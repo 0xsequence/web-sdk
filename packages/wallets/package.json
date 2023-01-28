@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Wallets for Ethconnect",
   "repository": "https://github.com/0xsequence/ethconnect/tree/master/packages/ethconnect",
-  "source": "src/index.ts",
   "main": "dist/ethconnect-wallets.cjs.js",
   "module": "dist/ethconnect-wallets.esm.js",
   "author": "Horizon Blockchain Games",
@@ -14,8 +13,7 @@
   },
   "dependencies": {
     "@0xsequence/provider": "^0.43.11",
-    "@0xsequence/wagmi-connector": "^1.0.2",
-    "@types/react": "^18.0.27"
+    "@0xsequence/wagmi-connector": "^1.0.2"
   },
   "peerDependencies": {
     "react": ">=17",
@@ -28,7 +26,7 @@
     "@types/react-dom": "^18.0.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "wagmi": "^0.10.14"
+    "wagmi": "^0.11.0"
   },
   "files": [
     "src",

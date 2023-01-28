@@ -2,7 +2,6 @@
 import { EthConnectProvider, getEthConnectWallets } from '@ethconnect/core'
 import { sequenceWallet, metamaskWallet, injectedWallet } from '@ethconnect/wallets'
 import Homepage from './components/Homepage'
-import * as wagmi from 'wagmi'
 import { WagmiConfig, createClient, configureChains } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import { mainnet, polygon } from 'wagmi/chains'
@@ -47,7 +46,7 @@ function App() {
 
   return (
     <WagmiConfig client={client}>
-      <EthConnectProvider wagmi={wagmi}>
+      <EthConnectProvider>
         <Homepage />
       </EthConnectProvider>
     </WagmiConfig>

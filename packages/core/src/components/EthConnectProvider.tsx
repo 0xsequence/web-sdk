@@ -10,7 +10,6 @@ import {
   ThemeProvider,
 } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
-// TODO: figure out the problem with the pnpm setup and use the wagmi hooks
 import { useConnect, useAccount, useClient, Connector } from 'wagmi'
 
 import { ConnectModalContext } from '../contexts'
@@ -20,14 +19,13 @@ import '@0xsequence/design-system/styles.css'
 
 export type EthConnectProvider = {
   children: React.ReactNode,
-  wagmi: any
 }
 
-export const EthConnectProvider = ({ children, wagmi }: EthConnectProvider) => {
+export const EthConnectProvider = ({ children }: EthConnectProvider) => {
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
   const [clickedGoBack, setClickedGoBack] = useState(false)
-  const connectInfo = wagmi.useConnect()
-  const accountInfo = wagmi.useAccount()
+  const connectInfo = useConnect()
+  const accountInfo = useAccount()
   const pendingConnector = connectInfo.pendingConnector
   const error = connectInfo.isError
   console.log('connect info...', connectInfo)
@@ -73,7 +71,9 @@ export const EthConnectProvider = ({ children, wagmi }: EthConnectProvider) => {
         <Box gap="4" flexDirection="column" justifyContent="center" alignItems="center">
           {/* @ts-ignore-next-line */}
           {connectInfo.connectors.map((connector) => {
+              // @ts-ignore
               const Logo = connector._wallet.logo as React.FunctionComponent
+              // @ts-ignore
               const walletName = connector._wallet.name
 
               return (
@@ -98,6 +98,7 @@ export const EthConnectProvider = ({ children, wagmi }: EthConnectProvider) => {
                     width="16"
                     justifyContent="center"
                     alignItems="center"
+                    // @ts-ignore
                     style={{ backgroundColor: connector._wallet.iconBackground }}
                     borderRadius="md"
                   >

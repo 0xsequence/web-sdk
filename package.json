@@ -18,16 +18,9 @@
     "format": "prettier --write packages/**/src/**/*.ts packages/**/tests/**/*.ts",
     "audit:fix": "pnpm audit --fix",
     "typecheck": "tsc --noEmit",
-    "dev": "preconstruct dev",
-    "postinstall": "preconstruct dev",
     "coverage": "rimraf ./coverage && rimraf ./.nyc_output && nyc pnpm test",
-    "prepare": "husky-run install"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pnpm lint",
-      "pre-push": "pnpm lint && pnpm build && pnpm test:parallel"
-    }
+    "dev": "preconstruct dev",
+    "postinstall": "preconstruct dev"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -47,7 +40,7 @@
     "@types/node": "^18.11.17",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
-    "ava": "^3.15.0",
+    "@vanilla-extract/babel-plugin": "^1.2.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "concurrently": "^7.5.0",
@@ -58,20 +51,18 @@
     "ethers": "^5.7.2",
     "express": "^4.18.2",
     "hardhat": "^2.12.2",
-    "husky": "4.3.8",
     "mocha": "^10.1.0",
     "nyc": "^15.1.0",
     "prettier": "^2.7.1",
-    "puppeteer": "^19.2.2",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.1.2",
     "ts-node": "^10.9.1",
     "tsx": "^3.12.1",
-    "typescript": "~4.9.4",
-    "wait-on": "^6.0.1"
+    "typescript": "~4.9.4"
   },
   "resolutions": {},
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "preconstruct": {
     "packages": [
@@ -88,8 +79,5 @@
       "got@<11.8.5": ">=11.8.5",
       "glob-parent@<5.1.2": ">=5.1.2"
     }
-  },
-  "dependencies": {
-    "@vanilla-extract/babel-plugin": "^1.2.0"
   }
 }

@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Core package for Ethconnect",
   "repository": "https://github.com/0xsequence/ethconnect/tree/master/packages/ethconnect",
-  "source": "src/index.ts",
   "main": "dist/ethconnect-core.cjs.js",
   "module": "dist/ethconnect-core.esm.js",
   "author": "Horizon Blockchain Games",
@@ -29,7 +28,7 @@
     "@types/react-dom": "^18.0.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "wagmi": "^0.10.14"
+    "wagmi": "^0.11.0"
   },
   "files": [
     "src",
