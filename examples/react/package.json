@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "0xsequence": "^0.43.10",
-    "@0xsequence/wagmi-connector": "^1.0.2",
+    "@0xsequence/wagmi-connector": "^1.0.3",
     "@ethconnect/core": "workspace:*",
     "@ethconnect/wallets": "workspace:*",
     "@testing-library/jest-dom": "^5.16.5",
@@ -16,7 +16,6 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.4",
-    "wagmi": "^0.11.0",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {

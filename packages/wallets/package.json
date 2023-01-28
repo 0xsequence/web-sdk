@@ -5,6 +5,7 @@
   "repository": "https://github.com/0xsequence/ethconnect/tree/master/packages/ethconnect",
   "main": "dist/ethconnect-wallets.cjs.js",
   "module": "dist/ethconnect-wallets.esm.js",
+  "types": "dist/ethconnect-wallets.cjs.d.ts",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
   "scripts": {
@@ -13,7 +14,7 @@
   },
   "dependencies": {
     "@0xsequence/provider": "^0.43.11",
-    "@0xsequence/wagmi-connector": "^1.0.2"
+    "@0xsequence/wagmi-connector": "^1.0.3"
   },
   "peerDependencies": {
     "react": ">=17",
@@ -21,12 +22,6 @@
     "wagmi": ">=0.10.0"
   },
   "devDependencies": {
-    "@types/webextension-polyfill": "^0.10.0",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "wagmi": "^0.11.0"
   },
   "files": [
     "src",
