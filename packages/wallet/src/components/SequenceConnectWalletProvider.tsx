@@ -6,8 +6,8 @@ import {
 } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
 
-import { Home } from '../views/Home'
-import { WalletModalContext } from '../contexts'
+import { AllCoins, Home } from '../views'
+import { Navigation, NavigationContext, WalletModalContext } from '../contexts'
 
 import '@0xsequence/design-system/styles.css'
 
@@ -25,22 +25,38 @@ export type SequenceConnectWalletProvider = {
 
 export const SequenceConnectWalletProvider = ({ children, theme }: SequenceConnectWalletProvider) => {
   const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
+  const [navigation, setNavigation] = useState<Navigation>({
+    location: 'home'
+  })
 
   const queryClient = new QueryClient()
+
+  const getContent = () => {
+    const { location } = navigation
+    switch (location) {
+      case 'all-coins':
+        return <AllCoins />
+      case 'home':
+      default:
+        return <Home />
+    }
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
       <WalletModalContext.Provider value={{ setOpenWalletModal }}>
-        <ThemeProvider theme={theme}>
-          <AnimatePresence>
-            {openWalletModal && (
-              <Modal scroll={false} backdropColor="transparent" size="sm" onClose={() => setOpenWalletModal(false)}>
-                <Home />
-              </Modal>
-            )}
-          </AnimatePresence>
-        </ThemeProvider>
-        {children}
+        <NavigationContext.Provider value={{ setNavigation }}>
+          <ThemeProvider theme={theme}>
+            <AnimatePresence>
+              {openWalletModal && (
+                <Modal scroll={false} backdropColor="transparent" size="sm" onClose={() => setOpenWalletModal(false)}>
+                  {getContent()}
+                </Modal>
+              )}
+            </AnimatePresence>
+          </ThemeProvider>
+          {children}
+        </NavigationContext.Provider>
       </WalletModalContext.Provider>
     </QueryClientProvider>
   )
