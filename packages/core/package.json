@@ -1,11 +1,11 @@
 {
-  "name": "@0xsequence/connect-core",
+  "name": "@0xsequence/kit-core",
   "version": "0.0.1",
-  "description": "Core package for Sequence Connect",
-  "repository": "https://github.com/0xsequence/connect/tree/master/packages/core",
-  "main": "dist/0xsequence-connect-core.cjs.js",
-  "module": "dist/0xsequence-connect-core.esm.js",
-  "types": "dist/0xsequence-connect-core.cjs.d.ts",
+  "description": "Core package for Sequence Kit",
+  "repository": "https://github.com/0xsequence/kit/tree/master/packages/core",
+  "main": "dist/0xsequence-kit-core.cjs.js",
+  "module": "dist/0xsequence-kit-core.esm.js",
+  "types": "dist/0xsequence-kit-core.cjs.d.ts",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
   "scripts": {

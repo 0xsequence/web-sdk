@@ -1,11 +1,11 @@
 {
-  "name": "@0xsequence/connect-wallet",
+  "name": "@0xsequence/kit-wallet",
   "version": "0.0.1",
-  "description": "Wallet UI for Sequence Connect",
-  "repository": "https://github.com/0xsequence/connect/tree/master/packages/wallet",
-  "main": "dist/0xsequence-connect-wallet.cjs.js",
-  "module": "dist/0xsequence-connect-wallet.esm.js",
-  "types": "dist/0xsequence-connect-wallet.cjs.d.ts",
+  "description": "Wallet UI for Sequence Kit",
+  "repository": "https://github.com/0xsequence/kit/tree/master/packages/wallet",
+  "main": "dist/0xsequence-kit-wallet.cjs.js",
+  "module": "dist/0xsequence-kit-wallet.esm.js",
+  "types": "dist/0xsequence-kit-wallet.cjs.d.ts",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
   "scripts": {

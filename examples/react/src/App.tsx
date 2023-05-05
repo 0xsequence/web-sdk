@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { SequenceConnectProvider, getSequenceConnectWallets, THEMES } from '@0xsequence/connect-core'
-import { sequence, metamask, injected, walletConnect } from '@0xsequence/connect-connectors'
-import { SequenceConnectWalletProvider } from '@0xsequence/connect-wallet'
+import { SequenceConnectProvider, getSequenceConnectWallets, THEMES } from '@0xsequence/kit-core'
+import { sequence, metamask, injected, walletConnect } from '@0xsequence/kit-connectors'
+import { SequenceConnectWalletProvider } from '@0xsequence/kit-wallet'
 import Homepage from './components/Homepage'
 import { WagmiConfig, createClient, configureChains } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
@@ -24,7 +24,7 @@ function App() {
     sequence({
       chains,
       connect: {
-        app: 'Sequence Connect example',
+        app: 'Sequence Kit example',
         networkId: 137
       }
     }),

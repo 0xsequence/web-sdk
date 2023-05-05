@@ -1,13 +1,13 @@
 {
-  "name": "@0xsequence/connect-example-react",
+  "name": "@0xsequence/kit-example-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "0xsequence": "^0.43.26",
     "@0xsequence/wagmi-connector": "^1.0.6",
-    "@0xsequence/connect-core": "workspace:*",
-    "@0xsequence/connect-connectors": "workspace:*",
-    "@0xsequence/connect-wallet": "workspace:*",
+    "@0xsequence/kit-core": "workspace:*",
+    "@0xsequence/kit-connectors": "workspace:*",
+    "@0xsequence/kit-wallet": "workspace:*",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

@@ -1,1 +1,1 @@
-export * './Home'
+export * from './Home'

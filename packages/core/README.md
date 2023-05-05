@@ -1,4 +1,4 @@
-@0xsequence/connect-core
-===============
+@0xsequence/kit-core
+====================
 
-Core package for Sequence Connect.
+Core package for Sequence Kit.

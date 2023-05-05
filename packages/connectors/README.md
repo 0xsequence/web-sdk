@@ -1,4 +1,4 @@
-@0xsequence/connect-connectors
-===============
+@0xsequence/kit-connectors
+==========================
 
-Official wallet integrations that work with Sequence Connect.
+Official wallet integrations that work with Sequence Kit.

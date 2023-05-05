@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { sequence } from '0xsequence' 
 import { ethers } from 'ethers'
-import { useOpenConnectModal } from '@0xsequence/connect-core'
-import { useOpenWalletModal } from '@0xsequence/connect-wallet'
+import { useOpenConnectModal } from '@0xsequence/kit-core'
+import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { useDisconnect, useAccount, useSigner, useProvider } from 'wagmi'
 import { ModalThemeContext } from '../contexts'
 

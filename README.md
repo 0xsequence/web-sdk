@@ -1,40 +1,40 @@
-Sequence Connect
-================
+Sequence Kit
+============
 
-Sequence Connect (@0xsequence/connect) is a library enabling developers to easily integrate web3 wallets in their app. It is based on [wagmi](https://wagmi.sh/) and all functionality from wagmi, such as hooks, can be used.
+Sequence Kit (@0xsequence/kit) is a library enabling developers to easily integrate web3 wallets in their app. It is based on [wagmi](https://wagmi.sh/) and all functionality from wagmi, such as hooks, can be used.
 
 ## Usage
 ### Installing the Library
 
-`npm install @0xsequence/connect-core wagmi ethers`
+`npm install @0xsequence/kit-core wagmi ethers`
 
 or
 
-`pnpm install @0xsequence/connect-core wagmi ethers`
+`pnpm install @0xsequence/kit-core wagmi ethers`
 
 or
 
-`yarn add @0xsequence/connect-core wagmi ethers`
+`yarn add @0xsequence/kit-core wagmi ethers`
 
 ### Installing Wallets
 Official wallets can be installed by running:
 
-`npm install @0xsequence/connect-connectors`
+`npm install @0xsequence/kit-connectors`
 
 or
 
-`pnpm install @0xsequence/connect-connectors`
+`pnpm install @0xsequence/kit-connectors`
 
 or
 
-`yarn add @0xsequence/connect-connectors`
+`yarn add @0xsequence/kit-connectors`
 
 ### Setting up the Library
-React apps must be wrapped by a Wagmi client and the EthConnnectProvider components. It is important that the Wagmi wrapper comes before the Sequence Connect wrapper.
+React apps must be wrapped by a Wagmi client and the EthConnnectProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
 ```js
-import { SequenceConnectProvider, getSequenceConnectWallets } from '@0xsequence/connect-core'
-import { sequenceWallet, metamaskWallet, injectedWallet, walletConnectWallet } from '@0xsequence/connect-connectors'
+import { SequenceConnectProvider, getSequenceConnectWallets } from '@0xsequence/kit-core'
+import { sequenceWallet, metamaskWallet, injectedWallet, walletConnectWallet } from '@0xsequence/kit-connectors'
 import { WagmiConfig, createClient, configureChains } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import { mainnet, polygon } from 'wagmi/chains'
@@ -54,7 +54,7 @@ function App() {
     sequenceWallet({
       chains,
       connect: {
-        app: 'Sequence Connect example',
+        app: 'Sequence Kit example',
         networkId: 137
       }
     }),
@@ -93,7 +93,7 @@ function App() {
 Wallet selection is done through a modal which can be called programmatically.
 
 ```js
-import { useOpenConnectModal } from '@0xsequence/connect-core'
+import { useOpenConnectModal } from '@0xsequence/kit-core'
 import { useDisconnect, useAccount, useSigner, useProvider } from 'wagmi'
 
 
@@ -124,9 +124,9 @@ const MyReactComponent = () => {
 
 ## Packages
 
-- [@0xsequence/connect-example-react](./examples/react)
-- [@0xsequence/connect-core](./packages/core)
-- [@0xsequence/connect-connectors](./packages/wallets)
+- [@0xsequence/kit-example-react](./examples/react)
+- [@0xsequence/kit-core](./packages/core)
+- [@0xsequence/kit-connectors](./packages/wallets)
 
 
 ## Local Development

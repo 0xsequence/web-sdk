@@ -1,5 +1,5 @@
 {
-  "name": "sequenceConnect",
+  "name": "kit",
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
@@ -21,7 +21,7 @@
     "coverage": "rimraf ./coverage && rimraf ./.nyc_output && nyc pnpm test",
     "dev": "preconstruct dev",
     "postinstall": "preconstruct dev",
-    "start:react": "pnpm --filter @0xsequence/connect-example-react start"
+    "start:react": "pnpm --filter @0xsequence/kit-example-react start"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -32,8 +32,8 @@
     "@babel/runtime": "^7.20.1",
     "@changesets/changelog-github": "^0.4.7",
     "@changesets/cli": "^2.25.2",
-    "@0xsequence/connect-core": "workspace:*",
-    "@0xsequence/connect-connectors": "workspace:*",
+    "@0xsequence/kit-core": "workspace:*",
+    "@0xsequence/kit-connectors": "workspace:*",
     "@preconstruct/cli": "^2.6.2",
     "@types/chai": "^4.2.22",
     "@types/chai-as-promised": "^7.1.4",

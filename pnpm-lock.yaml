@@ -10,10 +10,10 @@ importers:
 
   .:
     devDependencies:
-      '@0xsequence/connect-connectors':
+      '@0xsequence/kit-connectors':
         specifier: workspace:*
         version: link:packages/connectors
-      '@0xsequence/connect-core':
+      '@0xsequence/kit-core':
         specifier: workspace:*
         version: link:packages/core
       '@babel/core':
@@ -136,13 +136,13 @@ importers:
       0xsequence:
         specifier: ^0.43.26
         version: 0.43.26(ethers@5.7.2)
-      '@0xsequence/connect-connectors':
+      '@0xsequence/kit-connectors':
         specifier: workspace:*
         version: link:../../packages/connectors
-      '@0xsequence/connect-core':
+      '@0xsequence/kit-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@0xsequence/connect-wallet':
+      '@0xsequence/kit-wallet':
         specifier: workspace:*
         version: link:../../packages/wallet
       '@0xsequence/wagmi-connector':

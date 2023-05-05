@@ -1,11 +1,11 @@
 {
-  "name": "@0xsequence/connect-connectors",
+  "name": "@0xsequence/kit-connectors",
   "version": "0.0.1",
-  "description": "Wallets for Sequence Connect",
-  "repository": "https://github.com/0xsequence/connect/tree/master/packages/connectors",
-  "main": "dist/0xsequence-connect-connectors.cjs.js",
-  "module": "dist/0xsequence-connect-connectors.esm.js",
-  "types": "dist/0xsequence-connect-connectors.cjs.d.ts",
+  "description": "Wallets for Sequence Kit",
+  "repository": "https://github.com/0xsequence/kit/tree/master/packages/connectors",
+  "main": "dist/0xsequence-kit-connectors.cjs.js",
+  "module": "dist/0xsequence-kit-connectors.esm.js",
+  "types": "dist/0xsequence-kit-connectors.cjs.d.ts",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
   "scripts": {
