@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "kit",
+  "type": "module",
   "dependencies": {
     "0xsequence": "^1.8.2",
     "@0xsequence/design-system": "^1.1.0",
