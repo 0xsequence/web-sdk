@@ -92,7 +92,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient["analytics"]>()
-  const { address, isConnected } = useAccount()
+  // const { address, isConnected } = useAccount()
 
   const setupAnalytics = (projectAccessKey: string) => {
     const s = sequence.initWallet(projectAccessKey)
@@ -100,15 +100,15 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     setAnalytics(sequenceAnalytics)
   }
 
-  useEffect(() => {
-    if (!isConnected) {
-      analytics?.reset()
-      return
-    }
-    if (address) {
-      analytics?.identify(address.toLowerCase())
-    }
-  },[analytics, address, isConnected])
+  // useEffect(() => {
+  //   if (!isConnected) {
+  //     analytics?.reset()
+  //     return
+  //   }
+  //   if (address) {
+  //     analytics?.identify(address.toLowerCase())
+  //   }
+  // },[analytics, address, isConnected])
 
   const poweredBySequenceOnClick = () => {
     window.open('https://sequence.xyz')
