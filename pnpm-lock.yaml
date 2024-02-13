@@ -71,6 +71,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^5.43.0
         version: 5.62.0(eslint@8.54.0)(typescript@5.3.3)
+      '@vanilla-extract/babel-plugin':
+        specifier: ^1.2.0
+        version: 1.2.0
       chai:
         specifier: ^4.3.4
         version: 4.3.10
@@ -7378,6 +7381,17 @@ packages:
       - supports-color
     dev: true
 
+  /@vanilla-extract/babel-plugin@1.2.0:
+    resolution: {integrity: sha512-4R+hqoyzoyJIrE+NgrYxZuL6GqGH28hiBrPUOxwtvqnJJ5WnUl2/WzItLDDH9YT1Auwl3cIR7pcbrV6HIchORA==}
+    deprecated: The features of this plugin are now built-in to all vanilla-extract bundler integrations — making this plugin no longer required. For more information about test environment integrations, see https://vanilla-extract.style/documentation/test-environments/
+    dependencies:
+      '@babel/core': 7.23.9
+      '@babel/template': 7.23.9
+      '@vanilla-extract/integration': 5.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@vanilla-extract/css@1.14.0:
     resolution: {integrity: sha512-rYfm7JciWZ8PFzBM/HDiE2GLnKI3xJ6/vdmVJ5BSgcCZ5CxRlM9Cjqclni9lGzF3eMOijnUhCd/KV8TOzyzbMA==}
     dependencies:
@@ -7392,6 +7406,18 @@ packages:
       media-query-parser: 2.0.2
       modern-ahocorasick: 1.0.1
       outdent: 0.8.0
+
+  /@vanilla-extract/integration@5.0.1:
+    resolution: {integrity: sha512-HRV/HvC/lihb9wT3x5s7pf5qLjqxSd9nBePJ10juOuMB5cl2ZClEcts076m9BuRKM3wRK2h7KuwkNsaUtjujxQ==}
+    dependencies:
+      '@vanilla-extract/css': 1.14.0
+      esbuild: 0.11.23
+      eval: 0.1.6
+      find-up: 5.0.0
+      javascript-stringify: 2.1.0
+      lodash: 4.17.21
+      outdent: 0.8.0
+    dev: true
 
   /@vanilla-extract/integration@7.1.0(@types/node@20.11.17):
     resolution: {integrity: sha512-kCFn2IfnCHf4PCP538zBs5g6JJvqybJ4lU+ww2CeV/B2roze8drF7jVu2hDQUTtfiXgNe0Q3WpUfXdX27KFLsw==}
@@ -9889,6 +9915,12 @@ packages:
     resolution: {integrity: sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==}
     dev: true
 
+  /esbuild@0.11.23:
+    resolution: {integrity: sha512-iaiZZ9vUF5wJV8ob1tl+5aJTrwDczlvGP0JoMmnpC2B0ppiMCu8n8gmy5ZTGl5bcG081XBVn+U+jP+mPFm5T5Q==}
+    hasBin: true
+    requiresBuild: true
+    dev: true
+
   /esbuild@0.18.20:
     resolution: {integrity: sha512-ceqxoedUrcayh7Y7ZX6NdbbDzGROiyVBgC4PriJThBKSVPWnnFHZAkfI1lJT8QFkOwH4qOS2SJkS4wvpGl8BpA==}
     engines: {node: '>=12'}
@@ -10321,6 +10353,13 @@ packages:
     dependencies:
       is-hex-prefixed: 1.0.0
       strip-hex-prefix: 1.0.0
+    dev: true
+
+  /eval@0.1.6:
+    resolution: {integrity: sha512-o0XUw+5OGkXw4pJZzQoXUk+H87DHuC+7ZE//oSrRGtatTmr12oTnLfg6QOq9DyTt0c/p4TwzgmkKrBzWTSizyQ==}
+    engines: {node: '>= 0.8'}
+    dependencies:
+      require-like: 0.1.2
     dev: true
 
   /eval@0.1.8:

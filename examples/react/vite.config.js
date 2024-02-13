@@ -22,8 +22,8 @@ export default defineConfig(() => {
         },
       }),
       viteTsconfigPaths(),
-      svgrPlugin(),
       vanillaExtractPlugin(),
+      svgrPlugin(),
     ],
     server: {
       port: 4444,

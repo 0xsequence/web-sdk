@@ -15,6 +15,7 @@ module.exports = {
     '@babel/preset-react'
   ],
   plugins: [
-    ['@babel/plugin-transform-class-properties', { loose: true }]
+    ['@babel/plugin-transform-class-properties', { loose: true }],
+    ["@vanilla-extract/babel-plugin", {}]
   ]
 }
