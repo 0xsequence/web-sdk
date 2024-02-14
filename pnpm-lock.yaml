@@ -144,16 +144,16 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
-        specifier: workspace:*
+        specifier: ^2.0.0
         version: link:../../packages/kit
       '@0xsequence/kit-checkout':
-        specifier: workspace:*
+        specifier: ^2.0.0
         version: link:../../packages/checkout
       '@0xsequence/kit-connectors':
-        specifier: workspace:*
+        specifier: ^2.0.0
         version: link:../../packages/connectors
       '@0xsequence/kit-wallet':
-        specifier: workspace:*
+        specifier: ^2.0.0
         version: link:../../packages/wallet
       '@tanstack/react-query':
         specifier: ^4.36.1
