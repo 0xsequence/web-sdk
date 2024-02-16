@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import { GoogleOAuthProvider, googleLogout } from '@react-oauth/google'
 
 import { Box, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
@@ -101,6 +101,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   useEffect(() => {
     if (!isConnected) {
       analytics?.reset()
+
       return
     }
     if (address) {
@@ -157,6 +158,8 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   useEffect(() => {
     setDisplayedAssets(displayedAssets)
   }, [displayedAssetsSetting])
+
+  console.log('googleClientId', googleClientId)
 
   return (
     <ThemeContextProvider

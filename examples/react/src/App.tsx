@@ -66,7 +66,7 @@ function App() {
   const kitConfig: KitConfig = {
     defaultTheme: 'dark',
     signIn: {
-      projectName: 'Skyweaver',
+      projectName: 'Kit Demo',
       // logoUrl: 'sw-logo-white.svg',
       useMock: isDebugMode
     },

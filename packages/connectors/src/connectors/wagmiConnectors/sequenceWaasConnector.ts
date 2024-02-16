@@ -44,18 +44,16 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     name: 'SequenceWaaS',
     type: sequenceWaasWallet.type,
     async setup() {
-      const sessionHash = await sequenceWaas.getSessionHash()
-      localStorage.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
+      const isConnected = await sequenceWaas.isSignedIn()
+      if (!isConnected) {
+        const sessionHash = await sequenceWaas.getSessionHash()
+        localStorage.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
+      }
     },
     async connect() {
       console.log('connect called')
-      console.log
 
       const isConnected = await sequenceWaas.isSignedIn()
-
-      console.log('isSignedIn', isConnected)
-
-      // console.log('address', await sequenceWaas.getAddress())
 
       if (isConnected) {
         const accounts = await this.getAccounts()
@@ -72,8 +70,8 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         const idToken = localStorage.getItem(LocalStorageKey.GoogleIDToken)
         console.log('idToken', idToken)
         if (waasConfig.googleClientId && idToken) {
-          const sessionHash = await sequenceWaas.getSessionHash()
           await sequenceWaas.signIn({ idToken }, 'asdasasdad111')
+          localStorage.removeItem(LocalStorageKey.GoogleIDToken)
 
           console.log('address', await sequenceWaas.getAddress())
 
@@ -88,21 +86,20 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
     },
     async disconnect() {
-      this.onDisconnect()
-      return
+      config.emitter.emit('disconnect')
+      try {
+        await sequenceWaas.dropSession({ sessionId: await sequenceWaas.getSessionId() })
+      } catch (e) {
+        console.log(e)
+      }
+      localStorage.removeItem(LocalStorageKey.WaasSessionHash)
     },
     async getAccounts() {
       const address = await sequenceWaas.getAddress()
 
-      const account = getAddress(address)
-
-      console.log('account', account)
-
-      return [account]
+      return [getAddress(address)]
     },
     async getProvider(): Promise<SequenceWaasProvider> {
-      console.log('sequenceSigner.getAddress()', await sequenceWaasProvider.getAddress())
-
       return sequenceWaasProvider
     },
     async isAuthorized() {
@@ -140,12 +137,16 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
     async onConnect(connectinfo) {
       console.log('onConnect connectInfo', connectinfo)
-    },
-    async onDisconnect() {
-      sequenceWaas.dropSession({ sessionId: await sequenceWaas.getSessionId() })
-      localStorage.clear()
-      config.emitter.emit('disconnect')
     }
+    // async onDisconnect() {
+    //   try {
+    //     await sequenceWaas.dropSession({ sessionId: await sequenceWaas.getSessionId() })
+    //   } catch (e) {
+    //     console.log(e)
+    //   }
+    //   localStorage.removeItem(LocalStorageKey.WaasSessionHash)
+    //   config.emitter.emit('disconnect')
+    // }
   }))
 }
 
@@ -163,7 +164,7 @@ export class SequenceWaasProvider extends SequenceSigner implements EIP1193Provi
 
       const account = getAddress(address)
 
-      console.log('account', account)
+      console.log('eth_accounts', account)
 
       return [account]
     }

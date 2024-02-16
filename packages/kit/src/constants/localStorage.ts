@@ -5,7 +5,7 @@ export const LOCAL_STORAGE_PREFIX_ETHAUTH_PROOF = 'ethAuthProof'
 export const LOCAL_STORAGE_PREFIX_ETHAUTH_SETTINGS = 'ethAuthSettings'
 export const LOCAL_STORAGE_PREFIX_PROJECT_ACCESS_KEY = 'projectAccessKey'
 export const LOCAL_STORAGE_PREFIX_GOOGLE_CLIENT_ID = 'googleClientId'
-export const LOCAL_STORAGE_PREFIX_GOOGLE_ID_TOKEN = 'googleClientId'
+export const LOCAL_STORAGE_PREFIX_GOOGLE_ID_TOKEN = 'googleIdToken'
 export const LOCAL_STORAGE_PREFIX_WAAS_SESSION_HASH = 'waasSessionHash'
 
 export enum LocalStorageKey {

@@ -27,8 +27,9 @@ export type ExtendedConnector = CreateConnectorFn & WalletField
 
 export const getKitConnectWallets = (projectAccessKey: string, wallets: any[], googleClientId?: string): CreateConnectorFn[] => {
   localStorage.setItem(LocalStorageKey.ProjectAccessKey, projectAccessKey)
-
-  localStorage.setItem(LocalStorageKey.GoogleClientID, googleClientId ?? '')
+  if (googleClientId) {
+    localStorage.setItem(LocalStorageKey.GoogleClientID, googleClientId)
+  }
 
   const connectors: CreateConnectorFn[] = []
 

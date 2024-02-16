@@ -179,20 +179,22 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 return (
                   <>
                     {connector._wallet.id === 'google-waas' && (
-                      <GoogleLogin
-                        type="icon"
-                        size="large"
-                        nonce={localStorage.getItem(LocalStorageKey.WaasSessionHash) ?? undefined}
-                        onSuccess={credentialResponse => {
-                          if (credentialResponse.credential) {
-                            localStorage.setItem(LocalStorageKey.GoogleIDToken, credentialResponse.credential)
-                            onConnect(connector)
-                          }
-                        }}
-                        onError={() => {
-                          console.log('Login Failed')
-                        }}
-                      />
+                      <Box key={connector._wallet.id}>
+                        <GoogleLogin
+                          type="icon"
+                          size="large"
+                          nonce={localStorage.getItem(LocalStorageKey.WaasSessionHash) ?? undefined}
+                          onSuccess={credentialResponse => {
+                            if (credentialResponse.credential) {
+                              localStorage.setItem(LocalStorageKey.GoogleIDToken, credentialResponse.credential)
+                              onConnect(connector)
+                            }
+                          }}
+                          onError={() => {
+                            console.log('Login Failed')
+                          }}
+                        />
+                      </Box>
                     )}
                     {connector._wallet.id !== 'google-waas' && (
                       <Card

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import qs from 'query-string'
 import { useOpenConnectModal, signEthAuthProof, validateEthProof, useTheme as useKitTheme } from '@0xsequence/kit'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -12,7 +12,19 @@ import {
   useSwitchChain,
   useSendTransaction
 } from 'wagmi'
-import { Box, Button, Card, Text, Image, SunIcon, MoonIcon, SignoutIcon, useTheme, vars } from '@0xsequence/design-system'
+import {
+  Box,
+  Button,
+  Card,
+  Text,
+  Image,
+  SunIcon,
+  MoonIcon,
+  SignoutIcon,
+  useTheme,
+  vars,
+  Spinner
+} from '@0xsequence/design-system'
 
 import { Footer } from './Footer'
 import { messageToSign } from '../constants'
@@ -29,7 +41,11 @@ function Homepage() {
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
 
-  const { data: hash, sendTransaction } = useSendTransaction()
+  const { data: hash, sendTransaction, isLoading } = useSendTransaction()
+
+  const [isSigningMessage, setIsSigningMessage] = React.useState(false)
+  const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
+  const [messageSig, setMessageSig] = React.useState<string | undefined>()
 
   // TODO: fix this for waas
   const chainId = useChainId()
@@ -64,6 +80,8 @@ function Homepage() {
       return
     }
 
+    setIsSigningMessage(true)
+
     try {
       const message = messageToSign
 
@@ -83,6 +101,10 @@ function Homepage() {
         signature: sig
       })
 
+      setIsSigningMessage(false)
+      setIsMessageValid(isValid)
+      setMessageSig(sig)
+
       console.log('isValid?', isValid)
     } catch (e) {
       console.error(e)
@@ -96,11 +118,7 @@ function Homepage() {
 
     const [account] = await walletClient.getAddresses()
 
-    try {
-      sendTransaction({ to: account, value: '0', gas: null })
-    } catch (e) {
-      console.log(e)
-    }
+    sendTransaction({ to: account, value: '0', gas: null })
   }
 
   const onClickChangeTheme = () => {
@@ -140,7 +158,8 @@ function Homepage() {
                 <SwitchThemeButton />
               </Box>
               <Text fontWeight="medium" fontSize="normal" color="text100">
-                {formatAddress(address || '')}
+                {/* {formatAddress(address || '')} */}
+                {address}
               </Text>
             </Box>
             <Box alignItems="center" justifyContent="flex-end" flexDirection="row">
@@ -157,10 +176,11 @@ function Homepage() {
   interface ClickableCardProps {
     title: string
     description: string
+    isLoading?: boolean
     onClick: () => void
   }
 
-  const ClickableCard = ({ title, description, onClick }: ClickableCardProps) => {
+  const ClickableCard = ({ title, description, isLoading, onClick }: ClickableCardProps) => {
     return (
       <Card style={{ width: '332px' }} clickable onClick={onClick}>
         <Text color="text100" lineHeight="5" fontSize="normal" fontWeight="bold">
@@ -171,6 +191,7 @@ function Homepage() {
             {description}
           </Text>
         </Box>
+        {isLoading && <Spinner marginTop="3" size="sm" color="text100" />}
       </Card>
     )
   }
@@ -229,12 +250,46 @@ function Homepage() {
                 description="Checkout screen before placing a purchase on coins or collections"
                 onClick={onClickCheckout}
               />
-              <ClickableCard title="Sign message" description="Sign a message with your wallet" onClick={signMessage} />
               <ClickableCard
                 title="Send transaction"
                 description="Send a transaction with your wallet"
+                isLoading={isLoading}
                 onClick={runSendTransaction}
               />
+
+              {hash && (
+                <Text
+                  as="a"
+                  marginLeft="4"
+                  variant="small"
+                  underline
+                  href={`https://polygonscan.com/tx/${hash.hash}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View on PolygonScan
+                </Text>
+              )}
+              <ClickableCard
+                title="Sign message"
+                description="Sign a message with your wallet"
+                onClick={signMessage}
+                isLoading={isSigningMessage}
+              />
+              {isMessageValid && (
+                <Card style={{ width: '332px' }} flexDirection={'column'} gap={'2'}>
+                  <Text variant="medium">Signed message:</Text>
+                  <Text>{messageToSign}</Text>
+                  <Text variant="medium">Signature:</Text>
+                  <Text variant="code" as="p" ellipsis>
+                    {messageSig}
+                  </Text>
+                  <Text variant="medium">
+                    isValid: <Text variant="code">{isMessageValid.toString()}</Text>
+                  </Text>
+                </Card>
+              )}
+
               {isDebugMode && (
                 <ClickableCard
                   title="Generate EthAuth proof"
