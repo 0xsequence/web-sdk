@@ -1,8 +1,8 @@
-import { SequenceWaaS, Network, SequenceConfig, ExtendedSequenceConfig, defaults } from '@0xsequence/waas'
+import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, defaults } from '@0xsequence/waas'
 import { SequenceSigner } from '@0xsequence/waas-ethers'
-import { LocalStorageKey, EthAuthSettings } from '@0xsequence/kit'
+import { LocalStorageKey } from '@0xsequence/kit'
 
-import { UserRejectedRequestError, getAddress } from 'viem'
+import { getAddress } from 'viem'
 
 import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
@@ -88,9 +88,8 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
     },
     async disconnect() {
-      const provider = await this.getProvider()
-
-      provider.disconnect()
+      this.onDisconnect()
+      return
     },
     async getAccounts() {
       const address = await sequenceWaas.getAddress()
@@ -143,8 +142,8 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       console.log('onConnect connectInfo', connectinfo)
     },
     async onDisconnect() {
-      sequenceWaas.dropSession()
-      localStorage.removeItem(LocalStorageKey.EthAuthProof)
+      sequenceWaas.dropSession({ sessionId: await sequenceWaas.getSessionId() })
+      localStorage.clear()
       config.emitter.emit('disconnect')
     }
   }))
@@ -189,5 +188,9 @@ export class SequenceWaasProvider extends SequenceSigner implements EIP1193Provi
 
       return sig
     }
+  }
+
+  async disconnect() {
+    return
   }
 }

@@ -17,7 +17,6 @@ import { Box, Button, Card, Text, Image, SunIcon, MoonIcon, SignoutIcon, useThem
 import { Footer } from './Footer'
 import { messageToSign } from '../constants'
 import { formatAddress, getCheckoutSettings } from '../utils'
-import { parseEther } from 'viem'
 
 function Homepage() {
   const { theme, setTheme } = useTheme()
@@ -32,7 +31,11 @@ function Homepage() {
 
   const { data: hash, sendTransaction } = useSendTransaction()
 
+  // TODO: fix this for waas
   const chainId = useChainId()
+  // console.log('chainId', chainId)
+
+  console.log('isConnected', isConnected)
 
   const publicClient = usePublicClient({ chainId: 137 })
 
