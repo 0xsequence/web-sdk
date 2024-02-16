@@ -16,22 +16,22 @@ export default defineConfig(() => {
     plugins: [
       react(),
       nodePolyfills({
-        include: ["buffer"],
+        include: ['buffer'],
         globals: {
-          Buffer: true,
-        },
+          Buffer: true
+        }
       }),
       viteTsconfigPaths(),
       vanillaExtractPlugin(),
-      svgrPlugin(),
+      svgrPlugin()
     ],
     server: {
-      port: 4444,
+      port: 3000,
       fs: {
         // Allow serving files from one level up to the project root
         allow: ['..']
       }
     },
-    base: '', 
-  };
-});
+    base: ''
+  }
+})

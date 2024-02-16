@@ -1,52 +1,42 @@
 import { sequence } from '0xsequence'
 import { LocalStorageKey, EthAuthSettings } from '@0xsequence/kit'
 
-import {
-  UserRejectedRequestError,
-  getAddress,
-} from 'viem'
+import { UserRejectedRequestError, getAddress } from 'viem'
 
-import {
-  createConnector
-} from 'wagmi'
+import { createConnector } from 'wagmi'
 
 export interface BaseSequenceConnectorOptions {
   walletAppURL?: string
-  defaultNetwork?: sequence.network.ChainIdLike,
-  connect: sequence.provider.ConnectOptions,
+  defaultNetwork?: sequence.network.ChainIdLike
+  connect: sequence.provider.ConnectOptions
 }
 
 sequenceWallet.type = 'sequence' as const
 
 export function sequenceWallet(params: BaseSequenceConnectorOptions) {
-  const {  
-    defaultNetwork,
-    connect,
-    walletAppURL
-  } = params
+  const { defaultNetwork, connect, walletAppURL } = params
 
-    let id = 'sequence'
-    let name = 'Sequence'
+  let id = 'sequence'
+  let name = 'Sequence'
 
-    const signInOptions = params?.connect?.settings?.signInOptions || []
-    const signInWith = params?.connect?.settings?.signInWith
-    const signInWithEmail = params?.connect?.settings?.signInWithEmail
-    
-    // If there are no sign in options
-    // Then it must mean we are connecting with email
-    if (signInWithEmail) {
-      id = 'email'
-      name = 'Email'
-    } else if (signInWith) {
-      id = signInWith
-      name = `${signInWith[0].toUpperCase()}${signInWith.slice(1)}` 
-    } else if (signInOptions.length > 0) {
-      const newId = signInOptions[0]
-      const newName = `${id[0].toUpperCase()}${id.slice(1)}` 
-      id = newId
-      name = newName
-    }
+  const signInOptions = params?.connect?.settings?.signInOptions || []
+  const signInWith = params?.connect?.settings?.signInWith
+  const signInWithEmail = params?.connect?.settings?.signInWithEmail
 
+  // If there are no sign in options
+  // Then it must mean we are connecting with email
+  if (signInWithEmail) {
+    id = 'email'
+    name = 'Email'
+  } else if (signInWith) {
+    id = signInWith
+    name = `${signInWith[0].toUpperCase()}${signInWith.slice(1)}`
+  } else if (signInOptions.length > 0) {
+    const newId = signInOptions[0]
+    const newName = `${id[0].toUpperCase()}${id.slice(1)}`
+    id = newId
+    name = newName
+  }
 
   type Provider = sequence.provider.SequenceProvider
   type Properties = {}
@@ -66,12 +56,12 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       })
     },
     async connect() {
-      const provider = await this.getProvider() as sequence.provider.SequenceProvider
+      const provider = (await this.getProvider()) as sequence.provider.SequenceProvider
 
       if (!provider.isConnected()) {
         const localStorageTheme = localStorage.getItem(LocalStorageKey.Theme)
         const ethAuthSettingsRaw = localStorage.getItem(LocalStorageKey.EthAuthSettings)
-        const parseEthAuthSettings = ethAuthSettingsRaw ? JSON.parse(ethAuthSettingsRaw) : {} as EthAuthSettings
+        const parseEthAuthSettings = ethAuthSettingsRaw ? JSON.parse(ethAuthSettingsRaw) : ({} as EthAuthSettings)
 
         const connectOptionsWithTheme = {
           authorize: true,
@@ -79,7 +69,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
           ...connect,
           settings: {
             theme: localStorageTheme || 'dark',
-            ...connect?.settings,
+            ...connect?.settings
           }
         }
 
@@ -96,7 +86,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
         if (proofString) {
           const jsonEthAuthProof = JSON.stringify({
             proofString,
-            typedData: proofTypedData,
+            typedData: proofTypedData
           })
 
           localStorage.setItem(LocalStorageKey.EthAuthProof, jsonEthAuthProof)
@@ -118,7 +108,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     async getAccounts() {
       const provider = await this.getProvider()
 
-      const account = getAddress(await provider.getSigner().getAddress() as `0x${string}`)
+      const account = getAddress((await provider.getSigner().getAddress()) as `0x${string}`)
 
       return [account]
     },
@@ -127,7 +117,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
         const provider = sequence.getWallet()
 
         return provider
-      } catch(e) {
+      } catch (e) {
         const projectAccessKey = localStorage.getItem(LocalStorageKey.ProjectAccessKey)
 
         if (!projectAccessKey) {
@@ -137,10 +127,10 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
         const provider = sequence.initWallet(projectAccessKey, {
           defaultNetwork,
           transports: {
-            walletAppURL: walletAppURL || 'https://sequence.app',
+            walletAppURL: walletAppURL || 'https://sequence.app'
           },
           defaultEIP6492: true,
-          analytics: false,
+          analytics: false
         })
 
         const chainId = await provider.getChainId()
@@ -153,7 +143,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       try {
         const account = await this.getAccounts()
         return !!account
-      } catch(e) {
+      } catch (e) {
         return false
       }
     },
@@ -168,7 +158,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       return chain
     },
     async getChainId() {
-      const provider = await this.getProvider() as sequence.provider.SequenceProvider
+      const provider = (await this.getProvider()) as sequence.provider.SequenceProvider
 
       const chainId = provider.getChainId()
       return chainId
@@ -182,8 +172,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       config.emitter.emit('change', { chainId: normalizeChainId(chain) })
       provider.setDefaultChainId(normalizeChainId(chain))
     },
-    async onConnect(connectinfo) {
-    },
+    async onConnect(connectinfo) {},
     async onDisconnect() {
       localStorage.removeItem(LocalStorageKey.EthAuthProof)
       config.emitter.emit('disconnect')

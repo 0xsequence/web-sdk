@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import qs from 'query-string'
 import { ThemeProvider } from '@0xsequence/design-system'
 import { KitProvider, KitConfig, getKitConnectWallets } from '@0xsequence/kit'
-import { getDefaultConnectors, mock } from '@0xsequence/kit-connectors'
+import { getDefaultConnectors, getDefaultWaasConnectors, mock } from '@0xsequence/kit-connectors'
 import { KitWalletProvider } from '@0xsequence/kit-wallet'
 import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
 import Homepage from './components/Homepage'
@@ -14,35 +14,37 @@ import { mainnet, polygon } from 'wagmi/chains'
 
 import '@0xsequence/design-system/styles.css'
 
-const queryClient = new QueryClient() 
+const queryClient = new QueryClient()
 
 function App() {
-  // append ?debug=true to url to enable debug mode 
+  // append ?debug=true to url to enable debug mode
   const { debug } = qs.parse(location.search)
   const isDebugMode = debug === 'true'
 
   /* typing error from wagmi? */
-  const chains: readonly [Chain, ...Chain[]] = [mainnet as Chain, polygon as Chain] 
+  const chains: readonly [Chain, ...Chain[]] = [mainnet as Chain, polygon as Chain]
 
-  const projectAccessKey = 'iK0DPkHRt0IFo8o4M3fZIIOAAAAAAAAAA'
+  const projectAccessKey = 'EeP6AmufRFfigcWaNverI6CAAAAAAAAAA'
+  const waasConfigKey =
+    'eyJwcm9qZWN0SWQiOjIsImVtYWlsUmVnaW9uIjoidXMtZWFzdC0yIiwiZW1haWxDbGllbnRJZCI6IjVncDltaDJmYnFiajhsNnByamdvNzVwMGY2IiwicnBjU2VydmVyIjoiaHR0cHM6Ly9uZXh0LXdhYXMuc2VxdWVuY2UuYXBwIn0='
+  const googleClientId = '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
 
   const connectors = [
-    ...getDefaultConnectors({
+    ...getDefaultWaasConnectors({
       walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
       defaultChainId: 137,
+      waasConfigKey,
+      googleClientId,
       appName: 'demo app',
       projectAccessKey
     }),
-    ...(
-      isDebugMode
-      ?
-        getKitConnectWallets(projectAccessKey, [
+    ...(isDebugMode
+      ? getKitConnectWallets(projectAccessKey, [
           mock({
-            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9'],
+            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
           })
         ])
-      : []
-    )
+      : [])
   ]
 
   const transports = {}
@@ -58,7 +60,7 @@ function App() {
     chains,
     /* TODO: check connector typings. Might be related to wagmi problem */
     /* @ts-ignore-next-line */
-    connectors,
+    connectors
   })
 
   const kitConfig: KitConfig = {
@@ -72,25 +74,25 @@ function App() {
       // Matic token
       {
         contractAddress: ethers.constants.AddressZero,
-        chainId: 137,
+        chainId: 137
       },
       // USDC token
       {
         contractAddress: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-        chainId: 137,
+        chainId: 137
       },
       // skyweaver collectibles
       {
         contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
         chainId: 137
       }
-    ],
+    ]
   }
 
   return (
     <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}> 
-        <KitProvider config={kitConfig} >
+      <QueryClientProvider client={queryClient}>
+        <KitProvider config={kitConfig}>
           <KitWalletProvider>
             <KitCheckoutProvider>
               <div id="app">
@@ -103,7 +105,7 @@ function App() {
         </KitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  );
+  )
 }
 
-export default App;
+export default App

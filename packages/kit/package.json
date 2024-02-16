@@ -30,7 +30,8 @@
     "@0xsequence/utils": "1.8.2",
     "@vanilla-extract/css": "^1.9.3",
     "@vanilla-extract/recipes": "^0.3.0",
-    "framer-motion": "^8.5.2"
+    "framer-motion": "^8.5.2",
+    "@react-oauth/google": "^0.11.1"
   },
   "peerDependencies": {
     "0xsequence": ">=1.8.2",
