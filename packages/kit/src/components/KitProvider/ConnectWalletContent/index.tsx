@@ -171,15 +171,14 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             )}
             <Box marginTop="3" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
               {socialAuthConnectors.map(connector => {
-                console.log('waasSessionHash', localStorage.getItem(LocalStorageKey.WaasSessionHash))
                 const Logo =
                   theme === 'dark'
                     ? (connector._wallet.monochromeLogoDark as React.FunctionComponent)
                     : (connector._wallet.monochromeLogoLight as React.FunctionComponent)
                 return (
-                  <>
+                  <Box key={connector._wallet.id}>
                     {connector._wallet.id === 'google-waas' && (
-                      <Box key={connector._wallet.id}>
+                      <Box>
                         <GoogleLogin
                           type="icon"
                           size="large"
@@ -198,7 +197,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                     )}
                     {connector._wallet.id !== 'google-waas' && (
                       <Card
-                        key={connector._wallet.id}
                         className={styles.clickable}
                         justifyContent="center"
                         alignItems="center"
@@ -220,7 +218,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                         </Box>
                       </Card>
                     )}
-                  </>
+                  </Box>
                 )
               })}
             </Box>

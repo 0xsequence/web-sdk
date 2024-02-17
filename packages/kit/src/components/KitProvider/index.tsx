@@ -159,8 +159,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     setDisplayedAssets(displayedAssets)
   }, [displayedAssetsSetting])
 
-  console.log('googleClientId', googleClientId)
-
   return (
     <ThemeContextProvider
       value={{

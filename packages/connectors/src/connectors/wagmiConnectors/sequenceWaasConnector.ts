@@ -26,18 +26,19 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
   const sequenceWaas = new SequenceWaaS(
     {
-      network: 'polygon',
+      network: params.config.network ?? 137,
       projectAccessKey: waasConfig.projectAccessKey,
       waasConfigKey: waasConfig.waasConfigKey
     },
     defaults.TEST
   )
 
-  const sequenceSignerProvider = new ethers.providers.JsonRpcProvider(
+  const waasProvider = new ethers.providers.JsonRpcProvider(
     `https://next-nodes.sequence.app/polygon/${waasConfig.projectAccessKey}`
   )
 
-  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, sequenceSignerProvider)
+  const sequenceWaasSigner = new SequenceSigner(sequenceWaas, waasProvider)
+  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaasSigner, params.config.network ?? 137)
 
   return createConnector<Provider, Properties>(config => ({
     id: 'sequence-waas',
@@ -49,11 +50,16 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         const sessionHash = await sequenceWaas.getSessionHash()
         localStorage.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
       }
+
+      sequenceWaasProvider.on('disconnect', () => {
+        this.onDisconnect()
+      })
     },
     async connect() {
       console.log('connect called')
 
       const isConnected = await sequenceWaas.isSignedIn()
+      console.log('connect isConnected', isConnected)
 
       if (isConnected) {
         const accounts = await this.getAccounts()
@@ -86,13 +92,15 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
     },
     async disconnect() {
-      config.emitter.emit('disconnect')
       try {
         await sequenceWaas.dropSession({ sessionId: await sequenceWaas.getSessionId() })
       } catch (e) {
         console.log(e)
       }
       localStorage.removeItem(LocalStorageKey.WaasSessionHash)
+
+      sequenceWaasProvider.emit('disconnect')
+      sequenceWaasProvider.emit('accountsChanged', [])
     },
     async getAccounts() {
       const address = await sequenceWaas.getAddress()
@@ -137,16 +145,10 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
     async onConnect(connectinfo) {
       console.log('onConnect connectInfo', connectinfo)
+    },
+    async onDisconnect() {
+      return
     }
-    // async onDisconnect() {
-    //   try {
-    //     await sequenceWaas.dropSession({ sessionId: await sequenceWaas.getSessionId() })
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
-    //   localStorage.removeItem(LocalStorageKey.WaasSessionHash)
-    //   config.emitter.emit('disconnect')
-    // }
   }))
 }
 
@@ -157,10 +159,14 @@ function normalizeChainId(chainId: string | number | bigint | { chainId: string 
   return chainId
 }
 
-export class SequenceWaasProvider extends SequenceSigner implements EIP1193Provider {
+export class SequenceWaasProvider extends ethers.providers.BaseProvider implements EIP1193Provider {
+  constructor(public signer: SequenceSigner, network: ethers.providers.Networkish) {
+    super(network)
+  }
+
   async request({ method, params }: { method: string; params: any[] }) {
     if (method === 'eth_accounts') {
-      const address = await this.getAddress()
+      const address = await this.signer.getAddress()
 
       const account = getAddress(address)
 
@@ -185,13 +191,17 @@ export class SequenceWaasProvider extends SequenceSigner implements EIP1193Provi
       method === 'sequence_sign' ||
       method === 'sequence_signTypedData_v4'
     ) {
-      const sig = await this.signMessage(params[0])
+      const sig = await this.signer.signMessage(params[0])
 
       return sig
     }
   }
 
+  async getChainId() {
+    return await this.signer.getChainId()
+  }
+
   async disconnect() {
-    return
+    console.log('disconnect in provider')
   }
 }

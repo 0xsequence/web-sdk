@@ -51,8 +51,6 @@ function Homepage() {
   const chainId = useChainId()
   // console.log('chainId', chainId)
 
-  console.log('isConnected', isConnected)
-
   const publicClient = usePublicClient({ chainId: 137 })
 
   // append ?debug=true to url to enable debug mode
