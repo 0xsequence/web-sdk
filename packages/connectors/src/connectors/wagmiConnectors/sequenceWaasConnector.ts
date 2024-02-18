@@ -33,6 +33,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     defaults.TEST
   )
 
+  // FIX, should work with any network
   const waasProvider = new ethers.providers.JsonRpcProvider(
     `https://next-nodes.sequence.app/polygon/${waasConfig.projectAccessKey}`
   )
@@ -48,6 +49,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       const isConnected = await sequenceWaas.isSignedIn()
       if (!isConnected) {
         const sessionHash = await sequenceWaas.getSessionHash()
+
         localStorage.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
       }
 
@@ -55,40 +57,43 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         this.onDisconnect()
       })
     },
-    async connect() {
-      console.log('connect called')
+    async connect({ chainId, isReconnecting } = {}) {
+      console.log('isReconnecting', isReconnecting)
 
-      const isConnected = await sequenceWaas.isSignedIn()
-      console.log('connect isConnected', isConnected)
+      const isSignedIn = await sequenceWaas.isSignedIn()
 
-      if (isConnected) {
-        const accounts = await this.getAccounts()
-        const provider = await this.getProvider()
+      let accounts: `0x${string}`[] = []
 
-        console.log('accounts', accounts)
-        console.log('provider', provider)
-
-        return {
-          accounts: [...accounts],
-          chainId: provider.getChainId()
+      if (isSignedIn) {
+        console.log('connect isSignedIn true')
+        try {
+          accounts = await this.getAccounts()
+          const provider = await this.getProvider()
+          // FIX!!
+          chainId = 137
+        } catch (e) {
+          console.log(e)
         }
       } else {
+        console.log('connect isSignedIn false')
         const idToken = localStorage.getItem(LocalStorageKey.GoogleIDToken)
-        console.log('idToken', idToken)
+
         if (waasConfig.googleClientId && idToken) {
-          await sequenceWaas.signIn({ idToken }, 'asdasasdad111')
+          await sequenceWaas.signIn({ idToken }, randomName())
           localStorage.removeItem(LocalStorageKey.GoogleIDToken)
 
           console.log('address', await sequenceWaas.getAddress())
 
-          const accounts = await this.getAccounts()
+          accounts = await this.getAccounts()
           const provider = await this.getProvider()
-
-          return {
-            accounts: [...accounts],
-            chainId: provider.getChainId()
-          }
+          // FIX!!
+          chainId = 137
         }
+      }
+
+      return {
+        accounts,
+        chainId
       }
     },
     async disconnect() {
@@ -97,23 +102,31 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       } catch (e) {
         console.log(e)
       }
-      localStorage.removeItem(LocalStorageKey.WaasSessionHash)
 
-      sequenceWaasProvider.emit('disconnect')
-      sequenceWaasProvider.emit('accountsChanged', [])
+      localStorage.removeItem(LocalStorageKey.WaasSessionHash)
     },
     async getAccounts() {
-      const address = await sequenceWaas.getAddress()
+      try {
+        const isSignedIn = await sequenceWaas.isSignedIn()
+        if (isSignedIn) {
+          console.log('getAccoutns isSignedIn true')
+          const address = await sequenceWaas.getAddress()
 
-      return [getAddress(address)]
+          return [getAddress(address)]
+        }
+      } catch (e) {
+        return []
+      }
+      return []
     },
     async getProvider(): Promise<SequenceWaasProvider> {
       return sequenceWaasProvider
     },
     async isAuthorized() {
       try {
-        const account = await this.getAccounts()
-        return !!account
+        const isSignedIn = await sequenceWaas.isSignedIn()
+        console.log('isAuthorized in connector', isSignedIn)
+        return isSignedIn
       } catch (e) {
         return false
       }
@@ -131,6 +144,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     async getChainId() {
       const provider = await this.getProvider()
 
+      console.log('getChainId in connector')
       const chainId = provider.getChainId()
       return chainId
     },
@@ -147,7 +161,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       console.log('onConnect connectInfo', connectinfo)
     },
     async onDisconnect() {
-      return
+      await this.disconnect()
     }
   }))
 }
@@ -198,10 +212,28 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
   }
 
   async getChainId() {
-    return await this.signer.getChainId()
+    return this.network.chainId
   }
 
   async disconnect() {
     console.log('disconnect in provider')
   }
+}
+
+const DEVICE_EMOJIS = [
+  // 256 emojis for unsigned byte range 0 - 255
+  ...'🐶🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐽🐸🐵🙈🙉🙊🐒🐔🐧🐦🐤🐣🐥🦆🦅🦉🦇🐺🐗🐴🦄🐝🐛🦋🐌🐞🐜🦟🦗🕷🕸🦂🐢🐍🦎🦖🦕🐙🦑🦐🦞🦀🐡🐠🐟🐬🐳🐋🦈🐊🐅🐆🦓🦍🦧🐘🦛🦏🐪🐫🦒🦘🐃🐂🐄🐎🐖🐏🐑🦙🐐🦌🐕🐩🦮🐈🐓🦃🦚🦜🦢🦩🕊🐇🦝🦨🦡🦦🦥🐁🐀🐿🦔🐾🐉🐲🌵🎄🌲🌳🌴🌱🌿🍀🎍🎋🍃👣🍂🍁🍄🐚🌾💐🌷🌹🥀🌺🌸🌼🌻🌞🌝🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🥭🍍🥥🥝🍅🥑🥦🥬🥒🌶🌽🥕🧄🧅🥔🍠🥐🥯🍞🥖🥨🧀🥚🍳🧈🥞🧇🥓🥩🍗🍖🦴🌭🍔🍟🍕🥪🥙🧆🌮🌯🥗🥘🥫🍝🍜🍲🍛🍣🍱🥟🦪🍤🍙🍚🍘🍥🥠🥮🍢🍡🍧🍨🍦🥧🧁🍰🎂🍮🍭🍬🍫🍿🍩🍪🌰🥜👀👂👃👄👅👆👇👈👉👊👋👌👍👎👏👐👑👒👓🎯🎰🎱🎲🎳👾👯👺👻👽🏂🏃🏄'
+]
+
+// Generate a random name for the session, using a single random emoji and 2 random words
+// from the list of words of ethers
+export function randomName() {
+  const wordlistSize = 2048
+  const words = ethers.wordlists.en
+
+  const randomEmoji = DEVICE_EMOJIS[Math.floor(Math.random() * DEVICE_EMOJIS.length)]
+  const randomWord1 = words.getWord(Math.floor(Math.random() * wordlistSize))
+  const randomWord2 = words.getWord(Math.floor(Math.random() * wordlistSize))
+
+  return `${randomEmoji} ${randomWord1} ${randomWord2}`
 }

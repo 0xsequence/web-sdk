@@ -94,35 +94,14 @@ export const getDefaultWaasConnectors = ({
   const connectors = getKitConnectWallets(
     projectAccessKey,
     [
+      googleWaas({ config: { projectAccessKey, googleClientId, waasConfigKey } }),
       coinbaseWallet({
         appName
       }),
-
-      googleWaas({ config: { projectAccessKey, googleClientId, waasConfigKey } }),
-      // facebook({
-      //   defaultNetwork: defaultChainId,
-      //   connect: {
-      //     app: appName,
-      //     projectAccessKey
-      //   }
-      // }),
-      // twitch({
-      //   defaultNetwork: defaultChainId,
-      //   connect: {
-      //     app: appName
-      //   }
-      // }),
-      // apple({
-      //   defaultNetwork: defaultChainId,
-      //   connect: {
-      //     app: appName
-      //   }
-      // }),
       metamask(),
       walletConnect({
         projectId: walletConnectProjectId
-      }),
-      sequenceWaas({ config: { projectAccessKey, waasConfigKey } })
+      })
     ],
     googleClientId
   )
