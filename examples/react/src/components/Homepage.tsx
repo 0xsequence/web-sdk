@@ -237,7 +237,12 @@ function Homepage() {
       <Box style={{ height: '72px' }} position="fixed" width="full" top="0">
         <HeaderContent />
       </Box>
-      <Box style={{ height: '100vh' }} flexDirection="column" justifyContent="center" alignItems="center">
+      <Box
+        style={isMobile ? { paddingTop: '85px', paddingBottom: '80px' } : { height: '100vh' }}
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
         {isConnected ? (
           <Box flexDirection="column" gap="4">
             <Box flexDirection="column" gap="2">
@@ -327,7 +332,7 @@ function Homepage() {
           </Box>
         )}
       </Box>
-      <Footer />
+      {!isMobile && <Footer />}
     </Box>
   )
 }
