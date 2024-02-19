@@ -47,11 +47,9 @@ function Homepage() {
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
 
-  // TODO: fix this for waas
   const chainId = useChainId()
-  // console.log('chainId', chainId)
 
-  const publicClient = usePublicClient({ chainId: 137 })
+  const publicClient = usePublicClient({ chainId })
 
   // append ?debug=true to url to enable debug mode
   const { debug } = qs.parse(location.search)
@@ -90,6 +88,7 @@ function Homepage() {
       })
       console.log('address', address)
       console.log('signature:', sig)
+      console.log('chainId in homepage', chainId)
 
       const [account] = await walletClient.getAddresses()
 
@@ -214,10 +213,10 @@ function Homepage() {
   }
 
   const onSwitchNetwork = () => {
-    if (chainId === 1) {
+    if (chainId === 80001) {
       switchChain({ chainId: 137 })
     } else {
-      switchChain({ chainId: 1 })
+      switchChain({ chainId: 80001 })
     }
   }
 
@@ -295,7 +294,7 @@ function Homepage() {
                   onClick={generateEthAuthProof}
                 />
               )}
-              {isDebugMode && <ClickableCard title="Switch network" description="Switch network" onClick={onSwitchNetwork} />}
+              <ClickableCard title="Switch network" description="Switch network" onClick={onSwitchNetwork} />
             </Box>
             <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
               <Button onClick={() => disconnect()} leftIcon={SignoutIcon} label="Sign out" />

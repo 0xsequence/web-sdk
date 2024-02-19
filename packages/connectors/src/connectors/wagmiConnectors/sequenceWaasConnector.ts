@@ -1,5 +1,5 @@
 import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, defaults } from '@0xsequence/waas'
-import { SequenceSigner } from '@0xsequence/waas-ethers'
+
 import { LocalStorageKey } from '@0xsequence/kit'
 
 import { getAddress } from 'viem'
@@ -24,22 +24,32 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   type Provider = SequenceWaasProvider
   type Properties = {}
 
+  const initialChain = waasConfig.network ?? 137
+
+  const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
+    `https://next-nodes.sequence.app/polygon/${waasConfig.projectAccessKey}`
+  )
+
   const sequenceWaas = new SequenceWaaS(
     {
-      network: params.config.network ?? 137,
+      network: initialChain,
       projectAccessKey: waasConfig.projectAccessKey,
       waasConfigKey: waasConfig.waasConfigKey
     },
     defaults.TEST
   )
 
-  // FIX, should work with any network
-  const waasProvider = new ethers.providers.JsonRpcProvider(
-    `https://next-nodes.sequence.app/polygon/${waasConfig.projectAccessKey}`
-  )
+  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain)
 
-  const sequenceWaasSigner = new SequenceSigner(sequenceWaas, waasProvider)
-  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaasSigner, params.config.network ?? 137)
+  const updateNetwork = async (chainId: number) => {
+    const networks = await sequenceWaas.networkList()
+    const networkName = networks.find(n => n.id === chainId)?.name
+    const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+      `https://next-nodes.sequence.app/${networkName}/${waasConfig.projectAccessKey}`
+    )
+    sequenceWaasProvider.updateJsonRpcProvider(jsonRpcProvider)
+    sequenceWaasProvider.updateNetwork(ethers.providers.getNetwork(chainId))
+  }
 
   return createConnector<Provider, Properties>(config => ({
     id: 'sequence-waas',
@@ -58,36 +68,31 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       })
     },
     async connect({ chainId, isReconnecting } = {}) {
-      console.log('isReconnecting', isReconnecting)
-
       const isSignedIn = await sequenceWaas.isSignedIn()
 
       let accounts: `0x${string}`[] = []
+      chainId = sequenceWaasProvider.getChainId()
 
       if (isSignedIn) {
-        console.log('connect isSignedIn true')
         try {
           accounts = await this.getAccounts()
-          const provider = await this.getProvider()
-          // FIX!!
-          chainId = 137
         } catch (e) {
           console.log(e)
         }
       } else {
-        console.log('connect isSignedIn false')
         const idToken = localStorage.getItem(LocalStorageKey.GoogleIDToken)
 
         if (waasConfig.googleClientId && idToken) {
-          await sequenceWaas.signIn({ idToken }, randomName())
+          try {
+            await sequenceWaas.signIn({ idToken }, randomName())
+          } catch (e) {
+            console.log(e)
+          }
           localStorage.removeItem(LocalStorageKey.GoogleIDToken)
 
           console.log('address', await sequenceWaas.getAddress())
 
           accounts = await this.getAccounts()
-          const provider = await this.getProvider()
-          // FIX!!
-          chainId = 137
         }
       }
 
@@ -109,9 +114,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       try {
         const isSignedIn = await sequenceWaas.isSignedIn()
         if (isSignedIn) {
-          console.log('getAccoutns isSignedIn true')
           const address = await sequenceWaas.getAddress()
-
           return [getAddress(address)]
         }
       } catch (e) {
@@ -124,18 +127,15 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
     async isAuthorized() {
       try {
-        const isSignedIn = await sequenceWaas.isSignedIn()
-        console.log('isAuthorized in connector', isSignedIn)
-        return isSignedIn
+        return await sequenceWaas.isSignedIn()
       } catch (e) {
         return false
       }
     },
     async switchChain({ chainId }) {
-      const provider = await this.getProvider()
-
       const chain = config.chains.find(c => c.id === chainId) || config.chains[0]
-      provider.setDefaultChainId(normalizeChainId(chainId))
+
+      updateNetwork(chainId)
 
       config.emitter.emit('change', { chainId })
 
@@ -143,10 +143,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
     async getChainId() {
       const provider = await this.getProvider()
-
-      console.log('getChainId in connector')
-      const chainId = provider.getChainId()
-      return chainId
+      return provider.getChainId()
     },
     async onAccountsChanged(accounts) {
       return { account: accounts[0] }
@@ -166,33 +163,51 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   }))
 }
 
-function normalizeChainId(chainId: string | number | bigint | { chainId: string }) {
-  if (typeof chainId === 'object') return normalizeChainId(chainId.chainId)
-  if (typeof chainId === 'string') return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
-  if (typeof chainId === 'bigint') return Number(chainId)
-  return chainId
-}
-
 export class SequenceWaasProvider extends ethers.providers.BaseProvider implements EIP1193Provider {
-  constructor(public signer: SequenceSigner, network: ethers.providers.Networkish) {
+  constructor(
+    public sequenceWaas: SequenceWaaS,
+    public jsonRpcProvider: ethers.providers.JsonRpcProvider,
+    network: ethers.providers.Networkish
+  ) {
     super(network)
+  }
+
+  currentNetwork: ethers.providers.Network = this.network
+
+  updateJsonRpcProvider(jsonRpcProvider: ethers.providers.JsonRpcProvider) {
+    this.jsonRpcProvider = jsonRpcProvider
+  }
+
+  updateNetwork(network: ethers.providers.Network) {
+    this.currentNetwork = network
   }
 
   async request({ method, params }: { method: string; params: any[] }) {
     if (method === 'eth_accounts') {
-      const address = await this.signer.getAddress()
-
+      const address = await this.sequenceWaas.getAddress()
       const account = getAddress(address)
-
-      console.log('eth_accounts', account)
-
       return [account]
     }
 
     if (method === 'eth_sendTransaction') {
-      console.log('send txn', params)
-      const txnResult = await this.sendTransaction(params[0])
-      return txnResult
+      const chainId = this.getChainId()
+
+      const response = await this.sequenceWaas.sendTransaction({
+        transactions: [await ethers.utils.resolveProperties(params[0])],
+        network: chainId
+      })
+
+      if (response.code === 'transactionFailed') {
+        // Failed
+        throw new Error(`Unable to send transaction: ${response.data.error}`)
+      }
+
+      if (response.code === 'transactionReceipt') {
+        // Success
+        const { txHash } = response.data
+        // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
+        return this.getTransaction(txHash)
+      }
     }
 
     if (
@@ -205,18 +220,23 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       method === 'sequence_sign' ||
       method === 'sequence_signTypedData_v4'
     ) {
-      const sig = await this.signer.signMessage(params[0])
+      const chainId = this.getChainId()
+      const sig = await this.sequenceWaas.signMessage({ message: params[0], network: this.currentNetwork.chainId })
 
-      return sig
+      return sig.data.signature
     }
   }
 
-  async getChainId() {
-    return this.network.chainId
+  async getTransaction(txHash: string) {
+    return await this.jsonRpcProvider.getTransaction(txHash)
   }
 
-  async disconnect() {
-    console.log('disconnect in provider')
+  detectNetwork(): Promise<ethers.providers.Network> {
+    return Promise.resolve(this.currentNetwork)
+  }
+
+  getChainId() {
+    return this.currentNetwork.chainId
   }
 }
 
@@ -236,4 +256,11 @@ export function randomName() {
   const randomWord2 = words.getWord(Math.floor(Math.random() * wordlistSize))
 
   return `${randomEmoji} ${randomWord1} ${randomWord2}`
+}
+
+function normalizeChainId(chainId: string | number | bigint | { chainId: string }) {
+  if (typeof chainId === 'object') return normalizeChainId(chainId.chainId)
+  if (typeof chainId === 'string') return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
+  if (typeof chainId === 'bigint') return Number(chainId)
+  return chainId
 }

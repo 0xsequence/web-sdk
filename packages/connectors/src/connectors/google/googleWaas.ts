@@ -4,7 +4,7 @@ import { GoogleLogo, getMonochromeGoogleLogo } from './GoogleLogo'
 
 import { sequenceWaasWallet, BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
 
-export interface GoogleWaasOptions extends BaseSequenceWaasConnectorOptions {}
+export type GoogleWaasOptions = BaseSequenceWaasConnectorOptions
 
 export const googleWaas = (options: GoogleWaasOptions) => ({
   id: 'google-waas',

@@ -3,7 +3,7 @@ import { CreateConnectorFn } from 'wagmi'
 import { SequenceLogo } from './SequenceLogo'
 import { sequenceWaasWallet, BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
 
-export interface SequenceWaasOptions extends BaseSequenceWaasConnectorOptions {}
+export type SequenceWaasOptions = BaseSequenceWaasConnectorOptions
 
 export const sequenceWaas = (options: SequenceWaasOptions) => ({
   id: 'sequence-waas',

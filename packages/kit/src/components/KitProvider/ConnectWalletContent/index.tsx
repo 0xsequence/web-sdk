@@ -178,7 +178,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 return (
                   <Box key={connector._wallet.id}>
                     {connector._wallet.id === 'google-waas' && (
-                      <Box>
+                      <Box style={{ height: '48px', alignItems: 'center', justifyContent: 'center' }}>
                         <GoogleLogin
                           type="icon"
                           size="large"
