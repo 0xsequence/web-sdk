@@ -220,7 +220,6 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       method === 'sequence_sign' ||
       method === 'sequence_signTypedData_v4'
     ) {
-      const chainId = this.getChainId()
       const sig = await this.sequenceWaas.signMessage({ message: params[0], network: this.currentNetwork.chainId })
 
       return sig.data.signature
