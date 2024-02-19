@@ -224,6 +224,8 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
 
       return sig.data.signature
     }
+
+    return undefined
   }
 
   async getTransaction(txHash: string) {
