@@ -23,7 +23,8 @@ import {
   SignoutIcon,
   useTheme,
   vars,
-  Spinner
+  Spinner,
+  useMediaQuery
 } from '@0xsequence/design-system'
 
 import { Footer } from './Footer'
@@ -41,6 +42,8 @@ function Homepage() {
   const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
+
+  const isMobile = useMediaQuery('isMobile')
 
   const { data: txnData, sendTransaction, isLoading: isSendTxnLoading } = useSendTransaction()
 
@@ -158,8 +161,7 @@ function Homepage() {
                 <SwitchThemeButton />
               </Box>
               <Text fontWeight="medium" fontSize="normal" color="text100">
-                {/* {formatAddress(address || '')} */}
-                {address}
+                {isMobile ? formatAddress(address || '') : address}
               </Text>
             </Box>
             <Box alignItems="center" justifyContent="flex-end" flexDirection="row">
