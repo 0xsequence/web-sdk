@@ -294,7 +294,7 @@ function Homepage() {
                   onClick={generateEthAuthProof}
                 />
               )}
-              <ClickableCard title="Switch network" description="Switch network" onClick={onSwitchNetwork} />
+              <ClickableCard title="Switch network" description={`Current chainId: ${chainId}`} onClick={onSwitchNetwork} />
             </Box>
             <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
               <Button onClick={() => disconnect()} leftIcon={SignoutIcon} label="Sign out" />
