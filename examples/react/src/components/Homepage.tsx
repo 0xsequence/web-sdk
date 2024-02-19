@@ -29,6 +29,7 @@ import {
 import { Footer } from './Footer'
 import { messageToSign } from '../constants'
 import { formatAddress, getCheckoutSettings } from '../utils'
+import { sequence } from '0xsequence'
 
 function Homepage() {
   const { theme, setTheme } = useTheme()
@@ -41,13 +42,15 @@ function Homepage() {
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
 
-  const { data: hash, sendTransaction, isLoading } = useSendTransaction()
+  const { data: txnData, sendTransaction, isLoading: isSendTxnLoading } = useSendTransaction()
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
 
   const chainId = useChainId()
+
+  const networkForCurrentChainId = sequence.network.allNetworks.find(n => n.chainId === chainId)
 
   const publicClient = usePublicClient({ chainId })
 
@@ -218,6 +221,8 @@ function Homepage() {
     } else {
       switchChain({ chainId: 80001 })
     }
+
+    setIsMessageValid(undefined)
   }
 
   return (
@@ -250,21 +255,21 @@ function Homepage() {
               <ClickableCard
                 title="Send transaction"
                 description="Send a transaction with your wallet"
-                isLoading={isLoading}
+                isLoading={isSendTxnLoading}
                 onClick={runSendTransaction}
               />
 
-              {hash && (
+              {txnData && txnData.chainId === chainId && (
                 <Text
                   as="a"
                   marginLeft="4"
                   variant="small"
                   underline
-                  href={`https://polygonscan.com/tx/${hash.hash}`}
+                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${txnData.hash}`}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View on PolygonScan
+                  View on {networkForCurrentChainId.blockExplorer.name}
                 </Text>
               )}
               <ClickableCard
