@@ -15,7 +15,8 @@
   "dependencies": {
     "@0xsequence/provider": "^1.8.2",
     "@0xsequence/waas": "0.0.0-20240215191225",
-    "@0xsequence/waas-ethers": "0.0.0-20240215191225"
+    "@0xsequence/waas-ethers": "0.0.0-20240215191225",
+    "@react-oauth/google": "^0.11.1"
   },
   "devDependencies": {
     "@0xsequence/design-system": "^1.1.0",
@@ -29,8 +30,7 @@
     "react-dom": ">=17",
     "viem": ">=2.0.0",
     "wagmi": ">=2.0.0",
-    "@0xsequence/kit": "workspace:*",
-    "@react-oauth/google": ">=0.11.1"
+    "@0xsequence/kit": "workspace:*"
   },
   "files": [
     "src",
