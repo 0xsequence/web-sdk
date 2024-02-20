@@ -110,6 +110,7 @@ function Homepage() {
 
       console.log('isValid?', isValid)
     } catch (e) {
+      setIsSigningMessage(false)
       console.error(e)
     }
   }

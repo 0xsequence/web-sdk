@@ -232,9 +232,11 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
           params[0],
           this.currentNetwork.chainId
         )
+        console.log('confirmation', confirmation)
         // TODO: return rejected
         if (!confirmation) {
           console.log('rejected')
+
           return
         }
       }

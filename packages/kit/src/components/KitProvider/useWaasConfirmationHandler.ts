@@ -1,22 +1,23 @@
 import { ethers } from 'ethers'
 import { useState, useEffect } from 'react'
 
+let _pendingConfirmation: Deferred<Boolean> | undefined
+
 export function useWaasConfirmationHandler(
   waasConnector?: any
 ): [string | undefined, (id: string) => void, (id: string) => void] {
   const [pendingSignMessageConfirmation, setPendingSignMessageConfirmation] = useState<string | undefined>()
 
-  let pendingConfirmation: Deferred<Boolean> | undefined
-
   function confirmPendingRequest(id: string) {
-    pendingConfirmation?.resolve(true)
+    _pendingConfirmation?.resolve(true)
     setPendingSignMessageConfirmation(undefined)
+    _pendingConfirmation = undefined
   }
 
   function rejectPendingRequest(id: string) {
-    console.log('asda')
-    pendingConfirmation?.reject(false)
+    _pendingConfirmation?.reject(false)
     setPendingSignMessageConfirmation(undefined)
+    _pendingConfirmation = undefined
   }
 
   if (!waasConnector) return [undefined, confirmPendingRequest, rejectPendingRequest]
@@ -27,13 +28,15 @@ export function useWaasConfirmationHandler(
 
       waasProvider.requestConfirmationHandler = {
         confirmSignTransactionRequest(tx: ethers.Transaction[]): Promise<Boolean> {
-          pendingConfirmation = new Deferred<Boolean>()
-          return pendingConfirmation.promise
+          const pending = new Deferred<Boolean>()
+          _pendingConfirmation = pending
+          return pending.promise
         },
         confirmSignMessageRequest(message: string, chainId: number): Promise<Boolean> {
+          const pending = new Deferred<Boolean>()
           setPendingSignMessageConfirmation(message)
-          pendingConfirmation = new Deferred<Boolean>()
-          return pendingConfirmation.promise
+          _pendingConfirmation = pending
+          return pending.promise
         }
       }
     }
@@ -52,15 +55,15 @@ class Deferred<T> {
     this._resolve = resolve
   })
 
-  public get promise(): Promise<T> {
+  get promise(): Promise<T> {
     return this._promise
   }
 
-  public resolve(value: T) {
+  resolve(value: T) {
     this._resolve(value)
   }
 
-  public reject(value: T) {
+  reject(value: T) {
     this._reject(value)
   }
 }
