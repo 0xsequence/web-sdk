@@ -3,7 +3,6 @@ import { getKitConnectWallets } from '@0xsequence/kit'
 
 import { apple, coinbaseWallet, email, facebook, google, metamask, sequence, twitch, walletConnect } from './connectors'
 import { googleWaas } from './connectors/google/googleWaas'
-import { sequenceWaas } from './connectors/sequence/sequence-waas'
 
 interface GetDefaultConnectors {
   walletConnectProjectId: string

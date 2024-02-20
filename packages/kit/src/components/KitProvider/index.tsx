@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
-import { GoogleOAuthProvider, googleLogout } from '@react-oauth/google'
-
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Box, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
-import { useAccount } from 'wagmi'
+import { useAccount, useConnect } from 'wagmi'
+import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
+import '@0xsequence/design-system/styles.css'
 
 import { ConnectWalletContent } from './ConnectWalletContent'
 import { SequenceLogo } from './SequenceLogo'
@@ -18,10 +19,9 @@ import {
 } from '../../contexts'
 import { ModalPosition, getModalPositionCss } from '../../utils'
 
-import '@0xsequence/design-system/styles.css'
-
 import * as sharedStyles from '../styles.css'
-import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
+
+import { useWaasConfirmationHandler } from './useWaasConfirmationHandler'
 
 export declare const THEME: readonly ['dark', 'light']
 export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>
@@ -89,6 +89,11 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
+  const { connectors } = useConnect()
+
+  const waasConnector = connectors.find(connector => connector.id === 'sequence-waas')
+
+  const [pendingSignMessageConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
 
   const googleClientId = localStorage.getItem(LocalStorageKey.GoogleClientID) || ''
 
@@ -216,6 +221,54 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                           >
                             <Text fontSize="small" color="text100">
                               Powered by Sequence
+                            </Text>
+                            <Box height="5" width="5">
+                              <SequenceLogo />
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Modal>
+                    )}
+                  </AnimatePresence>
+                  <AnimatePresence>
+                    {pendingSignMessageConfirmation && (
+                      <Modal
+                        scroll={false}
+                        backdropColor="backgroundBackdrop"
+                        size="sm"
+                        contentProps={{
+                          style: {
+                            maxWidth: '364px',
+                            ...getModalPositionCss(position)
+                          }
+                        }}
+                        onClose={() => {
+                          rejectPendingRequest('')
+                        }}
+                      >
+                        <Box padding="4" className={sharedStyles.walletContent}>
+                          <Box
+                            justifyContent="center"
+                            color="text100"
+                            alignItems="center"
+                            fontWeight="medium"
+                            style={{
+                              marginTop: '4px'
+                            }}
+                          >
+                            <Text>Confirm</Text>
+                          </Box>
+                          <Box
+                            onClick={poweredBySequenceOnClick}
+                            className={sharedStyles.clickable}
+                            gap="1"
+                            marginTop="2"
+                            flexDirection="row"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Text fontSize="small" color="text100">
+                              Powered by Sequence WaaS
                             </Text>
                             <Box height="5" width="5">
                               <SequenceLogo />

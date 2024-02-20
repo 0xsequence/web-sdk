@@ -1,11 +1,9 @@
 import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, defaults } from '@0xsequence/waas'
-
 import { LocalStorageKey } from '@0xsequence/kit'
-
 import { getAddress } from 'viem'
-
 import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
+import { EventEmitter } from 'eventemitter3'
 import { EIP1193Provider } from '0xsequence/dist/declarations/src/provider'
 
 export interface SequenceWaasConnectConfig {
@@ -38,6 +36,8 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
     defaults.TEST
   )
+
+  let requestHandler: WaasRequestHandler
 
   const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain)
 
@@ -172,6 +172,8 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
     super(network)
   }
 
+  requestConfirmationHandler: WaasRequestConfirmationHandler | undefined
+
   currentNetwork: ethers.providers.Network = this.network
 
   updateJsonRpcProvider(jsonRpcProvider: ethers.providers.JsonRpcProvider) {
@@ -190,6 +192,16 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
     }
 
     if (method === 'eth_sendTransaction') {
+      const txns: ethers.Transaction[] = await ethers.utils.resolveProperties(params[0])
+
+      if (this.requestConfirmationHandler) {
+        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(txns)
+        // TODO: return rejected
+        if (!confirmation) {
+          return
+        }
+      }
+
       const chainId = this.getChainId()
 
       const response = await this.sequenceWaas.sendTransaction({
@@ -205,7 +217,6 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       if (response.code === 'transactionReceipt') {
         // Success
         const { txHash } = response.data
-        // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
         return this.getTransaction(txHash)
       }
     }
@@ -214,12 +225,19 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       method === 'eth_sign' ||
       method === 'eth_signTypedData' ||
       method === 'eth_signTypedData_v4' ||
-      method === 'personal_sign' ||
-      // These methods will use EIP-6492
-      // but this is handled directly by the wallet
-      method === 'sequence_sign' ||
-      method === 'sequence_signTypedData_v4'
+      method === 'personal_sign'
     ) {
+      if (this.requestConfirmationHandler) {
+        const confirmation = await this.requestConfirmationHandler.confirmSignMessageRequest(
+          params[0],
+          this.currentNetwork.chainId
+        )
+        // TODO: return rejected
+        if (!confirmation) {
+          console.log('rejected')
+          return
+        }
+      }
       const sig = await this.sequenceWaas.signMessage({ message: params[0], network: this.currentNetwork.chainId })
 
       return sig.data.signature
@@ -239,6 +257,11 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
   getChainId() {
     return this.currentNetwork.chainId
   }
+}
+
+export interface WaasRequestConfirmationHandler {
+  confirmSignTransactionRequest(tx: ethers.Transaction[]): Promise<Boolean>
+  confirmSignMessageRequest(message: string, chainId: number): Promise<Boolean>
 }
 
 const DEVICE_EMOJIS = [

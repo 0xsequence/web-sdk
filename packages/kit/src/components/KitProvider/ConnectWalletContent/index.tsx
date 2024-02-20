@@ -95,6 +95,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
       const email = prompt('Auto-email login, please specify the email address:')
       localStorage.setItem(EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, email || '')
     }
+
     connect({ connector })
   }
 
