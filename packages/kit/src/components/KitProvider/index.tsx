@@ -268,11 +268,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 <Text variant="medium">Message:</Text>
                                 <Text variant="small" marginBottom="4">
                                   {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
-                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
-                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
-                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
-                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
-                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
                                 </Text>
                                 <Text variant="medium">Chain:</Text>
                                 <Text variant="small" marginBottom="4">
