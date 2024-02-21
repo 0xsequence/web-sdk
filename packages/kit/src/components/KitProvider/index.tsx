@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { Box, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
+import { Box, Button, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
 import { useAccount, useConnect } from 'wagmi'
 import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
@@ -22,6 +22,7 @@ import { ModalPosition, getModalPositionCss } from '../../utils'
 import * as sharedStyles from '../styles.css'
 
 import { useWaasConfirmationHandler } from './useWaasConfirmationHandler'
+import { ethers } from 'ethers'
 
 export declare const THEME: readonly ['dark', 'light']
 export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>
@@ -93,7 +94,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
   const waasConnector = connectors.find(connector => connector.id === 'sequence-waas')
 
-  const [pendingSignMessageConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
+  const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
 
   const googleClientId = localStorage.getItem(LocalStorageKey.GoogleClientID) || ''
 
@@ -231,7 +232,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                     )}
                   </AnimatePresence>
                   <AnimatePresence>
-                    {pendingSignMessageConfirmation && (
+                    {pendingRequestConfirmation && (
                       <Modal
                         scroll={false}
                         backdropColor="backgroundBackdrop"
@@ -242,12 +243,14 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             ...getModalPositionCss(position)
                           }
                         }}
+                        isDismissible={false}
                         onClose={() => {
                           rejectPendingRequest('')
                         }}
                       >
-                        <Box padding="4" className={sharedStyles.walletContent}>
+                        <Box paddingX="4" paddingTop="4" paddingBottom="2" className={sharedStyles.walletContent}>
                           <Box
+                            flexDirection="column"
                             justifyContent="center"
                             color="text100"
                             alignItems="center"
@@ -256,21 +259,57 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                               marginTop: '4px'
                             }}
                           >
-                            <Text>Confirm</Text>
-                          </Box>
-                          <Box
-                            onClick={poweredBySequenceOnClick}
-                            className={sharedStyles.clickable}
-                            gap="1"
-                            marginTop="2"
-                            flexDirection="row"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Text fontSize="small" color="text100">
-                              Powered by Sequence WaaS
+                            <Text as="h1" variant="large" marginBottom="5">
+                              Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
                             </Text>
-                            <Box height="5" width="5">
+
+                            {pendingRequestConfirmation.type === 'signMessage' && (
+                              <Box flexDirection="column" width="full">
+                                <Text variant="medium">Message:</Text>
+                                <Text variant="small" marginBottom="4">
+                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                </Text>
+                                <Text variant="medium">Chain:</Text>
+                                <Text variant="small" marginBottom="4">
+                                  {pendingRequestConfirmation.chainId}
+                                </Text>
+                              </Box>
+                            )}
+
+                            <Box flexDirection="row" gap="2" width="full" marginTop="5">
+                              <Button
+                                width="full"
+                                shape="square"
+                                size="lg"
+                                label="Reject"
+                                onClick={() => {
+                                  rejectPendingRequest('')
+                                }}
+                              />
+                              <Button
+                                alignItems="center"
+                                textAlign="center"
+                                width="full"
+                                shape="square"
+                                size="lg"
+                                label="Confirm"
+                                variant="primary"
+                                onClick={() => {
+                                  confirmPendingRequest('')
+                                }}
+                              />
+                            </Box>
+                          </Box>
+                          <Box gap="1" marginTop="4" flexDirection="row" alignItems="center" justifyContent="center">
+                            <Text fontSize="small" color="text80">
+                              Powered by Sequence
+                            </Text>
+                            <Box height="4" width="4" marginTop="1">
                               <SequenceLogo />
                             </Box>
                           </Box>

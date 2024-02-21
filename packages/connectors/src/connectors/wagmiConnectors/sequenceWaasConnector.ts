@@ -1,6 +1,6 @@
 import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, defaults } from '@0xsequence/waas'
 import { LocalStorageKey } from '@0xsequence/kit'
-import { getAddress } from 'viem'
+import { UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
 import { EventEmitter } from 'eventemitter3'
@@ -237,7 +237,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         if (!confirmation) {
           console.log('rejected')
 
-          return
+          return new UserRejectedRequestError(new Error('User rejected sign message request'))
         }
       }
       const sig = await this.sequenceWaas.signMessage({ message: params[0], network: this.currentNetwork.chainId })

@@ -3,20 +3,27 @@ import { useState, useEffect } from 'react'
 
 let _pendingConfirmation: Deferred<Boolean> | undefined
 
+export type WaasRequestConfirmation = {
+  type: 'signTransaction' | 'signMessage'
+  message?: string
+  tx?: ethers.Transaction
+  chainId?: number
+}
+
 export function useWaasConfirmationHandler(
   waasConnector?: any
-): [string | undefined, (id: string) => void, (id: string) => void] {
-  const [pendingSignMessageConfirmation, setPendingSignMessageConfirmation] = useState<string | undefined>()
+): [WaasRequestConfirmation | undefined, (id: string) => void, (id: string) => void] {
+  const [pendingRequestConfirmation, setPendingRequestConfirmation] = useState<WaasRequestConfirmation | undefined>()
 
   function confirmPendingRequest(id: string) {
     _pendingConfirmation?.resolve(true)
-    setPendingSignMessageConfirmation(undefined)
+    setPendingRequestConfirmation(undefined)
     _pendingConfirmation = undefined
   }
 
   function rejectPendingRequest(id: string) {
     _pendingConfirmation?.reject(false)
-    setPendingSignMessageConfirmation(undefined)
+    setPendingRequestConfirmation(undefined)
     _pendingConfirmation = undefined
   }
 
@@ -34,7 +41,7 @@ export function useWaasConfirmationHandler(
         },
         confirmSignMessageRequest(message: string, chainId: number): Promise<Boolean> {
           const pending = new Deferred<Boolean>()
-          setPendingSignMessageConfirmation(message)
+          setPendingRequestConfirmation({ type: 'signMessage', message, chainId })
           _pendingConfirmation = pending
           return pending.promise
         }
@@ -43,7 +50,7 @@ export function useWaasConfirmationHandler(
     setup()
   })
 
-  return [pendingSignMessageConfirmation, confirmPendingRequest, rejectPendingRequest]
+  return [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest]
 }
 
 class Deferred<T> {
