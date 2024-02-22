@@ -28,11 +28,13 @@ export function useWaasConfirmationHandler(
     _pendingConfirmation = undefined
   }
 
-  if (!waasConnector) return [undefined, confirmPendingRequest, rejectPendingRequest]
-
   useEffect(() => {
     async function setup() {
-      const waasProvider = await waasConnector.getProvider()
+      if (!waasConnector) {
+        return
+      }
+
+      const waasProvider = waasConnector.sequenceWaasProvider
 
       waasProvider.requestConfirmationHandler = {
         confirmSignTransactionRequest(

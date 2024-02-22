@@ -39,7 +39,8 @@
     "react": ">=17",
     "react-dom": ">=17",
     "viem": ">=2.0.0",
-    "wagmi": ">=2.0.0"
+    "wagmi": ">=2.0.0",
+    "@0xsequence/waas": ">=0.0.0-20240215191225"
   },
   "devDependencies": {
     "ethers": "5.7.2",

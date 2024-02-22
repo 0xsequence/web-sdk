@@ -1,20 +1,22 @@
-export const LOCAL_STORAGE_PREFIX = '@kit'
-export const LOCAL_STORAGE_PREFIX_SETTINGS = 'settings'
-export const LOCAL_STORAGE_PREFIX_THEME = 'theme'
-export const LOCAL_STORAGE_PREFIX_ETHAUTH_PROOF = 'ethAuthProof'
-export const LOCAL_STORAGE_PREFIX_ETHAUTH_SETTINGS = 'ethAuthSettings'
-export const LOCAL_STORAGE_PREFIX_PROJECT_ACCESS_KEY = 'projectAccessKey'
-export const LOCAL_STORAGE_PREFIX_GOOGLE_CLIENT_ID = 'googleClientId'
-export const LOCAL_STORAGE_PREFIX_GOOGLE_ID_TOKEN = 'googleIdToken'
-export const LOCAL_STORAGE_PREFIX_WAAS_SESSION_HASH = 'waasSessionHash'
+const PREFIX = '@kit'
+const SETTINGS = 'settings'
+const THEME = 'theme'
+const ETHAUTH_PROOF = 'ethAuthProof'
+const ETHAUTH_SETTINGS = 'ethAuthSettings'
+const PROJECT_ACCESS_KEY = 'projectAccessKey'
+const GOOGLE_CLIENT_ID = 'googleClientId'
+const GOOGLE_ID_TOKEN = 'googleIdToken'
+const WAAS_SESSION_HASH = 'waasSessionHash'
+const ACTIVE_WAAS_OPTION = 'activeWaasOption'
 
 export enum LocalStorageKey {
-  Settings = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_SETTINGS}`,
-  Theme = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_THEME}`,
-  EthAuthProof = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_ETHAUTH_PROOF}`,
-  EthAuthSettings = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_ETHAUTH_SETTINGS}`,
-  ProjectAccessKey = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_PROJECT_ACCESS_KEY}`,
-  GoogleClientID = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_GOOGLE_CLIENT_ID}`,
-  GoogleIDToken = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_GOOGLE_ID_TOKEN}`,
-  WaasSessionHash = `${LOCAL_STORAGE_PREFIX}.${LOCAL_STORAGE_PREFIX_WAAS_SESSION_HASH}`
+  Settings = `${PREFIX}.${SETTINGS}`,
+  Theme = `${PREFIX}.${THEME}`,
+  EthAuthProof = `${PREFIX}.${ETHAUTH_PROOF}`,
+  EthAuthSettings = `${PREFIX}.${ETHAUTH_SETTINGS}`,
+  ProjectAccessKey = `${PREFIX}.${PROJECT_ACCESS_KEY}`,
+  GoogleClientID = `${PREFIX}.${GOOGLE_CLIENT_ID}`,
+  GoogleIDToken = `${PREFIX}.${GOOGLE_ID_TOKEN}`,
+  WaasSessionHash = `${PREFIX}.${WAAS_SESSION_HASH}`,
+  ActiveWaasOption = `${PREFIX}.${ACTIVE_WAAS_OPTION}`
 }

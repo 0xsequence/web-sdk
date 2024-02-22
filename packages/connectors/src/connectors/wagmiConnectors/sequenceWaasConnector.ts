@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
   enableConfirmationModal: boolean
+  loginType: 'email' | 'google'
 }
 
 export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
@@ -17,7 +18,7 @@ sequenceWaasWallet.type = 'sequence-waas' as const
 
 export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   type Provider = SequenceWaasProvider
-  type Properties = {}
+  type Properties = { sequenceWaas: SequenceWaaS; sequenceWaasProvider: SequenceWaasProvider }
 
   if (params.googleClientId) {
     localStorage.setItem(LocalStorageKey.GoogleClientID, params.googleClientId)
@@ -53,9 +54,11 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   }
 
   return createConnector<Provider, Properties>(config => ({
-    id: 'sequence-waas',
-    name: 'SequenceWaaS',
+    id: `${params.loginType}-waas`,
+    name: 'Sequence WaaS',
     type: sequenceWaasWallet.type,
+    sequenceWaas,
+    sequenceWaasProvider,
     async setup() {
       const isConnected = await sequenceWaas.isSignedIn()
       if (!isConnected) {
@@ -94,6 +97,10 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           console.log('address', await sequenceWaas.getAddress())
 
           accounts = await this.getAccounts()
+
+          if (accounts.length) {
+            localStorage.setItem(LocalStorageKey.ActiveWaasLoginType, params.loginType)
+          }
         }
       }
 
@@ -127,6 +134,10 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       return sequenceWaasProvider
     },
     async isAuthorized() {
+      const activeWaasOption = localStorage.getItem(LocalStorageKey.ActiveWaasLoginType)
+      if (params.loginType !== activeWaasOption) {
+        return false
+      }
       try {
         return await sequenceWaas.isSignedIn()
       } catch (e) {

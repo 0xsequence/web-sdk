@@ -13,7 +13,7 @@ import {
 } from '@0xsequence/design-system'
 import { useConnect, useAccount } from 'wagmi'
 import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY } from '@0xsequence/kit-connectors'
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import { GoogleLogin } from '@react-oauth/google'
 
 import { ExtendedWalletList } from './ExtendedWalletList'
 import { Banner } from './Banner'
@@ -25,6 +25,7 @@ import { KitConnectProviderProps } from '../index'
 import { ExtendedConnector } from '../../../utils/getKitConnectWallets'
 
 import * as styles from '../../styles.css'
+import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   openConnectModal: boolean
@@ -79,6 +80,17 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     setEmail(ev.target.value)
   }
 
+  // const {
+  //   inProgress: emailAuthInProgress,
+  //   loading: emailAuthLoading,
+  //   initiateAuth: initiateEmailAuth,
+  //   sendChallengeAnswer
+  // } = useEmailAuth(connectors.find(c => c._wallet.id === 'email-waas')?.sequenceWaas, {
+  //   onSuccess: async idToken => {
+  //     // save id token to local storage
+  //   }
+  // })
+
   useEffect(() => {
     if (isConnected && openConnectModal) {
       setOpenConnectModal(false)
@@ -109,6 +121,10 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
 
     if (emailConnector) {
       localStorage.setItem(EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, email)
+
+      if (emailConnector._wallet.id === 'email-waas') {
+        console.log('emailwaas')
+      }
       connect({ connector: emailConnector })
     }
   }

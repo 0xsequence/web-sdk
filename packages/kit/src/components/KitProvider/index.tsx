@@ -4,8 +4,10 @@ import { sequence } from '0xsequence'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Box, Button, Card, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
-import { useAccount, useConnect } from 'wagmi'
+import { Connector, useAccount, useConnections } from 'wagmi'
 import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
+import { ethers } from 'ethers'
+
 import '@0xsequence/design-system/styles.css'
 
 import { ConnectWalletContent } from './ConnectWalletContent'
@@ -21,8 +23,7 @@ import { ModalPosition, getModalPositionCss } from '../../utils'
 
 import * as sharedStyles from '../styles.css'
 
-import { useWaasConfirmationHandler } from './useWaasConfirmationHandler'
-import { ethers } from 'ethers'
+import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 
 export declare const THEME: readonly ['dark', 'light']
 export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>
@@ -90,9 +91,9 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
-  const { connectors } = useConnect()
+  const connections = useConnections()
 
-  const waasConnector = connectors.find(connector => connector.id === 'sequence-waas')
+  const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
 
   const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
 
