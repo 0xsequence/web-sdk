@@ -4,6 +4,7 @@ import { UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
 import { EIP1193Provider } from '0xsequence/dist/declarations/src/provider'
+import { v4 as uuidv4 } from 'uuid'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
@@ -39,15 +40,13 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     defaults.TEST
   )
 
-  let requestHandler: WaasRequestConfirmationHandler
-
   const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain, showConfirmationModal)
 
   const updateNetwork = async (chainId: number) => {
     const networks = await sequenceWaas.networkList()
     const networkName = networks.find(n => n.id === chainId)?.name
     const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-      `https://next-nodes.sequence.app/${networkName}/${waasConfig.projectAccessKey}`
+      `https://next-nodes.sequence.app/${networkName}/${params.projectAccessKey}`
     )
     sequenceWaasProvider.updateJsonRpcProvider(jsonRpcProvider)
     sequenceWaasProvider.updateNetwork(ethers.providers.getNetwork(chainId))
@@ -200,10 +199,17 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       const chainId = this.getChainId()
 
       if (this.requestConfirmationHandler && this.showConfirmation) {
-        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(txns, chainId)
-        // TODO: return rejected
-        if (!confirmation) {
-          return
+        const id = uuidv4()
+        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(id, txns, chainId)
+
+        if (!confirmation.confirmed) {
+          console.error('rejected')
+          return new UserRejectedRequestError(new Error('User rejected send transaction request'))
+        }
+
+        if (id !== confirmation.id) {
+          console.error('confirmation ids do not match')
+          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }
 
@@ -231,16 +237,21 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       method === 'personal_sign'
     ) {
       if (this.requestConfirmationHandler && this.showConfirmation) {
+        const id = uuidv4()
         const confirmation = await this.requestConfirmationHandler.confirmSignMessageRequest(
+          id,
           params[0],
           this.currentNetwork.chainId
         )
-        console.log('confirmation', confirmation)
-        // TODO: return rejected
-        if (!confirmation) {
-          console.log('rejected')
 
+        if (!confirmation.confirmed) {
+          console.error('rejected')
           return new UserRejectedRequestError(new Error('User rejected sign message request'))
+        }
+
+        if (id !== confirmation.id) {
+          console.error('confirmation ids do not match')
+          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }
       const sig = await this.sequenceWaas.signMessage({ message: params[0], network: this.currentNetwork.chainId })
@@ -265,8 +276,12 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
 }
 
 export interface WaasRequestConfirmationHandler {
-  confirmSignTransactionRequest(txs: ethers.Transaction[], chainId: number): Promise<Boolean>
-  confirmSignMessageRequest(message: string, chainId: number): Promise<Boolean>
+  confirmSignTransactionRequest(
+    id: string,
+    txs: ethers.Transaction[],
+    chainId: number
+  ): Promise<{ id: string; confirmed: boolean }>
+  confirmSignMessageRequest(id: string, message: string, chainId: number): Promise<{ id: string; confirmed: boolean }>
 }
 
 const DEVICE_EMOJIS = [

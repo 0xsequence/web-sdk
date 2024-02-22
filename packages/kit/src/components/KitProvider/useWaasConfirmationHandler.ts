@@ -1,9 +1,10 @@
 import { ethers } from 'ethers'
 import { useState, useEffect } from 'react'
 
-let _pendingConfirmation: Deferred<Boolean> | undefined
+let _pendingConfirmation: Deferred<{ id: string; confirmed: boolean }> | undefined
 
 export type WaasRequestConfirmation = {
+  id: string
   type: 'signTransaction' | 'signMessage'
   message?: string
   txs?: ethers.Transaction[]
@@ -16,13 +17,13 @@ export function useWaasConfirmationHandler(
   const [pendingRequestConfirmation, setPendingRequestConfirmation] = useState<WaasRequestConfirmation | undefined>()
 
   function confirmPendingRequest(id: string) {
-    _pendingConfirmation?.resolve(true)
+    _pendingConfirmation?.resolve({ id, confirmed: true })
     setPendingRequestConfirmation(undefined)
     _pendingConfirmation = undefined
   }
 
   function rejectPendingRequest(id: string) {
-    _pendingConfirmation?.reject(false)
+    _pendingConfirmation?.reject({ id, confirmed: false })
     setPendingRequestConfirmation(undefined)
     _pendingConfirmation = undefined
   }
@@ -34,15 +35,19 @@ export function useWaasConfirmationHandler(
       const waasProvider = await waasConnector.getProvider()
 
       waasProvider.requestConfirmationHandler = {
-        confirmSignTransactionRequest(txs: ethers.Transaction[], chainId: number): Promise<Boolean> {
-          const pending = new Deferred<Boolean>()
-          setPendingRequestConfirmation({ type: 'signTransaction', txs, chainId })
+        confirmSignTransactionRequest(
+          id: string,
+          txs: ethers.Transaction[],
+          chainId: number
+        ): Promise<{ id: string; confirmed: boolean }> {
+          const pending = new Deferred<{ id: string; confirmed: boolean }>()
+          setPendingRequestConfirmation({ id, type: 'signTransaction', txs, chainId })
           _pendingConfirmation = pending
           return pending.promise
         },
-        confirmSignMessageRequest(message: string, chainId: number): Promise<Boolean> {
-          const pending = new Deferred<Boolean>()
-          setPendingRequestConfirmation({ type: 'signMessage', message, chainId })
+        confirmSignMessageRequest(id: string, message: string, chainId: number): Promise<{ id: string; confirmed: boolean }> {
+          const pending = new Deferred<{ id: string; confirmed: boolean }>()
+          setPendingRequestConfirmation({ id, type: 'signMessage', message, chainId })
           _pendingConfirmation = pending
           return pending.promise
         }

@@ -298,7 +298,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 size="lg"
                                 label="Reject"
                                 onClick={() => {
-                                  rejectPendingRequest('')
+                                  rejectPendingRequest(pendingRequestConfirmation?.id)
                                 }}
                               />
                               <Button
@@ -310,7 +310,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 label="Confirm"
                                 variant="primary"
                                 onClick={() => {
-                                  confirmPendingRequest('')
+                                  confirmPendingRequest(pendingRequestConfirmation?.id)
                                 }}
                               />
                             </Box>
