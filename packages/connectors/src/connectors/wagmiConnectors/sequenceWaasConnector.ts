@@ -3,7 +3,6 @@ import { LocalStorageKey } from '@0xsequence/kit'
 import { UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
-import { EventEmitter } from 'eventemitter3'
 import { EIP1193Provider } from '0xsequence/dist/declarations/src/provider'
 
 export interface SequenceWaasConnectConfig {
@@ -37,7 +36,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     defaults.TEST
   )
 
-  let requestHandler: WaasRequestHandler
+  let requestHandler: WaasRequestConfirmationHandler
 
   const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain)
 
@@ -194,15 +193,15 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
     if (method === 'eth_sendTransaction') {
       const txns: ethers.Transaction[] = await ethers.utils.resolveProperties(params[0])
 
+      const chainId = this.getChainId()
+
       if (this.requestConfirmationHandler) {
-        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(txns)
+        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(txns, chainId)
         // TODO: return rejected
         if (!confirmation) {
           return
         }
       }
-
-      const chainId = this.getChainId()
 
       const response = await this.sequenceWaas.sendTransaction({
         transactions: [await ethers.utils.resolveProperties(params[0])],
@@ -262,7 +261,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
 }
 
 export interface WaasRequestConfirmationHandler {
-  confirmSignTransactionRequest(tx: ethers.Transaction[]): Promise<Boolean>
+  confirmSignTransactionRequest(txs: ethers.Transaction[], chainId: number): Promise<Boolean>
   confirmSignMessageRequest(message: string, chainId: number): Promise<Boolean>
 }
 

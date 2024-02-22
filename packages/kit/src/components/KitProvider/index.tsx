@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { Box, Button, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
+import { Box, Button, Card, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
 import { useAccount, useConnect } from 'wagmi'
 import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
@@ -269,6 +269,21 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 <Text variant="small" marginBottom="4">
                                   {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
                                 </Text>
+                                <Text variant="medium">Chain:</Text>
+                                <Text variant="small" marginBottom="4">
+                                  {pendingRequestConfirmation.chainId}
+                                </Text>
+                              </Box>
+                            )}
+
+                            {pendingRequestConfirmation.type === 'signTransaction' && (
+                              <Box flexDirection="column" width="full">
+                                <Text variant="medium">Transaction data:</Text>
+                                <Card overflowX="scroll" marginY="3">
+                                  <Text variant="code" marginBottom="4">
+                                    {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
+                                  </Text>
+                                </Card>
                                 <Text variant="medium">Chain:</Text>
                                 <Text variant="small" marginBottom="4">
                                   {pendingRequestConfirmation.chainId}

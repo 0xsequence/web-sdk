@@ -6,7 +6,7 @@ let _pendingConfirmation: Deferred<Boolean> | undefined
 export type WaasRequestConfirmation = {
   type: 'signTransaction' | 'signMessage'
   message?: string
-  tx?: ethers.Transaction
+  txs?: ethers.Transaction[]
   chainId?: number
 }
 
@@ -34,8 +34,9 @@ export function useWaasConfirmationHandler(
       const waasProvider = await waasConnector.getProvider()
 
       waasProvider.requestConfirmationHandler = {
-        confirmSignTransactionRequest(tx: ethers.Transaction[]): Promise<Boolean> {
+        confirmSignTransactionRequest(txs: ethers.Transaction[], chainId: number): Promise<Boolean> {
           const pending = new Deferred<Boolean>()
+          setPendingRequestConfirmation({ type: 'signTransaction', txs, chainId })
           _pendingConfirmation = pending
           return pending.promise
         },
