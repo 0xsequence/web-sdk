@@ -7,38 +7,41 @@ import { EIP1193Provider } from '0xsequence/dist/declarations/src/provider'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
+  enableConfirmationModal: boolean
 }
 
-export interface BaseSequenceWaasConnectorOptions {
-  config: SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
-}
+export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
 
 sequenceWaasWallet.type = 'sequence-waas' as const
 
 export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
-  const waasConfig = params.config
-
   type Provider = SequenceWaasProvider
   type Properties = {}
 
-  const initialChain = waasConfig.network ?? 137
+  if (params.googleClientId) {
+    localStorage.setItem(LocalStorageKey.GoogleClientID, params.googleClientId)
+  }
+
+  const showConfirmationModal = params.enableConfirmationModal
+
+  const initialChain = params.network ?? 137
 
   const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-    `https://next-nodes.sequence.app/polygon/${waasConfig.projectAccessKey}`
+    `https://next-nodes.sequence.app/polygon/${params.projectAccessKey}`
   )
 
   const sequenceWaas = new SequenceWaaS(
     {
       network: initialChain,
-      projectAccessKey: waasConfig.projectAccessKey,
-      waasConfigKey: waasConfig.waasConfigKey
+      projectAccessKey: params.projectAccessKey,
+      waasConfigKey: params.waasConfigKey
     },
     defaults.TEST
   )
 
   let requestHandler: WaasRequestConfirmationHandler
 
-  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain)
+  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain, showConfirmationModal)
 
   const updateNetwork = async (chainId: number) => {
     const networks = await sequenceWaas.networkList()
@@ -81,7 +84,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       } else {
         const idToken = localStorage.getItem(LocalStorageKey.GoogleIDToken)
 
-        if (waasConfig.googleClientId && idToken) {
+        if (params.googleClientId && idToken) {
           try {
             await sequenceWaas.signIn({ idToken }, randomName())
           } catch (e) {
@@ -166,7 +169,8 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
   constructor(
     public sequenceWaas: SequenceWaaS,
     public jsonRpcProvider: ethers.providers.JsonRpcProvider,
-    network: ethers.providers.Networkish
+    network: ethers.providers.Networkish,
+    public showConfirmation: boolean
   ) {
     super(network)
   }
@@ -195,7 +199,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
 
       const chainId = this.getChainId()
 
-      if (this.requestConfirmationHandler) {
+      if (this.requestConfirmationHandler && this.showConfirmation) {
         const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(txns, chainId)
         // TODO: return rejected
         if (!confirmation) {
@@ -226,7 +230,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       method === 'eth_signTypedData_v4' ||
       method === 'personal_sign'
     ) {
-      if (this.requestConfirmationHandler) {
+      if (this.requestConfirmationHandler && this.showConfirmation) {
         const confirmation = await this.requestConfirmationHandler.confirmSignMessageRequest(
           params[0],
           this.currentNetwork.chainId

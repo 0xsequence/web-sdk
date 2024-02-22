@@ -80,6 +80,8 @@ interface GetDefaultWaasConnectors {
 
   appName: string
   defaultChainId?: number
+
+  enableConfirmationModal: boolean
 }
 
 export const getDefaultWaasConnectors = ({
@@ -88,22 +90,19 @@ export const getDefaultWaasConnectors = ({
   googleClientId,
   walletConnectProjectId,
   appName,
-  defaultChainId
+  defaultChainId,
+  enableConfirmationModal
 }: GetDefaultWaasConnectors): CreateConnectorFn[] => {
-  const connectors = getKitConnectWallets(
-    projectAccessKey,
-    [
-      googleWaas({ config: { projectAccessKey, googleClientId, waasConfigKey } }),
-      coinbaseWallet({
-        appName
-      }),
-      metamask(),
-      walletConnect({
-        projectId: walletConnectProjectId
-      })
-    ],
-    googleClientId
-  )
+  const connectors = getKitConnectWallets(projectAccessKey, [
+    googleWaas({ projectAccessKey, googleClientId, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
+    coinbaseWallet({
+      appName
+    }),
+    metamask(),
+    walletConnect({
+      projectId: walletConnectProjectId
+    })
+  ])
 
   /* @ts-ignore-next-line */
   return connectors

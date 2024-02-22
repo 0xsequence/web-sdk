@@ -36,7 +36,8 @@ function App() {
       waasConfigKey,
       googleClientId,
       appName: 'demo app',
-      projectAccessKey
+      projectAccessKey,
+      enableConfirmationModal: true
     }),
     ...(isDebugMode
       ? getKitConnectWallets(projectAccessKey, [

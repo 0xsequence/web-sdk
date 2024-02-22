@@ -25,11 +25,8 @@ export interface WalletField {
 
 export type ExtendedConnector = CreateConnectorFn & WalletField
 
-export const getKitConnectWallets = (projectAccessKey: string, wallets: any[], googleClientId?: string): CreateConnectorFn[] => {
+export const getKitConnectWallets = (projectAccessKey: string, wallets: any[]): CreateConnectorFn[] => {
   localStorage.setItem(LocalStorageKey.ProjectAccessKey, projectAccessKey)
-  if (googleClientId) {
-    localStorage.setItem(LocalStorageKey.GoogleClientID, googleClientId)
-  }
 
   const connectors: CreateConnectorFn[] = []
 
