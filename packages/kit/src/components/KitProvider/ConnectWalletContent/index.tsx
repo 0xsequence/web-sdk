@@ -53,7 +53,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     return connector._wallet.id === 'mock'
   })
 
-  const emailConnector = connectors.find(c => c._wallet.id === 'email')
+  const emailConnector = connectors.find(c => c._wallet.id.includes('email'))
   const walletConnectors = connectors
     .filter(connector => {
       const foundOption = walletAuthOptions.find(authOption => authOption === connector._wallet.id)
@@ -271,24 +271,24 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 )
               })}
             </Box>
-            {/* {displayExtendedListButton && (
-                <Box
-                  padding="4"
-                  marginTop="3"
-                  background="backgroundSecondary"
-                  width="full"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  borderRadius="md"
-                  color="text100"
-                  as="button"
-                  className={styles.clickable}
-                  onClick={() => setShowExtendedList(true)}
-                >
-                  <Text variant="medium">More options</Text>
-                  <ChevronRightIcon />
-                </Box>
-              )} */}
+            {displayExtendedListButton && (
+              <Box
+                padding="4"
+                marginTop="3"
+                background="backgroundSecondary"
+                width="full"
+                justifyContent="space-between"
+                alignItems="center"
+                borderRadius="md"
+                color="text100"
+                as="button"
+                className={styles.clickable}
+                onClick={() => setShowExtendedList(true)}
+              >
+                <Text variant="medium">More options</Text>
+                <ChevronRightIcon />
+              </Box>
+            )}
           </>
         )}
       </Box>

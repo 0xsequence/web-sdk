@@ -3,6 +3,7 @@ import { getKitConnectWallets } from '@0xsequence/kit'
 
 import { apple, coinbaseWallet, email, facebook, google, metamask, sequence, twitch, walletConnect } from './connectors'
 import { googleWaas } from './connectors/google/googleWaas'
+import { emailWaas } from './connectors/email/emailWaas'
 
 interface GetDefaultConnectors {
   walletConnectProjectId: string
@@ -94,6 +95,7 @@ export const getDefaultWaasConnectors = ({
   enableConfirmationModal
 }: GetDefaultWaasConnectors): CreateConnectorFn[] => {
   const connectors = getKitConnectWallets(projectAccessKey, [
+    emailWaas({ projectAccessKey, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
     googleWaas({ projectAccessKey, googleClientId, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
     coinbaseWallet({
       appName
