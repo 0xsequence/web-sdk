@@ -26,7 +26,7 @@ export default defineConfig(() => {
       svgrPlugin()
     ],
     server: {
-      port: 3000,
+      port: 4444,
       fs: {
         // Allow serving files from one level up to the project root
         allow: ['..']

@@ -28,6 +28,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
   const initialChain = params.network ?? 137
 
+  // TODO: update to use prod
   const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
     `https://next-nodes.sequence.app/polygon/${params.projectAccessKey}`
   )

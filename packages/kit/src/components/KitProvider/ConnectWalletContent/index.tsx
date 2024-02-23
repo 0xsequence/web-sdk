@@ -154,7 +154,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
           </Text>
           <PINCodeInput value={waasEmailPinCode} digits={6} onChange={setWaasEmailPinCode} />
 
-          <Box gap="2" marginY="4">
+          <Box gap="2" marginY="4" alignItems="center" justifyContent="center" style={{ height: '44px' }}>
             {emailAuthLoading ? (
               <Spinner />
             ) : (
