@@ -97,7 +97,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
   const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
 
-  const googleClientId = localStorage.getItem(LocalStorageKey.GoogleClientID) || ''
+  const googleClientId = localStorage.getItem(LocalStorageKey.WaasGoogleClientID) || ''
 
   const setupAnalytics = (projectAccessKey: string) => {
     const s = sequence.initWallet(projectAccessKey)

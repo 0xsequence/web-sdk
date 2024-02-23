@@ -21,7 +21,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   type Properties = { sequenceWaas: SequenceWaaS; sequenceWaasProvider: SequenceWaasProvider }
 
   if (params.googleClientId) {
-    localStorage.setItem(LocalStorageKey.GoogleClientID, params.googleClientId)
+    localStorage.setItem(LocalStorageKey.WaasGoogleClientID, params.googleClientId)
   }
 
   const showConfirmationModal = params.enableConfirmationModal
@@ -84,22 +84,34 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           console.log(e)
         }
       } else {
-        const idToken = localStorage.getItem(LocalStorageKey.GoogleIDToken)
+        const googleIdToken = localStorage.getItem(LocalStorageKey.WaasGoogleIdToken)
+        const emailIdToken = localStorage.getItem(LocalStorageKey.WaasEmailIdToken)
 
-        if (params.googleClientId && idToken) {
+        if (params.loginType === 'google' && googleIdToken) {
           try {
-            await sequenceWaas.signIn({ idToken }, randomName())
+            await sequenceWaas.signIn({ idToken: googleIdToken }, randomName())
           } catch (e) {
             console.log(e)
           }
-          localStorage.removeItem(LocalStorageKey.GoogleIDToken)
-
-          console.log('address', await sequenceWaas.getAddress())
+          localStorage.removeItem(LocalStorageKey.WaasGoogleIdToken)
 
           accounts = await this.getAccounts()
 
           if (accounts.length) {
-            localStorage.setItem(LocalStorageKey.ActiveWaasLoginType, params.loginType)
+            localStorage.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
+          }
+        } else if (params.loginType === 'email' && emailIdToken) {
+          try {
+            await sequenceWaas.signIn({ idToken: emailIdToken }, randomName())
+          } catch (e) {
+            console.log(e)
+          }
+          localStorage.removeItem(LocalStorageKey.WaasEmailIdToken)
+
+          accounts = await this.getAccounts()
+
+          if (accounts.length) {
+            localStorage.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
           }
         }
       }
@@ -117,6 +129,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
 
       localStorage.removeItem(LocalStorageKey.WaasSessionHash)
+      localStorage.removeItem(LocalStorageKey.WaasActiveLoginType)
     },
     async getAccounts() {
       try {
@@ -134,7 +147,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       return sequenceWaasProvider
     },
     async isAuthorized() {
-      const activeWaasOption = localStorage.getItem(LocalStorageKey.ActiveWaasLoginType)
+      const activeWaasOption = localStorage.getItem(LocalStorageKey.WaasActiveLoginType)
       if (params.loginType !== activeWaasOption) {
         return false
       }

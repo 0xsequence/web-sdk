@@ -1,8 +1,9 @@
 import { SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
+import { ExtendedConnector } from '../utils'
 
-export function useEmailAuth({ sequence, onSuccess }: { sequence?: SequenceWaaS; onSuccess: (idToken: string) => void }) {
-  if (!sequence) {
+export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedConnector; onSuccess: (idToken: string) => void }) {
+  if (!connector) {
     return {
       inProgress: false,
       loading: false,
@@ -21,7 +22,8 @@ export function useEmailAuth({ sequence, onSuccess }: { sequence?: SequenceWaaS;
     setLoading(true)
 
     try {
-      const { instance } = await sequence.email.initiateAuth({ email })
+      const connectorAny: any = connector
+      const { instance } = await connectorAny.sequenceWaas?.email.initiateAuth({ email })
       setInstance(instance)
       setEmail(email)
     } catch (e: any) {
@@ -35,12 +37,12 @@ export function useEmailAuth({ sequence, onSuccess }: { sequence?: SequenceWaaS;
     setLoading(true)
 
     try {
-      const sessionHash = await sequence.getSessionHash()
-      const { idToken } = await sequence.email.finalizeAuth({ instance, answer, email, sessionHash })
+      const connectorAny: any = connector
+      const sessionHash = await connectorAny.sequenceWaas?.getSessionHash()
+      const { idToken } = await connectorAny.sequenceWaas?.email.finalizeAuth({ instance, answer, email, sessionHash })
       onSuccess(idToken)
     } catch (e: any) {
       setError(e.message || 'Unknown error')
-    } finally {
       setLoading(false)
     }
   }
