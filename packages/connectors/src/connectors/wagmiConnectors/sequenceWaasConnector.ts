@@ -1,6 +1,6 @@
 import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, defaults } from '@0xsequence/waas'
 import { LocalStorageKey } from '@0xsequence/kit'
-import { UserRejectedRequestError, getAddress } from 'viem'
+import { TransactionRejectedRpcError, UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
 import { EIP1193Provider } from '0xsequence/dist/declarations/src/provider'
@@ -54,7 +54,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   }
 
   return createConnector<Provider, Properties>(config => ({
-    id: `${params.loginType}-waas`,
+    id: `sequence-waas`,
     name: 'Sequence WaaS',
     type: sequenceWaasWallet.type,
     sequenceWaas,
@@ -227,12 +227,10 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(id, txns, chainId)
 
         if (!confirmation.confirmed) {
-          console.error('rejected')
           return new UserRejectedRequestError(new Error('User rejected send transaction request'))
         }
 
         if (id !== confirmation.id) {
-          console.error('confirmation ids do not match')
           return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }
@@ -244,7 +242,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
 
       if (response.code === 'transactionFailed') {
         // Failed
-        throw new Error(`Unable to send transaction: ${response.data.error}`)
+        return new TransactionRejectedRpcError(new Error(`Unable to send transaction: ${response.data.error}`))
       }
 
       if (response.code === 'transactionReceipt') {
@@ -269,12 +267,10 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         )
 
         if (!confirmation.confirmed) {
-          console.error('rejected')
           return new UserRejectedRequestError(new Error('User rejected sign message request'))
         }
 
         if (id !== confirmation.id) {
-          console.error('confirmation ids do not match')
           return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }

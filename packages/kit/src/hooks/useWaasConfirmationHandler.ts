@@ -23,7 +23,7 @@ export function useWaasConfirmationHandler(
   }
 
   function rejectPendingRequest(id: string) {
-    _pendingConfirmation?.reject({ id, confirmed: false })
+    _pendingConfirmation?.resolve({ id, confirmed: false })
     setPendingRequestConfirmation(undefined)
     _pendingConfirmation = undefined
   }
