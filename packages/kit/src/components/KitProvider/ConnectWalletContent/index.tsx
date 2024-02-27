@@ -15,7 +15,7 @@ import {
 import { useConnect, useAccount } from 'wagmi'
 import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY } from '@0xsequence/kit-connectors'
 import { GoogleLogin } from '@react-oauth/google'
-import { appleAuthHelpers } from 'react-apple-signin-auth'
+import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 
 import { ExtendedWalletList } from './ExtendedWalletList'
 import { Banner } from './Banner'
@@ -36,6 +36,8 @@ interface ConnectWalletContentProps extends KitConnectProviderProps {
 }
 
 export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
+  useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
+
   const { isConnected } = useAccount()
   const { theme } = useTheme()
   const { config = {} } = props
