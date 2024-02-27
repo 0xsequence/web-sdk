@@ -298,7 +298,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                               nonce: sessionHash
                             },
                             onSuccess: (response: any) => {
-                              console.log('apple auth response', response)
+                              localStorage.setItem(LocalStorageKey.WaasAppleIdToken, response.authorization.id_token)
                               onConnect(connector)
                             },
                             onError: (error: any) => console.error(error)

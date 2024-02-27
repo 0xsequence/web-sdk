@@ -95,38 +95,35 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       } else {
         const googleIdToken = localStorage.getItem(LocalStorageKey.WaasGoogleIdToken)
         const emailIdToken = localStorage.getItem(LocalStorageKey.WaasEmailIdToken)
+        const appleIdToken = localStorage.getItem(LocalStorageKey.WaasAppleIdToken)
+
+        let idToken: string | undefined
 
         if (params.loginType === 'google' && googleIdToken) {
-          try {
-            await sequenceWaas.signIn({ idToken: googleIdToken }, randomName())
-          } catch (e) {
-            console.log(e)
-          }
-          localStorage.removeItem(LocalStorageKey.WaasGoogleIdToken)
-
-          accounts = await this.getAccounts()
-
-          if (accounts.length) {
-            localStorage.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
-          }
+          idToken = googleIdToken
         } else if (params.loginType === 'email' && emailIdToken) {
+          idToken = emailIdToken
+        } else if (params.loginType === 'apple' && appleIdToken) {
+          idToken = appleIdToken
+        }
+
+        if (idToken) {
           try {
-            await sequenceWaas.signIn({ idToken: emailIdToken }, randomName())
+            await sequenceWaas.signIn({ idToken }, randomName())
           } catch (e) {
             console.log(e)
           }
-          localStorage.removeItem(LocalStorageKey.WaasEmailIdToken)
 
           accounts = await this.getAccounts()
 
           if (accounts.length) {
             localStorage.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
           }
-        } else if (params.loginType === 'apple' && params.appleClientId && params.appleRedirectURI) {
-          console.log('apple')
-          const appleIdToken = localStorage.getItem(LocalStorageKey.WaasAppleIdToken) || ''
-          console.log('appleIdToken', appleIdToken)
         }
+
+        localStorage.removeItem(LocalStorageKey.WaasGoogleIdToken)
+        localStorage.removeItem(LocalStorageKey.WaasEmailIdToken)
+        localStorage.removeItem(LocalStorageKey.WaasAppleIdToken)
       }
 
       return {
