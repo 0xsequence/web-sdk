@@ -144,17 +144,17 @@ importers:
         specifier: ^1.1.0
         version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
-        specifier: 2.0.5-beta.5
-        version: 2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
+        specifier: 2.0.5-beta.6
+        version: 2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/kit-checkout':
-        specifier: 2.0.5-beta.5
-        version: 2.0.5-beta.5(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.5)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
+        specifier: 2.0.5-beta.6
+        version: 2.0.5-beta.6(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.6)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
       '@0xsequence/kit-connectors':
-        specifier: 2.0.5-beta.5
-        version: 2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.5)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
+        specifier: 2.0.5-beta.6
+        version: 2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.6)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/kit-wallet':
-        specifier: 2.0.5-beta.5
-        version: 2.0.5-beta.5(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.5)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
+        specifier: 2.0.5-beta.6
+        version: 2.0.5-beta.6(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.6)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
       '@tanstack/react-query':
         specifier: ^4.36.1
         version: 4.36.1(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)
@@ -622,11 +622,11 @@ packages:
   /@0xsequence/indexer@1.8.7:
     resolution: {integrity: sha512-SVGQFbCZcWDTri99p4UpdKUiAjw+kzOdL+Uemv4ATpoCdA5QJZQpilDwx2ocHlxxPI2OD7wL7on3fBsuuRk34A==}
 
-  /@0xsequence/kit-checkout@2.0.5-beta.5(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.5)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
-    resolution: {integrity: sha512-ZrwsXwbhtkQSJA0BL6lwtrJXtVs1sgQONMx5Ra034lPj9Lz0ULLl10QRsiVuCcrXJKhdFfKw8izcLUqtJpmyvw==}
+  /@0xsequence/kit-checkout@2.0.5-beta.6(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.6)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
+    resolution: {integrity: sha512-U1OpJQQPqmzSuFJN1Bwm72Ej7iBaukwRuvwTQRXlK91BtBxqwqWJ6T7BYHqEbRySX7RqcT/tWzcs2I+SCcO/HA==}
     peerDependencies:
       '@0xsequence/design-system': '>=1.1.0'
-      '@0xsequence/kit': 2.0.5-beta.5
+      '@0xsequence/kit': 2.0.5-beta.6
       '@vanilla-extract/css': '>=1.9.3'
       '@vanilla-extract/recipes': '>=0.3.0'
       ethers: '>=5.7.2'
@@ -639,7 +639,7 @@ packages:
       '@0xsequence/api': 1.8.7
       '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/indexer': 1.8.7
-      '@0xsequence/kit': 2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
+      '@0xsequence/kit': 2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/metadata': 1.8.7
       '@0xsequence/network': 1.8.7(ethers@5.7.2)
       '@paperxyz/react-client-sdk': 1.1.5(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
@@ -659,12 +659,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsequence/kit-connectors@2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.5)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7):
-    resolution: {integrity: sha512-gD0qpzg1Z+K+NSgYj8TGs/q3tCOMgM0t+U7KmxlPKHoa0HPKymRyZ5OBkEx3yf5Sd8zq7wAnCoY4GhIULSHMCg==}
+  /@0xsequence/kit-connectors@2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.6)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7):
+    resolution: {integrity: sha512-E9zh533rncxAhuLo/c1T8RI7w+NYeSyJdV1zqPc3iqz01cJ0XDf2UEJOS58GUs0LO0UJHrCUbEsZ/lUM0wde1A==}
     peerDependencies:
       0xsequence: '>=1.8.2'
       '@0xsequence/design-system': '>=1.1.0'
-      '@0xsequence/kit': 2.0.5-beta.5
+      '@0xsequence/kit': 2.0.5-beta.6
       ethers: '>=5.7.2'
       react: '>=17'
       react-dom: '>=17'
@@ -674,7 +674,7 @@ packages:
     dependencies:
       0xsequence: 1.8.7(ethers@5.7.2)
       '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
-      '@0xsequence/kit': 2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
+      '@0xsequence/kit': 2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/provider': 1.8.7(ethers@5.7.2)
       '@0xsequence/waas': 0.0.0-20240215191225(ethers@5.7.2)
       '@0xsequence/waas-ethers': 0.0.0-20240215191225(ethers@5.7.2)
@@ -692,11 +692,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsequence/kit-wallet@2.0.5-beta.5(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.5)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
-    resolution: {integrity: sha512-LTQowrAteEJ1W/KMuc/cM/qNVIGzONe7duOMezpnjfy5mR+qilaenhrAXhuvSEyxtICNerluEOvCKDy523+OqQ==}
+  /@0xsequence/kit-wallet@2.0.5-beta.6(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.6)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
+    resolution: {integrity: sha512-5etc7I97kY6GZIvyg0WEPJuxCpA0srN35joFMRB9n5m+zpufyRtUSkPegB3Xh4BMmgp6i9NQwGqQtjYumOfCHg==}
     peerDependencies:
       '@0xsequence/design-system': '>=1.1.0'
-      '@0xsequence/kit': 2.0.5-beta.5
+      '@0xsequence/kit': 2.0.5-beta.6
       '@vanilla-extract/css': '>=1.9.3'
       '@vanilla-extract/recipes': '>=0.3.0'
       ethers: '>=5.7.2'
@@ -709,7 +709,7 @@ packages:
       '@0xsequence/api': 1.8.7
       '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/indexer': 1.8.7
-      '@0xsequence/kit': 2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
+      '@0xsequence/kit': 2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/metadata': 1.8.7
       '@0xsequence/network': 1.8.7(ethers@5.7.2)
       '@radix-ui/react-popover': 1.0.7(@types/react-dom@18.2.19)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
@@ -735,8 +735,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsequence/kit@2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7):
-    resolution: {integrity: sha512-MoCRtEg+0cEU1Cso9xF/iWdtLfipyEMRpVrD/W1sKqT7K/760/sTGlqBcOSAzkVKS3PgrzxSctL66nhEh8ZdEQ==}
+  /@0xsequence/kit@2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/waas@0.0.0-20240215191225)(@react-oauth/google@0.11.1)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-apple-signin-auth@1.1.0)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7):
+    resolution: {integrity: sha512-rJE6Aylrg5L7+MZ4FIWd2LDTaX/dOcVX2iSVkDz+MgKtJ3+hZHiMEuTyU8K4/ssQ2tgFsSrrvnn8m8RHfKI1tQ==}
     peerDependencies:
       0xsequence: '>=1.8.2'
       '@0xsequence/waas': '>=0.0.0-20240215191225'
@@ -754,7 +754,7 @@ packages:
       '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/ethauth': 0.8.1(ethers@5.7.2)
       '@0xsequence/indexer': 1.8.7
-      '@0xsequence/kit-connectors': 2.0.5-beta.5(0xsequence@1.8.7)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.5)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
+      '@0xsequence/kit-connectors': 2.0.5-beta.6(0xsequence@1.8.7)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.5-beta.6)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(uuid@8.3.2)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/metadata': 1.8.7
       '@0xsequence/network': 1.8.7(ethers@5.7.2)
       '@0xsequence/provider': 1.8.7(ethers@5.7.2)
