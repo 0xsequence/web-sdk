@@ -134,8 +134,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
       localStorage.setItem(EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, email)
 
       if (emailConnector._wallet.id === 'email-waas') {
-        console.log('emailwaas')
-        console.log(email)
         try {
           await initiateEmailAuth(email)
           setShowEmailWaasPinInput(true)
@@ -239,7 +237,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             )}
             <Box marginTop="3" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
               {socialAuthConnectors.map(connector => {
-                console.log(connector)
                 const Logo =
                   theme === 'dark'
                     ? (connector._wallet.monochromeLogoDark as React.FunctionComponent)
@@ -285,7 +282,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                         justifyContent="center"
                         alignItems="center"
                         onClick={() => {
-                          console.log('apple signin')
                           const appleClientId = localStorage.getItem(LocalStorageKey.WaasAppleClientID) || ''
                           const appleRedirectUri = localStorage.getItem(LocalStorageKey.WaasAppleRedirectURI) || ''
                           const sessionHash = localStorage.getItem(LocalStorageKey.WaasSessionHash) || ''

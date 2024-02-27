@@ -72,7 +72,6 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       const isConnected = await sequenceWaas.isSignedIn()
       if (!isConnected) {
         const sessionHash = await sequenceWaas.getSessionHash()
-
         localStorage.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
       }
 
@@ -91,6 +90,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           accounts = await this.getAccounts()
         } catch (e) {
           console.log(e)
+          await this.disconnect()
         }
       } else {
         const googleIdToken = localStorage.getItem(LocalStorageKey.WaasGoogleIdToken)
@@ -112,6 +112,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
             await sequenceWaas.signIn({ idToken }, randomName())
           } catch (e) {
             console.log(e)
+            await this.disconnect()
           }
 
           accounts = await this.getAccounts()
@@ -140,6 +141,9 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
       localStorage.removeItem(LocalStorageKey.WaasSessionHash)
       localStorage.removeItem(LocalStorageKey.WaasActiveLoginType)
+
+      const sessionHash = await sequenceWaas.getSessionHash()
+      localStorage.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
     },
     async getAccounts() {
       try {
@@ -189,9 +193,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       config.emitter.emit('change', { chainId: normalizeChainId(chain) })
       provider.setDefaultChainId(normalizeChainId(chain))
     },
-    async onConnect(connectinfo) {
-      console.log('onConnect connectInfo', connectinfo)
-    },
+    async onConnect(connectinfo) {},
     async onDisconnect() {
       await this.disconnect()
     }
