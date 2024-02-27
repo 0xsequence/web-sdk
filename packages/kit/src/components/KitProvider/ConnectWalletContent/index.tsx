@@ -298,8 +298,12 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                               nonce: sessionHash
                             },
                             onSuccess: (response: any) => {
-                              localStorage.setItem(LocalStorageKey.WaasAppleIdToken, response.authorization.id_token)
-                              onConnect(connector)
+                              if (response.authorization?.id_token) {
+                                localStorage.setItem(LocalStorageKey.WaasAppleIdToken, response.authorization.id_token)
+                                onConnect(connector)
+                              } else {
+                                console.log('Apple login error: No id_token found')
+                              }
                             },
                             onError: (error: any) => console.error(error)
                           })
