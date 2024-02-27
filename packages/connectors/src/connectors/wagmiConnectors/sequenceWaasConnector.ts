@@ -8,8 +8,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
+  appleClientId?: string
+  appleRedirectURI?: string
   enableConfirmationModal: boolean
-  loginType: 'email' | 'google'
+  loginType: 'email' | 'google' | 'apple'
 }
 
 export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
@@ -22,6 +24,12 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
   if (params.googleClientId) {
     localStorage.setItem(LocalStorageKey.WaasGoogleClientID, params.googleClientId)
+  }
+  if (params.appleClientId) {
+    localStorage.setItem(LocalStorageKey.WaasAppleClientID, params.appleClientId)
+  }
+  if (params.appleRedirectURI) {
+    localStorage.setItem(LocalStorageKey.WaasAppleRedirectURI, params.appleRedirectURI)
   }
 
   const showConfirmationModal = params.enableConfirmationModal
@@ -114,6 +122,10 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           if (accounts.length) {
             localStorage.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
           }
+        } else if (params.loginType === 'apple' && params.appleClientId && params.appleRedirectURI) {
+          console.log('apple')
+          const appleIdToken = localStorage.getItem(LocalStorageKey.WaasAppleIdToken) || ''
+          console.log('appleIdToken', appleIdToken)
         }
       }
 

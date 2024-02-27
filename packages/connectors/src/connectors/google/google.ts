@@ -2,10 +2,9 @@ import { CreateConnectorFn } from 'wagmi'
 
 import { GoogleLogo, getMonochromeGoogleLogo } from './GoogleLogo'
 
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors';
+import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
-export interface GoogleOptions extends BaseSequenceConnectorOptions {
-}
+export type GoogleOptions = BaseSequenceConnectorOptions
 
 export const google = (options: GoogleOptions) => ({
   id: 'google',
@@ -14,7 +13,6 @@ export const google = (options: GoogleOptions) => ({
   logoLight: GoogleLogo,
   monochromeLogoDark: getMonochromeGoogleLogo({ isDarkMode: true }),
   monochromeLogoLight: getMonochromeGoogleLogo({ isDarkMode: false }),
-  // iconBackground: '#fff',
   name: 'Google',
   createConnector: (() => {
     const connector = sequenceWallet({
@@ -27,7 +25,7 @@ export const google = (options: GoogleOptions) => ({
           signInWith: 'google'
         }
       }
-    });
+    })
     return connector
   }) as () => CreateConnectorFn
 })

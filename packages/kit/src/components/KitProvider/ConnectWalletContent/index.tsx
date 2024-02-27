@@ -15,6 +15,7 @@ import {
 import { useConnect, useAccount } from 'wagmi'
 import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY } from '@0xsequence/kit-connectors'
 import { GoogleLogin } from '@react-oauth/google'
+import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { ExtendedWalletList } from './ExtendedWalletList'
 import { Banner } from './Banner'
@@ -236,14 +237,27 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             )}
             <Box marginTop="3" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
               {socialAuthConnectors.map(connector => {
+                console.log(connector)
                 const Logo =
                   theme === 'dark'
                     ? (connector._wallet.monochromeLogoDark as React.FunctionComponent)
                     : (connector._wallet.monochromeLogoLight as React.FunctionComponent)
                 return (
-                  <Box key={connector._wallet.id}>
+                  <Box
+                    key={connector._wallet.id}
+                    aspectRatio="1/1"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={
+                      connector._wallet.id.includes('waas')
+                        ? { width: '43px', height: '43px', margin: '16px 4px' }
+                        : {
+                            width: `calc(25% - ${vars.space[2]})`
+                          }
+                    }
+                  >
                     {connector._wallet.id === 'google-waas' && (
-                      <Box style={{ height: '48px', alignItems: 'center', justifyContent: 'center' }}>
+                      <Box style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <GoogleLogin
                           type="icon"
                           size="large"
@@ -260,17 +274,47 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                         />
                       </Box>
                     )}
-                    {connector._wallet.id !== 'google-waas' && (
+                    {connector._wallet.id === 'apple-waas' && (
+                      <Card
+                        style={{ width: '100%', height: '100%', marginTop: '3px' }}
+                        padding="2"
+                        borderRadius="xs"
+                        className={styles.clickable}
+                        justifyContent="center"
+                        alignItems="center"
+                        onClick={() => {
+                          console.log('apple signin')
+                          const appleClientId = localStorage.getItem(LocalStorageKey.WaasAppleClientID) || ''
+                          const appleRedirectUri = localStorage.getItem(LocalStorageKey.WaasAppleRedirectURI) || ''
+                          const sessionHash = localStorage.getItem(LocalStorageKey.WaasSessionHash) || ''
+                          appleAuthHelpers.signIn({
+                            authOptions: {
+                              clientId: appleClientId,
+                              scope: 'openid email',
+                              redirectURI: appleRedirectUri,
+                              usePopup: true,
+                              nonce: sessionHash
+                            },
+                            onSuccess: (response: any) => {
+                              console.log('apple auth response', response)
+                              onConnect(connector)
+                            },
+                            onError: (error: any) => console.error(error)
+                          })
+                        }}
+                      >
+                        <Box width="12" height="12" flexDirection="column" alignItems="center" justifyContent="center">
+                          <Logo />
+                        </Box>
+                      </Card>
+                    )}
+                    {!connector._wallet.id.includes('waas') && (
                       <Card
                         className={styles.clickable}
                         justifyContent="center"
                         alignItems="center"
                         onClick={() => {
                           onConnect(connector)
-                        }}
-                        aspectRatio="1/1"
-                        style={{
-                          width: `calc(25% - ${vars.space[2]})`
                         }}
                       >
                         <Box
