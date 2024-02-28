@@ -52,6 +52,22 @@ function App() {
       : [])
   ]
 
+  // const connectors = [
+  //   ...getDefaultConnectors({
+  //     walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
+  //     defaultChainId: 137,
+  //     appName: 'demo app',
+  //     projectAccessKey
+  //   }),
+  //   ...(isDebugMode
+  //     ? getKitConnectWallets(projectAccessKey, [
+  //         mock({
+  //           accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
+  //         })
+  //       ])
+  //     : [])
+  // ]
+
   const transports = {}
 
   chains.forEach(chain => {

@@ -247,16 +247,10 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                     aspectRatio="1/1"
                     alignItems="center"
                     justifyContent="center"
-                    style={
-                      connector._wallet.id.includes('waas')
-                        ? { width: '43px', height: '43px', margin: '16px 4px' }
-                        : {
-                            width: `calc(25% - ${vars.space[2]})`
-                          }
-                    }
+                    style={{ width: '43px', height: '42px', margin: '12px 4px' }}
                   >
                     {connector._wallet.id === 'google-waas' && (
-                      <Box style={{ alignItems: 'center', justifyContent: 'center' }}>
+                      <Box alignItems="center" justifyContent="center">
                         <GoogleLogin
                           type="icon"
                           size="large"
@@ -275,7 +269,8 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                     )}
                     {connector._wallet.id === 'apple-waas' && (
                       <Card
-                        style={{ width: '100%', height: '100%', marginTop: '3px' }}
+                        width="full"
+                        height="full"
                         padding="2"
                         borderRadius="xs"
                         className={styles.clickable}
@@ -312,6 +307,10 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                     )}
                     {!connector._wallet.id.includes('waas') && (
                       <Card
+                        width="full"
+                        height="full"
+                        padding="2"
+                        borderRadius="xs"
                         className={styles.clickable}
                         justifyContent="center"
                         alignItems="center"
@@ -319,12 +318,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                           onConnect(connector)
                         }}
                       >
-                        <Box
-                          className={styles.walletLogoContainer}
-                          flexDirection="column"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
+                        <Box width="16" height="16" flexDirection="column" alignItems="center" justifyContent="center">
                           <Logo />
                         </Box>
                       </Card>
@@ -349,7 +343,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 </Box>
               </>
             )}
-            <Box marginTop="3" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+            <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
               {walletConnectors.map(connector => {
                 const Logo =
                   theme === 'dark'
@@ -360,21 +354,15 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 return (
                   <Card
                     key={connector._wallet.id}
+                    style={{ width: '43px', height: '43px', margin: '12px 4px' }}
+                    padding="2"
+                    borderRadius="xs"
                     className={styles.clickable}
                     justifyContent="center"
                     alignItems="center"
                     onClick={() => onConnect(connector)}
-                    aspectRatio="1/1"
-                    style={{
-                      width: `calc(25% - ${vars.space[2]})`
-                    }}
                   >
-                    <Box
-                      className={styles.walletLogoContainer}
-                      flexDirection="column"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
+                    <Box width="16" height="16" flexDirection="column" alignItems="center" justifyContent="center">
                       <Logo />
                     </Box>
                   </Card>
