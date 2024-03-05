@@ -10,7 +10,9 @@ export const Footer = () => {
   const isMobile = useMediaQuery('isMobile')
 
   const onClickLinkUrl = (url: string) => {
-    window.open(url)
+    if (typeof window !== 'undefined') {
+      window.open(url)
+    }
   }
 
   const Links = () => {
@@ -33,7 +35,11 @@ export const Footer = () => {
             <Box
               key={index}
               className={sharedStyles.clickable}
-              onClick={() => window.open(socialLink.url)}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.open(socialLink.url)
+                }
+              }}
             >
               <Image
                 height="3"

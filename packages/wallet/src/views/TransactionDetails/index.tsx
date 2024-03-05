@@ -96,7 +96,9 @@ export const TransactionDetails = ({
   const date = dayjs(transaction.timestamp).format('ddd MMM DD YYYY, h:m:s a')
 
   const onClickBlockExplorer = () => {
-    window.open(`${nativeTokenInfo.blockExplorerUrl}/tx/${transaction.txnHash}`, '_blank')
+    if (typeof window !== 'undefined') {
+      window.open(`${nativeTokenInfo.blockExplorerUrl}/tx/${transaction.txnHash}`, '_blank')
+    }
   }
 
   interface TransferProps {

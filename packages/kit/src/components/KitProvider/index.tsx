@@ -117,7 +117,9 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   }, [analytics, address, isConnected])
 
   const poweredBySequenceOnClick = () => {
-    window.open('https://sequence.xyz')
+    if (typeof window !== 'undefined') {
+      window.open('https://sequence.xyz')
+    }
   }
 
   useEffect(() => {

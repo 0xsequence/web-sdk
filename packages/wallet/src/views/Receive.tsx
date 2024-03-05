@@ -27,7 +27,9 @@ export const Receive = () => {
   }
 
   const onClickShare = () => {
-    window.open(`https://twitter.com/intent/tweet?text=Here%20is%20my%20address%20${address}`)
+    if (typeof window !== 'undefined') {
+      window.open(`https://twitter.com/intent/tweet?text=Here%20is%20my%20address%20${address}`)
+    }
   }
 
   return (

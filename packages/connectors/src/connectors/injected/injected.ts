@@ -13,8 +13,6 @@ declare global {
   }
 }
 
-window.ethereum = window.ethereum || {}
-
 export interface MoreExternalProviders {
   isSequence?: boolean
 }
