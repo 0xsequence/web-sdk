@@ -5,6 +5,7 @@ import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
 import { EIP1193Provider } from '0xsequence/dist/declarations/src/provider'
 import { v4 as uuidv4 } from 'uuid'
+import { sequence } from '0xsequence'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
@@ -35,10 +36,11 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   const showConfirmationModal = params.enableConfirmationModal
 
   const initialChain = params.network ?? 137
+  const initialChainName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
 
-  // TODO: update to use prod
+  // TODO: update to use prod nodes
   const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-    `https://next-nodes.sequence.app/polygon/${params.projectAccessKey}`
+    `https://next-nodes.sequence.app/${initialChainName ?? 'polygon'}/${params.projectAccessKey}`
   )
 
   const sequenceWaas = new SequenceWaaS(
@@ -55,6 +57,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   const updateNetwork = async (chainId: number) => {
     const networks = await sequenceWaas.networkList()
     const networkName = networks.find(n => n.id === chainId)?.name
+    // TODO: update to use prod nodes
     const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
       `https://next-nodes.sequence.app/${networkName}/${params.projectAccessKey}`
     )
