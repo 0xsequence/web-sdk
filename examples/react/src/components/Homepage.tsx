@@ -10,7 +10,8 @@ import {
   usePublicClient,
   useChainId,
   useSwitchChain,
-  useSendTransaction
+  useSendTransaction,
+  useConnections
 } from 'wagmi'
 import {
   Box,
@@ -42,12 +43,15 @@ function Homepage() {
   const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
+  const connections = useConnections()
+
+  console.log(connections)
 
   const isMobile = useMediaQuery('isMobile')
 
   const { data: txnData, sendTransaction, isLoading: isSendTxnLoading } = useSendTransaction()
 
-  const [isSignMessageEnabled, setIsSignMessageEnabled] = React.useState(false)
+  const [isSignMessageEnabled, setIsSignMessageEnabled] = React.useState(true)
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
@@ -82,8 +86,10 @@ function Homepage() {
 
   useEffect(() => {
     const getBytecode = async () => {
-      const walletBytecode = await publicClient.getBytecode({ address })
-      setIsSignMessageEnabled(walletBytecode !== undefined)
+      if (connections[0].connector.type.includes('waas')) {
+        const walletBytecode = await publicClient.getBytecode({ address })
+        setIsSignMessageEnabled(walletBytecode !== undefined)
+      }
     }
 
     if (address) {
