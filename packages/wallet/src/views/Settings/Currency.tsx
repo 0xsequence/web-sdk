@@ -8,19 +8,9 @@ import { useSettings } from '../../hooks'
 export const SettingsCurrency = () => {
   const { fiatCurrency, setFiatCurrency } = useSettings()
   return (
-    <Box
-      paddingBottom="5"
-      paddingLeft="5"
-      paddingTop="3"
-      style={{
-        paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`
-      }}
-    >
-      <Box
-        flexDirection="column"
-        gap="2"
-      >
-        {supportedFiatCurrencies.map((currency) => {
+    <Box paddingBottom="5" paddingX="4" paddingTop="3">
+      <Box flexDirection="column" gap="2">
+        {supportedFiatCurrencies.map(currency => {
           return (
             <SelectButton
               key={currency.symbol}
@@ -32,9 +22,7 @@ export const SettingsCurrency = () => {
                 <Text color="text100" fontWeight="bold">
                   {currency.symbol}
                 </Text>
-                <Text color="text50">
-                  {currency.name.message}
-                </Text>
+                <Text color="text50">{currency.name.message}</Text>
               </Box>
             </SelectButton>
           )

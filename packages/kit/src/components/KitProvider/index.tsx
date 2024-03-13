@@ -168,6 +168,8 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     setDisplayedAssets(displayedAssets)
   }, [displayedAssetsSetting])
 
+  const networkInfoForChainId = (chainId?: number) => sequence.network.allNetworks.find(n => n.chainId === chainId)
+
   return (
     <ThemeContextProvider
       value={{
@@ -272,9 +274,10 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 <Text variant="small" marginBottom="4">
                                   {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
                                 </Text>
-                                <Text variant="medium">Chain:</Text>
+                                <Text variant="medium">Network:</Text>
                                 <Text variant="small" marginBottom="4">
-                                  {pendingRequestConfirmation.chainId}
+                                  {networkInfoForChainId(pendingRequestConfirmation.chainId)?.title ??
+                                    pendingRequestConfirmation.chainId}
                                 </Text>
                               </Box>
                             )}
@@ -287,9 +290,10 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                     {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
                                   </Text>
                                 </Card>
-                                <Text variant="medium">Chain:</Text>
+                                <Text variant="medium">Network:</Text>
                                 <Text variant="small" marginBottom="4">
-                                  {pendingRequestConfirmation.chainId}
+                                  {networkInfoForChainId(pendingRequestConfirmation.chainId)?.title ??
+                                    pendingRequestConfirmation.chainId}
                                 </Text>
                               </Box>
                             )}

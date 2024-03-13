@@ -11,26 +11,19 @@ interface CoinDetailsSkeletonProps {
   chainId: number
 }
 
-export const CoinDetailsSkeleton = ({
-  chainId
-}: CoinDetailsSkeletonProps) => {
+export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box
-        flexDirection="column"
-        gap="10"
-        paddingBottom="5"
-        paddingLeft="5"
-        paddingTop="0"
-        style={{ marginTop: '-20px', paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})` }}
-      >
+      <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
         <Box marginBottom="10" gap="2" alignItems="center" justifyContent="center" flexDirection="column">
           <Skeleton width="32px" height="32px" />
           <Skeleton height="24px" width="70px" />
           <NetworkBadge chainId={chainId} />
         </Box>
         <Box>
-          <Text fontWeight="medium" color="text50" fontSize="normal">Balance</Text>
+          <Text fontWeight="medium" color="text50" fontSize="normal">
+            Balance
+          </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
             <Skeleton width="150px" height="36px" />
             <Skeleton width="33px" height="17px" />
@@ -52,4 +45,5 @@ export const CoinDetailsSkeleton = ({
         </Box>
       </Box>
     </Box>
-  )}
+  )
+}

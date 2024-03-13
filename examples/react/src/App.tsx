@@ -10,7 +10,7 @@ import Homepage from './components/Homepage'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { type Chain } from 'viem'
 import { createConfig, http, WagmiProvider } from 'wagmi'
-import { mainnet, polygon, polygonMumbai } from 'wagmi/chains'
+import { arbitrumNova, arbitrumSepolia, mainnet, polygon } from 'wagmi/chains'
 
 import '@0xsequence/design-system/styles.css'
 
@@ -22,7 +22,12 @@ function App() {
   const isDebugMode = debug === 'true'
 
   /* typing error from wagmi? */
-  const chains: readonly [Chain, ...Chain[]] = [mainnet as Chain, polygon as Chain, polygonMumbai as Chain]
+  const chains: readonly [Chain, ...Chain[]] = [
+    arbitrumNova as Chain,
+    arbitrumSepolia as Chain,
+    mainnet as Chain,
+    polygon as Chain
+  ]
 
   const projectAccessKey = 'EeP6AmufRFfigcWaNverI6CAAAAAAAAAA'
   const waasConfigKey =
@@ -34,12 +39,12 @@ function App() {
   const connectors = [
     ...getDefaultWaasConnectors({
       walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: 137,
+      defaultChainId: 42170,
       waasConfigKey,
       googleClientId,
       appleClientId,
       appleRedirectURI,
-      appName: 'demo app',
+      appName: 'Kit Demo',
       projectAccessKey,
       enableConfirmationModal: true
     }),
@@ -92,17 +97,12 @@ function App() {
       useMock: isDebugMode
     },
     displayedAssets: [
-      // Matic token
+      // Native token
       {
         contractAddress: ethers.constants.AddressZero,
-        chainId: 137
+        chainId: 42170
       },
-      // USDC token
-      {
-        contractAddress: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-        chainId: 137
-      },
-      // skyweaver collectibles
+      // Skyweaver assets
       {
         contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
         chainId: 137

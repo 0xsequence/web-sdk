@@ -100,7 +100,7 @@ export const getDefaultWaasConnectors = ({
   enableConfirmationModal
 }: GetDefaultWaasConnectors): CreateConnectorFn[] => {
   const connectors = getKitConnectWallets(projectAccessKey, [
-    emailWaas({ projectAccessKey, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
+    // emailWaas({ projectAccessKey, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
     googleWaas({ projectAccessKey, googleClientId, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
     appleWaas({
       projectAccessKey,

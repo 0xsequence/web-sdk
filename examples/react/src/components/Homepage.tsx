@@ -47,9 +47,12 @@ function Homepage() {
 
   const { data: txnData, sendTransaction, isLoading: isSendTxnLoading } = useSendTransaction()
 
+  const [isSignMessageEnabled, setIsSignMessageEnabled] = React.useState(false)
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
+
+  const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
 
   const chainId = useChainId()
 
@@ -76,6 +79,23 @@ function Homepage() {
       console.error(e)
     }
   }
+
+  useEffect(() => {
+    const getBytecode = async () => {
+      const walletBytecode = await publicClient.getBytecode({ address })
+      setIsSignMessageEnabled(walletBytecode !== undefined)
+    }
+
+    if (address) {
+      getBytecode()
+    }
+  }, [address, chainId, txnData])
+
+  useEffect(() => {
+    if (txnData?.hash) {
+      setLastTxnDataHash(txnData.hash)
+    }
+  }, [txnData])
 
   const signMessage = async () => {
     if (!walletClient) {
@@ -179,13 +199,19 @@ function Homepage() {
   interface ClickableCardProps {
     title: string
     description: string
+    disabled?: boolean
     isLoading?: boolean
     onClick: () => void
   }
 
-  const ClickableCard = ({ title, description, isLoading, onClick }: ClickableCardProps) => {
+  const ClickableCard = ({ title, description, disabled, isLoading, onClick }: ClickableCardProps) => {
     return (
-      <Card style={{ width: '332px' }} clickable onClick={onClick}>
+      <Card
+        style={{ width: '332px' }}
+        clickable={!disabled}
+        onClick={disabled ? () => {} : onClick}
+        opacity={disabled ? '50' : '100'}
+      >
         <Text color="text100" lineHeight="5" fontSize="normal" fontWeight="bold">
           {title}
         </Text>
@@ -219,10 +245,10 @@ function Homepage() {
   }
 
   const onSwitchNetwork = () => {
-    if (chainId === 80001) {
-      switchChain({ chainId: 137 })
+    if (chainId === 421614) {
+      switchChain({ chainId: 42170 })
     } else {
-      switchChain({ chainId: 80001 })
+      switchChain({ chainId: 421614 })
     }
 
     setIsMessageValid(undefined)
@@ -255,11 +281,11 @@ function Homepage() {
                 description="Connect a Sequence wallet to view, swap, send, and receive collections"
                 onClick={() => setOpenWalletModal(true)}
               />
-              <ClickableCard
+              {/* <ClickableCard
                 title="Checkout"
                 description="Checkout screen before placing a purchase on coins or collections"
                 onClick={onClickCheckout}
-              />
+              /> */}
               <ClickableCard
                 title="Send transaction"
                 description="Send a transaction with your wallet"
@@ -267,7 +293,7 @@ function Homepage() {
                 onClick={runSendTransaction}
               />
 
-              {txnData && txnData.chainId === chainId && (
+              {lastTxnDataHash && txnData?.chainId === chainId && (
                 <Text
                   as="a"
                   marginLeft="4"
@@ -283,9 +309,15 @@ function Homepage() {
               <ClickableCard
                 title="Sign message"
                 description="Sign a message with your wallet"
+                disabled={!isSignMessageEnabled}
                 onClick={signMessage}
                 isLoading={isSigningMessage}
               />
+              {!isSignMessageEnabled && (
+                <Text color="text50" fontSize="small" fontWeight="medium" marginLeft="4" marginBottom="1">
+                  Send your first transaction to sign messages.
+                </Text>
+              )}
               {isMessageValid && (
                 <Card style={{ width: '332px' }} flexDirection={'column'} gap={'2'}>
                   <Text variant="medium">Signed message:</Text>
@@ -307,10 +339,22 @@ function Homepage() {
                   onClick={generateEthAuthProof}
                 />
               )}
-              <ClickableCard title="Switch network" description={`Current chainId: ${chainId}`} onClick={onSwitchNetwork} />
+              <ClickableCard
+                title="Switch network"
+                description={`Current network: ${networkForCurrentChainId.title}`}
+                onClick={onSwitchNetwork}
+              />
             </Box>
             <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
-              <Button onClick={() => disconnect()} leftIcon={SignoutIcon} label="Sign out" />
+              <Button
+                onClick={() => {
+                  disconnect()
+                  setLastTxnDataHash(undefined)
+                  setIsMessageValid(undefined)
+                }}
+                leftIcon={SignoutIcon}
+                label="Sign out"
+              />
             </Box>
           </Box>
         ) : (
