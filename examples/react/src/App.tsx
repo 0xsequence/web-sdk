@@ -34,7 +34,7 @@ function App() {
     'eyJwcm9qZWN0SWQiOjIsImVtYWlsUmVnaW9uIjoidXMtZWFzdC0yIiwiZW1haWxDbGllbnRJZCI6IjVncDltaDJmYnFiajhsNnByamdvNzVwMGY2IiwicnBjU2VydmVyIjoiaHR0cHM6Ly9uZXh0LXdhYXMuc2VxdWVuY2UuYXBwIn0='
   const googleClientId = '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
   const appleClientId = 'com.horizon.sequence.waas'
-  const appleRedirectURI = 'https://strong-pavlova-dcf6f0.netlify.app'
+  const appleRedirectURI = 'https://' + window.location.host
 
   const connectors = [
     ...getDefaultWaasConnectors({
