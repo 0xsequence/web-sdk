@@ -43,9 +43,6 @@ function Homepage() {
   const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
-  const connections = useConnections()
-
-  console.log(connections)
 
   const isMobile = useMediaQuery('isMobile')
 
