@@ -102,6 +102,11 @@ function App() {
         contractAddress: ethers.constants.AddressZero,
         chainId: 42170
       },
+      // Native token
+      {
+        contractAddress: ethers.constants.AddressZero,
+        chainId: 421614
+      },
       // Skyweaver assets
       {
         contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',

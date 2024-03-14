@@ -51,7 +51,6 @@ function Homepage() {
 
   const { data: txnData, sendTransaction, isLoading: isSendTxnLoading } = useSendTransaction()
 
-  const [isSignMessageEnabled, setIsSignMessageEnabled] = React.useState(true)
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
@@ -83,19 +82,6 @@ function Homepage() {
       console.error(e)
     }
   }
-
-  useEffect(() => {
-    const getBytecode = async () => {
-      if (connections[0].connector.type.includes('waas')) {
-        const walletBytecode = await publicClient.getBytecode({ address })
-        setIsSignMessageEnabled(walletBytecode !== undefined)
-      }
-    }
-
-    if (address) {
-      getBytecode()
-    }
-  }, [address, chainId, txnData])
 
   useEffect(() => {
     if (txnData?.hash) {
@@ -315,15 +301,9 @@ function Homepage() {
               <ClickableCard
                 title="Sign message"
                 description="Sign a message with your wallet"
-                disabled={!isSignMessageEnabled}
                 onClick={signMessage}
                 isLoading={isSigningMessage}
               />
-              {!isSignMessageEnabled && (
-                <Text color="text50" fontSize="small" fontWeight="medium" marginLeft="4" marginBottom="1">
-                  Send your first transaction to sign messages.
-                </Text>
-              )}
               {isMessageValid && (
                 <Card style={{ width: '332px' }} flexDirection={'column'} gap={'2'}>
                   <Text variant="medium">Signed message:</Text>
