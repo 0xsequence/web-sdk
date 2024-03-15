@@ -70,10 +70,12 @@ export const SendItemInfo = ({ address, txs, chainId }: SendItemInfoProps) => {
   )
 
   const { data: tokenMetadata, isLoading: isTokenMetadataLoading } = useTokenMetadata({
-    tokens: { chainId, contractAddress, tokenIds: txnProps[0]?.tokenIds }
+    tokens: { chainId, contractAddress, tokenIds: txnProps[0]?.tokenIds ?? [] }
   })
 
-  const tokenBalance = contractAddress && balances.find(b => getAddress(b.contractAddress) === getAddress(contractAddress))
+  const tokenBalance = contractAddress
+    ? balances.find(b => getAddress(b.contractAddress) === getAddress(contractAddress))
+    : undefined
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
 
   const imageUrl = isNativeCoin

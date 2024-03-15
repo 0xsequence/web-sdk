@@ -56,7 +56,7 @@ export interface UnknownProps extends BaseDecoding {
   type: DecodingType.UNKNOWN
 }
 
-export type TxnProps = TransferProps | UnknownProps
+export type TxnProps = TransferProps
 
 interface ContractCallArg {
   name?: string
@@ -65,7 +65,7 @@ interface ContractCallArg {
 }
 
 // Transform decoded contract call arguments to a object format
-const transformArgs = (args: ContractCallArg[]) => {
+const transformArgs = (args: ContractCallArg[]): any => {
   return Object.fromEntries(
     args.map((arg, i) => [
       arg.name && !arg.name.startsWith('unnamed') ? arg.name : `_${i}`,
@@ -273,7 +273,7 @@ export const decodeTransactions = async (
     }
 
     if (!decodedTxnData) {
-      return { type: DecodingType.UNKNOWN, signature: '', byteSignature: '', methodName: '', target, value }
+      return undefined
     }
 
     const contractAddress = getAddress(txn.target)
