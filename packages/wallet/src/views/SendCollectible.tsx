@@ -1,4 +1,4 @@
-import React, { useRef, useState, ChangeEvent } from "react"
+import React, { useRef, useState, ChangeEvent } from 'react'
 import { ethers } from 'ethers'
 import {
   Box,
@@ -14,25 +14,15 @@ import {
   TextInput,
   vars
 } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useAnalyticsContext } from '@0xsequence/kit'
+import { getNativeTokenInfoByChainId, useAnalyticsContext, ExtendedConnector } from '@0xsequence/kit'
 import { TokenBalance } from '@0xsequence/indexer'
-import { ExtendedConnector } from "@0xsequence/kit"
-import { useAccount, useChainId, useSwitchChain, useWalletClient, useConfig } from 'wagmi'
+import { useAccount, useChainId, useSwitchChain, useWalletClient, useConfig, useSendTransaction } from 'wagmi'
 
 import { SendItemInfo } from '../shared/SendItemInfo'
-import { ERC_1155_ABI, ERC_721_ABI } from '../constants'
-import {
-  useCollectibleBalance,
-  useOpenWalletModal
-} from '../hooks'
-import {
-  limitDecimals,
-  isEthAddress,
-  truncateAtMiddle
-} from '../utils'
-import { HEADER_HEIGHT } from '../constants'
+import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
+import { useCollectibleBalance, useOpenWalletModal } from '../hooks'
+import { limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
 import * as sharedStyles from '../shared/styles.css'
-import { chain } from "lodash"
 
 interface SendCollectibleProps {
   chainId: number
@@ -40,11 +30,7 @@ interface SendCollectibleProps {
   tokenId: string
 }
 
-export const SendCollectible = ({
-  chainId,
-  contractAddress,
-  tokenId
-}: SendCollectibleProps) => {
+export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendCollectibleProps) => {
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
@@ -59,20 +45,19 @@ export const SendCollectible = ({
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
   const { data: walletClient } = useWalletClient()
+  const { sendTransaction } = useSendTransaction()
   const { data: tokenBalance, isLoading: isLoadingBalances } = useCollectibleBalance({
     accountAddress: accountAddress,
     chainId,
     collectionAddress: contractAddress,
-    tokenId,
+    tokenId
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const isLoading =  isLoadingBalances
+  const isLoading = isLoadingBalances
 
   if (isLoading) {
-    return (
-      null
-    )
+    return null
   }
 
   const decimals = tokenBalance?.tokenMetadata?.decimals || 0
@@ -81,7 +66,7 @@ export const SendCollectible = ({
   const amountToSendFormatted = amount === '' ? '0' : amount
   const amountRaw = ethers.utils.parseUnits(amountToSendFormatted, decimals)
 
-  const insufficientFunds = amountRaw.gt(tokenBalance?.balance || '0') 
+  const insufficientFunds = amountRaw.gt(tokenBalance?.balance || '0')
   const isNonZeroAmount = amountRaw.gt(0)
 
   const handleChangeAmount = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +99,7 @@ export const SendCollectible = ({
   const handleMax = () => {
     amountInputRef.current?.focus()
     const maxAmount = ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals).toString()
-    
+
     setAmount(maxAmount)
   }
 
@@ -137,34 +122,35 @@ export const SendCollectible = ({
     const sendAmount = ethers.utils.parseUnits(amountToSendFormatted, decimals)
     const { contractType } = tokenBalance as TokenBalance
 
-    switch(contractType) {
+    switch (contractType) {
       case 'ERC721':
         analytics?.track({
           event: 'SEND_TRANSACTION_REQUEST',
           props: {
-            'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown'
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown'
           }
         })
         // _from, _to, _id
-        walletClient?.sendTransaction({
+        sendTransaction({
           to: (tokenBalance as TokenBalance).contractAddress as `0x${string}}`,
           data: new ethers.utils.Interface(ERC_721_ABI).encodeFunctionData('safeTransferFrom', [
             accountAddress,
             toAddress,
-            tokenId,
-          ]) as `0x${string}`
-        }).catch(e => console.error('User rejected transaction', e))
-        break;
+            tokenId
+          ]) as `0x${string}`,
+          gas: null
+        })
+        break
       case 'ERC1155':
       default:
         analytics?.track({
           event: 'SEND_TRANSACTION_REQUEST',
           props: {
-            'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown'
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown'
           }
         })
         // _from, _to, _ids, _amounts, _data
-        walletClient?.sendTransaction({
+        sendTransaction({
           to: (tokenBalance as TokenBalance).contractAddress as `0x${string}}`,
           data: new ethers.utils.Interface(ERC_1155_ABI).encodeFunctionData('safeBatchTransferFrom', [
             accountAddress,
@@ -172,8 +158,9 @@ export const SendCollectible = ({
             [tokenId],
             [sendAmount.toHexString()],
             []
-          ]) as `0x${string}`
-        }).catch(e => console.error('User rejected transaction', e))
+          ]) as `0x${string}`,
+          gas: null
+        })
     }
     setOpenWalletModal(false)
   }
@@ -195,13 +182,7 @@ export const SendCollectible = ({
       as="form"
       onSubmit={executeTransaction}
     >
-      <Box
-        background="backgroundSecondary"
-        borderRadius="md"
-        padding="4"
-        gap="2"
-        flexDirection="column"
-      >
+      <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
         <SendItemInfo
           imageUrl={imageUrl}
           showSquareImage
@@ -231,14 +212,10 @@ export const SendCollectible = ({
           </Text>
         )}
       </Box>
-      <Box
-        background="backgroundSecondary"
-        borderRadius="md"
-        padding="4"
-        gap="2"
-        flexDirection="column"
-      >
-        <Text fontSize="normal" color="text50">To</Text>
+      <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
+        <Text fontSize="normal" color="text50">
+          To
+        </Text>
         {isEthAddress(toAddress) ? (
           <Box
             borderRadius="md"
@@ -254,9 +231,7 @@ export const SendCollectible = ({
           >
             <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
               <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-              <Text color="text100">
-                {`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}
-              </Text>
+              <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
             </Box>
             <CloseIcon size="xs" />
           </Box>
@@ -282,25 +257,23 @@ export const SendCollectible = ({
         )}
       </Box>
 
-      {
-        showSwitchNetwork && (
-          <Box
-            marginTop="3"
-          >
-            <Text color="negative">The wallet is connected to the wrong network. Please switch network before proceeding</Text>
-            <Button
-              marginTop="2"
-              width="full"
-              variant="primary"
-              type="button"
-              label="Switch Network"
-              onClick={() => switchChain({ chainId })}
-              disabled={isCorrectChainId}
-              style={{ height: '52px', borderRadius: vars.radii.md }}
-            />
-          </Box>
-        )
-      }
+      {showSwitchNetwork && (
+        <Box marginTop="3">
+          <Text variant="small" color="negative" marginBottom="2">
+            The wallet is connected to the wrong network. Please switch network before proceeding
+          </Text>
+          <Button
+            marginTop="2"
+            width="full"
+            variant="primary"
+            type="button"
+            label="Switch Network"
+            onClick={() => switchChain({ chainId })}
+            disabled={isCorrectChainId}
+            style={{ height: '52px', borderRadius: vars.radii.md }}
+          />
+        </Box>
+      )}
 
       <Button
         color="text100"
@@ -308,7 +281,9 @@ export const SendCollectible = ({
         width="full"
         variant="primary"
         type="submit"
-        disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || (!isCorrectChainId && !isConnectorSequenceBased)}
+        disabled={
+          !isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || (!isCorrectChainId && !isConnectorSequenceBased)
+        }
         label="Send"
         rightIcon={ChevronRightIcon}
         style={{ height: '52px', borderRadius: vars.radii.md }}

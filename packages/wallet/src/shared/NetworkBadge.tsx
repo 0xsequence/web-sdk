@@ -1,11 +1,6 @@
 import React from 'react'
 import { Box, Image, Text } from '@0xsequence/design-system'
-import {
-  getNativeTokenInfoByChainId,
-  getChainColor,
-  getChainBGColor,
-  getNetworkConfigAndClients
-} from '@0xsequence/kit'
+import { getNativeTokenInfoByChainId, getChainColor, getChainBGColor, getNetworkConfigAndClients } from '@0xsequence/kit'
 import { useConfig } from 'wagmi'
 
 import { capitalize } from '../utils'
@@ -14,10 +9,8 @@ interface NetworkBadgeProps {
   chainId: number
 }
 
-export const NetworkBadge = ({
-  chainId
-}: NetworkBadgeProps) => {
-  const { chains }  = useConfig()
+export const NetworkBadge = ({ chainId }: NetworkBadgeProps) => {
+  const { chains } = useConfig()
   const { network } = getNetworkConfigAndClients(chainId)
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const chainColor = getChainColor(chainId)
@@ -37,12 +30,9 @@ export const NetworkBadge = ({
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
-      width="min"
+      width="fit"
     >
-      <Image
-        style={{ width: '14px' }}
-        src={nativeTokenInfo.logoURI}
-      />
+      <Image style={{ width: '14px' }} src={nativeTokenInfo.logoURI} />
       <Text
         fontWeight="bold"
         fontSize="xsmall"
@@ -50,7 +40,7 @@ export const NetworkBadge = ({
           color: chainColor
         }}
       >
-        {capitalize(network.name)}
+        {capitalize(network.title ?? network.name)}
       </Text>
     </Box>
   )

@@ -18,6 +18,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@0xsequence/core": "^1.9.6",
     "@0xsequence/auth": "^1.9.6",
     "@0xsequence/api": "^1.9.6",
     "@0xsequence/indexer": "^1.9.6",
@@ -27,6 +28,7 @@
     "@0xsequence/design-system": "^1.1.0",
     "@0xsequence/ethauth": "^0.8.1",
     "@0xsequence/kit-connectors": "workspace:*",
+    "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/utils": "1.9.6",
     "@vanilla-extract/css": "^1.9.3",
     "@vanilla-extract/recipes": "^0.3.0",

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { Box, Button, Card, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
+import { Box, Button, Card, Collapsible, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
 import { Connector, useAccount, useConnections } from 'wagmi'
 import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
@@ -24,6 +24,9 @@ import { ModalPosition, getModalPositionCss } from '../../utils'
 import * as sharedStyles from '../styles.css'
 
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
+
+import { SendItemInfo } from '../TxnDetails'
+import { NetworkBadge } from '@0xsequence/kit-wallet'
 
 export declare const THEME: readonly ['dark', 'light']
 export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>
@@ -270,31 +273,45 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
                             {pendingRequestConfirmation.type === 'signMessage' && (
                               <Box flexDirection="column" width="full">
-                                <Text variant="medium">Message:</Text>
-                                <Text variant="small" marginBottom="4">
-                                  {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                <Text fontSize="normal" color="text50">
+                                  Message
                                 </Text>
-                                <Text variant="medium">Network:</Text>
-                                <Text variant="small" marginBottom="4">
-                                  {networkInfoForChainId(pendingRequestConfirmation.chainId)?.title ??
-                                    pendingRequestConfirmation.chainId}
-                                </Text>
+                                <Card marginTop="2" paddingY="6">
+                                  <Text variant="normal" marginBottom="4">
+                                    {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                  </Text>
+                                </Card>
                               </Box>
                             )}
 
                             {pendingRequestConfirmation.type === 'signTransaction' && (
                               <Box flexDirection="column" width="full">
-                                <Text variant="medium">Transaction data:</Text>
-                                <Card overflowX="scroll" marginY="3">
-                                  <Text variant="code" marginBottom="4">
-                                    {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
+                                <SendItemInfo
+                                  address={address ?? ''}
+                                  txs={pendingRequestConfirmation.txs ?? []}
+                                  chainId={pendingRequestConfirmation.chainId ?? 137}
+                                />
+
+                                <Collapsible label="Transaction data" marginTop="4">
+                                  <Card overflowX="scroll" marginY="3">
+                                    <Text variant="code" marginBottom="4">
+                                      {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
+                                    </Text>
+                                  </Card>
+                                </Collapsible>
+                              </Box>
+                            )}
+
+                            {pendingRequestConfirmation.chainId && (
+                              <Box width="full" marginTop="3" justifyContent="flex-end" alignItems="center">
+                                <Box width="1/2" justifyContent="flex-start">
+                                  <Text variant="small" color="text50">
+                                    Network
                                   </Text>
-                                </Card>
-                                <Text variant="medium">Network:</Text>
-                                <Text variant="small" marginBottom="4">
-                                  {networkInfoForChainId(pendingRequestConfirmation.chainId)?.title ??
-                                    pendingRequestConfirmation.chainId}
-                                </Text>
+                                </Box>
+                                <Box width="1/2" justifyContent="flex-end">
+                                  <NetworkBadge chainId={pendingRequestConfirmation.chainId} />
+                                </Box>
                               </Box>
                             )}
 

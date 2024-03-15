@@ -175,7 +175,12 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
                 foundCollectionBalances.length > 0 &&
                 foundCollectionBalances.map(indexItem => {
                   const collectionBalance = collectionBalances[indexItem.index]
-                  return <BalanceItem key={collectionBalance.contractAddress} balance={collectionBalance} />
+                  return (
+                    <BalanceItem
+                      key={collectionBalance.contractAddress + collectionBalance.chainId}
+                      balance={collectionBalance}
+                    />
+                  )
                 })}
             </Box>
           </TabsContent>

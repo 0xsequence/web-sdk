@@ -1,3 +1,4 @@
+import { commons } from '@0xsequence/core'
 import { ethers } from 'ethers'
 import { useState, useEffect } from 'react'
 
@@ -7,7 +8,7 @@ export type WaasRequestConfirmation = {
   id: string
   type: 'signTransaction' | 'signMessage'
   message?: string
-  txs?: ethers.Transaction[]
+  txs?: commons.transaction.Transaction[]
   chainId?: number
 }
 
@@ -36,14 +37,18 @@ export function useWaasConfirmationHandler(
 
       const waasProvider = waasConnector.sequenceWaasProvider
 
+      if (!waasProvider) {
+        return
+      }
+
       waasProvider.requestConfirmationHandler = {
         confirmSignTransactionRequest(
           id: string,
-          txs: ethers.Transaction[],
+          txs: commons.transaction.Transaction[],
           chainId: number
         ): Promise<{ id: string; confirmed: boolean }> {
           const pending = new Deferred<{ id: string; confirmed: boolean }>()
-          setPendingRequestConfirmation({ id, type: 'signTransaction', txs, chainId })
+          setPendingRequestConfirmation({ id, type: 'signTransaction', txs: Array.isArray(txs) ? txs : [txs], chainId })
           _pendingConfirmation = pending
           return pending.promise
         },

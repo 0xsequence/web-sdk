@@ -157,7 +157,7 @@ export const SearchWallet = () => {
         ) : (
           foundCollectionBalances.map(indexedItem => {
             const balance = collectionBalances[indexedItem.index]
-            return <BalanceItem key={balance.contractAddress} balance={balance} />
+            return <BalanceItem key={balance.contractAddress + balance.chainId} balance={balance} />
           })
         )}
       </Box>
@@ -180,7 +180,7 @@ export const SearchWallet = () => {
         ) : (
           foundCoinBalances.map(indexItem => {
             const balance = coinBalances[indexItem.index]
-            return <BalanceItem key={balance.contractAddress} balance={balance} />
+            return <BalanceItem key={balance.contractAddress + balance.chainId} balance={balance} />
           })
         )}
       </Box>
