@@ -11,7 +11,8 @@ import {
   useChainId,
   useSwitchChain,
   useSendTransaction,
-  useConnections
+  useConnections,
+  useWriteContract
 } from 'wagmi'
 import {
   Box,
@@ -32,6 +33,7 @@ import { Footer } from './Footer'
 import { messageToSign } from '../constants'
 import { formatAddress, getCheckoutSettings } from '../utils'
 import { sequence } from '0xsequence'
+import abi from '../constants/nft-abi'
 
 function Homepage() {
   const { theme, setTheme } = useTheme()
@@ -47,12 +49,14 @@ function Homepage() {
   const isMobile = useMediaQuery('isMobile')
 
   const { data: txnData, sendTransaction, isLoading: isSendTxnLoading } = useSendTransaction()
+  const { data: txnData2, isLoading: isMintTxnLoading, writeContract } = useWriteContract()
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
 
   const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
+  const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
 
   const chainId = useChainId()
 
@@ -84,7 +88,10 @@ function Homepage() {
     if (txnData?.hash) {
       setLastTxnDataHash(txnData.hash)
     }
-  }, [txnData])
+    if (txnData2?.hash) {
+      setLastTxnDataHash2(txnData2.hash)
+    }
+  }, [txnData, txnData2])
 
   const signMessage = async () => {
     if (!walletClient) {
@@ -132,6 +139,21 @@ function Homepage() {
     const [account] = await walletClient.getAddresses()
 
     sendTransaction({ to: account, value: '0', gas: null })
+  }
+
+  const runMintNFT = async () => {
+    if (!walletClient) {
+      return
+    }
+
+    const [account] = await walletClient.getAddresses()
+
+    writeContract({
+      address: '0x0d402C63cAe0200F0723B3e6fa0914627a48462E',
+      abi,
+      functionName: 'awardItem',
+      args: [account, 'https://dev-metadata.sequence.app/projects/277/collections/62/tokens/0.json']
+    })
   }
 
   const onClickChangeTheme = () => {
@@ -315,6 +337,26 @@ function Homepage() {
                 </Card>
               )}
 
+              <ClickableCard
+                title="Mint an NFT"
+                description="Test minting an NFT to your wallet"
+                isLoading={isMintTxnLoading}
+                onClick={runMintNFT}
+              />
+              {lastTxnDataHash2 && txnData2?.chainId === chainId && (
+                <Text
+                  as="a"
+                  marginLeft="4"
+                  variant="small"
+                  underline
+                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${txnData2.hash}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View on {networkForCurrentChainId.blockExplorer.name}
+                </Text>
+              )}
+
               {isDebugMode && (
                 <ClickableCard
                   title="Generate EthAuth proof"
@@ -333,6 +375,7 @@ function Homepage() {
                 onClick={() => {
                   disconnect()
                   setLastTxnDataHash(undefined)
+                  setLastTxnDataHash2(undefined)
                   setIsMessageValid(undefined)
                 }}
                 leftIcon={SignoutIcon}
@@ -356,6 +399,17 @@ function Homepage() {
               <Box gap="2" flexDirection="row" alignItems="center">
                 <Button onClick={onClickConnect} variant="feature" label="Connect" />
               </Box>
+            </Box>
+
+            <Box style={{ marginTop: '100px', maxWidth: '332px' }}>
+              <Text variant="medium" color="text50">
+                Hints
+              </Text>
+              <Card marginTop="2">
+                <Text fontSize="small" color="text50">
+                  Add `?enableConfirmation=true` to the URL to enable confirmation modal
+                </Text>
+              </Card>
             </Box>
           </Box>
         )}

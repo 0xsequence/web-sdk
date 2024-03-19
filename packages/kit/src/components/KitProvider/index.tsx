@@ -25,7 +25,7 @@ import * as sharedStyles from '../styles.css'
 
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 
-import { SendItemInfo } from '../TxnDetails'
+import { TxnDetails } from '../TxnDetails'
 import { NetworkBadge } from '@0xsequence/kit-wallet'
 
 export declare const THEME: readonly ['dark', 'light']
@@ -286,7 +286,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
                             {pendingRequestConfirmation.type === 'signTransaction' && (
                               <Box flexDirection="column" width="full">
-                                <SendItemInfo
+                                <TxnDetails
                                   address={address ?? ''}
                                   txs={pendingRequestConfirmation.txs ?? []}
                                   chainId={pendingRequestConfirmation.chainId ?? 137}

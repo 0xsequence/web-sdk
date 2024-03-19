@@ -21,6 +21,8 @@ function App() {
   const { debug } = qs.parse(location.search)
   const isDebugMode = debug === 'true'
 
+  const { enableConfirmation } = qs.parse(location.search)
+
   /* typing error from wagmi? */
   const chains: readonly [Chain, ...Chain[]] = [
     arbitrumNova as Chain,
@@ -46,7 +48,7 @@ function App() {
       appleRedirectURI,
       appName: 'Kit Demo',
       projectAccessKey,
-      enableConfirmationModal: true
+      enableConfirmationModal: enableConfirmation === 'true'
     }),
     ...(isDebugMode
       ? getKitConnectWallets(projectAccessKey, [
@@ -105,6 +107,16 @@ function App() {
       // Native token
       {
         contractAddress: ethers.constants.AddressZero,
+        chainId: 421614
+      },
+      // Waas demo NFT
+      {
+        contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
+        chainId: 42170
+      },
+      // Waas demo NFT
+      {
+        contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
         chainId: 421614
       },
       // Skyweaver assets

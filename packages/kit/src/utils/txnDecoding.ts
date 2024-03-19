@@ -26,7 +26,7 @@ export enum DecodingType {
   APPROVE = 'approve',
   TRANSFER = 'transfer',
   SWAP = 'swap',
-  NIFTYSWAP = 'niftyswap',
+  AWARD_ITEM = 'awardItem',
   UNIMPLEMENTED = 'unimplemented',
   UNKNOWN = 'unknown'
 }
@@ -52,11 +52,18 @@ export interface TransferProps extends BaseDecoding {
   isNetworkFee?: boolean
 }
 
+export interface AwardItemProps extends BaseDecoding {
+  type: DecodingType.AWARD_ITEM
+  contractAddress: string
+  to: string
+  amount: string
+}
+
 export interface UnknownProps extends BaseDecoding {
   type: DecodingType.UNKNOWN
 }
 
-export type TxnProps = TransferProps
+export type TxnProps = TransferProps | AwardItemProps
 
 interface ContractCallArg {
   name?: string
@@ -170,7 +177,10 @@ export enum ByteSignature {
   UNISWAPV2_SWAP_EXACT_ETH_FOR_TOKENS = '0x7ff36ab5',
   UNISWAPV2_SWAP_ETH_FOR_EXACT_TOKENS = '0xfb3bdb41',
   UNISWAPV2_SWAP_TOKENS_FOR_EXACT_ETH = '0x4a25d94a',
-  UNISWAPV2_SWAP_EXACT_TOKENS_FOR_ETH = '0x18cbafe5'
+  UNISWAPV2_SWAP_EXACT_TOKENS_FOR_ETH = '0x18cbafe5',
+
+  // For demo NFT contract
+  AWARD_ITEM = '0xcf378343'
 }
 
 interface CreateTypedTxnData<S extends ByteSignature, A extends Args> extends TxnData {
@@ -210,6 +220,11 @@ export interface TransferArgs {
   amount: number
 }
 
+interface AwardItemArgs {
+  player: string
+  tokenURI: string
+}
+
 type TransferTxnData = CreateTypedTxnData<ByteSignature.TRANSFER, TransferArgs>
 type SafeBatchTransferFromTxnData = CreateTypedTxnData<ByteSignature.ERC1155_SAFE_BATCH_TRANSFER_FROM, SafeBatchTransferFromArgs>
 type ERC721SafeTransferFromTxnData = CreateTypedTxnData<
@@ -218,11 +233,14 @@ type ERC721SafeTransferFromTxnData = CreateTypedTxnData<
 >
 type ERC1155SafeTransferFromTxnData = CreateTypedTxnData<ByteSignature.ERC1155_SAFE_TRANSFER_FROM, ERC1155SafeTransferFromArgs>
 
+type AwardItemTxnData = CreateTypedTxnData<ByteSignature.AWARD_ITEM, AwardItemArgs>
+
 type DecodedTxnData =
   | TransferTxnData
   | SafeBatchTransferFromTxnData
   | ERC721SafeTransferFromTxnData
   | ERC1155SafeTransferFromTxnData
+  | AwardItemTxnData
 
 const decodeTxnData = async (txns: commons.transaction.TransactionEncoded[]): Promise<TxnData> => {
   const mainModule = new ethers.utils.Interface(mainModuleAbi)
@@ -349,6 +367,19 @@ export const decodeTransactions = async (
           to: getAddress(args._to),
           tokenIds: args._ids,
           amounts: args._amounts
+        }
+      }
+
+      case ByteSignature.AWARD_ITEM: {
+        const { args } = decodedTxnData
+
+        return {
+          ...baseDecoding,
+          type: DecodingType.AWARD_ITEM,
+          contractAddress,
+          // @ts-ignore-next-line
+          to: getAddress(args._0),
+          amount: '1'
         }
       }
     }

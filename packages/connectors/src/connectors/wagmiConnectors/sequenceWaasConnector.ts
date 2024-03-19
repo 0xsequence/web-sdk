@@ -55,7 +55,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain, showConfirmationModal)
 
   const updateNetwork = async (chainId: number) => {
-    const networkName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
+    const networkName = sequence.network.allNetworks.find(n => n.chainId === chainId || n.name === initialChain)?.name
     // TODO: update to use prod nodes
     const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
       `https://next-nodes.sequence.app/${networkName}/${params.projectAccessKey}`
