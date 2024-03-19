@@ -37,6 +37,7 @@ export const TxnDetailsSkeleton = () => {
   )
 }
 
+// @ts-ignore-next-line
 export const TxnDetails = ({ address, txs, chainId }: TxnDetailsProps) => {
   const { chains } = useConfig()
   // const { fiatCurrency } = useSettings()
