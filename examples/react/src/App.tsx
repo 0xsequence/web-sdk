@@ -21,8 +21,6 @@ function App() {
   const { debug } = qs.parse(location.search)
   const isDebugMode = debug === 'true'
 
-  const { enableConfirmation } = qs.parse(location.search)
-
   /* typing error from wagmi? */
   const chains: readonly [Chain, ...Chain[]] = [
     arbitrumNova as Chain,
@@ -48,7 +46,7 @@ function App() {
       appleRedirectURI,
       appName: 'Kit Demo',
       projectAccessKey,
-      enableConfirmationModal: enableConfirmation === 'true'
+      enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true'
     }),
     ...(isDebugMode
       ? getKitConnectWallets(projectAccessKey, [

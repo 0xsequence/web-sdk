@@ -11,7 +11,6 @@ import {
   useChainId,
   useSwitchChain,
   useSendTransaction,
-  useConnections,
   useWriteContract
 } from 'wagmi'
 import {
@@ -26,7 +25,8 @@ import {
   useTheme,
   vars,
   Spinner,
-  useMediaQuery
+  useMediaQuery,
+  Switch
 } from '@0xsequence/design-system'
 
 import { Footer } from './Footer'
@@ -57,6 +57,10 @@ function Homepage() {
 
   const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
+
+  const [confirmationEnabled, setConfirmationEnabled] = React.useState<boolean>(
+    localStorage.getItem('confirmationEnabled') === 'true'
+  )
 
   const chainId = useChainId()
 
@@ -370,6 +374,34 @@ function Homepage() {
                 onClick={onSwitchNetwork}
               />
             </Box>
+
+            <Box marginY="3">
+              <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text fontWeight="semibold" variant="small" color="text50">
+                  Confirmations
+                </Text>
+
+                <Box alignItems="center" gap="2">
+                  <Switch
+                    name="confirmations"
+                    checked={confirmationEnabled}
+                    onCheckedChange={async (checked: boolean) => {
+                      if (checked) {
+                        localStorage.setItem('confirmationEnabled', 'true')
+                        setConfirmationEnabled(true)
+                      } else {
+                        localStorage.removeItem('confirmationEnabled')
+                        setConfirmationEnabled(false)
+                      }
+
+                      await delay(300)
+
+                      window.location.reload()
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
             <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
               <Button
                 onClick={() => {
@@ -400,23 +432,16 @@ function Homepage() {
                 <Button onClick={onClickConnect} variant="feature" label="Connect" />
               </Box>
             </Box>
-
-            <Box style={{ marginTop: '100px', maxWidth: '332px' }}>
-              <Text variant="medium" color="text50">
-                Hints
-              </Text>
-              <Card marginTop="2">
-                <Text fontSize="small" color="text50">
-                  Add `?enableConfirmation=true` to the URL to enable confirmation modal
-                </Text>
-              </Card>
-            </Box>
           </Box>
         )}
       </Box>
       {!isMobile && <Footer />}
     </Box>
   )
+}
+
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 export default Homepage
