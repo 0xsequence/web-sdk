@@ -41,7 +41,7 @@ export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeleton
           {Array(8)
             .fill(null)
             .map((_, i) => (
-              <Skeleton width="full" aspectRatio="1/1" />
+              <Skeleton key={i} width="full" aspectRatio="1/1" />
             ))}
         </Box>
       </Box>

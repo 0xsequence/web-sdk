@@ -209,7 +209,7 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
           <Box flexDirection="column" alignItems="flex-start">
             <Box flexDirection="row" alignItems="center" gap="1">
               <Text variant="medium" color="text100">
-                'Waas Demo NFT'
+                Waas Demo NFT
               </Text>
             </Box>
 

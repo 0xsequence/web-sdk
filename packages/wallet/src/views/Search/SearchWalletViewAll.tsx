@@ -173,14 +173,9 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
               {!isLoading && foundCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
               {!isLoading &&
                 foundCollectionBalances.length > 0 &&
-                foundCollectionBalances.map(indexItem => {
+                foundCollectionBalances.map((indexItem, index) => {
                   const collectionBalance = collectionBalances[indexItem.index]
-                  return (
-                    <BalanceItem
-                      key={collectionBalance.contractAddress + collectionBalance.chainId}
-                      balance={collectionBalance}
-                    />
-                  )
+                  return <BalanceItem key={index} balance={collectionBalance} />
                 })}
             </Box>
           </TabsContent>
@@ -191,9 +186,9 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
               {!isLoading && coinBalances.length == 0 && <Text color="text100">No Coins Found</Text>}
               {!isLoading &&
                 foundCoinBalances.length > 0 &&
-                foundCoinBalances.map(indexedItem => {
+                foundCoinBalances.map((indexedItem, index) => {
                   const coinBalance = coinBalances[indexedItem.index]
-                  return <BalanceItem key={coinBalance.contractAddress} balance={coinBalance} />
+                  return <BalanceItem key={index} balance={coinBalance} />
                 })}
             </Box>
           </TabsContent>

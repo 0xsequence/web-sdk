@@ -1,27 +1,24 @@
 import React, { useContext } from 'react'
-import { useNavigationContext, Navigation, History } from '../contexts/Navigation'
+import { useNavigationContext, Navigation, History, BasicNavigation } from '../contexts/Navigation'
 import { useOpenWalletModal } from './useOpenWalletModal'
 
 interface UseNavigation {
-  setNavigation: (navigation: Navigation) => void,
+  setNavigation: (navigation: Navigation) => void
   setHistory?: (history: History) => void
-  history: History,
+  history: History
   goBack: () => void
 }
 
 export const useNavigation = (): UseNavigation => {
-  const {
-    setHistory,
-    history
-  } = useNavigationContext()
+  const { setHistory, history } = useNavigationContext()
 
   const setNavigation = (navigation: Navigation) => {
     // Scroll to top of page when navigating to a new page
-    const childElement = document.getElementById("sequence-kit-wallet-content")
+    const childElement = document.getElementById('sequence-kit-wallet-content')
     const parentElement = childElement?.parentElement
     parentElement?.scrollTo(0, 0)
 
-    const newHistory = [...history, navigation]
+    const newHistory = navigation.location === 'home' ? [] : [...history, navigation]
     setHistory(newHistory)
   }
 

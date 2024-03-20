@@ -81,17 +81,13 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
           width="full"
           marginTop="3"
         >
-          {collectionBalanceData?.map(balance => {
+          {collectionBalanceData?.map((balance, index) => {
             const unformattedBalance = balance.balance
             const decimals = balance?.tokenMetadata?.decimals || 0
             const formattedBalance = formatDisplay(ethers.utils.formatUnits(unformattedBalance, decimals))
 
             return (
-              <Box
-                key={`${balance.contractAddress}-${balance.tokenID}`}
-                onClick={() => onClickItem(balance)}
-                className={sharedStyles.clickable}
-              >
+              <Box key={index} onClick={() => onClickItem(balance)} className={sharedStyles.clickable}>
                 <Box
                   background="backgroundSecondary"
                   aspectRatio="1/1"

@@ -1,7 +1,5 @@
 import React from 'react'
-import { Box, vars } from '@0xsequence/design-system'
-
-import { SCROLLBAR_WIDTH } from '../../constants'
+import { Box } from '@0xsequence/design-system'
 
 import { AssetSummary } from './components/AssetSummary'
 

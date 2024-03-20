@@ -10,7 +10,8 @@ import {
   Text,
   NumericInput,
   TextInput,
-  vars
+  vars,
+  Spinner
 } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useAnalyticsContext, ExtendedConnector } from '@0xsequence/kit'
 import { TokenBalance } from '@0xsequence/indexer'
@@ -18,7 +19,7 @@ import { useAccount, useChainId, useSwitchChain, useWalletClient, useConfig, use
 
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
-import { useBalances, useCoinPrices, useConversionRate, useSettings, useOpenWalletModal } from '../hooks'
+import { useBalances, useCoinPrices, useConversionRate, useSettings, useOpenWalletModal, useNavigation } from '../hooks'
 import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
 import * as sharedStyles from '../shared/styles.css'
 
@@ -28,6 +29,7 @@ interface SendCoinProps {
 }
 
 export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
+  const { setNavigation } = useNavigation()
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
@@ -42,8 +44,8 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
-  const { data: walletClient } = useWalletClient()
   const { sendTransaction } = useSendTransaction()
+  const [isSendTxnPending, setIsSendTxnPending] = useState(false)
   const { data: balances = [], isLoading: isLoadingBalances } = useBalances(
     {
       accountAddress: accountAddress,
@@ -133,11 +135,24 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown'
         }
       })
-      sendTransaction({
-        to: toAddress as `0x${string}}`,
-        value: BigInt(sendAmount.toString()),
-        gas: null
-      })
+      setIsSendTxnPending(true)
+      sendTransaction(
+        {
+          to: toAddress as `0x${string}}`,
+          value: BigInt(sendAmount.toString()),
+          gas: null
+        },
+        {
+          onSettled: (result, error) => {
+            if (result) {
+              setNavigation({
+                location: 'home'
+              })
+            }
+            setIsSendTxnPending(false)
+          }
+        }
+      )
     } else {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
@@ -145,16 +160,28 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown'
         }
       })
-      sendTransaction({
-        to: tokenBalance?.contractAddress as `0x${string}}`,
-        data: new ethers.utils.Interface(ERC_20_ABI).encodeFunctionData('transfer', [
-          toAddress,
-          sendAmount.toHexString()
-        ]) as `0x${string}`,
-        gas: null
-      })
+      setIsSendTxnPending(true)
+      sendTransaction(
+        {
+          to: tokenBalance?.contractAddress as `0x${string}}`,
+          data: new ethers.utils.Interface(ERC_20_ABI).encodeFunctionData('transfer', [
+            toAddress,
+            sendAmount.toHexString()
+          ]) as `0x${string}`,
+          gas: null
+        },
+        {
+          onSettled: (result, error) => {
+            if (result) {
+              setNavigation({
+                location: 'home'
+              })
+            }
+            setIsSendTxnPending(false)
+          }
+        }
+      )
     }
-    setOpenWalletModal(false)
   }
 
   return (
@@ -168,6 +195,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       flexDirection="column"
       as="form"
       onSubmit={executeTransaction}
+      pointerEvents={isSendTxnPending ? 'none' : 'auto'}
     >
       <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
         <SendItemInfo
@@ -271,19 +299,28 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
         </Box>
       )}
 
-      <Button
-        color="text100"
-        marginTop="3"
-        width="full"
-        variant="primary"
-        type="submit"
-        disabled={
-          !isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || (!isCorrectChainId && !isConnectorSequenceBased)
-        }
-        label="Send"
-        rightIcon={ChevronRightIcon}
-        style={{ height: '52px', borderRadius: vars.radii.md }}
-      />
+      <Box style={{ height: '52px' }} alignItems="center" justifyContent="center">
+        {isSendTxnPending ? (
+          <Spinner />
+        ) : (
+          <Button
+            color="text100"
+            marginTop="3"
+            width="full"
+            variant="primary"
+            type="submit"
+            disabled={
+              !isNonZeroAmount ||
+              !isEthAddress(toAddress) ||
+              insufficientFunds ||
+              (!isCorrectChainId && !isConnectorSequenceBased)
+            }
+            label="Send"
+            rightIcon={ChevronRightIcon}
+            style={{ height: '52px', borderRadius: vars.radii.md }}
+          />
+        )}
+      </Box>
     </Box>
   )
 }

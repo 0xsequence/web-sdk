@@ -73,38 +73,23 @@ export const AssetSummary = () => {
         gap: vars.space[2]
       }}
     >
-      {nativeTokens.map(balance => {
+      {nativeTokens.map((balance, index) => {
         return (
-          <Box
-            key={balance.contractAddress + balance.chainId}
-            className={sharedStyles.clickable}
-            aspectRatio="1/1"
-            onClick={() => onClickItem(balance)}
-          >
+          <Box key={index} className={sharedStyles.clickable} aspectRatio="1/1" onClick={() => onClickItem(balance)}>
             <CoinTile balance={balance} />
           </Box>
         )
       })}
-      {erc20Tokens.map(balance => {
+      {erc20Tokens.map((balance, index) => {
         return (
-          <Box
-            className={sharedStyles.clickable}
-            key={balance.contractAddress + balance.chainId}
-            aspectRatio="1/1"
-            onClick={() => onClickItem(balance)}
-          >
+          <Box className={sharedStyles.clickable} key={index} aspectRatio="1/1" onClick={() => onClickItem(balance)}>
             <CoinTile balance={balance} />
           </Box>
         )
       })}
-      {collectibles.map(balance => {
+      {collectibles.map((balance, index) => {
         return (
-          <Box
-            className={sharedStyles.clickable}
-            aspectRatio="1/1"
-            key={`${balance.contractAddress}-${balance.tokenID}}`}
-            onClick={() => onClickItem(balance)}
-          >
+          <Box className={sharedStyles.clickable} aspectRatio="1/1" key={index} onClick={() => onClickItem(balance)}>
             <CollectibleTile balance={balance} />
           </Box>
         )
