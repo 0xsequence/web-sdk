@@ -65,8 +65,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       } else if (contractType === 'ERC1155') {
         if (Number(ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals)) >= 1) {
           setAmount('1')
-          setShowAmountControls(true)
         }
+        setShowAmountControls(true)
       }
     }
   }, [tokenBalance])
