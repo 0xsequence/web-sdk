@@ -99,17 +99,8 @@ export const getDefaultWaasConnectors = ({
   defaultChainId,
   enableConfirmationModal
 }: GetDefaultWaasConnectors): CreateConnectorFn[] => {
-  const connectors = getKitConnectWallets(projectAccessKey, [
+  const wallets: any[] = [
     // emailWaas({ projectAccessKey, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
-    googleWaas({ projectAccessKey, googleClientId, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
-    appleWaas({
-      projectAccessKey,
-      appleClientId,
-      appleRedirectURI,
-      waasConfigKey,
-      enableConfirmationModal,
-      network: defaultChainId
-    }),
     coinbaseWallet({
       appName
     }),
@@ -117,7 +108,26 @@ export const getDefaultWaasConnectors = ({
     walletConnect({
       projectId: walletConnectProjectId
     })
-  ])
+  ]
+  if (googleClientId) {
+    wallets.push(
+      googleWaas({ projectAccessKey, googleClientId, waasConfigKey, enableConfirmationModal, network: defaultChainId })
+    )
+  }
+  if (appleClientId && appleRedirectURI) {
+    wallets.push(
+      appleWaas({
+        projectAccessKey,
+        appleClientId,
+        appleRedirectURI,
+        waasConfigKey,
+        enableConfirmationModal,
+        network: defaultChainId
+      })
+    )
+  }
+
+  const connectors = getKitConnectWallets(projectAccessKey, wallets)
 
   /* @ts-ignore-next-line */
   return connectors
