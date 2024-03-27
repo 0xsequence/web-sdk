@@ -79,6 +79,9 @@ export const getTokenBalances = async ({
     const res = await indexerClient.getTokenBalances({
       accountAddress,
       includeMetadata,
+      metadataOptions: {
+        verifiedOnly: true
+      },
       ...(contractAddress ? { contractAddress } : {})
     })
 
@@ -159,6 +162,9 @@ export const fetchCollectionBalance = async ({
       accountAddress,
       includeMetadata,
       contractAddress: collectionAddress,
+      metadataOptions: {
+        verifiedOnly: true
+      }
     })
   
     return res?.balances || []
@@ -375,7 +381,10 @@ export const getCollectibleBalance = async ({
     accountAddress,
     includeMetadata: true,
     contractAddress: collectionAddress,
-    tokenID: tokenId
+    tokenID: tokenId,
+    metadataOptions: {
+      verifiedOnly: true
+    }
   })
   const tokenBalance = res.balances[0]
 

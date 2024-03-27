@@ -9,7 +9,7 @@ export const metamask = () => ({
   // iconBackground: '#fff',
   name: 'Metamask',
   createConnector: () => {
-    const connector = injected();
+    const connector = injected({ target: 'metaMask' });
     return connector
   }
 })

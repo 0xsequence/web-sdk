@@ -30,17 +30,7 @@ export const getKitConnectWallets = (projectAccessKey: string, wallets: any[]): 
 
   const connectors: CreateConnectorFn[] = []
 
-  // hide connector if there is an identical injected wallet
-  const injectedWallet = wallets.find(connector => connector.id === 'injected')
-
-  const filteredWallets = wallets.filter(wallet => {
-    if (!injectedWallet || !injectedWallet.hideConnectorId) {
-      return true
-    }
-    return wallet.id !== injectedWallet.hideConnectorId
-  })
-
-  filteredWallets.forEach(wallet => {
+  wallets.forEach(wallet => {
     const { createConnector, ...metaProperties } = wallet
     const walletProperties = { ...metaProperties }
 
