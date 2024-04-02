@@ -7,16 +7,17 @@ import { ethers } from 'ethers'
 import { getPaperNetworkName } from '../utils'
 
 export interface GetTokenBalancesArgs {
-  accountAddress: string,
+  accountAddress: string
   chainId: number
+  verifiedOnly?: boolean
 }
 
 export const getNativeToken = async ({ accountAddress, chainId }: GetTokenBalancesArgs) => {
   try {
-    const { indexerClient } = await getNetworkConfigAndClients(chainId) 
+    const { indexerClient } = getNetworkConfigAndClients(chainId)
 
     const res = await indexerClient.getEtherBalance({ accountAddress })
-  
+
     const tokenBalance: TokenBalance = {
       chainId,
       contractAddress: ethers.constants.AddressZero,
@@ -25,29 +26,29 @@ export const getNativeToken = async ({ accountAddress, chainId }: GetTokenBalanc
       contractType: ContractType.UNKNOWN,
       blockHash: '',
       blockNumber: 0,
-      tokenID: '',
+      tokenID: ''
     }
     return [tokenBalance]
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     return []
   }
 }
 
-export const getTokenBalances = async ({ accountAddress, chainId }: GetTokenBalancesArgs) => {
+export const getTokenBalances = async ({ accountAddress, chainId, verifiedOnly }: GetTokenBalancesArgs) => {
   try {
-    const { indexerClient } = await getNetworkConfigAndClients(chainId) 
+    const { indexerClient } = getNetworkConfigAndClients(chainId)
 
     const res = await indexerClient.getTokenBalances({
       accountAddress,
       includeMetadata: true,
       metadataOptions: {
-        verifiedOnly: true
+        verifiedOnly: verifiedOnly ?? true
       }
     })
-  
+
     return res?.balances || []
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     return []
   }
@@ -63,38 +64,44 @@ export const fetchBalances = async ({ accountAddress, chainId }: GetTokenBalance
         }),
         getTokenBalances({
           accountAddress,
-          chainId,
+          chainId
         })
       ])
     ).flat()
     return tokenBalances
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     return []
   }
 }
 
 export interface GetCollectionBalanceArgs {
-  accountAddress: string,
-  chainId: number,
+  accountAddress: string
+  chainId: number
   collectionAddress: string
+  verifiedOnly?: boolean
 }
 
-export const fetchCollectionBalance = async ({ accountAddress, chainId, collectionAddress }: GetCollectionBalanceArgs) => {
+export const fetchCollectionBalance = async ({
+  accountAddress,
+  chainId,
+  collectionAddress,
+  verifiedOnly
+}: GetCollectionBalanceArgs) => {
   try {
-    const { indexerClient } = await getNetworkConfigAndClients(chainId) 
+    const { indexerClient } = getNetworkConfigAndClients(chainId)
 
     const res = await indexerClient.getTokenBalances({
       accountAddress,
       includeMetadata: true,
       contractAddress: collectionAddress,
       metadataOptions: {
-        verifiedOnly: true
+        verifiedOnly: verifiedOnly ?? true
       }
     })
-  
+
     return res?.balances || []
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     return []
   }
@@ -108,15 +115,15 @@ export const getCoinPrices = async ({ tokens }: GetCoinPricesArgs): Promise<Toke
   try {
     if (tokens.length === 0) return []
     const chainId = tokens[0].chainId
-  
-    const { apiClient } = await getNetworkConfigAndClients(chainId)
-  
+
+    const { apiClient } = getNetworkConfigAndClients(chainId)
+
     const res = await apiClient.getCoinPrices({
       tokens
     })
 
     return res?.tokenPrices || []
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     return
   }
@@ -128,48 +135,41 @@ export interface GetTokenMetadataArgs {
   contractAddress: string
 }
 
-export const fetchTokenMetadata = async ({
-  chainId,
-  tokenId,
-  contractAddress,
-}: GetTokenMetadataArgs): Promise<TokenMetadata> => {
-  const { metadataClient } = await getNetworkConfigAndClients(chainId)
+export const fetchTokenMetadata = async ({ chainId, tokenId, contractAddress }: GetTokenMetadataArgs): Promise<TokenMetadata> => {
+  const { metadataClient } = getNetworkConfigAndClients(chainId)
 
   const response = await metadataClient.getTokenMetadata({
     chainID: String(chainId),
     contractAddress,
-    tokenIDs: [tokenId],
+    tokenIDs: [tokenId]
   })
 
   return response.tokenMetadata[0]
 }
 
-export const fetchContractInfo = async ({
-  chainID,
-  contractAddress,
-}: GetContractInfoArgs): Promise<ContractInfo> => {
-  const { metadataClient } = await getNetworkConfigAndClients(chainID)
-  
+export const fetchContractInfo = async ({ chainID, contractAddress }: GetContractInfoArgs): Promise<ContractInfo> => {
+  const { metadataClient } = getNetworkConfigAndClients(chainID)
+
   const response = await metadataClient.getContractInfo({
     chainID,
-    contractAddress,
+    contractAddress
   })
 
   return response.contractInfo
 }
 
 export interface FetchPaperSecretArgs {
-  chainId: number,
-  email: string,
-  abi: string,
-  contractAddress: string,
-  recipientAddress: string,
-  receiptTitle: string,
-  collectionContractAddress?: string,
-  methodArguments: MethodArguments,
-  currency: string,
-  currencyAmount: string,
-  methodName: string,
+  chainId: number
+  email: string
+  abi: string
+  contractAddress: string
+  recipientAddress: string
+  receiptTitle: string
+  collectionContractAddress?: string
+  methodArguments: MethodArguments
+  currency: string
+  currencyAmount: string
+  methodName: string
 }
 
 export interface MethodArguments {
@@ -187,9 +187,9 @@ export const fetchPaperSecret = async ({
   currency,
   currencyAmount,
   methodName,
-  recipientAddress,
+  recipientAddress
 }: FetchPaperSecretArgs) => {
-  const { network, apiClient } = await getNetworkConfigAndClients(chainId) 
+  const { network, apiClient } = await getNetworkConfigAndClients(chainId)
 
   // @ts-ignore-next-line
   const chainName = getPaperNetworkName(network)
@@ -203,23 +203,25 @@ export const fetchPaperSecret = async ({
       args: methodArguments,
       payment: {
         currency,
-        value: `${currencyAmount} * $QUANTITY`,
+        value: `${currencyAmount} * $QUANTITY`
       },
-      name: methodName,
+      name: methodName
     },
     walletAddress: recipientAddress,
-    ...(collectionContractAddress ? {
-      contractArgs: {
-        collectionContractAddress
-      }
-    } : {}),
+    ...(collectionContractAddress
+      ? {
+          contractArgs: {
+            collectionContractAddress
+          }
+        }
+      : {})
   })
 
   const { secret } = await apiClient.paperSessionSecret2({
-   chainName,
-   contractAddress,
-   abi,
-   paramsJson,
+    chainName,
+    contractAddress,
+    abi,
+    paramsJson
   })
 
   return secret

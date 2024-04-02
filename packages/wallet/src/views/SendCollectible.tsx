@@ -17,7 +17,7 @@ import {
 } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useAnalyticsContext, ExtendedConnector } from '@0xsequence/kit'
 import { TokenBalance, Transaction } from '@0xsequence/indexer'
-import { useAccount, useChainId, useSwitchChain, useWalletClient, useConfig, useSendTransaction } from 'wagmi'
+import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
@@ -53,7 +53,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     accountAddress: accountAddress,
     chainId,
     collectionAddress: contractAddress,
-    tokenId
+    tokenId,
+    verifiedOnly: false
   })
   const { contractType } = tokenBalance as TokenBalance
 
@@ -145,7 +146,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         analytics?.track({
           event: 'SEND_TRANSACTION_REQUEST',
           props: {
-            'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
             source: 'sequence-kit/wallet'
           }
         })
@@ -178,7 +179,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         analytics?.track({
           event: 'SEND_TRANSACTION_REQUEST',
           props: {
-            'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
             source: 'sequence-kit/wallet'
           }
         })

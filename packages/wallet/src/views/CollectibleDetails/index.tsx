@@ -51,7 +51,8 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
     accountAddress: accountAddress || '',
     collectionAddress: contractAddress,
     chainId,
-    tokenId
+    tokenId,
+    verifiedOnly: false
   })
 
   const { data: dataCollectiblePrices, isLoading: isLoadingCollectiblePrices } = useCollectiblePrices({
