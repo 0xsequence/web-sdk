@@ -9,6 +9,5 @@ const PulseSimple = keyframes({
 export const skeleton = style({
   height: '76px',
   backgroundColor: '#909090',
-  animation: `${PulseSimple} 2s ease-in-out infinite`,
+  animation: `${PulseSimple} 2s ease-in-out infinite`
 })
-

@@ -9,63 +9,41 @@ import { CoinTileContent } from './CoinTileContent'
 
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
-import {
-  computeBalanceFiat,
-  formatDisplay,
-  getPercentagePriceChange,
-  compareAddress,
-} from '../../../../../utils'
+import { computeBalanceFiat, formatDisplay, getPercentagePriceChange, compareAddress } from '../../../../../utils'
 
-import {
-  useCoinPrices,
-  useConversionRate ,
-  useSettings
-} from '../../../../../hooks'
+import { useCoinPrices, useConversionRate, useSettings } from '../../../../../hooks'
 
 interface CoinTileProps {
   balance: TokenBalance
 }
 
-export const CoinTile = ({
-  balance
-}: CoinTileProps) => {
+export const CoinTile = ({ balance }: CoinTileProps) => {
   const { chains } = useConfig()
   const { fiatCurrency } = useSettings()
   const isNativeToken = compareAddress(balance.contractAddress, ethers.constants.AddressZero)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
   const { data: dataCoinPrices = [], isLoading: isLoadingCoinPrice } = useCoinPrices({
-    tokens: [{
-      chainId: balance.chainId,
-      contractAddress: balance.contractAddress
-    }]
+    tokens: [
+      {
+        chainId: balance.chainId,
+        contractAddress: balance.contractAddress
+      }
+    ]
   })
 
-  const {
-    data: conversionRate = 1,
-    isLoading: isLoadingConversionRate
-  } = useConversionRate({
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
-  const {
-    data: contractInfo,
-    isLoading: isLoadingContractInfo
-  } = useContractInfo({
+  const { data: contractInfo, isLoading: isLoadingContractInfo } = useContractInfo({
     chainID: String(balance.chainId),
     contractAddress: balance.contractAddress
   })
 
   const isLoading = isLoadingCoinPrice || isLoadingConversionRate || isLoadingContractInfo
   if (isLoading) {
-    return (
-      <Box
-        background="backgroundSecondary"
-        width="full"
-        height="full"
-        borderRadius="md"
-      />
-    )
+    return <Box background="backgroundSecondary" width="full" height="full" borderRadius="md" />
   }
 
   if (isNativeToken) {
@@ -78,7 +56,7 @@ export const CoinTile = ({
     const priceChangePercentage = getPercentagePriceChange(balance, dataCoinPrices)
     const formattedBalance = ethers.utils.formatUnits(balance.balance, nativeTokenInfo.decimals)
     const balanceDisplayed = formatDisplay(formattedBalance)
-  
+
     return (
       <CoinTileContent
         networkLogoUrl={nativeTokenInfo.logoURI}
@@ -98,10 +76,10 @@ export const CoinTile = ({
     balance,
     prices: dataCoinPrices,
     conversionRate,
-    decimals,
+    decimals
   })
   const priceChangePercentage = getPercentagePriceChange(balance, dataCoinPrices)
-  
+
   const formattedBalance = ethers.utils.formatUnits(balance.balance, decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 

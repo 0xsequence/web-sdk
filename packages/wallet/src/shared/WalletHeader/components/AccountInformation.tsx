@@ -1,11 +1,6 @@
 import React, { forwardRef } from 'react'
 
-import {
-  Box,
-  Text,
-  GradientAvatar,
-  ChevronDownIcon,
-} from '@0xsequence/design-system'
+import { Box, Text, GradientAvatar, ChevronDownIcon } from '@0xsequence/design-system'
 
 import { useAccount } from 'wagmi'
 
@@ -17,14 +12,12 @@ interface AccountInformationProps {
   onClickAccount: () => void
 }
 
-export const AccountInformation = forwardRef(({
-  onClickAccount,
-}: AccountInformationProps, ref) => {
+export const AccountInformation = forwardRef(({ onClickAccount }: AccountInformationProps, ref) => {
   const { address } = useAccount()
 
   return (
     <Box gap="2" alignItems="center">
-      <Box width="full" flexDirection="column" alignItems="center" justifyContent="center" >
+      <Box width="full" flexDirection="column" alignItems="center" justifyContent="center">
         <Box
           onClick={onClickAccount}
           gap="2"

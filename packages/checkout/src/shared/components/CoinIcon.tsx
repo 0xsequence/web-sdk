@@ -8,14 +8,9 @@ interface CoinIconProps {
   size?: number
 }
 
-export const CoinIcon = ({
-  imageUrl,
-  size = 30
-}: CoinIconProps) => {
+export const CoinIcon = ({ imageUrl, size = 30 }: CoinIconProps) => {
   if (imageUrl) {
-    return (
-      <Image src={imageUrl} borderRadius="circle" style={{ width: `${size}px`, height: `${size}px` }} />
-    )
+    return <Image src={imageUrl} borderRadius="circle" style={{ width: `${size}px`, height: `${size}px` }} />
   }
 
   return <DefaultIcon size={size} />

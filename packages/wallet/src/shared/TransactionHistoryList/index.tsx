@@ -12,52 +12,48 @@ interface TransactionHistoryListProps {
   isFetchingNextPage: boolean
 }
 
-export const TransactionHistoryList = ({
-  transactions,
-  isLoading,
-  isFetchingNextPage,
-}: TransactionHistoryListProps) => {
+export const TransactionHistoryList = ({ transactions, isLoading, isFetchingNextPage }: TransactionHistoryListProps) => {
   type TransactionPeriodId = 'today' | 'yesterday' | 'week' | 'month' | 'year' | 'years'
 
   interface TransactionPeriods {
-    id: TransactionPeriodId,
+    id: TransactionPeriodId
     label: string
   }
 
-  const transactionPeriods: TransactionPeriods[] = [{
-    id: 'today',
-    label: 'Today'
-  },
-  {
-    id: 'yesterday',
-    label: 'Yesterday'
-  },
-  {
-    id: 'week',
-    label: 'Last Week'
-  },
-  {
-    id: 'month',
-    label: 'Last Month'
-  },
-  {
-    id: 'year',
-    label: 'Last Year'
-  },
-  {
-    id: 'years',
-    label: 'Past Years'
-  }]
+  const transactionPeriods: TransactionPeriods[] = [
+    {
+      id: 'today',
+      label: 'Today'
+    },
+    {
+      id: 'yesterday',
+      label: 'Yesterday'
+    },
+    {
+      id: 'week',
+      label: 'Last Week'
+    },
+    {
+      id: 'month',
+      label: 'Last Month'
+    },
+    {
+      id: 'year',
+      label: 'Last Year'
+    },
+    {
+      id: 'years',
+      label: 'Past Years'
+    }
+  ]
 
   const transactionsByTime = useMemo(() => {
-    const todayTreshold = new Date(new Date().setHours(0,0,0,0)).getTime()
-    const yesterdayTreshold = new Date(
-      new Date().setDate(new Date(todayTreshold).getDate() - 1)
-    ).getTime()
+    const todayTreshold = new Date(new Date().setHours(0, 0, 0, 0)).getTime()
+    const yesterdayTreshold = new Date(new Date().setDate(new Date(todayTreshold).getDate() - 1)).getTime()
     const weekTreshold = new Date(new Date().setDate(new Date().getDate() - 7)).getTime()
     const monthTreshold = new Date(new Date().setDate(new Date().getDate() - 30)).getTime()
     const yearTreshold = new Date(new Date().setDate(new Date().getDate() - 365)).getTime()
-  
+
     const transactionsByTime: {
       [key in TransactionPeriodId]: Transaction[]
     } = {
@@ -66,15 +62,15 @@ export const TransactionHistoryList = ({
       week: [],
       month: [],
       year: [],
-      years: [],
+      years: []
     }
-  
-    transactions.forEach((transaction) => {
+
+    transactions.forEach(transaction => {
       const transactionTime = new Date(transaction.timestamp).getTime()
       if (transactionTime > todayTreshold) {
         transactionsByTime.today.push(transaction)
       } else if (transactionTime > yesterdayTreshold) {
-        transactionsByTime.yesterday.push(transaction) 
+        transactionsByTime.yesterday.push(transaction)
       } else if (transactionTime > weekTreshold) {
         transactionsByTime.week.push(transaction)
       } else if (transactionTime > monthTreshold) {
@@ -91,10 +87,7 @@ export const TransactionHistoryList = ({
 
   if (isLoading) {
     return (
-      <Box
-        flexDirection="column"
-        gap="2"
-      >
+      <Box flexDirection="column" gap="2">
         <TransactionHistorySkeleton />
       </Box>
     )
@@ -102,18 +95,14 @@ export const TransactionHistoryList = ({
 
   interface TimeLabelProps {
     label: string
-  } 
+  }
 
-  const TimeLabel = ({
-    label
-  }: TimeLabelProps) => {
+  const TimeLabel = ({ label }: TimeLabelProps) => {
     return (
       <Box>
-        <Text
-          color="text50"
-          fontWeight="medium"
-          fontSize="normal"
-        >{label}</Text>
+        <Text color="text50" fontWeight="medium" fontSize="normal">
+          {label}
+        </Text>
       </Box>
     )
   }
@@ -122,21 +111,12 @@ export const TransactionHistoryList = ({
     transactions: Transaction[]
   }
 
-  const TransactionsList = ({
-    transactions
-  }: TransactionsListProps) => {
+  const TransactionsList = ({ transactions }: TransactionsListProps) => {
     return (
-      <Box
-        flexDirection="column"
-        gap="2"
-      >
+      <Box flexDirection="column" gap="2">
         {transactions.map((transaction, index) => {
           return (
-            <Box
-              key={`${transaction.txnHash}-${index}`}
-              flexDirection="column"
-              gap="2"
-            >
+            <Box key={`${transaction.txnHash}-${index}`} flexDirection="column" gap="2">
               <TransactionHistoryItem transaction={transaction} />
             </Box>
           )
@@ -145,34 +125,23 @@ export const TransactionHistoryList = ({
     )
   }
 
-
   return (
-    <Box
-      flexDirection="column"
-      gap="5"
-    >
-      {transactionPeriods.map((period) => {
+    <Box flexDirection="column" gap="5">
+      {transactionPeriods.map(period => {
         const txs = transactionsByTime[period.id]
         if (txs.length === 0) {
           return null
         }
         return (
-          <Box
-            key={period.id}
-            flexDirection="column"
-            gap="3"
-          >
+          <Box key={period.id} flexDirection="column" gap="3">
             <TimeLabel label={period.label} />
             <TransactionsList transactions={txs} />
           </Box>
         )
       })}
       {transactions.length === 0 && (
-        <Box
-          flexDirection="column"
-          gap="3"
-        >
-          <TimeLabel label={"History"} />
+        <Box flexDirection="column" gap="3">
+          <TimeLabel label={'History'} />
           <Text color="text100">No Recent Transaction History Found</Text>
         </Box>
       )}

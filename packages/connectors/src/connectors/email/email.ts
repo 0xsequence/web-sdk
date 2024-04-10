@@ -2,12 +2,11 @@ import { CreateConnectorFn } from 'wagmi'
 
 import { getEmailLogo } from './EmailLogo'
 
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors';
+import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
 export const EMAIL_CONNECTOR_LOCAL_STORAGE_KEY = '@sequence.kit.connector.email'
 
-export interface EmailOptions extends BaseSequenceConnectorOptions {
-}
+export interface EmailOptions extends BaseSequenceConnectorOptions {}
 
 export const email = (options: EmailOptions) => ({
   id: 'email',
@@ -30,7 +29,7 @@ export const email = (options: EmailOptions) => ({
           signInWithEmail: email || ''
         }
       }
-    });
+    })
 
     return connector
   }) as () => CreateConnectorFn

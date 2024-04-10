@@ -2,16 +2,7 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { Token } from '@0xsequence/api'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
-import {
-  ArrowRightIcon,
-  Box,
-  Button,
-  Divider,
-  GradientAvatar,
-  Image,
-  LinkIcon,
-  Text,
- } from '@0xsequence/design-system'
+import { ArrowRightIcon, Box, Button, Divider, GradientAvatar, Image, LinkIcon, Text } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import dayjs from 'dayjs'
 import { useConfig } from 'wagmi'
@@ -20,55 +11,45 @@ import { CoinIcon } from '../../shared/CoinIcon'
 import { CopyButton } from '../../shared/CopyButton'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { Skeleton } from '../../shared/Skeleton'
-import {
-  compareAddress,
-  formatDisplay,
-} from '../../utils'
-import {
-  useCoinPrices,
-  useConversionRate,
-  useCollectiblePrices,
-  useSettings
-} from '../../hooks'
+import { compareAddress, formatDisplay } from '../../utils'
+import { useCoinPrices, useConversionRate, useCollectiblePrices, useSettings } from '../../hooks'
 
 interface TransactionDetailProps {
   transaction: Transaction
 }
 
-export const TransactionDetails = ({
-  transaction
-}: TransactionDetailProps) => {
+export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
   const { chains } = useConfig()
   const { fiatCurrency } = useSettings()
 
   const coins: Token[] = []
-  const collectibles: Token[]= []
+  const collectibles: Token[] = []
   transaction.transfers?.forEach(transfer => {
     if (transfer.contractInfo?.type === 'ERC721' || transfer.contractInfo?.type === 'ERC1155') {
       transfer.tokenIds?.forEach(tokenId => {
-        const foundCollectible = collectibles.find(collectible => (
-          collectible.chainId === transaction.chainId &&
-          compareAddress(collectible.contractAddress, transfer.contractInfo?.address || '') &&
-          collectible.tokenId === tokenId
-        ))
+        const foundCollectible = collectibles.find(
+          collectible =>
+            collectible.chainId === transaction.chainId &&
+            compareAddress(collectible.contractAddress, transfer.contractInfo?.address || '') &&
+            collectible.tokenId === tokenId
+        )
         if (!foundCollectible) {
           collectibles.push({
             chainId: transaction.chainId,
             contractAddress: transfer.contractInfo?.address || '',
-            tokenId,
+            tokenId
           })
         }
       })
     } else {
       const contractAddress = transfer?.contractInfo?.address || ethers.constants.AddressZero
-      const foundCoin = coins.find(coin => (
-        coin.chainId === transaction.chainId &&
-        compareAddress(coin.contractAddress, contractAddress)
-      ))
+      const foundCoin = coins.find(
+        coin => coin.chainId === transaction.chainId && compareAddress(coin.contractAddress, contractAddress)
+      )
       if (!foundCoin) {
         coins.push({
           chainId: transaction.chainId,
-          contractAddress,
+          contractAddress
         })
       }
     }
@@ -82,14 +63,14 @@ export const TransactionDetails = ({
     tokens: collectibles
   })
 
-  const {
-    data: conversionRate = 1,
-    isLoading: isLoadingConversionRate
-  } = useConversionRate({
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
-  const arePricesLoading = (coins.length > 0 && coinPricesIsLoading) || (collectibles.length > 0 && collectiblePricesIsLoading) || isLoadingConversionRate
+  const arePricesLoading =
+    (coins.length > 0 && coinPricesIsLoading) ||
+    (collectibles.length > 0 && collectiblePricesIsLoading) ||
+    isLoadingConversionRate
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
 
@@ -106,7 +87,8 @@ export const TransactionDetails = ({
   }
   const Transfer = ({ transfer }: TransferProps) => {
     const recipientAddress = transfer.to
-    const recipientAddressFormatted = recipientAddress.substring(0, 10) + '...' + recipientAddress.substring(transfer.to.length - 4, transfer.to.length )
+    const recipientAddressFormatted =
+      recipientAddress.substring(0, 10) + '...' + recipientAddress.substring(transfer.to.length - 4, transfer.to.length)
     const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', ethers.constants.AddressZero)
     const logoURI = isNativeToken ? nativeTokenInfo.logoURI : transfer?.contractInfo?.logoURI
     const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer?.contractInfo?.symbol || ''
@@ -121,16 +103,18 @@ export const TransactionDetails = ({
           const decimals = isCollectible ? collectibleDecimals : coinDecimals
           const formattedBalance = ethers.utils.formatUnits(amount, decimals)
           const balanceDisplayed = formatDisplay(formattedBalance)
-          const fiatPrice = isCollectible ?
-            collectiblePricesData?.find(collectible => (
-              compareAddress(collectible.token.contractAddress, transfer.contractInfo?.address || '') &&
-              collectible.token.tokenId === transfer.tokenIds?.[index] &&
-              collectible.token.chainId === transaction.chainId
-            ))?.price?.value :
-            coinPricesData?.find(coin => (
-              compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.constants.AddressZero) &&
-              coin.token.chainId === transaction.chainId
-            ))?.price?.value
+          const fiatPrice = isCollectible
+            ? collectiblePricesData?.find(
+                collectible =>
+                  compareAddress(collectible.token.contractAddress, transfer.contractInfo?.address || '') &&
+                  collectible.token.tokenId === transfer.tokenIds?.[index] &&
+                  collectible.token.chainId === transaction.chainId
+              )?.price?.value
+            : coinPricesData?.find(
+                coin =>
+                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.constants.AddressZero) &&
+                  coin.token.chainId === transaction.chainId
+              )?.price?.value
 
           const fiatValue = (parseFloat(formattedBalance) * (conversionRate * (fiatPrice || 0))).toFixed(2)
 
@@ -153,7 +137,7 @@ export const TransactionDetails = ({
                     {`${balanceDisplayed} ${symbol}`}
                   </Text>
                   {arePricesLoading ? (
-                    <Skeleton width="44px" height="12px"/>
+                    <Skeleton width="44px" height="12px" />
                   ) : (
                     <Text fontWeight="bold" fontSize="xsmall" color="text50">
                       {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
@@ -174,7 +158,9 @@ export const TransactionDetails = ({
                 style={{ flexBasis: '100%' }}
               >
                 <GradientAvatar address={recipientAddress} style={{ width: '20px' }} />
-                <Text fontWeight="bold" fontSize="xsmall" color="text100">{recipientAddressFormatted}</Text>
+                <Text fontWeight="bold" fontSize="xsmall" color="text100">
+                  {recipientAddressFormatted}
+                </Text>
               </Box>
             </Box>
           )
@@ -184,18 +170,14 @@ export const TransactionDetails = ({
   }
 
   return (
-    <Box
-      padding="5"
-      paddingTop="3"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap="10"
-      marginTop="5"
-    >
+    <Box padding="5" paddingTop="3" flexDirection="column" alignItems="center" justifyContent="center" gap="10" marginTop="5">
       <Box marginTop="6" flexDirection="column" justifyContent="center" alignItems="center" gap="1">
-        <Text fontSize="normal" fontWeight="medium">Transaction details</Text>
-        <Text marginBottom="1" fontSize="small" fontWeight="medium" color="text50">{date}</Text>
+        <Text fontSize="normal" fontWeight="medium">
+          Transaction details
+        </Text>
+        <Text marginBottom="1" fontSize="small" fontWeight="medium" color="text50">
+          {date}
+        </Text>
         <NetworkBadge chainId={transaction.chainId} />
       </Box>
       <Box
@@ -209,18 +191,13 @@ export const TransactionDetails = ({
         borderRadius="md"
       >
         <Box width="full" gap="1" flexDirection="row" alignItems="center" justifyContent="flex-start">
-          <Text fontSize="normal" fontWeight="medium" color="text50">Transfer</Text>
+          <Text fontSize="normal" fontWeight="medium" color="text50">
+            Transfer
+          </Text>
           <Image width="3" src={nativeTokenInfo.logoURI} alt="network logo" />
         </Box>
         {transaction.transfers?.map((transfer, index) => (
-          <Box
-            width="full"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            gap="4"
-            key={`transfer-${index}`}
-          >
+          <Box width="full" flexDirection="column" justifyContent="center" alignItems="center" gap="4" key={`transfer-${index}`}>
             <Transfer transfer={transfer} />
           </Box>
         ))}

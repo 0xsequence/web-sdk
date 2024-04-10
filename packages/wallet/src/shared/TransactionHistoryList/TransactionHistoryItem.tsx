@@ -3,40 +3,20 @@ import { TokenPrice } from '@0xsequence/api'
 import { ethers } from 'ethers'
 import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import {
-  ArrowRightIcon,
-  Box,
-  Text,
-  Image,
-  SendIcon,
-  ReceiveIcon,
-  TransactionIcon,
-  vars
-} from '@0xsequence/design-system'
+import { ArrowRightIcon, Box, Text, Image, SendIcon, ReceiveIcon, TransactionIcon, vars } from '@0xsequence/design-system'
 import dayjs from 'dayjs'
 import { useConfig } from 'wagmi'
 
 import * as sharedStyles from '../../shared/styles.css'
 import { Skeleton } from '../../shared/Skeleton'
-import {
-  useCoinPrices,
-  useSettings,
-  useNavigation,
-  useConversionRate
-} from '../../hooks'
-import {
-  formatDisplay,
-  compareAddress,
-} from '../../utils'
+import { useCoinPrices, useSettings, useNavigation, useConversionRate } from '../../hooks'
+import { formatDisplay, compareAddress } from '../../utils'
 
 interface TransactionHistoryItemProps {
   transaction: Transaction
 }
 
-
-export const TransactionHistoryItem = ({
-  transaction
-}: TransactionHistoryItemProps) => {
+export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemProps) => {
   const { chains } = useConfig()
   const { fiatCurrency } = useSettings()
   const { setNavigation } = useNavigation()
@@ -47,23 +27,20 @@ export const TransactionHistoryItem = ({
       params: {
         transaction
       }
-    });
+    })
   }
 
   let tokenContractAddresses: string[] = []
-    
-  transaction.transfers?.forEach((transfer) => {
+
+  transaction.transfers?.forEach(transfer => {
     const tokenContractAddress = transfer.contractAddress
     if (!tokenContractAddresses.includes(tokenContractAddress)) {
       tokenContractAddresses.push(tokenContractAddress)
     }
   })
 
-  const {
-    data: coinPrices = [],
-    isLoading: isLoadingCoinPrices
-  } = useCoinPrices({
-    tokens: tokenContractAddresses.map((contractAddress) => ({
+  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useCoinPrices({
+    tokens: tokenContractAddresses.map(contractAddress => ({
       contractAddress,
       chainId: transaction.chainId
     }))
@@ -72,7 +49,7 @@ export const TransactionHistoryItem = ({
   const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
-  
+
   const isLoading = isLoadingCoinPrices || isLoadingConversionRate
 
   const { transfers } = transaction
@@ -80,7 +57,7 @@ export const TransactionHistoryItem = ({
   const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
 
   const getTransactionIconByType = (transferType: TxnTransferType) => {
-    switch(transferType) {
+    switch (transferType) {
       case TxnTransferType.SEND:
         return (
           <ArrowRightIcon
@@ -106,7 +83,7 @@ export const TransactionHistoryItem = ({
   }
 
   const getTansactionLabelByType = (transferType: TxnTransferType) => {
-    switch(transferType) {
+    switch (transferType) {
       case TxnTransferType.SEND:
         return 'Sent'
       case TxnTransferType.RECEIVE:
@@ -116,7 +93,6 @@ export const TransactionHistoryItem = ({
         return 'Transacted'
     }
   }
-  
 
   const getTransferAmountLabel = (amount: string, symbol: string, transferType: TxnTransferType) => {
     let sign = ''
@@ -129,13 +105,11 @@ export const TransactionHistoryItem = ({
     let textColor = 'text50'
     if (transferType === TxnTransferType.SEND) {
       textColor = vars.colors.negative
-    } else if  (transferType === TxnTransferType.RECEIVE) {
+    } else if (transferType === TxnTransferType.RECEIVE) {
       textColor = vars.colors.positive
     }
 
-    return (
-      <Text fontWeight="bold" fontSize="normal" style={{ color: textColor }}>{`${sign}${amount} ${symbol}`}</Text>
-    )
+    return <Text fontWeight="bold" fontSize="normal" style={{ color: textColor }}>{`${sign}${amount} ${symbol}`}</Text>
   }
 
   interface GetTransfer {
@@ -143,10 +117,7 @@ export const TransactionHistoryItem = ({
     isFirstItem: boolean
   }
 
-  const getTransfer = ({
-    transfer,
-    isFirstItem
-  }: GetTransfer)  => {
+  const getTransfer = ({ transfer, isFirstItem }: GetTransfer) => {
     const { amounts } = transfer
     const date = dayjs(transaction.timestamp).format('MMM DD, YYYY')
     return (
@@ -154,15 +125,18 @@ export const TransactionHistoryItem = ({
         <Box flexDirection="row" justifyContent="space-between">
           <Box color="text50" gap="1" flexDirection="row" justifyContent="center" alignItems="center">
             {getTransactionIconByType(transfer.transferType)}
-            <Text fontWeight="medium" fontSize="normal" color="text100">{getTansactionLabelByType(transfer.transferType)}</Text>
+            <Text fontWeight="medium" fontSize="normal" color="text100">
+              {getTansactionLabelByType(transfer.transferType)}
+            </Text>
             <Image src={nativeTokenInfo.logoURI} width="3" />
           </Box>
           {isFirstItem && (
             <Box>
-              <Text fontWeight="medium" fontSize="normal" color="text50">{date}</Text>
+              <Text fontWeight="medium" fontSize="normal" color="text50">
+                {date}
+              </Text>
             </Box>
           )}
-
         </Box>
         {amounts.map((amount, index) => {
           const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
@@ -179,19 +153,17 @@ export const TransactionHistoryItem = ({
           const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer.contractInfo?.symbol || ''
           const tokenLogoUri = isNativeToken ? nativeTokenInfo.logoURI : transfer.contractInfo?.logoURI
 
-          const fiatConversionRate = coinPrices.find((coinPrice: TokenPrice) => compareAddress(coinPrice.token.contractAddress, transfer.contractAddress))?.price?.value
+          const fiatConversionRate = coinPrices.find((coinPrice: TokenPrice) =>
+            compareAddress(coinPrice.token.contractAddress, transfer.contractAddress)
+          )?.price?.value
 
           return (
             <Box key={index} flexDirection="row" justifyContent="space-between">
               <Box flexDirection="row" gap="2" justifyContent="center" alignItems="center">
-                {tokenLogoUri && (
-                  <Image src={tokenLogoUri} width="5" alt="token logo" />
-                )}
+                {tokenLogoUri && <Image src={tokenLogoUri} width="5" alt="token logo" />}
                 {getTransferAmountLabel(formatDisplay(amountValue), symbol, transfer.transferType)}
               </Box>
-              {isLoading && (
-                <Skeleton width="35px" height="20px" />
-              )}
+              {isLoading && <Skeleton width="35px" height="20px" />}
               {fiatConversionRate && (
                 <Text fontWeight="medium" fontSize="normal" color="text50">
                   {`${fiatCurrency.sign}${(Number(amountValue) * fiatConversionRate * conversionRate).toFixed(2)}`}
@@ -218,7 +190,7 @@ export const TransactionHistoryItem = ({
     >
       {transfers?.map((transfer, position) => {
         return (
-          <Box  key={`${transaction.txnHash}-${position}`} width="full">
+          <Box key={`${transaction.txnHash}-${position}`} width="full">
             {getTransfer({
               transfer,
               isFirstItem: position === 0

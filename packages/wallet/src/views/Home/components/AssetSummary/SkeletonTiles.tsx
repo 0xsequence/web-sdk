@@ -11,15 +11,13 @@ export const SkeletonTiles = () => {
         gap: vars.space[2]
       }}
     >
-      {Array(12).fill(null).map((_, i) => (
-        (
-          <Box
-            key={i}
-          >
-            <Skeleton height="100%" width="100%" aspectRatio='1/1' />
+      {Array(12)
+        .fill(null)
+        .map((_, i) => (
+          <Box key={i}>
+            <Skeleton height="100%" width="100%" aspectRatio="1/1" />
           </Box>
-        )
-      ))}
+        ))}
     </Box>
   )
 }

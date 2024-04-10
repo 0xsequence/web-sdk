@@ -7,12 +7,7 @@ import { useSettings } from '../../hooks'
 
 export const SettingsGeneral = () => {
   const { theme, setTheme } = useTheme()
-  const {
-    hideUnlistedTokens,
-    setHideUnlistedTokens,
-    hideCollectibles,
-    setHideCollectibles,
-  } = useSettings()
+  const { hideUnlistedTokens, setHideUnlistedTokens, hideCollectibles, setHideCollectibles } = useSettings()
 
   const onChangeTheme = () => {
     setTheme && setTheme(theme === 'light' ? 'dark' : 'light')
@@ -42,31 +37,17 @@ export const SettingsGeneral = () => {
             onCheckedChange={onChangeTheme}
           />
         </Card> */}
-        <Card
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Card flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text color="text100" fontWeight="bold">
             Hide unlisted tokens
           </Text>
-          <Switch
-            checked={hideUnlistedTokens}
-            onCheckedChange={onChangeHideUnlistedTokens}
-          />
+          <Switch checked={hideUnlistedTokens} onCheckedChange={onChangeHideUnlistedTokens} />
         </Card>
-        <Card
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Card flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text color="text100" fontWeight="bold">
             Hide collectibles
           </Text>
-          <Switch
-            checked={hideCollectibles}
-            onCheckedChange={onChangeHideCollectibles}
-          />
+          <Switch checked={hideCollectibles} onCheckedChange={onChangeHideCollectibles} />
         </Card>
       </Box>
     </Box>

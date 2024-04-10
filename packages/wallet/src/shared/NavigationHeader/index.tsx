@@ -9,10 +9,7 @@ interface NavigationHeaderProps {
   secondaryText?: string
 }
 
-export const NavigationHeader = ({
-  secondaryText,
-  primaryText,
-}: NavigationHeaderProps) => {
+export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
 
   const onClickBack = () => {
@@ -39,12 +36,14 @@ export const NavigationHeader = ({
           onClick={onClickBack}
           icon={ChevronLeftIcon}
           size="sm"
-          style={{ 
+          style={{
             background: 'rgba(0,0,0,0)',
-            width: '44px',
+            width: '44px'
           }}
         />
-      ) : <Box/>}
+      ) : (
+        <Box />
+      )}
       <Box>
         <Text fontWeight="medium" variant="small" color="text50">
           {secondaryText}
@@ -53,9 +52,11 @@ export const NavigationHeader = ({
           {primaryText}
         </Text>
       </Box>
-      <Box style={{
-        width: '44px'
-      }} />
-    </Box>    
+      <Box
+        style={{
+          width: '44px'
+        }}
+      />
+    </Box>
   )
 }

@@ -7,7 +7,7 @@ import { InjectedLogo } from './InjectedLogo'
 declare global {
   interface Window {
     /* @ts-ignore-next-line */
-    ethereum?: ethers.providers.ExternalProvider;
+    ethereum?: ethers.providers.ExternalProvider
   }
 }
 
@@ -16,31 +16,31 @@ export interface MoreExternalProviders {
 }
 
 export interface InjectedWalletInformation {
-  name: string;
-  logoDark: React.FunctionComponent;
-  logoLight: React.FunctionComponent;
+  name: string
+  logoDark: React.FunctionComponent
+  logoLight: React.FunctionComponent
 }
 
 const getInjectedWalletInformation = (): InjectedWalletInformation => {
-    return {
-      name: 'Injected Wallet',
-      logoDark: InjectedLogo,
-      logoLight: InjectedLogo,
-    }
+  return {
+    name: 'Injected Wallet',
+    logoDark: InjectedLogo,
+    logoLight: InjectedLogo
+  }
 }
 
 export const injected = () => {
   const { name, logoDark, logoLight } = getInjectedWalletInformation()
 
-  return ({
+  return {
     id: 'injected',
     logoDark,
     logoLight,
     // iconBackground: '#fff',
     name,
     createConnector: () => {
-      const connector = injectedBase();
+      const connector = injectedBase()
       return connector
     }
-  })
+  }
 }

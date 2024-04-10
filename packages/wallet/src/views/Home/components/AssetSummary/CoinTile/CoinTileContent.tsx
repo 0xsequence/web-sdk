@@ -11,7 +11,7 @@ interface CoinTileContentProps {
   tokenName: string
   balance: string
   balanceFiat: string
-  priceChangePercentage: number,
+  priceChangePercentage: number
   symbol: string
 }
 
@@ -22,10 +22,10 @@ export const CoinTileContent = ({
   balance,
   balanceFiat,
   priceChangePercentage,
-  symbol,
+  symbol
 }: CoinTileContentProps) => {
   const { fiatCurrency } = useSettings()
-  const priceChangeSymbol =  priceChangePercentage > 0 ? '+' : ''
+  const priceChangeSymbol = priceChangePercentage > 0 ? '+' : ''
 
   return (
     <Box
@@ -66,9 +66,7 @@ export const CoinTileContent = ({
         <Box>
           <Text fontWeight="bold" color="text100">{`${fiatCurrency.sign}${balanceFiat}`}</Text>
         </Box>
-        <Text
-          style={{ color: getPercentageColor(priceChangePercentage) }}
-        >
+        <Text style={{ color: getPercentageColor(priceChangePercentage) }}>
           {`${priceChangeSymbol}${priceChangePercentage.toFixed(2)}%`}
         </Text>
       </Box>

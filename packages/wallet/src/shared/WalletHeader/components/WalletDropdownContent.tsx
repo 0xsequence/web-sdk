@@ -25,12 +25,7 @@ interface WalletDropdownContentProps {
   setOpenWalletDropdown: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const WalletDropdownContent = forwardRef((
-  {
-    setOpenWalletDropdown
-  }: WalletDropdownContentProps,
-  ref: any
-) => {
+export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: WalletDropdownContentProps, ref: any) => {
   const { setNavigation } = useNavigation()
   const { setOpenWalletModal } = useOpenWalletModal()
   const { address } = useAccount()
@@ -64,7 +59,7 @@ export const WalletDropdownContent = forwardRef((
   }
 
   const getDropdownBackgroundColor = () => {
-    switch(theme) {
+    switch (theme) {
       case 'dark':
         return 'rgba(38, 38, 38, 0.85)'
       case 'light':
@@ -87,36 +82,18 @@ export const WalletDropdownContent = forwardRef((
         backdropFilter: 'blur(12.5px)',
         top: '16px',
         left: '15px',
-        background: getDropdownBackgroundColor() 
+        background: getDropdownBackgroundColor()
       }}
-
     >
       <Box flexDirection="row" justifyContent="space-between" alignItems="flex-start">
-        <Box
-          flexDirection="row"
-          justifyContent="center"
-          alignItems="center"
-          gap="3"
-          marginLeft="2"
-          color="text100"
-        >
+        <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3" marginLeft="2" color="text100">
           <GradientAvatar style={{ width: '28px' }} size="md" address={address || ''} />
-          <Text
-            fontSize="large"
-            style={{ fontWeight: '700' }}
-            color="text100"
-          >
+          <Text fontSize="large" style={{ fontWeight: '700' }} color="text100">
             {formatAddress(address || '')}
           </Text>
-          <CopyButton
-            buttonVariant="icon"
-            size="md"
-            text={address || ''}
-            color="text100"
-            style={{ marginLeft: '-16px' }}
-          />
+          <CopyButton buttonVariant="icon" size="md" text={address || ''} color="text100" style={{ marginLeft: '-16px' }} />
         </Box>
-        <IconButton onClick={() => setOpenWalletDropdown(false)} size="xs" background="buttonGlass" icon={CloseIcon}/>
+        <IconButton onClick={() => setOpenWalletDropdown(false)} size="xs" background="buttonGlass" icon={CloseIcon} />
       </Box>
       <Box gap="2" marginTop="3" flexDirection="column">
         <Button

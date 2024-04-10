@@ -126,7 +126,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
         return
       }
     }
-    
+
     connect({ connector })
   }
 
