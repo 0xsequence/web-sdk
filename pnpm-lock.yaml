@@ -144,17 +144,17 @@ importers:
         specifier: ^1.1.0
         version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
-        specifier: ^2.0.0
-        version: 2.0.7(0xsequence@1.9.11)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
+        specifier: workspace:*
+        version: link:../../packages/kit
       '@0xsequence/kit-checkout':
-        specifier: ^2.0.0
-        version: 2.0.7(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
+        specifier: workspace:*
+        version: link:../../packages/checkout
       '@0xsequence/kit-connectors':
-        specifier: ^2.0.0
-        version: 2.0.7(0xsequence@1.9.11)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
+        specifier: workspace:*
+        version: link:../../packages/connectors
       '@0xsequence/kit-wallet':
-        specifier: ^2.0.0
-        version: 2.0.7(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
+        specifier: workspace:*
+        version: link:../../packages/wallet
       '@tanstack/react-query':
         specifier: ^4.36.1
         version: 4.36.1(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)

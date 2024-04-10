@@ -11,7 +11,7 @@ export interface SequenceWaasConnectConfig {
   googleClientId?: string
   appleClientId?: string
   appleRedirectURI?: string
-  enableConfirmationModal: boolean
+  enableConfirmationModal?: boolean
   loginType: 'email' | 'google' | 'apple'
 }
 
@@ -33,7 +33,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     localStorage.setItem(LocalStorageKey.WaasAppleRedirectURI, params.appleRedirectURI)
   }
 
-  const showConfirmationModal = params.enableConfirmationModal
+  const showConfirmationModal = params.enableConfirmationModal ?? false
 
   const initialChain = params.network ?? 137
   const initialChainName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name

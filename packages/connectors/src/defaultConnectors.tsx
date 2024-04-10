@@ -85,7 +85,7 @@ interface GetDefaultWaasConnectors {
   appName: string
   defaultChainId?: number
 
-  enableConfirmationModal: boolean
+  enableConfirmationModal?: boolean
 }
 
 export const getDefaultWaasConnectors = ({
