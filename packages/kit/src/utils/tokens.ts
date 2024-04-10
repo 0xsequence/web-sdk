@@ -1,10 +1,10 @@
 import { Chain } from 'wagmi/chains'
 
 export interface NativeTokenInfo {
-  name: string,
-  symbol: string,
-  logoURI: string,
-  decimals: number,
+  name: string
+  symbol: string
+  logoURI: string
+  decimals: number
   blockExplorerUrl: string
   blockExplorerName: string
 }
@@ -28,7 +28,7 @@ export const nativeTokenInfos: TokenInfos = {
     decimals: 18,
     logoURI: 'https://assets.coingecko.com/coins/images/279/thumb/ethereum.png',
     blockExplorerName: 'Etherscan (Goerli)',
-    blockExplorerUrl: 'https://goerli.etherscan.io',
+    blockExplorerUrl: 'https://goerli.etherscan.io'
   },
   10: {
     name: 'Optimism',
@@ -36,7 +36,7 @@ export const nativeTokenInfos: TokenInfos = {
     logoURI: 'https://assets.coingecko.com/coins/images/25244/small/Optimism.png',
     decimals: 18,
     blockExplorerName: 'Etherscan (Optimism)',
-    blockExplorerUrl: 'https://optimistic.etherscan.io',
+    blockExplorerUrl: 'https://optimistic.etherscan.io'
   },
   56: {
     name: 'BNB',
@@ -52,7 +52,7 @@ export const nativeTokenInfos: TokenInfos = {
     logoURI: 'https://assets.coingecko.com/coins/images/662/small/logo_square_simple_300px.png',
     decimals: 18,
     blockExplorerUrl: 'https://gnosisscan.io',
-    blockExplorerName: 'Gnosis Scan',
+    blockExplorerName: 'Gnosis Scan'
   },
   137: {
     name: 'Polygon',
@@ -68,16 +68,15 @@ export const nativeTokenInfos: TokenInfos = {
     logoURI: 'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png',
     decimals: 18,
     blockExplorerName: 'PolygonScan',
-    blockExplorerUrl: 'https://zkevm.polygonscan.com',
+    blockExplorerUrl: 'https://zkevm.polygonscan.com'
   },
   42161: {
     name: 'Arbitrum',
     symbol: 'ARB',
-    logoURI:'https://assets.coingecko.com/asset_platforms/images/33/small/arbitrum-one.png',
+    logoURI: 'https://assets.coingecko.com/asset_platforms/images/33/small/arbitrum-one.png',
     decimals: 18,
     blockExplorerName: 'Arbiscan',
-    blockExplorerUrl: 'https://arbiscan.io',
-
+    blockExplorerUrl: 'https://arbiscan.io'
   },
   43114: {
     name: 'Avalanche',
@@ -93,16 +92,15 @@ export const nativeTokenInfos: TokenInfos = {
     logoURI: 'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png',
     decimals: 18,
     blockExplorerName: 'Polyscan (Mumbai)',
-    blockExplorerUrl: 'https://mumbai.polygonscan.com',
-  },
+    blockExplorerUrl: 'https://mumbai.polygonscan.com'
+  }
 }
 
 export const getChainIdList = () => {
   return Object.keys(nativeTokenInfos).map(chainId => parseInt(chainId))
 }
 
-
-export const defaultNativeTokenInfo = (chainId: number, wagmiChains: readonly [Chain, ...Chain[]] ) => {
+export const defaultNativeTokenInfo = (chainId: number, wagmiChains: readonly [Chain, ...Chain[]]) => {
   const foundChain = wagmiChains.find(chain => chain.id === chainId)
 
   if (foundChain) {

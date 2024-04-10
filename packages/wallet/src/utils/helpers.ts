@@ -6,10 +6,7 @@ export const truncateAtMiddle = (text: string, truncateAt: number) => {
   let finalText = text
 
   if (text.length >= truncateAt) {
-    finalText =
-      text.slice(0, truncateAt / 2) +
-      '...' +
-      text.slice(text.length - truncateAt / 2, text.length)
+    finalText = text.slice(0, truncateAt / 2) + '...' + text.slice(text.length - truncateAt / 2, text.length)
   }
 
   return finalText
@@ -51,10 +48,7 @@ export const formatDisplay = (_val: number | string): string => {
   }
 
   let notation: Intl.NumberFormatOptions['notation'] = undefined
-  let config: Pick<
-    Intl.NumberFormatOptions,
-    'maximumFractionDigits' | 'maximumSignificantDigits'
-  >
+  let config: Pick<Intl.NumberFormatOptions, 'maximumFractionDigits' | 'maximumSignificantDigits'>
 
   switch (valMode) {
     case ValueType.VERY_LARGE:

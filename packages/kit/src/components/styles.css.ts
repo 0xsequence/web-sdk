@@ -18,24 +18,23 @@ export const clickable = style({
   }
 })
 
-export const walletLogoContainer = style({}) 
+export const walletLogoContainer = style({})
 
-globalStyle (`${walletLogoContainer} svg`, {
+globalStyle(`${walletLogoContainer} svg`, {
   height: '40px'
 })
 
-export const walletLogoContainerExtended = style({}) 
+export const walletLogoContainerExtended = style({})
 
-globalStyle (`${walletLogoContainerExtended} svg`, {
+globalStyle(`${walletLogoContainerExtended} svg`, {
   width: '30px'
 })
 
-export const walletContent = style({
-})
+export const walletContent = style({})
 
 // Will affect the close button in the modal
 globalStyle(`${walletContent} + button`, {
-  backgroundColor: 'transparent',
+  backgroundColor: 'transparent'
 })
 
 globalStyle(`${walletContent} + button > svg`, {

@@ -7,7 +7,7 @@ import { LocalStorageKey } from '../constants'
 
 export const getNetworkConfigAndClients = (chainID: number | string) => {
   const network = networks[chainID as ChainId]
-  
+
   if (!network) {
     throw 'invalid network'
   }

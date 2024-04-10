@@ -1,5 +1,13 @@
-export type ModalPosition = 'center' | 'middle-right' | 'middle-left' | 'top-center' | 'top-right' | 'top-left' | 'bottom-center' | 'bottom-right' | 'bottom-left'
-
+export type ModalPosition =
+  | 'center'
+  | 'middle-right'
+  | 'middle-left'
+  | 'top-center'
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-center'
+  | 'bottom-right'
+  | 'bottom-left'
 
 export interface modalPositionCss {
   top?: string
@@ -9,7 +17,7 @@ export interface modalPositionCss {
 }
 
 export const getModalPositionCss = (position: ModalPosition) => {
-  switch(position) {
+  switch (position) {
     case 'top-right':
       return {
         top: '0px',
@@ -22,7 +30,7 @@ export const getModalPositionCss = (position: ModalPosition) => {
       }
     case 'top-center':
       return {
-        top: '0px',
+        top: '0px'
       }
     case 'bottom-right':
       return {
@@ -36,19 +44,18 @@ export const getModalPositionCss = (position: ModalPosition) => {
       }
     case 'bottom-center':
       return {
-        bottom: '0px',
+        bottom: '0px'
       }
     case 'middle-right':
       return {
-        right: '0px',
+        right: '0px'
       }
     case 'middle-left':
       return {
-        left: '0px',
+        left: '0px'
       }
     case 'center':
     default:
       return {}
   }
-
 }

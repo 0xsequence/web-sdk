@@ -8,19 +8,19 @@ import { vars } from '@0xsequence/design-system'
 import { compareAddress } from './helpers'
 
 export const getPercentageColor = (value: number) => {
-  if(value > 0) {
+  if (value > 0) {
     return vars.colors.positive
   } else if (value < 0) {
     return vars.colors.negative
- } else {
-  return vars.colors.text50
- }
+  } else {
+    return vars.colors.text50
+  }
 }
 
 export const getPercentagePriceChange = (balance: TokenBalance, prices: TokenPrice[]) => {
   const priceForToken = prices.find(p => compareAddress(p.token.contractAddress, balance.contractAddress))
   if (!priceForToken) {
-    return 0;
+    return 0
   }
 
   const price24HourChange = priceForToken?.price24hChange?.value || 0
@@ -28,23 +28,18 @@ export const getPercentagePriceChange = (balance: TokenBalance, prices: TokenPri
 }
 
 interface ComputeBalanceFiat {
-  balance: TokenBalance,
-  prices: TokenPrice[],
-  decimals: number,
+  balance: TokenBalance
+  prices: TokenPrice[]
+  decimals: number
   conversionRate: number
 }
 
-export const computeBalanceFiat = ({
-  balance,
-  prices,
-  decimals,
-  conversionRate
-}: ComputeBalanceFiat): string => {
+export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }: ComputeBalanceFiat): string => {
   let totalUsd = 0
 
   const priceForToken = prices.find(p => compareAddress(p.token.contractAddress, balance.contractAddress))
   if (!priceForToken) {
-    return '0.00';
+    return '0.00'
   }
   const priceFiat = priceForToken.price?.value || 0
   const valueFormatted = ethers.utils.formatUnits(balance.balance, decimals)
@@ -56,10 +51,9 @@ export const computeBalanceFiat = ({
   return `${fiatValue.toFixed(2)}`
 }
 
-
 interface SortBalancesByTypeReturn {
-  nativeTokens: TokenBalance[],
-  erc20Tokens: TokenBalance[],
+  nativeTokens: TokenBalance[]
+  erc20Tokens: TokenBalance[]
   collectibles: TokenBalance[]
 }
 
@@ -67,8 +61,8 @@ export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByType
   const nativeTokens: TokenBalance[] = []
   const erc20Tokens: TokenBalance[] = []
   const collectibles: TokenBalance[] = []
-  
-  balances.forEach((balance) => {
+
+  balances.forEach(balance => {
     // Note: contractType for the native token should be "UNKNOWN"
     if (balance.contractAddress === ethers.constants.AddressZero) {
       nativeTokens.push(balance)
