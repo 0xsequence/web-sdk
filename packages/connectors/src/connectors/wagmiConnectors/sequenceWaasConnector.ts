@@ -1,4 +1,4 @@
-import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, defaults } from '@0xsequence/waas'
+import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig } from '@0xsequence/waas'
 import { LocalStorageKey } from '@0xsequence/kit'
 import { TransactionRejectedRpcError, UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
@@ -38,27 +38,23 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   const initialChain = params.network ?? 137
   const initialChainName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
 
-  // TODO: update to use prod nodes
   const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-    `https://next-nodes.sequence.app/${initialChainName ?? 'polygon'}/${params.projectAccessKey}`
+    `https://nodes.sequence.app/${initialChainName ?? 'polygon'}/${params.projectAccessKey}`
   )
 
-  const sequenceWaas = new SequenceWaaS(
-    {
-      network: initialChain,
-      projectAccessKey: params.projectAccessKey,
-      waasConfigKey: params.waasConfigKey
-    },
-    defaults.TEST
-  )
+  const sequenceWaas = new SequenceWaaS({
+    network: initialChain,
+    projectAccessKey: params.projectAccessKey,
+    waasConfigKey: params.waasConfigKey
+  })
 
   const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain, showConfirmationModal)
 
   const updateNetwork = async (chainId: number) => {
     const networkName = sequence.network.allNetworks.find(n => n.chainId === chainId || n.name === initialChain)?.name
-    // TODO: update to use prod nodes
+
     const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-      `https://next-nodes.sequence.app/${networkName}/${params.projectAccessKey}`
+      `https://nodes.sequence.app/${networkName}/${params.projectAccessKey}`
     )
     sequenceWaasProvider.updateJsonRpcProvider(jsonRpcProvider)
     sequenceWaasProvider.updateNetwork(ethers.providers.getNetwork(chainId))

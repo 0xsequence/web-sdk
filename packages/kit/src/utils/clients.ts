@@ -12,9 +12,7 @@ export const getNetworkConfigAndClients = (chainID: number | string) => {
     throw 'invalid network'
   }
 
-  //const projectAccessKey = localStorage.getItem(LocalStorageKey.ProjectAccessKey) || undefined
-  // TODO: revert to above
-  const projectAccessKey = 'AQAAAAAAAAbvbTfnDHU8MsbE6FDcaPNFt18'
+  const projectAccessKey = localStorage.getItem(LocalStorageKey.ProjectAccessKey) || undefined
 
   const metadataClient = new SequenceMetadata('https://metadata.sequence.app', projectAccessKey)
   const indexerClient = new SequenceIndexer(indexerURL(network.name), projectAccessKey)
