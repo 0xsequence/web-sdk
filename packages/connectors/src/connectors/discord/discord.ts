@@ -2,10 +2,9 @@ import { CreateConnectorFn } from 'wagmi'
 
 import { getDiscordLogo } from './DiscordLogo'
 
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors';
+import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
-export interface DiscordOptions extends BaseSequenceConnectorOptions {
-}
+export interface DiscordOptions extends BaseSequenceConnectorOptions {}
 
 export const discord = (options: DiscordOptions) => ({
   id: 'discord',
@@ -26,7 +25,7 @@ export const discord = (options: DiscordOptions) => ({
           signInWith: 'discord'
         }
       }
-    });
+    })
     return connector
   }) as () => CreateConnectorFn
 })

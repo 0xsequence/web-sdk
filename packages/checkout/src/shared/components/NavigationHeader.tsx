@@ -9,11 +9,7 @@ interface NavigationHeaderProps {
   disableBack?: boolean
 }
 
-export const NavigationHeader = ({
-  secondaryText,
-  primaryText,
-  disableBack = false
-}: NavigationHeaderProps) => {
+export const NavigationHeader = ({ secondaryText, primaryText, disableBack = false }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
 
   const onClickBack = () => {
@@ -35,17 +31,19 @@ export const NavigationHeader = ({
         backgroundColor: vars.colors.backgroundPrimary
       }}
     >
-      {(history.length > 0 && !disableBack) ? (
+      {history.length > 0 && !disableBack ? (
         <IconButton
           onClick={onClickBack}
           icon={ChevronLeftIcon}
           size="sm"
-          style={{ 
+          style={{
             background: 'rgba(0,0,0,0)',
-            width: '44px',
+            width: '44px'
           }}
         />
-      ) : <Box/>}
+      ) : (
+        <Box />
+      )}
       <Box>
         <Text fontWeight="medium" variant="small" color="text50">
           {secondaryText}
@@ -54,9 +52,11 @@ export const NavigationHeader = ({
           {primaryText}
         </Text>
       </Box>
-      <Box style={{
-        width: '44px'
-      }} />
-    </Box>    
+      <Box
+        style={{
+          width: '44px'
+        }}
+      />
+    </Box>
   )
 }

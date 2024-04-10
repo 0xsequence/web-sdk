@@ -1,23 +1,13 @@
 import { ethers } from 'ethers'
 import React, { useState, useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import {
-  Box,
-  Modal,
-  ThemeProvider,
-  Scroll,
-} from '@0xsequence/design-system'
+import { Box, Modal, ThemeProvider, Scroll } from '@0xsequence/design-system'
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { AnimatePresence } from 'framer-motion'
 
 import { getHeader, getContent } from './utils'
 
-import {
-  History,
-  Navigation,
-  NavigationContextProvider,
-  WalletModalContextProvider,
-} from '../../contexts'
+import { History, Navigation, NavigationContextProvider, WalletModalContextProvider } from '../../contexts'
 
 import { HEADER_HEIGHT } from '../../constants'
 import * as styles from '../styles.css'
@@ -25,11 +15,11 @@ import * as styles from '../styles.css'
 import '@0xsequence/design-system/styles.css'
 
 export type KitWalletProviderProps = {
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 const DEFAULT_LOCATION: Navigation = {
-  location: 'home',
+  location: 'home'
 }
 
 // const DEFAULT_LOCATION: Navigation = {
@@ -61,23 +51,22 @@ const DEFAULT_LOCATION: Navigation = {
 //   }
 // }
 
-
 export const KitWalletProvider = (props: KitWalletProviderProps) => {
   const queryClient = new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <KitWalletContent  {...props} />
+      <KitWalletContent {...props} />
     </QueryClientProvider>
   )
 }
 
 export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
   const { theme, position } = useTheme()
-  
+
   // Wallet Modal Context
   const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
- 
+
   // Navigation Context
   const [history, setHistory] = useState<History>([])
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
@@ -91,7 +80,6 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
     navigation.location === 'settings-currency'
-
 
   useEffect(() => {
     if (openWalletModal) {
@@ -112,7 +100,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
                       maxWidth: '400px',
                       height: 'fit-content',
                       ...getModalPositionCss(position)
-                    },
+                    }
                   }}
                   scroll={false}
                   backdropColor="backgroundBackdrop"
@@ -120,7 +108,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
                 >
                   <Box className={styles.walletContent} id="sequence-kit-wallet-content">
                     {getHeader(navigation)}
-                  
+
                     {displayScrollbar ? (
                       <Scroll className={styles.scrollbar} style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 80vh)' }}>
                         {getContent(navigation)}
@@ -128,14 +116,13 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
                     ) : (
                       getContent(navigation)
                     )}
-
                   </Box>
                 </Modal>
               )}
             </AnimatePresence>
           </ThemeProvider>
         </div>
-          {children}
+        {children}
       </NavigationContextProvider>
     </WalletModalContextProvider>
   )

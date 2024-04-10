@@ -9,9 +9,7 @@ interface CollectionDetailsSkeletonProps {
   chainId: number
 }
 
-export const CollectionDetailsSkeleton = ({
-  chainId
-}: CollectionDetailsSkeletonProps) => {
+export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeletonProps) => {
   return (
     <Box
       paddingLeft="5"
@@ -22,14 +20,9 @@ export const CollectionDetailsSkeleton = ({
       alignItems="center"
       justifyContent="center"
       gap="10"
-      style={{ paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`}}
+      style={{ paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})` }}
     >
-      <Box
-        flexDirection="column"
-        gap="2"
-        justifyContent="center"
-        alignItems="center"
-      >
+      <Box flexDirection="column" gap="2" justifyContent="center" alignItems="center">
         <Skeleton width="32px" height="32px" />
         <Skeleton width="100px" height="24px" />
         <NetworkBadge chainId={chainId} />
@@ -46,9 +39,11 @@ export const CollectionDetailsSkeleton = ({
           width="full"
           marginTop="3"
         >
-          {Array(8).fill(null).map((_, i) => (
-            <Skeleton width="full" aspectRatio="1/1" />
-          ))}
+          {Array(8)
+            .fill(null)
+            .map((_, i) => (
+              <Skeleton width="full" aspectRatio="1/1" />
+            ))}
         </Box>
       </Box>
     </Box>

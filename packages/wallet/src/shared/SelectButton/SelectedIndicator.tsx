@@ -13,7 +13,7 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
   return (
     <Box
       borderStyle="solid"
-      borderColor={squareIndicator && selected ? "transparent" : "borderNormal"}
+      borderColor={squareIndicator && selected ? 'transparent' : 'borderNormal'}
       borderWidth="thin"
       position="relative"
       alignItems="center"
@@ -21,23 +21,23 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
       flexShrink="0"
       className={className}
       style={{
-        borderRadius: squareIndicator ? "4px" : vars.radii.circle,
+        borderRadius: squareIndicator ? '4px' : vars.radii.circle,
         width: '20px',
         height: '20px'
       }}
     >
       <Box
         as={motion.div}
-        background={squareIndicator ? "borderNormal" : "backgroundInverse"}
+        background={squareIndicator ? 'borderNormal' : 'backgroundInverse'}
         position="absolute"
         color="textInverse100"
         initial={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.5 }}
         animate={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.5 }}
         transition={{ ease: 'backOut' }}
         style={{
-          borderRadius: squareIndicator ? "4px" : vars.radii.circle,
-          width: squareIndicator ? "20px" : '14px',
-          height: squareIndicator ? "20px" : '14px'
+          borderRadius: squareIndicator ? '4px' : vars.radii.circle,
+          width: squareIndicator ? '20px' : '14px',
+          height: squareIndicator ? '20px' : '14px'
         }}
         justifyContent="center"
         alignItems="center"

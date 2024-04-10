@@ -10,31 +10,16 @@ import { CoinDetailsSkeleton } from './Skeleton'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
-import {
-  useCoinBalance,
-  useConversionRate,
-  useSettings,
-  useCoinPrices,
-  useTransactionHistory,
-  useNavigation
-} from '../../hooks'
+import { useCoinBalance, useConversionRate, useSettings, useCoinPrices, useTransactionHistory, useNavigation } from '../../hooks'
 import { HEADER_HEIGHT, SCROLLBAR_WIDTH } from '../../constants'
-import {
-  compareAddress,
-  computeBalanceFiat,
-  formatDisplay,
-  flattenPaginatedTransactionHistory
-} from '../../utils'
+import { compareAddress, computeBalanceFiat, formatDisplay, flattenPaginatedTransactionHistory } from '../../utils'
 
 export interface CoinDetailsProps {
   contractAddress: string
   chainId: number
 }
 
-export const CoinDetails = ({
-  contractAddress,
-  chainId
-}: CoinDetailsProps) => {
+export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
   const { fiatCurrency, hideUnlistedTokens } = useSettings()
@@ -46,40 +31,41 @@ export const CoinDetails = ({
     isLoading: isLoadingTransactionHistory,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
+    isFetchingNextPage
   } = useTransactionHistory({
     chainId,
     accountAddress: accountAddress || '',
-    contractAddress,
+    contractAddress
   })
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCoinBalance , isLoading: isLoadingCoinBalance } = useCoinBalance({
-    accountAddress: accountAddress || '',
-    contractAddress,
-    chainId
-  }, { hideUnlistedTokens })
+  const { data: dataCoinBalance, isLoading: isLoadingCoinBalance } = useCoinBalance(
+    {
+      accountAddress: accountAddress || '',
+      contractAddress,
+      chainId
+    },
+    { hideUnlistedTokens }
+  )
 
   const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useCoinPrices({
-    tokens: [{
-      chainId,
-      contractAddress,  
-    }]
+    tokens: [
+      {
+        chainId,
+        contractAddress
+      }
+    ]
   })
 
-  const {
-    data: conversionRate = 1, isLoading: isLoadingConversionRate
-  } = useConversionRate({
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
   const isLoading = isLoadingCoinBalance || isLoadingCoinPrices || isLoadingConversionRate
 
   if (isLoading) {
-    return (
-      <CoinDetailsSkeleton chainId={chainId} />
-    )
+    return <CoinDetailsSkeleton chainId={chainId} />
   }
 
   const isNativeToken = compareAddress(contractAddress, ethers.constants.AddressZero)
@@ -90,19 +76,21 @@ export const CoinDetails = ({
   const formattedBalance = ethers.utils.formatUnits(dataCoinBalance?.balance || '0', decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
-  const coinBalanceFiat = dataCoinBalance? computeBalanceFiat({
-    balance: dataCoinBalance,
-    prices: dataCoinPrices || [],
-    conversionRate,
-    decimals: decimals || 0
-  }) : '0'
+  const coinBalanceFiat = dataCoinBalance
+    ? computeBalanceFiat({
+        balance: dataCoinBalance,
+        prices: dataCoinPrices || [],
+        conversionRate,
+        decimals: decimals || 0
+      })
+    : '0'
 
   const onClickSend = () => {
     setNavigation({
       location: 'send-coin',
       params: {
         chainId,
-        contractAddress,
+        contractAddress
       }
     })
   }
@@ -119,39 +107,23 @@ export const CoinDetails = ({
       >
         <Box marginBottom="10" gap="2" alignItems="center" justifyContent="center" flexDirection="column">
           <Image width="8" src={logo} alt="logo" />
-          <Text
-            color="text100"
-            fontWeight="bold"
-            fontSize="large"
-          >
+          <Text color="text100" fontWeight="bold" fontSize="large">
             {name}
           </Text>
           <NetworkBadge chainId={chainId} />
         </Box>
         <Box>
-          <Text fontWeight="medium" color="text50" fontSize="normal">Balance</Text>
+          <Text fontWeight="medium" color="text50" fontSize="normal">
+            Balance
+          </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
-            <Text
-              fontWeight='bold'
-              color='text100'
-              fontSize='xlarge'
-            >{`${balanceDisplayed} ${symbol}`}</Text>
+            <Text fontWeight="bold" color="text100" fontSize="xlarge">{`${balanceDisplayed} ${symbol}`}</Text>
             <Text fontWeight="medium" color="text50" fontSize="normal">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </Box>
         </Box>
-        <Button
-          width="full"
-          variant="primary"
-          leftIcon={SendIcon}
-          color="text100"
-          label="Send"
-          onClick={onClickSend}
-        />
+        <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
         <Box>
-          <InfiniteScroll
-            onLoad={() => fetchNextPage()}
-            hasMore={hasNextPage}
-          >
+          <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList
               transactions={transactionHistory}
               isLoading={isLoadingTransactionHistory}

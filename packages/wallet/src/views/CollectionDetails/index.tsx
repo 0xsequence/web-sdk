@@ -19,16 +19,13 @@ interface CollectionDetailsProps {
   contractAddress: string
 }
 
-export const CollectionDetails = ({
-  chainId,
-  contractAddress
-}: CollectionDetailsProps) => {
+export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetailsProps) => {
   const { setNavigation } = useNavigation()
-  const { address: accountAddress } = useAccount() 
+  const { address: accountAddress } = useAccount()
   const { data: collectionBalanceData, isLoading: isLoadingCollectionBalance } = useCollectionBalance({
     chainId,
     accountAddress: accountAddress || '',
-    collectionAddress: contractAddress,
+    collectionAddress: contractAddress
   })
 
   const contractInfo = collectionBalanceData?.[0]?.contractInfo
@@ -39,14 +36,15 @@ export const CollectionDetails = ({
   }
 
   const onClickItem = (balance: TokenBalance) => {
-    setNavigation && setNavigation({
-      location: 'collectible-details',
-      params: {
-        contractAddress: balance.contractAddress,
-        chainId: balance.chainId,
-        tokenId: balance.tokenID,
-      }
-    })
+    setNavigation &&
+      setNavigation({
+        location: 'collectible-details',
+        params: {
+          contractAddress: balance.contractAddress,
+          chainId: balance.chainId,
+          tokenId: balance.tokenID
+        }
+      })
   }
 
   return (
@@ -59,25 +57,20 @@ export const CollectionDetails = ({
       alignItems="center"
       justifyContent="center"
       gap="10"
-      style={{ paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`}}
+      style={{ paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})` }}
     >
-      <Box
-        flexDirection="column"
-        gap="2"
-        justifyContent="center"
-        alignItems="center"
-      >
+      <Box flexDirection="column" gap="2" justifyContent="center" alignItems="center">
         <CoinIcon imageUrl={collectionLogoURI} size={32} />
-        <Text fontWeight="bold" fontSize="large" color="text100">{contractInfo?.name || 'Unknown'}</Text>
+        <Text fontWeight="bold" fontSize="large" color="text100">
+          {contractInfo?.name || 'Unknown'}
+        </Text>
         <NetworkBadge chainId={chainId} />
-        <Text fontWeight="medium" fontSize="normal" color="text50">{`${collectionBalanceData?.length || 0} Unique Collectibles`}</Text>
+        <Text fontWeight="medium" fontSize="normal" color="text50">{`${
+          collectionBalanceData?.length || 0
+        } Unique Collectibles`}</Text>
       </Box>
       <Box width="full">
-        <Text
-          fontWeight="medium"
-          fontSize="normal"
-          color="text50"
-        >
+        <Text fontWeight="medium" fontSize="normal" color="text50">
           {`Owned (${collectionBalanceData?.length || 0})`}
         </Text>
         <Box
@@ -89,12 +82,10 @@ export const CollectionDetails = ({
           width="full"
           marginTop="3"
         >
-          {collectionBalanceData?.map((balance) => {
+          {collectionBalanceData?.map(balance => {
             const unformattedBalance = balance.balance
-            const decimals = balance?.tokenMetadata?.decimals || 0 
-            const formattedBalance = formatDisplay(
-              ethers.utils.formatUnits(unformattedBalance, decimals)
-            )
+            const decimals = balance?.tokenMetadata?.decimals || 0
+            const formattedBalance = formatDisplay(ethers.utils.formatUnits(unformattedBalance, decimals))
 
             return (
               <Box
@@ -104,7 +95,7 @@ export const CollectionDetails = ({
               >
                 <Box
                   background="backgroundSecondary"
-                  aspectRatio='1/1'
+                  aspectRatio="1/1"
                   width="full"
                   borderRadius="md"
                   justifyContent="center"
@@ -114,21 +105,12 @@ export const CollectionDetails = ({
                   <Image style={{ height: '100%' }} src={balance.tokenMetadata?.image} />
                 </Box>
                 <Box>
-                  <Text
-                    fontWeight="bold"
-                    fontSize="normal"
-                    color="text100"
-                  >
+                  <Text fontWeight="bold" fontSize="normal" color="text100">
                     {`${balance.tokenMetadata?.name}`}
                   </Text>
                 </Box>
                 <Box>
-                  <Text
-                    marginTop="1"
-                    fontWeight="medium"
-                    fontSize="normal"
-                    color="text50"
-                  >
+                  <Text marginTop="1" fontWeight="medium" fontSize="normal" color="text50">
                     {formattedBalance} Owned
                   </Text>
                 </Box>

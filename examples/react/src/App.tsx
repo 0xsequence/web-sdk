@@ -14,15 +14,15 @@ import { mainnet, polygon } from 'wagmi/chains'
 
 import '@0xsequence/design-system/styles.css'
 
-const queryClient = new QueryClient() 
+const queryClient = new QueryClient()
 
 function App() {
-  // append ?debug=true to url to enable debug mode 
+  // append ?debug=true to url to enable debug mode
   const { debug } = qs.parse(location.search)
   const isDebugMode = debug === 'true'
 
   /* typing error from wagmi? */
-  const chains: readonly [Chain, ...Chain[]] = [mainnet as Chain, polygon as Chain] 
+  const chains: readonly [Chain, ...Chain[]] = [mainnet as Chain, polygon as Chain]
 
   const projectAccessKey = 'iK0DPkHRt0IFo8o4M3fZIIOAAAAAAAAAA'
 
@@ -33,16 +33,13 @@ function App() {
       appName: 'demo app',
       projectAccessKey
     }),
-    ...(
-      isDebugMode
-      ?
-        getKitConnectWallets(projectAccessKey, [
+    ...(isDebugMode
+      ? getKitConnectWallets(projectAccessKey, [
           mock({
-            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9'],
+            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
           })
         ])
-      : []
-    )
+      : [])
   ]
 
   const transports = {}
@@ -58,7 +55,7 @@ function App() {
     chains,
     /* TODO: check connector typings. Might be related to wagmi problem */
     /* @ts-ignore-next-line */
-    connectors,
+    connectors
   })
 
   const kitConfig: KitConfig = {
@@ -72,25 +69,25 @@ function App() {
       // Matic token
       {
         contractAddress: ethers.constants.AddressZero,
-        chainId: 137,
+        chainId: 137
       },
       // USDC token
       {
         contractAddress: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-        chainId: 137,
+        chainId: 137
       },
       // skyweaver collectibles
       {
         contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
         chainId: 137
       }
-    ],
+    ]
   }
 
   return (
     <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}> 
-        <KitProvider config={kitConfig} >
+      <QueryClientProvider client={queryClient}>
+        <KitProvider config={kitConfig}>
           <KitWalletProvider>
             <KitCheckoutProvider>
               <div id="app">
@@ -103,7 +100,7 @@ function App() {
         </KitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  );
+  )
 }
 
-export default App;
+export default App

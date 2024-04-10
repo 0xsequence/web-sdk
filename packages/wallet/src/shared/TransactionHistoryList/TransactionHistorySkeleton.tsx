@@ -4,7 +4,6 @@ import { Text, Box } from '@0xsequence/design-system'
 import { Skeleton } from '../../shared/Skeleton'
 
 export const TransactionHistorySkeleton = () => {
-
   const getTransactionItem = () => {
     return (
       <Box flexDirection="column" gap="2" width="full" justifyContent="space-between">
@@ -24,21 +23,24 @@ export const TransactionHistorySkeleton = () => {
     <Box flexDirection="column" gap="3">
       <Skeleton width="70px" height="17px" />
       <Box flexDirection="column" gap="2">
-        {Array(8).fill(null).map((_, index) => {
-          return (
-            <Box
-              borderRadius="md"
-              padding="4"
-              gap="2"
-              alignItems="center"
-              justifyContent="center"
-              flexDirection="column"
-              background="backgroundSecondary" key={index}
-            >
-              {getTransactionItem()}
-            </Box>
-          )
-        })}
+        {Array(8)
+          .fill(null)
+          .map((_, index) => {
+            return (
+              <Box
+                borderRadius="md"
+                padding="4"
+                gap="2"
+                alignItems="center"
+                justifyContent="center"
+                flexDirection="column"
+                background="backgroundSecondary"
+                key={index}
+              >
+                {getTransactionItem()}
+              </Box>
+            )
+          })}
       </Box>
     </Box>
   )

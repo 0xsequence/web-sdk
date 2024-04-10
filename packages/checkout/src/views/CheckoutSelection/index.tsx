@@ -1,14 +1,6 @@
 import React from 'react'
 import { ethers } from 'ethers'
-import {
-  Box,
-  Button,
-  ChevronRightIcon,
-  Divider,
-  Text,
-  PaymentsIcon,
-  vars
-} from '@0xsequence/design-system'
+import { Box, Button, ChevronRightIcon, Divider, Text, PaymentsIcon, vars } from '@0xsequence/design-system'
 
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
@@ -19,16 +11,8 @@ import { OrderSummaryItem } from './component/OrderSummaryItem'
 import { CoinIcon } from '../../shared/components/CoinIcon'
 import { Skeleton } from '../../shared/components/Skeleton'
 import { HEADER_HEIGHT } from '../../constants'
-import {
-  useNavigation,
-  useCheckoutModal,
-  useBalances,
-  useContractInfo,
-} from '../../hooks'
-import {
-  compareAddress,
-  formatDisplay
-} from '../../utils'
+import { useNavigation, useCheckoutModal, useBalances, useContractInfo } from '../../hooks'
+import { compareAddress, formatDisplay } from '../../utils'
 import * as styles from './styles.css'
 
 export const CheckoutSelection = () => {
@@ -42,33 +26,27 @@ export const CheckoutSelection = () => {
   const displayCryptoCheckout = !!cryptoCheckoutSettings
   // const displayCreditCardCheckout = !!creditCardCheckoutSettings
 
-  const {
-    data: contractInfoData,
-    isLoading: contractInfoLoading
-  } = useContractInfo({
+  const { data: contractInfoData, isLoading: contractInfoLoading } = useContractInfo({
     contractAddress: cryptoCheckoutSettings?.coinQuantity?.contractAddress || '',
     chainID: String(cryptoCheckoutSettings?.chainId || 1)
   })
 
-  const {
-    data: balancesData,
-    isLoading: balancesLoading
-  } = useBalances({
+  const { data: balancesData, isLoading: balancesLoading } = useBalances({
     accountAddress: accountAddress || '',
     chainId: cryptoCheckoutSettings?.chainId || 1
   })
 
   const isLoading = (contractInfoLoading || balancesLoading) && cryptoCheckoutSettings
 
-  const isNativeToken  = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.constants.AddressZero)
+  const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.constants.AddressZero)
   const nativeTokenInfo = getNativeTokenInfoByChainId(cryptoCheckoutSettings?.chainId || 1, chains)
 
   const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : contractInfoData?.decimals || 0
   const coinSymbol = isNativeToken ? nativeTokenInfo.symbol : contractInfoData?.symbol || 'COIN'
   const coinImageUrl = isNativeToken ? nativeTokenInfo.logoURI : contractInfoData?.logoURI || ''
-  const coinBalance = balancesData?.find(balance => (
+  const coinBalance = balancesData?.find(balance =>
     compareAddress(balance.contractAddress, cryptoCheckoutSettings?.coinQuantity?.contractAddress || '')
-  ))
+  )
   const userBalanceRaw = coinBalance ? coinBalance.balance : '0'
   const requestedAmountRaw = cryptoCheckoutSettings?.coinQuantity?.amountRequiredRaw || '0'
   const userBalance = ethers.utils.formatUnits(userBalanceRaw, coinDecimals)
@@ -91,7 +69,7 @@ export const CheckoutSelection = () => {
     transaction && transaction()
     closeCheckout()
   }
-  
+
   return (
     <Box
       paddingX="5"
@@ -106,12 +84,10 @@ export const CheckoutSelection = () => {
         <>
           <Text fontWeight="normal" fontSize="normal" color="text50">
             Order summary
-          </Text>      
+          </Text>
           <Box flexDirection="column" gap="2">
             {orderSummaryItems.map((orderSummaryItem, index) => {
-              return (
-                <OrderSummaryItem key={index} {...orderSummaryItem} chainId={chainId} />
-              )
+              return <OrderSummaryItem key={index} {...orderSummaryItem} chainId={chainId} />
             })}
           </Box>
           <Box marginTop="2">
@@ -124,7 +100,6 @@ export const CheckoutSelection = () => {
           </Box>
         </>
       )}
-
 
       {displayCryptoCheckout && (
         <Box justifyContent="space-between" alignItems="center">
@@ -144,12 +119,7 @@ export const CheckoutSelection = () => {
         </Box>
       )}
 
-      <Box
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        gap="2"
-      >
+      <Box flexDirection="column" alignItems="center" justifyContent="center" gap="2">
         {/* {displayCreditCardCheckout && (
           <Button
             style={{
@@ -165,7 +135,7 @@ export const CheckoutSelection = () => {
             onClick={onClickPayWithCard}
           />
         )} */}
-        {displayCryptoCheckout && (!isInsufficientBalance && !isLoading) && (
+        {displayCryptoCheckout && !isInsufficientBalance && !isLoading && (
           <Button
             style={{
               borderRadius: vars.radii.md,
@@ -201,15 +171,10 @@ export const CheckoutSelection = () => {
           {isLoading ? (
             <Skeleton width="102px" height="14px" />
           ) : (
-            <Text
-              fontWeight="bold"
-              fontSize="small"
-              color="text50"
-            >
+            <Text fontWeight="bold" fontSize="small" color="text50">
               Balance: {`${formatDisplay(userBalance)} ${coinSymbol}`}
             </Text>
           )}
-
         </Box>
       )}
     </Box>

@@ -11,8 +11,8 @@ export const walletConnect = (options: WalletConnectParameters) => ({
   name: 'Walletconnect',
   createConnector: (() => {
     const connector = walletConnectbase({
-      ...options,
-    });
+      ...options
+    })
     return connector
   }) as () => CreateConnectorFn
 })

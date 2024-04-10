@@ -7,11 +7,9 @@ interface BannerProps {
   config: KitConfig
 }
 
-export const Banner = ({
-  config = {} as KitConfig
-}: BannerProps) => {
+export const Banner = ({ config = {} as KitConfig }: BannerProps) => {
   const { signIn = {} } = config
-  const { logoUrl } = signIn 
+  const { logoUrl } = signIn
 
   return (
     <>

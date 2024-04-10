@@ -3,10 +3,9 @@ import { CreateConnectorFn } from 'wagmi'
 
 import { getAppleLogo, getAppleMonochromeLogo } from './AppleLogo'
 
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors';
+import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
-export interface AppleOptions extends BaseSequenceConnectorOptions {
-}
+export interface AppleOptions extends BaseSequenceConnectorOptions {}
 
 export const apple = (options: AppleOptions) => ({
   id: 'apple',
@@ -27,7 +26,7 @@ export const apple = (options: AppleOptions) => ({
           signInWith: 'apple'
         }
       }
-    });
+    })
     return connector
   }) as () => CreateConnectorFn
 })

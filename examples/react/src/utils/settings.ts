@@ -4,11 +4,13 @@ export const getCheckoutSettings = (address?: string) => {
   const checkoutSettings: CheckoutSettings = {
     cryptoCheckout: {
       chainId: 137,
-      triggerTransaction: async () => { console.log('triggered transaction') },
+      triggerTransaction: async () => {
+        console.log('triggered transaction')
+      },
       coinQuantity: {
         contractAddress: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
         amountRequiredRaw: '10000000000'
-      },
+      }
     },
     orderSummaryItems: [
       {
@@ -20,7 +22,7 @@ export const getCheckoutSettings = (address?: string) => {
         contractAddress: '0x624e4fa6980afcf8ea27bfe08e2fb5979b64df1c',
         tokenId: '1741',
         quantityRaw: '100'
-      },
+      }
     ]
   }
 

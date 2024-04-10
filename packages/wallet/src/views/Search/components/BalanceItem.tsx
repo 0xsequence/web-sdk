@@ -7,10 +7,7 @@ import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
 import { CoinIcon } from '../../../shared/CoinIcon'
 import { useNavigation } from '../../../hooks'
-import {
-  compareAddress,
-  formatDisplay,
-} from '../../../utils'
+import { compareAddress, formatDisplay } from '../../../utils'
 
 import * as sharedStyles from '../../../shared/styles.css'
 
@@ -18,22 +15,20 @@ interface BalanceItemProps {
   balance: TokenBalance
 }
 
-export const BalanceItem = ({
-  balance
-}: BalanceItemProps) => {
+export const BalanceItem = ({ balance }: BalanceItemProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
-  const isNativeToken = compareAddress(balance.contractAddress, ethers.constants.AddressZero) 
+  const isNativeToken = compareAddress(balance.contractAddress, ethers.constants.AddressZero)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
   const logoURI = isNativeToken ? nativeTokenInfo.logoURI : balance?.contractInfo?.logoURI
   const tokenName = isNativeToken ? nativeTokenInfo.name : balance?.contractInfo?.name || 'Unknown'
-  
+
   const getQuantity = () => {
     if (balance.contractType === 'ERC721' || balance.contractType === 'ERC1155') {
-      return (balance.balance)
+      return balance.balance
     }
-    const decimals = isNativeToken  ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
-    const bal = ethers.utils.formatUnits( balance.balance, decimals || 0)
+    const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
+    const bal = ethers.utils.formatUnits(balance.balance, decimals || 0)
     const displayBalance = formatDisplay(bal)
     const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 
@@ -47,7 +42,7 @@ export const BalanceItem = ({
         location: 'collection-details',
         params: {
           contractAddress: balance.contractAddress,
-          chainId: balance.chainId,
+          chainId: balance.chainId
         }
       })
     } else {

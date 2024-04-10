@@ -16,11 +16,8 @@ export const SettingsCurrency = () => {
         paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`
       }}
     >
-      <Box
-        flexDirection="column"
-        gap="2"
-      >
-        {supportedFiatCurrencies.map((currency) => {
+      <Box flexDirection="column" gap="2">
+        {supportedFiatCurrencies.map(currency => {
           return (
             <SelectButton
               key={currency.symbol}
@@ -32,9 +29,7 @@ export const SettingsCurrency = () => {
                 <Text color="text100" fontWeight="bold">
                   {currency.symbol}
                 </Text>
-                <Text color="text50">
-                  {currency.name.message}
-                </Text>
+                <Text color="text50">{currency.name.message}</Text>
               </Box>
             </SelectButton>
           )

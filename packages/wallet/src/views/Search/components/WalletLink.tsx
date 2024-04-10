@@ -6,14 +6,11 @@ import { Navigation } from '../../../contexts'
 import * as sharedStyles from '../../../shared/styles.css'
 
 interface WalletLinkProps {
-  toLocation: Navigation,
-  label: string,
+  toLocation: Navigation
+  label: string
 }
 
-export const WalletLink = ({
-  toLocation,
-  label
-}: WalletLinkProps) => {
+export const WalletLink = ({ toLocation, label }: WalletLinkProps) => {
   const { setNavigation } = useNavigation()
 
   const onClick = () => {
@@ -29,19 +26,11 @@ export const WalletLink = ({
       alignItems="center"
       className={sharedStyles.clickable}
     >
-      <Text
-        color="text50"
-        fontSize="normal"
-        fontWeight="medium"
-      >
+      <Text color="text50" fontSize="normal" fontWeight="medium">
         {label}
       </Text>
       <Box flexDirection="row" justifyContent="center" alignItems="center">
-        <Text
-          color="text50"
-          fontSize="normal"
-          fontWeight="medium"
-        >
+        <Text color="text50" fontSize="normal" fontWeight="medium">
           View all
         </Text>
         <ChevronRightIcon color="text50" size="sm" />

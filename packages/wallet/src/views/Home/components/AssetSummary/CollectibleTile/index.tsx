@@ -8,12 +8,8 @@ interface CollectibleTileProps {
   balance: TokenBalance
 }
 
-export const CollectibleTile = ({
-  balance
-}: CollectibleTileProps) => {
-  const {
-    data: tokenMetadata,
-  } = useTokenMetadata({
+export const CollectibleTile = ({ balance }: CollectibleTileProps) => {
+  const { data: tokenMetadata } = useTokenMetadata({
     tokens: {
       chainId: balance.chainId,
       contractAddress: balance.contractAddress,
@@ -23,7 +19,5 @@ export const CollectibleTile = ({
 
   const imageUrl = tokenMetadata?.[0]?.image
 
-  return (
-    <CollectibleTileImage imageUrl={imageUrl} />
-  )
+  return <CollectibleTileImage imageUrl={imageUrl} />
 }

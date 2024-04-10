@@ -1,14 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react'
-import {
-  Box,
-  Button,
-  Card,
-  Spinner,
-  Text,
-  TextInput,
-  EditIcon,
-  CheckmarkIcon
-} from '@0xsequence/design-system'
+import { Box, Button, Card, Spinner, Text, TextInput, EditIcon, CheckmarkIcon } from '@0xsequence/design-system'
 import { CheckoutWithCard } from '@paperxyz/react-client-sdk'
 import { useNavigation } from '../../hooks'
 import { fetchPaperSecret } from '../../api'
@@ -17,9 +8,7 @@ export interface PaperTransactionProps {
   settings: CheckoutSettings
 }
 
-export const PaperTransaction = ({
-  settings
-}: PaperTransactionProps) => {
+export const PaperTransaction = ({ settings }: PaperTransactionProps) => {
   const [emailEditState, setEmailEditState] = useState(true)
   const [email, setEmail] = useState<string>(settings.creditCardCheckout?.email || '')
   const [inputEmailAddress, setInputEmailAddress] = useState<string | undefined>(email)
@@ -54,8 +43,8 @@ export const PaperTransaction = ({
       })
 
       setPaperSecret(secret)
-    } catch(e) {
-      console.error('Failed to fetch paper secret', e )
+    } catch (e) {
+      console.error('Failed to fetch paper secret', e)
       setNavigation({
         location: 'transaction-error',
         params: {
@@ -76,9 +65,9 @@ export const PaperTransaction = ({
         paperJsSdkModal.style.pointerEvents = 'visible'
       }
     }, 100)
-    return (() => {
+    return () => {
       clearInterval(timer)
-    })
+    }
   }, [])
 
   useEffect(() => {
@@ -118,24 +107,9 @@ export const PaperTransaction = ({
   const getEmailInput = () => {
     if (emailEditState) {
       return (
-        <Box
-          as="form"
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="flex-start"
-          onSubmit={onClickEditEmail}
-        >
-          <Box
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="flex-start"
-            gap="2"
-          >
-            <Text
-              fontSize="normal"
-              fontWeight="normal"
-              color="text50"
-            >
+        <Box as="form" flexDirection="row" justifyContent="space-between" alignItems="flex-start" onSubmit={onClickEditEmail}>
+          <Box flexDirection="column" justifyContent="center" alignItems="flex-start" gap="2">
+            <Text fontSize="normal" fontWeight="normal" color="text50">
               Receipt email address
             </Text>
             <TextInput
@@ -148,50 +122,22 @@ export const PaperTransaction = ({
               data-1p-ignore
             />
           </Box>
-          <Button
-            size="xs"
-            label={'Save'}
-            leftIcon={CheckmarkIcon}
-            disabled={!isValidEmailAddress()}
-            type="submit"
-          />
+          <Button size="xs" label={'Save'} leftIcon={CheckmarkIcon} disabled={!isValidEmailAddress()} type="submit" />
         </Box>
       )
     }
 
     return (
-      <Box
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-      >
-        <Box
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="flex-start"
-          gap="2"
-        >
-          <Text
-            fontSize="normal"
-            fontWeight="normal"
-            color="text50"
-          >
+      <Box flexDirection="row" justifyContent="space-between" alignItems="flex-start">
+        <Box flexDirection="column" justifyContent="center" alignItems="flex-start" gap="2">
+          <Text fontSize="normal" fontWeight="normal" color="text50">
             Receipt email address
           </Text>
-          <Text
-            fontSize="normal"
-            fontWeight="bold"
-            color="text100"
-          >
+          <Text fontSize="normal" fontWeight="bold" color="text100">
             {email}
           </Text>
         </Box>
-        <Button
-          size="xs"
-          label={"Edit"}
-          leftIcon={EditIcon}
-          onClick={onClickEditEmail}
-        />
+        <Button size="xs" label={'Edit'} leftIcon={EditIcon} onClick={onClickEditEmail} />
       </Box>
     )
   }

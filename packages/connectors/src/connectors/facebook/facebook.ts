@@ -3,10 +3,9 @@ import type { Wallet } from '@0xsequence/kit'
 
 import { FacebookLogo, getFacebookMonochromeLogo } from './FacebookLogo'
 
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors';
+import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
-export interface FacebookOptions extends BaseSequenceConnectorOptions {
-}
+export interface FacebookOptions extends BaseSequenceConnectorOptions {}
 
 export const facebook = (options: FacebookOptions) => ({
   id: 'facebook',
@@ -27,7 +26,7 @@ export const facebook = (options: FacebookOptions) => ({
           signInWith: 'facebook'
         }
       }
-    });
+    })
     return connector
   }) as () => CreateConnectorFn
 })

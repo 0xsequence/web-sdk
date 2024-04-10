@@ -10,32 +10,21 @@ import { useTokenMetadata, useContractInfo } from '../../../hooks'
 import { formatDisplay } from '../../../utils'
 
 interface OrderSummaryItem {
-  contractAddress: string,
-  tokenId: string,
-  quantityRaw: string,
+  contractAddress: string
+  tokenId: string
+  quantityRaw: string
   chainId: number
 }
 
-export const OrderSummaryItem = ({
-  contractAddress,
-  tokenId,
-  quantityRaw,
-  chainId,
-}: OrderSummaryItem) => {
-  const { chains } = useConfig() 
-  const {
-    data: tokenMetadata,
-    isLoading: isTokenMetadataLoading,
-  } = useTokenMetadata({
+export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainId }: OrderSummaryItem) => {
+  const { chains } = useConfig()
+  const { data: tokenMetadata, isLoading: isTokenMetadataLoading } = useTokenMetadata({
     chainId,
     contractAddress,
-    tokenId,
+    tokenId
   })
 
-  const {
-    data: contractInfo,
-    isLoading: isContractInfoLoading,
-  } = useContractInfo({
+  const { data: contractInfo, isLoading: isContractInfoLoading } = useContractInfo({
     chainID: String(chainId),
     contractAddress
   })
@@ -43,31 +32,20 @@ export const OrderSummaryItem = ({
   const isLoading = isTokenMetadataLoading || isContractInfoLoading
 
   if (isLoading) {
-    return (
-      <OrderSummarySkeleton />
-    )
+    return <OrderSummarySkeleton />
   }
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, [...chains])
   const { name = 'unknown', image, decimals = 0 } = tokenMetadata || {}
 
-  const {
-    logoURI: collectionLogoURI,
-    name: collectionName = 'Unknown Collection',
-  } = contractInfo || {}
+  const { logoURI: collectionLogoURI, name: collectionName = 'Unknown Collection' } = contractInfo || {}
 
   const balanceFormatted = ethers.utils.formatUnits(quantityRaw, decimals)
 
   return (
     <Card flexDirection="row" alignItems="flex-start" justifyContent="space-between">
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-        <Box
-          aspectRatio="1/1"
-          height="full"
-          justifyContent="center"
-          alignItems="center"
-          style={{ width: '80px' }}
-        >
+        <Box aspectRatio="1/1" height="full" justifyContent="center" alignItems="center" style={{ width: '80px' }}>
           <Image src={image} borderRadius="md" style={{ height: '80px' }} />
         </Box>
         <Box flexDirection="column" alignItems="flex-start" justifyContent="center" gap="2">
@@ -86,7 +64,9 @@ export const OrderSummaryItem = ({
               width: '180px'
             }}
           >
-            <Text color="text100" fontSize="normal" fontWeight="normal">{name}</Text>
+            <Text color="text100" fontSize="normal" fontWeight="normal">
+              {name}
+            </Text>
             <Text color="text50" fontSize="normal" fontWeight="normal">{`#${tokenId}`}</Text>
           </Box>
         </Box>

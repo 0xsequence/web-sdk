@@ -6,18 +6,14 @@ import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
 
-import {
-  computeBalanceFiat,
-  formatDisplay,
-  flattenPaginatedTransactionHistory
-} from '../../utils'
+import { computeBalanceFiat, formatDisplay, flattenPaginatedTransactionHistory } from '../../utils'
 import {
   useCollectiblePrices,
   useCollectibleBalance,
   useSettings,
   useTransactionHistory,
   useNavigation,
-  useConversionRate,
+  useConversionRate
 } from '../../hooks'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
@@ -30,11 +26,7 @@ export interface CollectibleDetailsProps {
   tokenId: string
 }
 
-export const CollectibleDetails = ({
-  contractAddress,
-  chainId,
-  tokenId,
-}: CollectibleDetailsProps) => {
+export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: CollectibleDetailsProps) => {
   const { chains } = useConfig()
   const { address: accountAddress } = useAccount()
   const { fiatCurrency } = useSettings()
@@ -45,7 +37,7 @@ export const CollectibleDetails = ({
     isLoading: isLoadingTransactionHistory,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
+    isFetchingNextPage
   } = useTransactionHistory({
     chainId,
     accountAddress: accountAddress || '',
@@ -59,30 +51,27 @@ export const CollectibleDetails = ({
     accountAddress: accountAddress || '',
     collectionAddress: contractAddress,
     chainId,
-    tokenId,
+    tokenId
   })
 
   const { data: dataCollectiblePrices, isLoading: isLoadingCollectiblePrices } = useCollectiblePrices({
-    tokens: [{
-      chainId,
-      contractAddress,
-      tokenId
-    }]
+    tokens: [
+      {
+        chainId,
+        contractAddress,
+        tokenId
+      }
+    ]
   })
 
-  const {
-    data: conversionRate = 1,
-    isLoading: isLoadingConversionRate
-  } = useConversionRate({
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
   const isLoading = isLoadingCollectibleBalance || isLoadingCollectiblePrices || isLoadingConversionRate
 
   if (isLoading) {
-    return (
-      <CollectibleDetailsSkeleton />
-    )
+    return <CollectibleDetailsSkeleton />
   }
 
   const onClickSend = () => {
@@ -91,7 +80,7 @@ export const CollectibleDetails = ({
       params: {
         chainId,
         contractAddress,
-        tokenId,
+        tokenId
       }
     })
   }
@@ -105,13 +94,15 @@ export const CollectibleDetails = ({
   const balance = ethers.utils.formatUnits(rawBalance, decimals)
   const formattedBalance = formatDisplay(Number(balance))
 
-  const valueFiat = dataCollectibleBalance ? computeBalanceFiat({
-    balance: dataCollectibleBalance,
-    prices: dataCollectiblePrices || [],
-    conversionRate,
-    decimals: decimals
-  }) : '0'
-  
+  const valueFiat = dataCollectibleBalance
+    ? computeBalanceFiat({
+        balance: dataCollectibleBalance,
+        prices: dataCollectiblePrices || [],
+        conversionRate,
+        decimals: decimals
+      })
+    : '0'
+
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box
@@ -137,16 +128,14 @@ export const CollectibleDetails = ({
               }}
             />
             <Box gap="1" flexDirection="row" justifyContent="center" alignItems="center">
-              <Text fontWeight="bold" fontSize="small" color="text100">{collectionName}</Text>
+              <Text fontWeight="bold" fontSize="small" color="text100">
+                {collectionName}
+              </Text>
               <Image width="3" src={nativeTokenInfo.logoURI} alt="collection logo" />
             </Box>
           </Box>
           <Box flexDirection="column" justifyContent="center" alignItems="center">
-            <Text
-              color="text100"
-              fontWeight="bold"
-              fontSize="large"
-            >
+            <Text color="text100" fontWeight="bold" fontSize="large">
               {dataCollectibleBalance?.tokenMetadata?.name || 'Unknown Collectible'}
             </Text>
             <Text color="text50" fontSize="small" fontWeight="medium">
@@ -160,16 +149,14 @@ export const CollectibleDetails = ({
         <Box>
           {/* balance */}
           <Box>
-            <Text fontWeight="medium" color="text50" fontSize="normal">Balance</Text>
+            <Text fontWeight="medium" color="text50" fontSize="normal">
+              Balance
+            </Text>
             <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
-              <Text
-                fontWeight='bold'
-                color='text100'
-                fontSize='xlarge'
-              >
+              <Text fontWeight="bold" color="text100" fontSize="xlarge">
                 {formattedBalance}
               </Text>
-              {dataCollectiblePrices && dataCollectiblePrices[0].price?.value &&(
+              {dataCollectiblePrices && dataCollectiblePrices[0].price?.value && (
                 <Text fontWeight="medium" color="text50" fontSize="normal">{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
               )}
             </Box>
@@ -185,10 +172,7 @@ export const CollectibleDetails = ({
           />
         </Box>
         <Box>
-          <InfiniteScroll
-            onLoad={() => fetchNextPage()}
-            hasMore={hasNextPage}
-          >
+          <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList
               transactions={transactionHistory}
               isLoading={isLoadingTransactionHistory}

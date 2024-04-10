@@ -11,7 +11,7 @@ export const mock = (options: MockParameters) => ({
   // iconBackground: '#777',
   name: 'Mock',
   createConnector: (() => {
-    const connector = mockBase(options);
+    const connector = mockBase(options)
     return connector
   }) as () => CreateConnectorFn
 })

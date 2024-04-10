@@ -1,11 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import {
-  Box,
-  ChevronLeftIcon,
-  IconButton,
-  SearchIcon,
-  vars,
-} from '@0xsequence/design-system'
+import { Box, ChevronLeftIcon, IconButton, SearchIcon, vars } from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -17,11 +11,9 @@ import { useNavigation, useOpenWalletModal } from '../../hooks'
 
 import * as styles from './styles.css'
 
-interface WalletHeaderProps {
-}
+interface WalletHeaderProps {}
 
-export const WalletHeader = ({
-}: WalletHeaderProps) => {
+export const WalletHeader = ({}: WalletHeaderProps) => {
   const { openWalletModalState } = useOpenWalletModal()
 
   const [openWalletDropdown, setOpenWalletDropdown] = useState<boolean>(false)
@@ -78,7 +70,7 @@ export const WalletHeader = ({
             paddingTop: '6px'
           }}
         >
-          {(history.length > 0) ? (
+          {history.length > 0 ? (
             <IconButton
               onClick={onClickBack}
               icon={ChevronLeftIcon}
@@ -106,15 +98,11 @@ export const WalletHeader = ({
 
         <AnimatePresence>
           {openWalletDropdown && (
-            <PopoverPrimitive.Content
-              asChild
-              side="bottom"
-              align="start"
-            >
+            <PopoverPrimitive.Content asChild side="bottom" align="start">
               <WalletDropdownContent setOpenWalletDropdown={setOpenWalletDropdown} />
             </PopoverPrimitive.Content>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
       </PopoverPrimitive.Root>
     </Box>
   )

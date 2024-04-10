@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import type { ComponentProps } from "react";
+import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
 
-import {
-  Box,
-  Modal,
-  Text,
-  ThemeProvider,
-} from '@0xsequence/design-system'
+import { Box, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
 import { useAccount } from 'wagmi'
 
@@ -25,50 +20,49 @@ import { ModalPosition, getModalPositionCss } from '../../utils'
 import '@0xsequence/design-system/styles.css'
 
 import * as sharedStyles from '../styles.css'
-import { SequenceClient } from '0xsequence/dist/declarations/src/provider';
+import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
 
-export declare const THEME: readonly ["dark", "light"];
-export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>;
+export declare const THEME: readonly ['dark', 'light']
+export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>
 export const THEMES = {
   dark: 'dark' as Theme,
   light: 'light' as Theme
-};
+}
 
 export interface DisplayedAsset {
-  contractAddress: string,
-  chainId: number,
+  contractAddress: string
+  chainId: number
 }
 
 export interface EthAuthSettings {
-  app?: string,
+  app?: string
   /** expiry number (in seconds) that is used for ETHAuth proof. Default is 1 week in seconds. */
-  expiry?: number,
+  expiry?: number
   /** origin hint of the dapp's host opening the wallet. This value will automatically
    * be determined and verified for integrity, and can be omitted. */
-  origin?: string,
+  origin?: string
   /** authorizeNonce is an optional number to be passed as ETHAuth's nonce claim for replay protection. **/
   nonce?: number
 }
 
-
 export interface KitConfig {
-  disableAnalytics?: boolean,
-  defaultTheme?: Theme,
-  position?: ModalPosition,
+  disableAnalytics?: boolean
+  defaultTheme?: Theme
+  position?: ModalPosition
   signIn?: {
-    logoUrl?: string,
-    projectName?: string,
-    showEmailInput?: boolean,
+    logoUrl?: string
+    projectName?: string
+    showEmailInput?: boolean
     socialAuthOptions?: string[]
     walletAuthOptions?: string[]
     useMock?: boolean
-  },
-  displayedAssets?: DisplayedAsset[],
-  ethAuth?: EthAuthSettings,
+  }
+  displayedAssets?: DisplayedAsset[]
+  ethAuth?: EthAuthSettings
 }
 
 export type KitConnectProviderProps = {
-  children: React.ReactNode,
+  children: React.ReactNode
   config: KitConfig
 }
 
@@ -80,7 +74,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     position = 'center',
     displayedAssets: displayedAssetsSetting = [],
     ethAuth = {} as EthAuthSettings,
-    disableAnalytics = false,
+    disableAnalytics = false
   } = config
 
   const defaultAppName = signIn.projectName || 'app'
@@ -92,7 +86,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || THEMES.dark)
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
-  const [analytics, setAnalytics] = useState<SequenceClient["analytics"]>()
+  const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
 
   const setupAnalytics = (projectAccessKey: string) => {
@@ -109,7 +103,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     if (address) {
       analytics?.identify(address.toLowerCase())
     }
-  },[analytics, address, isConnected])
+  }, [analytics, address, isConnected])
 
   const poweredBySequenceOnClick = () => {
     if (typeof window !== 'undefined') {
@@ -148,9 +142,15 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     // EthAuth
     // note: keep an eye out for potential race-conditions, though they shouldn't occur.
     // If there are race conditions, the settings could be a function executed prior to being passed to wagmi
-    localStorage.setItem(LocalStorageKey.EthAuthSettings, JSON.stringify({
-      expiry, app, origin, nonce
-    }))
+    localStorage.setItem(
+      LocalStorageKey.EthAuthSettings,
+      JSON.stringify({
+        expiry,
+        app,
+        origin,
+        nonce
+      })
+    )
   }, [theme, ethAuth])
 
   useEffect(() => {
@@ -185,10 +185,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                       }}
                       onClose={() => setOpenConnectModal(false)}
                     >
-                      <Box
-                        padding="4"
-                        className={sharedStyles.walletContent}
-                      >
+                      <Box padding="4" className={sharedStyles.walletContent}>
                         <Box
                           justifyContent="center"
                           color="text100"
@@ -205,24 +202,32 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                           setOpenConnectModal={setOpenConnectModal}
                           {...props}
                         />
-                        <Box onClick={poweredBySequenceOnClick} className={sharedStyles.clickable} gap="1" marginTop="2" flexDirection="row" alignItems="center" justifyContent="center">
-                            <Text fontSize="small" color="text100">
-                              Powered by Sequence
-                            </Text>
-                            <Box height="5" width="5">
-                              <SequenceLogo/>
-                            </Box>
+                        <Box
+                          onClick={poweredBySequenceOnClick}
+                          className={sharedStyles.clickable}
+                          gap="1"
+                          marginTop="2"
+                          flexDirection="row"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <Text fontSize="small" color="text100">
+                            Powered by Sequence
+                          </Text>
+                          <Box height="5" width="5">
+                            <SequenceLogo />
+                          </Box>
                         </Box>
                       </Box>
                     </Modal>
                   )}
-                  </AnimatePresence>
-                </ThemeProvider>
-              </div>
-              {children}
-            </AnalyticsContextProvider>
-          </WalletConfigContextProvider>
-        </ConnectModalContextProvider>
+                </AnimatePresence>
+              </ThemeProvider>
+            </div>
+            {children}
+          </AnalyticsContextProvider>
+        </WalletConfigContextProvider>
+      </ConnectModalContextProvider>
     </ThemeContextProvider>
   )
 }

@@ -11,9 +11,7 @@ interface CoinDetailsSkeletonProps {
   chainId: number
 }
 
-export const CoinDetailsSkeleton = ({
-  chainId
-}: CoinDetailsSkeletonProps) => {
+export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box
@@ -30,7 +28,9 @@ export const CoinDetailsSkeleton = ({
           <NetworkBadge chainId={chainId} />
         </Box>
         <Box>
-          <Text fontWeight="medium" color="text50" fontSize="normal">Balance</Text>
+          <Text fontWeight="medium" color="text50" fontSize="normal">
+            Balance
+          </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
             <Skeleton width="150px" height="36px" />
             <Skeleton width="33px" height="17px" />
@@ -52,4 +52,5 @@ export const CoinDetailsSkeleton = ({
         </Box>
       </Box>
     </Box>
-  )}
+  )
+}

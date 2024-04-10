@@ -2,10 +2,9 @@ import { CreateConnectorFn } from 'wagmi'
 
 import { getTwitchLogo } from './TwitchLogo'
 
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors';
+import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
-export interface TwitchOptions extends BaseSequenceConnectorOptions {
-}
+export interface TwitchOptions extends BaseSequenceConnectorOptions {}
 
 export const twitch = (options: TwitchOptions) => ({
   id: 'twitch',
@@ -26,7 +25,7 @@ export const twitch = (options: TwitchOptions) => ({
           signInWith: 'twitch'
         }
       }
-    });
+    })
     return connector
   }) as () => CreateConnectorFn
 })
