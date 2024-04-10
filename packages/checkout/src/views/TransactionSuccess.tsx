@@ -8,7 +8,7 @@ export const TransactionSuccess = () => {
   const { closeCheckout, settings } = useCheckoutModal()
   const nav = useNavigation()
   const navigation = nav.navigation as TransactionSuccessNavigation
-  
+
   useEffect(() => {
     setTimeout(() => {
       closeCheckout()
@@ -22,7 +22,7 @@ export const TransactionSuccess = () => {
         flexDirection="column"
         alignItems="center"
         position="absolute"
-        style={{top: '50%', right: '50%', transform: 'translate(50%, -50%)'}}
+        style={{ top: '50%', right: '50%', transform: 'translate(50%, -50%)' }}
       >
         <NotificationSuccessIcon />
         <Text fontSize="xlarge">Success!</Text>
@@ -31,7 +31,7 @@ export const TransactionSuccess = () => {
         </Text>
       </Box>
     </Box>
- )
+  )
 }
 
 export const NotificationSuccessIcon = () => (

@@ -2,11 +2,11 @@ import React from 'react'
 import { createGenericContext } from '@0xsequence/kit'
 
 export interface SelectCheckoutNavigation {
-  location: 'select-method-checkout',
+  location: 'select-method-checkout'
 }
 
 export interface TransactionFormNavigation {
-  location: 'transaction-form',
+  location: 'transaction-form'
 }
 
 export interface TransactionSuccessParams {
@@ -14,7 +14,7 @@ export interface TransactionSuccessParams {
 }
 
 export interface TransactionSuccessNavigation {
-  location: 'transaction-success',
+  location: 'transaction-success'
   params: TransactionSuccessParams
 }
 
@@ -23,7 +23,7 @@ export interface TransactionErrorParams {
 }
 
 export interface TransactionErrorNavigation {
-  location: 'transaction-error',
+  location: 'transaction-error'
   params: TransactionErrorParams
 }
 
@@ -32,17 +32,22 @@ export interface TransactionPendingParams {
 }
 
 export interface TransactionPendingNavigation {
-  location: 'transaction-pending',
+  location: 'transaction-pending'
   params: TransactionPendingParams
 }
 
-export type Navigation = TransactionFormNavigation | TransactionSuccessNavigation | TransactionErrorNavigation | TransactionPendingNavigation | SelectCheckoutNavigation
+export type Navigation =
+  | TransactionFormNavigation
+  | TransactionSuccessNavigation
+  | TransactionErrorNavigation
+  | TransactionPendingNavigation
+  | SelectCheckoutNavigation
 
 export type History = Navigation[]
 
 type NavigationContext = {
   setHistory: (history: History) => void
-  history: History,
+  history: History
 }
 
-export const [useNavigationContext,NavigationContextProvider] = createGenericContext<NavigationContext>()
+export const [useNavigationContext, NavigationContextProvider] = createGenericContext<NavigationContext>()

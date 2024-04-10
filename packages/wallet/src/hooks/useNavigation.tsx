@@ -3,21 +3,18 @@ import { useNavigationContext, Navigation, History } from '../contexts/Navigatio
 import { useOpenWalletModal } from './useOpenWalletModal'
 
 interface UseNavigation {
-  setNavigation: (navigation: Navigation) => void,
+  setNavigation: (navigation: Navigation) => void
   setHistory?: (history: History) => void
-  history: History,
+  history: History
   goBack: () => void
 }
 
 export const useNavigation = (): UseNavigation => {
-  const {
-    setHistory,
-    history
-  } = useNavigationContext()
+  const { setHistory, history } = useNavigationContext()
 
   const setNavigation = (navigation: Navigation) => {
     // Scroll to top of page when navigating to a new page
-    const childElement = document.getElementById("sequence-kit-wallet-content")
+    const childElement = document.getElementById('sequence-kit-wallet-content')
     const parentElement = childElement?.parentElement
     parentElement?.scrollTo(0, 0)
 

@@ -7,7 +7,7 @@ import { useSettings, useTransactionHistorySummary } from '../hooks'
 import { TransactionHistoryList } from '../shared/TransactionHistoryList'
 
 export const History = () => {
-  const { selectedNetworks } = useSettings() 
+  const { selectedNetworks } = useSettings()
   const { address: accountAddress } = useAccount()
 
   const { data: transactionHistory = [], isLoading: isLoadingTransactionHistory } = useTransactionHistorySummary({
@@ -25,11 +25,11 @@ export const History = () => {
           paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`
         }}
       >
-          <TransactionHistoryList
-            transactions={transactionHistory}
-            isLoading={isLoadingTransactionHistory}
-            isFetchingNextPage={false}
-          />
+        <TransactionHistoryList
+          transactions={transactionHistory}
+          isLoading={isLoadingTransactionHistory}
+          isFetchingNextPage={false}
+        />
       </Box>
     </Box>
   )

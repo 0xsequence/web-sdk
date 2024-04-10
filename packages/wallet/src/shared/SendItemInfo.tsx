@@ -13,14 +13,14 @@ import { useSettings } from '../hooks'
 import { CollectibleTileImage } from '../shared/CollectibleTileImage'
 
 interface SendItemInfoProps {
-  name: string,
-  symbol: string,
-  decimals: number,
-  balance: string,
-  imageUrl?: string,
-  fiatValue?: string,
-  chainId: number,
-  showSquareImage?: boolean,
+  name: string
+  symbol: string
+  decimals: number
+  balance: string
+  imageUrl?: string
+  fiatValue?: string
+  chainId: number
+  showSquareImage?: boolean
 }
 
 export const SendItemInfoSkeleton = () => {
@@ -49,7 +49,7 @@ export const SendItemInfo = ({
   symbol,
   fiatValue,
   chainId,
-  showSquareImage,
+  showSquareImage
 }: SendItemInfoProps) => {
   const { chains } = useConfig()
   const { fiatCurrency } = useSettings()
@@ -69,16 +69,19 @@ export const SendItemInfo = ({
         )}
         <Box flexDirection="column" alignItems="flex-start">
           <Box flexDirection="row" alignItems="center" gap="1">
-            <Text variant="medium" color="text100">{name}</Text>
+            <Text variant="medium" color="text100">
+              {name}
+            </Text>
             <CoinIcon imageUrl={nativeTokenInfo.logoURI} size={12} />
           </Box>
-          <Text color="text50" variant="normal"> {`${balanceDisplayed} ${symbol} available`}</Text>
+          <Text color="text50" variant="normal">
+            {' '}
+            {`${balanceDisplayed} ${symbol} available`}
+          </Text>
         </Box>
       </Box>
       <Box flexDirection="column" alignItems="flex-end" justifyContent="flex-end">
-        {fiatValue && (
-          <Text variant="normal" color="text100">{`${fiatCurrency.sign}${fiatValue}`}</Text>
-        )}
+        {fiatValue && <Text variant="normal" color="text100">{`${fiatCurrency.sign}${fiatValue}`}</Text>}
       </Box>
     </Box>
   )

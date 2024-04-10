@@ -8,10 +8,9 @@ export interface CollectionDetailsParams {
 }
 
 export interface CollectionDetailsNavigation {
-  location: 'collection-details',
+  location: 'collection-details'
   params: CollectionDetailsParams
 }
-
 
 export interface CoinDetailsParams {
   contractAddress: string
@@ -19,7 +18,7 @@ export interface CoinDetailsParams {
 }
 
 export interface CoinDetailsNavigation {
-  location: 'coin-details',
+  location: 'coin-details'
   params: CoinDetailsParams
 }
 
@@ -30,7 +29,7 @@ export interface CollectibleDetailsParams {
 }
 
 export interface CollectibleDetailsNavigation {
-  location: 'collectible-details',
+  location: 'collectible-details'
   params: CollectibleDetailsParams
 }
 
@@ -39,7 +38,7 @@ export interface TransactionDetailsParams {
 }
 
 export interface TransactionDetailsNavigation {
-  location: 'transaction-details',
+  location: 'transaction-details'
   params: TransactionDetailsParams
 }
 
@@ -48,59 +47,59 @@ export interface SearchViewAllParams {
 }
 
 export interface SearchViewAllNavigation {
-  location: 'search-view-all',
+  location: 'search-view-all'
   params: SearchViewAllParams
 }
 
 export interface SendCoinParams {
-  chainId: number,
-  contractAddress: string,
+  chainId: number
+  contractAddress: string
 }
 
 export interface SendCoinNavigation {
-  location: 'send-coin',
+  location: 'send-coin'
   params: SendCoinParams
 }
 
 export interface SendCollectibleParams {
-  chainId: number,
-  contractAddress: string,
-  tokenId: string,
+  chainId: number
+  contractAddress: string
+  tokenId: string
 }
 
 export interface SendCollectibleNavigation {
-  location: 'send-collectible',
+  location: 'send-collectible'
   params: SendCollectibleParams
 }
 
 export interface BasicNavigation {
   location:
-    'home' |
-    'receive' |
-    'history' |
-    'receive' |
-    'settings' |
-    'settings-general' |
-    'settings-currency' |
-    'settings-networks' |
-    'search'
+    | 'home'
+    | 'receive'
+    | 'history'
+    | 'receive'
+    | 'settings'
+    | 'settings-general'
+    | 'settings-currency'
+    | 'settings-networks'
+    | 'search'
 }
 
 export type Navigation =
-  BasicNavigation |
-  CoinDetailsNavigation |
-  CollectibleDetailsNavigation |
-  CollectionDetailsNavigation |
-  TransactionDetailsNavigation |
-  SearchViewAllNavigation |
-  SendCoinNavigation |
-  SendCollectibleNavigation
+  | BasicNavigation
+  | CoinDetailsNavigation
+  | CollectibleDetailsNavigation
+  | CollectionDetailsNavigation
+  | TransactionDetailsNavigation
+  | SearchViewAllNavigation
+  | SendCoinNavigation
+  | SendCollectibleNavigation
 
 export type History = Navigation[]
 
 type NavigationContext = {
   setHistory: (history: History) => void
-  history: History,
+  history: History
 }
 
 export const [useNavigationContext, NavigationContextProvider] = createGenericContext<NavigationContext>()

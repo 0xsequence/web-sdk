@@ -4,8 +4,8 @@ import { createGenericContext, ModalPosition } from '../utils'
 
 type ThemeContext = {
   setTheme: React.Dispatch<React.SetStateAction<Theme>>
-  theme: Theme,
-  position: ModalPosition,
+  theme: Theme
+  position: ModalPosition
   setPosition: React.Dispatch<React.SetStateAction<ModalPosition>>
 }
 

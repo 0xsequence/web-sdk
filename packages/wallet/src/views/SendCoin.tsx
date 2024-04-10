@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useRef } from "react"
+import React, { useState, ChangeEvent, useRef } from 'react'
 import { ethers } from 'ethers'
 import {
   Box,
@@ -15,30 +15,12 @@ import {
 import { getNativeTokenInfoByChainId, useAnalyticsContext } from '@0xsequence/kit'
 import { TokenBalance } from '@0xsequence/indexer'
 import { ExtendedConnector } from '@0xsequence/kit'
-import {
-  useAccount,
-  useChainId,
-  useSwitchChain,
-  useWalletClient,
-  useConfig
-} from 'wagmi'
+import { useAccount, useChainId, useSwitchChain, useWalletClient, useConfig } from 'wagmi'
 
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { ERC_20_ABI } from '../constants'
-import {
-  useBalances,
-  useCoinPrices,
-  useConversionRate,
-  useSettings,
-  useOpenWalletModal
-} from '../hooks'
-import {
-  compareAddress,
-  computeBalanceFiat,
-  limitDecimals,
-  isEthAddress,
-  truncateAtMiddle
-} from '../utils'
+import { useBalances, useCoinPrices, useConversionRate, useSettings, useOpenWalletModal } from '../hooks'
+import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
 import { HEADER_HEIGHT } from '../constants'
 import * as sharedStyles from '../shared/styles.css'
 
@@ -47,10 +29,7 @@ interface SendCoinProps {
   contractAddress: string
 }
 
-export const SendCoin = ({
-  chainId,
-  contractAddress
-}: SendCoinProps) => {
+export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
@@ -66,34 +45,31 @@ export const SendCoin = ({
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
   const { data: walletClient } = useWalletClient()
-  const { data: balances = [], isLoading: isLoadingBalances } = useBalances({
-    accountAddress: accountAddress,
-    chainIds: [chainId],
-    contractAddress,
-  }, { hideUnlistedTokens: false })
-  const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
-  const tokenBalance = (balances as  TokenBalance[]).find(b => b.contractAddress === contractAddress)
-  const {
-    data: coinPrices = [],
-    isLoading: isLoadingCoinPrices
-  } = useCoinPrices({
-    tokens: [{
-      chainId,
+  const { data: balances = [], isLoading: isLoadingBalances } = useBalances(
+    {
+      accountAddress: accountAddress,
+      chainIds: [chainId],
       contractAddress
-    }]
-  });
+    },
+    { hideUnlistedTokens: false }
+  )
+  const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
+  const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
+  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useCoinPrices({
+    tokens: [
+      {
+        chainId,
+        contractAddress
+      }
+    ]
+  })
 
-  const {
-    data: conversionRate = 1,
-    isLoading: isLoadingConversionRate
-  } = useConversionRate({ toCurrency: fiatCurrency.symbol})
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({ toCurrency: fiatCurrency.symbol })
 
-  const isLoading =  isLoadingBalances || isLoadingCoinPrices || isLoadingConversionRate
+  const isLoading = isLoadingBalances || isLoadingCoinPrices || isLoadingConversionRate
 
   if (isLoading) {
-    return (
-      null
-    )
+    return null
   }
 
   const isNativeCoin = compareAddress(contractAddress, ethers.constants.AddressZero)
@@ -106,15 +82,15 @@ export const SendCoin = ({
 
   const amountToSendFiat = computeBalanceFiat({
     balance: {
-      ...tokenBalance as TokenBalance,
-      balance: amountRaw.toString(),
+      ...(tokenBalance as TokenBalance),
+      balance: amountRaw.toString()
     },
     prices: coinPrices,
     conversionRate,
     decimals
   })
 
-  const insufficientFunds = amountRaw.gt(tokenBalance?.balance || '0') 
+  const insufficientFunds = amountRaw.gt(tokenBalance?.balance || '0')
   const isNonZeroAmount = amountRaw.gt(0)
 
   const handleChangeAmount = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -129,7 +105,7 @@ export const SendCoin = ({
   const handleMax = () => {
     amountInputRef.current?.focus()
     const maxAmount = ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals).toString()
-    
+
     setAmount(maxAmount)
   }
 
@@ -155,26 +131,33 @@ export const SendCoin = ({
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
-          'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+          walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
           source: 'sequence-kit/wallet'
         }
       })
-      walletClient?.sendTransaction({
-        to: toAddress as `0x${string}}`,
-        value: BigInt(sendAmount.toString())
-      }).catch(e => console.error('User rejected transaction', e))
+      walletClient
+        ?.sendTransaction({
+          to: toAddress as `0x${string}}`,
+          value: BigInt(sendAmount.toString())
+        })
+        .catch(e => console.error('User rejected transaction', e))
     } else {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
-          'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+          walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
           source: 'sequence-kit/wallet'
         }
       })
-      walletClient?.sendTransaction({
-        to: tokenBalance?.contractAddress as `0x${string}}`,
-        data: new ethers.utils.Interface(ERC_20_ABI).encodeFunctionData('transfer', [toAddress, sendAmount.toHexString()]) as `0x${string}`
-      }).catch(e => console.error('User rejected transaction', e))
+      walletClient
+        ?.sendTransaction({
+          to: tokenBalance?.contractAddress as `0x${string}}`,
+          data: new ethers.utils.Interface(ERC_20_ABI).encodeFunctionData('transfer', [
+            toAddress,
+            sendAmount.toHexString()
+          ]) as `0x${string}`
+        })
+        .catch(e => console.error('User rejected transaction', e))
     }
     setOpenWalletModal(false)
   }
@@ -191,13 +174,7 @@ export const SendCoin = ({
       as="form"
       onSubmit={executeTransaction}
     >
-      <Box
-        background="backgroundSecondary"
-        borderRadius="md"
-        padding="4"
-        gap="2"
-        flexDirection="column"
-      >
+      <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
         <SendItemInfo
           imageUrl={imageUrl}
           decimals={decimals}
@@ -224,7 +201,9 @@ export const SendCoin = ({
                 {`~${fiatCurrency.sign}${amountToSendFiat}`}
               </Text>
               <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
-              <Text fontSize="xlarge" fontWeight="bold" color="text100">{symbol}</Text>
+              <Text fontSize="xlarge" fontWeight="bold" color="text100">
+                {symbol}
+              </Text>
             </>
           }
         />
@@ -234,14 +213,10 @@ export const SendCoin = ({
           </Text>
         )}
       </Box>
-      <Box
-        background="backgroundSecondary"
-        borderRadius="md"
-        padding="4"
-        gap="2"
-        flexDirection="column"
-      >
-        <Text fontSize="normal" color="text50">To</Text>
+      <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
+        <Text fontSize="normal" color="text50">
+          To
+        </Text>
         {isEthAddress(toAddress) ? (
           <Box
             borderRadius="md"
@@ -257,9 +232,7 @@ export const SendCoin = ({
           >
             <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
               <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-              <Text color="text100">
-                {`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}
-              </Text>
+              <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
             </Box>
             <CloseIcon size="xs" />
           </Box>
@@ -285,25 +258,21 @@ export const SendCoin = ({
         )}
       </Box>
 
-      {
-        showSwitchNetwork && (
-          <Box
-            marginTop="3"
-          >
-            <Text color="negative">The wallet is connected to the wrong network. Please switch network before proceeding</Text>
-            <Button
-              marginTop="2"
-              width="full"
-              variant="primary"
-              type="button"
-              label="Switch Network"
-              onClick={() => switchChain({ chainId })}
-              disabled={isCorrectChainId}
-              style={{ height: '52px', borderRadius: vars.radii.md }}
-            />
-          </Box>
-        )
-      }
+      {showSwitchNetwork && (
+        <Box marginTop="3">
+          <Text color="negative">The wallet is connected to the wrong network. Please switch network before proceeding</Text>
+          <Button
+            marginTop="2"
+            width="full"
+            variant="primary"
+            type="button"
+            label="Switch Network"
+            onClick={() => switchChain({ chainId })}
+            disabled={isCorrectChainId}
+            style={{ height: '52px', borderRadius: vars.radii.md }}
+          />
+        </Box>
+      )}
 
       <Button
         color="text100"
@@ -311,7 +280,9 @@ export const SendCoin = ({
         width="full"
         variant="primary"
         type="submit"
-        disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || (!isCorrectChainId && !isConnectorSequenceBased)}
+        disabled={
+          !isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || (!isCorrectChainId && !isConnectorSequenceBased)
+        }
         label="Send"
         rightIcon={ChevronRightIcon}
         style={{ height: '52px', borderRadius: vars.radii.md }}

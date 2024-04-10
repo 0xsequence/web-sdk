@@ -3,13 +3,13 @@ import { MethodArguments } from '../api'
 import { createGenericContext, Theme } from '@0xsequence/kit'
 
 interface CoinQuantity {
-  contractAddress: string,
-  amountRequiredRaw: string,
+  contractAddress: string
+  amountRequiredRaw: string
 }
 
 interface OrderSummaryItem {
-  contractAddress: string,
-  quantityRaw: string,
+  contractAddress: string
+  quantityRaw: string
   tokenId: string
 }
 
@@ -28,12 +28,12 @@ export interface CheckoutSettings {
     email?: string
     onSuccess?: (transactionHash: string) => void
     onError?: (error: Error) => void
-  },
+  }
   cryptoCheckout?: {
-    chainId: number,
-    triggerTransaction: () => void,
-    coinQuantity: CoinQuantity,
-  },
+    chainId: number
+    triggerTransaction: () => void
+    coinQuantity: CoinQuantity
+  }
   orderSummaryItems: OrderSummaryItem[]
 }
 

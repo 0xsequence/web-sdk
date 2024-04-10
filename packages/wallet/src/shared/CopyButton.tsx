@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 type ButtonProps = ComponentProps<typeof Button>
 
 interface CopyButtonProps extends ButtonProps {
-  text: string,
+  text: string
   buttonVariant: 'icon' | 'with-label'
 }
 
@@ -35,7 +35,7 @@ export const CopyButton = (props: CopyButtonProps) => {
         icon={isCopied ? CheckmarkIcon : CopyIcon}
         {...rest}
         style={{ background: backgroundColor, ...props?.style }}
-        label={buttonVariant === 'with-label' ? label: undefined}
+        label={buttonVariant === 'with-label' ? label : undefined}
       />
     </CopyToClipboard>
   )
