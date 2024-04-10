@@ -15,10 +15,12 @@ export const DefaultIcon = ({ size = 30 }: DefaultIconProps) => {
       flexShrink="0"
       style={{
         width: `${size}px`,
-        height: `${size}px`,
+        height: `${size}px`
       }}
     >
-      <Text variant="large" color="textInverse100">?</Text>
+      <Text variant="large" color="textInverse100">
+        ?
+      </Text>
     </Box>
   )
 }

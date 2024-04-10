@@ -6,6 +6,6 @@ export const useWalletSettings = () => {
 
   return {
     displayedAssets,
-    setDisplayedAssets,
+    setDisplayedAssets
   }
 }

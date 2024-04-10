@@ -8,7 +8,9 @@ const POLLING_TIME = 10 * 1000
 
 export const PendingTransaction = () => {
   const nav = useNavigation()
-  const { params: { transactionId } } = nav.navigation as TransactionPendingNavigation
+  const {
+    params: { transactionId }
+  } = nav.navigation as TransactionPendingNavigation
   const { setNavigation } = nav
 
   const paperGetStatusUrl = `https://withpaper.com/api/v1/transaction-status/${transactionId}`
@@ -31,31 +33,34 @@ export const PendingTransaction = () => {
         return
       }
       if (status === 'TRANSFER_SUCCEEDED') {
-        setNavigation && setNavigation({
-          location: 'transaction-success',
-          params: {
-            transactionHash,
-          }
-        })
+        setNavigation &&
+          setNavigation({
+            location: 'transaction-success',
+            params: {
+              transactionHash
+            }
+          })
         return
       }
       if (status === 'TRANSFER_FAILED' || status === 'PAYMENT_FAILED') {
-        setNavigation && setNavigation({
-          location: 'transaction-error',
-          params: {
-            error: new Error('Failed to transfer collectible'),
-          }
-        })
+        setNavigation &&
+          setNavigation({
+            location: 'transaction-error',
+            params: {
+              error: new Error('Failed to transfer collectible')
+            }
+          })
         return
       }
     } catch (e) {
       console.error('An error occurred while fetching the transaction status')
-      setNavigation && setNavigation({
-        location: 'transaction-error',
-        params: {
-          error: e,
-        }
-      })
+      setNavigation &&
+        setNavigation({
+          location: 'transaction-error',
+          params: {
+            error: e
+          }
+        })
     }
   }
 
@@ -83,7 +88,8 @@ export const PendingTransaction = () => {
       >
         <Spinner size="lg" style={{ width: '60px', height: '60px' }} />
         <Text variant="medium" color="text50" textAlign="center" marginTop="8">
-          Transaction in progress. <br/>This may take a few minutes.         
+          Transaction in progress. <br />
+          This may take a few minutes.
         </Text>
       </Box>
     </Box>

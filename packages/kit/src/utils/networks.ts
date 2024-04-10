@@ -1,7 +1,4 @@
-export const getChainColor = (
-  chainId: number,
-  mode: 'dark' | 'light' = 'light'
-) => {
+export const getChainColor = (chainId: number, mode: 'dark' | 'light' = 'light') => {
   switch (chainId) {
     case 1:
       return mode === 'light' ? '#abf' : '#abf'
@@ -26,12 +23,9 @@ export const getChainColor = (
   }
 }
 
-export const getChainBGColor = (
-  chainId: number,
-  mode: 'dark' | 'light' = 'light'
-) => {
+export const getChainBGColor = (chainId: number, mode: 'dark' | 'light' = 'light') => {
   switch (chainId) {
-    case 1: 
+    case 1:
       return mode === 'light' ? '#132362' : '#132362'
     case 137:
       return mode === 'light' ? '#350881' : '#350881'

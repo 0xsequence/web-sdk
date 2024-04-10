@@ -1,14 +1,14 @@
 import { ethers } from 'ethers'
-import { ETHAuthProof } from "@0xsequence/auth"
-import { ETHAuth, Proof,  } from '@0xsequence/ethauth'
+import { ETHAuthProof } from '@0xsequence/auth'
+import { ETHAuth, Proof } from '@0xsequence/ethauth'
 import { sequence } from '0xsequence'
 import { UsePublicClientReturnType } from 'wagmi'
 import { GetWalletClientData } from 'wagmi/query'
 
 import { publicClientToProvider, walletClientToSigner } from './adapters'
 
-import { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from "../constants"
-import { EthAuthSettings } from "../components/KitProvider"
+import { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from '../constants'
+import { EthAuthSettings } from '../components/KitProvider'
 
 export const signEthAuthProof = async (walletClient: GetWalletClientData<any, any>): Promise<ETHAuthProof> => {
   const proofInformation = localStorage.getItem(LocalStorageKey.EthAuthProof)
@@ -43,25 +43,23 @@ export const signEthAuthProof = async (walletClient: GetWalletClientData<any, an
   typedData.domain.verifyingContract
 
   const signer = walletClientToSigner(walletClient)
-  const signature = await signer._signTypedData(
-    typedData.domain, typedData.types, typedData.message
-  )
+  const signature = await signer._signTypedData(typedData.domain, typedData.types, typedData.message)
 
   proof.signature = signature
 
   const ethAuth = new ETHAuth()
   const proofString = await ethAuth.encodeProof(proof, true)
 
-  return ({
+  return {
     typedData,
     proofString
-  })
+  }
 }
 
 export const validateEthProof = async (
   walletClient: GetWalletClientData<any, any>,
   publicClient: UsePublicClientReturnType<any, any>,
-  proof: ETHAuthProof,
+  proof: ETHAuthProof
 ): Promise<boolean> => {
   const walletAddress = walletClient.account.address
   const ethAuth = new ETHAuth()
@@ -69,12 +67,7 @@ export const validateEthProof = async (
   const decodedProof = await ethAuth.decodeProof(proof.proofString, true)
   const provider = publicClientToProvider(publicClient)
 
-  const isValid = await sequence.utils.isValidTypedDataSignature(
-    walletAddress,
-    proof.typedData,
-    decodedProof.signature,
-    provider,
-  )
+  const isValid = await sequence.utils.isValidTypedDataSignature(walletAddress, proof.typedData, decodedProof.signature, provider)
 
   return isValid
 }

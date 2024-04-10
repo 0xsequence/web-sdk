@@ -29,7 +29,7 @@ export const supportedFiatCurrencies: FiatCurrency[] = [
   { symbol: 'DKK', sign: 'kr ', name: { message: 'Danish Krone' }, decimals: 2 },
   { symbol: 'PLN', sign: 'zł ', name: { message: 'Polish Zloty' }, decimals: 2 },
   { symbol: 'THB', sign: '฿', name: { message: 'Thai Baht' }, decimals: 2 },
-  { symbol: 'IDR', sign: 'Rp', name: { message: 'Indonesian Rupiah' }, decimals: 2 },
+  { symbol: 'IDR', sign: 'Rp', name: { message: 'Indonesian Rupiah' }, decimals: 2 }
 ]
 
 export const defaultFiatCurrency = supportedFiatCurrencies[0]

@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Box,
-  Text,
-} from '@0xsequence/design-system'
+import { Box, Text } from '@0xsequence/design-system'
 import { useCheckoutModal } from '../hooks/useCheckoutModal'
 import { PaperTransaction } from '../shared/components/PaperTransaction'
 import { HEADER_HEIGHT } from '../constants'
@@ -20,9 +17,7 @@ export const PaperTransactionForm = () => {
         marginTop: HEADER_HEIGHT
       }}
     >
-      {settings && (
-        <PaperTransaction settings={settings}  />
-      )}
+      {settings && <PaperTransaction settings={settings} />}
     </Box>
   )
 }

@@ -22,7 +22,7 @@ export const TransactionError = () => {
         flexDirection="column"
         alignItems="center"
         position="absolute"
-        style={{top: '50%', right: '50%', transform: 'translate(50%, -50%)'}}
+        style={{ top: '50%', right: '50%', transform: 'translate(50%, -50%)' }}
       >
         <NotificationErrorIcon />
         <Text fontSize="xlarge">Error</Text>
@@ -31,7 +31,7 @@ export const TransactionError = () => {
         </Text>
       </Box>
     </Box>
- )
+  )
 }
 
 export const NotificationErrorIcon = () => (

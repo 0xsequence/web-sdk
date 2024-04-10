@@ -5,5 +5,5 @@ export const getPaperNetworkName = (network: NetworkConfig): string => {
   if (network.chainId === 1) {
     return 'Ethereum'
   }
-  return (capitalize(network.name))
+  return capitalize(network.name)
 }

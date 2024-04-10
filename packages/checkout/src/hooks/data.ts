@@ -11,7 +11,7 @@ import {
   GetCoinPricesArgs,
   fetchTokenMetadata,
   GetTokenMetadataArgs,
-  fetchContractInfo,
+  fetchContractInfo
 } from '../api/data'
 
 export const time = {
@@ -46,7 +46,7 @@ export const useCoinPrices = (args: GetCoinPricesArgs): UseQueryResult<TokenPric
     staleTime: 1 * time.oneMinute,
     enabled: args.tokens.length > 0
   })
-  
+
 export const useTokenMetadata = (args: GetTokenMetadataArgs): UseQueryResult<TokenMetadata> =>
   useQuery({
     queryKey: ['useTokenMetadata', args],
