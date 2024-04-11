@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit",
-  "version": "2.0.5-beta.14",
+  "version": "2.0.8-beta",
   "description": "Core package for Sequence Kit",
   "keywords": [
     "sequence",
@@ -18,6 +18,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@0xsequence/core": "^1.9.17",
     "@0xsequence/auth": "^1.9.17",
     "@0xsequence/api": "^1.9.17",
     "@0xsequence/indexer": "^1.9.17",

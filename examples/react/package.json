@@ -6,6 +6,7 @@
   "type": "module",
   "dependencies": {
     "0xsequence": "^1.9.17",
+    "@0xsequence/core": "^1.9.17",
     "@0xsequence/design-system": "^1.1.0",
     "@0xsequence/kit": "workspace:*",
     "@0xsequence/kit-checkout": "workspace:*",
