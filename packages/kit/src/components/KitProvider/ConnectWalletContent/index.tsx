@@ -255,10 +255,10 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                     aspectRatio="1/1"
                     alignItems="center"
                     justifyContent="center"
-                    style={{ width: '43px', height: '42px', margin: '12px 4px' }}
+                    style={{ width: '40px', height: '40px', margin: '12px 4px' }}
                   >
                     {connector._wallet.id === 'google-waas' && (
-                      <Box alignItems="center" justifyContent="center">
+                      <Box className={styles.googleWaasButtonContainer}>
                         <GoogleLogin
                           type="icon"
                           size="large"

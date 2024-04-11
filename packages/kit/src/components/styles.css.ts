@@ -43,6 +43,17 @@ globalStyle(`${walletContent} + button > svg`, {
   height: '20px'
 })
 
+export const googleWaasButtonContainer = style({})
+
+globalStyle(`${googleWaasButtonContainer}`, {
+  width: '40px',
+  height: '40px',
+  overflow: 'hidden',
+  borderRadius: '4px',
+  alignItems: 'center',
+  justifyContent: 'center'
+})
+
 export const digitInput = style([
   textVariants({ variant: 'large' }),
   {
