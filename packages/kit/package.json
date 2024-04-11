@@ -24,7 +24,7 @@
     "@0xsequence/metadata": "^1.9.11",
     "@0xsequence/network": "^1.9.11",
     "@0xsequence/provider": "^1.9.11",
-    "@0xsequence/design-system": "^1.1.0",
+    "@0xsequence/design-system": "^1.4.0",
     "@0xsequence/ethauth": "^0.8.1",
     "@0xsequence/kit-connectors": "workspace:*",
     "@0xsequence/utils": "1.9.11",

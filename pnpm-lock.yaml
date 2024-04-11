@@ -141,20 +141,20 @@ importers:
         specifier: ^1.9.11
         version: 1.9.11(ethers@5.7.2)
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.0
+        version: 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
         specifier: ^2.0.0
         version: 2.0.7(0xsequence@1.9.11)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/kit-checkout':
         specifier: ^2.0.0
-        version: 2.0.7(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
+        version: 2.0.7(@0xsequence/design-system@1.4.0)(@0xsequence/kit@2.0.7)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
       '@0xsequence/kit-connectors':
         specifier: ^2.0.0
-        version: 2.0.7(0xsequence@1.9.11)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
+        version: 2.0.7(0xsequence@1.9.11)(@0xsequence/design-system@1.4.0)(@0xsequence/kit@2.0.7)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/kit-wallet':
         specifier: ^2.0.0
-        version: 2.0.7(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
+        version: 2.0.7(@0xsequence/design-system@1.4.0)(@0xsequence/kit@2.0.7)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7)
       '@tanstack/react-query':
         specifier: ^4.36.1
         version: 4.36.1(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)
@@ -242,8 +242,8 @@ importers:
         version: 5.1.0(react@18.2.0)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.0
+        version: 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
@@ -300,8 +300,8 @@ importers:
         version: 2.5.7(@tanstack/react-query@5.20.5)(@types/react@18.2.55)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(rollup@2.79.1)(typescript@5.3.3)(viem@2.7.9)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.0
+        version: 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
@@ -315,8 +315,8 @@ importers:
         specifier: ^1.9.11
         version: 1.9.11(ethers@5.7.2)
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.0
+        version: 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/ethauth':
         specifier: ^0.8.1
         version: 0.8.1(ethers@5.7.2)
@@ -410,8 +410,8 @@ importers:
         version: 5.1.0(react@18.2.0)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.0
+        version: 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
@@ -528,8 +528,8 @@ packages:
       '@0xsequence/abi': 1.9.11
       ethers: 5.7.2
 
-  /@0xsequence/design-system@1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-LGZZoO/oJSCTxeRS/9mQg7sfIdYfZbcHJ1DFQ6xG5uMZEZyCTUplKqrA3X3d4PD/bZO+PKgJ9LTUFDh4KLEzWQ==}
+  /@0xsequence/design-system@1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Kw2AroLzUb0JDPngH3M4lRhHhZc6O8qAB6TbY1eUEN644xdZAq/+ptakDifVJO4Xmz5BkVo2jyV1DllVF5RLzQ==}
     peerDependencies:
       framer-motion: '>=6'
       react: '>=17'
@@ -550,7 +550,7 @@ packages:
       framer-motion: 8.5.5(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-hook-form: 7.50.1(react@18.2.0)
+      react-hook-form: 7.51.2(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -578,7 +578,7 @@ packages:
   /@0xsequence/indexer@1.9.11:
     resolution: {integrity: sha512-YsaY+oRuE1WS0CG203HBbC8iz9F2I8LvxbGW0Q9YxhJuQGYD9UJ1IncGh9qYG7b60Sz8qvZGSFsG7X5PYyEsRg==}
 
-  /@0xsequence/kit-checkout@2.0.7(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
+  /@0xsequence/kit-checkout@2.0.7(@0xsequence/design-system@1.4.0)(@0xsequence/kit@2.0.7)(@babel/core@7.23.9)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
     resolution: {integrity: sha512-oolLugx2I2oG4Hk4aopJZmMch1/gCny9KmVNds02374ZM1bM4uc1yp+3XNLuRkZcuuTmbjO/5S14tTjyOH0YdA==}
     peerDependencies:
       '@0xsequence/design-system': '>=1.1.0'
@@ -593,7 +593,7 @@ packages:
     dependencies:
       0xsequence: 1.9.11(ethers@5.7.2)
       '@0xsequence/api': 1.9.11
-      '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+      '@0xsequence/design-system': 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/indexer': 1.9.11
       '@0xsequence/kit': 2.0.7(0xsequence@1.9.11)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/metadata': 1.9.11
@@ -615,7 +615,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsequence/kit-connectors@2.0.7(0xsequence@1.9.11)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7):
+  /@0xsequence/kit-connectors@2.0.7(0xsequence@1.9.11)(@0xsequence/design-system@1.4.0)(@0xsequence/kit@2.0.7)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7):
     resolution: {integrity: sha512-tjSx0RTI5k9wDTK3S3xQ969wG8IaPOmPpNHR620HBkpnHysVVj4nyNW/5tutbe0zF0QvzIcVVex2KJI1+9kw9g==}
     peerDependencies:
       0xsequence: '>=1.9.11'
@@ -628,7 +628,7 @@ packages:
       wagmi: '>=2.0.0'
     dependencies:
       0xsequence: 1.9.11(ethers@5.7.2)
-      '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+      '@0xsequence/design-system': 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit': 2.0.7(0xsequence@1.9.11)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/provider': 1.9.11(ethers@5.7.2)
       ethers: 5.7.2
@@ -641,7 +641,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsequence/kit-wallet@2.0.7(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
+  /@0xsequence/kit-wallet@2.0.7(@0xsequence/design-system@1.4.0)(@0xsequence/kit@2.0.7)(@types/react-dom@18.2.19)(@types/react@18.2.55)(@vanilla-extract/css@1.14.1)(@vanilla-extract/recipes@0.3.0)(ethers@5.7.2)(framer-motion@8.5.5)(react-dom@18.2.0)(react-native@0.73.4)(react@18.2.0)(wagmi@2.5.7):
     resolution: {integrity: sha512-Eo/L2zoDv9x0DWStoKLLrMCmshrSPkHs06bSXLIk1/9nniIJ3z5J2xlNyFKZuITwnJymb7SL/EoVn/bt9a7+Zw==}
     peerDependencies:
       '@0xsequence/design-system': '>=1.1.0'
@@ -656,7 +656,7 @@ packages:
     dependencies:
       0xsequence: 1.9.11(ethers@5.7.2)
       '@0xsequence/api': 1.9.11
-      '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+      '@0xsequence/design-system': 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/indexer': 1.9.11
       '@0xsequence/kit': 2.0.7(0xsequence@1.9.11)(@types/react-dom@18.2.19)(@types/react@18.2.55)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/metadata': 1.9.11
@@ -697,10 +697,10 @@ packages:
       0xsequence: 1.9.11(ethers@5.7.2)
       '@0xsequence/api': 1.9.11
       '@0xsequence/auth': 1.9.11(ethers@5.7.2)
-      '@0xsequence/design-system': 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+      '@0xsequence/design-system': 1.4.0(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/ethauth': 0.8.1(ethers@5.7.2)
       '@0xsequence/indexer': 1.9.11
-      '@0xsequence/kit-connectors': 2.0.7(0xsequence@1.9.11)(@0xsequence/design-system@1.2.3)(@0xsequence/kit@2.0.7)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
+      '@0xsequence/kit-connectors': 2.0.7(0xsequence@1.9.11)(@0xsequence/design-system@1.4.0)(@0xsequence/kit@2.0.7)(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(viem@2.7.9)(wagmi@2.5.7)
       '@0xsequence/metadata': 1.9.11
       '@0xsequence/network': 1.9.11(ethers@5.7.2)
       '@0xsequence/provider': 1.9.11(ethers@5.7.2)
@@ -12243,8 +12243,8 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-hook-form@7.50.1(react@18.2.0):
-    resolution: {integrity: sha512-3PCY82oE0WgeOgUtIr3nYNNtNvqtJ7BZjsbxh6TnYNbXButaD5WpjOmTjdxZfheuHKR68qfeFnEDVYoSSFPMTQ==}
+  /react-hook-form@7.51.2(react@18.2.0):
+    resolution: {integrity: sha512-y++lwaWjtzDt/XNnyGDQy6goHskFualmDlf+jzEZvjvz6KWDf7EboL7pUvRCzPTJd0EOPpdekYaQLEvvG6m6HA==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
