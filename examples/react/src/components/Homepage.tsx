@@ -1,8 +1,15 @@
 import React, { useEffect } from 'react'
 import qs from 'query-string'
-import { useOpenConnectModal, signEthAuthProof, validateEthProof, useTheme as useKitTheme } from '@0xsequence/kit'
+import {
+  useOpenConnectModal,
+  signEthAuthProof,
+  validateEthProof,
+  useTheme as useKitTheme,
+  useWaasFeeOptions
+} from '@0xsequence/kit'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { useCheckoutModal } from '@0xsequence/kit-checkout'
+
 import {
   useDisconnect,
   useAccount,
@@ -26,7 +33,8 @@ import {
   vars,
   Spinner,
   useMediaQuery,
-  Switch
+  Switch,
+  Select
 } from '@0xsequence/design-system'
 
 import { Footer } from './Footer'
@@ -34,6 +42,7 @@ import { messageToSign } from '../constants'
 import { formatAddress, getCheckoutSettings } from '../utils'
 import { sequence } from '0xsequence'
 import abi from '../constants/nft-abi'
+import { ethers } from 'ethers'
 
 function Homepage() {
   const { theme, setTheme } = useTheme()
@@ -61,6 +70,16 @@ function Homepage() {
   const [confirmationEnabled, setConfirmationEnabled] = React.useState<boolean>(
     localStorage.getItem('confirmationEnabled') === 'true'
   )
+
+  const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = useWaasFeeOptions()
+
+  const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
+
+  useEffect(() => {
+    if (pendingFeeOptionConfirmation) {
+      setSelectedFeeOptionTokenName(pendingFeeOptionConfirmation.options[0].token.name)
+    }
+  }, [pendingFeeOptionConfirmation])
 
   const chainId = useChainId()
 
@@ -374,6 +393,50 @@ function Homepage() {
                 onClick={onSwitchNetwork}
               />
             </Box>
+
+            {pendingFeeOptionConfirmation && (
+              <Box marginY="3">
+                <Select
+                  name="feeOption"
+                  labelLocation="top"
+                  label="Pick a fee option"
+                  onValueChange={val => {
+                    const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
+                    if (selected) {
+                      setSelectedFeeOptionTokenName(selected.token.name)
+                    }
+                  }}
+                  value={selectedFeeOptionTokenName}
+                  options={[
+                    ...pendingFeeOptionConfirmation?.options?.map(option => ({
+                      label: (
+                        <Box alignItems="center" gap="2">
+                          <Text>{option.token.name}</Text>
+                          <Text>{ethers.utils.formatUnits(option.value, option.token.decimals)}</Text>
+                        </Box>
+                      ),
+                      value: option.token.name
+                    }))
+                  ]}
+                />
+                <Box marginY="2" alignItems="center" justifyContent="center">
+                  <Button
+                    onClick={() => {
+                      console.log('a')
+                      const selected = pendingFeeOptionConfirmation?.options?.find(
+                        option => option.token.name === selectedFeeOptionTokenName
+                      )
+                      console.log('a2')
+                      if (selected.token.contractAddress !== undefined) {
+                        console.log('a3', selected.token.contractAddress)
+                        confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
+                      }
+                    }}
+                    label="Confirm fee option"
+                  />
+                </Box>
+              </Box>
+            )}
 
             <Box marginY="3">
               <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">

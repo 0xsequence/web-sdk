@@ -1,4 +1,4 @@
-import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig } from '@0xsequence/waas'
+import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, Transaction, FeeOption } from '@0xsequence/waas'
 import { LocalStorageKey } from '@0xsequence/kit'
 import { TransactionRejectedRpcError, UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
@@ -209,6 +209,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
   }
 
   requestConfirmationHandler: WaasRequestConfirmationHandler | undefined
+  feeConfirmationHandler: WaasFeeOptionConfirmationHandler | undefined
 
   currentNetwork: ethers.providers.Network = this.network
 
@@ -245,9 +246,36 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         }
       }
 
+      const feeOptionsResponse = await this.checkTransactionFeeOptions({ transactions: [txns] as Transaction[], chainId })
+      const feeOptions = feeOptionsResponse?.feeOptions
+      let selectedFeeOption: FeeOption | undefined
+
+      if (!feeOptionsResponse?.isSponsored && feeOptions && feeOptions.length > 0) {
+        if (!this.feeConfirmationHandler) {
+          return new TransactionRejectedRpcError(
+            new Error('Unable to send transaction: please use UseWaasFeeOptions hook and pick a fee option')
+          )
+        }
+
+        const id = uuidv4()
+        const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, txns, chainId)
+
+        if (!confirmation.confirmed) {
+          return new UserRejectedRequestError(new Error('User rejected send transaction request'))
+        }
+
+        if (id !== confirmation.id) {
+          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
+        }
+
+        selectedFeeOption = feeOptions.find(feeOption => feeOption.token.contractAddress === confirmation.feeTokenAddress)
+      }
+
       const response = await this.sequenceWaas.sendTransaction({
         transactions: [await ethers.utils.resolveProperties(params[0])],
-        network: chainId
+        network: chainId,
+        transactionsFeeOption: selectedFeeOption,
+        transactionsFeeQuote: feeOptionsResponse?.feeQuote
       })
 
       if (response.code === 'transactionFailed') {
@@ -303,6 +331,24 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
   getChainId() {
     return this.currentNetwork.chainId
   }
+
+  async checkTransactionFeeOptions({
+    transactions,
+    chainId
+  }: {
+    transactions: Transaction[]
+    chainId: number
+  }): Promise<{ feeQuote: string | undefined; feeOptions: FeeOption[] | undefined; isSponsored: boolean }> {
+    const resp = await this.sequenceWaas.feeOptions({
+      transactions: transactions,
+      network: chainId
+    })
+
+    if (resp.data.feeQuote && resp.data.feeOptions) {
+      return { feeQuote: resp.data.feeQuote, feeOptions: resp.data.feeOptions, isSponsored: false }
+    }
+    return { feeQuote: resp.data.feeQuote, feeOptions: resp.data.feeOptions, isSponsored: true }
+  }
 }
 
 export interface WaasRequestConfirmationHandler {
@@ -312,6 +358,15 @@ export interface WaasRequestConfirmationHandler {
     chainId: number
   ): Promise<{ id: string; confirmed: boolean }>
   confirmSignMessageRequest(id: string, message: string, chainId: number): Promise<{ id: string; confirmed: boolean }>
+}
+
+export interface WaasFeeOptionConfirmationHandler {
+  confirmFeeOption(
+    id: string,
+    options: FeeOption[],
+    txs: ethers.Transaction[],
+    chainId: number
+  ): Promise<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>
 }
 
 const DEVICE_EMOJIS = [
