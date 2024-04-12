@@ -30,38 +30,24 @@ function App() {
   ]
 
   const projectAccessKey = 'T3czhtWsTONJpbjFgAdLAuEAAAAAAAAA'
-  const waasConfigKey = 'eyJwcm9qZWN0SWQiOjc1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
-  const googleClientId = '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
-  const appleClientId = 'com.horizon.sequence.waas'
-  const appleRedirectURI = 'https://' + window.location.host
 
-  const connectors = [
-    ...getDefaultWaasConnectors({
-      walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: 42170,
-      waasConfigKey,
-      googleClientId,
-      appleClientId,
-      appleRedirectURI,
-      appName: 'Kit Demo',
-      projectAccessKey,
-      enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true'
-    }),
-    ...(isDebugMode
-      ? getKitConnectWallets(projectAccessKey, [
-          mock({
-            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
-          })
-        ])
-      : [])
-  ]
+  // WaaS config
+  // const waasConfigKey = 'eyJwcm9qZWN0SWQiOjc1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
+  // const googleClientId = '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
+  // const appleClientId = 'com.horizon.sequence.waas'
+  // const appleRedirectURI = 'https://' + window.location.host
 
   // const connectors = [
-  //   ...getDefaultConnectors({
+  //   ...getDefaultWaasConnectors({
   //     walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-  //     defaultChainId: 137,
-  //     appName: 'demo app',
-  //     projectAccessKey
+  //     defaultChainId: 42170,
+  //     waasConfigKey,
+  //     googleClientId,
+  //     appleClientId,
+  //     appleRedirectURI,
+  //     appName: 'Kit Demo',
+  //     projectAccessKey,
+  //     enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true'
   //   }),
   //   ...(isDebugMode
   //     ? getKitConnectWallets(projectAccessKey, [
@@ -71,6 +57,22 @@ function App() {
   //       ])
   //     : [])
   // ]
+
+  const connectors = [
+    ...getDefaultConnectors({
+      walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
+      defaultChainId: 137,
+      appName: 'demo app',
+      projectAccessKey
+    }),
+    ...(isDebugMode
+      ? getKitConnectWallets(projectAccessKey, [
+          mock({
+            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
+          })
+        ])
+      : [])
+  ]
 
   const transports = {}
 
