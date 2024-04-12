@@ -1,5 +1,3 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { useOpenConnectModal, useWaasFeeOptions } from '@0xsequence/kit'
 import {
@@ -12,7 +10,7 @@ import {
   useWalletClient
 } from 'wagmi'
 import { sequence } from '0xsequence'
-import { formatUnits, parseUnits } from 'viem'
+import { formatUnits } from 'viem'
 import { useEffect, useState } from 'react'
 
 function App() {
