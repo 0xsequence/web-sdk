@@ -6,13 +6,13 @@ import { useAccount } from 'wagmi'
 
 import { CollectionDetailsSkeleton } from './Skeleton'
 
-import { SCROLLBAR_WIDTH } from '../../constants'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { CoinIcon } from '../../shared/CoinIcon'
 import { useCollectionBalance, useNavigation } from '../../hooks'
 import { formatDisplay } from '../../utils'
 
 import * as sharedStyles from '../../shared/styles.css'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 interface CollectionDetailsProps {
   chainId: number
@@ -27,6 +27,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
     accountAddress: accountAddress || '',
     collectionAddress: contractAddress
   })
+  const scrollbarWidth = useScrollbarWidth()
 
   const contractInfo = collectionBalanceData?.[0]?.contractInfo
   const collectionLogoURI = contractInfo?.logoURI
@@ -57,7 +58,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
       alignItems="center"
       justifyContent="center"
       gap="10"
-      style={{ paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})` }}
+      style={{ paddingRight: `calc(${vars.space[5]} - ${scrollbarWidth})` }}
     >
       <Box flexDirection="column" gap="2" justifyContent="center" alignItems="center">
         <CoinIcon imageUrl={collectionLogoURI} size={32} />

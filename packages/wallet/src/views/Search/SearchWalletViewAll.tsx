@@ -7,9 +7,9 @@ import Fuse from 'fuse.js'
 import { useAccount, useConfig } from 'wagmi'
 
 import { Skeleton } from '../../shared/Skeleton'
-import { SCROLLBAR_WIDTH } from '../../constants'
 import { useBalances, useCoinPrices, useConversionRate, useSettings } from '../../hooks'
 import { compareAddress, computeBalanceFiat } from '../../utils'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
@@ -20,6 +20,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const { fiatCurrency, hideUnlistedTokens, selectedNetworks } = useSettings()
   const [search, setSearch] = useState('')
   const [selectedTab, setSelectedTab] = useState(defaultTab)
+  const scrollbarWidth = useScrollbarWidth()
 
   useEffect(() => {
     setSearch('')
@@ -148,7 +149,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
       alignItems="center"
       justifyContent="center"
       style={{
-        paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`
+        paddingRight: `calc(${vars.space[5]} - ${scrollbarWidth})`
       }}
     >
       <Box width="full">

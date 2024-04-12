@@ -9,15 +9,16 @@ import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
 
 import { Skeleton } from '../../shared/Skeleton'
-import { SCROLLBAR_WIDTH } from '../../constants'
 import { useBalances, useCoinPrices, useConversionRate, useSettings } from '../../hooks'
 import { compareAddress, computeBalanceFiat } from '../../utils'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 export const SearchWallet = () => {
   const { chains } = useConfig()
   const { fiatCurrency, hideUnlistedTokens, selectedNetworks } = useSettings()
   const [search, setSearch] = useState('')
   const { address: accountAddress } = useAccount()
+  const scrollbarWidth = useScrollbarWidth()
 
   const { data: tokenBalancesData, isLoading: tokenBalancesIsLoading } = useBalances(
     {
@@ -126,7 +127,7 @@ export const SearchWallet = () => {
       gap="10"
       alignItems="center"
       justifyContent="center"
-      style={{ paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})` }}
+      style={{ paddingRight: `calc(${vars.space[5]} - ${scrollbarWidth})` }}
     >
       <Box width="full">
         <TextInput

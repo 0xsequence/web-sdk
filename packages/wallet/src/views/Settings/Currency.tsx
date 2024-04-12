@@ -2,18 +2,21 @@ import React from 'react'
 import { Box, Text, vars } from '@0xsequence/design-system'
 
 import { SelectButton } from '../../shared/SelectButton'
-import { SCROLLBAR_WIDTH, supportedFiatCurrencies } from '../../constants'
+import { supportedFiatCurrencies } from '../../constants'
 import { useSettings } from '../../hooks'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 export const SettingsCurrency = () => {
   const { fiatCurrency, setFiatCurrency } = useSettings()
+  const scrollbarWidth = useScrollbarWidth()
+
   return (
     <Box
       paddingBottom="5"
       paddingLeft="5"
       paddingTop="3"
       style={{
-        paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`
+        paddingRight: `calc(${vars.space[5]} - ${scrollbarWidth})`
       }}
     >
       <Box flexDirection="column" gap="2">

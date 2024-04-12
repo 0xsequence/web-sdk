@@ -2,13 +2,14 @@ import { Box, vars } from '@0xsequence/design-system'
 import React from 'react'
 import { useAccount } from 'wagmi'
 
-import { SCROLLBAR_WIDTH } from '../constants'
 import { useSettings, useTransactionHistorySummary } from '../hooks'
 import { TransactionHistoryList } from '../shared/TransactionHistoryList'
+import { useScrollbarWidth } from '../hooks/useScrollbarWidth'
 
 export const History = () => {
   const { selectedNetworks } = useSettings()
   const { address: accountAddress } = useAccount()
+  const scrollbarWidth = useScrollbarWidth()
 
   const { data: transactionHistory = [], isLoading: isLoadingTransactionHistory } = useTransactionHistorySummary({
     accountAddress: accountAddress || '',
@@ -22,7 +23,7 @@ export const History = () => {
         paddingBottom="5"
         paddingTop="3"
         style={{
-          paddingRight: `calc(${vars.space[5]} - ${SCROLLBAR_WIDTH})`
+          paddingRight: `calc(${vars.space[5]} - ${scrollbarWidth})`
         }}
       >
         <TransactionHistoryList
