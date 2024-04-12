@@ -15,7 +15,7 @@ export type WaasFeeOptionConfirmation = {
 
 export function useWaasFeeOptions(): [
   WaasFeeOptionConfirmation | undefined,
-  (id: string, feeTokenAddress: string) => void,
+  (id: string, feeTokenAddress: string | null) => void,
   (id: string) => void
 ] {
   const connections = useConnections()

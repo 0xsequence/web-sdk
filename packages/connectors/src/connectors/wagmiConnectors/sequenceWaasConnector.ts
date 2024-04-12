@@ -233,19 +233,6 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
 
       const chainId = this.getChainId()
 
-      if (this.requestConfirmationHandler && this.showConfirmation) {
-        const id = uuidv4()
-        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(id, txns, chainId)
-
-        if (!confirmation.confirmed) {
-          return new UserRejectedRequestError(new Error('User rejected send transaction request'))
-        }
-
-        if (id !== confirmation.id) {
-          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
-        }
-      }
-
       const feeOptionsResponse = await this.checkTransactionFeeOptions({ transactions: [txns] as Transaction[], chainId })
       const feeOptions = feeOptionsResponse?.feeOptions
       let selectedFeeOption: FeeOption | undefined
@@ -269,6 +256,19 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         }
 
         selectedFeeOption = feeOptions.find(feeOption => feeOption.token.contractAddress === confirmation.feeTokenAddress)
+      }
+
+      if (this.requestConfirmationHandler && this.showConfirmation) {
+        const id = uuidv4()
+        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(id, txns, chainId)
+
+        if (!confirmation.confirmed) {
+          return new UserRejectedRequestError(new Error('User rejected send transaction request'))
+        }
+
+        if (id !== confirmation.id) {
+          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
+        }
       }
 
       const response = await this.sequenceWaas.sendTransaction({
