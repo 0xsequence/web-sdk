@@ -1,5 +1,4 @@
 import React from 'react'
-import { Box } from '@0xsequence/design-system'
 
 interface GetTwitchLogo {
   isDarkMode?: boolean

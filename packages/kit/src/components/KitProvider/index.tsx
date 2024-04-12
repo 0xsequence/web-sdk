@@ -92,7 +92,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || THEMES.dark)
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
-  const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
+  const [analytics, setAnalytics] = useState<sequence.SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
   const connections = useConnections()
 

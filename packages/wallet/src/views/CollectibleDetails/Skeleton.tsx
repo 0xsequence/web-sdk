@@ -4,9 +4,12 @@ import { Box, Button, SendIcon, Text, vars } from '@0xsequence/design-system'
 import { Skeleton } from '../../shared/Skeleton'
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 
-import { HEADER_HEIGHT, SCROLLBAR_WIDTH } from '../../constants'
+import { HEADER_HEIGHT } from '../../constants'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 export const CollectibleDetailsSkeleton = () => {
+  const scrollbarWidth = useScrollbarWidth()
+
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box

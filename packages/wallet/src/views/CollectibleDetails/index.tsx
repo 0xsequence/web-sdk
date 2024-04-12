@@ -18,7 +18,8 @@ import {
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { CollectibleTileImage } from '../../shared/CollectibleTileImage'
-import { HEADER_HEIGHT, SCROLLBAR_WIDTH } from '../../constants'
+import { HEADER_HEIGHT } from '../../constants'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 export interface CollectibleDetailsProps {
   contractAddress: string
@@ -31,6 +32,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
   const { address: accountAddress } = useAccount()
   const { fiatCurrency } = useSettings()
   const { setNavigation } = useNavigation()
+  const scrollbarWidth = useScrollbarWidth()
 
   const {
     data: dataTransactionHistory,

@@ -28,7 +28,7 @@
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": ">=1.1.0",
+    "@0xsequence/design-system": ">=1.4.1",
     "@0xsequence/kit": "workspace:*",
     "@vanilla-extract/css": ">=1.9.3",
     "@vanilla-extract/recipes": ">=0.3.0",
@@ -39,7 +39,7 @@
     "wagmi": ">=2.5.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.1.0",
+    "@0xsequence/design-system": "^1.4.1",
     "@0xsequence/kit": "workspace:*",
     "@types/lodash": "^4.14.196",
     "@types/react-copy-to-clipboard": "^5.0.4",

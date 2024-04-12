@@ -11,8 +11,9 @@ import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { useCoinBalance, useConversionRate, useSettings, useCoinPrices, useTransactionHistory, useNavigation } from '../../hooks'
-import { HEADER_HEIGHT, SCROLLBAR_WIDTH } from '../../constants'
+import { HEADER_HEIGHT } from '../../constants'
 import { compareAddress, computeBalanceFiat, formatDisplay, flattenPaginatedTransactionHistory } from '../../utils'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 export interface CoinDetailsProps {
   contractAddress: string
@@ -23,6 +24,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
   const { fiatCurrency, hideUnlistedTokens } = useSettings()
+  const scrollbarWidth = useScrollbarWidth()
 
   const { address: accountAddress } = useAccount()
 

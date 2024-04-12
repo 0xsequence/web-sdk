@@ -5,13 +5,16 @@ import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { Skeleton } from '../../shared/Skeleton'
 
-import { HEADER_HEIGHT, SCROLLBAR_WIDTH } from '../../constants'
+import { HEADER_HEIGHT } from '../../constants'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 interface CoinDetailsSkeletonProps {
   chainId: number
 }
 
 export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
+  const scrollbarWidth = useScrollbarWidth()
+
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>

@@ -195,9 +195,7 @@ function Homepage() {
     if (!isConnected) {
       return (
         <Box padding="5" justifyContent="flex-end">
-          <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
-            <SwitchThemeButton />
-          </Box>
+          <SwitchThemeButton />
         </Box>
       )
     }
@@ -217,9 +215,7 @@ function Homepage() {
         <Box>
           <Box flexDirection="column">
             <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
-              <Box style={{ marginRight: '-12px' }}>
-                <SwitchThemeButton />
-              </Box>
+              <SwitchThemeButton />
               <Text fontWeight="medium" fontSize="normal" color="text100">
                 {isMobile ? formatAddress(address || '') : address}
               </Text>
@@ -273,14 +269,7 @@ function Homepage() {
   }
 
   const SwitchThemeButton = () => {
-    return (
-      <Button
-        variant="base"
-        style={{ color: vars.colors.text100 }}
-        onClick={onClickChangeTheme}
-        leftIcon={theme === 'dark' ? SunIcon : MoonIcon}
-      />
-    )
+    return <IconButton onClick={onClickChangeTheme} icon={theme === 'dark' ? SunIcon : MoonIcon} />
   }
 
   const onSwitchNetwork = () => {

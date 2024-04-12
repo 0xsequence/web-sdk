@@ -1,6 +1,14 @@
 import { globalStyle, style } from '@vanilla-extract/css'
 import { textVariants, vars } from '@0xsequence/design-system'
 
+globalStyle('#kit-provider *, #kit-provider::before *, #kit-provider *::after', {
+  boxSizing: 'border-box'
+})
+
+globalStyle('#kit-wallet *, #kit-wallet::before *, #kit-wallet *::after', {
+  boxSizing: 'border-box'
+})
+
 export const networkButton = style({
   maxWidth: '400px',
   width: '100%',

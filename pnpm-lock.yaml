@@ -144,8 +144,8 @@ importers:
         specifier: ^1.9.17
         version: 1.9.17(ethers@5.7.2)
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.1
+        version: 1.4.1(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../../packages/kit
@@ -303,8 +303,8 @@ importers:
         version: 5.1.0(react@18.2.0)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.1
+        version: 1.4.1(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
@@ -397,8 +397,8 @@ importers:
         specifier: ^1.9.17
         version: 1.9.17(ethers@5.7.2)
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.1
+        version: 1.4.1(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/ethauth':
         specifier: ^0.8.1
         version: 0.8.1(ethers@5.7.2)
@@ -504,8 +504,8 @@ importers:
         version: 5.1.0(react@18.2.0)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.1.0
-        version: 1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.4.1
+        version: 1.4.1(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
@@ -622,8 +622,8 @@ packages:
       '@0xsequence/abi': 1.9.17
       ethers: 5.7.2
 
-  /@0xsequence/design-system@1.2.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-LGZZoO/oJSCTxeRS/9mQg7sfIdYfZbcHJ1DFQ6xG5uMZEZyCTUplKqrA3X3d4PD/bZO+PKgJ9LTUFDh4KLEzWQ==}
+  /@0xsequence/design-system@1.4.1(@types/react-dom@18.2.19)(@types/react@18.2.55)(framer-motion@8.5.5)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-cXN5fwUS3IxdZHnvg/6O3T5CG4aXnl2AydGvSLHvdJBgPe/GzeR5s9Asguz0EE/LWggR+pNWrrlMvcr0hBvgAg==}
     peerDependencies:
       framer-motion: '>=6'
       react: '>=17'
@@ -644,7 +644,7 @@ packages:
       framer-motion: 8.5.5(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-hook-form: 7.50.1(react@18.2.0)
+      react-hook-form: 7.51.2(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
@@ -13973,8 +13973,8 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-hook-form@7.50.1(react@18.2.0):
-    resolution: {integrity: sha512-3PCY82oE0WgeOgUtIr3nYNNtNvqtJ7BZjsbxh6TnYNbXButaD5WpjOmTjdxZfheuHKR68qfeFnEDVYoSSFPMTQ==}
+  /react-hook-form@7.51.2(react@18.2.0):
+    resolution: {integrity: sha512-y++lwaWjtzDt/XNnyGDQy6goHskFualmDlf+jzEZvjvz6KWDf7EboL7pUvRCzPTJd0EOPpdekYaQLEvvG6m6HA==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18

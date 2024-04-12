@@ -3,13 +3,15 @@ import { Box, vars } from '@0xsequence/design-system'
 
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { Skeleton } from '../../shared/Skeleton'
-import { SCROLLBAR_WIDTH } from '../../constants'
+import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 interface CollectionDetailsSkeletonProps {
   chainId: number
 }
 
 export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeletonProps) => {
+  const scrollbarWidth = useScrollbarWidth()
+
   return (
     <Box
       paddingX="4"
