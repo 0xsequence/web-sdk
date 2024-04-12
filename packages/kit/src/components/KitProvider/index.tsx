@@ -20,7 +20,6 @@ import { ModalPosition, getModalPositionCss } from '../../utils'
 import '@0xsequence/design-system/styles.css'
 
 import * as sharedStyles from '../styles.css'
-import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
 
 export declare const THEME: readonly ['dark', 'light']
 export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>
@@ -86,7 +85,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || THEMES.dark)
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
-  const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
+  const [analytics, setAnalytics] = useState<sequence.SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
 
   const setupAnalytics = (projectAccessKey: string) => {

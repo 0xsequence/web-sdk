@@ -1,11 +1,11 @@
-import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
+import { sequence } from '0xsequence'
 import React from 'react'
 
 import { createGenericContext } from '../utils'
 
 type AnalyticsContext = {
-  setAnalytics: React.Dispatch<React.SetStateAction<SequenceClient['analytics']>>
-  analytics: SequenceClient['analytics']
+  setAnalytics: React.Dispatch<React.SetStateAction<sequence.SequenceClient['analytics']>>
+  analytics: sequence.SequenceClient['analytics']
 }
 
 const [useAnalyticsContext, AnalyticsContextProvider] = createGenericContext<AnalyticsContext>()
