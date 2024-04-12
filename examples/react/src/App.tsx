@@ -61,7 +61,6 @@ function App() {
   // ]
 
   /// Use this to test the universal connectors
-
   const connectors = [
     ...getDefaultConnectors({
       walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',

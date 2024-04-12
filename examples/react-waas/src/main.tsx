@@ -18,8 +18,8 @@ const chains: readonly [Chain, ...Chain[]] = [arbitrumNova as Chain, arbitrumSep
 const projectAccessKey = 'T3czhtWsTONJpbjFgAdLAuEAAAAAAAAA'
 const waasConfigKey = 'eyJwcm9qZWN0SWQiOjc1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
 const googleClientId = '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
-const appleClientId = 'com.horizon.sequence.waas'
-const appleRedirectURI = 'https://' + window.location.host
+// const appleClientId =
+// const appleRedirectURI = 'https://' + window.location.host
 
 const connectors = [
   ...getDefaultWaasConnectors({
@@ -27,8 +27,8 @@ const connectors = [
     defaultChainId: 42170,
     waasConfigKey,
     googleClientId,
-    appleClientId,
-    appleRedirectURI,
+    // appleClientId,
+    // appleRedirectURI,
     appName: 'Kit Demo',
     projectAccessKey,
     enableConfirmationModal: false

@@ -427,11 +427,10 @@ function Homepage() {
                 <Box marginY="2" alignItems="center" justifyContent="center">
                   <Button
                     onClick={() => {
-                      console.log('a')
                       const selected = pendingFeeOptionConfirmation?.options?.find(
                         option => option.token.name === selectedFeeOptionTokenName
                       )
-                      console.log('a2')
+
                       if (selected.token.contractAddress !== undefined) {
                         console.log('a3', selected.token.contractAddress)
                         confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
