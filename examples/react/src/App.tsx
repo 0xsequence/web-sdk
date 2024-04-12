@@ -31,6 +31,8 @@ function App() {
 
   const projectAccessKey = 'T3czhtWsTONJpbjFgAdLAuEAAAAAAAAA'
 
+  /// Use this to test the waas connectors
+
   // WaaS config
   // const waasConfigKey = 'eyJwcm9qZWN0SWQiOjc1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
   // const googleClientId = '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
@@ -57,6 +59,8 @@ function App() {
   //       ])
   //     : [])
   // ]
+
+  /// Use this to test the universal connectors
 
   const connectors = [
     ...getDefaultConnectors({

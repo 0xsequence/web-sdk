@@ -18,7 +18,8 @@ import {
   useChainId,
   useSwitchChain,
   useSendTransaction,
-  useWriteContract
+  useWriteContract,
+  useConnections
 } from 'wagmi'
 import {
   Box,
@@ -54,6 +55,10 @@ function Homepage() {
   const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
+
+  const connections = useConnections()
+
+  const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
 
   const isMobile = useMediaQuery('isMobile')
 
@@ -438,33 +443,35 @@ function Homepage() {
               </Box>
             )}
 
-            <Box marginY="3">
-              <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Text fontWeight="semibold" variant="small" color="text50">
-                  Confirmations
-                </Text>
+            {isWaasConnection && (
+              <Box marginY="3">
+                <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
+                  <Text fontWeight="semibold" variant="small" color="text50">
+                    Confirmations
+                  </Text>
 
-                <Box alignItems="center" gap="2">
-                  <Switch
-                    name="confirmations"
-                    checked={confirmationEnabled}
-                    onCheckedChange={async (checked: boolean) => {
-                      if (checked) {
-                        localStorage.setItem('confirmationEnabled', 'true')
-                        setConfirmationEnabled(true)
-                      } else {
-                        localStorage.removeItem('confirmationEnabled')
-                        setConfirmationEnabled(false)
-                      }
+                  <Box alignItems="center" gap="2">
+                    <Switch
+                      name="confirmations"
+                      checked={confirmationEnabled}
+                      onCheckedChange={async (checked: boolean) => {
+                        if (checked) {
+                          localStorage.setItem('confirmationEnabled', 'true')
+                          setConfirmationEnabled(true)
+                        } else {
+                          localStorage.removeItem('confirmationEnabled')
+                          setConfirmationEnabled(false)
+                        }
 
-                      await delay(300)
+                        await delay(300)
 
-                      window.location.reload()
-                    }}
-                  />
+                        window.location.reload()
+                      }}
+                    />
+                  </Box>
                 </Box>
               </Box>
-            </Box>
+            )}
             <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
               <Button
                 onClick={() => {
