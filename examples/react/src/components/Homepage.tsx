@@ -35,7 +35,8 @@ import {
   Spinner,
   useMediaQuery,
   Switch,
-  Select
+  Select,
+  IconButton
 } from '@0xsequence/design-system'
 
 import { Footer } from './Footer'
