@@ -1,11 +1,10 @@
 import React from 'react'
-import { vars } from '@0xsequence/design-system'
 
 export const InjectedLogo: React.FunctionComponent = ({ ...props }) => {
   return (
     <React.Fragment>
       <svg
-        fill={vars.colors.text100}
+        fill={'var(--seq-colors-text100)'}
         version="1.1"
         id="Capa_1"
         xmlns="http://www.w3.org/2000/svg"

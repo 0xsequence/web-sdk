@@ -16,13 +16,11 @@
     "@0xsequence/provider": "^1.9.11"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.4.0",
     "@0xsequence/kit": "workspace:*"
   },
   "peerDependencies": {
     "0xsequence": ">=1.9.11",
     "ethers": ">=5.7.2",
-    "@0xsequence/design-system": ">=1.4.0",
     "react": ">=17",
     "react-dom": ">=17",
     "viem": ">=2.0.0",
