@@ -31,7 +31,6 @@
     "viem": ">=2.0.0",
     "wagmi": ">=2.0.0",
     "@0xsequence/kit": "workspace:*",
-    "@0xsequence/design-system": ">=1.1.0",
     "uuid": ">=8.3.2"
   },
   "files": [

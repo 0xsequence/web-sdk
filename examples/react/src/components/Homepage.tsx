@@ -342,7 +342,7 @@ function Homepage() {
                 isLoading={isSigningMessage}
               />
               {isMessageValid && (
-                <Card style={{ width: '332px' }} flexDirection={'column'} gap={'2'}>
+                <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
                   <Text variant="medium">Signed message:</Text>
                   <Text>{messageToSign}</Text>
                   <Text variant="medium">Signature:</Text>

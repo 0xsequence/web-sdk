@@ -64,7 +64,7 @@ function App() {
   const connectors = [
     ...getDefaultConnectors({
       walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: 137,
+      defaultChainId: 42170,
       appName: 'demo app',
       projectAccessKey
     }),
