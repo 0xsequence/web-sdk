@@ -108,11 +108,11 @@ function Homepage() {
   }
 
   useEffect(() => {
-    if (txnData?.hash) {
-      setLastTxnDataHash(txnData.hash)
+    if (txnData) {
+      setLastTxnDataHash(txnData.hash ?? txnData)
     }
-    if (txnData2?.hash) {
-      setLastTxnDataHash2(txnData2.hash)
+    if (txnData2) {
+      setLastTxnDataHash2(txnData2.hash ?? txnData)
     }
   }, [txnData, txnData2])
 
@@ -327,13 +327,13 @@ function Homepage() {
                 onClick={runSendTransaction}
               />
 
-              {lastTxnDataHash && txnData?.chainId === chainId && (
+              {lastTxnDataHash && (txnData?.chainId === chainId || txnData) && (
                 <Text
                   as="a"
                   marginLeft="4"
                   variant="small"
                   underline
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${txnData.hash}`}
+                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${txnData.hash ?? txnData}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -366,13 +366,13 @@ function Homepage() {
                 isLoading={isMintTxnLoading}
                 onClick={runMintNFT}
               />
-              {lastTxnDataHash2 && txnData2?.chainId === chainId && (
+              {lastTxnDataHash2 && (txnData2?.chainId === chainId || txnData2) && (
                 <Text
                   as="a"
                   marginLeft="4"
                   variant="small"
                   underline
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${txnData2.hash}`}
+                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${txnData2.hash ?? txnData2}`}
                   target="_blank"
                   rel="noreferrer"
                 >
