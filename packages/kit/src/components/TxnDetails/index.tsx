@@ -190,7 +190,7 @@ interface AwardItemInfoProps {
   awardItemProps: AwardItemProps
 }
 
-// TODO: remove before release
+// This is used only for demo purposes
 const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
   return (
     <Card>
