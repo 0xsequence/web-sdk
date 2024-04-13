@@ -10,7 +10,8 @@ import {
   TextInput,
   vars,
   useTheme,
-  Spinner
+  Spinner,
+  Image
 } from '@0xsequence/design-system'
 import { useConnect, useAccount } from 'wagmi'
 import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY } from '@0xsequence/kit-connectors'
@@ -54,6 +55,18 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
   const [waasEmailPinCode, setWaasEmailPinCode] = useState<string[]>([])
   const { connectors: baseConnectors, connect } = useConnect()
+
+  console.log('baseConnectors', baseConnectors)
+
+  for (const c of baseConnectors) {
+    if (c.type === 'injected' && !('_wallet' in c)) {
+      ;(c as any)._wallet = {
+        id: c.id,
+        name: c.name
+      }
+    }
+  }
+
   /* @ts-ignore-next-line */
   const connectors = baseConnectors.filter(c => !!c?._wallet) as ExtendedConnector[]
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
@@ -377,6 +390,40 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 )
               })}
             </Box>
+
+            <Box>
+              <Box style={{ marginBottom: '-4px' }}>
+                <Divider color="backgroundSecondary" />
+              </Box>
+              <Box justifyContent="center" alignItems="center">
+                <Text variant="small" color="text50">
+                  EIP6963 Dicovered Wallets
+                </Text>
+              </Box>
+              <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+                {baseConnectors
+                  .filter(connector => connector.type === 'injected' && connector.icon)
+                  .map(connector => (
+                    <Card
+                      key={connector.id}
+                      style={{ width: '43px', height: '43px', margin: '12px 4px' }}
+                      padding="2"
+                      borderRadius="xs"
+                      className={styles.clickable}
+                      justifyContent="center"
+                      alignItems="center"
+                      onClick={() => onConnect(connector as any as ExtendedConnector)}
+                    >
+                      <Box width="16" height="16" flexDirection="column" alignItems="center" justifyContent="center">
+                        <Text variant="small" color="text50">
+                          <Image src={connector.icon} alt={connector.name} />
+                        </Text>
+                      </Box>
+                    </Card>
+                  ))}
+              </Box>
+            </Box>
+
             {displayExtendedListButton && (
               <Box
                 padding="4"
