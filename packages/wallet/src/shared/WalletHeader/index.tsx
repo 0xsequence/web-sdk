@@ -11,9 +11,7 @@ import { useNavigation, useOpenWalletModal } from '../../hooks'
 
 import * as styles from './styles.css'
 
-interface WalletHeaderProps {}
-
-export const WalletHeader = ({}: WalletHeaderProps) => {
+export const WalletHeader = () => {
   const { openWalletModalState } = useOpenWalletModal()
 
   const [openWalletDropdown, setOpenWalletDropdown] = useState<boolean>(false)

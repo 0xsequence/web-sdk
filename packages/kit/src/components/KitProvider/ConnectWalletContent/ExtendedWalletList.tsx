@@ -31,24 +31,25 @@ export const ExtendedWalletList = ({ onConnect, connectors }: ExtendedWalletList
             key={connectorId}
             width="full"
             shape="square"
+            leftIcon={() => (
+              <Box
+                justifyContent="center"
+                alignItems="center"
+                style={{ backgroundColor: connector._wallet.iconBackground }}
+                className={styles.walletLogoContainerExtended}
+                width="8"
+                height="8"
+                overflow="hidden"
+              >
+                <Logo />
+              </Box>
+            )}
             onClick={() => onConnect(connector)}
             label={
-              <Box gap="2" alignItems="center">
-                <Box
-                  justifyContent="center"
-                  alignItems="center"
-                  style={{ backgroundColor: connector._wallet.iconBackground }}
-                  className={styles.walletLogoContainerExtended}
-                  overflow="hidden"
-                  borderRadius="circle"
-                >
-                  <Logo />
-                </Box>
-                <Text>
-                  {walletName}
-                  {isPending}
-                </Text>
-              </Box>
+              <Text>
+                {walletName}
+                {isPending}
+              </Text>
             }
           />
         )

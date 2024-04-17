@@ -223,7 +223,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             onClick={poweredBySequenceOnClick}
                             className={sharedStyles.clickable}
                             gap="1"
-                            marginTop="2"
+                            marginTop="4"
                             flexDirection="row"
                             alignItems="center"
                             justifyContent="center"

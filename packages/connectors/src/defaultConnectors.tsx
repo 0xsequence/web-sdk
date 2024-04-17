@@ -20,9 +20,6 @@ export const getDefaultConnectors = ({
   appName
 }: GetDefaultConnectors): CreateConnectorFn[] => {
   const connectors = getKitConnectWallets(projectAccessKey, [
-    coinbaseWallet({
-      appName
-    }),
     email({
       defaultNetwork: defaultChainId,
       connect: {
@@ -56,16 +53,19 @@ export const getDefaultConnectors = ({
         app: appName
       }
     }),
-    metamask(),
-    walletConnect({
-      projectId: walletConnectProjectId
-    }),
     sequence({
       defaultNetwork: defaultChainId,
       connect: {
         app: appName,
         projectAccessKey
       }
+    }),
+    walletConnect({
+      projectId: walletConnectProjectId
+    }),
+    metamask(),
+    coinbaseWallet({
+      appName
     })
   ])
 
