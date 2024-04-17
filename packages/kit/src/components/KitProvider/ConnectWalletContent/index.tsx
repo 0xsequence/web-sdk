@@ -42,7 +42,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const { isConnected } = useAccount()
-  const { theme } = useTheme()
   const { config = {} } = props
   const { signIn = {} } = config as KitConfig
   const {
@@ -258,10 +257,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             )}
             <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
               {socialAuthConnectors.map(connector => {
-                const Logo =
-                  theme === 'dark'
-                    ? (connector._wallet.monochromeLogoDark as React.FunctionComponent)
-                    : (connector._wallet.monochromeLogoLight as React.FunctionComponent)
                 return (
                   <Box key={connector._wallet.id} aspectRatio="1/1" alignItems="center" justifyContent="center">
                     {connector._wallet.id === 'google-waas' && (

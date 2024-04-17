@@ -19,10 +19,7 @@ export const ExtendedWalletList = ({ onConnect, connectors }: ExtendedWalletList
   return (
     <Box flexDirection="column" gap="2" marginTop="5">
       {connectors.map(connector => {
-        const Logo =
-          theme === 'dark'
-            ? (connector._wallet.logoDark as React.FunctionComponent)
-            : (connector._wallet.logoLight as React.FunctionComponent)
+        const Logo = theme === 'dark' ? connector._wallet.logoDark : connector._wallet.logoLight
         const walletName = connector._wallet.name
         const connectorId = connector._wallet.id
 
