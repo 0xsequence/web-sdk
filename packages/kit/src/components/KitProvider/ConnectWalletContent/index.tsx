@@ -258,7 +258,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
               {socialAuthConnectors.map(connector => {
                 return (
-                  <Box key={connector._wallet.id} aspectRatio="1/1" alignItems="center" justifyContent="center">
+                  <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">
                     {connector._wallet.id === 'google-waas' && (
                       <Box className={styles.googleWaasButtonContainer}>
                         <GoogleLogin
@@ -368,9 +368,8 @@ const ConnectButton = (props: ConnectButtonProps) => {
       : walletProps.monochromeLogoLight || walletProps.logoLight
 
   return (
-    <Tooltip key={connector.id} message={walletProps.name}>
+    <Tooltip message={label || walletProps.name}>
       <Card
-        key={connector.id}
         clickable
         width="10"
         height="10"
