@@ -13,11 +13,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "0xsequence": "^1.9.17",
-    "@0xsequence/api": "^1.9.17",
-    "@0xsequence/indexer": "^1.9.17",
-    "@0xsequence/metadata": "^1.9.17",
-    "@0xsequence/network": "^1.9.17",
+    "0xsequence": "^1.9.19",
+    "@0xsequence/api": "^1.9.19",
+    "@0xsequence/indexer": "^1.9.19",
+    "@0xsequence/metadata": "^1.9.19",
+    "@0xsequence/network": "^1.9.19",
     "@tanstack/react-query": "^4.29.5",
     "react-copy-to-clipboard": "^5.1.0",
     "@paperxyz/react-client-sdk": "^1.1.3"

@@ -13,9 +13,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/provider": "^1.9.17",
-    "@0xsequence/waas": "^1.9.17",
-    "@0xsequence/waas-ethers": "^1.9.17",
+    "@0xsequence/provider": "^1.9.19",
+    "@0xsequence/waas": "^1.9.19",
+    "@0xsequence/waas-ethers": "^1.9.19",
     "@react-oauth/google": "^0.11.1",
     "react-apple-signin-auth": "^1.1.0"
   },
@@ -24,7 +24,7 @@
     "@0xsequence/kit": "workspace:*"
   },
   "peerDependencies": {
-    "0xsequence": ">=1.9.17",
+    "0xsequence": ">=1.9.19",
     "ethers": ">=5.7.2",
     "react": ">=17",
     "react-dom": ">=17",
