@@ -41,15 +41,15 @@ globalStyle(`${walletLogoContainerExtended} svg`, {
 
 export const walletContent = style({})
 
-// Will affect the close button in the modal
-globalStyle(`${walletContent} + button`, {
-  backgroundColor: 'transparent'
-})
+// // Will affect the close button in the modal
+// globalStyle(`${walletContent} + button`, {
+//   backgroundColor: 'transparent'
+// })
 
-globalStyle(`${walletContent} + button > svg`, {
-  width: '20px',
-  height: '20px'
-})
+// globalStyle(`${walletContent} + button > svg`, {
+//   width: '20px',
+//   height: '20px'
+// })
 
 export const googleWaasButtonContainer = style({})
 

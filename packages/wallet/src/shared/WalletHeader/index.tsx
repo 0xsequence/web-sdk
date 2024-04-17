@@ -65,30 +65,16 @@ export const WalletHeader = ({}: WalletHeaderProps) => {
           alignItems="center"
           justifyContent="space-between"
           width="full"
+          paddingX="4"
           style={{
             height: HEADER_HEIGHT,
             paddingTop: '6px'
           }}
         >
           {history.length > 0 ? (
-            <IconButton
-              onClick={onClickBack}
-              icon={ChevronLeftIcon}
-              style={{
-                backgroundColor: vars.colors.backgroundPrimary,
-                width: '44px'
-              }}
-            />
+            <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" />
           ) : (
-            <IconButton
-              onClick={onClickSearch}
-              icon={SearchIcon}
-              className={styles.searchButton}
-              style={{
-                backgroundColor: vars.colors.backgroundPrimary,
-                width: '44px'
-              }}
-            />
+            <IconButton onClick={onClickSearch} icon={SearchIcon} size="xs" />
           )}
           <PopoverPrimitive.Trigger asChild>
             <AccountInformation onClickAccount={onClickAccount} />

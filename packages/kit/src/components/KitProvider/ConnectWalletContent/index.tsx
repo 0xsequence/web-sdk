@@ -11,7 +11,8 @@ import {
   vars,
   useTheme,
   Spinner,
-  Image
+  Image,
+  IconButton
 } from '@0xsequence/design-system'
 import { useConnect, useAccount } from 'wagmi'
 import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY } from '@0xsequence/kit-connectors'
@@ -95,8 +96,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
 
   const displayExtendedListButton = walletConnectors.length > 4
 
-  const onChangeEmail = (ev: React.ChangeEventHandler<HTMLInputElement>) => {
-    /* @ts-ignore-next-line */
+  const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = ev => {
     setEmail(ev.target.value)
   }
 
@@ -132,8 +132,10 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
       localStorage.setItem(EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, email || '')
     }
 
+    // Open Metamask download page if Metamask window.ethereum is not found
     if (connector._wallet.id === 'metamask' && typeof window !== 'undefined') {
       const isMetamaskFound = !!window?.ethereum?._metamask
+
       if (!isMetamaskFound) {
         window.open('https://metamask.io/download/')
         return
@@ -197,14 +199,8 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   if (showExtendedList) {
     return (
       <>
-        <Box
-          as="button"
-          position="absolute"
-          style={{ top: '20px' }}
-          onClick={() => setShowExtendedList(false)}
-          className={styles.clickable}
-        >
-          <ChevronLeftIcon />
+        <Box position="absolute" top="4">
+          <IconButton icon={ChevronLeftIcon} onClick={() => setShowExtendedList(false)} size="xs" />
         </Box>
         <ExtendedWalletList connectors={walletConnectors} onConnect={onConnect} />
       </>
@@ -218,14 +214,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
         {emailConnector && showEmailInput && (
           <>
             <form onSubmit={onConnectInlineEmail}>
-              <TextInput
-                /* @ts-ignore-next-line */
-                onChange={onChangeEmail}
-                value={email}
-                name="email"
-                placeholder="Enter email"
-                data-1p-ignore
-              />
+              <TextInput onChange={onChangeEmail} value={email} name="email" placeholder="Enter email" data-1p-ignore />
               <Box alignItems="center" justifyContent="center" style={{ height: '48px' }}>
                 {!emailAuthInProgress && (
                   <Button
@@ -350,6 +339,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             </Box>
           </>
         )}
+
         {walletConnectors.length > 0 && (
           <>
             {((emailConnector && showEmailInput) || socialAuthConnectors.length > 0) && (
@@ -392,14 +382,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             </Box>
 
             <Box>
-              <Box style={{ marginBottom: '-4px' }}>
-                <Divider color="backgroundSecondary" />
-              </Box>
-              <Box justifyContent="center" alignItems="center">
-                <Text variant="small" color="text50">
-                  EIP6963 Dicovered Wallets
-                </Text>
-              </Box>
               <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
                 {baseConnectors
                   .filter(connector => connector.type === 'injected' && connector.icon)
@@ -425,22 +407,13 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
             </Box>
 
             {displayExtendedListButton && (
-              <Box
-                padding="4"
-                marginTop="3"
-                background="backgroundSecondary"
+              <Button
                 width="full"
-                justifyContent="space-between"
-                alignItems="center"
-                borderRadius="md"
-                color="text100"
-                as="button"
-                className={styles.clickable}
+                shape="square"
                 onClick={() => setShowExtendedList(true)}
-              >
-                <Text variant="medium">More options</Text>
-                <ChevronRightIcon />
-              </Box>
+                label="More options"
+                rightIcon={ChevronRightIcon}
+              />
             )}
           </>
         )}

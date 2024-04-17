@@ -25,25 +25,13 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
+      paddingX="4"
       style={{
         height: HEADER_HEIGHT,
-        paddingTop: '6px',
-        backgroundColor: vars.colors.backgroundPrimary
+        paddingTop: '6px'
       }}
     >
-      {history.length > 0 ? (
-        <IconButton
-          onClick={onClickBack}
-          icon={ChevronLeftIcon}
-          size="sm"
-          style={{
-            background: 'rgba(0,0,0,0)',
-            width: '44px'
-          }}
-        />
-      ) : (
-        <Box />
-      )}
+      {history.length > 0 ? <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" /> : <Box />}
       <Box>
         <Text fontWeight="medium" variant="small" color="text50">
           {secondaryText}

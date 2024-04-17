@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Box, Text, useTheme } from '@0xsequence/design-system'
+import { Box, Button, Text, TokenImage, useTheme } from '@0xsequence/design-system'
 import { useConnect } from 'wagmi'
 
 import { ExtendedConnector } from '../../../utils/getKitConnectWallets'
@@ -27,36 +27,30 @@ export const ExtendedWalletList = ({ onConnect, connectors }: ExtendedWalletList
         const connectorId = connector._wallet.id
 
         return (
-          <Box
+          <Button
             key={connectorId}
-            as="button"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            background="backgroundSecondary"
-            color="text100"
-            borderRadius="md"
-            padding="4"
-            style={{
-              height: '60px'
-            }}
-            className={styles.networkButton}
+            width="full"
+            shape="square"
             onClick={() => onConnect(connector)}
-          >
-            <Text variant="medium" color="text100">
-              {walletName}
-              {isPending}
-            </Text>
-            <Box
-              justifyContent="center"
-              alignItems="center"
-              style={{ backgroundColor: connector._wallet.iconBackground }}
-              borderRadius="md"
-              className={styles.walletLogoContainerExtended}
-            >
-              <Logo />
-            </Box>
-          </Box>
+            label={
+              <Box gap="2" alignItems="center">
+                <Box
+                  justifyContent="center"
+                  alignItems="center"
+                  style={{ backgroundColor: connector._wallet.iconBackground }}
+                  className={styles.walletLogoContainerExtended}
+                  overflow="hidden"
+                  borderRadius="circle"
+                >
+                  <Logo />
+                </Box>
+                <Text>
+                  {walletName}
+                  {isPending}
+                </Text>
+              </Box>
+            }
+          />
         )
       })}
     </Box>
