@@ -490,6 +490,8 @@ function Homepage() {
                           setFeeOptionAlert({
                             title: 'Insufficient balance',
                             description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
+                            secondaryDescription:
+                              'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
                             variant: 'warning'
                           })
                           return
@@ -505,6 +507,7 @@ function Homepage() {
                       <Alert
                         title={feeOptionAlert.title}
                         description={feeOptionAlert.description}
+                        secondaryDescription={feeOptionAlert.secondaryDescription}
                         variant={feeOptionAlert.variant}
                         buttonProps={feeOptionAlert.buttonProps}
                       />

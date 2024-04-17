@@ -4,12 +4,13 @@ import { ComponentProps } from 'react'
 export type AlertProps = {
   title: string
   description: string
+  secondaryDescription?: string
   variant: 'negative' | 'warning' | 'positive'
   buttonProps?: ComponentProps<typeof Button>
   children?: React.ReactNode
 }
 
-export const Alert = ({ title, description, variant, buttonProps, children }: AlertProps) => {
+export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
     <Box borderRadius="md" background={variant}>
       <Box
@@ -30,6 +31,12 @@ export const Alert = ({ title, description, variant, buttonProps, children }: Al
             <Text variant="normal" color="text50" fontWeight="medium">
               {description}
             </Text>
+
+            {secondaryDescription && (
+              <Text variant="normal" color="text80" fontWeight="medium">
+                {secondaryDescription}
+              </Text>
+            )}
           </Box>
 
           {buttonProps ? (
