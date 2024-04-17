@@ -239,7 +239,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
 
       if (!feeOptionsResponse?.isSponsored && feeOptions && feeOptions.length > 0) {
         if (!this.feeConfirmationHandler) {
-          return new TransactionRejectedRpcError(
+          throw new TransactionRejectedRpcError(
             new Error('Unable to send transaction: please use UseWaasFeeOptions hook and pick a fee option')
           )
         }
@@ -248,11 +248,11 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, txns, chainId)
 
         if (!confirmation.confirmed) {
-          return new UserRejectedRequestError(new Error('User rejected send transaction request'))
+          throw new UserRejectedRequestError(new Error('User rejected send transaction request'))
         }
 
         if (id !== confirmation.id) {
-          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
+          throw new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
 
         selectedFeeOption = feeOptions.find(feeOption => feeOption.token.contractAddress === confirmation.feeTokenAddress)
@@ -263,11 +263,11 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(id, txns, chainId)
 
         if (!confirmation.confirmed) {
-          return new UserRejectedRequestError(new Error('User rejected send transaction request'))
+          throw new UserRejectedRequestError(new Error('User rejected send transaction request'))
         }
 
         if (id !== confirmation.id) {
-          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
+          throw new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }
 
@@ -278,9 +278,11 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         transactionsFeeQuote: feeOptionsResponse?.feeQuote
       })
 
+      console.log('response', response)
+
       if (response.code === 'transactionFailed') {
         // Failed
-        return new TransactionRejectedRpcError(new Error(`Unable to send transaction: ${response.data.error}`))
+        throw new TransactionRejectedRpcError(new Error(`Unable to send transaction: ${response.data.error}`))
       }
 
       if (response.code === 'transactionReceipt') {
@@ -305,11 +307,11 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         )
 
         if (!confirmation.confirmed) {
-          return new UserRejectedRequestError(new Error('User rejected sign message request'))
+          throw new UserRejectedRequestError(new Error('User rejected sign message request'))
         }
 
         if (id !== confirmation.id) {
-          return new UserRejectedRequestError(new Error('User confirmation ids do not match'))
+          throw new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }
       const sig = await this.sequenceWaas.signMessage({ message: params[0], network: this.currentNetwork.chainId })
