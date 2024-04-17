@@ -484,9 +484,12 @@ function Homepage() {
 
                       if (selected.token.contractAddress !== undefined) {
                         // check if wallet has enough balance, should be balance > feeOption.value
-                        const balance = feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance
-                        const feeOptionValue = selected.value
-                        if (balance && balance < feeOptionValue) {
+                        const balance = ethers.utils.parseUnits(
+                          feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance,
+                          selected.token.decimals
+                        )
+                        const feeOptionValue = ethers.utils.parseUnits(selected.value, selected.token.decimals)
+                        if (balance && balance.lt(feeOptionValue)) {
                           setFeeOptionAlert({
                             title: 'Insufficient balance',
                             description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
