@@ -24,14 +24,13 @@ const googleClientId = '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googl
 const connectors = [
   ...getDefaultWaasConnectors({
     walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-    defaultChainId: 42170,
+    defaultChainId: 421614,
     waasConfigKey,
     googleClientId,
     // appleClientId,
     // appleRedirectURI,
     appName: 'Kit Demo',
-    projectAccessKey,
-    enableConfirmationModal: false
+    projectAccessKey
   })
 ]
 

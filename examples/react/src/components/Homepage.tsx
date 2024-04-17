@@ -5,7 +5,8 @@ import {
   signEthAuthProof,
   validateEthProof,
   useTheme as useKitTheme,
-  useWaasFeeOptions
+  useWaasFeeOptions,
+  getNetworkConfigAndClients
 } from '@0xsequence/kit'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { useCheckoutModal } from '@0xsequence/kit-checkout'
@@ -45,6 +46,7 @@ import { formatAddress, getCheckoutSettings } from '../utils'
 import { sequence } from '0xsequence'
 import abi from '../constants/nft-abi'
 import { ethers } from 'ethers'
+import { Alert, AlertProps } from './Alert'
 
 function Homepage() {
   const { theme, setTheme } = useTheme()
@@ -63,7 +65,7 @@ function Homepage() {
 
   const isMobile = useMediaQuery('isMobile')
 
-  const { data: txnData, sendTransaction, isLoading: isSendTxnLoading } = useSendTransaction()
+  const { data: txnData, sendTransaction, isLoading: isSendTxnLoading, error } = useSendTransaction()
   const { data: txnData2, isLoading: isMintTxnLoading, writeContract } = useWriteContract()
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
@@ -87,7 +89,52 @@ function Homepage() {
     }
   }, [pendingFeeOptionConfirmation])
 
+  useEffect(() => {
+    console.log(error?.message)
+  }, [error])
+
   const chainId = useChainId()
+
+  const { indexerClient } = getNetworkConfigAndClients(chainId)
+
+  const [feeOptionBalances, setFeeOptionBalances] = React.useState<{ tokenName: string; decimals: number; balance: string }[]>([])
+
+  const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>(undefined)
+
+  useEffect(() => {
+    checkTokenBalancesForFeeOptions()
+  }, [pendingFeeOptionConfirmation])
+
+  const checkTokenBalancesForFeeOptions = async () => {
+    if (pendingFeeOptionConfirmation) {
+      const [account] = await walletClient.getAddresses()
+      const nativeTokenBalance = await indexerClient.getEtherBalance({ accountAddress: account })
+
+      const tokenBalances = await indexerClient.getTokenBalances({
+        accountAddress: account
+      })
+
+      console.log('feeOptions', pendingFeeOptionConfirmation.options)
+      console.log('nativeTokenBalance', nativeTokenBalance)
+      console.log('tokenBalances', tokenBalances)
+
+      const balances = pendingFeeOptionConfirmation.options.map(option => {
+        if (option.token.contractAddress === null) {
+          return { tokenName: option.token.name, decimals: option.token.decimals, balance: nativeTokenBalance.balance.balanceWei }
+        } else {
+          return {
+            tokenName: option.token.name,
+            decimals: option.token.decimals,
+            balance:
+              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress.toLowerCase())
+                ?.balance || '0'
+          }
+        }
+      })
+
+      setFeeOptionBalances(balances)
+    }
+  }
 
   const networkForCurrentChainId = sequence.network.allNetworks.find(n => n.chainId === chainId)
 
@@ -280,6 +327,8 @@ function Homepage() {
       switchChain({ chainId: 421614 })
     }
 
+    setLastTxnDataHash(undefined)
+    setLastTxnDataHash2(undefined)
     setIsMessageValid(undefined)
   }
 
@@ -389,7 +438,7 @@ function Homepage() {
               />
             </Box>
 
-            {pendingFeeOptionConfirmation && (
+            {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
               <Box marginY="3">
                 <Select
                   name="feeOption"
@@ -399,22 +448,34 @@ function Homepage() {
                     const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
                     if (selected) {
                       setSelectedFeeOptionTokenName(selected.token.name)
+                      setFeeOptionAlert(undefined)
                     }
                   }}
                   value={selectedFeeOptionTokenName}
                   options={[
                     ...pendingFeeOptionConfirmation?.options?.map(option => ({
                       label: (
-                        <Box alignItems="center" gap="2">
-                          <Text>{option.token.name}</Text>
-                          <Text>{ethers.utils.formatUnits(option.value, option.token.decimals)}</Text>
+                        <Box alignItems="flex-start" flexDirection="column" fontSize="xsmall">
+                          <Box flexDirection="row">
+                            <Text>Fee (in {option.token.name}): </Text>{' '}
+                            <Text>{ethers.utils.formatUnits(option.value, option.token.decimals)}</Text>
+                          </Box>
+                          <Box flexDirection="row">
+                            <Text>Wallet balance for {option.token.name}: </Text>{' '}
+                            <Text>
+                              {ethers.utils.formatUnits(
+                                feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance,
+                                option.token.decimals
+                              )}
+                            </Text>
+                          </Box>
                         </Box>
                       ),
                       value: option.token.name
                     }))
                   ]}
                 />
-                <Box marginY="2" alignItems="center" justifyContent="center">
+                <Box marginY="2" alignItems="center" justifyContent="center" flexDirection="column">
                   <Button
                     onClick={() => {
                       const selected = pendingFeeOptionConfirmation?.options?.find(
@@ -422,12 +483,33 @@ function Homepage() {
                       )
 
                       if (selected.token.contractAddress !== undefined) {
-                        console.log('a3', selected.token.contractAddress)
+                        // check if wallet has enough balance, should be balance > feeOption.value
+                        const balance = feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance
+                        const feeOptionValue = selected.value
+                        if (balance && balance < feeOptionValue) {
+                          setFeeOptionAlert({
+                            title: 'Insufficient balance',
+                            description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
+                            variant: 'warning'
+                          })
+                          return
+                        }
+
                         confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
                       }
                     }}
                     label="Confirm fee option"
                   />
+                  {feeOptionAlert && (
+                    <Box marginTop="3" style={{ maxWidth: '332px' }}>
+                      <Alert
+                        title={feeOptionAlert.title}
+                        description={feeOptionAlert.description}
+                        variant={feeOptionAlert.variant}
+                        buttonProps={feeOptionAlert.buttonProps}
+                      />
+                    </Box>
+                  )}
                 </Box>
               </Box>
             )}
