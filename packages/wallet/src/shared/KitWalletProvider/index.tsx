@@ -1,4 +1,5 @@
-import { ethers } from 'ethers'
+'use client'
+
 import React, { useState, useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Box, Modal, ThemeProvider, Scroll } from '@0xsequence/design-system'

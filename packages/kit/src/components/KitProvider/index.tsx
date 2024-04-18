@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
 import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
@@ -5,7 +7,6 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Box, Button, Card, Collapsible, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'framer-motion'
 import { Connector, useAccount, useConnections } from 'wagmi'
-import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
 import { ethers } from 'ethers'
 
 import '@0xsequence/design-system/styles.css'
