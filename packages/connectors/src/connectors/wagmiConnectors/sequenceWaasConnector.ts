@@ -3,7 +3,6 @@ import { LocalStorageKey } from '@0xsequence/kit'
 import { TransactionRejectedRpcError, UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 import { ethers } from 'ethers'
-import { EIP1193Provider } from '0xsequence/dist/declarations/src/provider'
 import { v4 as uuidv4 } from 'uuid'
 import { sequence } from '0xsequence'
 
@@ -198,7 +197,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   }))
 }
 
-export class SequenceWaasProvider extends ethers.providers.BaseProvider implements EIP1193Provider {
+export class SequenceWaasProvider extends ethers.providers.BaseProvider implements sequence.provider.EIP1193Provider {
   constructor(
     public sequenceWaas: SequenceWaaS,
     public jsonRpcProvider: ethers.providers.JsonRpcProvider,
