@@ -23,7 +23,6 @@
     "clsx": "^2.0.0",
     "dayjs": "^1.11.9",
     "fuse.js": "^6.6.2",
-    "lodash": "^4.17.21",
     "qrcode.react": "^3.1.0",
     "react-copy-to-clipboard": "^5.1.0"
   },

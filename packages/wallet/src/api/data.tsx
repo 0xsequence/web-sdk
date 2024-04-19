@@ -4,8 +4,7 @@ import { TokenBalance, ContractType, Page, GetTransactionHistoryReturn, Transact
 import { ethers } from 'ethers'
 import { getNetworkConfigAndClients, DisplayedAsset } from '@0xsequence/kit'
 
-import { compareAddress, sortBalancesByType } from '../utils'
-import sampleSize from 'lodash/sampleSize'
+import { compareAddress, sampleSize, sortBalancesByType } from '../utils'
 
 export interface GetTokenBalancesArgs {
   accountAddress: string

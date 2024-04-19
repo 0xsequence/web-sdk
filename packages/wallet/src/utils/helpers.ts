@@ -100,3 +100,27 @@ export const isEthAddress = (value: string) => {
 
   return isEthAddress
 }
+
+// Gets n random elements at unique keys from collection up to the size of collection.
+export const sampleSize = <T>(collection: T[], n: number): T[] => {
+  const length = collection.length
+
+  if (!length || n < 1) {
+    return []
+  }
+
+  // Limit n to the size of the collection
+  n = n > length ? length : n
+
+  const sampled = new Array(n)
+  const indexes = new Set<number>()
+  while (indexes.size < n) {
+    indexes.add(Math.floor(Math.random() * length))
+  }
+
+  let index = 0
+  for (const i of indexes) {
+    sampled[index++] = collection[i]
+  }
+  return sampled
+}
