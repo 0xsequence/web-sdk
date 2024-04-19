@@ -6,11 +6,10 @@ import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 
 import { Skeleton, CollectibleTileImage, CoinIcon, formatDisplay, useBalances, useTokenMetadata } from '@0xsequence/kit-wallet'
-import { getNativeTokenInfoByChainId } from '../../utils'
+import { compareAddress, getNativeTokenInfoByChainId } from '../../utils'
 import { commons } from '@0xsequence/core'
 import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
 import { ContractType, TokenBalance } from '@0xsequence/indexer'
-import { compareAddress } from '@0xsequence/kit-wallet/src/utils'
 import { getAddress } from 'ethers/lib/utils'
 
 interface TxnDetailsProps {
