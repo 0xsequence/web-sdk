@@ -84,7 +84,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
   const defaultAppName = signIn.projectName || 'app'
 
-  const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin = location.origin, nonce } = ethAuth
+  const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth
 
   const { projectName } = signIn
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
@@ -160,7 +160,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
       JSON.stringify({
         expiry,
         app,
-        origin,
+        origin: origin || location.origin,
         nonce
       })
     )
