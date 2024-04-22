@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-checkout",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Checkout UI for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/checkout",
   "main": "dist/0xsequence-kit-checkout.cjs.js",

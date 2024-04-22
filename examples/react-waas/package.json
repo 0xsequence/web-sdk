@@ -1,7 +1,7 @@
 {
   "name": "@0xsequence/kit-example-react-waas",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "start": "vite --port 4444",
@@ -13,8 +13,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "0xsequence": "^1.9.19",
-    "@0xsequence/kit": "2.2.0",
-    "@0xsequence/kit-checkout": "2.2.0",
+    "@0xsequence/kit": "2.2.1",
+    "@0xsequence/kit-checkout": "2.2.1",
     "@tanstack/react-query": "^4.36.1",
     "viem": "^2.5.7",
     "wagmi": "^2.5.7"
