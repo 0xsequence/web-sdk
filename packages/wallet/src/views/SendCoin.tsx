@@ -132,7 +132,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
-          'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+          walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
           source: 'sequence-kit/wallet'
         }
       })
@@ -158,7 +158,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
-          'walletClient': (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+          walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
           source: 'sequence-kit/wallet'
         }
       })
