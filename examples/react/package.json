@@ -7,7 +7,7 @@
   "dependencies": {
     "0xsequence": "^1.9.19",
     "@0xsequence/core": "^1.9.19",
-    "@0xsequence/design-system": "^1.4.1",
+    "@0xsequence/design-system": "^1.4.7",
     "@0xsequence/kit": "2.2.0",
     "@0xsequence/kit-checkout": "2.2.0",
     "@0xsequence/kit-connectors": "2.2.0",
