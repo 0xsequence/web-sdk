@@ -2,13 +2,14 @@ import React from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from '../constants'
+import { LogoProps } from '@0xsequence/kit-connectors'
 
 export interface WalletProperties {
   id: string
-  logoDark: React.FunctionComponent
-  logoLight: React.FunctionComponent
-  monochromeLogoDark?: React.FunctionComponent
-  monochromeLogoLight?: React.FunctionComponent
+  logoDark: React.FunctionComponent<LogoProps>
+  logoLight: React.FunctionComponent<LogoProps>
+  monochromeLogoDark?: React.FunctionComponent<LogoProps>
+  monochromeLogoLight?: React.FunctionComponent<LogoProps>
   name: string
   iconBackground?: string
   hideConnectorId?: string | null

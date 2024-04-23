@@ -16,7 +16,7 @@ import {
   Tooltip
 } from '@0xsequence/design-system'
 import { useConnect, useAccount, Connector } from 'wagmi'
-import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY } from '@0xsequence/kit-connectors'
+import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, LogoProps } from '@0xsequence/kit-connectors'
 import { GoogleLogin } from '@react-oauth/google'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 
@@ -61,8 +61,8 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const injectedConnectors: ExtendedConnector[] = baseConnectors
     .filter(c => c.type === 'injected' && !c.hasOwnProperty('_wallet'))
     .map(connector => {
-      const Logo = () => {
-        return <Image src={connector.icon} alt={connector.name} disableAnimation width="full" height="full" />
+      const Logo = (props: LogoProps) => {
+        return <Image src={connector.icon} alt={connector.name} disableAnimation {...props} />
       }
 
       return {
@@ -379,7 +379,7 @@ const ConnectButton = (props: ConnectButtonProps) => {
         alignItems="center"
         onClick={() => onConnect(connector)}
       >
-        <Logo />
+        <Box as={Logo} width="6" height="6" />
       </Card>
     </Tooltip>
   )
