@@ -1,8 +1,6 @@
-import { GetContractInfoArgs, ContractInfo } from '@0xsequence/metadata'
-import { TokenBalance, GetTransactionHistoryReturn, Transaction, TokenMetadata } from '@0xsequence/indexer'
-import { TokenPrice } from '@0xsequence/api'
+import { GetContractInfoArgs } from '@0xsequence/metadata'
 import { ethers } from 'ethers'
-import { useQuery, useInfiniteQuery, UseQueryResult, UseInfiniteQueryResult } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
 import {
   fetchBalances,
   GetTokenBalancesArgs,
@@ -64,10 +62,7 @@ export const useCollectionBalance = (args: GetCollectionBalanceArgs) =>
     enabled: !!args.chainId && !!args.accountAddress && !!args.collectionAddress
   })
 
-export const useCoinPrices = ({
-  disabled,
-  ...args
-}: GetCoinPricesArgs & { disabled?: boolean }): UseQueryResult<TokenPrice[] | undefined> =>
+export const useCoinPrices = ({ disabled, ...args }: GetCoinPricesArgs & { disabled?: boolean }) =>
   useQuery({
     queryKey: ['coinPrices', args],
     queryFn: () => getCoinPrices(args),
@@ -90,7 +85,7 @@ export const useBalancesAssetsSummary = (args: FetchBalancesAssetsArgs, options:
 export const useCoinBalance = (args: GetTokenBalancesArgs, options: GetTokenBalancesOptions) =>
   useQuery({
     queryKey: ['coinBalance', args, options],
-    queryFn: (): Promise<TokenBalance> => {
+    queryFn: () => {
       if (compareAddress(args?.contractAddress || '', ethers.constants.AddressZero)) {
         const response = getNativeToken({
           accountAddress: args.accountAddress,
@@ -124,15 +119,13 @@ export const useCollectiblePrices = (args: GetCollectiblePricesArgs) =>
     enabled: args.tokens.length > 0
   })
 
-export const useTransactionHistory = (
-  arg: Omit<GetTransactionHistoryArgs, 'page'> & { disabled?: boolean }
-): UseInfiniteQueryResult<GetTransactionHistoryReturn> =>
+export const useTransactionHistory = (arg: Omit<GetTransactionHistoryArgs, 'page'> & { disabled?: boolean }) =>
   useInfiniteQuery({
     queryKey: ['transactionHistory', arg],
-    queryFn: ({ pageParam }: { pageParam?: number }) => {
+    queryFn: ({ pageParam }) => {
       return getTransactionHistory({
         ...(arg as Omit<GetTransactionHistoryArgs, 'page'>),
-        ...(pageParam ? { page: { page: pageParam } } : { page: { page: 1 } })
+        page: { page: pageParam }
       })
     },
     getNextPageParam: ({ page }) => {
@@ -141,12 +134,13 @@ export const useTransactionHistory = (
 
       return page?.page || 1
     },
+    initialPageParam: 1,
     retry: true,
     staleTime: time.oneSecond * 30,
     enabled: !!arg.chainId && !arg.disabled && !!arg.accountAddress
   })
 
-export const useTransactionHistorySummary = (args: GetTransactionHistorySummaryArgs): UseQueryResult<Transaction[]> =>
+export const useTransactionHistorySummary = (args: GetTransactionHistorySummaryArgs) =>
   useQuery({
     queryKey: ['transactionHistorySummary', args],
     queryFn: () => getTransactionHistorySummary(args),
@@ -164,7 +158,7 @@ export const useConversionRate = (args: FetchFiatConversionRateArgs) =>
     staleTime: time.oneMinute * 10
   })
 
-export const useTokenMetadata = (args: FetchTokenMetadataArgs): UseQueryResult<TokenMetadata[]> =>
+export const useTokenMetadata = (args: FetchTokenMetadataArgs) =>
   useQuery({
     queryKey: ['useTokenMetadata', args],
     queryFn: () => fetchTokenMetadata(args),
@@ -173,7 +167,7 @@ export const useTokenMetadata = (args: FetchTokenMetadataArgs): UseQueryResult<T
     enabled: !!args.tokens.chainId && !!args.tokens.contractAddress
   })
 
-export const useContractInfo = (args: GetContractInfoArgs): UseQueryResult<ContractInfo> =>
+export const useContractInfo = (args: GetContractInfoArgs) =>
   useQuery({
     queryKey: ['useContractInfo', args],
     queryFn: () => getContractInfo(args),
