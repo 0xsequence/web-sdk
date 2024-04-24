@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import { ETHAuthProof } from '@0xsequence/auth'
 import { ETHAuth, Proof } from '@0xsequence/ethauth'
 import { sequence } from '0xsequence'

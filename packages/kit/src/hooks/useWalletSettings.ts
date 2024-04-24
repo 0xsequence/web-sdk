@@ -1,4 +1,3 @@
-import React from 'react'
 import { useWalletConfigContext } from '../contexts/WalletSettings'
 
 export const useWalletSettings = () => {
