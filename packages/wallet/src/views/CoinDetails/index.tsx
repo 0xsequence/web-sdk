@@ -30,7 +30,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const {
     data: dataTransactionHistory,
-    isLoading: isLoadingTransactionHistory,
+    isPending: isPendingTransactionHistory,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -42,7 +42,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCoinBalance, isLoading: isLoadingCoinBalance } = useCoinBalance(
+  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useCoinBalance(
     {
       accountAddress: accountAddress || '',
       contractAddress,
@@ -51,7 +51,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     { hideUnlistedTokens }
   )
 
-  const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useCoinPrices({
+  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useCoinPrices({
     tokens: [
       {
         chainId,
@@ -60,13 +60,13 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     ]
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
-  const isLoading = isLoadingCoinBalance || isLoadingCoinPrices || isLoadingConversionRate
+  const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 
-  if (isLoading) {
+  if (isPending) {
     return <CoinDetailsSkeleton chainId={chainId} />
   }
 
@@ -121,7 +121,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList
               transactions={transactionHistory}
-              isLoading={isLoadingTransactionHistory}
+              isPending={isPendingTransactionHistory}
               isFetchingNextPage={isFetchingNextPage}
             />
           </InfiniteScroll>

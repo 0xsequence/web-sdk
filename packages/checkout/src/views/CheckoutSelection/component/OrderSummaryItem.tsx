@@ -18,20 +18,20 @@ interface OrderSummaryItem {
 
 export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainId }: OrderSummaryItem) => {
   const { chains } = useConfig()
-  const { data: tokenMetadata, isLoading: isTokenMetadataLoading } = useTokenMetadata({
+  const { data: tokenMetadata, isPending: isPendingTokenMetadata } = useTokenMetadata({
     chainId,
     contractAddress,
     tokenId
   })
 
-  const { data: contractInfo, isLoading: isContractInfoLoading } = useContractInfo({
+  const { data: contractInfo, isPending: isPendingContractInfo } = useContractInfo({
     chainID: String(chainId),
     contractAddress
   })
 
-  const isLoading = isTokenMetadataLoading || isContractInfoLoading
+  const isPending = isPendingTokenMetadata || isPendingContractInfo
 
-  if (isLoading) {
+  if (isPending) {
     return <OrderSummarySkeleton />
   }
 

@@ -26,17 +26,17 @@ export const CheckoutSelection = () => {
   const displayCryptoCheckout = !!cryptoCheckoutSettings
   // const displayCreditCardCheckout = !!creditCardCheckoutSettings
 
-  const { data: contractInfoData, isLoading: contractInfoLoading } = useContractInfo({
+  const { data: contractInfoData, isPending: isPendingContractInfo } = useContractInfo({
     contractAddress: cryptoCheckoutSettings?.coinQuantity?.contractAddress || '',
     chainID: String(cryptoCheckoutSettings?.chainId || 1)
   })
 
-  const { data: balancesData, isLoading: balancesLoading } = useBalances({
+  const { data: balancesData, isPending: isPendingBalances } = useBalances({
     accountAddress: accountAddress || '',
     chainId: cryptoCheckoutSettings?.chainId || 1
   })
 
-  const isLoading = (contractInfoLoading || balancesLoading) && cryptoCheckoutSettings
+  const isPending = (isPendingContractInfo || isPendingBalances) && cryptoCheckoutSettings
 
   const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.constants.AddressZero)
   const nativeTokenInfo = getNativeTokenInfoByChainId(cryptoCheckoutSettings?.chainId || 1, chains)
@@ -106,7 +106,7 @@ export const CheckoutSelection = () => {
           <Text fontWeight="normal" fontSize="normal" color="text50">
             Total
           </Text>
-          {isLoading ? (
+          {isPending ? (
             <Skeleton width="100px" height="17px" />
           ) : (
             <Box flexDirection="row" gap="1" alignItems="center">
@@ -135,7 +135,7 @@ export const CheckoutSelection = () => {
             onClick={onClickPayWithCard}
           />
         )} */}
-        {displayCryptoCheckout && !isInsufficientBalance && !isLoading && (
+        {displayCryptoCheckout && !isInsufficientBalance && !isPending && (
           <Button
             style={{
               borderRadius: vars.radii.md,
@@ -149,7 +149,7 @@ export const CheckoutSelection = () => {
             onClick={onClickPayWithCrypto}
           />
         )}
-        {displayCryptoCheckout && (isInsufficientBalance || isLoading) && (
+        {displayCryptoCheckout && (isInsufficientBalance || isPending) && (
           <Button
             className={styles.insufficientBalanceButton}
             style={{
@@ -168,7 +168,7 @@ export const CheckoutSelection = () => {
       </Box>
       {displayCryptoCheckout && (
         <Box width="full" justifyContent="flex-end">
-          {isLoading ? (
+          {isPending ? (
             <Skeleton width="102px" height="14px" />
           ) : (
             <Text fontWeight="bold" fontSize="small" color="text50">

@@ -22,7 +22,7 @@ interface CollectionDetailsProps {
 export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetailsProps) => {
   const { setNavigation } = useNavigation()
   const { address: accountAddress } = useAccount()
-  const { data: collectionBalanceData, isLoading: isLoadingCollectionBalance } = useCollectionBalance({
+  const { data: collectionBalanceData, isPending: isPendingCollectionBalance } = useCollectionBalance({
     chainId,
     accountAddress: accountAddress || '',
     collectionAddress: contractAddress
@@ -32,7 +32,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
   const contractInfo = collectionBalanceData?.[0]?.contractInfo
   const collectionLogoURI = contractInfo?.logoURI
 
-  if (isLoadingCollectionBalance) {
+  if (isPendingCollectionBalance) {
     return <CollectionDetailsSkeleton chainId={chainId} />
   }
 

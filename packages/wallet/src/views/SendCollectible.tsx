@@ -49,7 +49,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [showAmountControls, setShowAmountControls] = useState<boolean>(false)
   const { sendTransaction } = useSendTransaction()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
-  const { data: tokenBalance, isLoading: isLoadingBalances } = useCollectibleBalance({
+  const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalance({
     accountAddress: accountAddress,
     chainId,
     collectionAddress: contractAddress,
@@ -74,9 +74,9 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const isLoading = isLoadingBalances
+  const isPending = isPendingBalances
 
-  if (isLoading) {
+  if (isPending) {
     return null
   }
 

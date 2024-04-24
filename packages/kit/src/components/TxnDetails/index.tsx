@@ -91,7 +91,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const isNFT = transferProps[0]?.contractType === ContractType.ERC1155 || transferProps[0]?.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const { data: balances = [], isLoading: isLoadingBalances } = useBalances(
+  const { data: balances = [], isPending: isPendingBalances } = useBalances(
     {
       accountAddress: address,
       chainIds: [chainId],
@@ -100,7 +100,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
     { hideUnlistedTokens: false }
   )
 
-  const { data: tokenMetadata, isLoading: isTokenMetadataLoading } = useTokenMetadata({
+  const { data: tokenMetadata, isPending: isPendingTokenMetadata } = useTokenMetadata({
     tokens: { chainId, contractAddress, tokenIds: transferProps[0]?.tokenIds ?? [] }
   })
 

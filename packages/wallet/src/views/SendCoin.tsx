@@ -46,7 +46,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const [toAddress, setToAddress] = useState<string>('')
   const { sendTransaction } = useSendTransaction()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
-  const { data: balances = [], isLoading: isLoadingBalances } = useBalances(
+  const { data: balances = [], isPending: isPendingBalances } = useBalances(
     {
       accountAddress: accountAddress,
       chainIds: [chainId],
@@ -56,7 +56,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   )
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
-  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useCoinPrices({
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices({
     tokens: [
       {
         chainId,
@@ -65,11 +65,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     ]
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({ toCurrency: fiatCurrency.symbol })
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({ toCurrency: fiatCurrency.symbol })
 
-  const isLoading = isLoadingBalances || isLoadingCoinPrices || isLoadingConversionRate
+  const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
 
-  if (isLoading) {
+  if (isPending) {
     return null
   }
 

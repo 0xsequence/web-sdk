@@ -55,22 +55,22 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     }
   })
 
-  const { data: coinPricesData, isLoading: coinPricesIsLoading } = useCoinPrices({
+  const { data: coinPricesData, isPending: isPendingCoinPrices } = useCoinPrices({
     tokens: coins
   })
 
-  const { data: collectiblePricesData, isLoading: collectiblePricesIsLoading } = useCollectiblePrices({
+  const { data: collectiblePricesData, isPending: isPendingCollectiblePrices } = useCollectiblePrices({
     tokens: collectibles
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
   const arePricesLoading =
-    (coins.length > 0 && coinPricesIsLoading) ||
-    (collectibles.length > 0 && collectiblePricesIsLoading) ||
-    isLoadingConversionRate
+    (coins.length > 0 && isPendingCoinPrices) ||
+    (collectibles.length > 0 && isPendingCollectiblePrices) ||
+    isPendingConversionRate
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
 

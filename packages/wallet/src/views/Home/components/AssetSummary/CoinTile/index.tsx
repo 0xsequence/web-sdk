@@ -22,7 +22,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
   const isNativeToken = compareAddress(balance.contractAddress, ethers.constants.AddressZero)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
-  const { data: dataCoinPrices = [], isLoading: isLoadingCoinPrice } = useCoinPrices({
+  const { data: dataCoinPrices = [], isPending: isPendingCoinPrice } = useCoinPrices({
     tokens: [
       {
         chainId: balance.chainId,
@@ -31,17 +31,17 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
     ]
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
-  const { data: contractInfo, isLoading: isLoadingContractInfo } = useContractInfo({
+  const { data: contractInfo, isPending: isPendingContractInfo } = useContractInfo({
     chainID: String(balance.chainId),
     contractAddress: balance.contractAddress
   })
 
-  const isLoading = isLoadingCoinPrice || isLoadingConversionRate || isLoadingContractInfo
-  if (isLoading) {
+  const isPending = isPendingCoinPrice || isPendingConversionRate || isPendingContractInfo
+  if (isPending) {
     return <Box background="backgroundSecondary" width="full" height="full" borderRadius="md" />
   }
 

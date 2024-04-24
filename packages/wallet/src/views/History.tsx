@@ -11,7 +11,7 @@ export const History = () => {
   const { address: accountAddress } = useAccount()
   const scrollbarWidth = useScrollbarWidth()
 
-  const { data: transactionHistory = [], isLoading: isLoadingTransactionHistory } = useTransactionHistorySummary({
+  const { data: transactionHistory = [], isPending: isPendingTransactionHistory } = useTransactionHistorySummary({
     accountAddress: accountAddress || '',
     chainIds: selectedNetworks
   })
@@ -21,7 +21,7 @@ export const History = () => {
       <Box paddingX="4" paddingBottom="5" paddingTop="3">
         <TransactionHistoryList
           transactions={transactionHistory}
-          isLoading={isLoadingTransactionHistory}
+          isPending={isPendingTransactionHistory}
           isFetchingNextPage={false}
         />
       </Box>

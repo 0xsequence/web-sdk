@@ -66,8 +66,8 @@ export const Homepage = () => {
 
   const isMobile = useMediaQuery('isMobile')
 
-  const { data: txnData, sendTransaction, isLoading: isSendTxnLoading, error } = useSendTransaction()
-  const { data: txnData2, isLoading: isMintTxnLoading, writeContract } = useWriteContract()
+  const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error } = useSendTransaction()
+  const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
@@ -280,11 +280,11 @@ export const Homepage = () => {
     title: string
     description: string
     disabled?: boolean
-    isLoading?: boolean
+    isPending?: boolean
     onClick: () => void
   }
 
-  const ClickableCard = ({ title, description, disabled, isLoading, onClick }: ClickableCardProps) => {
+  const ClickableCard = ({ title, description, disabled, isPending, onClick }: ClickableCardProps) => {
     return (
       <Card
         style={{ width: '332px' }}
@@ -300,7 +300,7 @@ export const Homepage = () => {
             {description}
           </Text>
         </Box>
-        {isLoading && <Spinner marginTop="3" size="sm" color="text100" />}
+        {isPending && <Spinner marginTop="3" size="sm" color="text100" />}
       </Card>
     )
   }
@@ -364,7 +364,7 @@ export const Homepage = () => {
               <ClickableCard
                 title="Send transaction"
                 description="Send a transaction with your wallet"
-                isLoading={isSendTxnLoading}
+                isPending={isPendingSendTxn}
                 onClick={runSendTransaction}
               />
 
@@ -385,7 +385,7 @@ export const Homepage = () => {
                 title="Sign message"
                 description="Sign a message with your wallet"
                 onClick={signMessage}
-                isLoading={isSigningMessage}
+                isPending={isSigningMessage}
               />
               {isMessageValid && (
                 <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
@@ -404,7 +404,7 @@ export const Homepage = () => {
               <ClickableCard
                 title="Mint an NFT"
                 description="Test minting an NFT to your wallet"
-                isLoading={isMintTxnLoading}
+                isPending={isPendingMintTxn}
                 onClick={runMintNFT}
               />
               {lastTxnDataHash2 && (txnData2?.chainId === chainId || txnData2) && (

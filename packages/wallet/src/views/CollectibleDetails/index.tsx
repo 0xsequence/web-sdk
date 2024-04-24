@@ -36,7 +36,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const {
     data: dataTransactionHistory,
-    isLoading: isLoadingTransactionHistory,
+    isPending: isPendingTransactionHistory,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -49,7 +49,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCollectibleBalance, isLoading: isLoadingCollectibleBalance } = useCollectibleBalance({
+  const { data: dataCollectibleBalance, isPending: isPendingCollectibleBalance } = useCollectibleBalance({
     accountAddress: accountAddress || '',
     collectionAddress: contractAddress,
     chainId,
@@ -57,7 +57,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
     verifiedOnly: false
   })
 
-  const { data: dataCollectiblePrices, isLoading: isLoadingCollectiblePrices } = useCollectiblePrices({
+  const { data: dataCollectiblePrices, isPending: isPendingCollectiblePrices } = useCollectiblePrices({
     tokens: [
       {
         chainId,
@@ -67,13 +67,13 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
     ]
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
-  const isLoading = isLoadingCollectibleBalance || isLoadingCollectiblePrices || isLoadingConversionRate
+  const isPending = isPendingCollectibleBalance || isPendingCollectiblePrices || isPendingConversionRate
 
-  if (isLoading) {
+  if (isPending) {
     return <CollectibleDetailsSkeleton />
   }
 
@@ -177,7 +177,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList
               transactions={transactionHistory}
-              isLoading={isLoadingTransactionHistory}
+              isPending={isPendingTransactionHistory}
               isFetchingNextPage={isFetchingNextPage}
             />
           </InfiniteScroll>

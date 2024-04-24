@@ -39,18 +39,18 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
     }
   })
 
-  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useCoinPrices({
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices({
     tokens: tokenContractAddresses.map(contractAddress => ({
       contractAddress,
       chainId: transaction.chainId
     }))
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
-  const isLoading = isLoadingCoinPrices || isLoadingConversionRate
+  const isPending = isPendingCoinPrices || isPendingConversionRate
 
   const { transfers } = transaction
 
@@ -163,7 +163,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
                 {tokenLogoUri && <Image src={tokenLogoUri} width="5" alt="token logo" />}
                 {getTransferAmountLabel(formatDisplay(amountValue), symbol, transfer.transferType)}
               </Box>
-              {isLoading && <Skeleton width="35px" height="20px" />}
+              {isPending && <Skeleton width="35px" height="20px" />}
               {fiatConversionRate && (
                 <Text fontWeight="medium" fontSize="normal" color="text50">
                   {`${fiatCurrency.sign}${(Number(amountValue) * fiatConversionRate * conversionRate).toFixed(2)}`}

@@ -28,7 +28,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const { address: accountAddress } = useAccount()
 
-  const { data: tokenBalancesData, isLoading: tokenBalancesIsLoading } = useBalances(
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalances(
     {
       accountAddress: accountAddress || '',
       chainIds: selectedNetworks
@@ -41,14 +41,14 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
       b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.constants.AddressZero)
     ) || []
 
-  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useCoinPrices({
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices({
     tokens: coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
@@ -82,7 +82,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const coinBalancesAmount = coinBalances.length
   const collectionBalancesAmount = collectionBalances.length
 
-  const isLoading = tokenBalancesIsLoading || isLoadingCoinPrices || isLoadingConversionRate
+  const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
   interface IndexedData {
     index: number
     name: string
@@ -156,7 +156,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
       <Box width="full">
         <TabsRoot value={selectedTab} onValueChange={value => setSelectedTab(value as 'coins' | 'collections')}>
           <Box marginBottom="5">
-            {!isLoading && (
+            {!isPending && (
               <TabsHeader
                 value={selectedTab}
                 tabs={[
@@ -165,14 +165,14 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
                 ]}
               />
             )}
-            {isLoading && <TabsHeaderSkeleton />}
+            {isPending && <TabsHeaderSkeleton />}
           </Box>
 
           <TabsContent value="collections">
             <Box flexDirection="column" gap="3">
-              {isLoading && <ItemsSkeletons />}
-              {!isLoading && foundCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
-              {!isLoading &&
+              {isPending && <ItemsSkeletons />}
+              {!isPending && foundCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
+              {!isPending &&
                 foundCollectionBalances.length > 0 &&
                 foundCollectionBalances.map((indexItem, index) => {
                   const collectionBalance = collectionBalances[indexItem.index]
@@ -183,9 +183,9 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
           <TabsContent value="coins">
             <Box flexDirection="column" gap="3">
-              {isLoading && <ItemsSkeletons />}
-              {!isLoading && coinBalances.length == 0 && <Text color="text100">No Coins Found</Text>}
-              {!isLoading &&
+              {isPending && <ItemsSkeletons />}
+              {!isPending && coinBalances.length == 0 && <Text color="text100">No Coins Found</Text>}
+              {!isPending &&
                 foundCoinBalances.length > 0 &&
                 foundCoinBalances.map((indexedItem, index) => {
                   const coinBalance = coinBalances[indexedItem.index]

@@ -20,7 +20,7 @@ export const SearchWallet = () => {
   const { address: accountAddress } = useAccount()
   const scrollbarWidth = useScrollbarWidth()
 
-  const { data: tokenBalancesData, isLoading: tokenBalancesIsLoading } = useBalances(
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalances(
     {
       accountAddress: accountAddress || '',
       chainIds: selectedNetworks
@@ -33,14 +33,14 @@ export const SearchWallet = () => {
       b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.constants.AddressZero)
     ) || []
 
-  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useCoinPrices({
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices({
     tokens: coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   })
 
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useConversionRate({
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useConversionRate({
     toCurrency: fiatCurrency.symbol
   })
 
@@ -71,7 +71,7 @@ export const SearchWallet = () => {
     return Number(b.balance) - Number(a.balance)
   })
 
-  const isLoading = tokenBalancesIsLoading || isLoadingCoinPrices || isLoadingConversionRate
+  const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
   interface IndexedData {
     index: number
@@ -149,7 +149,7 @@ export const SearchWallet = () => {
           }}
           label={`Collections (${collectionBalancesAmount})`}
         />
-        {isLoading ? (
+        {isPending ? (
           Array(5)
             .fill(null)
             .map((_, i) => <Skeleton key={i} width="100%" height="32px" />)
@@ -172,7 +172,7 @@ export const SearchWallet = () => {
           }}
           label={`Coins (${coinBalancesAmount})`}
         />
-        {isLoading ? (
+        {isPending ? (
           Array(5)
             .fill(null)
             .map((_, i) => <Skeleton key={i} width="100%" height="32px" />)

@@ -88,7 +88,7 @@ export const App = () => {
   // Sending txn
   const [lastTxnDataHash, setLastTxnDataHash] = useState<string | undefined>()
 
-  const { data: txnData, sendTransaction, isLoading } = useSendTransaction()
+  const { data: txnData, sendTransaction, isPending } = useSendTransaction()
   const runSendTransaction = async () => {
     if (!walletClient) {
       return
@@ -137,16 +137,16 @@ export const App = () => {
 
             <div className="card">
               <p>Network: {networkForCurrentChainId?.name}</p>
-              <button onClick={() => switchNetwork()} disabled={isLoading}>
+              <button onClick={() => switchNetwork()} disabled={isPending}>
                 Switch network
               </button>
             </div>
             <div className="card">
-              <button onClick={() => runSendTransaction()} disabled={isLoading}>
+              <button onClick={() => runSendTransaction()} disabled={isPending}>
                 Send transaction
               </button>
 
-              {isLoading && <p>Transaction is pending...</p>}
+              {isPending && <p>Transaction is pending...</p>}
 
               {lastTxnDataHash && (
                 <div>
@@ -181,7 +181,7 @@ export const App = () => {
             <div className="card">
               <p>Sign message</p>
               <p>Message: {messageToSign}</p>
-              <button onClick={signMessage} disabled={isLoading}>
+              <button onClick={signMessage} disabled={isPending}>
                 Sign message
               </button>
 
