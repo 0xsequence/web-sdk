@@ -6,7 +6,7 @@
   "scripts": {
     "build": "pnpm dev && pnpm typecheck && preconstruct build",
     "watch": "preconstruct watch",
-    "clean": "rimraf ./node_modules",
+    "clean": "rimraf -g ./**/node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm build && changeset publish",
