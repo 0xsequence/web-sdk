@@ -53,7 +53,7 @@
     "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
     "typescript": "~5.4.5",
-    "wagmi": "^2.5.7"
+    "wagmi": "^2.5.20"
   },
   "resolutions": {},
   "workspaces": [

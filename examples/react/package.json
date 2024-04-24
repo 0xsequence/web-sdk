@@ -16,15 +16,15 @@
     "@0xsequence/kit-connectors": "workspace:*",
     "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/network": "^1.9.19",
-    "@tanstack/react-query": "^4.36.1",
+    "@tanstack/react-query": "^5.32.0",
     "@vanilla-extract/css": "^1.14.2",
     "ethers": "^5.7.2",
     "framer-motion": "^8.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.4.5",
-    "viem": "^2.5.7",
-    "wagmi": "^2.5.7"
+    "viem": "^2.9.26",
+    "wagmi": "^2.5.20"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",

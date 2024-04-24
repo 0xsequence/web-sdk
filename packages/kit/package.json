@@ -48,8 +48,8 @@
   "devDependencies": {
     "0xsequence": "^1.9.19",
     "ethers": "5.7.2",
-    "viem": "^2.5.7",
-    "wagmi": "^2.5.7"
+    "viem": "^2.9.26",
+    "wagmi": "^2.5.20"
   },
   "files": [
     "src",
