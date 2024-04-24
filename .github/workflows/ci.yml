@@ -1,11 +1,11 @@
-name: Test
+name: Build
 
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and Push
+    name: Build
     steps:
       - name: git-checkout
         uses: actions/checkout@v4
