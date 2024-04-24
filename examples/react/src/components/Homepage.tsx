@@ -40,8 +40,8 @@ import {
 import { allNetworks } from '@0xsequence/network'
 import { Footer } from './Footer'
 import { messageToSign } from '../constants'
-import { formatAddress, getCheckoutSettings } from '../utils'
-import abi from '../constants/nft-abi'
+import { delay, formatAddress, getCheckoutSettings } from '../utils'
+import { abi } from '../constants/nft-abi'
 import { ethers } from 'ethers'
 import { Alert, AlertProps } from './Alert'
 
@@ -49,7 +49,7 @@ import { Alert, AlertProps } from './Alert'
 const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 
-function Homepage() {
+export const Homepage = () => {
   const { theme, setTheme } = useTheme()
   const { setTheme: setKitTheme } = useKitTheme()
   const { address, connector, isConnected } = useAccount()
@@ -583,9 +583,3 @@ function Homepage() {
     </Box>
   )
 }
-
-function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-export default Homepage

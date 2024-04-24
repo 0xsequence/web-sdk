@@ -11,3 +11,7 @@ export const truncateAtMiddle = (text: string, truncateAt: number) => {
 export const formatAddress = (text: string) => {
   return `0x${truncateAtMiddle(text?.substring(2) || '', 8)}`
 }
+
+export const delay = (ms: number) => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}

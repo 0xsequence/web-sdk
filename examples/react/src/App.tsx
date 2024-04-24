@@ -2,7 +2,7 @@ import { ThemeProvider } from '@0xsequence/design-system'
 import { KitProvider } from '@0xsequence/kit'
 import { KitWalletProvider } from '@0xsequence/kit-wallet'
 import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
-import Homepage from './components/Homepage'
+import { Homepage } from './components/Homepage'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 
@@ -11,7 +11,7 @@ import { kitConfig, wagmiConfig } from './config'
 
 const queryClient = new QueryClient()
 
-function App() {
+export const App = () => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
@@ -30,5 +30,3 @@ function App() {
     </WagmiProvider>
   )
 }
-
-export default App

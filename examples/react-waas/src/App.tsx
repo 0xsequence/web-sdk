@@ -13,7 +13,7 @@ import { sequence } from '0xsequence'
 import { formatUnits } from 'viem'
 import { useEffect, useState } from 'react'
 
-function App() {
+export const App = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
   const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
@@ -201,5 +201,3 @@ function App() {
     </div>
   )
 }
-
-export default App
