@@ -42,7 +42,10 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
   }
 
   type Provider = sequence.provider.SequenceProvider
-  type Properties = { params: BaseSequenceConnectorOptions }
+  type Properties = {
+    params: BaseSequenceConnectorOptions
+    setEmail: (email: string) => void
+  }
   type StorageItem = {
     [LocalStorageKey.EthAuthProof]: ETHAuthProof
     [LocalStorageKey.Theme]: string
@@ -54,6 +57,12 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     name: 'Sequence',
     type: sequenceWallet.type,
     params,
+
+    setEmail(email: string) {
+      if (params.connect.settings) {
+        params.connect.settings.signInWithEmail = email
+      }
+    },
 
     async setup() {
       const provider = await this.getProvider()

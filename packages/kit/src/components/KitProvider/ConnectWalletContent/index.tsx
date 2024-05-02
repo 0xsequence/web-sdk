@@ -16,7 +16,7 @@ import {
   Tooltip
 } from '@0xsequence/design-system'
 import { useConnect, useAccount, Connector, useConfig, Storage } from 'wagmi'
-import { EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, LogoProps } from '@0xsequence/kit-connectors'
+import { LogoProps, sequenceWallet } from '@0xsequence/kit-connectors'
 import { GoogleLogin } from '@react-oauth/google'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 
@@ -145,7 +145,10 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
 
     if (connector._wallet.id === 'email') {
       const email = prompt('Auto-email login, please specify the email address:')
-      localStorage.setItem(EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, email || '')
+
+      if ('setEmail' in connector) {
+        ;(connector as any).setEmail(email)
+      }
     }
 
     // Open Metamask download page if Metamask window.ethereum is not found
@@ -170,7 +173,9 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     }
 
     if (emailConnector) {
-      localStorage.setItem(EMAIL_CONNECTOR_LOCAL_STORAGE_KEY, email)
+      if ('setEmail' in emailConnector) {
+        ;(emailConnector as any).setEmail(email)
+      }
 
       if (emailConnector._wallet.id === 'email-waas') {
         try {
