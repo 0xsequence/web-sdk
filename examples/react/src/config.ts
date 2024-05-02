@@ -42,7 +42,7 @@ const getWaasConnectors = () => {
   const connectors = [
     ...getDefaultWaasConnectors({
       walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: arbitrumSepolia.id,
+      defaultChainId: arbitrumNova.id,
       waasConfigKey,
       googleClientId,
       appleClientId,

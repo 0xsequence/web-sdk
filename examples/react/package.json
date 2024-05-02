@@ -5,6 +5,7 @@
   "homepage": "kit",
   "type": "module",
   "scripts": {
+    "dev": "pnpm start",
     "start": "vite",
     "build": "vite build && touch ./dist/.nojekyll",
     "serve": "vite preview",
