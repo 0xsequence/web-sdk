@@ -202,7 +202,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                           }}
                           onClose={() => setOpenConnectModal(false)}
                         >
-                          <Box padding="4" className={sharedStyles.walletContent}>
+                          <Box padding="4">
                             <Box
                               justifyContent="center"
                               color="text100"
@@ -256,7 +256,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             rejectPendingRequest('')
                           }}
                         >
-                          <Box paddingX="4" paddingTop="4" paddingBottom="2" className={sharedStyles.walletContent}>
+                          <Box paddingX="4" paddingTop="4" paddingBottom="2">
                             <Box
                               flexDirection="column"
                               justifyContent="center"

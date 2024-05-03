@@ -9,7 +9,6 @@ import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelec
 import { History, Navigation, NavigationContextProvider, CheckoutModalContextProvider, CheckoutSettings } from '../../contexts'
 
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import * as sharedStyles from '../../shared/styles.css'
 
 import '@0xsequence/design-system/styles.css'
 
@@ -104,7 +103,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                   backdropColor="backgroundBackdrop"
                   onClose={() => setOpenCheckoutModal(false)}
                 >
-                  <Box id="sequence-kit-checkout-content" className={sharedStyles.walletContent}>
+                  <Box id="sequence-kit-checkout-content">
                     {getHeader()}
                     {getContent()}
                   </Box>

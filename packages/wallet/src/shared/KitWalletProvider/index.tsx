@@ -106,7 +106,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
                   backdropColor="backgroundBackdrop"
                   onClose={() => setOpenWalletModal(false)}
                 >
-                  <Box className={styles.walletContent} id="sequence-kit-wallet-content">
+                  <Box id="sequence-kit-wallet-content">
                     {getHeader(navigation)}
 
                     {displayScrollbar ? (
