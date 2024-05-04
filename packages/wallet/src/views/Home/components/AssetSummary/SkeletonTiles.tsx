@@ -1,6 +1,5 @@
 import React from 'react'
-import { Box, vars } from '@0xsequence/design-system'
-import { Skeleton } from '../../../../shared/Skeleton'
+import { Box, Placeholder, vars } from '@0xsequence/design-system'
 
 export const SkeletonTiles = () => {
   return (
@@ -15,7 +14,7 @@ export const SkeletonTiles = () => {
         .fill(null)
         .map((_, i) => (
           <Box key={i}>
-            <Skeleton height="100%" width="100%" aspectRatio="1/1" />
+            <Placeholder height="full" width="full" aspectRatio="1/1" />
           </Box>
         ))}
     </Box>

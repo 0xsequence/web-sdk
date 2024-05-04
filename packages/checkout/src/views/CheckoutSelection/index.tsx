@@ -10,7 +10,8 @@ import {
   TooltipPrimitive,
   Tooltip,
   PaymentsIcon,
-  vars
+  vars,
+  Placeholder
 } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useTokenMetadata, useProjectAccessKey } from '@0xsequence/kit'
 
@@ -20,7 +21,6 @@ import { OrderSummaryItem } from './component/OrderSummaryItem'
 
 import { fetchSardineClientToken, fetchSardineOrderStatus } from '../../api'
 import { CoinIcon } from '../../shared/components/CoinIcon'
-import { Skeleton } from '../../shared/components/Skeleton'
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
 import { compareAddress, formatDisplay } from '../../utils'
@@ -159,7 +159,7 @@ export const CheckoutSelection = () => {
             Total
           </Text>
           {isPending ? (
-            <Skeleton width="100px" height="17px" />
+            <Placeholder style={{ width: '100px', height: '17px' }} />
           ) : (
             <Box flexDirection="row" gap="1" alignItems="center">
               <CoinIcon imageUrl={coinImageUrl} size={12} />
@@ -220,7 +220,7 @@ export const CheckoutSelection = () => {
       {displayCryptoCheckout && (
         <Box width="full" justifyContent="flex-end">
           {isPending ? (
-            <Skeleton width="102px" height="14px" />
+            <Placeholder style={{ width: '102px', height: '14px' }} />
           ) : (
             <Text fontWeight="bold" fontSize="small" color="text50">
               Balance: {`${formatDisplay(userBalance)} ${coinSymbol}`}

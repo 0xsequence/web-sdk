@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import { Box, SearchIcon, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
+import { Box, Placeholder, SearchIcon, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalances } from '@0xsequence/kit'
 import { BalanceItem } from './components/BalanceItem'
 import Fuse from 'fuse.js'
 import { useAccount, useConfig } from 'wagmi'
 
-import { Skeleton } from '../../shared/Skeleton'
 import { useSettings } from '../../hooks'
 import { compareAddress, computeBalanceFiat } from '../../utils'
 import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
@@ -120,7 +119,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     search === '' ? indexedCollectionBalances : fuzzySearchCollections.search(search).map(result => result.item)
 
   const TabsHeaderSkeleton = () => {
-    return <Skeleton width="360px" height="48px" />
+    return <Placeholder style={{ width: '360px', height: '48px' }} />
   }
 
   const ItemsSkeletons = () => {
@@ -129,7 +128,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
         {Array(8)
           .fill(null)
           .map((_, i) => (
-            <Skeleton key={i} width="full" height="32px" />
+            <Placeholder key={i} width="full" height="8" />
           ))}
       </>
     )

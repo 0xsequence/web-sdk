@@ -1,4 +1,4 @@
-import { Box, Card, GradientAvatar, Text } from '@0xsequence/design-system'
+import { Box, Card, GradientAvatar, Placeholder, Text } from '@0xsequence/design-system'
 
 import React, { useEffect, useState } from 'react'
 
@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 
 import { useTokenMetadata, useBalances } from '@0xsequence/kit'
-import { Skeleton, CollectibleTileImage, CoinIcon, formatDisplay } from '@0xsequence/kit-wallet'
+import { CollectibleTileImage, CoinIcon, formatDisplay } from '@0xsequence/kit-wallet'
 import { compareAddress, getNativeTokenInfoByChainId } from '../../utils'
 import { commons } from '@0xsequence/core'
 import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
@@ -24,15 +24,15 @@ export const TxnDetailsSkeleton = () => {
   return (
     <Box alignItems="center" justifyContent="space-between">
       <Box justifyContent="center" alignItems="center" gap="2">
-        <Skeleton width={30} height={30} borderRadius="circle" />
+        <Placeholder style={{ width: 30, height: 30 }} borderRadius="circle" />
         <Box flexDirection="column" gap="2" alignItems="flex-start">
-          <Skeleton width={100} height={14} />
-          <Skeleton width={75} height={14} />
+          <Placeholder style={{ width: 100, height: 14 }} />
+          <Placeholder style={{ width: 75, height: 14 }} />
         </Box>
       </Box>
       <Box flexDirection="column" gap="2" alignItems="flex-end">
-        <Skeleton width={100} height={14} />
-        <Skeleton width={50} height={12} />
+        <Placeholder style={{ width: 100, height: 14 }} />
+        <Placeholder style={{ width: 50, height: 12 }} />
       </Box>
     </Box>
   )

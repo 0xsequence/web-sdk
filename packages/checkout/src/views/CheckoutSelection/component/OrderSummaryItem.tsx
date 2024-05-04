@@ -1,10 +1,9 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
-import { Box, Card, Image, Text } from '@0xsequence/design-system'
+import { Box, Card, Image, Text, Placeholder } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useContractInfo, useTokenMetadata } from '@0xsequence/kit'
 import { CoinIcon } from '../../../shared/components/CoinIcon'
-import { Skeleton } from '../../../shared/components/Skeleton'
 
 import { formatDisplay } from '../../../utils'
 
@@ -72,13 +71,13 @@ export const OrderSummarySkeleton = () => {
   return (
     <Card flexDirection="row" alignItems="flex-start" justifyContent="space-between">
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-        <Skeleton height="80px" width="80px" />
+        <Placeholder style={{ width: '80px', height: '80px' }} />
         <Box flexDirection="column" alignItems="flex-start" justifyContent="center" gap="2">
-          <Skeleton width="100px" height="14px" />
-          <Skeleton width="180px" height="34px" />
+          <Placeholder style={{ width: '100px', height: '14px' }} />
+          <Placeholder style={{ width: '180px', height: '34px' }} />
         </Box>
       </Box>
-      <Skeleton height="14px" width="14px" />
+      <Placeholder style={{ width: '14px', height: '14px' }} />
     </Card>
   )
 }

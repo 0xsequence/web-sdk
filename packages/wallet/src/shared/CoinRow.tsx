@@ -1,7 +1,6 @@
-import { Box, Image, Text, vars } from '@0xsequence/design-system'
+import { Box, Image, Placeholder, Text, vars } from '@0xsequence/design-system'
 
 import React from 'react'
-import { Skeleton } from '../shared/Skeleton'
 import { ethers } from 'ethers'
 
 import { CoinIcon } from './CoinIcon'
@@ -29,15 +28,15 @@ export const CoinRowSkeleton = () => {
       paddingX="3"
     >
       <Box justifyContent="center" alignItems="center" gap="2">
-        <Skeleton width={30} height={30} borderRadius="circle" />
+        <Placeholder style={{ width: 30, height: 30 }} borderRadius="circle" />
         <Box flexDirection="column" gap="2" alignItems="flex-start">
-          <Skeleton width={100} height={14} />
-          <Skeleton width={75} height={14} />
+          <Placeholder style={{ width: 100, height: 14 }} />
+          <Placeholder style={{ width: 75, height: 14 }} />
         </Box>
       </Box>
       <Box flexDirection="column" gap="2" alignItems="flex-end">
-        <Skeleton width={100} height={14} />
-        <Skeleton width={50} height={12} />
+        <Placeholder style={{ width: 100, height: 14 }} />
+        <Placeholder style={{ width: 50, height: 12 }} />
       </Box>
     </Box>
   )

@@ -2,7 +2,17 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { Token } from '@0xsequence/api'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
-import { ArrowRightIcon, Box, Button, Divider, GradientAvatar, Image, LinkIcon, Text } from '@0xsequence/design-system'
+import {
+  ArrowRightIcon,
+  Box,
+  Button,
+  Divider,
+  GradientAvatar,
+  Image,
+  LinkIcon,
+  Placeholder,
+  Text
+} from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useCollectiblePrices } from '@0xsequence/kit'
 import dayjs from 'dayjs'
 import { useConfig } from 'wagmi'
@@ -10,7 +20,6 @@ import { useConfig } from 'wagmi'
 import { CoinIcon } from '../../shared/CoinIcon'
 import { CopyButton } from '../../shared/CopyButton'
 import { NetworkBadge } from '../../shared/NetworkBadge'
-import { Skeleton } from '../../shared/Skeleton'
 import { compareAddress, formatDisplay } from '../../utils'
 import { useSettings } from '../../hooks'
 
@@ -131,7 +140,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
                     {`${balanceDisplayed} ${symbol}`}
                   </Text>
                   {arePricesLoading ? (
-                    <Skeleton width="44px" height="12px" />
+                    <Placeholder style={{ width: '44px', height: '12px' }} />
                   ) : (
                     <Text fontWeight="bold" fontSize="xsmall" color="text50">
                       {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ethers } from 'ethers'
-import { Box, SearchIcon, Text, TextInput } from '@0xsequence/design-system'
+import { Box, Placeholder, SearchIcon, Text, TextInput } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalances } from '@0xsequence/kit'
 import Fuse from 'fuse.js'
 import { useAccount, useConfig } from 'wagmi'
@@ -8,7 +8,6 @@ import { useAccount, useConfig } from 'wagmi'
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
 
-import { Skeleton } from '../../shared/Skeleton'
 import { useSettings } from '../../hooks'
 import { compareAddress, computeBalanceFiat } from '../../utils'
 import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
@@ -148,7 +147,7 @@ export const SearchWallet = () => {
         {isPending ? (
           Array(5)
             .fill(null)
-            .map((_, i) => <Skeleton key={i} width="100%" height="32px" />)
+            .map((_, i) => <Placeholder key={i} width="full" height="8" />)
         ) : foundCollectionBalances.length === 0 ? (
           <Text color="text100">No collections found</Text>
         ) : (
@@ -171,7 +170,7 @@ export const SearchWallet = () => {
         {isPending ? (
           Array(5)
             .fill(null)
-            .map((_, i) => <Skeleton key={i} width="100%" height="32px" />)
+            .map((_, i) => <Placeholder key={i} width="full" height="8" />)
         ) : foundCoinBalances.length === 0 ? (
           <Text color="text100">No coins found</Text>
         ) : (

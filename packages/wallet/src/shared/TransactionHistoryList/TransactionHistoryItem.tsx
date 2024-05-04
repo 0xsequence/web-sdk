@@ -3,11 +3,20 @@ import { TokenPrice } from '@0xsequence/api'
 import { ethers } from 'ethers'
 import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId, useCoinPrices, useExchangeRate } from '@0xsequence/kit'
-import { ArrowRightIcon, Box, Text, Image, SendIcon, ReceiveIcon, TransactionIcon, vars } from '@0xsequence/design-system'
+import {
+  ArrowRightIcon,
+  Box,
+  Text,
+  Image,
+  SendIcon,
+  ReceiveIcon,
+  TransactionIcon,
+  vars,
+  Placeholder
+} from '@0xsequence/design-system'
 import dayjs from 'dayjs'
 import { useConfig } from 'wagmi'
 
-import { Skeleton } from '../../shared/Skeleton'
 import { useSettings, useNavigation } from '../../hooks'
 import { formatDisplay, compareAddress } from '../../utils'
 
@@ -160,7 +169,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
                 {tokenLogoUri && <Image src={tokenLogoUri} width="5" alt="token logo" />}
                 {getTransferAmountLabel(formatDisplay(amountValue), symbol, transfer.transferType)}
               </Box>
-              {isPending && <Skeleton width="35px" height="20px" />}
+              {isPending && <Placeholder style={{ width: '35px', height: '20px' }} />}
               {fiatConversionRate && (
                 <Text fontWeight="medium" fontSize="normal" color="text50">
                   {`${fiatCurrency.sign}${(Number(amountValue) * fiatConversionRate * conversionRate).toFixed(2)}`}

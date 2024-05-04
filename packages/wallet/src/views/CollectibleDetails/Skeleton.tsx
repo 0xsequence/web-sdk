@@ -1,7 +1,6 @@
 import React from 'react'
-import { Box, Button, SendIcon, Text, vars } from '@0xsequence/design-system'
+import { Box, Button, Placeholder, SendIcon, Text } from '@0xsequence/design-system'
 
-import { Skeleton } from '../../shared/Skeleton'
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -23,11 +22,11 @@ export const CollectibleDetailsSkeleton = () => {
         }}
       >
         <Box gap="3" alignItems="center" justifyContent="center" flexDirection="column">
-          <Skeleton width="120px" height="30px" />
-          <Skeleton width="140px" height="40px" />
+          <Placeholder style={{ width: '120px', height: '30px' }} />
+          <Placeholder style={{ width: '140px', height: '40px' }} />
         </Box>
         <Box>
-          <Skeleton width="347px" height="347px" />
+          <Placeholder style={{ width: '347px', height: '347px' }} />
         </Box>
         <Box>
           {/* balance */}
@@ -36,8 +35,8 @@ export const CollectibleDetailsSkeleton = () => {
               Balance
             </Text>
             <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
-              <Skeleton width="44px" height="36px" />
-              <Skeleton width="34px" height="17px" />
+              <Placeholder style={{ width: '44px', height: '36px' }} />
+              <Placeholder style={{ width: '34px', height: '17px' }} />
             </Box>
           </Box>
           <Button
