@@ -21,8 +21,6 @@ import {
 } from '../../contexts'
 import { ExtendedConnector, ModalPosition, getModalPositionCss } from '../../utils'
 
-import * as sharedStyles from '../styles.css'
-
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 
 import { TxnDetails } from '../TxnDetails'
@@ -221,12 +219,14 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             />
                             <Box
                               onClick={poweredBySequenceOnClick}
-                              className={sharedStyles.clickable}
                               gap="1"
                               marginTop="4"
                               flexDirection="row"
                               alignItems="center"
                               justifyContent="center"
+                              userSelect="none"
+                              cursor="pointer"
+                              opacity={{ hover: '80' }}
                             >
                               <Text fontSize="small" color="text100">
                                 Powered by Sequence

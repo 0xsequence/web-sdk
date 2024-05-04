@@ -7,7 +7,6 @@ import { ArrowRightIcon, Box, Text, Image, SendIcon, ReceiveIcon, TransactionIco
 import dayjs from 'dayjs'
 import { useConfig } from 'wagmi'
 
-import * as sharedStyles from '../../shared/styles.css'
 import { Skeleton } from '../../shared/Skeleton'
 import { useSettings, useNavigation } from '../../hooks'
 import { formatDisplay, compareAddress } from '../../utils'
@@ -183,7 +182,9 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
       alignItems="center"
       justifyContent="center"
       flexDirection="column"
-      className={sharedStyles.clickable}
+      userSelect="none"
+      cursor="pointer"
+      opacity={{ hover: '80' }}
       onClick={() => onClickTransaction()}
     >
       {transfers?.map((transfer, position) => {

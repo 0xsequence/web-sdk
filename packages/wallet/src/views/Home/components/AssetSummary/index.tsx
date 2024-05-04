@@ -10,7 +10,6 @@ import { SkeletonTiles } from './SkeletonTiles'
 
 import { sortBalancesByType } from '../../../../utils'
 import { useBalancesAssetsSummary, useNavigation, useSettings } from '../../../../hooks'
-import * as sharedStyles from '../../../../shared/styles.css'
 
 export const AssetSummary = () => {
   const { address } = useAccount()
@@ -74,21 +73,42 @@ export const AssetSummary = () => {
     >
       {nativeTokens.map((balance, index) => {
         return (
-          <Box key={index} className={sharedStyles.clickable} aspectRatio="1/1" onClick={() => onClickItem(balance)}>
+          <Box
+            key={index}
+            userSelect="none"
+            cursor="pointer"
+            opacity={{ hover: '80' }}
+            aspectRatio="1/1"
+            onClick={() => onClickItem(balance)}
+          >
             <CoinTile balance={balance} />
           </Box>
         )
       })}
       {erc20Tokens.map((balance, index) => {
         return (
-          <Box className={sharedStyles.clickable} key={index} aspectRatio="1/1" onClick={() => onClickItem(balance)}>
+          <Box
+            key={index}
+            userSelect="none"
+            cursor="pointer"
+            opacity={{ hover: '80' }}
+            aspectRatio="1/1"
+            onClick={() => onClickItem(balance)}
+          >
             <CoinTile balance={balance} />
           </Box>
         )
       })}
       {collectibles.map((balance, index) => {
         return (
-          <Box className={sharedStyles.clickable} aspectRatio="1/1" key={index} onClick={() => onClickItem(balance)}>
+          <Box
+            key={index}
+            userSelect="none"
+            cursor="pointer"
+            opacity={{ hover: '80' }}
+            aspectRatio="1/1"
+            onClick={() => onClickItem(balance)}
+          >
             <CollectibleTile balance={balance} />
           </Box>
         )

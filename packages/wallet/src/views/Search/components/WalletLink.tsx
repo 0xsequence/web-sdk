@@ -3,7 +3,6 @@ import { Box, Text, ChevronRightIcon } from '@0xsequence/design-system'
 import { useNavigation } from '../../../hooks'
 
 import { Navigation } from '../../../contexts'
-import * as sharedStyles from '../../../shared/styles.css'
 
 interface WalletLinkProps {
   toLocation: Navigation
@@ -24,7 +23,9 @@ export const WalletLink = ({ toLocation, label }: WalletLinkProps) => {
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      className={sharedStyles.clickable}
+      userSelect="none"
+      cursor="pointer"
+      opacity={{ hover: '80' }}
     >
       <Text color="text50" fontSize="normal" fontWeight="medium">
         {label}

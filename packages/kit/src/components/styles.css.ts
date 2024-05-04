@@ -19,14 +19,6 @@ export const networkButton = style({
   }
 })
 
-export const clickable = style({
-  ':hover': {
-    cursor: 'pointer',
-    opacity: '0.8',
-    userSelect: 'none'
-  }
-})
-
 export const walletLogoContainer = style({})
 
 globalStyle(`${walletLogoContainer} svg`, {

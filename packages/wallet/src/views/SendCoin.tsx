@@ -11,7 +11,8 @@ import {
   NumericInput,
   TextInput,
   vars,
-  Spinner
+  Spinner,
+  Card
 } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
@@ -28,7 +29,6 @@ import { SendItemInfo } from '../shared/SendItemInfo'
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
 import { useSettings, useOpenWalletModal, useNavigation } from '../hooks'
 import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
-import * as sharedStyles from '../shared/styles.css'
 
 interface SendCoinProps {
   chainId: number
@@ -245,15 +245,12 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           To
         </Text>
         {isEthAddress(toAddress) ? (
-          <Box
-            borderRadius="md"
-            background="backgroundSecondary"
+          <Card
+            clickable
             width="full"
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
-            padding="4"
-            className={sharedStyles.clickable}
             onClick={handleToAddressClear}
             style={{ height: '52px' }}
           >
@@ -262,7 +259,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
             </Box>
             <CloseIcon size="xs" />
-          </Box>
+          </Card>
         ) : (
           <TextInput
             value={toAddress}

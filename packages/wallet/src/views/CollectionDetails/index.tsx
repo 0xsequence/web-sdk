@@ -12,7 +12,6 @@ import { CoinIcon } from '../../shared/CoinIcon'
 import { useNavigation } from '../../hooks'
 import { formatDisplay } from '../../utils'
 
-import * as sharedStyles from '../../shared/styles.css'
 import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 interface CollectionDetailsProps {
@@ -89,7 +88,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
             const formattedBalance = formatDisplay(ethers.utils.formatUnits(unformattedBalance, decimals))
 
             return (
-              <Box key={index} onClick={() => onClickItem(balance)} className={sharedStyles.clickable}>
+              <Box key={index} onClick={() => onClickItem(balance)} userSelect="none" cursor="pointer" opacity={{ hover: '80' }}>
                 <Box
                   background="backgroundSecondary"
                   aspectRatio="1/1"

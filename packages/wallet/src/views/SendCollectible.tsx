@@ -13,7 +13,8 @@ import {
   NumericInput,
   TextInput,
   vars,
-  Spinner
+  Spinner,
+  Card
 } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useAnalyticsContext, ExtendedConnector, useCollectibleBalance } from '@0xsequence/kit'
 import { TokenBalance } from '@0xsequence/indexer'
@@ -23,7 +24,6 @@ import { SendItemInfo } from '../shared/SendItemInfo'
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigation, useOpenWalletModal } from '../hooks'
 import { limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
-import * as sharedStyles from '../shared/styles.css'
 
 interface SendCollectibleProps {
   chainId: number
@@ -269,15 +269,12 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           To
         </Text>
         {isEthAddress(toAddress) ? (
-          <Box
-            borderRadius="md"
-            background="backgroundSecondary"
+          <Card
+            clickable
             width="full"
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
-            padding="4"
-            className={sharedStyles.clickable}
             onClick={handleToAddressClear}
             style={{ height: '52px' }}
           >
@@ -286,7 +283,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
             </Box>
             <CloseIcon size="xs" />
-          </Box>
+          </Card>
         ) : (
           <TextInput
             value={toAddress}

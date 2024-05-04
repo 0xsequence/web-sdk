@@ -9,8 +9,6 @@ import { CoinIcon } from '../../../shared/CoinIcon'
 import { useNavigation } from '../../../hooks'
 import { compareAddress, formatDisplay } from '../../../utils'
 
-import * as sharedStyles from '../../../shared/styles.css'
-
 interface BalanceItemProps {
   balance: TokenBalance
 }
@@ -64,7 +62,9 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      className={sharedStyles.clickable}
+      userSelect="none"
+      cursor="pointer"
+      opacity={{ hover: '80' }}
     >
       <Box gap="3" flexDirection="row" alignItems="center" justifyContent="center">
         <CoinIcon imageUrl={logoURI} size={30} />

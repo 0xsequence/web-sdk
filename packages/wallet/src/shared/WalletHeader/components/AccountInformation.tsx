@@ -4,9 +4,7 @@ import { Box, Text, GradientAvatar, ChevronDownIcon } from '@0xsequence/design-s
 
 import { useAccount } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../../constants'
 import { formatAddress } from '../../../utils'
-import * as styles from '../../styles.css'
 
 interface AccountInformationProps {
   onClickAccount: () => void
@@ -23,8 +21,10 @@ export const AccountInformation = forwardRef(({ onClickAccount }: AccountInforma
           gap="2"
           alignItems="center"
           justifyContent="center"
-          className={styles.clickable}
           position="relative"
+          userSelect="none"
+          cursor="pointer"
+          opacity={{ hover: '80' }}
           // @ts-ignore-next-line
           ref={ref}
         >
