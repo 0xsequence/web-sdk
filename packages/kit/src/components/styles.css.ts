@@ -9,39 +9,6 @@ globalStyle('#kit-wallet *, #kit-wallet::before *, #kit-wallet *::after', {
   boxSizing: 'border-box'
 })
 
-export const networkButton = style({
-  maxWidth: '400px',
-  width: '100%',
-  ':hover': {
-    cursor: 'pointer',
-    opacity: '0.8',
-    userSelect: 'none'
-  }
-})
-
-export const walletLogoContainer = style({})
-
-globalStyle(`${walletLogoContainer} svg`, {
-  height: '40px'
-})
-
-export const walletLogoContainerExtended = style({})
-
-globalStyle(`${walletLogoContainerExtended} svg`, {
-  width: '30px'
-})
-
-export const googleWaasButtonContainer = style({})
-
-globalStyle(`${googleWaasButtonContainer}`, {
-  width: '40px',
-  height: '40px',
-  overflow: 'hidden',
-  borderRadius: '4px',
-  alignItems: 'center',
-  justifyContent: 'center'
-})
-
 export const digitInput = style([
   textVariants({ variant: 'large' }),
   {

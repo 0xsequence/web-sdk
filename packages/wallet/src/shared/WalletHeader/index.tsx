@@ -9,8 +9,6 @@ import { WalletDropdownContent } from './components/WalletDropdownContent'
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useOpenWalletModal } from '../../hooks'
 
-import * as styles from './styles.css'
-
 export const WalletHeader = () => {
   const { openWalletModalState } = useOpenWalletModal()
 

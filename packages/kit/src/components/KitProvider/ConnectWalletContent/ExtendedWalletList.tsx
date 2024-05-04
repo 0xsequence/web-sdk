@@ -5,8 +5,6 @@ import { useConnect } from 'wagmi'
 
 import { ExtendedConnector } from '../../../utils/getKitConnectWallets'
 
-import * as styles from '../../styles.css'
-
 interface ExtendedWalletListProps {
   onConnect: (connector: ExtendedConnector) => void
   connectors: ExtendedConnector[]
@@ -33,12 +31,11 @@ export const ExtendedWalletList = ({ onConnect, connectors }: ExtendedWalletList
                 justifyContent="center"
                 alignItems="center"
                 style={{ backgroundColor: connector._wallet.iconBackground }}
-                className={styles.walletLogoContainerExtended}
                 width="8"
                 height="8"
                 overflow="hidden"
               >
-                <Logo />
+                <Logo style={{ width: 30 }} />
               </Box>
             )}
             onClick={() => onConnect(connector)}
