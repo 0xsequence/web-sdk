@@ -1,13 +1,18 @@
 import React from 'react'
 import { ethers } from 'ethers'
-import { Box, Button, ChevronRightIcon, Divider, HelpIcon, Text, TooltipPrimitive, Tooltip, PaymentsIcon, vars } from '@0xsequence/design-system'
 import {
-  getNativeTokenInfoByChainId,
-  useBalances,
-  useContractInfo,
-  useTokenMetadata,
-  useProjectAccessKey
-} from '@0xsequence/kit'
+  Box,
+  Button,
+  ChevronRightIcon,
+  Divider,
+  HelpIcon,
+  Text,
+  TooltipPrimitive,
+  Tooltip,
+  PaymentsIcon,
+  vars
+} from '@0xsequence/design-system'
+import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useTokenMetadata, useProjectAccessKey } from '@0xsequence/kit'
 
 import { useAccount, useConfig } from 'wagmi'
 
@@ -19,7 +24,6 @@ import { Skeleton } from '../../shared/components/Skeleton'
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
 import { compareAddress, formatDisplay } from '../../utils'
-import * as styles from './styles.css'
 
 export const CheckoutSelection = () => {
   const { chains } = useConfig()
@@ -35,7 +39,7 @@ export const CheckoutSelection = () => {
 
   const { data: contractInfoData, isLoading: isPendingContractInfo } = useContractInfo(
     cryptoCheckoutSettings?.chainId || 1,
-    cryptoCheckoutSettings?.coinQuantity?.contractAddress || '',
+    cryptoCheckoutSettings?.coinQuantity?.contractAddress || ''
   )
 
   const { data: balancesData, isPending: isPendingBalances } = useBalances({
@@ -123,7 +127,8 @@ export const CheckoutSelection = () => {
               side="bottom"
               message={
                 <>
-                  Please note that NFTs are digital assets<br/> ,and as such, cannot be delivered physically.
+                  Please note that NFTs are digital assets
+                  <br /> ,and as such, cannot be delivered physically.
                 </>
               }
             >
@@ -198,16 +203,15 @@ export const CheckoutSelection = () => {
         )}
         {displayCryptoCheckout && (isInsufficientBalance || isPending) && (
           <Button
-            className={styles.insufficientBalanceButton}
-            style={{
-              borderRadius: vars.radii.md,
-              height: '56px',
-              justifyContent: 'center'
-            }}
+            shape="square"
             width="full"
-            leftIcon={() => <CoinIcon size={20} imageUrl={coinImageUrl} />}
             variant="glass"
-            label={`Insufficient ${coinSymbol}`}
+            label={
+              <Box placeItems="center" gap="2">
+                <CoinIcon size={20} imageUrl={coinImageUrl} />
+                <Text>Insufficient ${coinSymbol}</Text>
+              </Box>
+            }
             onClick={onClickPayWithCrypto}
             disabled
           />
