@@ -13,7 +13,8 @@ import {
   Spinner,
   Image,
   IconButton,
-  Tooltip
+  Tooltip,
+  PINCodeInput
 } from '@0xsequence/design-system'
 import { useConnect, useAccount, Connector, useConfig, Storage } from 'wagmi'
 import { LogoProps, sequenceWallet } from '@0xsequence/kit-connectors'
@@ -30,7 +31,6 @@ import { KitConnectProviderProps } from '../index'
 import { ExtendedConnector } from '../../../utils/getKitConnectWallets'
 
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
-import { PINCodeInput } from './PINCodeInput'
 import { getStorageItem } from '../../../utils/storage'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
