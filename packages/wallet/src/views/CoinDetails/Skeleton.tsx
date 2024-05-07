@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Placeholder, SendIcon, Text } from '@0xsequence/design-system'
+import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 import { NetworkBadge } from '../../shared/NetworkBadge'
@@ -18,8 +18,8 @@ export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
         <Box marginBottom="10" gap="2" alignItems="center" justifyContent="center" flexDirection="column">
-          <Placeholder style={{ width: '32px', height: '32px' }} />
-          <Placeholder style={{ height: '24px', width: '70px' }} />
+          <Skeleton style={{ width: '32px', height: '32px' }} />
+          <Skeleton style={{ height: '24px', width: '70px' }} />
           <NetworkBadge chainId={chainId} />
         </Box>
         <Box>
@@ -27,8 +27,8 @@ export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
             Balance
           </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
-            <Placeholder style={{ width: '150px', height: '36px' }} />
-            <Placeholder style={{ width: '33px', height: '17px' }} />
+            <Skeleton style={{ width: '150px', height: '36px' }} />
+            <Skeleton style={{ width: '33px', height: '17px' }} />
           </Box>
         </Box>
         <Button

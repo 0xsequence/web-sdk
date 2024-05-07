@@ -7,11 +7,10 @@ import {
   Divider,
   HelpIcon,
   Text,
-  TooltipPrimitive,
   Tooltip,
   PaymentsIcon,
   vars,
-  Placeholder
+  Skeleton
 } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useTokenMetadata, useProjectAccessKey } from '@0xsequence/kit'
 
@@ -159,7 +158,7 @@ export const CheckoutSelection = () => {
             Total
           </Text>
           {isPending ? (
-            <Placeholder style={{ width: '100px', height: '17px' }} />
+            <Skeleton style={{ width: '100px', height: '17px' }} />
           ) : (
             <Box flexDirection="row" gap="1" alignItems="center">
               <CoinIcon imageUrl={coinImageUrl} size={12} />
@@ -220,7 +219,7 @@ export const CheckoutSelection = () => {
       {displayCryptoCheckout && (
         <Box width="full" justifyContent="flex-end">
           {isPending ? (
-            <Placeholder style={{ width: '102px', height: '14px' }} />
+            <Skeleton style={{ width: '102px', height: '14px' }} />
           ) : (
             <Text fontWeight="bold" fontSize="small" color="text50">
               Balance: {`${formatDisplay(userBalance)} ${coinSymbol}`}

@@ -1,9 +1,7 @@
-import { Box, Placeholder, Text } from '@0xsequence/design-system'
-
 import React from 'react'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
-
+import { Box, Skeleton, Text } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
 import { CoinIcon } from './CoinIcon'
@@ -26,15 +24,15 @@ export const SendItemInfoSkeleton = () => {
   return (
     <Box alignItems="center" justifyContent="space-between">
       <Box justifyContent="center" alignItems="center" gap="2">
-        <Placeholder style={{ width: 30, height: 30 }} borderRadius="circle" />
+        <Skeleton style={{ width: 30, height: 30 }} borderRadius="circle" />
         <Box flexDirection="column" gap="2" alignItems="flex-start">
-          <Placeholder style={{ width: 100, height: 14 }} />
-          <Placeholder style={{ width: 75, height: 14 }} />
+          <Skeleton style={{ width: 100, height: 14 }} />
+          <Skeleton style={{ width: 75, height: 14 }} />
         </Box>
       </Box>
       <Box flexDirection="column" gap="2" alignItems="flex-end">
-        <Placeholder style={{ width: 100, height: 14 }} />
-        <Placeholder style={{ width: 50, height: 12 }} />
+        <Skeleton style={{ width: 100, height: 14 }} />
+        <Skeleton style={{ width: 50, height: 12 }} />
       </Box>
     </Box>
   )

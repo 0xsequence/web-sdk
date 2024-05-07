@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ethers } from 'ethers'
-import { Box, Placeholder, SearchIcon, Text, TextInput } from '@0xsequence/design-system'
+import { Box, SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalances } from '@0xsequence/kit'
 import Fuse from 'fuse.js'
 import { useAccount, useConfig } from 'wagmi'
@@ -147,7 +147,7 @@ export const SearchWallet = () => {
         {isPending ? (
           Array(5)
             .fill(null)
-            .map((_, i) => <Placeholder key={i} width="full" height="8" />)
+            .map((_, i) => <Skeleton key={i} width="full" height="8" />)
         ) : foundCollectionBalances.length === 0 ? (
           <Text color="text100">No collections found</Text>
         ) : (
@@ -170,7 +170,7 @@ export const SearchWallet = () => {
         {isPending ? (
           Array(5)
             .fill(null)
-            .map((_, i) => <Placeholder key={i} width="full" height="8" />)
+            .map((_, i) => <Skeleton key={i} width="full" height="8" />)
         ) : foundCoinBalances.length === 0 ? (
           <Text color="text100">No coins found</Text>
         ) : (

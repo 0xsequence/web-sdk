@@ -2,17 +2,7 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { Token } from '@0xsequence/api'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
-import {
-  ArrowRightIcon,
-  Box,
-  Button,
-  Divider,
-  GradientAvatar,
-  Image,
-  LinkIcon,
-  Placeholder,
-  Text
-} from '@0xsequence/design-system'
+import { ArrowRightIcon, Box, Button, Divider, GradientAvatar, Image, LinkIcon, Skeleton, Text } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useCollectiblePrices } from '@0xsequence/kit'
 import dayjs from 'dayjs'
 import { useConfig } from 'wagmi'
@@ -140,7 +130,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
                     {`${balanceDisplayed} ${symbol}`}
                   </Text>
                   {arePricesLoading ? (
-                    <Placeholder style={{ width: '44px', height: '12px' }} />
+                    <Skeleton style={{ width: '44px', height: '12px' }} />
                   ) : (
                     <Text fontWeight="bold" fontSize="xsmall" color="text50">
                       {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}

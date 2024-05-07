@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import { Box, Placeholder, SearchIcon, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
+import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalances } from '@0xsequence/kit'
 import { BalanceItem } from './components/BalanceItem'
 import Fuse from 'fuse.js'
@@ -119,7 +119,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     search === '' ? indexedCollectionBalances : fuzzySearchCollections.search(search).map(result => result.item)
 
   const TabsHeaderSkeleton = () => {
-    return <Placeholder style={{ width: '360px', height: '48px' }} />
+    return <Skeleton style={{ width: '360px', height: '48px' }} />
   }
 
   const ItemsSkeletons = () => {
@@ -128,7 +128,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
         {Array(8)
           .fill(null)
           .map((_, i) => (
-            <Placeholder key={i} width="full" height="8" />
+            <Skeleton key={i} width="full" height="8" />
           ))}
       </>
     )

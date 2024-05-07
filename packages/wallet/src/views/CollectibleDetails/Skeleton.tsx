@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Placeholder, SendIcon, Text } from '@0xsequence/design-system'
+import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 
@@ -22,11 +22,11 @@ export const CollectibleDetailsSkeleton = () => {
         }}
       >
         <Box gap="3" alignItems="center" justifyContent="center" flexDirection="column">
-          <Placeholder style={{ width: '120px', height: '30px' }} />
-          <Placeholder style={{ width: '140px', height: '40px' }} />
+          <Skeleton style={{ width: '120px', height: '30px' }} />
+          <Skeleton style={{ width: '140px', height: '40px' }} />
         </Box>
         <Box>
-          <Placeholder style={{ width: '347px', height: '347px' }} />
+          <Skeleton style={{ width: '347px', height: '347px' }} />
         </Box>
         <Box>
           {/* balance */}
@@ -35,8 +35,8 @@ export const CollectibleDetailsSkeleton = () => {
               Balance
             </Text>
             <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
-              <Placeholder style={{ width: '44px', height: '36px' }} />
-              <Placeholder style={{ width: '34px', height: '17px' }} />
+              <Skeleton style={{ width: '44px', height: '36px' }} />
+              <Skeleton style={{ width: '34px', height: '17px' }} />
             </Box>
           </Box>
           <Button

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Placeholder, vars } from '@0xsequence/design-system'
+import { Box, Skeleton, vars } from '@0xsequence/design-system'
 
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
@@ -23,13 +23,13 @@ export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeleton
       gap="10"
     >
       <Box flexDirection="column" gap="2" justifyContent="center" alignItems="center">
-        <Placeholder style={{ width: '32px', height: '32px' }} />
-        <Placeholder style={{ width: '100px', height: '24px' }} />
+        <Skeleton style={{ width: '32px', height: '32px' }} />
+        <Skeleton style={{ width: '100px', height: '24px' }} />
         <NetworkBadge chainId={chainId} />
-        <Placeholder style={{ width: '142px', height: '17px' }} />
+        <Skeleton style={{ width: '142px', height: '17px' }} />
       </Box>
       <Box width="full">
-        <Placeholder style={{ width: '168px', height: '20px' }} />
+        <Skeleton style={{ width: '168px', height: '20px' }} />
         <Box
           style={{
             display: 'grid',
@@ -42,7 +42,7 @@ export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeleton
           {Array(8)
             .fill(null)
             .map((_, i) => (
-              <Placeholder key={i} width="full" aspectRatio="1/1" />
+              <Skeleton key={i} width="full" aspectRatio="1/1" />
             ))}
         </Box>
       </Box>
