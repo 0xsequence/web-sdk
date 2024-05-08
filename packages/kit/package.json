@@ -30,8 +30,6 @@
     "@0xsequence/network": "^1.9.26",
     "@0xsequence/provider": "^1.9.26",
     "@0xsequence/utils": "^1.9.26",
-    "@vanilla-extract/css": "^1.14.2",
-    "@vanilla-extract/recipes": "^0.5.2",
     "framer-motion": "^8.5.2"
   },
   "peerDependencies": {
