@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import dns from 'dns'
 import react from '@vitejs/plugin-react'
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import svgrPlugin from 'vite-plugin-svgr'
@@ -19,7 +18,6 @@ export default defineConfig(() => {
         }
       }),
       viteTsconfigPaths(),
-      vanillaExtractPlugin(),
       svgrPlugin()
     ],
     define: {

@@ -1,9 +1,7 @@
 import React from 'react'
-import { Box, Image, Text, useMediaQuery } from '@0xsequence/design-system'
-import { useTheme } from '@0xsequence/design-system'
+import { Box, Image, Text, useMediaQuery, useTheme } from '@0xsequence/design-system'
 
 import { bottomPageLinks, socialLinks } from '../constants'
-import * as sharedStyles from '../shared/styles.css'
 
 export const Footer = () => {
   const { theme } = useTheme()
@@ -19,7 +17,14 @@ export const Footer = () => {
     return (
       <Box flexDirection="row" gap="4">
         {bottomPageLinks.map((link, index) => (
-          <Box onClick={() => onClickLinkUrl(link.url)} className={sharedStyles.clickable} key={index} gap="4">
+          <Box
+            key={index}
+            onClick={() => onClickLinkUrl(link.url)}
+            opacity={{ hover: '80' }}
+            cursor="pointer"
+            userSelect="none"
+            gap="4"
+          >
             <Text fontWeight="normal" fontSize="small" color="text50">
               {link.label}
             </Text>
@@ -36,7 +41,9 @@ export const Footer = () => {
           return (
             <Box
               key={index}
-              className={sharedStyles.clickable}
+              opacity={{ hover: '80' }}
+              cursor="pointer"
+              userSelect="none"
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   window.open(socialLink.url)
