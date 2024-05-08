@@ -56,6 +56,12 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.7.1
         version: 7.8.0(eslint@8.57.0)(typescript@5.4.5)
+      '@vanilla-extract/css':
+        specifier: ^1.14.2
+        version: 1.15.1(babel-plugin-macros@3.1.0)
+      '@vanilla-extract/recipes':
+        specifier: ^0.5.2
+        version: 0.5.2(@vanilla-extract/css@1.15.1(babel-plugin-macros@3.1.0))
       eslint:
         specifier: ^8.27.0
         version: 8.57.0
@@ -115,7 +121,7 @@ importers:
         version: 5.35.1(react@18.3.1)
       next:
         specifier: 14.2.3
-        version: 14.2.3(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.3(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -498,12 +504,6 @@ importers:
       '@types/react-copy-to-clipboard':
         specifier: ^5.0.4
         version: 5.0.7
-      '@vanilla-extract/css':
-        specifier: ^1.14.2
-        version: 1.15.1(babel-plugin-macros@3.1.0)
-      '@vanilla-extract/recipes':
-        specifier: ^0.5.2
-        version: 0.5.2(@vanilla-extract/css@1.15.1(babel-plugin-macros@3.1.0))
       babel-plugin-module-resolver:
         specifier: ^5.0.2
         version: 5.0.2
@@ -14992,7 +14992,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@14.2.3(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@14.2.3(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 14.2.3
       '@swc/helpers': 0.5.5
@@ -15002,7 +15002,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(@babel/core@7.24.5)(react@18.3.1)
+      styled-jsx: 5.1.1(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.3
       '@next/swc-darwin-x64': 14.2.3
@@ -16224,12 +16224,13 @@ snapshots:
 
   strnum@1.0.5: {}
 
-  styled-jsx@5.1.1(@babel/core@7.24.5)(react@18.3.1):
+  styled-jsx@5.1.1(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
     optionalDependencies:
       '@babel/core': 7.24.5
+      babel-plugin-macros: 3.1.0
 
   stylis@4.2.0: {}
 
