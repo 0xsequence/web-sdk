@@ -56,9 +56,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.7.1
         version: 7.8.0(eslint@8.57.0)(typescript@5.4.5)
-      '@vanilla-extract/babel-plugin':
-        specifier: ^1.2.0
-        version: 1.2.0(babel-plugin-macros@3.1.0)
       eslint:
         specifier: ^8.27.0
         version: 8.57.0
@@ -118,7 +115,7 @@ importers:
         version: 5.35.1(react@18.3.1)
       next:
         specifier: 14.2.3
-        version: 14.2.3(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.3(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -3490,15 +3487,8 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@vanilla-extract/babel-plugin@1.2.0':
-    resolution: {integrity: sha512-4R+hqoyzoyJIrE+NgrYxZuL6GqGH28hiBrPUOxwtvqnJJ5WnUl2/WzItLDDH9YT1Auwl3cIR7pcbrV6HIchORA==}
-    deprecated: The features of this plugin are now built-in to all vanilla-extract bundler integrations — making this plugin no longer required. For more information about test environment integrations, see https://vanilla-extract.style/documentation/test-environments/
-
   '@vanilla-extract/css@1.15.1':
     resolution: {integrity: sha512-puAfTKAUtsMr2+D+grQNjU5umsdw9zdVgQflUlbzS/tGORaAHdgaYz7jfKPmz1c4ZcpJ6uFNOiI50NDOAzzhyg==}
-
-  '@vanilla-extract/integration@5.0.1':
-    resolution: {integrity: sha512-HRV/HvC/lihb9wT3x5s7pf5qLjqxSd9nBePJ10juOuMB5cl2ZClEcts076m9BuRKM3wRK2h7KuwkNsaUtjujxQ==}
 
   '@vanilla-extract/private@1.0.4':
     resolution: {integrity: sha512-8FGD6AejeC/nXcblgNCM5rnZb9KXa4WNkR03HCWtdJBpANjTgjHEglNLFnhuvdQ78tC6afaxBPI+g7F2NX3tgg==}
@@ -4481,10 +4471,6 @@ packages:
     resolution: {integrity: sha512-QCOllgZJtaUo9miYBcLChTUaHNjJF3PYs1VidD7AwiEj1kYxKeQTctLAezAOH5ZKRH0g2IgPn6KwB4IT8iRpvA==}
     engines: {node: '>= 0.4'}
 
-  esbuild@0.11.23:
-    resolution: {integrity: sha512-iaiZZ9vUF5wJV8ob1tl+5aJTrwDczlvGP0JoMmnpC2B0ppiMCu8n8gmy5ZTGl5bcG081XBVn+U+jP+mPFm5T5Q==}
-    hasBin: true
-
   esbuild@0.20.2:
     resolution: {integrity: sha512-WdOOppmUNU+IbZ0PaDiTst80zjnrOkyJNHoKupIcVyU8Lvla3Ugx94VzkQ32Ijqd7UhHJy75gNWDMUekcrSJ6g==}
     engines: {node: '>=12'}
@@ -4666,10 +4652,6 @@ packages:
 
   ethers@5.7.2:
     resolution: {integrity: sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==}
-
-  eval@0.1.6:
-    resolution: {integrity: sha512-o0XUw+5OGkXw4pJZzQoXUk+H87DHuC+7ZE//oSrRGtatTmr12oTnLfg6QOq9DyTt0c/p4TwzgmkKrBzWTSizyQ==}
-    engines: {node: '>= 0.8'}
 
   event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -5355,9 +5337,6 @@ packages:
     resolution: {integrity: sha512-N3yCS/NegsOBokc8GAdM8UcmfsKiSS8cipheD/nivzr700H+nsMOxJjQnvwOcRYVuFkdH0wGUvW2WbXGmrZGbQ==}
     engines: {node: '>=14'}
 
-  javascript-stringify@2.1.0:
-    resolution: {integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==}
-
   jest-environment-node@29.7.0:
     resolution: {integrity: sha512-DOSwCRqXirTOyheM+4d5YZOrWcdu0LNZ87ewUoywbcb2XR4wKgqiG8vNeYwhjFMbEkfju7wx2GYH0P2gevGvFw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -5569,9 +5548,6 @@ packages:
 
   lodash.throttle@4.1.1:
     resolution: {integrity: sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==}
-
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -6059,9 +6035,6 @@ packages:
 
   outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
-
-  outdent@0.8.0:
-    resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
 
   p-filter@2.1.0:
     resolution: {integrity: sha512-ZBxxZ5sL2HghephhpGAQdoskxplTwr7ICaehZwLIlfL6acuVgZPm8yBNuRAFBGEqtD/hmUeq9eqLg2ys9Xr/yw==}
@@ -6554,9 +6527,6 @@ packages:
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
-
-  require-like@0.1.2:
-    resolution: {integrity: sha512-oyrU88skkMtDdauHDuKVrgR+zuItqr6/c//FXzvmxRGMexSDc6hNvJInGW3LL46n+8b50RykrvwSUIIQH2LQ5A==}
 
   require-main-filename@2.0.0:
     resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
@@ -11900,15 +11870,6 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vanilla-extract/babel-plugin@1.2.0(babel-plugin-macros@3.1.0)':
-    dependencies:
-      '@babel/core': 7.24.5
-      '@babel/template': 7.24.0
-      '@vanilla-extract/integration': 5.0.1(babel-plugin-macros@3.1.0)
-    transitivePeerDependencies:
-      - babel-plugin-macros
-      - supports-color
-
   '@vanilla-extract/css@1.15.1(babel-plugin-macros@3.1.0)':
     dependencies:
       '@emotion/hash': 0.9.1
@@ -11922,18 +11883,6 @@ snapshots:
       media-query-parser: 2.0.2
       modern-ahocorasick: 1.0.1
       picocolors: 1.0.0
-    transitivePeerDependencies:
-      - babel-plugin-macros
-
-  '@vanilla-extract/integration@5.0.1(babel-plugin-macros@3.1.0)':
-    dependencies:
-      '@vanilla-extract/css': 1.15.1(babel-plugin-macros@3.1.0)
-      esbuild: 0.11.23
-      eval: 0.1.6
-      find-up: 5.0.0
-      javascript-stringify: 2.1.0
-      lodash: 4.17.21
-      outdent: 0.8.0
     transitivePeerDependencies:
       - babel-plugin-macros
 
@@ -13375,8 +13324,6 @@ snapshots:
       is-date-object: 1.0.5
       is-symbol: 1.0.4
 
-  esbuild@0.11.23: {}
-
   esbuild@0.20.2:
     optionalDependencies:
       '@esbuild/aix-ppc64': 0.20.2
@@ -13711,10 +13658,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  eval@0.1.6:
-    dependencies:
-      require-like: 0.1.2
 
   event-target-shim@5.0.1: {}
 
@@ -14410,8 +14353,6 @@ snapshots:
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
 
-  javascript-stringify@2.1.0: {}
-
   jest-environment-node@29.7.0:
     dependencies:
       '@jest/environment': 29.7.0
@@ -14682,8 +14623,6 @@ snapshots:
   lodash.startcase@4.4.0: {}
 
   lodash.throttle@4.1.1: {}
-
-  lodash@4.17.21: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -15065,7 +15004,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@14.2.3(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@14.2.3(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 14.2.3
       '@swc/helpers': 0.5.5
@@ -15075,7 +15014,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react@18.3.1)
+      styled-jsx: 5.1.1(@babel/core@7.24.5)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.3
       '@next/swc-darwin-x64': 14.2.3
@@ -15317,8 +15256,6 @@ snapshots:
   os-tmpdir@1.0.2: {}
 
   outdent@0.5.0: {}
-
-  outdent@0.8.0: {}
 
   p-filter@2.1.0:
     dependencies:
@@ -15866,8 +15803,6 @@ snapshots:
 
   require-directory@2.1.1: {}
 
-  require-like@0.1.2: {}
-
   require-main-filename@2.0.0: {}
 
   reselect@4.1.8: {}
@@ -16301,13 +16236,12 @@ snapshots:
 
   strnum@1.0.5: {}
 
-  styled-jsx@5.1.1(@babel/core@7.24.5)(babel-plugin-macros@3.1.0)(react@18.3.1):
+  styled-jsx@5.1.1(@babel/core@7.24.5)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
     optionalDependencies:
       '@babel/core': 7.24.5
-      babel-plugin-macros: 3.1.0
 
   stylis@4.2.0: {}
 
