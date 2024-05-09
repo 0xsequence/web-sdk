@@ -25,7 +25,6 @@
     "@0xsequence/ethauth": "^0.8.1",
     "@0xsequence/indexer": "^1.9.26",
     "@0xsequence/kit-connectors": "workspace:*",
-    "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/metadata": "^1.9.26",
     "@0xsequence/network": "^1.9.26",
     "@0xsequence/provider": "^1.9.26",
