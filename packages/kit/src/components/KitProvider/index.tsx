@@ -24,8 +24,8 @@ import { ExtendedConnector, ModalPosition, getModalPositionCss } from '../../uti
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 
 import { TxnDetails } from '../TxnDetails'
-import { NetworkBadge } from '@0xsequence/kit-wallet'
 import { setStorageItem } from '../../utils/storage'
+import { NetworkBadge } from './NetworkBadge'
 
 export declare const THEME: readonly ['dark', 'light']
 export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>

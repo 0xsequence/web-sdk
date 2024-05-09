@@ -3,7 +3,7 @@ import { Box, Image, Text } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, getNetwork, getNetworkColor, getNetworkBackgroundColor } from '@0xsequence/kit'
 import { useConfig } from 'wagmi'
 
-import { capitalize } from '../utils'
+import { capitalize } from '../../utils/string'
 
 interface NetworkBadgeProps {
   chainId: number
