@@ -1,8 +1,8 @@
+import { Box, IconButton, ChevronLeftIcon, Text } from '@0xsequence/design-system'
 import React from 'react'
-import { Box, IconButton, ChevronLeftIcon, Text, vars } from '@0xsequence/design-system'
-import { useNavigation } from '../../hooks/useNavigation'
+
 import { HEADER_HEIGHT } from '../../constants'
-import { Navigation } from '../../contexts/Navigation'
+import { useNavigation } from '../../hooks/useNavigation'
 
 interface NavigationHeaderProps {
   primaryText?: string

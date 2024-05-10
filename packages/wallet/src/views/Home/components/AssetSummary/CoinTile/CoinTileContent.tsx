@@ -1,8 +1,8 @@
+import { Box, NetworkImage, Text, TokenImage } from '@0xsequence/design-system'
 import React from 'react'
-import { Box, NetworkIcon, NetworkImage, Text, TokenImage } from '@0xsequence/design-system'
 
-import { getPercentageColor } from '../../../../../utils'
 import { useSettings } from '../../../../../hooks'
+import { getPercentageColor } from '../../../../../utils'
 
 interface CoinTileContentProps {
   logoUrl?: string

@@ -1,6 +1,7 @@
 import { SequenceMetadata } from '@0xsequence/metadata'
-import { useProjectAccessKey } from './useProjectAccessKey'
 import { useMemo } from 'react'
+
+import { useProjectAccessKey } from './useProjectAccessKey'
 
 export const useMetadataClient = () => {
   const projectAccessKey = useProjectAccessKey()

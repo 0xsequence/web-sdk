@@ -1,13 +1,13 @@
 import { SequenceAPIClient, Token } from '@0xsequence/api'
+import { ContractType, Page, SequenceIndexer, TokenBalance } from '@0xsequence/indexer'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { zeroAddress } from 'viem'
 
-import { useMetadataClient } from './useMetadataClient'
+import { compareAddress } from '../utils/helpers'
+
 import { useAPIClient } from './useAPIClient'
 import { useIndexerClient, useIndexerClients } from './useIndexerClient'
-import { ContractType, Page, SequenceIndexer, TokenBalance } from '@0xsequence/indexer'
-
-import { zeroAddress } from 'viem'
-import { compareAddress } from '../utils/helpers'
+import { useMetadataClient } from './useMetadataClient'
 
 export const time = {
   oneSecond: 1 * 1000,

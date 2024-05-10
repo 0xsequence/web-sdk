@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { LogoProps } from '../types'
 
 export const FacebookLogo: React.FunctionComponent = (props: LogoProps) => {

@@ -1,7 +1,9 @@
 import type { Wallet } from '@0xsequence/kit'
-import { getAppleLogo, getAppleMonochromeLogo } from './AppleLogo'
 
 import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
+
+import { getAppleLogo, getAppleMonochromeLogo } from './AppleLogo'
+
 
 export type AppleOptions = BaseSequenceConnectorOptions
 

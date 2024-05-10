@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react'
 import {
   Box,
   Button,
@@ -8,7 +7,6 @@ import {
   Divider,
   Text,
   TextInput,
-  vars,
   useTheme,
   Spinner,
   Image,
@@ -16,23 +14,23 @@ import {
   Tooltip,
   PINCodeInput
 } from '@0xsequence/design-system'
-import { useConnect, useAccount, Connector, useConfig, Storage } from 'wagmi'
-import { LogoProps, sequenceWallet } from '@0xsequence/kit-connectors'
+import { LogoProps } from '@0xsequence/kit-connectors'
 import { GoogleLogin } from '@react-oauth/google'
+import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
+import { useConnect, useAccount, useConfig, Storage } from 'wagmi'
 
-import { ExtendedWalletList } from './ExtendedWalletList'
-import { Banner } from './Banner'
-import { GoogleLogo } from './GoogleLogo'
-
-import { KitConfig } from '../../index'
 import { LocalStorageKey, defaultSignInOptions } from '../../../constants'
-import { isEmailValid } from '../../../utils'
-import { KitConnectProviderProps } from '../index'
-import { ExtendedConnector } from '../../../utils/getKitConnectWallets'
-
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
+import { isEmailValid } from '../../../utils'
+import { ExtendedConnector } from '../../../utils/getKitConnectWallets'
 import { getStorageItem } from '../../../utils/storage'
+import { KitConfig } from '../../index'
+import { KitConnectProviderProps } from '../index'
+
+import { Banner } from './Banner'
+import { ExtendedWalletList } from './ExtendedWalletList'
+import { GoogleLogo } from './GoogleLogo'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   openConnectModal: boolean
@@ -62,7 +60,9 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
 
   useEffect(() => {
-    setTimeout(() => { setEnableGoogleTooltip(true) },300)
+    setTimeout(() => {
+      setEnableGoogleTooltip(true)
+    }, 300)
   })
 
   // EIP-6963 connectors will not have the _wallet property
@@ -316,7 +316,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                               paddingRight: '12px',
                               top: '50%',
                               left: '50%',
-                              transform: 'translate(-50%, -50%)',
+                              transform: 'translate(-50%, -50%)'
                             }}
                           >
                             <Box

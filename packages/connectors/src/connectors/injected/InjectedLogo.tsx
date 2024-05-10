@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { LogoProps } from '../types'
 
 export const InjectedLogo: React.FunctionComponent = (props: LogoProps) => {

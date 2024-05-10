@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Box, Modal, ThemeProvider } from '@0xsequence/design-system'
-import { AnimatePresence } from 'framer-motion'
-
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
 
-import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelection } from '../../views'
 import { History, Navigation, NavigationContextProvider, CheckoutModalContextProvider, CheckoutSettings } from '../../contexts'
-
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
+import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelection } from '../../views'
 
 import '@0xsequence/design-system/styles.css'
 

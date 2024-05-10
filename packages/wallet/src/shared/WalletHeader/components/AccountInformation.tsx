@@ -1,7 +1,5 @@
-import React, { forwardRef } from 'react'
-
 import { Box, Text, GradientAvatar, ChevronDownIcon } from '@0xsequence/design-system'
-
+import React, { forwardRef } from 'react'
 import { useAccount } from 'wagmi'
 
 import { formatAddress } from '../../../utils'

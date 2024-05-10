@@ -1,4 +1,3 @@
-import React, { useContext } from 'react'
 import { useNavigationContext, Navigation, History } from '../contexts/Navigation'
 import { DEFAULT_LOCATION } from '../shared/components/KitCheckoutProvider'
 

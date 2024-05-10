@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import { ExtendedConnector } from '../utils'
 
 export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedConnector; onSuccess: (idToken: string) => void }) {
@@ -7,8 +8,8 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
       inProgress: false,
       loading: false,
       error: undefined,
-      initiateAuth: async (email: string) => {},
-      sendChallengeAnswer: async (answer: string) => {}
+      initiateAuth: async (_email: string) => {},
+      sendChallengeAnswer: async (_answer: string) => {}
     }
   }
 

@@ -1,8 +1,9 @@
 import { Wallet } from '@0xsequence/kit'
 
+import { sequenceWaasWallet, BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
+
 import { getAppleLogo, getAppleMonochromeLogo } from './AppleLogo'
 
-import { sequenceWaasWallet, BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
 
 export type AppleWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType'>
 

@@ -1,4 +1,6 @@
 import React from 'react'
+
+import { Navigation } from '../../../contexts'
 import {
   CoinDetails,
   CollectibleDetails,
@@ -16,9 +18,8 @@ import {
   SettingsGeneral,
   TransactionDetails
 } from '../../../views'
-import { WalletHeader } from '../../WalletHeader'
 import { NavigationHeader } from '../../NavigationHeader'
-import { Navigation } from '../../../contexts'
+import { WalletHeader } from '../../WalletHeader'
 
 export const getContent = (navigation: Navigation) => {
   const { location } = navigation

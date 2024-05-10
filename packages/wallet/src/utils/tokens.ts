@@ -1,9 +1,8 @@
-import { ethers } from 'ethers'
-import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
 import { TokenPrice } from '@0xsequence/api'
-import { InfiniteData } from '@tanstack/react-query'
-
 import { vars } from '@0xsequence/design-system'
+import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
+import { InfiniteData } from '@tanstack/react-query'
+import { ethers } from 'ethers'
 
 import { compareAddress } from './helpers'
 

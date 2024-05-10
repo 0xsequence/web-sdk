@@ -1,5 +1,5 @@
-import React from 'react'
 import { Card, Image } from '@0xsequence/design-system'
+import React from 'react'
 
 interface CollectibleTileImageProps {
   imageUrl?: string

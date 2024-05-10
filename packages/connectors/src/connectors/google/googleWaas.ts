@@ -1,7 +1,9 @@
-import { GoogleLogo, getMonochromeGoogleLogo } from './GoogleLogo'
+import { Wallet } from '@0xsequence/kit'
 
 import { sequenceWaasWallet, BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
-import { Wallet } from '@0xsequence/kit'
+
+import { GoogleLogo, getMonochromeGoogleLogo } from './GoogleLogo'
+
 
 export type GoogleWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType'>
 

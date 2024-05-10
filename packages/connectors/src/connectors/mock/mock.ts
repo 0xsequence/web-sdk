@@ -1,7 +1,7 @@
+import { Wallet } from '@0xsequence/kit'
 import { mock as mockBase, MockParameters } from 'wagmi/connectors'
 
 import { SequenceLogo } from '../sequence/SequenceLogo'
-import { Wallet } from '@0xsequence/kit'
 
 export const mock = (options: MockParameters): Wallet => ({
   id: 'mock',

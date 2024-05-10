@@ -1,10 +1,10 @@
-import React from 'react'
 import { TokenPrice } from '@0xsequence/api'
-import { ethers } from 'ethers'
+import { ArrowRightIcon, Box, Text, Image, TransactionIcon, vars, Skeleton, NetworkImage } from '@0xsequence/design-system'
 import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId, useCoinPrices, useExchangeRate } from '@0xsequence/kit'
-import { ArrowRightIcon, Box, Text, Image, TransactionIcon, vars, Skeleton, NetworkImage } from '@0xsequence/design-system'
 import dayjs from 'dayjs'
+import { ethers } from 'ethers'
+import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { useSettings, useNavigation } from '../../hooks'
@@ -49,8 +49,6 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
   const isPending = isPendingCoinPrices || isPendingConversionRate
 
   const { transfers } = transaction
-
-  const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
 
   const getTransactionIconByType = (transferType: TxnTransferType) => {
     switch (transferType) {

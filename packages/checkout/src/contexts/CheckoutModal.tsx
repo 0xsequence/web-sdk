@@ -1,5 +1,3 @@
-import React from 'react'
-import { MethodArguments } from '../api'
 import { createGenericContext, Theme } from '@0xsequence/kit'
 
 interface CoinQuantity {
@@ -29,7 +27,7 @@ export interface SardineCheckout {
 }
 
 export interface CheckoutSettings {
-  sardineCheckout?: SardineCheckout,
+  sardineCheckout?: SardineCheckout
   cryptoCheckout?: {
     chainId: number
     triggerTransaction: () => void

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { LogoProps } from '../types'
 
 export const CoinbaseWalletLogo: React.FunctionComponent = (props: LogoProps) => {

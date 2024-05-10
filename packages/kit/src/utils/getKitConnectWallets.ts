@@ -1,7 +1,7 @@
+import { LogoProps } from '@0xsequence/kit-connectors'
 import React from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
-import { LogoProps } from '@0xsequence/kit-connectors'
 
 export interface WalletProperties {
   id: string

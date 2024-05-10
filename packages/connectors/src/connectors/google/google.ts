@@ -1,7 +1,9 @@
-import { GoogleLogo, getMonochromeGoogleLogo } from './GoogleLogo'
+import { Wallet } from '@0xsequence/kit'
 
 import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
-import { Wallet } from '@0xsequence/kit'
+
+import { GoogleLogo, getMonochromeGoogleLogo } from './GoogleLogo'
+
 
 export type GoogleOptions = BaseSequenceConnectorOptions
 

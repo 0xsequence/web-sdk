@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
-import { useProjectAccessKey } from './useProjectAccessKey'
 import { SequenceAPIClient } from '@0xsequence/api'
+import { useMemo } from 'react'
+
+import { useProjectAccessKey } from './useProjectAccessKey'
 
 export const useAPIClient = () => {
   const projectAccessKey = useProjectAccessKey()

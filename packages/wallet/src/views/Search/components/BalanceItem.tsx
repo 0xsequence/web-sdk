@@ -1,9 +1,9 @@
-import React from 'react'
-import { ethers } from 'ethers'
-import { useConfig } from 'wagmi'
-import { Box, Image, Text, ChevronRightIcon, TokenImage, NetworkImage } from '@0xsequence/design-system'
+import { Box, Text, ChevronRightIcon, TokenImage, NetworkImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { ethers } from 'ethers'
+import React from 'react'
+import { useConfig } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
 import { compareAddress, formatDisplay } from '../../../utils'

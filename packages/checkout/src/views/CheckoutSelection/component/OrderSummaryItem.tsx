@@ -1,8 +1,7 @@
-import React from 'react'
-import { ethers } from 'ethers'
-import { useConfig } from 'wagmi'
 import { Box, Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useContractInfo, useTokenMetadata } from '@0xsequence/kit'
+import { useContractInfo, useTokenMetadata } from '@0xsequence/kit'
+import { ethers } from 'ethers'
+import React from 'react'
 
 import { formatDisplay } from '../../../utils'
 
@@ -14,7 +13,6 @@ interface OrderSummaryItem {
 }
 
 export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainId }: OrderSummaryItem) => {
-  const { chains } = useConfig()
   const { data: tokenMetadata, isPending: isPendingTokenMetadata } = useTokenMetadata(chainId, contractAddress, [tokenId])
   const { data: contractInfo, isPending: isPendingContractInfo } = useContractInfo(chainId, contractAddress)
   const isPending = isPendingTokenMetadata || isPendingContractInfo
@@ -23,7 +21,6 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
     return <OrderSummarySkeleton />
   }
 
-  const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, [...chains])
   const { name = 'unknown', image, decimals = 0 } = tokenMetadata?.[0] ?? {}
 
   const { logoURI: collectionLogoURI, name: collectionName = 'Unknown Collection' } = contractInfo || {}

@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
-import { useProjectAccessKey } from './useProjectAccessKey'
 import { SequenceIndexer } from '@0xsequence/indexer'
 import { ChainId, indexerURL, networks } from '@0xsequence/network'
-import { useConfig } from 'wagmi'
+import { useMemo } from 'react'
+
+import { useProjectAccessKey } from './useProjectAccessKey'
 
 export const useIndexerClient = (chainId: ChainId) => {
   const projectAccessKey = useProjectAccessKey()

@@ -1,17 +1,16 @@
+import { sequence } from '0xsequence'
 import { ETHAuthProof } from '@0xsequence/auth'
 import { ETHAuth, Proof } from '@0xsequence/ethauth'
-import { sequence } from '0xsequence'
-import { Storage, UsePublicClientReturnType, useConfig } from 'wagmi'
+import { UsePublicClientReturnType } from 'wagmi'
 import { GetWalletClientData } from 'wagmi/query'
 
-import { publicClientToProvider, walletClientToSigner } from './adapters'
-
-import { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from '../constants'
 import { EthAuthSettings } from '../components/KitProvider'
+import { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from '../constants'
+
+import { publicClientToProvider, walletClientToSigner } from './adapters'
 import { getStorageItem } from './storage'
 
 export const signEthAuthProof = async (walletClient: GetWalletClientData<any, any>): Promise<ETHAuthProof> => {
-  const wagmiConfig = useConfig()
   const proofInformation = getStorageItem(LocalStorageKey.EthAuthProof) as ETHAuthProof | undefined
 
   // if proof information was generated and saved upon wallet connection, use that

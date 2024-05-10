@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
 import { Box, CloseIcon, Text } from '@0xsequence/design-system'
+import React, { useEffect } from 'react'
 
-import { useCheckoutModal, useNavigation } from '../hooks'
 import { TransactionErrorNavigation } from '../contexts'
+import { useCheckoutModal, useNavigation } from '../hooks'
 
 export const TransactionError = () => {
   const { closeCheckout, settings } = useCheckoutModal()

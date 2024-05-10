@@ -1,6 +1,6 @@
-import React from 'react'
 import { Box, CheckmarkIcon, vars } from '@0xsequence/design-system'
 import { motion } from 'framer-motion'
+import React from 'react'
 
 interface SelectedIndicatorProps {
   selected: boolean

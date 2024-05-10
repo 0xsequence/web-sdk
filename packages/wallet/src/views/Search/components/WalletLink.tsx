@@ -1,8 +1,8 @@
-import React from 'react'
 import { Box, Text, ChevronRightIcon } from '@0xsequence/design-system'
-import { useNavigation } from '../../../hooks'
+import React from 'react'
 
 import { Navigation } from '../../../contexts'
+import { useNavigation } from '../../../hooks'
 
 interface WalletLinkProps {
   toLocation: Navigation

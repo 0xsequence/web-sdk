@@ -1,19 +1,15 @@
-import React from 'react'
 import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
-
-import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
-import { NetworkBadge } from '../../shared/NetworkBadge'
+import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
+import { NetworkBadge } from '../../shared/NetworkBadge'
+import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 
 interface CoinDetailsSkeletonProps {
   chainId: number
 }
 
 export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
-  const scrollbarWidth = useScrollbarWidth()
-
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>

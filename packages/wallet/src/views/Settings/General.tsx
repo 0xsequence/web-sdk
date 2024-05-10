@@ -1,17 +1,17 @@
-import React from 'react'
 import { Box, Card, Switch, Text } from '@0xsequence/design-system'
-import { useTheme } from '@0xsequence/kit'
+// import { useTheme } from '@0xsequence/kit'
+import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 
 export const SettingsGeneral = () => {
-  const { theme, setTheme } = useTheme()
+  // const { theme, setTheme } = useTheme()
   const { hideUnlistedTokens, setHideUnlistedTokens, hideCollectibles, setHideCollectibles } = useSettings()
 
-  const onChangeTheme = () => {
-    setTheme && setTheme(theme === 'light' ? 'dark' : 'light')
-  }
+  // const onChangeTheme = () => {
+  //   setTheme && setTheme(theme === 'light' ? 'dark' : 'light')
+  // }
 
   const onChangeHideUnlistedTokens = () => {
     setHideUnlistedTokens(!hideUnlistedTokens)

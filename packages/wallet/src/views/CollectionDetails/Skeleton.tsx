@@ -1,16 +1,13 @@
-import React from 'react'
 import { Box, Skeleton, vars } from '@0xsequence/design-system'
+import React from 'react'
 
 import { NetworkBadge } from '../../shared/NetworkBadge'
-import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
 interface CollectionDetailsSkeletonProps {
   chainId: number
 }
 
 export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeletonProps) => {
-  const scrollbarWidth = useScrollbarWidth()
-
   return (
     <Box
       paddingX="4"

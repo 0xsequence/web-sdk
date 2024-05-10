@@ -1,29 +1,32 @@
-import { getNetwork } from '@0xsequence/kit'
-import { SequenceAPIClient, Token, TokenPrice, GetCoinPricesReturn } from '@0xsequence/api'
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
 
-import { getPaperNetworkName } from '../utils'
 import { SardineCheckout } from '..'
 
 export interface FetchSardineClientTokenReturn {
-  token: string,
-  orderId: string,
+  token: string
+  orderId: string
 }
 
 export interface MethodArguments {
   [key: string]: any
 }
 
-export const fetchSardineClientToken = async (order: SardineCheckout, isDev: boolean, projectAccessKey: string, tokenMetadata?: TokenMetadata): Promise<FetchSardineClientTokenReturn> => {
+export const fetchSardineClientToken = async (
+  order: SardineCheckout,
+  isDev: boolean,
+  projectAccessKey: string,
+  tokenMetadata?: TokenMetadata
+): Promise<FetchSardineClientTokenReturn> => {
   const randomNumber = Math.floor(Math.random() * 1000000)
   const timestamp = new Date().getTime()
   const referenceId = `sequence-kit-${randomNumber}-${timestamp}-${order.recipientAddress}-${networks[order.chainId as ChainId].name}-${order.contractAddress}-${order.contractAddress}-${order.recipientAddress}`
 
-
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
   const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-  const url = isDev ? 'https://dev-api.sequence.app/rpc/API/GetSardineNFTCheckoutToken' : 'https://api.sequence.app/rpc/API/GetSardineNFTCheckoutToken'
+  const url = isDev
+    ? 'https://dev-api.sequence.app/rpc/API/GetSardineNFTCheckoutToken'
+    : 'https://api.sequence.app/rpc/API/GetSardineNFTCheckoutToken'
 
   const res = await fetch(url, {
     method: 'POST',
@@ -31,43 +34,44 @@ export const fetchSardineClientToken = async (order: SardineCheckout, isDev: boo
       'Content-Type': 'application/json',
       'X-Access-Key': `${accessKey || ''}`
     },
-    body: JSON.stringify(
-      { 
-        params: {
-          referenceId,
-          expiresIn: 3600,
-          paymentMethodTypeConfig: {
-            enabled: ['us_debit', 'us_credit', 'international_debit', 'international_credit', 'ach'],
-            default: order.defaultPaymentMethodType
-          },
-          name: tokenMetadata?.name || 'Unknown',
-          imageUrl: tokenMetadata?.image || 'https://www.sequence.market/images/placeholder.png',
-          network: networks[order.chainId as ChainId].name,
-          recipientAddress: order.recipientAddress,
-          platform: 'horizon',
-          blockchainNftId: order.blockchainNftId,
-          contractAddress: order.contractAddress,
-          executionType: 'smart_contract',
-          quantity: Number(order.quantity),
-          decimals: Number(order.decimals),
-        }
+    body: JSON.stringify({
+      params: {
+        referenceId,
+        expiresIn: 3600,
+        paymentMethodTypeConfig: {
+          enabled: ['us_debit', 'us_credit', 'international_debit', 'international_credit', 'ach'],
+          default: order.defaultPaymentMethodType
+        },
+        name: tokenMetadata?.name || 'Unknown',
+        imageUrl: tokenMetadata?.image || 'https://www.sequence.market/images/placeholder.png',
+        network: networks[order.chainId as ChainId].name,
+        recipientAddress: order.recipientAddress,
+        platform: 'horizon',
+        blockchainNftId: order.blockchainNftId,
+        contractAddress: order.contractAddress,
+        executionType: 'smart_contract',
+        quantity: Number(order.quantity),
+        decimals: Number(order.decimals)
       }
-    )
+    })
   })
 
-  const { resp: { orderId, token } } = await res.json()
+  const {
+    resp: { orderId, token }
+  } = await res.json()
 
-  return ({
+  return {
     token,
-    orderId,
-  })
+    orderId
+  }
 }
-
 
 export const fetchSardineOrderStatus = async (orderId: string, isDev: boolean, projectAccessKey: string) => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
-  const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' :  projectAccessKey
-  const url = isDev ? 'https://dev-api.sequence.app/rpc/API/GetSardineNFTCheckoutOrderStatus' : 'https://api.sequence.app/rpc/API/GetSardineNFTCheckoutOrderStatus'
+  const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
+  const url = isDev
+    ? 'https://dev-api.sequence.app/rpc/API/GetSardineNFTCheckoutOrderStatus'
+    : 'https://api.sequence.app/rpc/API/GetSardineNFTCheckoutOrderStatus'
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -75,7 +79,7 @@ export const fetchSardineOrderStatus = async (orderId: string, isDev: boolean, p
       'X-Access-Key': `${accessKey}`
     },
     body: JSON.stringify({
-      orderId,
+      orderId
     })
   })
 
@@ -85,7 +89,7 @@ export const fetchSardineOrderStatus = async (orderId: string, isDev: boolean, p
 }
 
 export interface Country {
-  code: string,
+  code: string
 }
 
 export const fetchSupportedCountryCodes = async (): Promise<Country[]> => {
@@ -182,7 +186,7 @@ export const fetchSupportedCountryCodes = async (): Promise<Country[]> => {
     'UY',
     'UZ',
     'VU',
-    'VN',
+    'VN'
   ]
 
   return supportedCountries.map(countryCode => ({ code: countryCode }))

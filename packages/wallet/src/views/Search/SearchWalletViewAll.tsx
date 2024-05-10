@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
 import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalances } from '@0xsequence/kit'
-import { BalanceItem } from './components/BalanceItem'
+import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
+import React, { useState, useEffect } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { compareAddress, computeBalanceFiat } from '../../utils'
-import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
+
+import { BalanceItem } from './components/BalanceItem'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
@@ -19,7 +19,6 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const { fiatCurrency, hideUnlistedTokens, selectedNetworks } = useSettings()
   const [search, setSearch] = useState('')
   const [selectedTab, setSelectedTab] = useState(defaultTab)
-  const scrollbarWidth = useScrollbarWidth()
 
   useEffect(() => {
     setSearch('')

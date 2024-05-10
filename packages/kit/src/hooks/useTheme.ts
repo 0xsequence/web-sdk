@@ -1,4 +1,3 @@
-import React from 'react'
 import { useThemeContext } from '../contexts/Theme'
 
 export const useTheme = () => {

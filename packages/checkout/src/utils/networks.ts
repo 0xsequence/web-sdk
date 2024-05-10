@@ -1,4 +1,5 @@
 import { NetworkMetadata } from '@0xsequence/network'
+
 import { capitalize } from './helpers'
 
 export const getPaperNetworkName = (network: NetworkMetadata): string => {

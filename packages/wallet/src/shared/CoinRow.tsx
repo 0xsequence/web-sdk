@@ -1,6 +1,6 @@
-import React from 'react'
-import { ethers } from 'ethers'
 import { Box, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { ethers } from 'ethers'
+import React from 'react'
 
 import { formatDisplay, getPercentageColor } from '../utils'
 

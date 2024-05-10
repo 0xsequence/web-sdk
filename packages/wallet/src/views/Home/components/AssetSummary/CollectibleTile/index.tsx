@@ -1,8 +1,9 @@
-import React from 'react'
 import { TokenBalance } from '@0xsequence/indexer'
+import { useTokenMetadata } from '@0xsequence/kit'
+import React from 'react'
 
 import { CollectibleTileImage } from '../../../../../shared/CollectibleTileImage'
-import { useTokenMetadata } from '@0xsequence/kit'
+
 
 interface CollectibleTileProps {
   balance: TokenBalance

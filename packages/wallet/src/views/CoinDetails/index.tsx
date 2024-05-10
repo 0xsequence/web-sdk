@@ -1,5 +1,3 @@
-import React from 'react'
-import { ethers } from 'ethers'
 import { Box, Button, Image, SendIcon, Text } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
@@ -8,18 +6,18 @@ import {
   useTransactionHistory,
   useCoinBalance
 } from '@0xsequence/kit'
-
+import { ethers } from 'ethers'
+import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
-import { CoinDetailsSkeleton } from './Skeleton'
-
+import { HEADER_HEIGHT } from '../../constants'
+import { useSettings, useNavigation } from '../../hooks'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
-import { useSettings, useNavigation } from '../../hooks'
-import { HEADER_HEIGHT } from '../../constants'
 import { compareAddress, computeBalanceFiat, formatDisplay, flattenPaginatedTransactionHistory } from '../../utils'
-import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
+
+import { CoinDetailsSkeleton } from './Skeleton'
 
 export interface CoinDetailsProps {
   contractAddress: string
@@ -30,8 +28,6 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
   const { fiatCurrency, hideUnlistedTokens } = useSettings()
-  const scrollbarWidth = useScrollbarWidth()
-
   const { address: accountAddress } = useAccount()
 
   const {

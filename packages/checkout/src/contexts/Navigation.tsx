@@ -1,4 +1,3 @@
-import React from 'react'
 import { createGenericContext } from '@0xsequence/kit'
 
 export interface SelectCheckoutNavigation {

@@ -1,5 +1,5 @@
-import React from 'react'
 import { Box, Spinner } from '@0xsequence/design-system'
+import React from 'react'
 
 export const Loader = () => {
   return (

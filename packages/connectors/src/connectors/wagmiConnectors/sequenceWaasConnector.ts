@@ -1,10 +1,10 @@
-import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, Transaction, FeeOption } from '@0xsequence/waas'
+import { sequence } from '0xsequence'
 import { LocalStorageKey } from '@0xsequence/kit'
-import { TransactionRejectedRpcError, UserRejectedRequestError, getAddress } from 'viem'
-import { createConnector } from 'wagmi'
+import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, Transaction, FeeOption } from '@0xsequence/waas'
 import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
-import { sequence } from '0xsequence'
+import { TransactionRejectedRpcError, UserRejectedRequestError, getAddress } from 'viem'
+import { createConnector } from 'wagmi'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
@@ -100,7 +100,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       })
     },
 
-    async connect(connectInfo) {
+    async connect(_connectInfo) {
       const provider = await this.getProvider()
       const isSignedIn = await provider.sequenceWaas.isSignedIn()
 
@@ -216,13 +216,14 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
 
     async onChainChanged(chain) {
-      const provider = await this.getProvider()
+      // const provider = await this.getProvider()
 
       config.emitter.emit('change', { chainId: normalizeChainId(chain) })
+
       // provider.setDefaultChainId(normalizeChainId(chain))
     },
 
-    async onConnect(connectInfo) {},
+    async onConnect(_connectInfo) {},
 
     async onDisconnect() {
       await this.disconnect()

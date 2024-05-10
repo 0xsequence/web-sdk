@@ -1,7 +1,9 @@
-import { getDiscordLogo } from './DiscordLogo'
+import { Wallet } from '@0xsequence/kit'
 
 import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
-import { Wallet } from '@0xsequence/kit'
+
+import { getDiscordLogo } from './DiscordLogo'
+
 
 export interface DiscordOptions extends BaseSequenceConnectorOptions {}
 

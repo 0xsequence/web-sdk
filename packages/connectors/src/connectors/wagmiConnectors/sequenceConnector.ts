@@ -1,9 +1,7 @@
 import { sequence } from '0xsequence'
 import { ETHAuthProof } from '@0xsequence/auth'
 import { LocalStorageKey, EthAuthSettings } from '@0xsequence/kit'
-
 import { UserRejectedRequestError, getAddress } from 'viem'
-
 import { createConnector } from 'wagmi'
 
 export interface BaseSequenceConnectorOptions {
@@ -198,7 +196,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       provider.setDefaultChainId(normalizeChainId(chain))
     },
 
-    async onConnect(connectinfo) {},
+    async onConnect(_connectinfo) {},
 
     async onDisconnect() {
       await config.storage?.removeItem(LocalStorageKey.EthAuthProof)

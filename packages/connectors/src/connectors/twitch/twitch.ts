@@ -1,7 +1,9 @@
-import { getTwitchLogo } from './TwitchLogo'
+import { Wallet } from '@0xsequence/kit'
 
 import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
-import { Wallet } from '@0xsequence/kit'
+
+import { getTwitchLogo } from './TwitchLogo'
+
 
 export interface TwitchOptions extends BaseSequenceConnectorOptions {}
 

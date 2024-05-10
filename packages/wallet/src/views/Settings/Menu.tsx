@@ -1,8 +1,8 @@
+import { Box, Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon, vars } from '@0xsequence/design-system'
 import React from 'react'
-import { Box, Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon, Text, vars } from '@0xsequence/design-system'
 
-import { useNavigation } from '../../hooks'
 import { HEADER_HEIGHT } from '../../constants'
+import { useNavigation } from '../../hooks'
 
 export const SettingsMenu = () => {
   const { setNavigation } = useNavigation()

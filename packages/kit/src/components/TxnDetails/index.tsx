@@ -1,16 +1,14 @@
+import { commons } from '@0xsequence/core'
 import { Box, Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-
-import React, { useEffect, useState } from 'react'
-
+import { ContractType } from '@0xsequence/indexer'
+import { useTokenMetadata, useBalances } from '@0xsequence/kit'
 import { ethers } from 'ethers'
+import React, { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useTokenMetadata, useBalances } from '@0xsequence/kit'
-import { capitalize, compareAddress, getNativeTokenInfoByChainId } from '../../utils'
-import { commons } from '@0xsequence/core'
-import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
-import { ContractType } from '@0xsequence/indexer'
 import { useAPIClient } from '../../hooks'
+import { capitalize, compareAddress, getNativeTokenInfoByChainId } from '../../utils'
+import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../KitProvider/CollectibleTileImage'
 
 interface TxnDetailsProps {
@@ -95,17 +93,13 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const isNFT = transferProps[0]?.contractType === ContractType.ERC1155 || transferProps[0]?.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalances({
+  const { data: balances = [] } = useBalances({
     chainIds: [chainId],
     accountAddress: address,
     contractAddress
   })
 
-  const { data: tokenMetadata, isPending: isPendingTokenMetadata } = useTokenMetadata(
-    chainId,
-    contractAddress,
-    transferProps[0]?.tokenIds ?? []
-  )
+  const { data: tokenMetadata } = useTokenMetadata(chainId, contractAddress, transferProps[0]?.tokenIds ?? [])
 
   const tokenBalance = contractAddress ? balances.find(b => compareAddress(b.contractAddress, contractAddress)) : undefined
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
@@ -117,8 +111,6 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
       : tokenBalance?.contractInfo?.logoURI
   const name = isNativeCoin ? nativeTokenInfo.name : isNFT ? tokenMetadata?.[0]?.name : tokenBalance?.contractInfo?.name || ''
   const symbol = isNativeCoin ? nativeTokenInfo.symbol : isNFT ? '' : tokenBalance?.contractInfo?.symbol || ''
-
-  const formattedBalance = tokenBalance !== undefined ? ethers.utils.formatUnits(tokenBalance.balance, decimals) : ''
 
   const amountSending = transferProps[0]?.amounts?.[0] ?? transferProps[0]?.value
 

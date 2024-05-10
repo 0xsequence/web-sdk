@@ -1,7 +1,9 @@
-import { getEmailLogo } from './EmailLogo'
+import { Wallet } from '@0xsequence/kit'
 
 import { sequenceWaasWallet, BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
-import { Wallet } from '@0xsequence/kit'
+
+import { getEmailLogo } from './EmailLogo'
+
 
 export type EmailWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType'>
 

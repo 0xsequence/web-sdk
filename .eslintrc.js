@@ -14,7 +14,7 @@ module.exports = {
   ],
 
   rules: {
-    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -28,17 +28,24 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-default-export': 1,
     'import/no-named-as-default-member': 'off',
-    'import/export': 'off'
+    'import/export': 'off',
 
-    // 'import/order': [
-    //   'warn',
-    //   {
-    //     'groups': ['builtin', 'external', 'parent', 'sibling', 'index'],
-    //     'alphabetize': {
-    //       'order': 'asc', /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */
-    //       'caseInsensitive': true /* ignore case. Options: [true, false] */
-    //     }
-    //   },
-    // ]
+    'import/order': [
+      'warn',
+      {
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true
+        },
+        pathGroups: [
+          {
+            pattern: '~/**',
+            group: 'external',
+            position: 'after'
+          }
+        ],
+        'newlines-between': 'always'
+      }
+    ]
   }
 }

@@ -1,7 +1,9 @@
-import { getEmailLogo } from './EmailLogo'
+import { Wallet } from '@0xsequence/kit'
 
 import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
-import { Wallet } from '@0xsequence/kit'
+
+import { getEmailLogo } from './EmailLogo'
+
 
 export interface EmailOptions extends BaseSequenceConnectorOptions {}
 

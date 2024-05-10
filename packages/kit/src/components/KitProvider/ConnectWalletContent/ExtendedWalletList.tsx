@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-
-import { Box, Button, Text, TokenImage, useTheme } from '@0xsequence/design-system'
+import { Box, Button, Text, useTheme } from '@0xsequence/design-system'
+import React from 'react'
 import { useConnect } from 'wagmi'
 
 import { ExtendedConnector } from '../../../utils/getKitConnectWallets'

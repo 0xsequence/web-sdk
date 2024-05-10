@@ -1,5 +1,6 @@
 import { commons } from '@0xsequence/core'
 import { useState, useEffect } from 'react'
+
 import { Deferred } from '../utils/deferred'
 
 let _pendingConfirmation: Deferred<{ id: string; confirmed: boolean }> | undefined

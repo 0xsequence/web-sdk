@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
+import { SequenceAPIClient, TokenPrice } from '@0xsequence/api'
+import { Transaction, TokenBalance, SequenceIndexer } from '@0xsequence/indexer'
 import {
   getTransactionHistory,
   useAPIClient,
@@ -10,9 +11,8 @@ import {
   getCollectionBalance,
   useMetadataClient
 } from '@0xsequence/kit'
-import { Transaction, TokenBalance, SequenceIndexer } from '@0xsequence/indexer'
 import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
-import { SequenceAPIClient, TokenPrice } from '@0xsequence/api'
+import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
 import { compareAddress, sampleSize, sortBalancesByType } from '../utils'
@@ -95,7 +95,7 @@ export const getBalancesAssetsSummary = async (
       tokenBalances = (
         await Promise.all([
           ...indexerClientsArr.map(([chainId, indexerClient]) => getNativeTokenBalance(indexerClient, chainId, accountAddress)),
-          ...indexerClientsArr.map(([chainId, indexerClient]) =>
+          ...indexerClientsArr.map(([_chainId, indexerClient]) =>
             getTokenBalances(indexerClient, {
               accountAddress,
               hideCollectibles,
@@ -109,7 +109,7 @@ export const getBalancesAssetsSummary = async (
 
     const { nativeTokens, erc20Tokens, collectibles: collectionBalances } = sortBalancesByType(tokenBalances)
 
-    const fetchPricesPromise: Promise<TokenPrice[]> = new Promise(async (resolve, reject) => {
+    const fetchPricesPromise: Promise<TokenPrice[]> = new Promise(async resolve => {
       if (erc20Tokens.length > 0) {
         const tokens = erc20Tokens.map(token => ({
           chainId: token.chainId,

@@ -1,5 +1,3 @@
-import React from 'react'
-import { ethers } from 'ethers'
 import {
   Box,
   Button,
@@ -14,15 +12,16 @@ import {
   TokenImage
 } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useTokenMetadata, useProjectAccessKey } from '@0xsequence/kit'
-
+import { ethers } from 'ethers'
+import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
-import { OrderSummaryItem } from './component/OrderSummaryItem'
-
-import { fetchSardineClientToken, fetchSardineOrderStatus } from '../../api'
+import { fetchSardineClientToken } from '../../api'
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
 import { compareAddress, formatDisplay } from '../../utils'
+
+import { OrderSummaryItem } from './component/OrderSummaryItem'
 
 export const CheckoutSelection = () => {
   const { chains } = useConfig()
@@ -67,11 +66,7 @@ export const CheckoutSelection = () => {
 
   const chainId = settings?.cryptoCheckout?.chainId || settings?.sardineCheckout?.chainId || 1
 
-  const { data: tokensMetadata, isLoading: isTokenMetadataLoading } = useTokenMetadata(
-    chainId,
-    orderSummaryItems[0].contractAddress,
-    [orderSummaryItems[0].tokenId]
-  )
+  const { data: tokensMetadata } = useTokenMetadata(chainId, orderSummaryItems[0].contractAddress, [orderSummaryItems[0].tokenId])
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const triggerSardineTransaction = async () => {

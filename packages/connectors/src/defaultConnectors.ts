@@ -1,10 +1,10 @@
-import { CreateConnectorFn } from 'wagmi'
 import { getKitConnectWallets } from '@0xsequence/kit'
+import { CreateConnectorFn } from 'wagmi'
 
 import { apple, coinbaseWallet, email, facebook, google, metamask, sequence, twitch, walletConnect } from './connectors'
-import { googleWaas } from './connectors/google/googleWaas'
-import { emailWaas } from './connectors/email/emailWaas'
 import { appleWaas } from './connectors/apple/appleWaas'
+// import { emailWaas } from './connectors/email/emailWaas'
+import { googleWaas } from './connectors/google/googleWaas'
 
 interface GetDefaultConnectors {
   walletConnectProjectId: string

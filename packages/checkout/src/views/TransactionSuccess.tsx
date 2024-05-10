@@ -1,12 +1,12 @@
 import { sequence } from '0xsequence'
-import React, { useEffect } from 'react'
 import { Box, CheckmarkIcon, Text } from '@0xsequence/design-system'
+import React, { useEffect } from 'react'
 
-import { useCheckoutModal, useNavigation } from '../hooks'
 import { TransactionSuccessNavigation } from '../contexts'
+import { useCheckoutModal, useNavigation } from '../hooks'
 
 export const TransactionSuccess = () => {
-  const { closeCheckout, settings } = useCheckoutModal()
+  const { settings } = useCheckoutModal()
   const nav = useNavigation()
   const navigation = nav.navigation as TransactionSuccessNavigation
 
@@ -14,8 +14,10 @@ export const TransactionSuccess = () => {
   const network = sequence.network.allNetworks.find(n => n.chainId === chainId)
 
   useEffect(() => {
-    settings?.sardineCheckout?.onSuccess && settings?.sardineCheckout?.onSuccess(navigation.params.transactionHash, settings?.sardineCheckout)
-    settings?.sardineCheckout?.onSuccess && settings?.sardineCheckout?.onSuccess(navigation.params.transactionHash, settings?.sardineCheckout)
+    settings?.sardineCheckout?.onSuccess &&
+      settings?.sardineCheckout?.onSuccess(navigation.params.transactionHash, settings?.sardineCheckout)
+    settings?.sardineCheckout?.onSuccess &&
+      settings?.sardineCheckout?.onSuccess(navigation.params.transactionHash, settings?.sardineCheckout)
   }, [])
 
   return (

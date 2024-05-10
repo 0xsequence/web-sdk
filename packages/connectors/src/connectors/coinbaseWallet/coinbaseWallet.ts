@@ -1,7 +1,5 @@
-import { coinbaseWallet as coinbaseWalletBase, CoinbaseWalletParameters } from 'wagmi/connectors'
-import { Wallet } from '@0xsequence/kit'
-
 import { CreateConnectorFn } from 'wagmi'
+import { coinbaseWallet as coinbaseWalletBase, CoinbaseWalletParameters } from 'wagmi/connectors'
 
 import { CoinbaseWalletLogo } from './CoinbaseWalletLogo'
 

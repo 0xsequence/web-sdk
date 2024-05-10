@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Theme } from '../index'
 import { createGenericContext, ModalPosition } from '../utils'
 

@@ -1,6 +1,4 @@
-import React, { useContext } from 'react'
-import { useNavigationContext, Navigation, History, BasicNavigation } from '../contexts/Navigation'
-import { useOpenWalletModal } from './useOpenWalletModal'
+import { useNavigationContext, Navigation, History } from '../contexts/Navigation'
 
 interface UseNavigation {
   setNavigation: (navigation: Navigation) => void

@@ -1,14 +1,12 @@
+import { Box, Text } from '@0xsequence/design-system'
 import React from 'react'
-import { Box, Text, vars } from '@0xsequence/design-system'
 
-import { SelectButton } from '../../shared/SelectButton'
 import { supportedFiatCurrencies } from '../../constants'
 import { useSettings } from '../../hooks'
-import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
+import { SelectButton } from '../../shared/SelectButton'
 
 export const SettingsCurrency = () => {
   const { fiatCurrency, setFiatCurrency } = useSettings()
-  const scrollbarWidth = useScrollbarWidth()
 
   return (
     <Box paddingBottom="5" paddingX="4" paddingTop="3">

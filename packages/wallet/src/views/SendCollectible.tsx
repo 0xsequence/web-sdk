@@ -1,5 +1,3 @@
-import React, { useRef, useState, ChangeEvent, useEffect } from 'react'
-import { ethers } from 'ethers'
 import {
   Box,
   Button,
@@ -16,13 +14,15 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useAnalyticsContext, ExtendedConnector, useCollectibleBalance } from '@0xsequence/kit'
 import { TokenBalance } from '@0xsequence/indexer'
+import { getNativeTokenInfoByChainId, useAnalyticsContext, ExtendedConnector, useCollectibleBalance } from '@0xsequence/kit'
+import { ethers } from 'ethers'
+import React, { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
-import { SendItemInfo } from '../shared/SendItemInfo'
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
-import { useNavigation, useOpenWalletModal } from '../hooks'
+import { useNavigation } from '../hooks'
+import { SendItemInfo } from '../shared/SendItemInfo'
 import { limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
 
 interface SendCollectibleProps {
@@ -43,7 +43,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
   const { switchChain } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
-  const { setOpenWalletModal } = useOpenWalletModal()
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
   const [showAmountControls, setShowAmountControls] = useState<boolean>(false)
@@ -163,7 +162,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             gas: null
           },
           {
-            onSettled: (result, error) => {
+            onSettled: result => {
               if (result) {
                 setNavigation({
                   location: 'home'
@@ -198,7 +197,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             gas: null
           },
           {
-            onSettled: (result, error) => {
+            onSettled: result => {
               if (result) {
                 setNavigation({
                   location: 'home'

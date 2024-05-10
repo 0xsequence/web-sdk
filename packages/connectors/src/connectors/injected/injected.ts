@@ -1,9 +1,10 @@
-import React from 'react'
+import { Wallet } from '@0xsequence/kit'
 import { ethers } from 'ethers'
+import React from 'react'
 import { injected as injectedBase } from 'wagmi/connectors'
 
 import { InjectedLogo } from './InjectedLogo'
-import { Wallet } from '@0xsequence/kit'
+
 
 declare global {
   interface Window {

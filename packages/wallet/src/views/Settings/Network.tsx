@@ -1,11 +1,10 @@
-import React from 'react'
 import { Box, Text, TokenImage } from '@0xsequence/design-system'
-
+import React from 'react'
 import { useConfig } from 'wagmi'
 
-import { SelectButton } from '../../shared/SelectButton'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
+import { SelectButton } from '../../shared/SelectButton'
 
 export const SettingsNetwork = () => {
   const { selectedNetworks, setSelectedNetworks } = useSettings()

@@ -1,5 +1,5 @@
-import React from 'react'
 import { Transaction } from '@0xsequence/indexer'
+
 import { createGenericContext } from '../utils/genericContext'
 
 export interface CollectionDetailsParams {

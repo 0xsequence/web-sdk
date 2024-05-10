@@ -1,7 +1,7 @@
+import { Wallet } from '@0xsequence/kit'
 import { walletConnect as walletConnectbase, WalletConnectParameters } from 'wagmi/connectors'
 
 import { WalletConnectLogo } from './WalletConnectLogo'
-import { Wallet } from '@0xsequence/kit'
 
 export const walletConnect = (options: WalletConnectParameters): Wallet => ({
   id: 'wallet-connect',

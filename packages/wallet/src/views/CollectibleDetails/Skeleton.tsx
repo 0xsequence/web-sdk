@@ -1,14 +1,10 @@
-import React from 'react'
 import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
-
-import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
+import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
+import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 
 export const CollectibleDetailsSkeleton = () => {
-  const scrollbarWidth = useScrollbarWidth()
-
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box

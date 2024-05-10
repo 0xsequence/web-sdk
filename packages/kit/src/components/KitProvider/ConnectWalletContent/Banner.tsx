@@ -1,5 +1,5 @@
+import { Box, Image } from '@0xsequence/design-system'
 import React from 'react'
-import { Box, Image, useTheme } from '@0xsequence/design-system'
 
 import { KitConfig } from '../index'
 

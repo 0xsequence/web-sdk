@@ -1,5 +1,3 @@
-import React, { useState, ChangeEvent, useRef } from 'react'
-import { ethers } from 'ethers'
 import {
   Box,
   Button,
@@ -14,6 +12,7 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
 import {
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
@@ -22,12 +21,13 @@ import {
   useCoinPrices,
   useBalances
 } from '@0xsequence/kit'
-import { TokenBalance } from '@0xsequence/indexer'
+import { ethers } from 'ethers'
+import React, { useState, ChangeEvent, useRef } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
-import { SendItemInfo } from '../shared/SendItemInfo'
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
-import { useSettings, useOpenWalletModal, useNavigation } from '../hooks'
+import { useSettings, useNavigation } from '../hooks'
+import { SendItemInfo } from '../shared/SendItemInfo'
 import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
 
 interface SendCoinProps {
@@ -47,7 +47,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
   const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
-  const { setOpenWalletModal } = useOpenWalletModal()
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
@@ -146,7 +145,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           gas: null
         },
         {
-          onSettled: (result, error) => {
+          onSettled: result => {
             if (result) {
               setNavigation({
                 location: 'home'
@@ -175,7 +174,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           gas: null
         },
         {
-          onSettled: (result, error) => {
+          onSettled: result => {
             if (result) {
               setNavigation({
                 location: 'home'

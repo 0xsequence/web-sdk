@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
-import { Deferred } from '../utils/deferred'
-import { Connector, useConnections } from 'wagmi'
 import { FeeOption } from '@0xsequence/waas'
 import { ethers } from 'ethers'
+import { useState, useEffect } from 'react'
+import { Connector, useConnections } from 'wagmi'
+
+import { Deferred } from '../utils/deferred'
 
 // null means it's native token
 let _pendingFeeConfirmation: Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | undefined

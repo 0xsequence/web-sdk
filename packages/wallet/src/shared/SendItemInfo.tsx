@@ -1,11 +1,10 @@
-import React from 'react'
-import { ethers } from 'ethers'
-import { useConfig } from 'wagmi'
 import { Box, NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { ethers } from 'ethers'
+import React from 'react'
 
-import { formatDisplay } from '../utils'
 import { useSettings } from '../hooks'
 import { CollectibleTileImage } from '../shared/CollectibleTileImage'
+import { formatDisplay } from '../utils'
 
 interface SendItemInfoProps {
   name: string
@@ -46,7 +45,6 @@ export const SendItemInfo = ({
   chainId,
   showSquareImage
 }: SendItemInfoProps) => {
-  const { chains } = useConfig()
   const { fiatCurrency } = useSettings()
   const formattedBalance = ethers.utils.formatUnits(balance, decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)

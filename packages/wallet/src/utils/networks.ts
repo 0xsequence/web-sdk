@@ -1,4 +1,5 @@
 import { NetworkConfig } from '@0xsequence/network'
+
 import { capitalize } from './helpers'
 
 export const getPaperNetworkName = (network: NetworkConfig): string => {

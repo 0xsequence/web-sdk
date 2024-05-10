@@ -1,5 +1,5 @@
-import React from 'react'
 import { Box, Skeleton, vars } from '@0xsequence/design-system'
+import React from 'react'
 
 export const SkeletonTiles = () => {
   return (

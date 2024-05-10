@@ -1,17 +1,15 @@
-import React from 'react'
-import { TokenBalance } from '@0xsequence/indexer'
-import { ethers } from 'ethers'
 import { Box, Image, Text, TokenImage, vars } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
 import { useCollectionBalance } from '@0xsequence/kit'
+import { ethers } from 'ethers'
+import React from 'react'
 import { useAccount } from 'wagmi'
 
-import { CollectionDetailsSkeleton } from './Skeleton'
-
-import { NetworkBadge } from '../../shared/NetworkBadge'
 import { useNavigation } from '../../hooks'
+import { NetworkBadge } from '../../shared/NetworkBadge'
 import { formatDisplay } from '../../utils'
 
-import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
+import { CollectionDetailsSkeleton } from './Skeleton'
 
 interface CollectionDetailsProps {
   chainId: number
@@ -26,7 +24,6 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
     accountAddress: accountAddress || '',
     contractAddress
   })
-  const scrollbarWidth = useScrollbarWidth()
 
   const contractInfo = collectionBalanceData?.[0]?.contractInfo
   const collectionLogoURI = contractInfo?.logoURI

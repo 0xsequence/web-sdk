@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import type { ComponentProps } from 'react'
 import { sequence } from '0xsequence'
-import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Box, Button, Card, Collapsible, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
-import { AnimatePresence } from 'framer-motion'
-import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ethers } from 'ethers'
+import { AnimatePresence } from 'framer-motion'
+import type { ComponentProps } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 
 import '@0xsequence/design-system/styles.css'
 
-import { ConnectWalletContent } from './ConnectWalletContent'
-import { SequenceLogo } from './SequenceLogo'
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
 import {
   KitConfigContextProvider,
@@ -19,13 +17,14 @@ import {
   WalletConfigContextProvider,
   AnalyticsContextProvider
 } from '../../contexts'
-import { ExtendedConnector, ModalPosition, getModalPositionCss } from '../../utils'
-
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
-
-import { TxnDetails } from '../TxnDetails'
+import { ExtendedConnector, ModalPosition, getModalPositionCss } from '../../utils'
 import { setStorageItem } from '../../utils/storage'
+import { TxnDetails } from '../TxnDetails'
+
+import { ConnectWalletContent } from './ConnectWalletContent'
 import { NetworkBadge } from './NetworkBadge'
+import { SequenceLogo } from './SequenceLogo'
 
 export declare const THEME: readonly ['dark', 'light']
 export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>

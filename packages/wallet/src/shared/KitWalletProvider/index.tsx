@@ -1,15 +1,13 @@
-import { ethers } from 'ethers'
-import React, { useState, useEffect } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Box, Modal, ThemeProvider, Scroll } from '@0xsequence/design-system'
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
-
-import { getHeader, getContent } from './utils'
-
-import { History, Navigation, NavigationContextProvider, WalletModalContextProvider } from '../../contexts'
+import React, { useState, useEffect } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
+import { History, Navigation, NavigationContextProvider, WalletModalContextProvider } from '../../contexts'
+
+import { getHeader, getContent } from './utils'
 
 import '@0xsequence/design-system/styles.css'
 
