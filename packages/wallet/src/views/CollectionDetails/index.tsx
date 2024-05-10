@@ -1,14 +1,13 @@
 import React from 'react'
 import { TokenBalance } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
-import { Box, Image, Text, vars } from '@0xsequence/design-system'
+import { Box, Image, Text, TokenImage, vars } from '@0xsequence/design-system'
 import { useCollectionBalance } from '@0xsequence/kit'
 import { useAccount } from 'wagmi'
 
 import { CollectionDetailsSkeleton } from './Skeleton'
 
 import { NetworkBadge } from '../../shared/NetworkBadge'
-import { CoinIcon } from '../../shared/CoinIcon'
 import { useNavigation } from '../../hooks'
 import { formatDisplay } from '../../utils'
 
@@ -60,7 +59,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
       gap="10"
     >
       <Box flexDirection="column" gap="2" justifyContent="center" alignItems="center">
-        <CoinIcon imageUrl={collectionLogoURI} size={32} />
+        <TokenImage src={collectionLogoURI} size="lg" />
         <Text fontWeight="bold" fontSize="large" color="text100">
           {contractInfo?.name || 'Unknown'}
         </Text>

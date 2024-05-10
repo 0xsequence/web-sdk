@@ -1,10 +1,8 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
-import { Box, Skeleton, Text } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { Box, NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 
-import { CoinIcon } from './CoinIcon'
 import { formatDisplay } from '../utils'
 import { useSettings } from '../hooks'
 import { CollectibleTileImage } from '../shared/CollectibleTileImage'
@@ -52,7 +50,6 @@ export const SendItemInfo = ({
   const { fiatCurrency } = useSettings()
   const formattedBalance = ethers.utils.formatUnits(balance, decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
-  const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
   return (
     <Box alignItems="flex-end" justifyContent="space-between">
@@ -62,14 +59,14 @@ export const SendItemInfo = ({
             <CollectibleTileImage imageUrl={imageUrl} />
           </Box>
         ) : (
-          <CoinIcon imageUrl={imageUrl} size={40} />
+          <TokenImage src={imageUrl} size="xl" />
         )}
         <Box flexDirection="column" alignItems="flex-start">
           <Box flexDirection="row" alignItems="center" gap="1">
             <Text variant="medium" color="text100">
               {name}
             </Text>
-            <CoinIcon imageUrl={nativeTokenInfo.logoURI} size={12} />
+            <NetworkImage chainId={chainId} size="xs" />
           </Box>
           <Text color="text50" variant="normal">
             {' '}

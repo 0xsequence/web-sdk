@@ -1,28 +1,27 @@
 import React from 'react'
-import { Box, Text } from '@0xsequence/design-system'
+import { Box, NetworkIcon, NetworkImage, Text, TokenImage } from '@0xsequence/design-system'
 
 import { getPercentageColor } from '../../../../../utils'
-import { CoinIcon } from '../../../../../shared/CoinIcon'
 import { useSettings } from '../../../../../hooks'
 
 interface CoinTileContentProps {
-  networkLogoUrl: string
   logoUrl?: string
   tokenName: string
   balance: string
   balanceFiat: string
   priceChangePercentage: number
   symbol: string
+  chainId: number
 }
 
 export const CoinTileContent = ({
-  networkLogoUrl,
   logoUrl,
   tokenName,
   balance,
   balanceFiat,
   priceChangePercentage,
-  symbol
+  symbol,
+  chainId
 }: CoinTileContentProps) => {
   const { fiatCurrency } = useSettings()
   const priceChangeSymbol = priceChangePercentage > 0 ? '+' : ''
@@ -40,7 +39,7 @@ export const CoinTileContent = ({
       gap="1"
     >
       <Box marginBottom="1">
-        <CoinIcon size={36} imageUrl={logoUrl} />
+        <TokenImage src={logoUrl} symbol={symbol} size="xl" />
       </Box>
       <Box marginBottom="3">
         <Box flexDirection="row" gap="1" justifyContent="flex-start" alignItems="center">
@@ -52,7 +51,7 @@ export const CoinTileContent = ({
           >
             {tokenName}
           </Text>
-          <CoinIcon size={12} imageUrl={networkLogoUrl} />
+          <NetworkImage chainId={chainId} size="xs" />
         </Box>
         <Text
           color="text50"

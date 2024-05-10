@@ -1,9 +1,8 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
-import { Box, Card, Image, Text, Skeleton } from '@0xsequence/design-system'
+import { Box, Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useContractInfo, useTokenMetadata } from '@0xsequence/kit'
-import { CoinIcon } from '../../../shared/components/CoinIcon'
 
 import { formatDisplay } from '../../../utils'
 
@@ -39,11 +38,11 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
         </Box>
         <Box flexDirection="column" alignItems="flex-start" justifyContent="center" gap="2">
           <Box gap="1" alignItems="center">
-            <CoinIcon size={12} imageUrl={collectionLogoURI} />
+            <TokenImage src={collectionLogoURI} size="xs" />
             <Text marginLeft="1" fontSize="small" color="text80" fontWeight="bold">
               {collectionName}
             </Text>
-            <CoinIcon size={12} imageUrl={nativeTokenInfo.logoURI} />
+            <NetworkImage chainId={chainId} size="xs" />
           </Box>
           <Box
             flexDirection="column"

@@ -1,11 +1,10 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
-import { Box, Image, Text, ChevronRightIcon } from '@0xsequence/design-system'
+import { Box, Image, Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
-import { CoinIcon } from '../../../shared/CoinIcon'
 import { useNavigation } from '../../../hooks'
 import { compareAddress, formatDisplay } from '../../../utils'
 
@@ -20,6 +19,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
   const logoURI = isNativeToken ? nativeTokenInfo.logoURI : balance?.contractInfo?.logoURI
   const tokenName = isNativeToken ? nativeTokenInfo.name : balance?.contractInfo?.name || 'Unknown'
+  const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 
   const getQuantity = () => {
     if (balance.contractType === 'ERC721' || balance.contractType === 'ERC1155') {
@@ -67,7 +67,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
       opacity={{ hover: '80' }}
     >
       <Box gap="3" flexDirection="row" alignItems="center" justifyContent="center">
-        <CoinIcon imageUrl={logoURI} size={30} />
+        <TokenImage src={logoURI} symbol={symbol} size="lg" />
         <Box gap="1" flexDirection="row" alignItems="center" justifyContent="center">
           <Text
             color="text100"

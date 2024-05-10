@@ -1,8 +1,7 @@
 import React from 'react'
 import { ethers } from 'ethers'
-import { Box, Skeleton, Text } from '@0xsequence/design-system'
+import { Box, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 
-import { CoinIcon } from './CoinIcon'
 import { formatDisplay, getPercentageColor } from '../utils'
 
 interface CoinRowProps {
@@ -56,7 +55,7 @@ export const CoinRow = ({ imageUrl, name, decimals, balance, symbol, fiatValue, 
       paddingX="3"
     >
       <Box justifyContent="center" alignItems="center" gap="2">
-        <CoinIcon imageUrl={imageUrl} size={30} />
+        <TokenImage src={imageUrl} symbol={symbol} size="lg" />
         <Box flexDirection="column" alignItems="flex-start">
           <Text variant="medium" color="text100">
             {name}

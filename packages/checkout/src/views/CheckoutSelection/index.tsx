@@ -10,7 +10,8 @@ import {
   Tooltip,
   PaymentsIcon,
   vars,
-  Skeleton
+  Skeleton,
+  TokenImage
 } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useTokenMetadata, useProjectAccessKey } from '@0xsequence/kit'
 
@@ -19,7 +20,6 @@ import { useAccount, useConfig } from 'wagmi'
 import { OrderSummaryItem } from './component/OrderSummaryItem'
 
 import { fetchSardineClientToken, fetchSardineOrderStatus } from '../../api'
-import { CoinIcon } from '../../shared/components/CoinIcon'
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
 import { compareAddress, formatDisplay } from '../../utils'
@@ -161,7 +161,7 @@ export const CheckoutSelection = () => {
             <Skeleton style={{ width: '100px', height: '17px' }} />
           ) : (
             <Box flexDirection="row" gap="1" alignItems="center">
-              <CoinIcon imageUrl={coinImageUrl} size={12} />
+              <TokenImage src={coinImageUrl} size="xs" />
               <Text fontWeight="normal" fontSize="normal" color="text100">
                 {`${formatDisplay(requestAmount)} ${coinSymbol}`}
               </Text>
@@ -193,7 +193,7 @@ export const CheckoutSelection = () => {
               height: '56px'
             }}
             width="full"
-            leftIcon={() => <CoinIcon size={20} imageUrl={coinImageUrl} />}
+            leftIcon={() => <TokenImage src={coinImageUrl} size="sm" />}
             variant="primary"
             label={`Pay with ${coinSymbol}`}
             rightIcon={ChevronRightIcon}
@@ -207,7 +207,7 @@ export const CheckoutSelection = () => {
             variant="glass"
             label={
               <Box placeItems="center" gap="2">
-                <CoinIcon size={20} imageUrl={coinImageUrl} />
+                <TokenImage src={coinImageUrl} size="sm" />
                 <Text>Insufficient ${coinSymbol}</Text>
               </Box>
             }

@@ -51,7 +51,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
 
     return (
       <CoinTileContent
-        networkLogoUrl={nativeTokenInfo.logoURI}
+        chainId={balance.chainId}
         logoUrl={nativeTokenInfo.logoURI}
         tokenName={nativeTokenInfo.name}
         balance={balanceDisplayed}
@@ -81,7 +81,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
 
   return (
     <CoinTileContent
-      networkLogoUrl={nativeTokenInfo.logoURI}
+      chainId={balance.chainId}
       logoUrl={url}
       tokenName={name}
       balance={balanceDisplayed}
