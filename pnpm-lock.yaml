@@ -99,8 +99,8 @@ importers:
   examples/next:
     dependencies:
       '@0xsequence/design-system':
-        specifier: ^1.6.0
-        version: 1.6.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.7.0
+        version: 1.7.0(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../../packages/kit
@@ -160,8 +160,8 @@ importers:
   examples/react:
     dependencies:
       '@0xsequence/design-system':
-        specifier: ^1.6.0
-        version: 1.6.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.7.0
+        version: 1.7.0(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../../packages/kit
@@ -310,8 +310,8 @@ importers:
         version: 2.10.2(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.7)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.6.0
-        version: 1.6.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.7.0
+        version: 1.7.0(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
@@ -398,8 +398,8 @@ importers:
         specifier: ^1.9.26
         version: 1.9.26(ethers@5.7.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))
       '@0xsequence/design-system':
-        specifier: ^1.6.0
-        version: 1.6.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.7.0
+        version: 1.7.0(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/ethauth':
         specifier: ^0.8.1
         version: 0.8.1(ethers@5.7.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))
@@ -499,8 +499,8 @@ importers:
         version: 2.10.2(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.7)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.6.0
-        version: 1.6.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.7.0
+        version: 1.7.0(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
@@ -552,8 +552,8 @@ packages:
     peerDependencies:
       ethers: '>=5.5'
 
-  '@0xsequence/design-system@1.6.3':
-    resolution: {integrity: sha512-to1Gpo/ilOi1Xa+O1oRx4faXBWmqhzGedkVbWHRar5PWNp+RjBaG8bm0qI2j6S7vpTVgK3pLHoiF6/0JdwMcmA==}
+  '@0xsequence/design-system@1.7.0':
+    resolution: {integrity: sha512-NgPHWbANqzL0O6zmBg4KmkX65DlDY7t2ZaDF4LgWrXzKc7UhGWShrkS+feFdsL4NAV2xYpABRAnFgT3kC99/Jg==}
     peerDependencies:
       framer-motion: '>=6'
       react: '>=17'
@@ -7624,7 +7624,7 @@ snapshots:
       '@0xsequence/abi': 1.9.26
       ethers: 5.7.2(bufferutil@4.0.8)(utf-8-validate@6.0.3)
 
-  '@0xsequence/design-system@1.6.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@0xsequence/design-system@1.7.0(@types/react-dom@18.3.0)(@types/react@18.3.1)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/react-aspect-ratio': 1.0.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-checkbox': 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

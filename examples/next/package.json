@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@0xsequence/design-system": "^1.6.0",
+    "@0xsequence/design-system": "^1.7.0",
     "@0xsequence/kit": "workspace:*",
     "@0xsequence/kit-checkout": "workspace:*",
     "@0xsequence/kit-connectors": "workspace:*",

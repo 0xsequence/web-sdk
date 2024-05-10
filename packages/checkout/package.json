@@ -23,7 +23,7 @@
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": ">=1.6.0",
+    "@0xsequence/design-system": ">=1.7.0",
     "@0xsequence/kit": "workspace:*",
     "ethers": ">=5.7.2",
     "framer-motion": ">=8.5.2",
@@ -33,7 +33,7 @@
     "viem": ">=2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.6.0",
+    "@0xsequence/design-system": "^1.7.0",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.4",
     "babel-plugin-module-resolver": "^5.0.2",
