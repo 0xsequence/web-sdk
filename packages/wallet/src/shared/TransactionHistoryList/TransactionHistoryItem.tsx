@@ -3,7 +3,7 @@ import { TokenPrice } from '@0xsequence/api'
 import { ethers } from 'ethers'
 import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId, useCoinPrices, useExchangeRate } from '@0xsequence/kit'
-import { ArrowRightIcon, Box, Text, Image, TransactionIcon, vars, Skeleton } from '@0xsequence/design-system'
+import { ArrowRightIcon, Box, Text, Image, TransactionIcon, vars, Skeleton, NetworkImage } from '@0xsequence/design-system'
 import dayjs from 'dayjs'
 import { useConfig } from 'wagmi'
 
@@ -124,7 +124,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
             <Text fontWeight="medium" fontSize="normal" color="text100">
               {getTansactionLabelByType(transfer.transferType)}
             </Text>
-            <Image src={nativeTokenInfo.logoURI} width="3" />
+            <NetworkImage chainId={transaction.chainId} size="xs" />
           </Box>
           {isFirstItem && (
             <Box>

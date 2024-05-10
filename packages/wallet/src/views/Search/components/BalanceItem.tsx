@@ -1,7 +1,7 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
-import { Box, Image, Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
+import { Box, Image, Text, ChevronRightIcon, TokenImage, NetworkImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
@@ -67,7 +67,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
       opacity={{ hover: '80' }}
     >
       <Box gap="3" flexDirection="row" alignItems="center" justifyContent="center">
-        <TokenImage src={logoURI} symbol={symbol} size="lg" />
+        <TokenImage src={logoURI} symbol={symbol} size="md" />
         <Box gap="1" flexDirection="row" alignItems="center" justifyContent="center">
           <Text
             color="text100"
@@ -83,7 +83,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
           >
             {tokenName}
           </Text>
-          <Image src={nativeTokenInfo.logoURI} alt="network logo" style={{ width: '12px', height: '12px' }} />
+          <NetworkImage chainId={balance.chainId} size="xs" />
         </Box>
       </Box>
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="1">

@@ -8,8 +8,8 @@ import {
   Button,
   Divider,
   GradientAvatar,
-  Image,
   LinkIcon,
+  NetworkImage,
   Skeleton,
   Text,
   TokenImage
@@ -197,7 +197,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           <Text fontSize="normal" fontWeight="medium" color="text50">
             Transfer
           </Text>
-          <Image width="3" src={nativeTokenInfo.logoURI} alt="network logo" />
+          <NetworkImage chainId={transaction.chainId} size="xs" />
         </Box>
         {transaction.transfers?.map((transfer, index) => (
           <Box width="full" flexDirection="column" justifyContent="center" alignItems="center" gap="4" key={`transfer-${index}`}>

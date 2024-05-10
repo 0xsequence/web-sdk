@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Image, Text } from '@0xsequence/design-system'
+import { Box, NetworkImage, Text } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, getNetwork, getNetworkColor, getNetworkBackgroundColor } from '@0xsequence/kit'
 import { useConfig } from 'wagmi'
 
@@ -32,7 +32,7 @@ export const NetworkBadge = ({ chainId }: NetworkBadgeProps) => {
       alignItems="center"
       width="fit"
     >
-      <Image style={{ width: '14px' }} src={nativeTokenInfo.logoURI} />
+      <NetworkImage chainId={chainId} size="xs" />
       <Text
         fontWeight="bold"
         fontSize="xsmall"

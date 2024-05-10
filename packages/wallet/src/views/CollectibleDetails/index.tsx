@@ -1,7 +1,7 @@
 import React from 'react'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
-import { Box, Button, Image, SendIcon, Text } from '@0xsequence/design-system'
+import { Box, Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
@@ -128,7 +128,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
               <Text fontWeight="bold" fontSize="small" color="text100">
                 {collectionName}
               </Text>
-              <Image width="3" src={nativeTokenInfo.logoURI} alt="collection logo" />
+              <NetworkImage chainId={chainId} size="xs" />
             </Box>
           </Box>
           <Box flexDirection="column" justifyContent="center" alignItems="center">
