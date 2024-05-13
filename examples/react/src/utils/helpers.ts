@@ -1,5 +1,5 @@
-import { Address } from 'viem'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
+import { Address } from 'viem'
 
 export const truncateAtMiddle = (text: string, truncateAt: number) => {
   let finalText = text

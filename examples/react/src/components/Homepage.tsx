@@ -1,27 +1,3 @@
-import React, { useEffect } from 'react'
-import {
-  useOpenConnectModal,
-  signEthAuthProof,
-  validateEthProof,
-  useTheme as useKitTheme,
-  useWaasFeeOptions,
-  useIndexerClient,
-  getModalPositionCss
-} from '@0xsequence/kit'
-import { useOpenWalletModal } from '@0xsequence/kit-wallet'
-import { useCheckoutModal } from '@0xsequence/kit-checkout'
-
-import {
-  useDisconnect,
-  useAccount,
-  useWalletClient,
-  usePublicClient,
-  useChainId,
-  useSwitchChain,
-  useSendTransaction,
-  useWriteContract,
-  useConnections
-} from 'wagmi'
 import {
   Box,
   Button,
@@ -35,23 +11,42 @@ import {
   Spinner,
   useMediaQuery,
   Switch,
-  Select,
   IconButton,
   CheckmarkIcon,
   Modal,
   TextInput
 } from '@0xsequence/design-system'
+import {
+  useOpenConnectModal,
+  signEthAuthProof,
+  validateEthProof,
+  useTheme as useKitTheme,
+  getModalPositionCss
+} from '@0xsequence/kit'
+import { useCheckoutModal } from '@0xsequence/kit-checkout'
+import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks } from '@0xsequence/network'
-import { AnimatePresence } from 'framer-motion'
-import { Footer } from './Footer'
-import { messageToSign } from '../constants'
-import { delay, formatAddress, getCheckoutSettings } from '../utils'
 import { ethers } from 'ethers'
-import demoAbi from '../constants/demo-abi'
-import { abi } from '../constants/nft-abi'
-import { Alert, AlertProps } from './Alert'
+import { AnimatePresence } from 'framer-motion'
+import React, { useEffect } from 'react'
+import {
+  useDisconnect,
+  useAccount,
+  useWalletClient,
+  usePublicClient,
+  useChainId,
+  useSwitchChain,
+  useSendTransaction,
+  useWriteContract,
+  useConnections
+} from 'wagmi'
+
 import { ConnectionMode } from '../config'
-import { formatUnits, parseUnits } from 'viem'
+import { messageToSign } from '../constants'
+import { abi } from '../constants/nft-abi'
+import { delay, formatAddress, getCheckoutSettings } from '../utils'
+
+import { Footer } from './Footer'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -113,7 +108,7 @@ export const Homepage = () => {
 
   const chainId = useChainId()
 
-  const indexerClient = useIndexerClient(chainId)
+  // const indexerClient = useIndexerClient(chainId)
 
   // const [feeOptionBalances, setFeeOptionBalances] = React.useState<{ tokenName: string; decimals: number; balance: string }[]>([])
 
@@ -355,9 +350,9 @@ export const Homepage = () => {
     setOpenConnectModal(true)
   }
 
-  const onClickCheckout = () => {
-    setIsCheckoutInfoModalOpen(true)
-  }
+  // const onClickCheckout = () => {
+  //   setIsCheckoutInfoModalOpen(true)
+  // }
 
   const onCheckoutInfoConfirm = () => {
     setIsCheckoutInfoModalOpen(false)

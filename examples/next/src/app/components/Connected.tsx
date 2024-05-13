@@ -1,9 +1,13 @@
+import { Box, Text, Card, Button, Select, SignoutIcon } from '@0xsequence/design-system'
+import { signEthAuthProof, useIndexerClient, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
+import { CheckoutSettings } from '@0xsequence/kit-checkout'
+import { useOpenWalletModal } from '@0xsequence/kit-wallet'
+import { allNetworks } from '@0xsequence/network'
 import { ComponentProps, useEffect, useState } from 'react'
-import { Box, Text, Card, Button, Select, Switch, SignoutIcon } from '@0xsequence/design-system'
+import { formatUnits, parseUnits } from 'viem'
 import {
   useAccount,
   useChainId,
-  useConnections,
   useDisconnect,
   usePublicClient,
   useSendTransaction,
@@ -11,27 +15,22 @@ import {
   useWalletClient,
   useWriteContract
 } from 'wagmi'
+
+import { isDebugMode } from '../config'
+
 import { Header } from './Header'
-import { delay } from '@/utils'
-import { formatUnits, parseUnits } from 'viem'
-import { signEthAuthProof, useIndexerClient, useOpenConnectModal, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
-import { useOpenWalletModal } from '@0xsequence/kit-wallet'
-import { useCheckoutModal, CheckoutSettings } from '@0xsequence/kit-checkout'
-import { ConnectionMode, isDebugMode } from '../config'
-import { allNetworks } from '@0xsequence/network'
+
 import { abi, messageToSign } from '@/constants'
 
 export const Connected = () => {
   const { address } = useAccount()
   const { disconnect } = useDisconnect()
-  const { setOpenConnectModal } = useOpenConnectModal()
   const { setOpenWalletModal } = useOpenWalletModal()
-  const connections = useConnections()
-  const { triggerCheckout } = useCheckoutModal()
+  // const { setOpenConnectModal } = useOpenConnectModal()
+  // const { triggerCheckout } = useCheckoutModal()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
 
-  const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
   const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error } = useSendTransaction()
   const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
 
@@ -42,7 +41,7 @@ export const Connected = () => {
   const [lastTxnDataHash, setLastTxnDataHash] = useState<string | undefined>()
   const [lastTxnDataHash2, setLastTxnDataHash2] = useState<string | undefined>()
 
-  const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = useState<string | undefined>()
 
@@ -69,13 +68,6 @@ export const Connected = () => {
       checkTokenBalancesForFeeOptions()
     }
   }, [pendingFeeOptionConfirmation])
-
-  const handleSwitchConnectionMode = (mode: ConnectionMode) => {
-    const searchParams = new URLSearchParams()
-
-    searchParams.set('mode', mode)
-    window.location.search = searchParams.toString()
-  }
 
   const checkTokenBalancesForFeeOptions = async () => {
     if (pendingFeeOptionConfirmation) {
@@ -204,13 +196,13 @@ export const Connected = () => {
     })
   }
 
-  const onClickConnect = () => {
-    setOpenConnectModal(true)
-  }
+  // const onClickConnect = () => {
+  //   setOpenConnectModal(true)
+  // }
 
-  const onClickCheckout = () => {
-    triggerCheckout(getCheckoutSettings(address))
-  }
+  // const onClickCheckout = () => {
+  //   triggerCheckout(getCheckoutSettings(address))
+  // }
 
   const onSwitchNetwork = () => {
     if (chainId === 421614) {
@@ -425,7 +417,7 @@ interface CardButtonProps {
 }
 
 const CardButton = (props: CardButtonProps) => {
-  const { title, description, onClick, isPending } = props
+  const { title, description, onClick } = props
 
   return (
     <Card clickable onClick={onClick}>
@@ -490,7 +482,7 @@ export const Alert = ({ title, description, secondaryDescription, variant, butto
   )
 }
 
-export const getCheckoutSettings = (address?: string) => {
+export const getCheckoutSettings = (_address?: string) => {
   const checkoutSettings: CheckoutSettings = {
     cryptoCheckout: {
       chainId: 137,
@@ -504,11 +496,13 @@ export const getCheckoutSettings = (address?: string) => {
     },
     orderSummaryItems: [
       {
+        chainId: 137,
         contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
         tokenId: '66597',
         quantityRaw: '100'
       },
       {
+        chainId: 137,
         contractAddress: '0x624e4fa6980afcf8ea27bfe08e2fb5979b64df1c',
         tokenId: '1741',
         quantityRaw: '100'

@@ -1,12 +1,12 @@
 'use client'
 
-import { Box, Image, Button, Text } from '@0xsequence/design-system'
+import { Box, Image, Button } from '@0xsequence/design-system'
 import { useOpenConnectModal } from '@0xsequence/kit'
-
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { Footer } from './components/Footer'
+
 import { Connected } from './components/Connected'
+import { Footer } from './components/Footer'
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false)

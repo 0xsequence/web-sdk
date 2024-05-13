@@ -14,30 +14,30 @@ sequenceWallet.type = 'sequence' as const
 
 export function sequenceWallet(params: BaseSequenceConnectorOptions) {
   const { defaultNetwork, connect, walletAppURL } = params
-
-  let id = 'sequence'
-  let name = 'Sequence'
-
   const { projectAccessKey } = connect
 
-  const signInOptions = params?.connect?.settings?.signInOptions || []
-  const signInWith = params?.connect?.settings?.signInWith
-  const signInWithEmail = params?.connect?.settings?.signInWithEmail
+  // XXX id and name are not being used anywhere, should they override the connector id and name?
+  // let id = 'sequence'
+  // let name = 'Sequence'
+
+  // const signInOptions = params?.connect?.settings?.signInOptions || []
+  // const signInWith = params?.connect?.settings?.signInWith
+  // const signInWithEmail = params?.connect?.settings?.signInWithEmail
 
   // If there are no sign in options
   // Then it must mean we are connecting with email
-  if (signInWithEmail) {
-    id = 'email'
-    name = 'Email'
-  } else if (signInWith) {
-    id = signInWith
-    name = `${signInWith[0].toUpperCase()}${signInWith.slice(1)}`
-  } else if (signInOptions.length > 0) {
-    const newId = signInOptions[0]
-    const newName = `${id[0].toUpperCase()}${id.slice(1)}`
-    id = newId
-    name = newName
-  }
+  // if (signInWithEmail) {
+  //   id = 'email'
+  //   name = 'Email'
+  // } else if (signInWith) {
+  //   id = signInWith
+  //   name = `${signInWith[0].toUpperCase()}${signInWith.slice(1)}`
+  // } else if (signInOptions.length > 0) {
+  //   const newId = signInOptions[0]
+  //   const newName = `${id[0].toUpperCase()}${id.slice(1)}`
+  //   id = newId
+  //   name = newName
+  // }
 
   type Provider = sequence.provider.SequenceProvider
   type Properties = {

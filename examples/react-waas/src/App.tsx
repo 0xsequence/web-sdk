@@ -1,5 +1,7 @@
-import './App.css'
+import { sequence } from '0xsequence'
 import { useOpenConnectModal, useWaasFeeOptions } from '@0xsequence/kit'
+import { useEffect, useState } from 'react'
+import { formatUnits } from 'viem'
 import {
   useAccount,
   useChainId,
@@ -9,9 +11,8 @@ import {
   useSwitchChain,
   useWalletClient
 } from 'wagmi'
-import { sequence } from '0xsequence'
-import { formatUnits } from 'viem'
-import { useEffect, useState } from 'react'
+
+import './App.css'
 
 export const App = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
@@ -96,7 +97,7 @@ export const App = () => {
 
     const [account] = await walletClient.getAddresses()
 
-    sendTransaction({ to: account, value: '0', gas: null })
+    sendTransaction({ to: account, value: BigInt('0'), gas: null })
   }
 
   useEffect(() => {
@@ -106,7 +107,7 @@ export const App = () => {
   }, [txnData])
 
   // Fee options are required when txn is not gas sponsored (not needed on testnets)
-  const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
 
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null | undefined>() // option is null for native token, string for erc20 token
   useEffect(() => {
@@ -148,7 +149,7 @@ export const App = () => {
 
               {isPending && <p>Transaction is pending...</p>}
 
-              {lastTxnDataHash && (
+              {networkForCurrentChainId?.blockExplorer && lastTxnDataHash && (
                 <div>
                   <p style={{ overflowWrap: 'anywhere' }}>Transaction hash: {lastTxnDataHash}</p>
 

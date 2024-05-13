@@ -1,10 +1,11 @@
+import { ThemeProvider } from '@0xsequence/design-system'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+
 import './globals.css'
 import '@0xsequence/design-system/styles.css'
 
 import { Web3Provider } from './Web3Provider'
-import { ThemeProvider } from '@0xsequence/design-system'
 
 const inter = Inter({ subsets: ['latin'] })
 

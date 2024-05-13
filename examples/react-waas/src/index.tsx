@@ -1,14 +1,14 @@
+import { sequence } from '0xsequence'
+import { KitConfig, KitProvider } from '@0xsequence/kit'
+import { getDefaultWaasConnectors } from '@0xsequence/kit-connectors'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { App } from './App.tsx'
-import './index.css'
-
 import { WagmiProvider, createConfig, http } from 'wagmi'
 import { Chain, arbitrumNova, arbitrumSepolia, mainnet, polygon } from 'wagmi/chains'
-import { sequence } from '0xsequence'
-import { getDefaultWaasConnectors } from '@0xsequence/kit-connectors'
-import { KitConfig, KitProvider } from '@0xsequence/kit'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+import { App } from './App.tsx'
+import './index.css'
 
 const queryClient = new QueryClient()
 

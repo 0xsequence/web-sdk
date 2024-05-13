@@ -1,5 +1,5 @@
-import React from 'react'
 import { Box, Image, Text, useMediaQuery, useTheme } from '@0xsequence/design-system'
+import React from 'react'
 
 import { bottomPageLinks, socialLinks } from '../constants'
 

@@ -1,9 +1,9 @@
 import { KitConfig, getKitConnectWallets } from '@0xsequence/kit'
 import { getDefaultConnectors, getDefaultWaasConnectors, mock } from '@0xsequence/kit-connectors'
-import { Chain, arbitrumNova, arbitrumSepolia, mainnet, polygon } from 'wagmi/chains'
 import { findNetworkConfig, allNetworks } from '@0xsequence/network'
-import { createConfig, createStorage, http, noopStorage } from 'wagmi'
 import { Transport, zeroAddress } from 'viem'
+import { createConfig, createStorage, http, noopStorage } from 'wagmi'
+import { Chain, arbitrumNova, arbitrumSepolia, mainnet, polygon } from 'wagmi/chains'
 
 export type ConnectionMode = 'waas' | 'universal'
 

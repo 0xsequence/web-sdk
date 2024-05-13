@@ -1,6 +1,6 @@
 'use client'
 
-import { Connector, useConnect } from 'wagmi'
+import { useConnect } from 'wagmi'
 
 export const WalletOptions = () => {
   const { connectors, connect } = useConnect()
