@@ -6,7 +6,7 @@ import { KitWalletProvider } from '@0xsequence/kit-wallet'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 
-import { wagmiConfig, kitConfig } from './config'
+import { wagmiConfig, kitConfig } from '../config'
 
 const queryClient = new QueryClient()
 

@@ -16,7 +16,7 @@ import {
   useWriteContract
 } from 'wagmi'
 
-import { isDebugMode } from '../config'
+import { isDebugMode } from '../../config'
 
 import { Header } from './Header'
 
