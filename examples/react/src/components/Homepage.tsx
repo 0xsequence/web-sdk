@@ -650,7 +650,7 @@ export const Homepage = () => {
               <Box gap="2" flexDirection="column" marginTop="10" width="1/2">
                 <ConnectionModeSelect
                   mode="waas"
-                  title="Inventory (WaaS)"
+                  title="Embedded Wallet (WaaS)"
                   description="Connect to an embedded wallet for a seamless experience."
                   onClick={handleSwitchConnectionMode}
                 />
