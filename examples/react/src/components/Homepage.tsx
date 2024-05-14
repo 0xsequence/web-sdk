@@ -21,7 +21,8 @@ import {
   signEthAuthProof,
   validateEthProof,
   useTheme as useKitTheme,
-  getModalPositionCss
+  getModalPositionCss,
+  useStorage
 } from '@0xsequence/kit'
 import { useCheckoutModal } from '@0xsequence/kit-checkout'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -63,6 +64,7 @@ export const Homepage = () => {
   const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
+  const storage = useStorage()
 
   const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
 
@@ -165,12 +167,12 @@ export const Homepage = () => {
   const publicClient = usePublicClient({ chainId })
 
   const generateEthAuthProof = async () => {
-    if (!walletClient || !publicClient) {
+    if (!walletClient || !publicClient || !storage) {
       return
     }
 
     try {
-      const proof = await signEthAuthProof(walletClient)
+      const proof = await signEthAuthProof(walletClient, storage)
       console.log('proof:', proof)
 
       const isValid = await validateEthProof(walletClient, publicClient, proof)

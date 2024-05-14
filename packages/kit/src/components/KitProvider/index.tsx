@@ -16,10 +16,10 @@ import {
   WalletConfigContextProvider,
   AnalyticsContextProvider
 } from '../../contexts'
+import { useStorage } from '../../hooks'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
 import { getModalPositionCss } from '../../utils'
-import { setStorageItem } from '../../utils/storage'
 import { TxnDetails } from '../TxnDetails'
 
 import { ConnectWalletContent } from './ConnectWalletContent'
@@ -53,8 +53,9 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<sequence.SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
-  const connections = useConnections()
   const wagmiConfig = useConfig()
+  const storage = useStorage()
+  const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
 
   const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
@@ -117,7 +118,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     // EthAuth
     // note: keep an eye out for potential race-conditions, though they shouldn't occur.
     // If there are race conditions, the settings could be a function executed prior to being passed to wagmi
-    setStorageItem(LocalStorageKey.EthAuthSettings, {
+    storage?.setItem(LocalStorageKey.EthAuthSettings, {
       expiry,
       app,
       origin: origin || location.origin,

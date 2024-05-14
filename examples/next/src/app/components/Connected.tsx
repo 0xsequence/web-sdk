@@ -1,5 +1,5 @@
 import { Box, Text, Card, Button, Select, SignoutIcon } from '@0xsequence/design-system'
-import { signEthAuthProof, useIndexerClient, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
+import { signEthAuthProof, useIndexerClient, useStorage, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks } from '@0xsequence/network'
@@ -30,6 +30,7 @@ export const Connected = () => {
   // const { triggerCheckout } = useCheckoutModal()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
+  const storage = useStorage()
 
   const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error } = useSendTransaction()
   const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
@@ -109,12 +110,12 @@ export const Connected = () => {
   const publicClient = usePublicClient({ chainId })
 
   const generateEthAuthProof = async () => {
-    if (!walletClient || !publicClient) {
+    if (!walletClient || !publicClient || !storage) {
       return
     }
 
     try {
-      const proof = await signEthAuthProof(walletClient)
+      const proof = await signEthAuthProof(walletClient, storage)
       console.log('proof:', proof)
 
       const isValid = await validateEthProof(walletClient, publicClient, proof)

@@ -18,13 +18,13 @@ import { LogoProps } from '@0xsequence/kit-connectors'
 import { GoogleLogin } from '@react-oauth/google'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
-import { useConnect, useAccount, useConfig, Storage } from 'wagmi'
+import { useConnect, useAccount } from 'wagmi'
 
 import { LocalStorageKey, defaultSignInOptions } from '../../../constants'
+import { useStorage, useStorageItem } from '../../../hooks'
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
 import { ExtendedConnector, KitConfig } from '../../../types'
 import { isEmailValid } from '../../../utils'
-import { getStorageItem } from '../../../utils/storage'
 import { KitConnectProviderProps } from '../index'
 
 import { Banner } from './Banner'
@@ -39,9 +39,13 @@ interface ConnectWalletContentProps extends KitConnectProviderProps {
 export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
+  const storage = useStorage()
+  const { data: sessionHash, isPending: isPendingNonce } = useStorageItem(LocalStorageKey.WaasSessionHash)
+  const { data: appleClientId, isPending: isPendingAppleClientId } = useStorageItem(LocalStorageKey.WaasAppleClientID)
+  const { data: appleRedirectUri, isPending: isPendingAppleRedirectUri } = useStorageItem(LocalStorageKey.WaasAppleRedirectURI)
+  const isPendingStorage = isPendingNonce || isPendingAppleClientId || isPendingAppleRedirectUri
+
   const { isConnected } = useAccount()
-  const wagmiConfig = useConfig()
-  const storage = wagmiConfig.storage as Storage<{ [string: string]: string }>
   const { config = {} } = props
   const { signIn = {} } = config as KitConfig
   const {
@@ -255,7 +259,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
           </form>
         )}
 
-        {socialAuthConnectors.length > 0 && (
+        {socialAuthConnectors.length > 0 && !isPendingStorage && (
           <>
             {emailConnector && showEmailInput && (
               <>
@@ -286,7 +290,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                             <GoogleLogin
                               type="icon"
                               size="large"
-                              nonce={getStorageItem(LocalStorageKey.WaasSessionHash)}
+                              nonce={sessionHash}
                               onSuccess={credentialResponse => {
                                 if (credentialResponse.credential) {
                                   storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
@@ -333,21 +337,17 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                       </Tooltip>
                     )}
 
-                    {connector._wallet.id === 'apple-waas' && (
+                    {connector._wallet.id === 'apple-waas' && appleClientId && appleRedirectUri && (
                       <ConnectButton
                         connector={connector}
                         onConnect={() => {
-                          const appleClientId = getStorageItem(LocalStorageKey.WaasAppleClientID)
-                          const appleRedirectUri = getStorageItem(LocalStorageKey.WaasAppleRedirectURI)
-                          const sessionHash = getStorageItem(LocalStorageKey.WaasSessionHash)
-
                           appleAuthHelpers.signIn({
                             authOptions: {
                               clientId: appleClientId,
-                              scope: 'openid email',
                               redirectURI: appleRedirectUri,
-                              usePopup: true,
-                              nonce: sessionHash
+                              nonce: sessionHash,
+                              scope: 'openid email',
+                              usePopup: true
                             },
                             onSuccess: (response: any) => {
                               if (response.authorization?.id_token) {
