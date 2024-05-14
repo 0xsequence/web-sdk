@@ -16,22 +16,27 @@ interface OrderSummaryItem {
   tokenId: string
 }
 
-export interface SardineCheckout {
+export interface CreditCardCheckout {
   defaultPaymentMethodType: 'us_debit' | 'us_credit' | 'international_debit' | 'international_credit' | 'ach'
   chainId: number
-  platform: string
   contractAddress: string
-  blockchainNftId: string
   recipientAddress: string
-  quantity: number
-  decimals?: number
-  onSuccess?: (transactionHash: string, settings: SardineCheckout) => void
-  onError?: (error: Error, settings: SardineCheckout) => void
+  currencyQuantity: string
+  currencySymbol: string
+  currencyAddress: string
+  currencyDecimals: string
+  nftId: string
+  nftAddress: string
+  nftQuantity: string
+  nftDecimals?: string
+  calldata: string
+  onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
+  onError?: (error: Error, settings: CreditCardCheckout) => void
   isDev?: boolean
 }
 
 export interface CheckoutSettings {
-  sardineCheckout?: SardineCheckout
+  creditCardCheckout?: CreditCardCheckout
   cryptoCheckout?: {
     chainId: number
     triggerTransaction: () => void

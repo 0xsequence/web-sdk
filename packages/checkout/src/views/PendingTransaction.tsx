@@ -17,7 +17,7 @@ export const PendingTransaction = () => {
   const { setNavigation } = nav
   const projectAccessKey = useProjectAccessKey()
 
-  const isDev = settings?.sardineCheckout?.isDev || false
+  const isDev = settings?.creditCardCheckout?.isDev || false
   const url = isDev
     ? `https://crypto.sandbox.sardine.ai/?client_token=${authToken}&show_features=true`
     : `https://crypto.sardine.ai/?client_token=${authToken}&show_features=true`
@@ -25,7 +25,7 @@ export const PendingTransaction = () => {
   const pollForOrderStatus = async () => {
     try {
       console.log('Polling for transaction status')
-      const isDev = settings?.sardineCheckout?.isDev || false
+      const isDev = settings?.creditCardCheckout?.isDev || false
 
       const pollResponse = await fetchSardineOrderStatus(orderId, isDev, projectAccessKey)
       const status = pollResponse.resp.status

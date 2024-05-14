@@ -1,5 +1,7 @@
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
-import { Address } from 'viem'
+import { Hex, encodeFunctionData } from 'viem'
+
+import { orderbookAbi } from '../constants/orderbook-abi'
 
 export const truncateAtMiddle = (text: string, truncateAt: number) => {
   let finalText = text
@@ -19,35 +21,65 @@ export const delay = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const getCheckoutSettings = (
-  blockchainNftId: string,
-  recipientAddress: string | Address,
-  tokenContractAddress: string,
-  tokenId: string,
-  chainId: number,
-  quantity: number,
+export interface GetCheckoutSettings {
+  chainId: number
+  contractAddress: string
+  recipientAddress: string
+  currencyQuantity: string
+  currencySymbol: string
+  currencyAddress: string
+  currencyDecimals: string
+  nftId: string
+  nftAddress: string
+  nftQuantity: string
+  calldata: string
+  nftDecimals?: string
   isDev?: boolean
-) => {
+}
+
+export const getCheckoutSettings = (args: GetCheckoutSettings) => {
   const checkoutSettings: CheckoutSettings = {
-    sardineCheckout: {
-      chainId,
+    creditCardCheckout: {
       defaultPaymentMethodType: 'us_debit',
-      platform: 'horizon',
-      contractAddress: '0xB537a160472183f2150d42EB1c3DD6684A55f74c',
-      blockchainNftId: blockchainNftId,
-      recipientAddress: recipientAddress,
-      quantity,
-      isDev
+      onSuccess: (hash) => { console.log('credit card checkout success', hash) },
+      onError: (e) => { console.log('credit card checkout error', e) },
+      ...args
     },
     orderSummaryItems: [
       {
-        chainId,
-        contractAddress: tokenContractAddress,
-        tokenId,
-        quantityRaw: String(quantity)
+        chainId: args.chainId,
+        contractAddress: args.nftAddress,
+        tokenId: args.nftId,
+        quantityRaw: String(args.nftQuantity)
       }
     ]
   }
 
   return checkoutSettings
+}
+
+export interface GetOrderbookCalldata {
+  orderId: string,
+  quantity: string,
+  recipient: string,
+}
+
+export const getOrderbookCalldata = ({
+  orderId,
+  quantity,
+  recipient,
+}: GetOrderbookCalldata) => {
+  const calldata = encodeFunctionData({
+    abi: orderbookAbi,
+    functionName: 'acceptRequest',
+    args: [
+      BigInt(orderId),
+      BigInt(quantity),
+      recipient as Hex,
+      [],
+      []
+    ]
+  })
+
+  return calldata
 }

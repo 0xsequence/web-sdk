@@ -11,14 +11,14 @@ export const TransactionSuccess = () => {
   const nav = useNavigation()
   const navigation = nav.navigation as TransactionSuccessNavigation
 
-  const chainId = settings?.sardineCheckout?.chainId || ChainId.POLYGON
+  const chainId = settings?.creditCardCheckout?.chainId || 137
   const network = sequence.network.allNetworks.find(n => n.chainId === chainId)
 
   useEffect(() => {
-    settings?.sardineCheckout?.onSuccess &&
-      settings?.sardineCheckout?.onSuccess(navigation.params.transactionHash, settings?.sardineCheckout)
-    settings?.sardineCheckout?.onSuccess &&
-      settings?.sardineCheckout?.onSuccess(navigation.params.transactionHash, settings?.sardineCheckout)
+    settings?.creditCardCheckout?.onSuccess &&
+      settings?.creditCardCheckout?.onSuccess(navigation.params.transactionHash, settings?.creditCardCheckout)
+    settings?.creditCardCheckout?.onSuccess &&
+      settings?.creditCardCheckout?.onSuccess(navigation.params.transactionHash, settings?.creditCardCheckout)
   }, [])
 
   return (

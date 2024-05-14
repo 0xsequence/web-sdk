@@ -1,7 +1,7 @@
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
 
-import { SardineCheckout } from '../contexts/CheckoutModal'
+import { CreditCardCheckout } from '..'
 
 export interface FetchSardineClientTokenReturn {
   token: string
@@ -13,7 +13,7 @@ export interface MethodArguments {
 }
 
 export const fetchSardineClientToken = async (
-  order: SardineCheckout,
+  order: CreditCardCheckout,
   isDev: boolean,
   projectAccessKey: string,
   tokenMetadata?: TokenMetadata
@@ -46,12 +46,17 @@ export const fetchSardineClientToken = async (
         imageUrl: tokenMetadata?.image || 'https://www.sequence.market/images/placeholder.png',
         network: networks[order.chainId as ChainId].name,
         recipientAddress: order.recipientAddress,
-        platform: 'horizon',
-        blockchainNftId: order.blockchainNftId,
         contractAddress: order.contractAddress,
+        platform: "calldata_execution",
         executionType: 'smart_contract',
-        quantity: Number(order.quantity),
-        decimals: Number(order.decimals)
+        blockchainNftId: order.nftId,
+        quantity: Number(order.nftQuantity),
+        decimals: Number(order?.nftDecimals || 0),
+        tokenAmount: order.currencyQuantity,
+        tokenAddress: order.currencyAddress,
+        tokenSymbol: order.currencySymbol,
+        tokenDecimals: order.currencyDecimals,
+        callData: order.calldata,
       }
     })
   })

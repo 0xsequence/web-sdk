@@ -31,7 +31,7 @@ export const CheckoutSelection = () => {
   const projectAccessKey = useProjectAccessKey()
 
   const cryptoCheckoutSettings = settings?.cryptoCheckout
-  const creditCardCheckoutSettings = settings?.sardineCheckout
+  const creditCardCheckoutSettings = settings?.creditCardCheckout
   const displayCreditCardCheckout = !!creditCardCheckoutSettings
   const displayCryptoCheckout = !!cryptoCheckoutSettings
 
@@ -64,7 +64,7 @@ export const CheckoutSelection = () => {
 
   const orderSummaryItems = settings?.orderSummaryItems || []
 
-  const chainId = settings?.cryptoCheckout?.chainId || settings?.sardineCheckout?.chainId || 1
+  const chainId = settings?.cryptoCheckout?.chainId || settings?.creditCardCheckout?.chainId || 1
 
   const { data: tokensMetadata } = useTokenMetadata(chainId, orderSummaryItems[0].contractAddress, [orderSummaryItems[0].tokenId])
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
@@ -72,9 +72,9 @@ export const CheckoutSelection = () => {
   const triggerSardineTransaction = async () => {
     console.log('trigger sardine transaction')
 
-    if (settings?.sardineCheckout) {
-      const isDev = settings?.sardineCheckout?.isDev || false
-      const { token, orderId } = await fetchSardineClientToken(settings.sardineCheckout, isDev, projectAccessKey, tokenMetadata)
+    if (settings?.creditCardCheckout) {
+      const isDev = settings?.creditCardCheckout?.isDev || false
+      const { token, orderId } = await fetchSardineClientToken(settings.creditCardCheckout, isDev, projectAccessKey, tokenMetadata)
 
       setNavigation({
         location: 'transaction-pending',
@@ -84,7 +84,7 @@ export const CheckoutSelection = () => {
   }
 
   const onClickPayWithCard = () => {
-    if (settings?.sardineCheckout) {
+    if (settings?.creditCardCheckout) {
       triggerSardineTransaction()
     } else {
       setNavigation({
