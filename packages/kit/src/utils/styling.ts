@@ -1,13 +1,4 @@
-export type ModalPosition =
-  | 'center'
-  | 'middle-right'
-  | 'middle-left'
-  | 'top-center'
-  | 'top-right'
-  | 'top-left'
-  | 'bottom-center'
-  | 'bottom-right'
-  | 'bottom-left'
+import { ModalPosition } from '../types'
 
 export interface modalPositionCss {
   top?: string

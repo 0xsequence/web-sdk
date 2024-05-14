@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Theme } from '../index'
-import { createGenericContext, ModalPosition } from '../utils'
+import { ModalPosition, Theme } from '../index'
+import { createGenericContext } from '../utils'
 
 type ThemeContext = {
   setTheme: React.Dispatch<React.SetStateAction<Theme>>

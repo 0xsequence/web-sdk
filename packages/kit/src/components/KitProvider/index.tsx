@@ -3,7 +3,6 @@ import { Box, Button, Card, Collapsible, Modal, Text, ThemeProvider } from '@0xs
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
-import type { ComponentProps } from 'react'
 import React, { useState, useEffect } from 'react'
 import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 
@@ -18,53 +17,14 @@ import {
   AnalyticsContextProvider
 } from '../../contexts'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
-import { ExtendedConnector, ModalPosition, getModalPositionCss } from '../../utils'
+import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
+import { getModalPositionCss } from '../../utils'
 import { setStorageItem } from '../../utils/storage'
 import { TxnDetails } from '../TxnDetails'
 
 import { ConnectWalletContent } from './ConnectWalletContent'
 import { NetworkBadge } from './NetworkBadge'
 import { SequenceLogo } from './SequenceLogo'
-
-export declare const THEME: readonly ['dark', 'light']
-export declare type Theme = Exclude<ComponentProps<typeof ThemeProvider>['theme'], undefined>
-export const THEMES = {
-  dark: 'dark' as Theme,
-  light: 'light' as Theme
-}
-
-export interface DisplayedAsset {
-  contractAddress: string
-  chainId: number
-}
-
-export interface EthAuthSettings {
-  app?: string
-  /** expiry number (in seconds) that is used for ETHAuth proof. Default is 1 week in seconds. */
-  expiry?: number
-  /** origin hint of the dapp's host opening the wallet. This value will automatically
-   * be determined and verified for integrity, and can be omitted. */
-  origin?: string
-  /** authorizeNonce is an optional number to be passed as ETHAuth's nonce claim for replay protection. **/
-  nonce?: number
-}
-
-export interface KitConfig {
-  projectAccessKey: string
-  disableAnalytics?: boolean
-  defaultTheme?: Theme
-  position?: ModalPosition
-  signIn?: {
-    logoUrl?: string
-    projectName?: string
-    showEmailInput?: boolean
-    socialAuthOptions?: string[]
-    walletAuthOptions?: string[]
-    useMock?: boolean
-  }
-  displayedAssets?: DisplayedAsset[]
-  ethAuth?: EthAuthSettings
-}
 
 export type KitConnectProviderProps = {
   children: React.ReactNode
@@ -88,7 +48,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
   const { projectName } = signIn
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
-  const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || THEMES.dark)
+  const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<sequence.SequenceClient['analytics']>()

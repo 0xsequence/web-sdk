@@ -22,10 +22,9 @@ import { useConnect, useAccount, useConfig, Storage } from 'wagmi'
 
 import { LocalStorageKey, defaultSignInOptions } from '../../../constants'
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
+import { ExtendedConnector, KitConfig } from '../../../types'
 import { isEmailValid } from '../../../utils'
-import { ExtendedConnector } from '../../../utils/getKitConnectWallets'
 import { getStorageItem } from '../../../utils/storage'
-import { KitConfig } from '../../index'
 import { KitConnectProviderProps } from '../index'
 
 import { Banner } from './Banner'

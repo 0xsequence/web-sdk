@@ -6,7 +6,8 @@
     "dev": "next dev -p 4444",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@0xsequence/design-system": "^1.7.0",

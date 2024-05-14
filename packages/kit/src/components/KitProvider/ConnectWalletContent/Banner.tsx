@@ -1,7 +1,7 @@
 import { Box, Image } from '@0xsequence/design-system'
 import React from 'react'
 
-import { KitConfig } from '../index'
+import { KitConfig } from '../../../types'
 
 interface BannerProps {
   config: KitConfig

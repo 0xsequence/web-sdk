@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DisplayedAsset } from '../components/KitProvider'
+import { DisplayedAsset } from '../types'
 import { createGenericContext } from '../utils'
 
 type WalletConfigContext = {

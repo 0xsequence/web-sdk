@@ -4,8 +4,8 @@ import { ETHAuth, Proof } from '@0xsequence/ethauth'
 import { UsePublicClientReturnType } from 'wagmi'
 import { GetWalletClientData } from 'wagmi/query'
 
-import { EthAuthSettings } from '../components/KitProvider'
 import { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from '../constants'
+import { EthAuthSettings } from '../types'
 
 import { publicClientToProvider, walletClientToSigner } from './adapters'
 import { getStorageItem } from './storage'

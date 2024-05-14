@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { ExtendedConnector } from '../utils'
+import { ExtendedConnector } from '../types'
 
 export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedConnector; onSuccess: (idToken: string) => void }) {
   if (!connector) {
