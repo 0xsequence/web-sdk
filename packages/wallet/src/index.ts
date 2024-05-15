@@ -1,3 +1,5 @@
-export * from './hooks'
-export * from './contexts'
-export * from './shared'
+// Provider
+export { KitWalletProvider } from './shared/KitWalletProvider'
+
+// Hooks
+export { useOpenWalletModal } from './hooks/useOpenWalletModal'
