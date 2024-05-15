@@ -1,7 +1,7 @@
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
 
-import { SardineCheckout } from '..'
+import { SardineCheckout } from '../contexts/CheckoutModal'
 
 export interface FetchSardineClientTokenReturn {
   token: string
