@@ -6,10 +6,10 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useAPIClient } from '../../hooks'
-import { capitalize, compareAddress, getNativeTokenInfoByChainId } from '../../utils'
-import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
-import { CollectibleTileImage } from '../KitProvider/CollectibleTileImage'
+import { useAPIClient } from '../../../hooks'
+import { capitalize, compareAddress, getNativeTokenInfoByChainId } from '../../../utils'
+import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../../utils/txnDecoding'
+import { CollectibleTileImage } from '../CollectibleTileImage'
 
 interface TxnDetailsProps {
   address: string

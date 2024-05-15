@@ -20,11 +20,11 @@ import { useStorage } from '../../hooks'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
 import { getModalPositionCss } from '../../utils'
-import { TxnDetails } from '../TxnDetails'
 
 import { ConnectWalletContent } from './ConnectWalletContent'
 import { NetworkBadge } from './NetworkBadge'
 import { SequenceLogo } from './SequenceLogo'
+import { TxnDetails } from './TxnDetails'
 
 export type KitConnectProviderProps = {
   children: React.ReactNode
