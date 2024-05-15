@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { createGenericContext } from '../utils'
+import { createGenericContext } from './genericContext'
 
 type ConnectModalContext = {
   setOpenConnectModal: React.Dispatch<React.SetStateAction<boolean>>

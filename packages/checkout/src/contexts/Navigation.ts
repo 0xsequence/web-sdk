@@ -1,4 +1,4 @@
-import { createGenericContext } from '@0xsequence/kit'
+import { createGenericContext } from './genericContext'
 
 export interface SelectCheckoutNavigation {
   location: 'select-method-checkout'

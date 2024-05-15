@@ -71,3 +71,7 @@ export const formatDisplay = (_val: number | string): string => {
     ...config
   }).format(val)
 }
+
+export const capitalize = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1)
+}

@@ -21,10 +21,10 @@ import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useAccount } from 'wagmi'
 
 import { LocalStorageKey, defaultSignInOptions } from '../../../constants'
-import { useStorage, useStorageItem } from '../../../hooks'
+import { useStorage, useStorageItem } from '../../../hooks/useStorage'
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
 import { ExtendedConnector, KitConfig } from '../../../types'
-import { isEmailValid } from '../../../utils'
+import { isEmailValid } from '../../../utils/helpers'
 import { KitConnectProviderProps } from '../index'
 
 import { Banner } from './Banner'

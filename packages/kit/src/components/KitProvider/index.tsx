@@ -9,17 +9,15 @@ import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 import '@0xsequence/design-system/styles.css'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
-import {
-  KitConfigContextProvider,
-  ConnectModalContextProvider,
-  ThemeContextProvider,
-  WalletConfigContextProvider,
-  AnalyticsContextProvider
-} from '../../contexts'
-import { useStorage } from '../../hooks'
+import { AnalyticsContextProvider } from '../../contexts/Analytics'
+import { ConnectModalContextProvider } from '../../contexts/ConnectModal'
+import { KitConfigContextProvider } from '../../contexts/KitConfig'
+import { ThemeContextProvider } from '../../contexts/Theme'
+import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
+import { useStorage } from '../../hooks/useStorage'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
-import { getModalPositionCss } from '../../utils'
+import { getModalPositionCss } from '../../utils/styling'
 
 import { ConnectWalletContent } from './ConnectWalletContent'
 import { NetworkBadge } from './NetworkBadge'

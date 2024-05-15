@@ -20,14 +20,12 @@ export { LocalStorageKey, defaultSignInOptions, DEFAULT_SESSION_EXPIRATION } fro
 
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'
-export { isEmailValid, compareAddress, formatDisplay } from './utils/helpers'
+export { isEmailValid, compareAddress, formatDisplay, capitalize } from './utils/helpers'
 export { defaultNativeTokenInfo, getNativeTokenInfoByChainId, getChainIdList } from './utils/tokens'
-export { createGenericContext } from './utils/genericContext'
 export { getModalPositionCss } from './utils/styling'
 export { getNetwork, getNetworkColor, getNetworkBackgroundColor } from './utils/networks'
 export { walletClientToSigner, publicClientToProvider } from './utils/adapters'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth'
-export { capitalize } from './utils/string'
 
 // Contexts
 export { useKitConfig, KitConfigContextProvider } from './contexts/KitConfig'

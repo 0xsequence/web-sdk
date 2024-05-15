@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { DisplayedAsset } from '../types'
-import { createGenericContext } from '../utils'
+
+import { createGenericContext } from './genericContext'
 
 type WalletConfigContext = {
   setDisplayedAssets: React.Dispatch<React.SetStateAction<DisplayedAsset[]>>

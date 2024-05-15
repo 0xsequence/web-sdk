@@ -1,7 +1,7 @@
 import { sequence } from '0xsequence'
 import React from 'react'
 
-import { createGenericContext } from '../utils'
+import { createGenericContext } from './genericContext'
 
 type AnalyticsContext = {
   setAnalytics: React.Dispatch<React.SetStateAction<sequence.SequenceClient['analytics']>>
