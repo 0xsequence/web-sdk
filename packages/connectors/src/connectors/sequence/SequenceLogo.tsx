@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { LogoProps } from '../types'
+import { LogoProps } from '../../types'
 
 export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { LogoProps } from '../types'
+import { LogoProps } from '../../types'
 
 export const GoogleLogo: React.FunctionComponent = (props: LogoProps) => {
   return (

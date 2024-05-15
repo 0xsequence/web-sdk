@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { LogoProps } from '../types'
+import { LogoProps } from '../../types'
 
 interface GetDiscordLogo {
   isDarkMode: boolean
