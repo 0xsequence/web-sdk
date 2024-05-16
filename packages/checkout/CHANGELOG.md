@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 2.6.1
+
+### Patch Changes
+
+- Refactored GoogleWaasConnectButton and AppleWaasConnectButton
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.6.1
+
 ## 2.6.0
 
 ### Minor Changes

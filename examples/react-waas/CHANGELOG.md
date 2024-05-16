@@ -1,5 +1,14 @@
 # @0xsequence/kit-example-react-waas
 
+## 0.5.1
+
+### Patch Changes
+
+- Refactored GoogleWaasConnectButton and AppleWaasConnectButton
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.6.1
+
 ## 0.5.0
 
 ### Minor Changes
