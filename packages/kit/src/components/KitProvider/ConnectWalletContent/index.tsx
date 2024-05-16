@@ -29,7 +29,6 @@ import { KitConnectProviderProps } from '../index'
 
 import { Banner } from './Banner'
 import { ExtendedWalletList } from './ExtendedWalletList'
-import { GoogleLogo } from './GoogleLogo'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   openConnectModal: boolean
@@ -40,11 +39,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const storage = useStorage()
-  const { data: sessionHash, isPending: isPendingNonce } = useStorageItem(LocalStorageKey.WaasSessionHash)
-  const { data: appleClientId, isPending: isPendingAppleClientId } = useStorageItem(LocalStorageKey.WaasAppleClientID)
-  const { data: appleRedirectUri, isPending: isPendingAppleRedirectUri } = useStorageItem(LocalStorageKey.WaasAppleRedirectURI)
-  const isPendingStorage = isPendingNonce || isPendingAppleClientId || isPendingAppleRedirectUri
-
   const { isConnected } = useAccount()
   const { config = {} } = props
   const { signIn = {} } = config as KitConfig
@@ -60,13 +54,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
   const [waasEmailPinCode, setWaasEmailPinCode] = useState<string[]>([])
   const { connectors: baseConnectors, connect } = useConnect()
-  const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setEnableGoogleTooltip(true)
-    }, 300)
-  })
 
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = baseConnectors
@@ -259,7 +246,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
           </form>
         )}
 
-        {socialAuthConnectors.length > 0 && !isPendingStorage && (
+        {socialAuthConnectors.length > 0 && (
           <>
             {emailConnector && showEmailInput && (
               <>
@@ -276,91 +263,11 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 return (
                   <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">
                     {connector._wallet.id === 'google-waas' && (
-                      <Tooltip message="Google" disabled={!enableGoogleTooltip}>
-                        <Box position="relative" opacity={{ hover: '80' }}>
-                          <Box
-                            width="10"
-                            height="10"
-                            overflow="hidden"
-                            borderRadius="sm"
-                            alignItems="center"
-                            justifyContent="center"
-                            style={{ opacity: 0.0000001 }}
-                          >
-                            <GoogleLogin
-                              type="icon"
-                              size="large"
-                              nonce={sessionHash}
-                              onSuccess={credentialResponse => {
-                                if (credentialResponse.credential) {
-                                  storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
-                                  onConnect(connector)
-                                }
-                              }}
-                              onError={() => {
-                                console.log('Login Failed')
-                              }}
-                            />
-                          </Box>
-                          <Box
-                            background="backgroundSecondary"
-                            borderRadius="xs"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            position="absolute"
-                            pointerEvents="none"
-                            style={{
-                              width: '40px',
-                              height: '40px',
-                              paddingTop: '2px',
-                              paddingBottom: '2px',
-                              paddingLeft: '12px',
-                              paddingRight: '12px',
-                              top: '50%',
-                              left: '50%',
-                              transform: 'translate(-50%, -50%)'
-                            }}
-                          >
-                            <Box
-                              position="relative"
-                              style={{
-                                width: '18px',
-                                top: '2px',
-                                left: '2px'
-                              }}
-                            >
-                              <GoogleLogo />
-                            </Box>
-                          </Box>
-                        </Box>
-                      </Tooltip>
+                      <GoogleWaasConnectButton connector={connector} onConnect={onConnect} />
                     )}
 
-                    {connector._wallet.id === 'apple-waas' && appleClientId && appleRedirectUri && (
-                      <ConnectButton
-                        connector={connector}
-                        onConnect={() => {
-                          appleAuthHelpers.signIn({
-                            authOptions: {
-                              clientId: appleClientId,
-                              redirectURI: appleRedirectUri,
-                              nonce: sessionHash,
-                              scope: 'openid email',
-                              usePopup: true
-                            },
-                            onSuccess: (response: any) => {
-                              if (response.authorization?.id_token) {
-                                storage?.setItem(LocalStorageKey.WaasAppleIdToken, response.authorization.id_token)
-                                onConnect(connector)
-                              } else {
-                                console.log('Apple login error: No id_token found')
-                              }
-                            },
-                            onError: (error: any) => console.error(error)
-                          })
-                        }}
-                      />
+                    {connector._wallet.id === 'apple-waas' && (
+                      <AppleWaasConnectButton connector={connector} onConnect={onConnect} />
                     )}
 
                     {!connector._wallet.id.includes('waas') && <ConnectButton connector={connector} onConnect={onConnect} />}
@@ -439,4 +346,106 @@ const ConnectButton = (props: ConnectButtonProps) => {
       </Card>
     </Tooltip>
   )
+}
+
+const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
+  const { connector, onConnect } = props
+  const storage = useStorage()
+  const { data: sessionHash, isPending: isPendingNonce } = useStorageItem(LocalStorageKey.WaasSessionHash)
+  const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
+  const { theme } = useTheme()
+  const walletProps = connector._wallet
+
+  const Logo =
+    theme === 'dark'
+      ? walletProps.monochromeLogoDark || walletProps.logoDark
+      : walletProps.monochromeLogoLight || walletProps.logoLight
+
+  useEffect(() => {
+    setTimeout(() => {
+      setEnableGoogleTooltip(true)
+    }, 300)
+  })
+
+  return !isPendingNonce ? (
+    <Tooltip message="Google" disabled={!enableGoogleTooltip}>
+      <Card clickable background="transparent" borderRadius="xs" padding="0" width="10" height="10" position="relative">
+        <Box
+          width="10"
+          height="10"
+          overflow="hidden"
+          borderRadius="sm"
+          alignItems="center"
+          justifyContent="center"
+          style={{ opacity: 0.0000001 }}
+        >
+          <GoogleLogin
+            type="icon"
+            size="large"
+            width={40}
+            nonce={sessionHash}
+            onSuccess={credentialResponse => {
+              if (credentialResponse.credential) {
+                console.log(credentialResponse)
+                storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
+                onConnect(connector)
+              }
+            }}
+            onError={() => {
+              console.log('Login Failed')
+            }}
+          />
+        </Box>
+        <Box
+          background="backgroundSecondary"
+          borderRadius="xs"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          position="absolute"
+          pointerEvents="none"
+          width="10"
+          height="10"
+          top="0"
+          right="0"
+        >
+          <Box as={Logo} width="6" height="6" />
+        </Box>
+      </Card>
+    </Tooltip>
+  ) : null
+}
+
+export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
+  const { connector, onConnect } = props
+  const storage = useStorage()
+  const { data: sessionHash, isPending: isPendingNonce } = useStorageItem(LocalStorageKey.WaasSessionHash)
+  const { data: appleClientId } = useStorageItem(LocalStorageKey.WaasAppleClientID)
+  const { data: appleRedirectUri } = useStorageItem(LocalStorageKey.WaasAppleRedirectURI)
+
+  return !isPendingNonce && appleClientId && appleRedirectUri ? (
+    <ConnectButton
+      connector={connector}
+      onConnect={() => {
+        appleAuthHelpers.signIn({
+          authOptions: {
+            clientId: appleClientId,
+            redirectURI: appleRedirectUri,
+            nonce: sessionHash,
+            scope: 'openid email',
+            usePopup: true
+          },
+          onSuccess: (response: any) => {
+            if (response.authorization?.id_token) {
+              storage?.setItem(LocalStorageKey.WaasAppleIdToken, response.authorization.id_token)
+              onConnect(connector)
+            } else {
+              console.log('Apple login error: No id_token found')
+            }
+          },
+          onError: (error: any) => console.error(error)
+        })
+      }}
+    />
+  ) : null
 }
