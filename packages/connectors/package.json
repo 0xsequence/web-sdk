@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-connectors",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "Wallets for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/connectors",
   "main": "dist/0xsequence-kit-connectors.cjs.js",

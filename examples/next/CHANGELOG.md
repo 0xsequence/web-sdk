@@ -1,5 +1,19 @@
 # @0xsequence/kit-example-next
 
+## 0.4.0
+
+### Minor Changes
+
+- Generalized all storage access to wagmi storage and refined exports
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit-checkout@2.6.0
+  - @0xsequence/kit-connectors@2.6.0
+  - @0xsequence/kit@2.6.0
+  - @0xsequence/kit-wallet@2.6.0
+
 ## 0.3.1
 
 ### Patch Changes
