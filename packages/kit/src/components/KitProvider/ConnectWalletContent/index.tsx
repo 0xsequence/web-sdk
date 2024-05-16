@@ -23,7 +23,7 @@ import { useConnect, useAccount } from 'wagmi'
 import { LocalStorageKey, defaultSignInOptions } from '../../../constants'
 import { useStorage, useStorageItem } from '../../../hooks/useStorage'
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
-import { ExtendedConnector, KitConfig } from '../../../types'
+import { ExtendedConnector, KitConfig, WalletProperties } from '../../../types'
 import { isEmailValid } from '../../../utils/helpers'
 import { KitConnectProviderProps } from '../index'
 
@@ -325,10 +325,7 @@ const ConnectButton = (props: ConnectButtonProps) => {
   const { theme } = useTheme()
   const walletProps = connector._wallet
 
-  const Logo =
-    theme === 'dark'
-      ? walletProps.monochromeLogoDark || walletProps.logoDark
-      : walletProps.monochromeLogoLight || walletProps.logoLight
+  const Logo = getLogo(theme, walletProps)
 
   return (
     <Tooltip message={label || walletProps.name}>
@@ -356,10 +353,7 @@ const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const { theme } = useTheme()
   const walletProps = connector._wallet
 
-  const Logo =
-    theme === 'dark'
-      ? walletProps.monochromeLogoDark || walletProps.logoDark
-      : walletProps.monochromeLogoLight || walletProps.logoLight
+  const Logo = getLogo(theme, walletProps)
 
   useEffect(() => {
     setTimeout(() => {
@@ -449,3 +443,8 @@ export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
     />
   ) : null
 }
+
+const getLogo = (theme: any, walletProps: WalletProperties) =>
+  theme === 'dark'
+    ? walletProps.logoDark || walletProps.monochromeLogoDark
+    : walletProps.logoLight || walletProps.monochromeLogoLight
