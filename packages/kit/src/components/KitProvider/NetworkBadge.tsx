@@ -1,8 +1,8 @@
 import { Box, NetworkImage, Text } from '@0xsequence/design-system'
-import { getNetwork, getNetworkColor, getNetworkBackgroundColor } from '@0xsequence/kit'
 import React from 'react'
 
 import { capitalize } from '../../utils/helpers'
+import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '../../utils/networks'
 
 interface NetworkBadgeProps {
   chainId: number
