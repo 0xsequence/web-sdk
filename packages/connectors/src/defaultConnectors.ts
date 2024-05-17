@@ -3,7 +3,7 @@ import { CreateConnectorFn } from 'wagmi'
 
 import { apple } from './connectors/apple'
 import { appleWaas } from './connectors/apple/appleWaas'
-// import { emailWaas } from './connectors/email/emailWaas'
+import { emailWaas } from './connectors/email/emailWaas'
 import { coinbaseWallet } from './connectors/coinbaseWallet'
 import { email } from './connectors/email'
 import { facebook } from './connectors/facebook'
@@ -103,7 +103,7 @@ export const getDefaultWaasConnectors = ({
   enableConfirmationModal
 }: GetDefaultWaasConnectors): CreateConnectorFn[] => {
   const wallets: any[] = [
-    // emailWaas({ projectAccessKey, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
+    emailWaas({ projectAccessKey, waasConfigKey, enableConfirmationModal, network: defaultChainId }),
     coinbaseWallet({
       appName
     }),
