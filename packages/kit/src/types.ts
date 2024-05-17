@@ -70,7 +70,8 @@ export interface KitConfig {
     useMock?: boolean
   }
   displayedAssets?: DisplayedAsset[]
-  ethAuth?: EthAuthSettings
+  ethAuth?: EthAuthSettings,
+  isDev?: boolean
 }
 
 export type StorageItem = {

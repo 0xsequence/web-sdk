@@ -37,7 +37,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     position = 'center',
     displayedAssets: displayedAssetsSetting = [],
     ethAuth = {} as EthAuthSettings,
-    disableAnalytics = false
+    disableAnalytics = false,
   } = config
 
   const defaultAppName = signIn.projectName || 'app'

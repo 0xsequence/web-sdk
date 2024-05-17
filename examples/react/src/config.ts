@@ -14,7 +14,7 @@ const connectionMode: ConnectionMode = searchParams.get('mode') === 'universal' 
 
 // append ?debug to url to enable debug mode
 const isDebugMode = searchParams.has('debug')
-const projectAccessKey = 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
 const chains = [arbitrumNova, arbitrumSepolia, mainnet, polygon] as const satisfies Chain[]
 const transports = chains.reduce<Record<number, Transport>>((acc, chain) => {
@@ -33,8 +33,12 @@ chains.forEach(chain => {
   transports[chain.id] = http(network.rpcUrl)
 })
 
-const waasConfigKey = 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
-const googleClientId = '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
+const waasConfigKey = isDebugMode
+  ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
+  : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
+const googleClientId = isDebugMode 
+? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
+: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
 const appleClientId = 'com.horizon.sequence.waas'
 const appleRedirectURI = 'https://' + window.location.host
 
@@ -49,15 +53,16 @@ const getWaasConnectors = () => {
       appleRedirectURI,
       appName: 'Kit Demo',
       projectAccessKey,
-      enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true'
+      enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
+      isDev: isDebugMode
     }),
-    ...(isDebugMode
-      ? getKitConnectWallets(projectAccessKey, [
-          mock({
-            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
-          })
-        ])
-      : [])
+    // ...(isDebugMode
+    //   ? getKitConnectWallets(projectAccessKey, [
+    //       mock({
+    //         accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
+    //       })
+    //     ])
+    //   : [])
   ]
 
   return connectors

@@ -11,7 +11,8 @@ export interface SequenceWaasConnectConfig {
   appleClientId?: string
   appleRedirectURI?: string
   enableConfirmationModal?: boolean
-  loginType: 'email' | 'google' | 'apple'
+  loginType: 'email' | 'google' | 'apple',
+  isDev?: boolean
 }
 
 export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
@@ -36,13 +37,16 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasAppleRedirectURI]: string
   }
 
+  const isDev = !!params?.isDev
+  const nodesUrl = isDev ? 'https://dev-nodes.sequence.app' : 'https://nodes.sequence.app'
+
   const showConfirmationModal = params.enableConfirmationModal ?? false
 
   const initialChain = params.network ?? 137
   const initialChainName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
 
   const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-    `https://nodes.sequence.app/${initialChainName ?? 'polygon'}/${params.projectAccessKey}`
+    `${nodesUrl}/${initialChainName ?? 'polygon'}/${params.projectAccessKey}`
   )
 
   const sequenceWaas = new SequenceWaaS({
@@ -57,7 +61,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     const networkName = sequence.network.allNetworks.find(n => n.chainId === chainId || n.name === initialChain)?.name
 
     const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
-      `https://nodes.sequence.app/${networkName}/${params.projectAccessKey}`
+      `${nodesUrl}/${networkName}/${params.projectAccessKey}`
     )
     sequenceWaasProvider.updateJsonRpcProvider(jsonRpcProvider)
     sequenceWaasProvider.updateNetwork(ethers.providers.getNetwork(chainId))
