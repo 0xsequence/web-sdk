@@ -14,7 +14,8 @@ import {
   IconButton,
   CheckmarkIcon,
   Modal,
-  TextInput
+  TextInput,
+  Select
 } from '@0xsequence/design-system'
 import {
   useOpenConnectModal,
@@ -22,7 +23,9 @@ import {
   validateEthProof,
   useTheme as useKitTheme,
   getModalPositionCss,
-  useStorage
+  useStorage,
+  useWaasFeeOptions,
+  useIndexerClient
 } from '@0xsequence/kit'
 import { useCheckoutModal } from '@0xsequence/kit-checkout'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -41,12 +44,14 @@ import {
   useWriteContract,
   useConnections
 } from 'wagmi'
+import { formatUnits, parseUnits } from 'viem'
 
 import { ConnectionMode } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, formatAddress, getCheckoutSettings } from '../utils'
 
+import { Alert, AlertProps } from './Alert'
 import { Footer } from './Footer'
 
 // append ?debug to url to enable debug mode
@@ -92,15 +97,15 @@ export const Homepage = () => {
     localStorage.getItem('confirmationEnabled') === 'true'
   )
 
-  // const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = useWaasFeeOptions()
 
-  // const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
+  const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
-  // useEffect(() => {
-  //   if (pendingFeeOptionConfirmation) {
-  //     setSelectedFeeOptionTokenName(pendingFeeOptionConfirmation.options[0].token.name)
-  //   }
-  // }, [pendingFeeOptionConfirmation])
+  useEffect(() => {
+    if (pendingFeeOptionConfirmation) {
+      setSelectedFeeOptionTokenName(pendingFeeOptionConfirmation.options[0].token.name)
+    }
+  }, [pendingFeeOptionConfirmation])
 
   useEffect(() => {
     if (error?.message) {
@@ -110,15 +115,15 @@ export const Homepage = () => {
 
   const chainId = useChainId()
 
-  // const indexerClient = useIndexerClient(chainId)
+  const indexerClient = useIndexerClient(chainId)
 
-  // const [feeOptionBalances, setFeeOptionBalances] = React.useState<{ tokenName: string; decimals: number; balance: string }[]>([])
+  const [feeOptionBalances, setFeeOptionBalances] = React.useState<{ tokenName: string; decimals: number; balance: string }[]>([])
 
-  // const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>(undefined)
+  const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>(undefined)
 
-  // useEffect(() => {
-  //   checkTokenBalancesForFeeOptions()
-  // }, [pendingFeeOptionConfirmation])
+  useEffect(() => {
+    checkTokenBalancesForFeeOptions()
+  }, [pendingFeeOptionConfirmation])
 
   const handleSwitchConnectionMode = (mode: ConnectionMode) => {
     const searchParams = new URLSearchParams()
@@ -127,40 +132,40 @@ export const Homepage = () => {
     window.location.search = searchParams.toString()
   }
 
-  // const checkTokenBalancesForFeeOptions = async () => {
-  //   if (pendingFeeOptionConfirmation && walletClient) {
-  //     const [account] = await walletClient.getAddresses()
-  //     const nativeTokenBalance = await indexerClient.getEtherBalance({ accountAddress: account })
+  const checkTokenBalancesForFeeOptions = async () => {
+    if (pendingFeeOptionConfirmation && walletClient) {
+      const [account] = await walletClient.getAddresses()
+      const nativeTokenBalance = await indexerClient.getEtherBalance({ accountAddress: account })
 
-  //     const tokenBalances = await indexerClient.getTokenBalances({
-  //       accountAddress: account
-  //     })
+      const tokenBalances = await indexerClient.getTokenBalances({
+        accountAddress: account
+      })
 
-  //     console.log('feeOptions', pendingFeeOptionConfirmation.options)
-  //     console.log('nativeTokenBalance', nativeTokenBalance)
-  //     console.log('tokenBalances', tokenBalances)
+      console.log('feeOptions', pendingFeeOptionConfirmation.options)
+      console.log('nativeTokenBalance', nativeTokenBalance)
+      console.log('tokenBalances', tokenBalances)
 
-  //     const balances = pendingFeeOptionConfirmation.options.map(option => {
-  //       if (option.token.contractAddress === null) {
-  //         return {
-  //           tokenName: option.token.name,
-  //           decimals: option.token.decimals || 0,
-  //           balance: nativeTokenBalance.balance.balanceWei
-  //         }
-  //       } else {
-  //         return {
-  //           tokenName: option.token.name,
-  //           decimals: option.token.decimals || 0,
-  //           balance:
-  //             tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
-  //               ?.balance || '0'
-  //         }
-  //       }
-  //     })
+      const balances = pendingFeeOptionConfirmation.options.map(option => {
+        if (option.token.contractAddress === null) {
+          return {
+            tokenName: option.token.name,
+            decimals: option.token.decimals || 0,
+            balance: nativeTokenBalance.balance.balanceWei
+          }
+        } else {
+          return {
+            tokenName: option.token.name,
+            decimals: option.token.decimals || 0,
+            balance:
+              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
+                ?.balance || '0'
+          }
+        }
+      })
 
-  //     setFeeOptionBalances(balances)
-  //   }
-  // }
+      setFeeOptionBalances(balances)
+    }
+  }
 
   const networkForCurrentChainId = allNetworks.find(n => n.chainId === chainId)!
 
@@ -503,7 +508,7 @@ export const Homepage = () => {
               />
             </Box>
 
-            {/* {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
+            {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
               <Box marginY="3">
                 <Select
                   name="feeOption"
@@ -583,7 +588,7 @@ export const Homepage = () => {
                   )}
                 </Box>
               </Box>
-            )} */}
+            )}
 
             {isWaasConnection && (
               <Box marginY="3">
