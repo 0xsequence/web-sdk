@@ -14,7 +14,6 @@ import {
   Tooltip,
   PINCodeInput
 } from '@0xsequence/design-system'
-import { LogoProps } from '@0xsequence/kit-connectors'
 import { GoogleLogin } from '@react-oauth/google'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
@@ -23,7 +22,7 @@ import { useConnect, useAccount } from 'wagmi'
 import { LocalStorageKey, defaultSignInOptions } from '../../../constants'
 import { useStorage, useStorageItem } from '../../../hooks/useStorage'
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
-import { ExtendedConnector, KitConfig, WalletProperties } from '../../../types'
+import { ExtendedConnector, KitConfig, LogoProps, WalletProperties } from '../../../types'
 import { isEmailValid } from '../../../utils/helpers'
 import { KitConnectProviderProps } from '../index'
 

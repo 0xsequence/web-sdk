@@ -406,9 +406,6 @@ importers:
       '@0xsequence/indexer':
         specifier: ^1.9.26
         version: 1.9.26
-      '@0xsequence/kit-connectors':
-        specifier: workspace:*
-        version: link:../connectors
       '@0xsequence/metadata':
         specifier: ^1.9.26
         version: 1.9.26

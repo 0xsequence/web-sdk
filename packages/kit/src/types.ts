@@ -1,9 +1,13 @@
 import { ETHAuthProof } from '@0xsequence/auth'
-import { LogoProps } from '@0xsequence/kit-connectors'
 import { FunctionComponent } from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from './constants'
+
+export interface LogoProps {
+  className?: string
+  style?: React.CSSProperties
+}
 
 export interface WalletProperties {
   id: string
