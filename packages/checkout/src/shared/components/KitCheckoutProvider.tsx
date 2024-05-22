@@ -4,7 +4,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
 
-import { History, Navigation, NavigationContextProvider, CheckoutModalContextProvider, CheckoutSettings } from '../../contexts'
+import {
+  History,
+  Navigation,
+  NavigationContextProvider,
+  CheckoutModalContextProvider,
+  CheckoutSettings,
+  AddFundsSettings
+} from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelection } from '../../views'
 
@@ -31,7 +38,9 @@ export const KitCheckoutProvider = (props: KitCheckoutProvider) => {
 export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
   const { theme, position } = useTheme()
   const [openCheckoutModal, setOpenCheckoutModal] = useState<boolean>(false)
+  const [openAddFundsModal, setOpenAddFundsModal] = useState<boolean>(false)
   const [settings, setSettings] = useState<CheckoutSettings>()
+  const [addFundsSettings, setAddFundsSettings] = useState<AddFundsSettings>()
   const [history, setHistory] = useState<History>([])
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
 
@@ -44,7 +53,16 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
     setOpenCheckoutModal(false)
   }
 
-  const getContent = () => {
+  const triggerAddFunds = (settings: AddFundsSettings) => {
+    setAddFundsSettings(settings)
+    setOpenAddFundsModal(true)
+  }
+
+  const closeAddFunds = () => {
+    setOpenAddFundsModal(false)
+  }
+
+  const getCheckoutContent = () => {
     const { location } = navigation
     switch (location) {
       case 'select-method-checkout':
@@ -61,7 +79,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
     }
   }
 
-  const getHeader = () => {
+  const getCheckoutHeader = () => {
     const { location } = navigation
     switch (location) {
       case 'select-method-checkout':
@@ -76,14 +94,40 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
     }
   }
 
+  const getAddFundsHeader = () => {
+    const { location } = navigation
+    switch (location) {
+      default:
+        return <NavigationHeader primaryText="Add funds with credit card or debit card" />
+    }
+  }
+
+  const getAddFundsContent = () => {
+    const { location } = navigation
+    switch (location) {
+      default:
+        return <CheckoutSelection />
+    }
+  }
+
   useEffect(() => {
-    if (openCheckoutModal) {
+    if (openCheckoutModal || openAddFundsModal) {
       setHistory([])
     }
-  }, [openCheckoutModal])
+  }, [openCheckoutModal, openAddFundsModal])
 
   return (
-    <CheckoutModalContextProvider value={{ triggerCheckout, closeCheckout, settings, theme }}>
+    <CheckoutModalContextProvider
+      value={{
+        triggerCheckout,
+        closeCheckout,
+        settings,
+        triggerAddFunds,
+        closeAddFunds,
+        addFundsSettings,
+        theme,
+      }}
+    >
       <NavigationContextProvider value={{ history, setHistory }}>
         <div id="kit-checkout">
           <ThemeProvider root="#kit-checkout" scope="kit" theme={theme}>
@@ -102,8 +146,27 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                   onClose={() => setOpenCheckoutModal(false)}
                 >
                   <Box id="sequence-kit-checkout-content">
-                    {getHeader()}
-                    {getContent()}
+                    {getCheckoutHeader()}
+                    {getCheckoutContent()}
+                  </Box>
+                </Modal>
+              )}
+              {openAddFundsModal && (
+                <Modal
+                  contentProps={{
+                    style: {
+                      maxWidth: '400px',
+                      height: 'auto',
+                      ...getModalPositionCss(position)
+                    }
+                  }}
+                  scroll={false}
+                  backdropColor="backgroundBackdrop"
+                  onClose={() => setOpenCheckoutModal(false)}
+                >
+                  <Box id="sequence-kit-add-funds-content">
+                    {getAddFundsHeader()}
+                    {getAddFundsContent()}
                   </Box>
                 </Modal>
               )}
