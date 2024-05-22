@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import '@0xsequence/design-system/styles.css'
 
-import { Web3Provider } from './Web3Provider'
+import { Providers } from './Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider theme="dark">
-          <Web3Provider>{children}</Web3Provider>
+          <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
     </html>
