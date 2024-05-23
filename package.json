@@ -10,6 +10,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm build && changeset publish",
+    "deps": "pnpx taze -r",
     "test": "pnpm -r test",
     "lint": "eslint -c .eslintrc.js 'packages/**/src/**/*.{ts,tsx}'",
     "lint:fix": "eslint -c .eslintrc.js --fix 'packages/**/src/**/*.{ts,tsx}'",
