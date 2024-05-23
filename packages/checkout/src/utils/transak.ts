@@ -22,7 +22,10 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
 
   const url = new URL('https://global.transak.com')
   Object.keys(options).forEach(k => {
-    url.searchParams.append(k, options[k])
+    const option = options[k]
+    if (option) {
+      url.searchParams.append(k, option)
+    }
   })
 
   return url.href
