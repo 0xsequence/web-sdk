@@ -38,21 +38,10 @@ export interface CheckoutSettings {
   orderSummaryItems: OrderSummaryItem[]
 }
 
-export interface AddFundsSettings {
-  walletAddress: string,
-  fiatCurrency: string,
-  defaultFiatAmount?: string,
-  defaultCryptoCurrency?: string,
-  networks?: string
-}
-
 type CheckoutModalContext = {
   triggerCheckout: (settings: CheckoutSettings) => void
   closeCheckout: () => void
-  triggerAddFunds: (settings: AddFundsSettings) => void
-  closeAddFunds: () => void
   settings?: CheckoutSettings
-  addFundsSettings?: AddFundsSettings
   theme: Theme
 }
 

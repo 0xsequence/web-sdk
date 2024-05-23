@@ -10,6 +10,7 @@ import {
   NavigationContextProvider,
   CheckoutModalContextProvider,
   CheckoutSettings,
+  AddFundsContextProvider,
   AddFundsSettings
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
@@ -117,64 +118,69 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
   }, [openCheckoutModal, openAddFundsModal])
 
   return (
-    <CheckoutModalContextProvider
+    <AddFundsContextProvider
       value={{
-        triggerCheckout,
-        closeCheckout,
-        settings,
         triggerAddFunds,
         closeAddFunds,
         addFundsSettings,
-        theme,
       }}
     >
-      <NavigationContextProvider value={{ history, setHistory }}>
-        <div id="kit-checkout">
-          <ThemeProvider root="#kit-checkout" scope="kit" theme={theme}>
-            <AnimatePresence>
-              {openCheckoutModal && (
-                <Modal
-                  contentProps={{
-                    style: {
-                      maxWidth: '400px',
-                      height: 'auto',
-                      ...getModalPositionCss(position)
-                    }
-                  }}
-                  scroll={false}
-                  backdropColor="backgroundBackdrop"
-                  onClose={() => setOpenCheckoutModal(false)}
-                >
-                  <Box id="sequence-kit-checkout-content">
-                    {getCheckoutHeader()}
-                    {getCheckoutContent()}
-                  </Box>
-                </Modal>
-              )}
-              {openAddFundsModal && (
-                <Modal
-                  contentProps={{
-                    style: {
-                      maxWidth: '400px',
-                      height: 'auto',
-                      ...getModalPositionCss(position)
-                    }
-                  }}
-                  scroll={false}
-                  backdropColor="backgroundBackdrop"
-                  onClose={() => setOpenCheckoutModal(false)}
-                >
-                  <Box id="sequence-kit-add-funds-content">
-                    {getAddFundsHeader()}
-                    {getAddFundsContent()}
-                  </Box>
-                </Modal>
-              )}
-            </AnimatePresence>
-          </ThemeProvider>
-        </div>
-        {children}
-      </NavigationContextProvider>
-    </CheckoutModalContextProvider>
+      <CheckoutModalContextProvider
+        value={{
+          triggerCheckout,
+          closeCheckout,
+          settings,
+          theme,
+        }}
+      >
+        <NavigationContextProvider value={{ history, setHistory }}>
+          <div id="kit-checkout">
+            <ThemeProvider root="#kit-checkout" scope="kit" theme={theme}>
+              <AnimatePresence>
+                {openCheckoutModal && (
+                  <Modal
+                    contentProps={{
+                      style: {
+                        maxWidth: '400px',
+                        height: 'auto',
+                        ...getModalPositionCss(position)
+                      }
+                    }}
+                    scroll={false}
+                    backdropColor="backgroundBackdrop"
+                    onClose={() => setOpenCheckoutModal(false)}
+                  >
+                    <Box id="sequence-kit-checkout-content">
+                      {getCheckoutHeader()}
+                      {getCheckoutContent()}
+                    </Box>
+                  </Modal>
+                )}
+                {openAddFundsModal && (
+                  <Modal
+                    contentProps={{
+                      style: {
+                        maxWidth: '400px',
+                        height: 'auto',
+                        ...getModalPositionCss(position)
+                      }
+                    }}
+                    scroll={false}
+                    backdropColor="backgroundBackdrop"
+                    onClose={() => setOpenCheckoutModal(false)}
+                  >
+                    <Box id="sequence-kit-add-funds-content">
+                      {getAddFundsHeader()}
+                      {getAddFundsContent()}
+                    </Box>
+                  </Modal>
+                )}
+              </AnimatePresence>
+            </ThemeProvider>
+          </div>
+          {children}
+        </NavigationContextProvider>
+      </CheckoutModalContextProvider>
+    </AddFundsContextProvider>
   )
 }
