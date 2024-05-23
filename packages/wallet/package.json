@@ -43,8 +43,8 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "ethers": "^5.7.2",
     "framer-motion": "^8.5.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "wagmi": "^2.9.5"
   },
   "files": [
