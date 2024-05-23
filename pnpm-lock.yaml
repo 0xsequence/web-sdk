@@ -261,7 +261,7 @@ importers:
         specifier: workspace:*
         version: link:../kit
       '@types/react-copy-to-clipboard':
-        specifier: ^5.0.4
+        specifier: ^5.0.7
         version: 5.0.7
       babel-plugin-module-resolver:
         specifier: ^5.0.2
@@ -416,16 +416,16 @@ importers:
         specifier: ^1.9.27
         version: 1.9.27(ethers@5.7.2(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@radix-ui/react-popover':
-        specifier: ^1.0.6
+        specifier: ^1.0.7
         version: 1.0.7(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.37.1(react@18.3.1)
       clsx:
-        specifier: ^2.0.0
+        specifier: ^2.1.1
         version: 2.1.1
       dayjs:
-        specifier: ^1.11.9
+        specifier: ^1.11.11
         version: 1.11.11
       fuse.js:
         specifier: ^6.6.2
@@ -447,7 +447,7 @@ importers:
         specifier: workspace:*
         version: link:../kit
       '@types/react-copy-to-clipboard':
-        specifier: ^5.0.4
+        specifier: ^5.0.7
         version: 5.0.7
       babel-plugin-module-resolver:
         specifier: ^5.0.2
