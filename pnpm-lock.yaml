@@ -15,13 +15,13 @@ importers:
         specifier: workspace:*
         version: link:packages/connectors
       '@babel/core':
-        specifier: ^7.24.4
+        specifier: ^7.24.5
         version: 7.24.5
       '@babel/plugin-transform-class-properties':
         specifier: ^7.24.1
         version: 7.24.1(@babel/core@7.24.5)
       '@babel/preset-env':
-        specifier: ^7.24.4
+        specifier: ^7.24.5
         version: 7.24.5(@babel/core@7.24.5)
       '@babel/preset-react':
         specifier: ^7.24.1
@@ -30,16 +30,16 @@ importers:
         specifier: ^7.24.1
         version: 7.24.1(@babel/core@7.24.5)
       '@babel/runtime':
-        specifier: ^7.24.4
+        specifier: ^7.24.5
         version: 7.24.5
       '@changesets/changelog-github':
         specifier: ^0.5.0
         version: 0.5.0
       '@changesets/cli':
-        specifier: ^2.25.2
+        specifier: ^2.27.3
         version: 2.27.3
       '@preconstruct/cli':
-        specifier: ^2.8.3
+        specifier: ^2.8.4
         version: 2.8.4
       '@types/node':
         specifier: ^20.12.12
@@ -51,25 +51,25 @@ importers:
         specifier: ^18.3.0
         version: 18.3.0
       '@typescript-eslint/eslint-plugin':
-        specifier: ^7.7.1
+        specifier: ^7.10.0
         version: 7.10.0(@typescript-eslint/parser@7.10.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)(typescript@5.4.5)
       '@typescript-eslint/parser':
-        specifier: ^7.7.1
+        specifier: ^7.10.0
         version: 7.10.0(eslint@8.57.0)(typescript@5.4.5)
       '@vanilla-extract/css':
-        specifier: ^1.14.2
+        specifier: ^1.15.2
         version: 1.15.2(babel-plugin-macros@3.1.0)
       '@vanilla-extract/recipes':
-        specifier: ^0.5.2
+        specifier: ^0.5.3
         version: 0.5.3(@vanilla-extract/css@1.15.2(babel-plugin-macros@3.1.0))
       eslint:
         specifier: ^8.27.0
         version: 8.57.0
       eslint-config-prettier:
-        specifier: ^8.5.0
+        specifier: ^8.10.0
         version: 8.10.0(eslint@8.57.0)
       eslint-plugin-import:
-        specifier: ^2.26.0
+        specifier: ^2.29.1
         version: 2.29.1(@typescript-eslint/parser@7.10.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
       eslint-plugin-prettier:
         specifier: ^4.2.1
@@ -87,7 +87,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       rimraf:
-        specifier: ^5.0.5
+        specifier: ^5.0.7
         version: 5.0.7
       typescript:
         specifier: ~5.4.5
