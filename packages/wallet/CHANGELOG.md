@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 2.7.0
+
+### Minor Changes
+
+- Adding email waas support
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.7.0
+
 ## 2.6.1
 
 ### Patch Changes

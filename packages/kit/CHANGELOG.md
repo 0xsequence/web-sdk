@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.7.0
+
+### Minor Changes
+
+- Adding email waas support
+
 ## 2.6.1
 
 ### Patch Changes
