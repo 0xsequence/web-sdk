@@ -13,13 +13,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "0xsequence": "^1.9.26",
     "@0xsequence/api": "^1.9.26",
     "@0xsequence/indexer": "^1.9.26",
     "@0xsequence/metadata": "^1.9.26",
     "@0xsequence/network": "^1.9.26",
     "@radix-ui/react-popover": "^1.0.6",
-    "@tanstack/react-query": "^5.32.0",
+    "@tanstack/react-query": "^5.37.1",
+    "0xsequence": "^1.9.26",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.9",
     "fuse.js": "^6.6.2",
@@ -45,7 +45,7 @@
     "framer-motion": "^8.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "wagmi": "^2.5.20"
+    "wagmi": "^2.9.5"
   },
   "files": [
     "src",

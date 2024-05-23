@@ -16,12 +16,12 @@
     "@0xsequence/kit-connectors": "workspace:*",
     "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/network": "^1.9.26",
-    "@tanstack/react-query": "^5.29.2",
+    "@tanstack/react-query": "^5.37.1",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
-    "viem": "^2.5.7",
-    "wagmi": "^2.5.7"
+    "viem": "^2.12.0",
+    "wagmi": "^2.9.5"
   },
   "devDependencies": {
     "@types/node": "^20",
