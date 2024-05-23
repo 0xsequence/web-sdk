@@ -6,14 +6,14 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
   const defaultNetworks = "ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain"
 
   interface Options {
-    [index: string]: string
+    [index: string]: string | undefined
   }
 
   const options: Options = {
     apiKey: TRANSAK_API_KEY,
     referrerDomain: window.location.origin,
     walletAddress: addFundsSettings.walletAddress,
-    fiatCurrency: addFundsSettings.fiatCurrency,
+    fiatCurrency: addFundsSettings?.fiatCurrency,
     disableWalletAddressForm: 'true',
     defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
     defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',

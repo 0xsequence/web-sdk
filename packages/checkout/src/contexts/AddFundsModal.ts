@@ -1,10 +1,10 @@
-import { Theme } from '@0xsequence/kit'
+import { Hex } from 'viem'
 
 import { createGenericContext } from './genericContext'
 
 export interface AddFundsSettings {
-  walletAddress: string,
-  fiatCurrency: string,
+  walletAddress: string | Hex,
+  fiatCurrency?: string,
   defaultFiatAmount?: string,
   defaultCryptoCurrency?: string,
   networks?: string

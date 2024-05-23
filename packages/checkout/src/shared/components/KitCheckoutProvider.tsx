@@ -14,7 +14,13 @@ import {
   AddFundsSettings
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelection } from '../../views'
+import {
+  PendingTransaction,
+  TransactionError,
+  TransactionSuccess,
+  CheckoutSelection,
+  AddFundsContent,
+} from '../../views'
 
 import '@0xsequence/design-system/styles.css'
 
@@ -107,7 +113,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
     const { location } = navigation
     switch (location) {
       default:
-        return <CheckoutSelection />
+        return <AddFundsContent />
     }
   }
 
@@ -167,7 +173,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                     }}
                     scroll={false}
                     backdropColor="backgroundBackdrop"
-                    onClose={() => setOpenCheckoutModal(false)}
+                    onClose={() => setOpenAddFundsModal(false)}
                   >
                     <Box id="sequence-kit-add-funds-content">
                       {getAddFundsHeader()}

@@ -24,7 +24,7 @@ import {
   getModalPositionCss,
   useStorage
 } from '@0xsequence/kit'
-import { useCheckoutModal } from '@0xsequence/kit-checkout'
+import { useCheckoutModal, useAddFundsModal } from '@0xsequence/kit-checkout'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks } from '@0xsequence/network'
 import { ethers } from 'ethers'
@@ -61,6 +61,7 @@ export const Homepage = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
+  const { triggerAddFunds } = useAddFundsModal()
   const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
@@ -372,6 +373,12 @@ export const Homepage = () => {
     }
   }
 
+  const onClickAddFunds = () => {
+    triggerAddFunds({
+      walletAddress: address || '',
+    })
+  }
+
   const SwitchThemeButton = () => {
     return <IconButton onClick={onClickChangeTheme} icon={theme === 'dark' ? SunIcon : MoonIcon} />
   }
@@ -461,7 +468,11 @@ export const Homepage = () => {
                   </Text>
                 </Card>
               )}
-
+              <ClickableCard
+                title="Add Funds"
+                description="Buy Cryptocurrency with a Credit Card"
+                onClick={() => onClickAddFunds()}
+              />
               <ClickableCard
                 title="Mint an NFT"
                 description="Test minting an NFT to your wallet"

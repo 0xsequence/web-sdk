@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Box,
 } from '@0xsequence/design-system'
@@ -15,7 +16,7 @@ export const AddFundsContent = () => {
   const link = getTransakLink(addFundsSettings)
 
   return (
-    <Box alignItems="center" width="full" height="full" paddingX="4">
+    <Box alignItems="center" width="full" paddingX="4" paddingBottom="4" height="full" style={{ height: '600px' }}>
       <Box as="iframe" width="full" height="full" borderWidth="none" src={link} />
     </Box>
   )
