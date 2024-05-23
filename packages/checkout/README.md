@@ -109,11 +109,11 @@ This field specific the list of collectibles that will show up in the order summ
     ]
 ```
 
-### Adding Funds with Credit Card
-Kit also allows users to buy cryptocurrencies using credit card. Calling the triggerAddFunds function will cause a modal to appear.
+### Adding Funds with a Credit Card
+Kit allows users to buy cryptocurrencies using credit card. Calling the triggerAddFunds function will cause a modal to appear.
 
 ```js
-  import { useCheckoutModal } from '@0xsequence/kit-checkout'
+  import { useAddFundsModal } from '@0xsequence/kit-checkout'
 
   const MyComponent = () => {
     const { triggerAddFunds } = useAddFundsModal()
