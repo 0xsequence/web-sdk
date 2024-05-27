@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-connectors",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Wallets for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/connectors",
   "author": "Horizon Blockchain Games",

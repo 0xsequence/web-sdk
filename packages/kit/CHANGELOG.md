@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.0
+
+### Minor Changes
+
+- Turbo repo with unbundled package exports
+
 ## 2.7.0
 
 ### Minor Changes
