@@ -55,7 +55,7 @@ export const fetchSardineClientToken = async (
         tokenAmount: order.currencyQuantity,
         tokenAddress: order.currencyAddress,
         tokenSymbol: order.currencySymbol,
-        tokenDecimals: order.currencyDecimals,
+        tokenDecimals: Number(order.currencyDecimals),
         callData: order.calldata,
       }
     })
