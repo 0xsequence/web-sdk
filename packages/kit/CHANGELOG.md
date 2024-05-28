@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.2
+
+### Patch Changes
+
+- Added ability to purchase cryptocurrencies with credit card to kit-checkout
+
 ## 2.8.1
 
 ### Patch Changes
