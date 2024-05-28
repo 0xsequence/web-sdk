@@ -4,14 +4,11 @@ import {
   Card,
   Text,
   Image,
-  SunIcon,
-  MoonIcon,
   SignoutIcon,
   useTheme,
   Spinner,
   useMediaQuery,
   Switch,
-  IconButton,
   CheckmarkIcon,
   Modal,
   TextInput,
@@ -21,7 +18,6 @@ import {
   useOpenConnectModal,
   signEthAuthProof,
   validateEthProof,
-  useTheme as useKitTheme,
   getModalPositionCss,
   useStorage,
   useWaasFeeOptions,
@@ -49,10 +45,11 @@ import {
 import { ConnectionMode } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
-import { delay, formatAddress, getCheckoutSettings } from '../utils'
+import { delay, getCheckoutSettings } from '../utils'
 
 import { Alert, AlertProps } from './Alert'
 import { Footer } from './Footer'
+import { Header } from './Header'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -60,9 +57,8 @@ const connectionMode: ConnectionMode = searchParams.get('mode') === 'universal' 
 const isDebugMode = searchParams.has('debug')
 
 export const Homepage = () => {
-  const { theme, setTheme } = useTheme()
-  const { setTheme: setKitTheme } = useKitTheme()
-  const { address, connector, isConnected } = useAccount()
+  const { theme } = useTheme()
+  const { address, isConnected } = useAccount()
   const { setOpenConnectModal } = useOpenConnectModal()
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
@@ -278,53 +274,6 @@ export const Homepage = () => {
     })
   }
 
-  const onClickChangeTheme = () => {
-    // Change theme at the app level
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-    // Change the theme in kit. Theme can also be changed in the settings for kit only
-    setKitTheme(theme === 'dark' ? 'light' : 'dark')
-  }
-
-  const HeaderContent = () => {
-    if (!isConnected) {
-      return (
-        <Box padding="5" justifyContent="flex-end">
-          <SwitchThemeButton />
-        </Box>
-      )
-    }
-
-    return (
-      <Box padding="5" justifyContent="space-between">
-        <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
-          <Image style={{ width: '36px' }} src="kit-logo.svg" />
-          <Image
-            style={{
-              width: '24px',
-              filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
-            }}
-            src="kit-logo-text.svg"
-          />
-        </Box>
-        <Box>
-          <Box flexDirection="column">
-            <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
-              <SwitchThemeButton />
-              <Text fontWeight="medium" fontSize="normal" color="text100">
-                {isMobile ? formatAddress(address || '') : address}
-              </Text>
-            </Box>
-            <Box alignItems="center" justifyContent="flex-end" flexDirection="row">
-              <Text fontWeight="medium" fontSize="normal" color="text50">
-                {connector?.name}
-              </Text>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-    )
-  }
-
   interface ClickableCardProps {
     title: string
     description: string
@@ -380,12 +329,8 @@ export const Homepage = () => {
 
   const onClickAddFunds = () => {
     triggerAddFunds({
-      walletAddress: address || '',
+      walletAddress: address || ''
     })
-  }
-
-  const SwitchThemeButton = () => {
-    return <IconButton onClick={onClickChangeTheme} icon={theme === 'dark' ? SunIcon : MoonIcon} />
   }
 
   const onSwitchNetwork = () => {
@@ -402,20 +347,9 @@ export const Homepage = () => {
 
   return (
     <Box background="backgroundPrimary">
-      {isDebugMode && (
-        <Box justifyContent="center" alignItems="center">
-          <Text>Debug mode</Text>
-        </Box>
-      )}
-      <Box style={{ height: '72px' }} position="fixed" width="full" top="0">
-        <HeaderContent />
-      </Box>
-      <Box
-        style={isMobile ? { paddingTop: '85px', paddingBottom: '80px' } : { height: '100vh' }}
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
+      <Header />
+
+      <Box style={{ margin: '140px 0' }} flexDirection="column" justifyContent="center" alignItems="center">
         {isConnected ? (
           <Box flexDirection="column" gap="4">
             <Box flexDirection="column" gap="2">

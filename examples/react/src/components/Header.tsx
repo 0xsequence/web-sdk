@@ -1,7 +1,5 @@
-import { Box, Image, Text, GradientAvatar } from '@0xsequence/design-system'
+import { Box, Image, Text, GradientAvatar, truncateAddress } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
-
-import { truncateAddress } from '@/utils'
 
 export const Header = () => {
   const { address, connector } = useAccount()

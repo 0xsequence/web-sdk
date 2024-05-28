@@ -221,7 +221,7 @@ export const Connected = () => {
     <>
       <Header />
 
-      <Box flexDirection="column" justifyContent="center" alignItems="center" height="vh">
+      <Box flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4">
           <Box flexDirection="column" gap="2">
             <Text color="text50" fontSize="small" fontWeight="medium">

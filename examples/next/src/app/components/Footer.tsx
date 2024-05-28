@@ -1,4 +1,4 @@
-import { Box, Button, Image, Text, useMediaQuery, useTheme } from '@0xsequence/design-system'
+import { Box, Button, Image, Text, useTheme } from '@0xsequence/design-system'
 import React from 'react'
 
 interface BottomPageLink {
@@ -60,7 +60,6 @@ export const socialLinks: SocialLinks[] = [
 
 export const Footer = () => {
   const { theme } = useTheme()
-  const isMobile = useMediaQuery('isMobile')
 
   const onClickLinkUrl = (url: string) => {
     if (typeof window !== 'undefined') {
@@ -115,27 +114,17 @@ export const Footer = () => {
     )
   }
 
-  if (isMobile) {
-    return (
-      <Box
-        flexDirection="column"
-        padding="5"
-        gap="2"
-        style={{ height: '60px' }}
-        position="fixed"
-        bottom="0"
-        width="full"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Links />
-        <Socials />
-      </Box>
-    )
-  }
-
   return (
-    <Box padding="5" style={{ height: '60px' }} position="fixed" bottom="0" width="full" justifyContent="space-between">
+    <Box
+      padding="5"
+      style={{ height: '60px', borderTop: '1px solid #222' }}
+      position="fixed"
+      bottom="0"
+      width="full"
+      justifyContent="space-between"
+      background="backgroundOverlay"
+      backdropFilter="blur"
+    >
       <Links />
       <Socials />
     </Box>
