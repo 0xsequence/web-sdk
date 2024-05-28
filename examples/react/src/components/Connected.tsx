@@ -1,4 +1,4 @@
-import { Box, Button, Card, Modal, Select, SignoutIcon, Switch, Text, TextInput } from '@0xsequence/design-system'
+import { Box, Button, Card, Modal, Select, SignoutIcon, Spinner, Switch, Text, TextInput } from '@0xsequence/design-system'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -284,7 +284,7 @@ export const Connected = () => {
     <>
       <Header />
 
-      <Box flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
+      <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4">
           <Box flexDirection="column" gap="2">
             <Text color="text50" fontSize="small" fontWeight="medium">
@@ -586,6 +586,15 @@ const CardButton = (props: CardButtonProps) => {
       <Text as="p" variant="small" color="text50">
         {description}
       </Text>
+
+      {props.isPending && (
+        <Box gap="2" alignItems="center">
+          <Spinner size="sm" />
+          <Text variant="small" color="text50">
+            Pending...
+          </Text>
+        </Box>
+      )}
     </Card>
   )
 }

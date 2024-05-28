@@ -1,4 +1,4 @@
-import { Box, Text, Card, Button, Select, SignoutIcon } from '@0xsequence/design-system'
+import { Box, Text, Card, Button, Select, SignoutIcon, Spinner } from '@0xsequence/design-system'
 import { signEthAuthProof, useIndexerClient, useStorage, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -221,7 +221,7 @@ export const Connected = () => {
     <>
       <Header />
 
-      <Box flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
+      <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4">
           <Box flexDirection="column" gap="2">
             <Text color="text50" fontSize="small" fontWeight="medium">
@@ -428,6 +428,15 @@ const CardButton = (props: CardButtonProps) => {
       <Text as="p" variant="small" color="text50">
         {description}
       </Text>
+
+      {props.isPending && (
+        <Box gap="2" alignItems="center">
+          <Spinner />
+          <Text variant="small" color="text50">
+            Pending...
+          </Text>
+        </Box>
+      )}
     </Card>
   )
 }
