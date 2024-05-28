@@ -1,4 +1,16 @@
-import { Box, Button, Card, Modal, Select, SignoutIcon, Spinner, Switch, Text, TextInput } from '@0xsequence/design-system'
+import {
+  Box,
+  Button,
+  Card,
+  Modal,
+  Select,
+  SignoutIcon,
+  Spinner,
+  Switch,
+  Text,
+  TextInput,
+  breakpoints
+} from '@0xsequence/design-system'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -285,7 +297,7 @@ export const Connected = () => {
       <Header />
 
       <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
-        <Box flexDirection="column" gap="4">
+        <Box flexDirection="column" gap="4" style={{ maxWidth: breakpoints.md }}>
           <Box flexDirection="column" gap="2">
             <Text color="text50" fontSize="small" fontWeight="medium">
               Demos
@@ -583,12 +595,12 @@ const CardButton = (props: CardButtonProps) => {
       <Text variant="normal" fontWeight="bold" color="text100">
         {title}
       </Text>
-      <Text as="p" variant="small" color="text50">
+      <Text as="div" variant="normal" color="text50" marginTop="2">
         {description}
       </Text>
 
       {props.isPending && (
-        <Box gap="2" alignItems="center">
+        <Box gap="2" alignItems="center" marginTop="4">
           <Spinner size="sm" />
           <Text variant="small" color="text50">
             Pending...

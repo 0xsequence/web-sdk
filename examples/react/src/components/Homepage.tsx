@@ -1,4 +1,4 @@
-import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
+import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
 import { useOpenConnectModal } from '@0xsequence/kit'
 import { useAccount } from 'wagmi'
 
@@ -46,7 +46,7 @@ export const Homepage = () => {
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
           </Box>
 
-          <Box gap="2" flexDirection="column" marginTop="10" width="1/2">
+          <Box gap="2" flexDirection="column" paddingX="4" marginTop="10" width="full" style={{ maxWidth: breakpoints.md }}>
             <ConnectionModeSelect
               mode="waas"
               title="Embedded Wallet (WaaS)"
@@ -56,7 +56,7 @@ export const Homepage = () => {
 
             <ConnectionModeSelect
               mode="universal"
-              title="Universal"
+              title="Universal Wallet"
               description="Connect to the universal sequence wallet or EIP6963 Injected wallet providers (web extension wallets)."
               onClick={handleSwitchConnectionMode}
             />
@@ -85,6 +85,7 @@ const ConnectionModeSelect = (props: ConnectionModeSelectProps) => {
 
   return (
     <Card
+      width="full"
       clickable
       outlined
       borderWidth="thick"
@@ -95,11 +96,11 @@ const ConnectionModeSelect = (props: ConnectionModeSelectProps) => {
       onClick={() => onClick(mode)}
     >
       <Box gap="2">
-        <Box marginTop="1">
+        <Box>
           <Text variant="normal" fontWeight="bold" color={isSelected ? 'text100' : 'text80'}>
             {title}
           </Text>
-          <Text as="p" variant="normal" color="text50" marginTop="4">
+          <Text as="div" variant="normal" color="text50" marginTop="2">
             {description}
           </Text>
         </Box>

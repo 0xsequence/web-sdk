@@ -15,7 +15,7 @@ export const Header = () => {
       justifyContent="space-between"
       background="backgroundOverlay"
       backdropFilter="blur"
-      zIndex="20"
+      zIndex="1"
       style={{ borderBottom: '1px solid #222' }}
     >
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
@@ -34,7 +34,7 @@ export const Header = () => {
         <Box flexDirection="column">
           <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
             <GradientAvatar address={String(address)} />
-            <Text fontWeight="medium" fontSize="normal" color="text100">
+            <Text variant="normal" fontWeight="bold" color="text100">
               {truncateAddress(String(address), 8)}
             </Text>
           </Box>

@@ -425,12 +425,12 @@ const CardButton = (props: CardButtonProps) => {
       <Text variant="normal" fontWeight="bold" color="text100">
         {title}
       </Text>
-      <Text as="p" variant="small" color="text50">
+      <Text as="div" variant="normal" color="text50" marginTop="2">
         {description}
       </Text>
 
       {props.isPending && (
-        <Box gap="2" alignItems="center">
+        <Box gap="2" alignItems="center" marginTop="4">
           <Spinner />
           <Text variant="small" color="text50">
             Pending...
