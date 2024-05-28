@@ -1,13 +1,23 @@
-import { Box, Text, Card, Button, Select, SignoutIcon } from '@0xsequence/design-system'
-import { signEthAuthProof, useIndexerClient, useStorage, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
-import { CheckoutSettings } from '@0xsequence/kit-checkout'
+import { Box, Button, Card, Modal, Select, SignoutIcon, Switch, Text, TextInput } from '@0xsequence/design-system'
+import {
+  useStorage,
+  useWaasFeeOptions,
+  useIndexerClient,
+  signEthAuthProof,
+  validateEthProof,
+  getModalPositionCss
+} from '@0xsequence/kit'
+import { useCheckoutModal, useAddFundsModal } from '@0xsequence/kit-checkout'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
-import { ChainId, allNetworks } from '@0xsequence/network'
-import { ComponentProps, useEffect, useState } from 'react'
+import { allNetworks, ChainId } from '@0xsequence/network'
+import { ethers } from 'ethers'
+import { AnimatePresence } from 'framer-motion'
+import React, { ComponentProps, useEffect } from 'react'
 import { formatUnits, parseUnits } from 'viem'
 import {
   useAccount,
   useChainId,
+  useConnections,
   useDisconnect,
   usePublicClient,
   useSendTransaction,
@@ -16,35 +26,52 @@ import {
   useWriteContract
 } from 'wagmi'
 
-import { isDebugMode } from '../../config'
+import { messageToSign, abi } from '../constants'
+import { delay, getCheckoutSettings } from '../utils'
 
 import { Header } from './Header'
 
-import { abi, messageToSign } from '@/constants'
+// append ?debug to url to enable debug mode
+const searchParams = new URLSearchParams(location.search)
+const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
   const { address } = useAccount()
-  const { disconnect } = useDisconnect()
   const { setOpenWalletModal } = useOpenWalletModal()
-  // const { setOpenConnectModal } = useOpenConnectModal()
-  // const { triggerCheckout } = useCheckoutModal()
+  const { triggerCheckout } = useCheckoutModal()
+  const { triggerAddFunds } = useAddFundsModal()
+  const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const { switchChain } = useSwitchChain()
   const storage = useStorage()
 
+  const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
+
+  const [checkoutOrderId, setCheckoutOrderId] = React.useState('')
+  const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
+  const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
+
+  const connections = useConnections()
+
+  const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
+
   const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error } = useSendTransaction()
   const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
 
-  const [isSigningMessage, setIsSigningMessage] = useState(false)
-  const [isMessageValid, setIsMessageValid] = useState<boolean | undefined>()
-  const [messageSig, setMessageSig] = useState<string | undefined>()
+  const [isSigningMessage, setIsSigningMessage] = React.useState(false)
+  const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
+  const [messageSig, setMessageSig] = React.useState<string | undefined>()
 
-  const [lastTxnDataHash, setLastTxnDataHash] = useState<string | undefined>()
-  const [lastTxnDataHash2, setLastTxnDataHash2] = useState<string | undefined>()
+  const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
+  const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
+
+  const [confirmationEnabled, setConfirmationEnabled] = React.useState<boolean>(
+    localStorage.getItem('confirmationEnabled') === 'true'
+  )
 
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
 
-  const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = useState<string | undefined>()
+  const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
@@ -53,26 +80,26 @@ export const Connected = () => {
   }, [pendingFeeOptionConfirmation])
 
   useEffect(() => {
-    console.log(error?.message)
+    if (error?.message) {
+      console.log(error?.message)
+    }
   }, [error])
 
   const chainId = useChainId()
 
   const indexerClient = useIndexerClient(chainId)
 
-  const [feeOptionBalances, setFeeOptionBalances] = useState<{ tokenName: string; decimals: number; balance: string }[]>([])
+  const [feeOptionBalances, setFeeOptionBalances] = React.useState<{ tokenName: string; decimals: number; balance: string }[]>([])
 
-  const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps | undefined>(undefined)
+  const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>(undefined)
 
   useEffect(() => {
-    if (pendingFeeOptionConfirmation) {
-      checkTokenBalancesForFeeOptions()
-    }
+    checkTokenBalancesForFeeOptions()
   }, [pendingFeeOptionConfirmation])
 
   const checkTokenBalancesForFeeOptions = async () => {
-    if (pendingFeeOptionConfirmation) {
-      const [account] = await walletClient!.getAddresses()
+    if (pendingFeeOptionConfirmation && walletClient) {
+      const [account] = await walletClient.getAddresses()
       const nativeTokenBalance = await indexerClient.getEtherBalance({ accountAddress: account })
 
       const tokenBalances = await indexerClient.getTokenBalances({
@@ -95,7 +122,7 @@ export const Connected = () => {
             tokenName: option.token.name,
             decimals: option.token.decimals || 0,
             balance:
-              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress!.toLowerCase())
+              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
                 ?.balance || '0'
           }
         }
@@ -173,13 +200,31 @@ export const Connected = () => {
   }
 
   const runSendTransaction = async () => {
+    // NOTE: commented code is how to send ETH value to the account
+    // if (!walletClient) {
+    //   return
+    // }
+    // const [account] = await walletClient.getAddresses()
+    // sendTransaction({ to: account, value: '0', gas: null })
+
+    // NOTE: below is a a simple contract call. See `runMintNFT`
+    // on another example where you can use the wagmi `writeContract`
+    // method to do the same thing.
     if (!walletClient) {
       return
     }
 
-    const [account] = await walletClient.getAddresses()
+    // const [account] = await walletClient.getAddresses()
+    const contractAbiInterface = new ethers.utils.Interface(['function demo()'])
 
-    sendTransaction({ to: account, value: BigInt(0), gas: null })
+    // sendTransaction({ to: account, value: BigInt(0), gas: null })
+    const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+
+    sendTransaction({
+      to: '0x37470dac8a0255141745906c972e414b1409b470',
+      data,
+      gas: null
+    })
   }
 
   const runMintNFT = async () => {
@@ -197,13 +242,31 @@ export const Connected = () => {
     })
   }
 
-  // const onClickConnect = () => {
-  //   setOpenConnectModal(true)
+  // const onClickCheckout = () => {
+  //   setIsCheckoutInfoModalOpen(true)
   // }
 
-  // const onClickCheckout = () => {
-  //   triggerCheckout(getCheckoutSettings(address))
-  // }
+  const onCheckoutInfoConfirm = () => {
+    setIsCheckoutInfoModalOpen(false)
+    if (checkoutOrderId !== '' && checkoutTokenContractAddress !== '' && checkoutTokenId !== '') {
+      const checkoutSettings = getCheckoutSettings(
+        checkoutOrderId,
+        address || '',
+        checkoutTokenContractAddress,
+        checkoutTokenId,
+        ChainId.POLYGON,
+        1,
+        true
+      )
+      triggerCheckout(checkoutSettings)
+    }
+  }
+
+  const onClickAddFunds = () => {
+    triggerAddFunds({
+      walletAddress: address || ''
+    })
+  }
 
   const onSwitchNetwork = () => {
     if (chainId === ChainId.ARBITRUM_SEPOLIA) {
@@ -227,16 +290,16 @@ export const Connected = () => {
             <Text color="text50" fontSize="small" fontWeight="medium">
               Demos
             </Text>
+            {/* <CardButton
+        title="NFT Checkout"
+        description="NFT Checkout testing"
+        onClick={onClickCheckout}
+      /> */}
             <CardButton
               title="Inventory"
               description="Connect a Sequence wallet to view, swap, send, and receive collections"
               onClick={() => setOpenWalletModal(true)}
             />
-            {/* <CardButton
-                title="Checkout"
-                description="Checkout screen before placing a purchase on coins or collections"
-                onClick={onClickCheckout}
-              /> */}
             <CardButton
               title="Send transaction"
               description="Send a transaction with your wallet"
@@ -257,14 +320,12 @@ export const Connected = () => {
                 View on {networkForCurrentChainId.blockExplorer.name}
               </Text>
             )}
-
             <CardButton
               title="Sign message"
               description="Sign a message with your wallet"
               onClick={signMessage}
               isPending={isSigningMessage}
             />
-
             {isMessageValid && (
               <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
                 <Text variant="medium">Signed message:</Text>
@@ -278,14 +339,13 @@ export const Connected = () => {
                 </Text>
               </Card>
             )}
-
+            <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
             <CardButton
               title="Mint an NFT"
               description="Test minting an NFT to your wallet"
               isPending={isPendingMintTxn}
               onClick={runMintNFT}
             />
-
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash2 &&
               ((txnData2 as any)?.chainId === chainId || txnData2) && (
@@ -305,7 +365,11 @@ export const Connected = () => {
             {isDebugMode && (
               <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
             )}
-
+            {/* <CardButton
+        title="NFT Checkout"
+        description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
+        onClick={onClickCheckout}
+      /> */}
             <CardButton
               title="Switch network"
               description={`Current network: ${networkForCurrentChainId.title}`}
@@ -350,7 +414,6 @@ export const Connected = () => {
                   }))
                 ]}
               />
-
               <Box marginY="2" alignItems="center" justifyContent="center" flexDirection="column">
                 <Button
                   onClick={() => {
@@ -395,10 +458,42 @@ export const Connected = () => {
             </Box>
           )}
 
+          {isWaasConnection && (
+            <Box marginY="3">
+              <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text fontWeight="semibold" variant="small" color="text50">
+                  Confirmations
+                </Text>
+
+                <Box alignItems="center" gap="2">
+                  <Switch
+                    name="confirmations"
+                    checked={confirmationEnabled}
+                    onCheckedChange={async (checked: boolean) => {
+                      if (checked) {
+                        localStorage.setItem('confirmationEnabled', 'true')
+                        setConfirmationEnabled(true)
+                      } else {
+                        localStorage.removeItem('confirmationEnabled')
+                        setConfirmationEnabled(false)
+                      }
+
+                      await delay(300)
+
+                      window.location.reload()
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+          )}
           <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
             <Button
               onClick={() => {
                 disconnect()
+                setLastTxnDataHash(undefined)
+                setLastTxnDataHash2(undefined)
+                setIsMessageValid(undefined)
               }}
               leftIcon={SignoutIcon}
               label="Sign out"
@@ -406,6 +501,69 @@ export const Connected = () => {
           </Box>
         </Box>
       </Box>
+
+      <AnimatePresence>
+        {isCheckoutInfoModalOpen && (
+          <Modal
+            contentProps={{
+              style: {
+                maxWidth: '400px',
+                height: 'auto',
+                ...getModalPositionCss('center')
+              }
+            }}
+            scroll={false}
+            backdropColor="backgroundBackdrop"
+            onClose={() => setIsCheckoutInfoModalOpen(false)}
+          >
+            <Box id="sequence-kit-checkout-info-modal">
+              <Box paddingTop="16" paddingBottom="8" paddingX="6" gap="2" flexDirection="column">
+                <Text variant="medium" color="text50">
+                  Order ID
+                </Text>
+                <TextInput
+                  autoFocus
+                  name="orderId"
+                  value={checkoutOrderId}
+                  onChange={ev => setCheckoutOrderId(ev.target.value)}
+                  placeholder="Order Id"
+                  data-1p-ignore
+                />
+                <Text variant="medium" color="text50">
+                  Token Contract Address
+                </Text>
+                <TextInput
+                  autoFocus
+                  name="tokenContractAddress"
+                  value={checkoutTokenContractAddress}
+                  onChange={ev => setCheckoutTokenContractAddress(ev.target.value)}
+                  placeholder="Token Contract Address"
+                  data-1p-ignore
+                />
+                <Text variant="medium" color="text50">
+                  Token ID
+                </Text>
+                <TextInput
+                  autoFocus
+                  name="tokenId"
+                  value={checkoutTokenId}
+                  onChange={ev => setCheckoutTokenId(ev.target.value)}
+                  placeholder="Token Id"
+                  data-1p-ignore
+                />
+
+                <Button
+                  marginTop="4"
+                  onClick={() => {
+                    onCheckoutInfoConfirm()
+                  }}
+                  label="Trigger checkout"
+                />
+              </Box>
+            </Box>
+          </Modal>
+        )}
+      </AnimatePresence>
     </>
   )
 }
@@ -481,35 +639,4 @@ export const Alert = ({ title, description, secondaryDescription, variant, butto
       </Box>
     </Box>
   )
-}
-
-export const getCheckoutSettings = (_address?: string) => {
-  const checkoutSettings: CheckoutSettings = {
-    cryptoCheckout: {
-      chainId: ChainId.POLYGON,
-      triggerTransaction: async () => {
-        console.log('triggered transaction')
-      },
-      coinQuantity: {
-        contractAddress: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-        amountRequiredRaw: '10000000000'
-      }
-    },
-    orderSummaryItems: [
-      {
-        chainId: ChainId.POLYGON,
-        contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-        tokenId: '66597',
-        quantityRaw: '100'
-      },
-      {
-        chainId: ChainId.POLYGON,
-        contractAddress: '0x624e4fa6980afcf8ea27bfe08e2fb5979b64df1c',
-        tokenId: '1741',
-        quantityRaw: '100'
-      }
-    ]
-  }
-
-  return checkoutSettings
 }

@@ -30,6 +30,7 @@ export default function Home() {
               disableAnimation
             />
           </Box>
+
           <Box gap="2" flexDirection="row" alignItems="center">
             <Button onClick={() => setOpenConnectModal(true)} variant="feature" label="Connect" />
           </Box>
