@@ -27,9 +27,8 @@ import {
   useWriteContract
 } from 'wagmi'
 
-import { messageToSign } from '../constants'
-import { abi } from '../constants/nft-abi'
-import { delay, getCheckoutSettings } from '../utils'
+import { messageToSign, abi } from '../constants'
+import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -242,22 +241,36 @@ export const Connected = () => {
     })
   }
 
-  // const onClickCheckout = () => {
-  //   setIsCheckoutInfoModalOpen(true)
-  // }
+  const onClickCheckout = () => {
+    setIsCheckoutInfoModalOpen(true)
+  }
 
   const onCheckoutInfoConfirm = () => {
     setIsCheckoutInfoModalOpen(false)
     if (checkoutOrderId !== '' && checkoutTokenContractAddress !== '' && checkoutTokenId !== '') {
-      const checkoutSettings = getCheckoutSettings(
-        checkoutOrderId,
-        address || '',
-        checkoutTokenContractAddress,
-        checkoutTokenId,
-        ChainId.POLYGON,
-        1,
-        true
-      )
+      const chainId = 137
+      const orderbookAddress = '0xB537a160472183f2150d42EB1c3DD6684A55f74c'
+      const recipientAddress = address || ''
+      const nftQuantity = '1'
+
+      const checkoutSettings = getCheckoutSettings({
+        chainId,
+        contractAddress: orderbookAddress,
+        recipientAddress,
+        currencyQuantity: '100000',
+        currencySymbol: 'USDC',
+        currencyAddress: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
+        currencyDecimals: '6',
+        nftId: checkoutTokenId,
+        nftAddress: checkoutTokenContractAddress,
+        nftQuantity, 
+        isDev: true,
+        calldata: getOrderbookCalldata({
+          orderId: checkoutOrderId,
+          quantity: nftQuantity,
+          recipient: recipientAddress
+        }),
+      })
       triggerCheckout(checkoutSettings)
     }
   }
@@ -363,13 +376,17 @@ export const Connected = () => {
               )}
 
             {isDebugMode && (
-              <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
+              <>
+                <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
+
+                <CardButton
+                  title="NFT Checkout"
+                  description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
+                  onClick={onClickCheckout}
+                />
+              </>
             )}
-            {/* <CardButton
-        title="NFT Checkout"
-        description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
-        onClick={onClickCheckout}
-      /> */}
+
             <CardButton
               title="Switch network"
               description={`Current network: ${networkForCurrentChainId.title}`}
