@@ -36,11 +36,11 @@ chains.forEach(chain => {
 const waasConfigKey = isDebugMode
   ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
   : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9'
-const googleClientId = isDebugMode 
-? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
-: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
+const googleClientId = isDebugMode
+  ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
+  : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
 const appleClientId = 'com.horizon.sequence.waas'
-const appleRedirectURI = 'https://' + window.location.host
+const appleRedirectURI = window.location.origin + window.location.pathname
 
 const getWaasConnectors = () => {
   const connectors = [
@@ -55,7 +55,7 @@ const getWaasConnectors = () => {
       projectAccessKey,
       enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
       isDev: isDebugMode
-    }),
+    })
     // ...(isDebugMode
     //   ? getKitConnectWallets(projectAccessKey, [
     //       mock({
