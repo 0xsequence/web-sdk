@@ -1,15 +1,34 @@
-import { Box, Image, Text, GradientAvatar, truncateAddress } from '@0xsequence/design-system'
-import { useAccount } from 'wagmi'
+import {
+  Box,
+  Image,
+  Text,
+  GradientAvatar,
+  Select,
+  truncateAddress,
+  NetworkImage,
+  IconButton,
+  CloseIcon,
+  Card,
+  Button,
+  ChevronDownIcon
+} from '@0xsequence/design-system'
+import { ChainId } from '@0xsequence/network'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
+import { useState } from 'react'
+import { useAccount, useChainId, useDisconnect, useSwitchChain } from 'wagmi'
+
+const networks = [
+  { chainId: ChainId.ARBITRUM_SEPOLIA, title: 'Arbitrum Sepolia' },
+  { chainId: ChainId.ARBITRUM_NOVA, title: 'Arbitrum Nova' }
+]
 
 export const Header = () => {
-  const { address, connector } = useAccount()
-
   return (
     <Box
       position="fixed"
       top="0"
       width="full"
-      padding="5"
+      padding="4"
       justifyContent="space-between"
       background="backgroundOverlay"
       backdropFilter="blur"
@@ -28,21 +47,90 @@ export const Header = () => {
           disableAnimation
         />
       </Box>
-      <Box>
-        <Box flexDirection="column">
-          <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
-            <GradientAvatar address={String(address)} />
-            <Text variant="normal" fontWeight="bold" color="text100">
-              {truncateAddress(String(address), 8)}
-            </Text>
-          </Box>
-          <Box alignItems="center" justifyContent="flex-end" flexDirection="row">
-            <Text variant="small" color="text50">
-              {connector?.name}
-            </Text>
-          </Box>
-        </Box>
+      <Box gap="2" alignItems="center">
+        <NetworkSelect />
+        <AccountMenu />
       </Box>
     </Box>
+  )
+}
+
+const AccountMenu = () => {
+  const [isOpen, toggleOpen] = useState(false)
+  const { address, connector } = useAccount()
+  const { disconnect } = useDisconnect()
+
+  return (
+    <PopoverPrimitive.Root open={isOpen} onOpenChange={toggleOpen}>
+      <PopoverPrimitive.Trigger asChild>
+        <Box
+          borderColor={isOpen ? 'borderFocus' : 'borderNormal'}
+          borderWidth="thin"
+          borderStyle="solid"
+          borderRadius="md"
+          paddingX="4"
+          paddingY="3"
+          cursor="pointer"
+        >
+          <Box gap="2" alignItems="center">
+            <Box flexDirection="column">
+              <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
+                <GradientAvatar address={String(address)} size="sm" />
+                <Text variant="normal" fontWeight="bold" color="text100">
+                  {truncateAddress(String(address), 4)}
+                </Text>
+              </Box>
+              {/* <Box alignItems="center" justifyContent="flex-end" flexDirection="row">
+                <Text variant="small" color="text50">
+                  {connector?.name}
+                </Text>
+              </Box> */}
+            </Box>
+
+            <Box color="text50">
+              <ChevronDownIcon />
+            </Box>
+          </Box>
+        </Box>
+      </PopoverPrimitive.Trigger>
+
+      <PopoverPrimitive.Anchor />
+
+      {isOpen && (
+        <PopoverPrimitive.Portal>
+          <PopoverPrimitive.Content asChild>
+            <Card zIndex="20">
+              <Button label="Sign out" onClick={() => disconnect()} />
+              <PopoverPrimitive.Close asChild>
+                <IconButton icon={CloseIcon} size="xs" />
+              </PopoverPrimitive.Close>
+            </Card>
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      )}
+    </PopoverPrimitive.Root>
+  )
+}
+
+const NetworkSelect = () => {
+  const chainId = useChainId()
+  const { switchChain } = useSwitchChain()
+
+  return (
+    <Select
+      name="chainId"
+      labelLocation="top"
+      onValueChange={value => switchChain({ chainId: Number(value) })}
+      value={String(chainId)}
+      options={Object.values(networks).map(network => ({
+        label: (
+          <Box alignItems="center" gap="2">
+            <NetworkImage chainId={network.chainId} size="sm" />
+            <Text display={{ sm: 'none', lg: 'block' }}>{network.title!}</Text>
+          </Box>
+        ),
+        value: String(network.chainId)
+      }))}
+    />
   )
 }

@@ -1,4 +1,4 @@
-import { Box, Text, Card, Button, Select, SignoutIcon } from '@0xsequence/design-system'
+import { Box, Text, Card, Button, Select } from '@0xsequence/design-system'
 import { signEthAuthProof, useIndexerClient, useStorage, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
@@ -6,16 +6,7 @@ import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
 import { ComponentProps, useEffect, useState } from 'react'
 import { formatUnits, parseUnits } from 'viem'
-import {
-  useAccount,
-  useChainId,
-  useDisconnect,
-  usePublicClient,
-  useSendTransaction,
-  useSwitchChain,
-  useWalletClient,
-  useWriteContract
-} from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode } from '../../config'
 
@@ -24,12 +15,10 @@ import { abi } from '@/constants/nft-abi'
 
 export const Connected = () => {
   const { address } = useAccount()
-  const { disconnect } = useDisconnect()
   const { setOpenWalletModal } = useOpenWalletModal()
   // const { setOpenConnectModal } = useOpenConnectModal()
   // const { triggerCheckout } = useCheckoutModal()
   const { data: walletClient } = useWalletClient()
-  const { switchChain } = useSwitchChain()
   const storage = useStorage()
 
   const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error } = useSendTransaction()
@@ -205,17 +194,11 @@ export const Connected = () => {
   //   triggerCheckout(getCheckoutSettings(address))
   // }
 
-  const onSwitchNetwork = () => {
-    if (chainId === ChainId.ARBITRUM_SEPOLIA) {
-      switchChain({ chainId: ChainId.ARBITRUM_NOVA })
-    } else {
-      switchChain({ chainId: ChainId.ARBITRUM_SEPOLIA })
-    }
-
+  useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
     setIsMessageValid(undefined)
-  }
+  }, [chainId])
 
   return (
     <>
@@ -305,12 +288,6 @@ export const Connected = () => {
             {isDebugMode && (
               <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
             )}
-
-            <CardButton
-              title="Switch network"
-              description={`Current network: ${networkForCurrentChainId.title}`}
-              onClick={onSwitchNetwork}
-            />
           </Box>
 
           {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
@@ -394,16 +371,6 @@ export const Connected = () => {
               </Box>
             </Box>
           )}
-
-          <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
-            <Button
-              onClick={() => {
-                disconnect()
-              }}
-              leftIcon={SignoutIcon}
-              label="Sign out"
-            />
-          </Box>
         </Box>
       </Box>
     </>

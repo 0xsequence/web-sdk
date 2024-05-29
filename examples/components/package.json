@@ -4,10 +4,12 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@radix-ui/react-popover": "^1.0.7",
     "typescript": "latest"
   },
   "peerDependencies": {
     "@0xsequence/design-system": "*",
+    "@0xsequence/network": "*",
     "wagmi": "*"
   }
 }

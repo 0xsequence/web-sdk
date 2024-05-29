@@ -1,4 +1,4 @@
-import { Box, Button, Card, Modal, Select, SignoutIcon, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system'
+import { Box, Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -19,10 +19,8 @@ import {
   useAccount,
   useChainId,
   useConnections,
-  useDisconnect,
   usePublicClient,
   useSendTransaction,
-  useSwitchChain,
   useWalletClient,
   useWriteContract
 } from 'wagmi'
@@ -39,9 +37,7 @@ export const Connected = () => {
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
-  const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
-  const { switchChain } = useSwitchChain()
   const storage = useStorage()
 
   const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
@@ -263,13 +259,13 @@ export const Connected = () => {
         currencyDecimals: '6',
         nftId: checkoutTokenId,
         nftAddress: checkoutTokenContractAddress,
-        nftQuantity, 
+        nftQuantity,
         isDev: true,
         calldata: getOrderbookCalldata({
           orderId: checkoutOrderId,
           quantity: nftQuantity,
           recipient: recipientAddress
-        }),
+        })
       })
       triggerCheckout(checkoutSettings)
     }
@@ -281,17 +277,11 @@ export const Connected = () => {
     })
   }
 
-  const onSwitchNetwork = () => {
-    if (chainId === ChainId.ARBITRUM_SEPOLIA) {
-      switchChain({ chainId: ChainId.ARBITRUM_NOVA })
-    } else {
-      switchChain({ chainId: ChainId.ARBITRUM_SEPOLIA })
-    }
-
+  useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
     setIsMessageValid(undefined)
-  }
+  }, [chainId])
 
   return (
     <>
@@ -386,12 +376,6 @@ export const Connected = () => {
                 />
               </>
             )}
-
-            <CardButton
-              title="Switch network"
-              description={`Current network: ${networkForCurrentChainId.title}`}
-              onClick={onSwitchNetwork}
-            />
           </Box>
 
           {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
@@ -504,18 +488,6 @@ export const Connected = () => {
               </Box>
             </Box>
           )}
-          <Box width="full" gap="2" flexDirection="row" justifyContent="flex-end">
-            <Button
-              onClick={() => {
-                disconnect()
-                setLastTxnDataHash(undefined)
-                setLastTxnDataHash2(undefined)
-                setIsMessageValid(undefined)
-              }}
-              leftIcon={SignoutIcon}
-              label="Sign out"
-            />
-          </Box>
         </Box>
       </Box>
 
