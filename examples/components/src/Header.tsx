@@ -3,11 +3,8 @@ import {
   Image,
   Text,
   GradientAvatar,
-  Select,
   truncateAddress,
   NetworkImage,
-  IconButton,
-  CloseIcon,
   Card,
   Button,
   ChevronDownIcon,
@@ -72,21 +69,23 @@ const AccountMenu = () => {
           paddingX="4"
           paddingY="3"
           cursor="pointer"
+          gap="2"
+          alignItems="center"
+          userSelect="none"
+          opacity={{ hover: '80' }}
           style={{ height: 52 }}
         >
-          <Box gap="2" alignItems="center">
-            <Box flexDirection="column">
-              <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
-                <GradientAvatar address={String(address)} size="sm" />
-                <Text variant="normal" fontWeight="bold" color="text100">
-                  {truncateAddress(String(address), 4)}
-                </Text>
-              </Box>
+          <Box flexDirection="column">
+            <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
+              <GradientAvatar address={String(address)} size="sm" />
+              <Text variant="normal" fontWeight="bold" color="text100">
+                {truncateAddress(String(address), 4)}
+              </Text>
             </Box>
+          </Box>
 
-            <Box color="text50">
-              <ChevronDownIcon />
-            </Box>
+          <Box color="text50">
+            <ChevronDownIcon />
           </Box>
         </Box>
       </PopoverPrimitive.Trigger>
@@ -142,22 +141,73 @@ const AccountMenu = () => {
 const NetworkSelect = () => {
   const chainId = useChainId()
   const { switchChain } = useSwitchChain()
+  const [isOpen, toggleOpen] = useState(false)
 
   return (
-    <Select
-      name="chainId"
-      labelLocation="top"
-      onValueChange={value => switchChain({ chainId: Number(value) })}
-      value={String(chainId)}
-      options={Object.values(networks).map(network => ({
-        label: (
+    <PopoverPrimitive.Root open={isOpen} onOpenChange={toggleOpen}>
+      <PopoverPrimitive.Trigger asChild>
+        <Box
+          borderColor={isOpen ? 'borderFocus' : 'borderNormal'}
+          borderWidth="thin"
+          borderStyle="solid"
+          borderRadius="md"
+          paddingX="4"
+          paddingY="3"
+          cursor="pointer"
+          gap="2"
+          alignItems="center"
+          userSelect="none"
+          opacity={{ hover: '80' }}
+          style={{ height: 52 }}
+        >
           <Box alignItems="center" gap="2">
-            <NetworkImage chainId={network.chainId} size="sm" />
-            <Text display={{ sm: 'none', lg: 'block' }}>{network.title!}</Text>
+            <NetworkImage chainId={chainId} size="sm" />
+            <Text display={{ sm: 'none', lg: 'block' }} variant="normal" fontWeight="bold" color="text100">
+              {networks.find(x => x.chainId === chainId)!.title}
+            </Text>
           </Box>
-        ),
-        value: String(network.chainId)
-      }))}
-    />
+
+          <Box color="text50">
+            <ChevronDownIcon />
+          </Box>
+        </Box>
+      </PopoverPrimitive.Trigger>
+
+      {isOpen && (
+        <PopoverPrimitive.Portal>
+          <PopoverPrimitive.Content side="bottom" sideOffset={8} align="end" asChild>
+            <Card
+              zIndex="20"
+              background="backgroundRaised"
+              backdropFilter="blur"
+              position="relative"
+              padding="2"
+              flexDirection="column"
+              gap="2"
+            >
+              {networks.map(({ chainId, title }) => (
+                <Button
+                  key={chainId}
+                  width="full"
+                  shape="square"
+                  onClick={() => {
+                    switchChain({ chainId })
+                    toggleOpen(false)
+                  }}
+                  leftIcon={() => <NetworkImage chainId={chainId} size="sm" />}
+                  label={
+                    <Box alignItems="center" gap="2">
+                      <Text variant="normal" fontWeight="bold" color="text100">
+                        {title}
+                      </Text>
+                    </Box>
+                  }
+                />
+              ))}
+            </Card>
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      )}
+    </PopoverPrimitive.Root>
   )
 }
