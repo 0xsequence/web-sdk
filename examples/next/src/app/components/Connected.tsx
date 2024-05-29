@@ -1,7 +1,7 @@
-import { Box, Text, Card, Button, Select, SignoutIcon, Spinner } from '@0xsequence/design-system'
+import { Box, Text, Card, Button, Select, SignoutIcon } from '@0xsequence/design-system'
 import { signEthAuthProof, useIndexerClient, useStorage, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
-import { Header } from '@0xsequence/kit-example-shared-components'
+import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
 import { ComponentProps, useEffect, useState } from 'react'
@@ -407,37 +407,6 @@ export const Connected = () => {
         </Box>
       </Box>
     </>
-  )
-}
-
-interface CardButtonProps {
-  title: string
-  description: string
-  onClick: () => void
-  isPending?: boolean
-}
-
-const CardButton = (props: CardButtonProps) => {
-  const { title, description, onClick, isPending } = props
-
-  return (
-    <Card clickable onClick={onClick}>
-      <Text variant="normal" fontWeight="bold" color="text100">
-        {title}
-      </Text>
-      <Text as="div" variant="normal" color="text50" marginTop="2">
-        {description}
-      </Text>
-
-      {isPending && (
-        <Box gap="2" alignItems="center" marginTop="4">
-          <Spinner />
-          <Text variant="small" color="text50">
-            Pending...
-          </Text>
-        </Box>
-      )}
-    </Card>
   )
 }
 
