@@ -9,5 +9,6 @@
   "peerDependencies": {
     "@0xsequence/design-system": "*",
     "wagmi": "*"
-  }
+  },
+  "private": true
 }
