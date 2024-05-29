@@ -1,6 +1,7 @@
 import { Box, Text, Card, Button, Select, SignoutIcon, Spinner } from '@0xsequence/design-system'
 import { signEthAuthProof, useIndexerClient, useStorage, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
+import { Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
 import { ComponentProps, useEffect, useState } from 'react'
@@ -17,8 +18,6 @@ import {
 } from 'wagmi'
 
 import { isDebugMode } from '../../config'
-
-import { Header } from './Header'
 
 import { messageToSign } from '@/constants'
 import { abi } from '@/constants/nft-abi'

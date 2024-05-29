@@ -17,13 +17,13 @@ export const Header = () => {
       style={{ borderBottom: '1px solid #222' }}
     >
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
-        <Image style={{ width: '36px' }} src="kit-logo.svg" alt="Sequence kit" disableAnimation />
+        <Image style={{ width: '36px' }} src="images/kit-logo.svg" alt="Sequence kit" disableAnimation />
         <Image
           style={{
             width: '24px'
             // filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
           }}
-          src="kit-logo-text.svg"
+          src="images/kit-logo-text.svg"
           alt="Sequence Kit Text Logo"
           disableAnimation
         />

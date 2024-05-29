@@ -104,6 +104,9 @@ importers:
       '@0xsequence/kit-connectors':
         specifier: workspace:*
         version: link:../../packages/connectors
+      '@0xsequence/kit-example-shared-components':
+        specifier: workspace:*
+        version: link:../components
       '@0xsequence/kit-wallet':
         specifier: workspace:*
         version: link:../../packages/wallet

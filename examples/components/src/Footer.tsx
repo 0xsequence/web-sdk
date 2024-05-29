@@ -1,7 +1,61 @@
-import { Box, Image, Text, useTheme } from '@0xsequence/design-system'
-import React from 'react'
+import { Box, Button, Image, Text, useTheme } from '@0xsequence/design-system'
 
-import { bottomPageLinks, socialLinks } from '../constants'
+interface BottomPageLink {
+  label: string
+  url: string
+}
+
+export const bottomPageLinks: BottomPageLink[] = [
+  {
+    label: 'Terms',
+    url: 'https://sequence.xyz/terms'
+  },
+  {
+    label: 'About',
+    url: 'https://github.com/0xsequence/kit'
+  },
+  {
+    label: 'Blog',
+    url: 'https://sequence.xyz/blog'
+  },
+  {
+    label: 'Builder',
+    url: 'https://sequence.build'
+  },
+  {
+    label: 'Docs',
+    url: 'https://docs.sequence.xyz/wallet/connectors/kit/kit/overview'
+  }
+]
+
+interface SocialLinks {
+  id: string
+  url: string
+  icon: string
+}
+
+export const socialLinks: SocialLinks[] = [
+  {
+    id: 'discord',
+    url: 'https://discord.gg/sequence',
+    icon: 'images/discord.svg'
+  },
+  {
+    id: 'twitter',
+    url: 'https://www.twitter.com/0xsequence',
+    icon: 'images/twitter.svg'
+  },
+  {
+    id: 'youtube',
+    url: 'https://www.youtube.com/channel/UC1zHgUyV-doddTcnFNqt62Q',
+    icon: 'images/youtube.svg'
+  },
+  {
+    id: 'github',
+    url: 'https://github.com/0xsequence',
+    icon: 'images/github.svg'
+  }
+]
 
 export const Footer = () => {
   const { theme } = useTheme()
@@ -16,18 +70,13 @@ export const Footer = () => {
     return (
       <Box flexDirection="row" gap="4">
         {bottomPageLinks.map((link, index) => (
-          <Box
-            key={index}
+          <Button
+            variant="text"
             onClick={() => onClickLinkUrl(link.url)}
-            opacity={{ hover: '80' }}
-            cursor="pointer"
-            userSelect="none"
+            key={index}
             gap="4"
-          >
-            <Text fontWeight="normal" fontSize="small" color="text50">
-              {link.label}
-            </Text>
-          </Box>
+            label={<Text variant="small">{link.label}</Text>}
+          />
         ))}
       </Box>
     )
@@ -40,9 +89,8 @@ export const Footer = () => {
           return (
             <Box
               key={index}
-              opacity={{ hover: '80' }}
               cursor="pointer"
-              userSelect="none"
+              opacity={{ hover: '80' }}
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   window.open(socialLink.url)
@@ -56,6 +104,7 @@ export const Footer = () => {
                 style={{
                   filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
                 }}
+                disableAnimation
               />
             </Box>
           )

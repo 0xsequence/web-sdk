@@ -1,11 +1,11 @@
 import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
 import { useOpenConnectModal } from '@0xsequence/kit'
+import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useAccount } from 'wagmi'
 
 import { ConnectionMode } from '../config'
 
 import { Connected } from './Connected'
-import { Footer } from './Footer'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -32,13 +32,13 @@ export const Homepage = () => {
       {!isConnected ? (
         <Box flexDirection="column" alignItems="center" justifyContent="center" gap="5" height="vh">
           <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
-            <Image style={{ width: '48px' }} src="kit-logo.svg" />
+            <Image style={{ width: '48px' }} src="images/kit-logo.svg" />
             <Image
               style={{
                 width: '32px',
                 filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
               }}
-              src="kit-logo-text.svg"
+              src="images/kit-logo-text.svg"
             />
           </Box>
 
