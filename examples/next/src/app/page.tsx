@@ -16,7 +16,7 @@ export default function Home() {
       {!isConnected ? (
         <Box flexDirection="column" alignItems="center" justifyContent="center" gap="5" height="vh">
           <Box background="white" padding="2" borderRadius="sm">
-            <Image alt="Next" src="next.svg" height="3" disableAnimation />
+            <Image alt="Next" src="images/next.svg" height="3" disableAnimation />
           </Box>
           <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
             <Image alt="Sequence Kit Logo" style={{ width: '48px' }} src="images/kit-logo.svg" disableAnimation />
