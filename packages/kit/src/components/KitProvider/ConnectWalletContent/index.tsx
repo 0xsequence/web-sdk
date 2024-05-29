@@ -313,6 +313,9 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   )
 }
 
+const BUTTON_SIZE = '14'
+const ICON_SIZE = '10'
+
 interface ConnectButtonProps {
   connector: ExtendedConnector
   label?: string
@@ -330,15 +333,15 @@ const ConnectButton = (props: ConnectButtonProps) => {
     <Tooltip message={label || walletProps.name}>
       <Card
         clickable
-        width="10"
-        height="10"
+        width={BUTTON_SIZE}
+        height={BUTTON_SIZE}
         padding="2"
         borderRadius="xs"
         justifyContent="center"
         alignItems="center"
         onClick={() => onConnect(connector)}
       >
-        <Box as={Logo} width="6" height="6" />
+        <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
       </Card>
     </Tooltip>
   )
@@ -362,24 +365,31 @@ const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
 
   return !isPendingNonce ? (
     <Tooltip message="Google" disabled={!enableGoogleTooltip}>
-      <Card clickable background="transparent" borderRadius="xs" padding="0" width="10" height="10" position="relative">
+      <Card
+        clickable
+        background="transparent"
+        borderRadius="xs"
+        padding="0"
+        width={BUTTON_SIZE}
+        height={BUTTON_SIZE}
+        position="relative"
+      >
         <Box
-          width="10"
-          height="10"
+          width="full"
+          height="full"
           overflow="hidden"
           borderRadius="sm"
           alignItems="center"
           justifyContent="center"
-          style={{ opacity: 0.0000001 }}
+          style={{ opacity: 0.0000001, transform: 'scale(1.4)' }}
         >
           <GoogleLogin
             type="icon"
             size="large"
-            width={40}
+            width="56"
             nonce={sessionHash}
             onSuccess={credentialResponse => {
               if (credentialResponse.credential) {
-                console.log(credentialResponse)
                 storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
                 onConnect(connector)
               }
@@ -397,12 +407,12 @@ const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
           alignItems="center"
           position="absolute"
           pointerEvents="none"
-          width="10"
-          height="10"
+          width="full"
+          height="full"
           top="0"
           right="0"
         >
-          <Box as={Logo} width="6" height="6" />
+          <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
         </Box>
       </Card>
     </Tooltip>
