@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 2.8.3
+
+### Patch Changes
+
+- Update to NFT Checkout
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.3
+
 ## 2.8.2
 
 ### Patch Changes

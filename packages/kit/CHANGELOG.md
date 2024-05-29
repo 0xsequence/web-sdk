@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.3
+
+### Patch Changes
+
+- Update to NFT Checkout
+
 ## 2.8.2
 
 ### Patch Changes
