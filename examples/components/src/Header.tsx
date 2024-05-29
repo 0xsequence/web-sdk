@@ -10,7 +10,8 @@ import {
   CloseIcon,
   Card,
   Button,
-  ChevronDownIcon
+  ChevronDownIcon,
+  SignoutIcon
 } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
@@ -71,6 +72,7 @@ const AccountMenu = () => {
           paddingX="4"
           paddingY="3"
           cursor="pointer"
+          style={{ height: 52 }}
         >
           <Box gap="2" alignItems="center">
             <Box flexDirection="column">
@@ -80,11 +82,6 @@ const AccountMenu = () => {
                   {truncateAddress(String(address), 4)}
                 </Text>
               </Box>
-              {/* <Box alignItems="center" justifyContent="flex-end" flexDirection="row">
-                <Text variant="small" color="text50">
-                  {connector?.name}
-                </Text>
-              </Box> */}
             </Box>
 
             <Box color="text50">
@@ -94,16 +91,46 @@ const AccountMenu = () => {
         </Box>
       </PopoverPrimitive.Trigger>
 
-      <PopoverPrimitive.Anchor />
-
       {isOpen && (
         <PopoverPrimitive.Portal>
-          <PopoverPrimitive.Content asChild>
-            <Card zIndex="20">
-              <Button label="Sign out" onClick={() => disconnect()} />
-              <PopoverPrimitive.Close asChild>
-                <IconButton icon={CloseIcon} size="xs" />
-              </PopoverPrimitive.Close>
+          <PopoverPrimitive.Content side="bottom" sideOffset={8} align="end" asChild>
+            <Card
+              zIndex="20"
+              background="backgroundRaised"
+              backdropFilter="blur"
+              position="relative"
+              padding="2"
+              style={{ minWidth: 360 }}
+            >
+              {/* <PopoverPrimitive.Close asChild>
+                <IconButton icon={CloseIcon} size="xs" position="absolute" top="4" right="4" />
+              </PopoverPrimitive.Close> */}
+
+              <Card>
+                <Box alignItems="center" justifyContent="space-between">
+                  <Text variant="normal" fontWeight="bold" color="text100">
+                    Account
+                  </Text>
+                  <Text variant="small" color="text50">
+                    {connector?.name}
+                  </Text>
+                </Box>
+
+                <Text as="div" marginTop="2" variant="normal" color="text80">
+                  {address}
+                </Text>
+              </Card>
+
+              <Box marginTop="2">
+                <Button
+                  width="full"
+                  shape="square"
+                  variant="emphasis"
+                  rightIcon={SignoutIcon}
+                  label="Sign out"
+                  onClick={() => disconnect()}
+                />
+              </Box>
             </Card>
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
