@@ -38,7 +38,8 @@ import {
   useWriteContract
 } from 'wagmi'
 
-import { messageToSign, abi } from '../constants'
+import { messageToSign } from '../constants'
+import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings } from '../utils'
 
 import { Header } from './Header'
