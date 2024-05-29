@@ -1,0 +1,13 @@
+{
+  "name": "@0xsequence/kit-example-shared-components",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "typescript": "latest"
+  },
+  "peerDependencies": {
+    "@0xsequence/design-system": "*",
+    "wagmi": "*"
+  }
+}

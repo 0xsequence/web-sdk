@@ -20,6 +20,7 @@ import {
   getModalPositionCss
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal } from '@0xsequence/kit-checkout'
+import { Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
@@ -41,8 +42,6 @@ import {
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings } from '../utils'
-
-import { Header } from './Header'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
