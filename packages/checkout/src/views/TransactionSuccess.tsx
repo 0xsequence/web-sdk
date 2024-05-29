@@ -11,7 +11,7 @@ export const TransactionSuccess = () => {
   const nav = useNavigation()
   const navigation = nav.navigation as TransactionSuccessNavigation
 
-  const chainId = settings?.creditCardCheckout?.chainId || 137
+  const chainId = settings?.creditCardCheckout?.chainId || ChainId.POLYGON
   const network = sequence.network.allNetworks.find(n => n.chainId === chainId)
 
   useEffect(() => {

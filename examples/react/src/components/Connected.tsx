@@ -248,7 +248,7 @@ export const Connected = () => {
   const onCheckoutInfoConfirm = () => {
     setIsCheckoutInfoModalOpen(false)
     if (checkoutOrderId !== '' && checkoutTokenContractAddress !== '' && checkoutTokenId !== '') {
-      const chainId = 137
+      const chainId = ChainId.POLYGON
       const orderbookAddress = '0xB537a160472183f2150d42EB1c3DD6684A55f74c'
       const recipientAddress = address || ''
       const nftQuantity = '1'
