@@ -170,7 +170,13 @@ The settings are described in more detailed in the Sequence Kit documentation.
 | [@0xsequence/kit-connectors](https://github.com/0xsequence/kit/tree/master/packages/connectors) | Connectors for sequence kit including popular web3 wallets and social logins | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connectors/README.md) |
 | [@0xsequence/kit-wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet)         | Embedded wallets for viewing and sending coins and collectibles              | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)     |
 | [@0xsequence/kit-checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout)     | Checkout modal with fiat onramp                                              | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md)   |
-| [@0xsequence/kit-example-react](https://github.com/0xsequence/kit/tree/master/examples/react)   | Example application showing sign in, wallet and checkout                     | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md)      |
+
+## Examples
+
+| Application                                                                                   | Description                                                            | Docs                                                                                |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [@0xsequence/kit-example-react](https://github.com/0xsequence/kit/tree/master/examples/react) | React example application showing sign in, wallet and checkout         | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md) |
+| [@0xsequence/kit-example-next](https://github.com/0xsequence/kit/tree/master/examples/next)   | Next example application showing sign in, wallet and checkout with SSR | [Read more](https://github.com/0xsequence/kit/blob/master/examples/next/README.md)  |
 
 ## Local Development
 
