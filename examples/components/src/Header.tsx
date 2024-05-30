@@ -101,10 +101,6 @@ const AccountMenu = () => {
               padding="2"
               style={{ minWidth: 360 }}
             >
-              {/* <PopoverPrimitive.Close asChild>
-                <IconButton icon={CloseIcon} size="xs" position="absolute" top="4" right="4" />
-              </PopoverPrimitive.Close> */}
-
               <Card>
                 <Box alignItems="center" justifyContent="space-between">
                   <Text variant="normal" fontWeight="bold" color="text100">
