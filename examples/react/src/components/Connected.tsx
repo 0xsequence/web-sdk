@@ -25,7 +25,8 @@ import {
   useWriteContract
 } from 'wagmi'
 
-import { messageToSign, abi } from '../constants'
+import { messageToSign } from '../constants'
+import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode
