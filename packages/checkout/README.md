@@ -1,5 +1,4 @@
-Sequence Kit Checkout
-==========================
+# Sequence Kit Checkout
 
 <div align="center">
   <img src="../../public/docs/checkout-modal.png">
@@ -8,6 +7,7 @@ Sequence Kit Checkout
 Checkout modal for Sequence Kit. Displays a list a summary of collectibles to be purchased
 
 # Installing the module
+
 First install the package:
 
 ```bash
@@ -23,11 +23,10 @@ Then the wallet provider module must placed below the Sequence Kit Core provider
 ```js
 import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
 
-
 const App = () => {
   return (
     <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}> 
+      <QueryClientProvider client={queryClient}>
         <KitProvider>
           <KitCheckoutProvider>
             <Page />
@@ -39,8 +38,8 @@ const App = () => {
 }
 ```
 
-
 ## Open the checkout modal
+
 The `useCheckoutModal` hook must be used to open the modal.
 Furthermore, it is necessary to pass a settings object.
 
@@ -50,7 +49,7 @@ Furthermore, it is necessary to pass a settings object.
 
   const MyComponent = () => {
     const { triggerCheckout } = useCheckoutModal()
-  
+
     const onClick = () => {
       const checkoutSettings = {...}
       triggerCheckout(checkoutSettings)
@@ -64,6 +63,7 @@ Furthermore, it is necessary to pass a settings object.
 ```
 
 ## Configuration
+
 The react example has an example configuration for setting up the checkout.
 
 Example [settings](../../examples/react/src/utils/settings.ts)
@@ -77,6 +77,7 @@ const checkoutSettings = {
 ```
 
 ### cryptoCheckout
+
 The `cryptoCheckout` specifies settings regarding checking out with crypto.
 An example usecase might be interacting with a minting contract.
 
@@ -97,6 +98,7 @@ const checkoutConfig = {
 ```
 
 ### creditCardCheckout
+
 The `creditCardCheckout` field specifies settings regarding checking out with credit card.
 
 `triggerCheckout` must be called in order to open the checkout modal.
@@ -129,35 +131,35 @@ const creditCardCheckout = {
 ```
 
 ### orderSummaryItems
+
 This field specific the list of collectibles that will show up in the order summary.
 
 ```js
-    orderSummaryItems: [
-      {
-        contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-        tokenId: '66597',
-        quantityRaw: '100'
-      },
-    ]
+orderSummaryItems: [
+  {
+    contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
+    tokenId: '66597',
+    quantityRaw: '100'
+  }
+]
 ```
 
 ## Open the Add Funds by Credit Card Modal
+
 Kit allows users to buy cryptocurrencies using credit card. Calling the `triggerAddFunds` function will cause a modal to appear.
 
 ```js
-  import { useAddFundsModal } from '@0xsequence/kit-checkout'
+import { useAddFundsModal } from '@0xsequence/kit-checkout'
 
-  const MyComponent = () => {
-    const { triggerAddFunds } = useAddFundsModal()
+const MyComponent = () => {
+  const { triggerAddFunds } = useAddFundsModal()
 
-    const onClick = () => {
-      triggerAddFunds({
-        walletAddress: recipientAddress,
-      })
-    }
-
-    return (
-      <button onClick={onClick}>Add Funds</button>
-    )
+  const onClick = () => {
+    triggerAddFunds({
+      walletAddress: recipientAddress
+    })
   }
+
+  return <button onClick={onClick}>Add Funds</button>
+}
 ```
