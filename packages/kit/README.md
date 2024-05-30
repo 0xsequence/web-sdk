@@ -2,21 +2,21 @@
   <img src="https://raw.githubusercontent.com/0xsequence/kit/master/public/docs/kit-logo-in-one.png">
 </div>
 
-Sequence Kit 🧰
-============
+# Sequence Kit 🧰
 
 Sequence Kit 🧰 is a library enabling developers to easily integrate web3 wallets in their app. It is based on [wagmi](https://wagmi.sh/) and supports all wagmi features.
 
 - Connect via social logins eg: facebook, google, discord, etc...! 🔐🪪
 - Connect to popular web3 wallets eg: walletConnect, metamask ! 🦊 ⛓️
-- Full-fledged embedded wallet for coins and collectibles  👛 🖼️ 🪙 
+- Full-fledged embedded wallet for coins and collectibles 👛 🖼️ 🪙
 - Fiat onramp 💵 💶 💴 💷
-
 
 View the [demo](https://0xsequence.github.io/kit)! 👀
 
 ## Quick Start
+
 ### Installing the Library
+
 `@0xsequence/kit` is the core package. Any extra modules require this package to be installed first.
 To install this package:
 
@@ -29,8 +29,8 @@ yarn add @0xsequence/kit @0xsequence/kit-connectors wagmi ethers@5.7.2 viem 0xse
 ```
 
 ### Setting up the Library
-React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
+React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
 ```js
 import MyPage from './components/MyPage'
@@ -40,11 +40,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
 
-const queryClient = new QueryClient() 
+const queryClient = new QueryClient()
 
 function App() {
   const chains = [mainnet, polygon] as [Chain, ...Chain[]]
-  
+
   const projectAccessKey = 'xyz'
 
   const connectors = getDefaultConnectors({
@@ -59,7 +59,7 @@ function App() {
   chains.forEach(chain => {
     transports[chain.id] = http()
   })
-  
+
   const config = createConfig({
     transports,
     connectors,
@@ -68,7 +68,7 @@ function App() {
 
   return (
     <WagmiConfig config={config}>
-      <QueryClientProvider client={queryClient}> 
+      <QueryClientProvider client={queryClient}>
         <KitProvider>
           <MyPage />
         </KitProvider>
@@ -77,7 +77,9 @@ function App() {
   );
 }
 ```
+
 ### Opening the Sign in Modal
+
 <div align="center">
   <img src="public/docs/sign-in-modal.png">
 </div>
@@ -97,40 +99,36 @@ const MyReactComponent = () => {
     setOpenConnectModal(true)
   }
 
-  return (
-    <>
-      {!isConnected && (
-        <button onClick={onClick}>
-          Sign in
-        </button>
-      )}
-    </>
-  )
+  return <>{!isConnected && <button onClick={onClick}>Sign in</button>}</>
 }
 ```
+
 ## Hooks
+
 ### useOpenConnectModal
+
 Use the `useOpenConnectModal` to change to open or close the connection modal.
 
 ```js
 import { useOpenConnectModal } from '@0xsequence/kit'
 // ...
-  const { setOpenConnectModal } = useOpenConnectModal()
-  setOpenConnectModal(true)
-
+const { setOpenConnectModal } = useOpenConnectModal()
+setOpenConnectModal(true)
 ```
 
 ### useTheme
+
 Use the `useTheme` hook to get information about the current theme, such as light or dark, or set it to something else.
 
 ```js
 import { useTheme } from '@0xsequence/kit'
-  const { theme, setTheme } = useTheme()
+const { theme, setTheme } = useTheme()
 
-  setTheme('light')
+setTheme('light')
 ```
 
 ## Customization
+
 The `KitProvider` wrapper can accept an optional config object.
 
 The settings are described in more detailed in the Sequence Kit documentation.
@@ -167,16 +165,16 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 ## Packages
 
-| Package  | Description | Docs |
-| ------------- | ------------- | ------------- |
-| [@0xsequence/kit](https://github.com/0xsequence/kit/tree/master/packages/kit)  | Core package for Sequence Kit  | [Read more](https://github.com/0xsequence/kit/blob/master/packages/kit/README.md)  |
-| [@0xsequence/kit-connectors](https://github.com/0xsequence/kit/tree/master/packages/connectors)  | Connectors for sequence kit including popular web3 wallets and social logins  | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connectors/README.md)  |
-| [@0xsequence/kit-wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet)  | Embedded wallets for viewing and sending coins and collectibles   | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)  |
-| [@0xsequence/kit-checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout)  | Checkout modal with fiat onramp | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md)  |
-| [@0xsequence/kit-example-react](https://github.com/0xsequence/kit/tree/master/examples/react)  | Example application showing sign in, wallet and checkout  | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md)  |
-
+| Package                                                                                         | Description                                                                  | Docs                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [@0xsequence/kit](https://github.com/0xsequence/kit/tree/master/packages/kit)                   | Core package for Sequence Kit                                                | [Read more](https://github.com/0xsequence/kit/blob/master/packages/kit/README.md)        |
+| [@0xsequence/kit-connectors](https://github.com/0xsequence/kit/tree/master/packages/connectors) | Connectors for sequence kit including popular web3 wallets and social logins | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connectors/README.md) |
+| [@0xsequence/kit-wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet)         | Embedded wallets for viewing and sending coins and collectibles              | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)     |
+| [@0xsequence/kit-checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout)     | Checkout modal with fiat onramp                                              | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md)   |
+| [@0xsequence/kit-example-react](https://github.com/0xsequence/kit/tree/master/examples/react)   | Example application showing sign in, wallet and checkout                     | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md)      |
 
 ## Local Development
+
 <div align="center">
   <img src="public/docs/kit-demo.png">
 </div>
@@ -184,10 +182,11 @@ The settings are described in more detailed in the Sequence Kit documentation.
 The React example can be used to test the library locally.
 
 1. `pnpm install`
-2. From the root folder, run `pnpm watch` to build the package in watch mode in one console. 
-3. From the root folder, run `pnpm start:react` to run the react example in another console.
+2. From the root folder, run `pnpm build` to build the packages.
+3. From the root folder, run `pnpm dev:react` or `pnpm dev:next` to run the examples.
 
 ## What to do next?
+
 Now that the core package is installed, you can install the [embedded wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet) or take a look at the [checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout).
 
 ## LICENSE
