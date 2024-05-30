@@ -13,6 +13,11 @@ yarn add @0xsequence/kit-connectors
 ```
 
 # Supported wallets
+## Wallet as a Service
+- Email
+- Google
+- Apple
+
 ## Supported social logins
 - Facebook
 - Google
