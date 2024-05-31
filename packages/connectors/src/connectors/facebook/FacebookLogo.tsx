@@ -22,8 +22,8 @@ export const FacebookLogo: React.FunctionComponent = (props: LogoProps) => {
           y2="2.85086"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0062E0" />
-          <stop offset="1" stop-color="#19AFFF" />
+          <stop stopColor="#0062E0" />
+          <stop offset="1" stopColor="#19AFFF" />
         </linearGradient>
       </defs>
     </svg>
