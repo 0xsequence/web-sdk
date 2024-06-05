@@ -159,7 +159,7 @@ const NetworkSelect = () => {
           <Box alignItems="center" gap="2">
             <NetworkImage chainId={chainId} size="sm" />
             <Text display={{ sm: 'none', lg: 'block' }} variant="normal" fontWeight="bold" color="text100">
-              {networks.find(x => x.chainId === chainId)!.title}
+              {networks.find(x => x.chainId === chainId)?.title || chainId}
             </Text>
           </Box>
 
