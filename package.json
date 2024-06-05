@@ -6,6 +6,7 @@
   "scripts": {
     "build": "turbo run build --filter={packages/*}",
     "build:clean": "turbo run build:clean",
+    "dev": "turbo watch dev --filter={packages/*}",
     "reinstall": "rimraf -g ./**/node_modules && pnpm install",
     "test": "turbo run test",
     "lint": "eslint -c .eslintrc.js 'packages/**/src/**/*.{ts,tsx}'",
