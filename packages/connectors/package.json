@@ -45,7 +45,7 @@
   "peerDependencies": {
     "0xsequence": ">=1.9.26",
     "@0xsequence/kit": "workspace:*",
-    "ethers": ">=5.7.2",
+    "ethers": ">= 5.7.2 < 6",
     "react": ">=17",
     "react-dom": ">=17",
     "uuid": ">=8.3.2",

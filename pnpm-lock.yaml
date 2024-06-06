@@ -306,7 +306,7 @@ importers:
         specifier: ^0.11.1
         version: 0.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ethers:
-        specifier: '>=5.7.2'
+        specifier: '>= 5.7.2 < 6'
         version: 5.7.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       react:
         specifier: '>=17'

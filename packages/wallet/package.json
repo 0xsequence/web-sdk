@@ -47,7 +47,7 @@
   "peerDependencies": {
     "@0xsequence/design-system": ">=1.7.0",
     "@0xsequence/kit": "workspace:*",
-    "ethers": ">=5.7.2",
+    "ethers": ">= 5.7.2 < 6",
     "framer-motion": ">=8.5.2",
     "react": ">=17",
     "react-dom": ">=17",
