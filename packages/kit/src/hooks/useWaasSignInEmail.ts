@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+'use client'
+
+import { useEffect, useState } from 'react'
 import { useConfig, useAccount } from 'wagmi'
 
 import { LocalStorageKey } from '../constants/localStorage'
