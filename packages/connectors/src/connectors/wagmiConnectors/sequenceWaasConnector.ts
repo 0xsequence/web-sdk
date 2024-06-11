@@ -35,6 +35,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasGoogleClientID]: string
     [LocalStorageKey.WaasAppleClientID]: string
     [LocalStorageKey.WaasAppleRedirectURI]: string
+    [LocalStorageKey.WaasSignInEmail]: string
   }
 
   const isDev = !!params?.isDev
@@ -125,7 +126,10 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
         if (idToken) {
           try {
-            await provider.sequenceWaas.signIn({ idToken }, randomName())
+            const signInResponse = await provider.sequenceWaas.signIn({ idToken }, randomName())
+            if (signInResponse?.email) {
+              await config.storage?.setItem(LocalStorageKey.WaasSignInEmail, signInResponse.email)
+            }
           } catch (e) {
             console.log(e)
             await this.disconnect()

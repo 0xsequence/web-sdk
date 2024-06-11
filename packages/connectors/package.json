@@ -33,8 +33,8 @@
   "dependencies": {
     "@0xsequence/auth": "^1.9.27",
     "@0xsequence/provider": "^1.9.27",
-    "@0xsequence/waas": "^1.9.27",
-    "@0xsequence/waas-ethers": "^1.9.27",
+    "@0xsequence/waas": "^1.9.30",
+    "@0xsequence/waas-ethers": "^1.9.30",
     "@react-oauth/google": "^0.11.1",
     "react-apple-signin-auth": "^1.1.0"
   },
