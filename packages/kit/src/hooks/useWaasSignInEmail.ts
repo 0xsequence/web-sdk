@@ -6,7 +6,7 @@ import { LocalStorageKey } from '../constants/localStorage'
 export const useWaasSignInEmail = () => {
   const { storage } = useConfig()
   const { isConnected } = useAccount()
-  const [email, setEmail] = useState<undefined|string>()
+  const [email, setEmail] = useState<null|string>(null)
 
 
   const storeEmail = async () => {
@@ -20,7 +20,7 @@ export const useWaasSignInEmail = () => {
     if (isConnected) {
       storeEmail()
     } else {
-      setEmail(undefined)
+      setEmail(null)
     }
   }, [isConnected])
 

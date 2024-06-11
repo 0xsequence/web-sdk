@@ -6,7 +6,6 @@ import {
   signEthAuthProof,
   validateEthProof,
   getModalPositionCss,
-  useWaasSignInEmail
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
@@ -35,15 +34,12 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
-  const waasSignInEmail = useWaasSignInEmail()
   const { address } = useAccount()
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
-
-  console.log('waasSignInEmaill...', waasSignInEmail)
 
   const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
 
