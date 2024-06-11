@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.4
+
+### Patch Changes
+
+- Added hook for checking sardine status
+
 ## 2.8.3
 
 ### Patch Changes

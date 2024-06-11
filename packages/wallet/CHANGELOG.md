@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 2.8.4
+
+### Patch Changes
+
+- Added hook for checking sardine status
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.4
+
 ## 2.8.3
 
 ### Patch Changes
