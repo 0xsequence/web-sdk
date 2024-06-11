@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 2.8.5
+
+### Patch Changes
+
+- Added useWaasSignInEmail hook to kit
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.5
+
 ## 2.8.4
 
 ### Patch Changes

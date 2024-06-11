@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.5
+
+### Patch Changes
+
+- Added useWaasSignInEmail hook to kit
+
 ## 2.8.4
 
 ### Patch Changes

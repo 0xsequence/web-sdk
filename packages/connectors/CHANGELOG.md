@@ -1,5 +1,12 @@
 # @0xsequence/kit-connectors
 
+## 2.8.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.5
+
 ## 2.8.4
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @0xsequence/kit-example-next
 
+## 0.6.5
+
+### Patch Changes
+
+- Added useWaasSignInEmail hook to kit
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.5
+  - @0xsequence/kit-checkout@2.8.5
+  - @0xsequence/kit-wallet@2.8.5
+  - @0xsequence/kit-connectors@2.8.5
+
 ## 0.6.4
 
 ### Patch Changes
