@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.6
+
+### Patch Changes
+
+- Added a way to disable to the useCheckoutWhitelistStatus hook
+
 ## 2.8.5
 
 ### Patch Changes
