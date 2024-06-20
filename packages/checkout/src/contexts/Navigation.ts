@@ -1,4 +1,5 @@
 'use client'
+import { CreditCardCheckout } from '../contexts'
 
 import { createGenericContext } from './genericContext'
 
@@ -29,8 +30,7 @@ export interface TransactionErrorNavigation {
 }
 
 export interface TransactionPendingParams {
-  orderId: string
-  authToken: string
+  creditCardCheckout: CreditCardCheckout
 }
 
 export interface TransactionPendingNavigation {
@@ -50,6 +50,7 @@ export type History = Navigation[]
 type NavigationContext = {
   setHistory: (history: History) => void
   history: History
+  defaultLocation: Navigation
 }
 
 export const [useNavigationContext, NavigationContextProvider] = createGenericContext<NavigationContext>()

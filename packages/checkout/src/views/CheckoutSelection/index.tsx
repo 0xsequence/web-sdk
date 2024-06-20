@@ -11,12 +11,11 @@ import {
   Skeleton,
   TokenImage
 } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useTokenMetadata, useProjectAccessKey } from '@0xsequence/kit'
+import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useProjectAccessKey } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
-import { fetchSardineClientToken } from '../../api'
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
 import { compareAddress, formatDisplay } from '../../utils'
@@ -66,19 +65,15 @@ export const CheckoutSelection = () => {
 
   const chainId = settings?.cryptoCheckout?.chainId || settings?.creditCardCheckout?.chainId || 1
 
-  const { data: tokensMetadata } = useTokenMetadata(chainId, orderSummaryItems[0].contractAddress, [orderSummaryItems[0].tokenId])
-  const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
-
   const triggerSardineTransaction = async () => {
     console.log('trigger sardine transaction')
 
     if (settings?.creditCardCheckout) {
-      const isDev = settings?.creditCardCheckout?.isDev || false
-      const { token, orderId } = await fetchSardineClientToken(settings.creditCardCheckout, isDev, projectAccessKey, tokenMetadata)
-
       setNavigation({
         location: 'transaction-pending',
-        params: { orderId, authToken: token }
+        params: {
+          creditCardCheckout: settings.creditCardCheckout
+        }
       })
     }
   }

@@ -42,7 +42,7 @@ export interface CheckoutSettings {
     triggerTransaction: () => void
     coinQuantity: CoinQuantity
   }
-  orderSummaryItems: OrderSummaryItem[]
+  orderSummaryItems?: OrderSummaryItem[]
 }
 
 type CheckoutModalContext = {

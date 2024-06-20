@@ -13,7 +13,7 @@ import {
   CheckoutModalContextProvider,
   CheckoutSettings,
   AddFundsContextProvider,
-  AddFundsSettings
+  AddFundsSettings,
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import {
@@ -28,10 +28,6 @@ import '@0xsequence/design-system/styles.css'
 
 export type KitCheckoutProvider = {
   children: React.ReactNode
-}
-
-export const DEFAULT_LOCATION: Navigation = {
-  location: 'select-method-checkout'
 }
 
 export const KitCheckoutProvider = (props: KitCheckoutProvider) => {
@@ -51,7 +47,26 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
   const [settings, setSettings] = useState<CheckoutSettings>()
   const [addFundsSettings, setAddFundsSettings] = useState<AddFundsSettings>()
   const [history, setHistory] = useState<History>([])
-  const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
+
+  const getDefaultLocation = (): Navigation => {
+    // skip the order summary for credit card checkout if no items provided
+    const orderSummaryItems = settings?.orderSummaryItems || []
+    const creditCardSettings = settings?.creditCardCheckout
+    if (orderSummaryItems.length === 0 && creditCardSettings) {
+      return({
+        location: 'transaction-pending',
+        params: {
+          creditCardCheckout: creditCardSettings
+        }  
+      })
+    } else {
+      return({
+        location: 'select-method-checkout'
+      })
+    }
+  }
+
+  const navigation = history.length > 0 ? history[history.length - 1] : getDefaultLocation()
 
   const triggerCheckout = (settings: CheckoutSettings) => {
     setSettings(settings)
@@ -141,7 +156,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
           theme,
         }}
       >
-        <NavigationContextProvider value={{ history, setHistory }}>
+        <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>
           <div id="kit-checkout">
             <ThemeProvider root="#kit-checkout" scope="kit" theme={theme}>
               <AnimatePresence>

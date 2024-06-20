@@ -12,12 +12,19 @@ export interface MethodArguments {
   [key: string]: any
 }
 
-export const fetchSardineClientToken = async (
+export interface FetchSardineClientTokenArgs {
   order: CreditCardCheckout,
   isDev: boolean,
   projectAccessKey: string,
   tokenMetadata?: TokenMetadata
-): Promise<FetchSardineClientTokenReturn> => {
+}
+
+export const fetchSardineClientToken = async ({
+  order,
+  isDev,
+  projectAccessKey,
+  tokenMetadata
+ }: FetchSardineClientTokenArgs): Promise<FetchSardineClientTokenReturn> => {
   const randomNumber = Math.floor(Math.random() * 1000000)
   const timestamp = new Date().getTime()
   const referenceId = `sequence-kit-${randomNumber}-${timestamp}-${order.recipientAddress}-${networks[order.chainId as ChainId].name}-${order.contractAddress}-${order.contractAddress}-${order.recipientAddress}`

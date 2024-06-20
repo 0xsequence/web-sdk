@@ -1,5 +1,4 @@
 import { useNavigationContext, Navigation, History } from '../contexts/Navigation'
-import { DEFAULT_LOCATION } from '../shared/components/KitCheckoutProvider'
 
 interface UseNavigation {
   setNavigation: (navigation: Navigation) => void
@@ -10,7 +9,7 @@ interface UseNavigation {
 }
 
 export const useNavigation = (): UseNavigation => {
-  const { setHistory, history } = useNavigationContext()
+  const { setHistory, history, defaultLocation } = useNavigationContext()
 
   const setNavigation = (navigation: Navigation) => {
     // Scroll to top of page when navigating to a new page
@@ -28,7 +27,7 @@ export const useNavigation = (): UseNavigation => {
     setHistory(newHistory)
   }
 
-  const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
+  const navigation = history.length > 0 ? history[history.length - 1] : defaultLocation
 
   return { setNavigation, history, setHistory, goBack, navigation }
 }

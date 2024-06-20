@@ -45,14 +45,14 @@ export const getCheckoutSettings = (args: GetCheckoutSettings) => {
       onError: (e) => { console.log('credit card checkout error', e) },
       ...args
     },
-    orderSummaryItems: [
-      {
-        chainId: args.chainId,
-        contractAddress: args.nftAddress,
-        tokenId: args.nftId,
-        quantityRaw: String(args.nftQuantity)
-      }
-    ]
+    // orderSummaryItems: [
+    //   {
+    //     chainId: args.chainId,
+    //     contractAddress: args.nftAddress,
+    //     tokenId: args.nftId,
+    //     quantityRaw: String(args.nftQuantity)
+    //   }
+    // ]
   }
 
   return checkoutSettings
