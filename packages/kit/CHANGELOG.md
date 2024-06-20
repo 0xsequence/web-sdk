@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.7
+
+### Patch Changes
+
+- Simplified credit card checkout flow
+
 ## 2.8.6
 
 ### Patch Changes

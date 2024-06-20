@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 2.8.7
+
+### Patch Changes
+
+- Simplified credit card checkout flow
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.7
+
 ## 2.8.6
 
 ### Patch Changes
