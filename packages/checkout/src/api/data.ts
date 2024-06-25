@@ -64,6 +64,7 @@ export const fetchSardineClientToken = async ({
         tokenSymbol: order.currencySymbol,
         tokenDecimals: Number(order.currencyDecimals),
         callData: order.calldata,
+        ...(order?.approveSpenderAddress ? { approveSpenderAddress: order.approveSpenderAddress } : {})
       }
     })
   })
