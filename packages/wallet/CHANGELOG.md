@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 2.8.8
+
+### Patch Changes
+
+- Added approvedSpenderAddress to kit checkout
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.8
+
 ## 2.8.7
 
 ### Patch Changes

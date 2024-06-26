@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.8
+
+### Patch Changes
+
+- Added approvedSpenderAddress to kit checkout
+
 ## 2.8.7
 
 ### Patch Changes
