@@ -25,10 +25,6 @@ export const fetchSardineClientToken = async ({
   projectAccessKey,
   tokenMetadata
  }: FetchSardineClientTokenArgs): Promise<FetchSardineClientTokenReturn> => {
-  const randomNumber = Math.floor(Math.random() * 1000000)
-  const timestamp = new Date().getTime()
-  const referenceId = `sequence-kit-${randomNumber}-${timestamp}-${order.recipientAddress}-${networks[order.chainId as ChainId].name}-${order.contractAddress}-${order.contractAddress}-${order.recipientAddress}`
-
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
   const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
   const url = isDev
@@ -43,19 +39,12 @@ export const fetchSardineClientToken = async ({
     },
     body: JSON.stringify({
       params: {
-        referenceId,
-        expiresIn: 3600,
-        paymentMethodTypeConfig: {
-          enabled: ['us_debit', 'us_credit', 'international_debit', 'international_credit', 'ach'],
-          default: order.defaultPaymentMethodType
-        },
         name: tokenMetadata?.name || 'Unknown',
-        imageUrl: tokenMetadata?.image || 'https://www.sequence.market/images/placeholder.png',
+        imageUrl: tokenMetadata?.image || 'https://sequence.market/images/placeholder.png',
         network: networks[order.chainId as ChainId].name,
         recipientAddress: order.recipientAddress,
         contractAddress: order.contractAddress,
         platform: "calldata_execution",
-        executionType: 'smart_contract',
         blockchainNftId: order.nftId,
         quantity: Number(order.nftQuantity),
         decimals: Number(order?.nftDecimals || 0),
@@ -64,7 +53,7 @@ export const fetchSardineClientToken = async ({
         tokenSymbol: order.currencySymbol,
         tokenDecimals: Number(order.currencyDecimals),
         callData: order.calldata,
-        ...(order?.approveSpenderAddress ? { approveSpenderAddress: order.approveSpenderAddress } : {})
+        ...(order?.approvedSpenderAddress ? { approvedSpenderAddress: order.approvedSpenderAddress } : {})
       }
     })
   })

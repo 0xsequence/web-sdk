@@ -262,7 +262,7 @@ export const Connected = () => {
         nftAddress: checkoutTokenContractAddress,
         nftQuantity,
         isDev: true,
-        approveSpenderAddress: orderbookAddress,
+        approvedSpenderAddress: orderbookAddress,
         calldata: getOrderbookCalldata({
           orderId: checkoutOrderId,
           quantity: nftQuantity,

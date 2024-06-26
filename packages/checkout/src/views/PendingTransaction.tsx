@@ -19,12 +19,12 @@ export const PendingTransaction = () => {
   const { setNavigation } = nav
   const projectAccessKey = useProjectAccessKey()
 
-  const { data: tokensMetadata } = useTokenMetadata(creditCardCheckout.chainId, creditCardCheckout.nftAddress, [creditCardCheckout.nftId])
+  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useTokenMetadata(creditCardCheckout.chainId, creditCardCheckout.nftAddress, [creditCardCheckout.nftId])
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const isDev = settings?.creditCardCheckout?.isDev || false
 
-  const disableSardineClientTokenFetch = !tokenMetadata
+  const disableSardineClientTokenFetch = isLoadingTokenMetadata
 
   const { data, isLoading, isError } = useSardineClientToken({
     order: creditCardCheckout,
