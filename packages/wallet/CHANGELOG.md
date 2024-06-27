@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 2.8.10
+
+### Patch Changes
+
+- export getTransakLink util
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.8.10
+
 ## 2.8.9
 
 ### Patch Changes

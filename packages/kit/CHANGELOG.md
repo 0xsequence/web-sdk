@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.10
+
+### Patch Changes
+
+- export getTransakLink util
+
 ## 2.8.9
 
 ### Patch Changes
