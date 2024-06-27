@@ -13,5 +13,6 @@ export const useSardineClientToken = (args: FetchSardineClientTokenArgs, disable
     retry: false,
     staleTime: 0,
     enabled: !disabled,
+    refetchOnWindowFocus: false,
   })
 }
