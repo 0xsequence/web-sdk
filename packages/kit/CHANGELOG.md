@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.8.9
+
+### Patch Changes
+
+- Fix issue with NFT checkout that causes the flow to refresh upon switching tabs
+
 ## 2.8.8
 
 ### Patch Changes
