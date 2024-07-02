@@ -31,8 +31,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/auth": "^1.9.27",
-    "@0xsequence/provider": "^1.9.27",
+    "@0xsequence/auth": "^1.9.34",
+    "@0xsequence/provider": "^1.9.34",
     "@0xsequence/waas": "^1.9.30",
     "@0xsequence/waas-ethers": "^1.9.30",
     "@react-oauth/google": "^0.11.1",
