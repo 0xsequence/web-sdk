@@ -1,5 +1,17 @@
 # @0xsequence/kit-example-next
 
+## 0.6.11
+
+### Patch Changes
+
+- Updating sequence.js to v1.9.34
+
+- Updated dependencies []:
+  - @0xsequence/kit-connectors@2.8.11
+  - @0xsequence/kit-checkout@2.8.11
+  - @0xsequence/kit-wallet@2.8.11
+  - @0xsequence/kit@2.8.11
+
 ## 0.6.10
 
 ### Patch Changes
