@@ -39,7 +39,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
         params: {
           contractAddress: balance.contractAddress,
           chainId: balance.chainId,
-          tokenId: balance.tokenID
+          tokenId: balance.tokenID || ''
         }
       })
   }

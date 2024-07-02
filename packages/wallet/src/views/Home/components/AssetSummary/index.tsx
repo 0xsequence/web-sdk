@@ -11,7 +11,6 @@ import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
 import { SkeletonTiles } from './SkeletonTiles'
 
-
 export const AssetSummary = () => {
   const { address } = useAccount()
   const { setNavigation } = useNavigation()
@@ -40,7 +39,7 @@ export const AssetSummary = () => {
           params: {
             contractAddress: balance.contractAddress,
             chainId: balance.chainId,
-            tokenId: balance.tokenID
+            tokenId: balance.tokenID || ''
           }
         })
     } else if (balance.contractType === 'ERC20') {
