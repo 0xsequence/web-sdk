@@ -56,6 +56,10 @@ interface SortBalancesByTypeReturn {
   collectibles: TokenBalance[]
 }
 
+const compareTokenBalanceIds = (a: TokenBalance, b: TokenBalance) => {
+  return (a.tokenID || '').localeCompare(b.tokenID || '')
+}
+
 export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByTypeReturn => {
   const nativeTokens: TokenBalance[] = []
   const erc20Tokens: TokenBalance[] = []
@@ -72,9 +76,9 @@ export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByType
     }
   })
 
-  const sortedNativeTokens = nativeTokens.sort((a, b) => a.tokenID.localeCompare(b.tokenID))
-  const sortedErc20Tokens = erc20Tokens.sort((a, b) => a.tokenID.localeCompare(b.tokenID))
-  const sortedCollectibles = collectibles.sort((a, b) => a.tokenID.localeCompare(b.tokenID))
+  const sortedNativeTokens = nativeTokens.sort(compareTokenBalanceIds)
+  const sortedErc20Tokens = erc20Tokens.sort(compareTokenBalanceIds)
+  const sortedCollectibles = collectibles.sort(compareTokenBalanceIds)
 
   return {
     nativeTokens: sortedNativeTokens,
