@@ -43,7 +43,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const { config = {} } = props
   const { signIn = {} } = config as KitConfig
   const {
-    // showEmailInput = defaultSignInOptions.showEmailInput,
+    showEmailInput: showEmailConnector = defaultSignInOptions.showEmailInput,
     socialAuthOptions = defaultSignInOptions.socialAuthOptions,
     walletAuthOptions = defaultSignInOptions.walletAuthOptions
   } = signIn
@@ -51,7 +51,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const { openConnectModal, setOpenConnectModal } = props
 
   const [email, setEmail] = useState('')
-  const [showEmailInput, setShowEmailInput] = useState<boolean>(false) //defaultSignInOptions.showEmailInput)
+  const [showEmailInput, setShowEmailInput] = useState<boolean>(false)
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
   const [waasEmailPinCode, setWaasEmailPinCode] = useState<string[]>([])
   const { connectors: baseConnectors, connect } = useConnect()
@@ -82,7 +82,8 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     return connector._wallet.id === 'mock'
   })
 
-  const emailConnector = connectors.find(c => c._wallet.id.includes('email'))
+  const emailConnector = showEmailConnector ? connectors.find(c => c._wallet.id.includes('email')) : undefined
+
   const walletConnectors = [
     ...connectors
       .filter(connector => {
@@ -105,6 +106,8 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     .sort((a, b) => {
       return socialAuthOptions.indexOf(a._wallet.id) - socialAuthOptions.indexOf(b._wallet.id)
     })
+
+  const isEmailOnly = emailConnector && socialAuthConnectors.length === 0 && walletConnectors.length === 0
 
   const displayExtendedListButton = walletConnectors.length > 7
 
@@ -229,13 +232,13 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
       <Banner config={config as KitConfig} />
 
       <Box marginTop="6">
-        {emailConnector && showEmailInput ? (
+        {emailConnector && (showEmailInput || isEmailOnly) ? (
           <form onSubmit={onConnectInlineEmail}>
             <TextInput onChange={onChangeEmail} value={email} name="email" placeholder="Enter email" data-1p-ignore />
             <Box alignItems="center" justifyContent="center" marginTop="4">
               {!emailAuthInProgress && (
                 <Box gap="2" width="full">
-                  <Button label="Back" width="full" onClick={() => setShowEmailInput(false)} />
+                  {!isEmailOnly && <Button label="Back" width="full" onClick={() => setShowEmailInput(false)} />}
 
                   <Button
                     type="submit"
@@ -252,7 +255,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
           </form>
         ) : (
           <>
-            {socialAuthConnectors.length > 0 && (
+            {(emailConnector || socialAuthConnectors.length > 0) && (
               <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
                 {socialAuthConnectors.map(connector => {
                   return (
@@ -280,7 +283,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
 
             {walletConnectors.length > 0 && (
               <>
-                {((emailConnector && showEmailInput) || socialAuthConnectors.length > 0) && (
+                {(emailConnector || socialAuthConnectors.length > 0) && (
                   <>
                     <Divider color="backgroundSecondary" />
                     <Box justifyContent="center" alignItems="center">
