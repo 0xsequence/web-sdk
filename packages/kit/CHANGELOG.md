@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.9.0
+
+### Minor Changes
+
+- Move email sign in option to social auth options row
+
 ## 2.8.11
 
 ### Patch Changes
