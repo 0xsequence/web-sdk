@@ -39,7 +39,7 @@
     "@0xsequence/api": "^1.9.34",
     "@0xsequence/auth": "^1.9.34",
     "@0xsequence/core": "^1.9.34",
-    "@0xsequence/design-system": "^1.7.1",
+    "@0xsequence/design-system": "^1.7.3",
     "@0xsequence/ethauth": "^0.8.1",
     "@0xsequence/indexer": "^1.9.34",
     "@0xsequence/metadata": "^1.9.34",
@@ -49,16 +49,16 @@
     "framer-motion": "^8.5.2"
   },
   "peerDependencies": {
-    "0xsequence": ">=1.9.26",
-    "@0xsequence/waas": ">=1.9.24",
-    "@react-oauth/google": ">=0.11.1",
-    "@tanstack/react-query": ">=5.0.0",
+    "0xsequence": ">= 1.9.26",
+    "@0xsequence/waas": ">= 1.9.24",
+    "@react-oauth/google": ">= 0.11.1",
+    "@tanstack/react-query": ">= 5.0.0",
     "ethers": ">= 5.7.2 < 6",
-    "react": ">=17",
-    "react-apple-signin-auth": ">=1.1.0",
-    "react-dom": ">=17",
-    "viem": ">=2.0.0",
-    "wagmi": ">=2.0.0"
+    "react": ">= 17",
+    "react-apple-signin-auth": ">= 1.1.0",
+    "react-dom": ">= 17",
+    "viem": ">= 2.0.0",
+    "wagmi": ">= 2.0.0"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.37.1",

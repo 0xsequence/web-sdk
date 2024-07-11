@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "^1.7.1",
+    "@0xsequence/design-system": "^1.7.3",
     "@0xsequence/kit": "workspace:*",
     "@0xsequence/kit-checkout": "workspace:*",
     "@0xsequence/kit-connectors": "workspace:*",

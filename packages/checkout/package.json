@@ -41,17 +41,17 @@
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": ">=1.7.0",
+    "@0xsequence/design-system": ">= 1.7.3",
     "@0xsequence/kit": "workspace:*",
     "ethers": ">= 5.7.2 < 6",
-    "framer-motion": ">=8.5.2",
-    "react": ">=17",
-    "react-dom": ">=17",
-    "wagmi": ">=2.0.0",
-    "viem": ">=2.0.0"
+    "framer-motion": ">= 8.5.2",
+    "react": ">= 17",
+    "react-dom": ">= 17",
+    "wagmi": ">= 2.0.0",
+    "viem": ">= 2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.7.1",
+    "@0xsequence/design-system": "^1.7.3",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^5.7.2",
