@@ -1,14 +1,7 @@
-import {
-  KitConfig,
-  getKitConnectWallets,
-  getDefaultConnectors,
-  getDefaultWaasConnectors,
-  mock,
-  getDefaultChains
-} from '@0xsequence/kit'
+import { KitConfig, getDefaultConfig, getDefaultChains } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
-import { Transport, zeroAddress } from 'viem'
-import { createConfig, http } from 'wagmi'
+import { zeroAddress } from 'viem'
+import { createConfig } from 'wagmi'
 
 export type ConnectionMode = 'waas' | 'universal'
 
@@ -21,12 +14,6 @@ const connectionMode: ConnectionMode = searchParams.get('mode') === 'universal' 
 const isDebugMode = searchParams.has('debug')
 const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
-const chains = getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON])
-const transports = chains.reduce<Record<number, Transport>>((acc, chain) => {
-  acc[chain.id] = http()
-  return acc
-}, {})
-
 const waasConfigKey = isDebugMode
   ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
   : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9'
@@ -36,66 +23,35 @@ const googleClientId = isDebugMode
 const appleClientId = 'com.horizon.sequence.waas'
 const appleRedirectURI = window.location.origin + window.location.pathname
 
-const getWaasConnectors = () => {
-  const connectors = [
-    ...getDefaultWaasConnectors({
-      walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: ChainId.ARBITRUM_NOVA,
-      waasConfigKey,
-      googleClientId,
-      appleClientId,
-      appleRedirectURI,
-      appName: 'Kit Demo',
-      projectAccessKey,
-      // legacyEmailAuth: true,
-      enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
-      isDev: isDebugMode
-    })
-    // ...(isDebugMode
-    //   ? getKitConnectWallets(projectAccessKey, [
-    //       mock({
-    //         accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
-    //       })
-    //     ])
-    //   : [])
-  ]
+export const wagmiConfig = createConfig(
+  getDefaultConfig({
+    appName: 'Kit Demo',
+    projectAccessKey,
+    walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
+    chains: getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON]),
+    defaultChainId: ChainId.ARBITRUM_NOVA,
 
-  return connectors
-}
-
-const getUniversalConnectors = () => {
-  const connectors = [
-    ...getDefaultConnectors({
-      walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: ChainId.ARBITRUM_NOVA,
-      appName: 'demo app',
-      projectAccessKey
-    }),
-    ...(isDebugMode
-      ? getKitConnectWallets(projectAccessKey, [
-          mock({
-            accounts: ['0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9']
-          })
-        ])
-      : [])
-  ]
-  return connectors
-}
-
-export const wagmiConfig = createConfig({
-  transports,
-  chains,
-  connectors: connectionMode === 'waas' ? getWaasConnectors() : getUniversalConnectors()
-})
+    // Waas specific config options
+    ...(connectionMode === 'waas'
+      ? {
+          waasConfigKey,
+          googleClientId,
+          appleClientId,
+          appleRedirectURI,
+          enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
+          isDev: isDebugMode
+        }
+      : undefined)
+  })
+)
 
 export const kitConfig: KitConfig = {
   isDev: isDebugMode,
   projectAccessKey,
   defaultTheme: 'dark',
   signIn: {
-    projectName: 'Kit Demo'
-    // logoUrl: 'sw-logo-white.svg',
-    // useMock: isDebugMode
+    projectName: 'Kit Demo',
+    useMock: isDebugMode
   },
   displayedAssets: [
     // Native token

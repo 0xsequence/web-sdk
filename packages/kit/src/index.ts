@@ -1,4 +1,5 @@
 // Provider
+export { SequenceKit } from './components/SequenceKit'
 export { KitProvider } from './components/KitProvider'
 export { KitPreviewProvider } from './components/KitPreviewProvider'
 
@@ -18,6 +19,7 @@ export type {
 export type { SwapQuotesWithCurrencyInfo } from './hooks/data'
 
 // Config
+export { getDefaultConfig } from './config/defaultConfig'
 export { getDefaultConnectors, getDefaultWaasConnectors } from './config/defaultConnectors'
 export { getDefaultChains } from './config/defaultChains'
 

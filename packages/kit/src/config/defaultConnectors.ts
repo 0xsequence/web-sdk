@@ -13,10 +13,10 @@ import { twitch } from '../connectors/twitch'
 import { walletConnect } from '../connectors/walletConnect'
 import { getKitConnectWallets } from '../utils/getKitConnectWallets'
 
-interface GetDefaultConnectors {
-  walletConnectProjectId: string
-  projectAccessKey: string
+export interface DefaultConnectorsProps {
   appName: string
+  projectAccessKey: string
+  walletConnectProjectId: string
   defaultChainId?: number
 }
 
@@ -25,7 +25,7 @@ export const getDefaultConnectors = ({
   defaultChainId,
   projectAccessKey,
   appName
-}: GetDefaultConnectors): CreateConnectorFn[] => {
+}: DefaultConnectorsProps): CreateConnectorFn[] => {
   const connectors = getKitConnectWallets(projectAccessKey, [
     email({
       defaultNetwork: defaultChainId,
@@ -71,22 +71,18 @@ export const getDefaultConnectors = ({
   return connectors
 }
 
-interface GetDefaultWaasConnectors {
+export interface DefaultWaasConnectorsProps {
+  appName: string
   projectAccessKey: string
+  walletConnectProjectId: string
+  defaultChainId?: number
+
   waasConfigKey: string
   googleClientId?: string
   appleClientId?: string
   appleRedirectURI?: string
-
-  walletConnectProjectId: string
-
-  appName: string
-  defaultChainId?: number
-
-  legacyEmailAuth?: boolean
-
   enableConfirmationModal?: boolean
-
+  legacyEmailAuth?: boolean
   isDev?: boolean
 }
 
@@ -102,7 +98,7 @@ export const getDefaultWaasConnectors = ({
   enableConfirmationModal,
   legacyEmailAuth = false,
   isDev = false
-}: GetDefaultWaasConnectors): CreateConnectorFn[] => {
+}: DefaultWaasConnectorsProps): CreateConnectorFn[] => {
   const wallets: any[] = [
     emailWaas({
       projectAccessKey,
