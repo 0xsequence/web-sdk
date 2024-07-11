@@ -1,19 +1,9 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
-  "changelog": [
-    "@changesets/changelog-github",
-    { "repo": "0xsequence/kit" }
-  ],
+  "changelog": ["@changesets/changelog-github", { "repo": "0xsequence/kit" }],
   "commit": false,
   "linked": [],
-  "fixed": [
-    [
-      "@0xsequence/kit",
-      "@0xsequence/kit-connectors",
-      "@0xsequence/kit-checkout",
-      "@0xsequence/kit-wallet"
-    ]
-  ],
+  "fixed": [["@0xsequence/kit", "@0xsequence/kit-checkout", "@0xsequence/kit-wallet"]],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",

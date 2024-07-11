@@ -21,11 +21,11 @@ View the [demo](https://0xsequence.github.io/kit)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/kit @0xsequence/kit-connectors wagmi ethers@5.7.2 viem 0xsequence @tanstack/react-query
+npm install @0xsequence/kit wagmi ethers@5.7.2 viem 0xsequence @tanstack/react-query
 # or
-pnpm install @0xsequence/kit @0xsequence/kit-connectors wagmi ethers@5.7.2 viem 0xsequence @tanstack/react-query
+pnpm install @0xsequence/kit wagmi ethers@5.7.2 viem 0xsequence @tanstack/react-query
 # or
-yarn add @0xsequence/kit @0xsequence/kit-connectors wagmi ethers@5.7.2 viem 0xsequence @tanstack/react-query
+yarn add @0xsequence/kit wagmi ethers@5.7.2 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library
@@ -34,8 +34,7 @@ React apps must be wrapped by a Wagmi client and the KitWalletProvider component
 
 ```js
 import MyPage from './components/MyPage'
-import { KitProvider } from '@0xsequence/kit'
-import { getDefaultConnectors } from '@0xsequence/kit-connectors'
+import { KitProvider, getDefaultConnectors } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
@@ -165,13 +164,12 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 ## Packages
 
-| Package                                                                                         | Description                                                                  | Docs                                                                                     |
-| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| [@0xsequence/kit](https://github.com/0xsequence/kit/tree/master/packages/kit)                   | Core package for Sequence Kit                                                | [Read more](https://github.com/0xsequence/kit/blob/master/packages/kit/README.md)        |
-| [@0xsequence/kit-connectors](https://github.com/0xsequence/kit/tree/master/packages/connectors) | Connectors for sequence kit including popular web3 wallets and social logins | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connectors/README.md) |
-| [@0xsequence/kit-wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet)         | Embedded wallets for viewing and sending coins and collectibles              | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)     |
-| [@0xsequence/kit-checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout)     | Checkout modal with fiat onramp                                              | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md)   |
-| [@0xsequence/kit-example-react](https://github.com/0xsequence/kit/tree/master/examples/react)   | Example application showing sign in, wallet and checkout                     | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md)      |
+| Package                                                                                       | Description                                                     | Docs                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [@0xsequence/kit](https://github.com/0xsequence/kit/tree/master/packages/kit)                 | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/kit/blob/master/packages/kit/README.md)      |
+| [@0xsequence/kit-wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet)       | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)   |
+| [@0xsequence/kit-checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout)   | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md) |
+| [@0xsequence/kit-example-react](https://github.com/0xsequence/kit/tree/master/examples/react) | Example application showing sign in, wallet and checkout        | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md)    |
 
 ## Local Development
 

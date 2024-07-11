@@ -1,5 +1,4 @@
-import { KitConfig, getKitConnectWallets } from '@0xsequence/kit'
-import { getDefaultConnectors, getDefaultWaasConnectors, mock } from '@0xsequence/kit-connectors'
+import { KitConfig, getKitConnectWallets, getDefaultConnectors, getDefaultWaasConnectors, mock } from '@0xsequence/kit'
 import { findNetworkConfig, allNetworks } from '@0xsequence/network'
 import { Transport, zeroAddress } from 'viem'
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi'

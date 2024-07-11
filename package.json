@@ -27,7 +27,6 @@
   },
   "devDependencies": {
     "@0xsequence/kit": "workspace:*",
-    "@0xsequence/kit-connectors": "workspace:*",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.25.2",
     "@types/node": "^20.12.12",
