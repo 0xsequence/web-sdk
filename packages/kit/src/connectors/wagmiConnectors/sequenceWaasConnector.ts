@@ -57,15 +57,13 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     waasConfigKey: params.waasConfigKey
   })
 
-  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, initialJsonRpcProvider, initialChain, showConfirmationModal)
-
-  const updateNetwork = async (chainId: number) => {
-    const networkName = sequence.network.allNetworks.find(n => n.chainId === chainId || n.name === initialChain)?.name
-
-    const jsonRpcProvider = new ethers.providers.JsonRpcProvider(`${nodesUrl}/${networkName}/${params.projectAccessKey}`)
-    sequenceWaasProvider.updateJsonRpcProvider(jsonRpcProvider)
-    sequenceWaasProvider.updateNetwork(ethers.providers.getNetwork(chainId))
-  }
+  const sequenceWaasProvider = new SequenceWaasProvider(
+    sequenceWaas,
+    initialJsonRpcProvider,
+    initialChain,
+    showConfirmationModal,
+    nodesUrl
+  )
 
   return createConnector<Provider, Properties, StorageItem>(config => ({
     id: `sequence-waas`,
@@ -204,11 +202,14 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
 
     async switchChain({ chainId }) {
+      const provider = await this.getProvider()
       const chain = config.chains.find(c => c.id === chainId) || config.chains[0]
 
-      updateNetwork(chainId)
-
-      config.emitter.emit('change', { chainId })
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: ethers.utils.hexValue(chainId) }]
+      }),
+        config.emitter.emit('change', { chainId })
 
       return chain
     },
@@ -243,7 +244,8 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
     public sequenceWaas: SequenceWaaS,
     public jsonRpcProvider: ethers.providers.JsonRpcProvider,
     network: ethers.providers.Networkish,
-    public showConfirmation: boolean
+    public showConfirmation: boolean,
+    public nodesUrl: string
   ) {
     super(network)
   }
@@ -262,6 +264,20 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
   }
 
   async request({ method, params }: { method: string; params?: any[] }) {
+    if (method === 'wallet_switchEthereumChain') {
+      const chainId = normalizeChainId(params?.[0].chainId)
+
+      const networkName = sequence.network.allNetworks.find(n => n.chainId === chainId)?.name
+      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+        `${this.nodesUrl}/${networkName}/${this.sequenceWaas.config.projectAccessKey}`
+      )
+
+      this.updateJsonRpcProvider(jsonRpcProvider)
+      this.updateNetwork(ethers.providers.getNetwork(chainId))
+
+      return null
+    }
+
     if (method === 'eth_accounts') {
       const address = await this.sequenceWaas.getAddress()
       const account = getAddress(address)
