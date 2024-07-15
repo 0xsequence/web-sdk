@@ -208,8 +208,9 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       await provider.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: ethers.utils.hexValue(chainId) }]
-      }),
-        config.emitter.emit('change', { chainId })
+      })
+
+      config.emitter.emit('change', { chainId })
 
       return chain
     },
