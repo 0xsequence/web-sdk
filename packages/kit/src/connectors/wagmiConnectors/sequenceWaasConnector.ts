@@ -279,6 +279,10 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       return null
     }
 
+    if (method === 'eth_chainId') {
+      return ethers.utils.hexValue(this.currentNetwork.chainId)
+    }
+
     if (method === 'eth_accounts') {
       const address = await this.sequenceWaas.getAddress()
       const account = getAddress(address)
@@ -345,7 +349,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       if (response.code === 'transactionReceipt') {
         // Success
         const { txHash } = response.data
-        return this.getTransaction(txHash)
+        return txHash
       }
     }
 
@@ -376,7 +380,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       return sig.data.signature
     }
 
-    return undefined
+    return await this.jsonRpcProvider.send(method, params ?? [])
   }
 
   async getTransaction(txHash: string) {
