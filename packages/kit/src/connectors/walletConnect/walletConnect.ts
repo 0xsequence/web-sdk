@@ -9,6 +9,7 @@ export const walletConnect = (options: WalletConnectParameters): Wallet => ({
   logoLight: WalletConnectLogo,
   // iconBackground: '#fff',
   name: 'Walletconnect',
+  type: 'wallet',
   createConnector: () => {
     const connector = walletConnectbase({
       ...options

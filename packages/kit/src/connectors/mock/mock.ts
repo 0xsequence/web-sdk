@@ -10,6 +10,7 @@ export const mock = (options: MockParameters): Wallet => ({
   logoLight: SequenceLogo,
   // iconBackground: '#777',
   name: 'Mock',
+  type: 'wallet',
   createConnector: () => {
     const connector = mockBase(options)
     return connector

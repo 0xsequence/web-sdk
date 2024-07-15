@@ -10,6 +10,7 @@ export const metamask = (): Wallet => ({
   logoLight: MetamaskLogo,
   // iconBackground: '#fff',
   name: 'Metamask',
+  type: 'wallet',
   createConnector: () => {
     const connector = injected({ target: 'metaMask' })
     return connector

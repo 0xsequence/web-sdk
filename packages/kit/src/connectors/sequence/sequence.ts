@@ -12,6 +12,7 @@ export const sequence = (options: SequenceOptions): Wallet => ({
   logoLight: SequenceLogo,
   // iconBackground: '#777',
   name: 'Sequence',
+  type: 'wallet',
   createConnector: projectAccessKey => {
     const connector = sequenceWallet({
       ...options,

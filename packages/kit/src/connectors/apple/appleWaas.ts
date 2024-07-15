@@ -12,6 +12,7 @@ export const appleWaas = (options: AppleWaasOptions): Wallet => ({
   monochromeLogoDark: getAppleMonochromeLogo({ isDarkMode: true }),
   monochromeLogoLight: getAppleMonochromeLogo({ isDarkMode: false }),
   name: 'Apple',
+  type: 'social',
   createConnector: () => {
     const connector = sequenceWaasWallet({
       ...options,

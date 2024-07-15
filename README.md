@@ -140,8 +140,6 @@ The settings are described in more detailed in the Sequence Kit documentation.
       logoUrl: 'https://logo-dark-mode.svg',
       projectName: 'my app',
       showEmailInput: true,
-      socialAuthOptions: ['google', 'facebook', 'twitch', 'apple'],
-      walletAuthOptions: ['sequence', 'metamask', 'wallet-connect', 'coinbase-wallet'],
     };
     // limits the digital assets displayed on the assets summary screen
     displayedAssets: [

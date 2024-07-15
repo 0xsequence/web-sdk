@@ -14,6 +14,7 @@ export const facebook = (options: FacebookOptions): Wallet => ({
   monochromeLogoLight: getFacebookMonochromeLogo({ isDarkMode: false }),
   // iconBackground: '#fff',
   name: 'Facebook',
+  type: 'social',
   createConnector: projectAccessKey => {
     const connector = sequenceWallet({
       ...options,

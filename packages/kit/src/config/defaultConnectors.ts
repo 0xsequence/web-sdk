@@ -68,9 +68,6 @@ export const getDefaultConnectors = ({
       projectId: walletConnectProjectId
     }),
     metamask()
-    // coinbaseWallet({
-    //   appName
-    // })
   ])
 
   return connectors

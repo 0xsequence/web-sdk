@@ -14,6 +14,7 @@ export const twitch = (options: TwitchOptions): Wallet => ({
   monochromeLogoLight: getTwitchLogo({ isDarkMode: false }),
   // iconBackground: '#fff',
   name: 'Twitch',
+  type: 'social',
   createConnector: projectAccessKey => {
     const connector = sequenceWallet({
       ...options,

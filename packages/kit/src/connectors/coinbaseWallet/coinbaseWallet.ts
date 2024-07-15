@@ -8,6 +8,7 @@ export const coinbaseWallet = (params: CoinbaseWalletParameters) => ({
   logoDark: CoinbaseWalletLogo,
   logoLight: CoinbaseWalletLogo,
   name: 'Coinbase Wallet',
+  type: 'wallet',
   createConnector: (() => {
     const connector = coinbaseWalletBase({ ...params })
     return connector

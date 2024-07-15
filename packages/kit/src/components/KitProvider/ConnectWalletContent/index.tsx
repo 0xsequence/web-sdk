@@ -44,8 +44,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const { signIn = {} } = config as KitConfig
   const {
     showEmailInput: showEmailConnector = defaultSignInOptions.showEmailInput,
-    socialAuthOptions = defaultSignInOptions.socialAuthOptions,
-    walletAuthOptions = defaultSignInOptions.walletAuthOptions
   } = signIn
 
   const { openConnectModal, setOpenConnectModal } = props
@@ -56,9 +54,48 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const [waasEmailPinCode, setWaasEmailPinCode] = useState<string[]>([])
   const { connectors: baseConnectors, connect } = useConnect()
 
+  const injectedSequenceConnector = baseConnectors.find(c => c.id === 'app.sequence')
+
+  const baseWalletConnectors = baseConnectors
+  .filter(c => {
+      /* @ts-ignore-next-line */
+      const isWalletProperties = !!c?._wallet
+      /* @ts-ignore-next-line */
+      const isWallet = (c?._wallet?.type || 'wallet') === 'wallet'
+      /* @ts-ignore-next-line */
+      const displayEmailConnector = c?._wallet?.id === 'email' && !showEmailInput
+
+      return  isWalletProperties && (isWallet || displayEmailConnector)
+    })
+    // Remove sequence if wallet extension detected
+   .filter(c => {
+    /* @ts-ignore-next-line */
+    if (c?._wallet?.id === 'sequence' && injectedSequenceConnector) {
+      return false
+    }
+
+    return true
+   })  as ExtendedConnector[]
+  const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
+  const mockConnector = baseWalletConnectors.find(connector => {
+    return connector._wallet.id === 'mock'
+  })
+
+  const emailConnector = baseWalletConnectors.find(c => c._wallet.id.includes('email'))
+
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = baseConnectors
-    .filter(c => c.type === 'injected' && !c.hasOwnProperty('_wallet'))
+    .filter(c => c.type === 'injected')
+    // Remove the injected connectors when another connector is already in the base connectors
+    .filter((connector) => {
+      if (connector.id === 'io.metamask' || connector.id === 'metaMask') {
+        return !baseConnectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask')
+      } else if (connector.id === 'com.coinbase.wallet') {
+        return !baseConnectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet')
+      }
+
+      return true
+    })
     .map(connector => {
       const Logo = (props: LogoProps) => {
         return <Image src={connector.icon} alt={connector.name} disableAnimation {...props} />
@@ -70,42 +107,21 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
           id: connector.id,
           name: connector.name,
           logoLight: Logo,
-          logoDark: Logo
+          logoDark: Logo,
+          type: 'wallet'
         }
       }
     })
 
-  /* @ts-ignore-next-line */
-  const connectors = baseConnectors.filter(c => !!c?._wallet) as ExtendedConnector[]
-  const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
-  const mockConnector = connectors.find(connector => {
-    return connector._wallet.id === 'mock'
-  })
-
-  const emailConnector = showEmailConnector ? connectors.find(c => c._wallet.id.includes('email')) : undefined
 
   const walletConnectors = [
-    ...connectors
-      .filter(connector => {
-        const foundOption =
-          walletAuthOptions.find(authOption => authOption === connector._wallet.id) &&
-          !injectedConnectors.some(injected => injected.name === connector.name)
-        return !!foundOption
-      })
-      .sort((a, b) => {
-        return walletAuthOptions.indexOf(a._wallet.id) - walletAuthOptions.indexOf(b._wallet.id)
-      }),
+    ...baseWalletConnectors,
     ...injectedConnectors
   ]
 
-  const socialAuthConnectors = connectors
-    .filter(connector => {
-      const foundOption = socialAuthOptions.find(authOption => authOption === connector._wallet.id)
-      return !!foundOption
-    })
-    .sort((a, b) => {
-      return socialAuthOptions.indexOf(a._wallet.id) - socialAuthOptions.indexOf(b._wallet.id)
-    })
+  const socialAuthConnectors = baseConnectors
+    /* @ts-ignore-next-line */
+    .filter(c => c?._wallet?.type === 'social') as ExtendedConnector[]
 
   const isEmailOnly = emailConnector && socialAuthConnectors.length === 0 && walletConnectors.length === 0
 
@@ -121,7 +137,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     initiateAuth: initiateEmailAuth,
     sendChallengeAnswer
   } = useEmailAuth({
-    connector: connectors.find(c => c._wallet.id === 'email-waas'),
+    connector: baseWalletConnectors.find(c => c._wallet.id === 'email-waas'),
     onSuccess: async idToken => {
       storage?.setItem(LocalStorageKey.WaasEmailIdToken, idToken)
       if (emailConnector) {
@@ -294,9 +310,13 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                   </>
                 )}
                 <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
-                  {walletConnectors.slice(0, 7).map(connector => (
-                    <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
-                  ))}
+                  {walletConnectors.slice(0, 7).map(connector => {
+                    if (connector._wallet.id === 'email' || connector._wallet.id === 'email-waas') {
+                      return null
+                    }
+
+                    return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+                  })}
                 </Box>
 
                 {displayExtendedListButton && (

@@ -14,6 +14,7 @@ export const discord = (options: DiscordOptions): Wallet => ({
   monochromeLogoLight: getDiscordLogo({ isDarkMode: false }),
   // iconBackground: '#fff',
   name: 'Discord',
+  type: 'social',
   createConnector: projectAccessKey => {
     const connector = sequenceWallet({
       ...options,
