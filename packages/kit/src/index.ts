@@ -15,6 +15,10 @@ export type {
   StorageItem
 } from './types'
 
+// Config
+export { getDefaultConnectors, getDefaultWaasConnectors } from './config/defaultConnectors'
+export { getDefaultChains } from './config/defaultChains'
+
 // Constants
 export { LocalStorageKey, defaultSignInOptions, DEFAULT_SESSION_EXPIRATION } from './constants'
 
@@ -56,9 +60,6 @@ export {
   type BaseSequenceConnectorOptions,
   type BaseSequenceWaasConnectorOptions
 } from './connectors/wagmiConnectors'
-
-// Config
-export { getDefaultConnectors, getDefaultWaasConnectors } from './config/defaultConnectors'
 
 // Hooks
 export { useOpenConnectModal } from './hooks/useOpenConnectModal'

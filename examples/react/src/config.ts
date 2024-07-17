@@ -1,8 +1,14 @@
-import { KitConfig, getKitConnectWallets, getDefaultConnectors, getDefaultWaasConnectors, mock } from '@0xsequence/kit'
-import { findNetworkConfig, allNetworks } from '@0xsequence/network'
+import {
+  KitConfig,
+  getKitConnectWallets,
+  getDefaultConnectors,
+  getDefaultWaasConnectors,
+  mock,
+  getDefaultChains
+} from '@0xsequence/kit'
+import { ChainId } from '@0xsequence/network'
 import { Transport, zeroAddress } from 'viem'
 import { createConfig, http } from 'wagmi'
-import { Chain, arbitrumNova, arbitrumSepolia, mainnet, polygon } from 'wagmi/chains'
 
 export type ConnectionMode = 'waas' | 'universal'
 
@@ -15,22 +21,11 @@ const connectionMode: ConnectionMode = searchParams.get('mode') === 'universal' 
 const isDebugMode = searchParams.has('debug')
 const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
-const chains = [arbitrumNova, arbitrumSepolia, mainnet, polygon] as const satisfies Chain[]
+const chains = getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA])
 const transports = chains.reduce<Record<number, Transport>>((acc, chain) => {
-  const network = findNetworkConfig(allNetworks, chain.id)
-
-  if (network) {
-    acc[chain.id] = http(network.rpcUrl)
-  }
-
+  acc[chain.id] = http()
   return acc
 }, {})
-
-chains.forEach(chain => {
-  const network = findNetworkConfig(allNetworks, chain.id)
-  if (!network) return
-  transports[chain.id] = http(network.rpcUrl)
-})
 
 const waasConfigKey = isDebugMode
   ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
@@ -45,7 +40,7 @@ const getWaasConnectors = () => {
   const connectors = [
     ...getDefaultWaasConnectors({
       walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: arbitrumNova.id,
+      defaultChainId: ChainId.ARBITRUM_NOVA,
       waasConfigKey,
       googleClientId,
       appleClientId,
@@ -71,7 +66,7 @@ const getUniversalConnectors = () => {
   const connectors = [
     ...getDefaultConnectors({
       walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-      defaultChainId: arbitrumNova.id,
+      defaultChainId: ChainId.ARBITRUM_NOVA,
       appName: 'demo app',
       projectAccessKey
     }),
@@ -105,27 +100,27 @@ export const kitConfig: KitConfig = {
     // Native token
     {
       contractAddress: zeroAddress,
-      chainId: arbitrumNova.id
+      chainId: ChainId.ARBITRUM_NOVA
     },
     // Native token
     {
       contractAddress: zeroAddress,
-      chainId: arbitrumSepolia.id
+      chainId: ChainId.ARBITRUM_SEPOLIA
     },
     // Waas demo NFT
     {
       contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: arbitrumNova.id
+      chainId: ChainId.ARBITRUM_NOVA
     },
     // Waas demo NFT
     {
       contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: arbitrumSepolia.id
+      chainId: ChainId.ARBITRUM_SEPOLIA
     },
     // Skyweaver assets
     {
       contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-      chainId: polygon.id
+      chainId: ChainId.POLYGON
     }
   ]
 }

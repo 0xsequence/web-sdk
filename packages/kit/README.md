@@ -34,7 +34,7 @@ React apps must be wrapped by a Wagmi client and the KitWalletProvider component
 
 ```js
 import MyPage from './components/MyPage'
-import { KitProvider, getDefaultConnectors } from '@0xsequence/kit'
+import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
@@ -42,7 +42,7 @@ import { mainnet, polygon, Chain } from 'wagmi/chains'
 const queryClient = new QueryClient()
 
 function App() {
-  const chains = [mainnet, polygon] as [Chain, ...Chain[]]
+  const chains = getDefaultChains(/* optional array of chain ids to filter */)
 
   const projectAccessKey = 'xyz'
 
@@ -73,7 +73,7 @@ function App() {
         </KitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  );
+  )
 }
 ```
 

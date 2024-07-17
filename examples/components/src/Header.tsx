@@ -10,15 +10,9 @@ import {
   ChevronDownIcon,
   SignoutIcon
 } from '@0xsequence/design-system'
-import { ChainId } from '@0xsequence/network'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useState } from 'react'
-import { useAccount, useChainId, useDisconnect, useSwitchChain } from 'wagmi'
-
-const networks = [
-  { chainId: ChainId.ARBITRUM_SEPOLIA, title: 'Arbitrum Sepolia' },
-  { chainId: ChainId.ARBITRUM_NOVA, title: 'Arbitrum Nova' }
-]
+import { useAccount, useChainId, useChains, useDisconnect, useSwitchChain } from 'wagmi'
 
 export const Header = () => {
   return (
@@ -135,6 +129,7 @@ const AccountMenu = () => {
 }
 
 const NetworkSelect = () => {
+  const chains = useChains()
   const chainId = useChainId()
   const { switchChain } = useSwitchChain()
   const [isOpen, toggleOpen] = useState(false)
@@ -159,7 +154,7 @@ const NetworkSelect = () => {
           <Box alignItems="center" gap="2">
             <NetworkImage chainId={chainId} size="sm" />
             <Text display={{ sm: 'none', lg: 'block' }} variant="normal" fontWeight="bold" color="text100">
-              {networks.find(x => x.chainId === chainId)?.title || chainId}
+              {chains.find(chain => chain.id === chainId)?.name || chainId}
             </Text>
           </Box>
 
@@ -181,20 +176,20 @@ const NetworkSelect = () => {
               flexDirection="column"
               gap="2"
             >
-              {networks.map(({ chainId, title }) => (
+              {chains.map(chain => (
                 <Button
-                  key={chainId}
+                  key={chain.id}
                   width="full"
                   shape="square"
                   onClick={() => {
-                    switchChain({ chainId })
+                    switchChain({ chainId: chain.id })
                     toggleOpen(false)
                   }}
-                  leftIcon={() => <NetworkImage chainId={chainId} size="sm" />}
+                  leftIcon={() => <NetworkImage chainId={chain.id} size="sm" />}
                   label={
                     <Box alignItems="center" gap="2">
                       <Text variant="normal" fontWeight="bold" color="text100">
-                        {title}
+                        {chain.name}
                       </Text>
                     </Box>
                   }
