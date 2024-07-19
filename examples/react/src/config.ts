@@ -21,7 +21,7 @@ const connectionMode: ConnectionMode = searchParams.get('mode') === 'universal' 
 const isDebugMode = searchParams.has('debug')
 const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
-const chains = getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA])
+const chains = getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON])
 const transports = chains.reduce<Record<number, Transport>>((acc, chain) => {
   acc[chain.id] = http()
   return acc
