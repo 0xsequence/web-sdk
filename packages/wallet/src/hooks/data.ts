@@ -15,7 +15,7 @@ import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metada
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import { compareAddress, sampleSize, sortBalancesByType } from '../utils'
+import { compareAddress, sampleSize, sortBalancesByType, isTruthy } from '../utils'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -73,24 +73,40 @@ export const getBalancesAssetsSummary = async (
 
       tokenBalances = (
         await Promise.all([
-          ...Object.keys(nativeTokensByChainId).map(chainId =>
-            getNativeTokenBalance(indexerClients.get(Number(chainId))!, Number(chainId), accountAddress)
-          ),
+          ...Object.keys(nativeTokensByChainId).map(chainId => {
+            const indexerClient = indexerClients.get(Number(chainId))
+
+            if (!indexerClient) {
+              console.error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
+              return null
+            }
+
+            return getNativeTokenBalance(indexerClient, Number(chainId), accountAddress)
+          }),
           ...Object.keys(otherAssetsByChainId)
             .map(chainId =>
-              otherAssetsByChainId[Number(chainId)].map(asset =>
-                getTokenBalances(indexerClients.get(Number(chainId))!, {
+              otherAssetsByChainId[Number(chainId)].map(asset => {
+                const indexerClient = indexerClients.get(Number(chainId))
+
+                if (!indexerClient) {
+                  console.error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
+                  return []
+                }
+
+                return getTokenBalances(indexerClient, {
                   accountAddress,
                   contractAddress: asset.contractAddress,
                   includeMetadata: false,
                   hideCollectibles,
                   verifiedOnly
                 })
-              )
+              })
             )
             .flat()
         ])
-      ).flat()
+      )
+        .flat()
+        .filter(isTruthy)
     } else {
       tokenBalances = (
         await Promise.all([
@@ -126,7 +142,14 @@ export const getBalancesAssetsSummary = async (
       if (customDisplayAssets) {
         return collectionBalance
       }
-      const balance = await getCollectionBalance(indexerClients.get(collectionBalance.chainId)!, {
+
+      const indexerClient = indexerClients.get(collectionBalance.chainId)
+
+      if (!indexerClient) {
+        throw new Error(`Indexer client not found for chainId: ${collectionBalance.chainId}, did you forget to add this Chain?`)
+      }
+
+      const balance = await getCollectionBalance(indexerClient, {
         accountAddress,
         chainId: collectionBalance.chainId,
         contractAddress: collectionBalance.contractAddress,

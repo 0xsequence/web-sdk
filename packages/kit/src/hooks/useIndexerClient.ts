@@ -25,7 +25,7 @@ export const useIndexerClient = (chainId: ChainId) => {
   const indexerClient = indexerClients.get(chainId)
 
   if (!indexerClient) {
-    throw new Error('Indexer client not found')
+    throw new Error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
   }
 
   return indexerClient
@@ -53,7 +53,7 @@ export const useIndexerClients = (chainIds: ChainId[]) => {
     const indexerClient = indexerClients.get(chainId)
 
     if (!indexerClient) {
-      throw new Error('Indexer client not found')
+      throw new Error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
     }
 
     result.set(chainId, indexerClient)

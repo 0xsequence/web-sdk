@@ -124,3 +124,5 @@ export const sampleSize = <T>(collection: T[], n: number): T[] => {
   }
   return sampled
 }
+
+export const isTruthy = <T>(value: T | undefined | null): value is T => Boolean(value)
