@@ -139,7 +139,6 @@ The settings are described in more detailed in the Sequence Kit documentation.
     signIn: {
       logoUrl: 'https://logo-dark-mode.svg',
       projectName: 'my app',
-      showEmailInput: true,
     };
     // limits the digital assets displayed on the assets summary screen
     displayedAssets: [

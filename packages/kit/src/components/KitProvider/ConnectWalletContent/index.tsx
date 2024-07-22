@@ -20,7 +20,7 @@ import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useAccount } from 'wagmi'
 
-import { LocalStorageKey, defaultSignInOptions } from '../../../constants'
+import { LocalStorageKey } from '../../../constants'
 import { useStorage, useStorageItem } from '../../../hooks/useStorage'
 import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
 import { ExtendedConnector, KitConfig, LogoProps, WalletProperties } from '../../../types'
@@ -42,9 +42,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const { isConnected } = useAccount()
   const { config = {} } = props
   const { signIn = {} } = config as KitConfig
-  const {
-    showEmailInput: showEmailConnector = defaultSignInOptions.showEmailInput,
-  } = signIn
 
   const { openConnectModal, setOpenConnectModal } = props
 
@@ -63,7 +60,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
       /* @ts-ignore-next-line */
       const isWallet = (c?._wallet?.type || 'wallet') === 'wallet'
       /* @ts-ignore-next-line */
-      const displayEmailConnector = c?._wallet?.id === 'email' && !showEmailInput
+      const displayEmailConnector = c?._wallet?.id === 'email'
 
       return  isWalletProperties && (isWallet || displayEmailConnector)
     })

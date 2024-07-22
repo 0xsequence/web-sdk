@@ -20,7 +20,7 @@ export { getDefaultConnectors, getDefaultWaasConnectors } from './config/default
 export { getDefaultChains } from './config/defaultChains'
 
 // Constants
-export { LocalStorageKey, defaultSignInOptions, DEFAULT_SESSION_EXPIRATION } from './constants'
+export { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from './constants'
 
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'

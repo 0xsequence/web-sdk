@@ -69,7 +69,6 @@ export interface KitConfig {
   signIn?: {
     logoUrl?: string
     projectName?: string
-    showEmailInput?: boolean
     useMock?: boolean
   }
   displayedAssets?: DisplayedAsset[]
