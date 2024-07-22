@@ -88,9 +88,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     .filter(c => c.type === 'injected')
     // Remove the injected connectors when another connector is already in the base connectors
     .filter((connector) => {
-      if (connector.id === 'io.metamask' || connector.id === 'metaMask') {
-        return !baseConnectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask')
-      } else if (connector.id === 'com.coinbase.wallet') {
+      if (connector.id === 'com.coinbase.wallet') {
         return !baseConnectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet')
       }
 
@@ -163,16 +161,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
 
       if ('setEmail' in connector) {
         ;(connector as any).setEmail(email)
-      }
-    }
-
-    // Open Metamask download page if Metamask window.ethereum is not found
-    if (connector._wallet.id === 'metamask' && typeof window !== 'undefined') {
-      const isMetamaskFound = !!(window as any)?.ethereum?._metamask
-
-      if (!isMetamaskFound) {
-        window.open('https://metamask.io/download/')
-        return
       }
     }
 

@@ -8,7 +8,6 @@ import { emailWaas } from '../connectors/email/emailWaas'
 import { facebook } from '../connectors/facebook'
 import { google } from '../connectors/google'
 import { googleWaas } from '../connectors/google/googleWaas'
-import { metamask } from '../connectors/metamask'
 import { sequence } from '../connectors/sequence'
 import { twitch } from '../connectors/twitch'
 import { walletConnect } from '../connectors/walletConnect'
@@ -66,8 +65,7 @@ export const getDefaultConnectors = ({
     }),
     walletConnect({
       projectId: walletConnectProjectId
-    }),
-    metamask()
+    })
   ])
 
   return connectors
@@ -113,7 +111,6 @@ export const getDefaultWaasConnectors = ({
     coinbaseWallet({
       appName
     }),
-    metamask(),
     walletConnect({
       projectId: walletConnectProjectId
     })
