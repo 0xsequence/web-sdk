@@ -78,7 +78,8 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     return connector._wallet.id === 'mock'
   })
 
-  const emailConnector = baseWalletConnectors.find(c => c._wallet.id.includes('email'))
+  /* @ts-ignore-next-line */
+  const emailConnector = baseConnectors.find(c => c?._wallet?.id.includes('email'))
 
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = baseConnectors
@@ -116,7 +117,9 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
 
   const socialAuthConnectors = baseConnectors
     /* @ts-ignore-next-line */
-    .filter(c => c?._wallet?.type === 'social') as ExtendedConnector[]
+    .filter(c => (c?._wallet?.type === 'social'))
+    /* @ts-ignore-next-line */
+    .filter(c => !c?._wallet?.id?.includes('email')) as ExtendedConnector[]
 
   const isEmailOnly = emailConnector && socialAuthConnectors.length === 0 && walletConnectors.length === 0
 
@@ -177,6 +180,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
         ;(emailConnector as any).setEmail(email)
       }
 
+      /* @ts-ignore-next-line */
       if (emailConnector._wallet.id === 'email-waas') {
         try {
           await initiateEmailAuth(email)
