@@ -1,3 +1,4 @@
+import { SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 
 import { ExtendedConnector } from '../types'
@@ -18,12 +19,27 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
   const [loading, setLoading] = useState(false)
   const [instance, setInstance] = useState('')
 
+  const getSequenceWaas = () => {
+    if (!connector) {
+      throw new Error('Connector is not defined')
+    }
+
+    const sequenceWaas: SequenceWaaS | undefined = (connector as any).sequenceWaas
+
+    if (!sequenceWaas) {
+      throw new Error('Connector does not support SequenceWaaS')
+    }
+
+    return sequenceWaas
+  }
+
   const initiateAuth = async (email: string) => {
+    const waas = getSequenceWaas()
+
     setLoading(true)
 
     try {
-      const connectorAny: any = connector
-      const { instance } = await connectorAny.sequenceWaas?.email.initiateAuth({ email })
+      const { instance } = await waas.email.initiateAuth({ email })
       setInstance(instance)
       setEmail(email)
     } catch (e: any) {
@@ -34,12 +50,13 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
   }
 
   const sendChallengeAnswer = async (answer: string) => {
+    const waas = getSequenceWaas()
+
     setLoading(true)
 
     try {
-      const connectorAny: any = connector
-      const sessionHash = await connectorAny.sequenceWaas?.getSessionHash()
-      const { idToken } = await connectorAny.sequenceWaas?.email.finalizeAuth({ instance, answer, email, sessionHash })
+      const sessionHash = await waas.getSessionHash()
+      const { idToken } = await waas.email.finalizeAuth({ instance, answer, email, sessionHash })
       onSuccess(idToken)
     } catch (e: any) {
       setError(e.message || 'Unknown error')
