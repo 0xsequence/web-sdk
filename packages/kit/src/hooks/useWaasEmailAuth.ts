@@ -106,6 +106,6 @@ export function useEmailAuth({
     loading,
     error,
     initiateAuth,
-    sendChallengeAnswer: instance ? sendChallengeAnswer : undefined
+    sendChallengeAnswer
   }
 }

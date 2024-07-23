@@ -111,6 +111,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     initiateAuth: initiateEmailAuth,
     sendChallengeAnswer
   } = useEmailAuth({
+    version: 1,
     connector: socialAuthConnectors.find(c => c._wallet.id === 'email-waas'),
     onSuccess: async idToken => {
       storage?.setItem(LocalStorageKey.WaasEmailIdToken, idToken)
@@ -187,7 +188,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
                 variant="primary"
                 disabled={waasEmailPinCode.includes('')}
                 label="Verify"
-                onClick={() => sendChallengeAnswer?.(waasEmailPinCode.join(''))}
+                onClick={() => sendChallengeAnswer(waasEmailPinCode.join(''))}
                 data-id="verifyButton"
               />
             )}
