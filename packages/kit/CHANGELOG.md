@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.10.1
+
+### Patch Changes
+
+- Fixing email auth
+
 ## 2.10.0
 
 ### Minor Changes

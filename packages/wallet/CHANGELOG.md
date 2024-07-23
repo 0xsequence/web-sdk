@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 2.10.1
+
+### Patch Changes
+
+- Fixing email auth
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.10.1
+
 ## 2.10.0
 
 ### Minor Changes
