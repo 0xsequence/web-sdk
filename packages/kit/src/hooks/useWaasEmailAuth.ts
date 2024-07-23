@@ -1,9 +1,17 @@
-import { SequenceWaaS } from '@0xsequence/waas'
+import { Challenge, SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 
 import { ExtendedConnector } from '../types'
 
-export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedConnector; onSuccess: (idToken: string) => void }) {
+export function useEmailAuth({
+  connector,
+  version = 1,
+  onSuccess
+}: {
+  connector?: ExtendedConnector
+  version?: 1 | 2
+  onSuccess: (idToken: string) => void
+}) {
   if (!connector) {
     return {
       inProgress: false,
@@ -18,6 +26,7 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
   const [error, setError] = useState<unknown>()
   const [loading, setLoading] = useState(false)
   const [instance, setInstance] = useState('')
+  const [challenge, setChallenge] = useState<Challenge | undefined>()
 
   const getSequenceWaas = () => {
     if (!connector) {
@@ -38,14 +47,26 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
 
     setLoading(true)
 
-    try {
-      const { instance } = await waas.email.initiateAuth({ email })
-      setInstance(instance)
-      setEmail(email)
-    } catch (e: any) {
-      setError(e.message || 'Unknown error')
-    } finally {
-      setLoading(false)
+    if (version === 1) {
+      try {
+        const { instance } = await waas.email.initiateAuth({ email })
+        setInstance(instance)
+        setEmail(email)
+      } catch (e: any) {
+        setError(e.message || 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      try {
+        const challenge = await waas.initAuth({ email })
+        setChallenge(challenge)
+        setEmail(email)
+      } catch (e: any) {
+        setError(e.message || 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
@@ -54,13 +75,29 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
 
     setLoading(true)
 
-    try {
-      const sessionHash = await waas.getSessionHash()
-      const { idToken } = await waas.email.finalizeAuth({ instance, answer, email, sessionHash })
-      onSuccess(idToken)
-    } catch (e: any) {
-      setError(e.message || 'Unknown error')
-      setLoading(false)
+    if (version === 1) {
+      try {
+        const sessionHash = await waas.getSessionHash()
+        const { idToken } = await waas.email.finalizeAuth({ instance, answer, email, sessionHash })
+        onSuccess(idToken)
+      } catch (e: any) {
+        setError(e.message || 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      try {
+        if (!challenge) {
+          throw new Error('Challenge is not defined')
+        }
+
+        const res = await waas.completeAuth(challenge.withAnswer(answer))
+        onSuccess(res.sessionId)
+      } catch (e: any) {
+        setError(e.message || 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
