@@ -13,9 +13,9 @@ export interface MethodArguments {
 }
 
 export interface FetchSardineClientTokenArgs {
-  order: CreditCardCheckout,
-  isDev: boolean,
-  projectAccessKey: string,
+  order: CreditCardCheckout
+  isDev: boolean
+  projectAccessKey: string
   tokenMetadata?: TokenMetadata
 }
 
@@ -24,7 +24,7 @@ export const fetchSardineClientToken = async ({
   isDev,
   projectAccessKey,
   tokenMetadata
- }: FetchSardineClientTokenArgs): Promise<FetchSardineClientTokenReturn> => {
+}: FetchSardineClientTokenArgs): Promise<FetchSardineClientTokenReturn> => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
   const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
   const url = isDev
@@ -44,7 +44,7 @@ export const fetchSardineClientToken = async ({
         network: networks[order.chainId as ChainId].name,
         recipientAddress: order.recipientAddress,
         contractAddress: order.contractAddress,
-        platform: "calldata_execution",
+        platform: 'calldata_execution',
         blockchainNftId: order.nftId,
         quantity: Number(order.nftQuantity),
         decimals: Number(order?.nftDecimals || 0),

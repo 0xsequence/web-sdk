@@ -13,16 +13,10 @@ import {
   CheckoutModalContextProvider,
   CheckoutSettings,
   AddFundsContextProvider,
-  AddFundsSettings,
+  AddFundsSettings
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import {
-  PendingTransaction,
-  TransactionError,
-  TransactionSuccess,
-  CheckoutSelection,
-  AddFundsContent,
-} from '../../views'
+import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelection, AddFundsContent } from '../../views'
 
 import '@0xsequence/design-system/styles.css'
 
@@ -53,16 +47,16 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
     const orderSummaryItems = settings?.orderSummaryItems || []
     const creditCardSettings = settings?.creditCardCheckout
     if (orderSummaryItems.length === 0 && creditCardSettings) {
-      return({
+      return {
         location: 'transaction-pending',
         params: {
           creditCardCheckout: creditCardSettings
-        }  
-      })
+        }
+      }
     } else {
-      return({
+      return {
         location: 'select-method-checkout'
-      })
+      }
     }
   }
 
@@ -145,7 +139,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
       value={{
         triggerAddFunds,
         closeAddFunds,
-        addFundsSettings,
+        addFundsSettings
       }}
     >
       <CheckoutModalContextProvider
@@ -153,7 +147,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
           triggerCheckout,
           closeCheckout,
           settings,
-          theme,
+          theme
         }}
       >
         <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>

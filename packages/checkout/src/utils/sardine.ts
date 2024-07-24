@@ -7,12 +7,10 @@ export interface CheckSardineWhitelistStatusArgs {
   marketplaceAddress: string
 }
 
-export const checkSardineWhitelistStatus = async ({
-  isDev,
-  chainId,
-  marketplaceAddress,
-}: CheckSardineWhitelistStatusArgs,
-projectAccessKey: string) => {
+export const checkSardineWhitelistStatus = async (
+  { isDev, chainId, marketplaceAddress }: CheckSardineWhitelistStatusArgs,
+  projectAccessKey: string
+) => {
   const referenceId = `sequence-kit-sardine-whitelist-check`
 
   const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
@@ -40,7 +38,7 @@ projectAccessKey: string) => {
         network: networks[chainId as ChainId].name,
         recipientAddress: constants.AddressZero,
         contractAddress: marketplaceAddress,
-        platform: "calldata_execution",
+        platform: 'calldata_execution',
         executionType: 'smart_contract',
         blockchainNftId: '42',
         quantity: 1,
@@ -49,19 +47,16 @@ projectAccessKey: string) => {
         tokenAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
         tokenSymbol: 'USDC',
         tokenDecimals: 6,
-        callData: '0x1',
+        callData: '0x1'
       }
     })
   })
 
   const resJson = await res.json()
 
-  if (
-    typeof resJson?.cause === 'string' &&
-      resJson.cause.includes('It must me allow listed')
-  ) {
+  if (typeof resJson?.cause === 'string' && resJson.cause.includes('It must me allow listed')) {
     return false
   }
-  
+
   return true
 }

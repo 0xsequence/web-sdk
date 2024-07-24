@@ -18,7 +18,7 @@ export interface WalletProperties {
   name: string
   iconBackground?: string
   hideConnectorId?: string | null
-  isSequenceBased?: boolean,
+  isSequenceBased?: boolean
   type?: 'social' | 'wallet'
 }
 
@@ -72,7 +72,7 @@ export interface KitConfig {
     useMock?: boolean
   }
   displayedAssets?: DisplayedAsset[]
-  ethAuth?: EthAuthSettings,
+  ethAuth?: EthAuthSettings
   isDev?: boolean
 }
 

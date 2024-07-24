@@ -5,7 +5,6 @@ import { ethers } from 'ethers'
 import React from 'react'
 import { useConfig } from 'wagmi'
 
-
 import { useSettings } from '../../../../../hooks'
 import { computeBalanceFiat, formatDisplay, getPercentagePriceChange, compareAddress } from '../../../../../utils'
 

@@ -12,7 +12,8 @@ export const TransactionError = () => {
   useEffect(() => {
     setTimeout(() => {
       closeCheckout()
-      settings?.creditCardCheckout?.onError && settings?.creditCardCheckout?.onError(navigation.params.error, settings?.creditCardCheckout)
+      settings?.creditCardCheckout?.onError &&
+        settings?.creditCardCheckout?.onError(navigation.params.error, settings?.creditCardCheckout)
     }, 3000)
   }, [])
 

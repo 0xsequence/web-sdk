@@ -11,7 +11,7 @@ import {
   Skeleton,
   TokenImage
 } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useBalances, useContractInfo, useProjectAccessKey } from '@0xsequence/kit'
+import { getNativeTokenInfoByChainId, useBalances, useContractInfo } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -27,7 +27,6 @@ export const CheckoutSelection = () => {
   const { setNavigation } = useNavigation()
   const { closeCheckout, settings } = useCheckoutModal()
   const { address: accountAddress } = useAccount()
-  const projectAccessKey = useProjectAccessKey()
 
   const cryptoCheckoutSettings = settings?.cryptoCheckout
   const creditCardCheckoutSettings = settings?.creditCardCheckout

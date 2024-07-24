@@ -42,10 +42,14 @@ export const getCheckoutSettings = (args: GetCheckoutSettings) => {
   const checkoutSettings: CheckoutSettings = {
     creditCardCheckout: {
       defaultPaymentMethodType: 'us_debit',
-      onSuccess: (hash) => { console.log('credit card checkout success', hash) },
-      onError: (e) => { console.log('credit card checkout error', e) },
+      onSuccess: hash => {
+        console.log('credit card checkout success', hash)
+      },
+      onError: e => {
+        console.log('credit card checkout error', e)
+      },
       ...args
-    },
+    }
     // orderSummaryItems: [
     //   {
     //     chainId: args.chainId,
@@ -60,26 +64,16 @@ export const getCheckoutSettings = (args: GetCheckoutSettings) => {
 }
 
 export interface GetOrderbookCalldata {
-  orderId: string,
-  quantity: string,
-  recipient: string,
+  orderId: string
+  quantity: string
+  recipient: string
 }
 
-export const getOrderbookCalldata = ({
-  orderId,
-  quantity,
-  recipient,
-}: GetOrderbookCalldata) => {
+export const getOrderbookCalldata = ({ orderId, quantity, recipient }: GetOrderbookCalldata) => {
   const calldata = encodeFunctionData({
     abi: orderbookAbi,
     functionName: 'acceptRequest',
-    args: [
-      BigInt(orderId),
-      BigInt(quantity),
-      recipient as Hex,
-      [],
-      []
-    ]
+    args: [BigInt(orderId), BigInt(quantity), recipient as Hex, [], []]
   })
 
   return calldata

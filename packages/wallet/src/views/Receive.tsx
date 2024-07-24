@@ -7,7 +7,6 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../constants'
 
-
 export const Receive = () => {
   const { address, chain } = useAccount()
   const { chains } = useConfig()

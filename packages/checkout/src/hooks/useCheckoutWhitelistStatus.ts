@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { checkSardineWhitelistStatus, CheckSardineWhitelistStatusArgs } from '../utils'
 
-
 export const useCheckoutWhitelistStatus = (args: CheckSardineWhitelistStatusArgs, disabled?: boolean) => {
   const projectAccessKey = useProjectAccessKey()
 

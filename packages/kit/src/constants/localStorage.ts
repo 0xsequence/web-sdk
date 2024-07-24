@@ -27,5 +27,5 @@ export enum LocalStorageKey {
   WaasSessionHash = `${PREFIX}.${WAAS_SESSION_HASH}`,
   WaasActiveLoginType = `${PREFIX}.${WAAS_ACTIVE_LOGIN_TYPE}`,
   WaasEmailIdToken = `${PREFIX}.${WAAS_EMAIL_ID_TOKEN}`,
-  WaasSignInEmail = `${PREFIX}.${WAAS_SIGN_IN_EMAIL}`,
+  WaasSignInEmail = `${PREFIX}.${WAAS_SIGN_IN_EMAIL}`
 }

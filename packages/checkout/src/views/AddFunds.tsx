@@ -1,7 +1,5 @@
+import { Box } from '@0xsequence/design-system'
 import React from 'react'
-import {
-  Box,
-} from '@0xsequence/design-system'
 
 import { useAddFundsModal } from '../hooks'
 import { getTransakLink } from '../utils/transak'

@@ -5,7 +5,7 @@ import {
   useIndexerClient,
   signEthAuthProof,
   validateEthProof,
-  getModalPositionCss,
+  getModalPositionCss
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'

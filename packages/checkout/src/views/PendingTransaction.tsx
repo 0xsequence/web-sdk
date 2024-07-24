@@ -1,11 +1,10 @@
 import { Box, Spinner, Text } from '@0xsequence/design-system'
-import { useProjectAccessKey } from '@0xsequence/kit'
+import { useProjectAccessKey, useTokenMetadata } from '@0xsequence/kit'
 import React, { useEffect } from 'react'
 
 import { fetchSardineOrderStatus } from '../api'
 import { TransactionPendingNavigation } from '../contexts'
 import { useNavigation, useCheckoutModal, useSardineClientToken } from '../hooks'
-import { useTokenMetadata } from '@0xsequence/kit'
 
 const POLLING_TIME = 10 * 1000
 
@@ -19,19 +18,26 @@ export const PendingTransaction = () => {
   const { setNavigation } = nav
   const projectAccessKey = useProjectAccessKey()
 
-  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useTokenMetadata(creditCardCheckout.chainId, creditCardCheckout.nftAddress, [creditCardCheckout.nftId])
+  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useTokenMetadata(
+    creditCardCheckout.chainId,
+    creditCardCheckout.nftAddress,
+    [creditCardCheckout.nftId]
+  )
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const isDev = settings?.creditCardCheckout?.isDev || false
 
   const disableSardineClientTokenFetch = isLoadingTokenMetadata
 
-  const { data, isLoading, isError } = useSardineClientToken({
-    order: creditCardCheckout,
-    isDev,
-    projectAccessKey: projectAccessKey,
-    tokenMetadata: tokenMetadata
-  }, disableSardineClientTokenFetch)
+  const { data, isLoading, isError } = useSardineClientToken(
+    {
+      order: creditCardCheckout,
+      isDev,
+      projectAccessKey: projectAccessKey,
+      tokenMetadata: tokenMetadata
+    },
+    disableSardineClientTokenFetch
+  )
 
   const authToken = data?.token
 
@@ -103,10 +109,16 @@ export const PendingTransaction = () => {
 
   if (isError) {
     return (
-      <Box flexDirection="column" justifyContent="center" alignItems="center" gap="6" style={{
-        height: '500px',
-        width: '380px'
-      }}>
+      <Box
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap="6"
+        style={{
+          height: '500px',
+          width: '380px'
+        }}
+      >
         <Box>
           <Text color="text100">An error has occurred</Text>
         </Box>
@@ -116,10 +128,16 @@ export const PendingTransaction = () => {
 
   if (isLoading || !authToken) {
     return (
-      <Box flexDirection="column" justifyContent="center" alignItems="center" gap="6" style={{
-        height: '500px',
-        width: '380px'
-      }}>
+      <Box
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap="6"
+        style={{
+          height: '500px',
+          width: '380px'
+        }}
+      >
         <Box>
           <Spinner size="lg" />
         </Box>

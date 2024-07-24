@@ -1,9 +1,9 @@
-import { AddFundsSettings } from "../contexts"
+import { AddFundsSettings } from '../contexts'
 
 export const TRANSAK_API_KEY = '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
 
 export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
-  const defaultNetworks = "ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain"
+  const defaultNetworks = 'ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain'
 
   interface Options {
     [index: string]: string | undefined

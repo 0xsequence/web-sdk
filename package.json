@@ -10,7 +10,7 @@
     "reinstall": "rimraf -g ./**/node_modules && pnpm install",
     "test": "turbo run test",
     "lint": "eslint -c .eslintrc.js 'packages/**/src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint -c .eslintrc.js --fix 'packages/**/src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint -c .eslintrc.js --fix 'packages/**/src/**/*.{ts,tsx}' && pnpm run format",
     "format": "prettier --list-different --write './{packages,examples}/*/src/**/*.{ts,tsx}'",
     "audit:fix": "pnpm audit --fix",
     "typecheck": "tsc --noEmit",

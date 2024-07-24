@@ -8,13 +8,12 @@ import { LocalStorageKey } from '../constants/localStorage'
 export const useWaasSignInEmail = () => {
   const { storage } = useConfig()
   const { isConnected } = useAccount()
-  const [email, setEmail] = useState<null|string>(null)
-
+  const [email, setEmail] = useState<null | string>(null)
 
   const storeEmail = async () => {
     const key = LocalStorageKey.WaasSignInEmail
     const storedEmail = await storage?.getItem(key as any)
-  
+
     setEmail(storedEmail)
   }
 
@@ -28,4 +27,3 @@ export const useWaasSignInEmail = () => {
 
   return email
 }
-
