@@ -9,7 +9,8 @@ import {
   Spinner,
   Image,
   IconButton,
-  PINCodeInput
+  PINCodeInput,
+  useToast
 } from '@0xsequence/design-system'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
@@ -47,7 +48,7 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
   const [waasEmailPinCode, setWaasEmailPinCode] = useState<string[]>([])
   const { connectors, connect } = useConnect()
-
+  const toast = useToast()
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
   const baseWalletConnectors = (connectors as ExtendedConnector[])
@@ -108,10 +109,10 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const {
     inProgress: emailAuthInProgress,
     loading: emailAuthLoading,
+    error: emailAuthError,
     initiateAuth: initiateEmailAuth,
     sendChallengeAnswer
   } = useEmailAuth({
-    version: 1,
     connector: socialAuthConnectors.find(c => c._wallet.id === 'email-waas'),
     onSuccess: async idToken => {
       storage?.setItem(LocalStorageKey.WaasEmailIdToken, idToken)
@@ -120,6 +121,17 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
       }
     }
   })
+
+  useEffect(() => {
+    if (emailAuthError && !emailAuthInProgress) {
+      toast({
+        variant: 'error',
+        title: 'Error',
+        description: emailAuthError,
+        duration: 5000
+      })
+    }
+  }, [emailAuthError, emailAuthInProgress])
 
   useEffect(() => {
     if (isConnected && openConnectModal) {
@@ -193,6 +205,12 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
               />
             )}
           </Box>
+
+          {emailAuthError && (
+            <Text variant="small" color="negative" textAlign="center">
+              {emailAuthError}
+            </Text>
+          )}
         </Box>
       </>
     )

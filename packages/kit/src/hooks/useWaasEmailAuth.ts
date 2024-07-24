@@ -1,17 +1,10 @@
 import { Challenge, SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 
+import { EmailWaasOptions } from '../connectors/email/emailWaas'
 import { ExtendedConnector } from '../types'
 
-export function useEmailAuth({
-  connector,
-  version = 1,
-  onSuccess
-}: {
-  connector?: ExtendedConnector
-  version?: 1 | 2
-  onSuccess: (idToken: string) => void
-}) {
+export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedConnector; onSuccess: (idToken: string) => void }) {
   if (!connector) {
     return {
       inProgress: false,
@@ -23,7 +16,7 @@ export function useEmailAuth({
   }
 
   const [email, setEmail] = useState('')
-  const [error, setError] = useState<unknown>()
+  const [error, setError] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
   const [instance, setInstance] = useState('')
   const [challenge, setChallenge] = useState<Challenge | undefined>()
@@ -43,11 +36,13 @@ export function useEmailAuth({
   }
 
   const initiateAuth = async (email: string) => {
+    const params = (connector as any).params as EmailWaasOptions
     const waas = getSequenceWaas()
 
     setLoading(true)
+    setError(undefined)
 
-    if (version === 1) {
+    if (params.emailAuthVersion === 1) {
       try {
         const { instance } = await waas.email.initiateAuth({ email })
         setInstance(instance)
@@ -71,11 +66,13 @@ export function useEmailAuth({
   }
 
   const sendChallengeAnswer = async (answer: string) => {
+    const params = (connector as any).params as EmailWaasOptions
     const waas = getSequenceWaas()
 
     setLoading(true)
+    setError(undefined)
 
-    if (version === 1) {
+    if (params.emailAuthVersion === 1) {
       try {
         const sessionHash = await waas.getSessionHash()
         const { idToken } = await waas.email.finalizeAuth({ instance, answer, email, sessionHash })

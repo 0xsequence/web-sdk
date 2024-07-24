@@ -83,6 +83,8 @@ interface GetDefaultWaasConnectors {
   appName: string
   defaultChainId?: number
 
+  emailAuthVersion?: 1 | 2
+
   enableConfirmationModal?: boolean
 
   isDev?: boolean
@@ -98,10 +100,12 @@ export const getDefaultWaasConnectors = ({
   appName,
   defaultChainId,
   enableConfirmationModal,
+  emailAuthVersion,
   isDev = false
 }: GetDefaultWaasConnectors): CreateConnectorFn[] => {
   const wallets: any[] = [
     emailWaas({
+      emailAuthVersion,
       projectAccessKey,
       waasConfigKey,
       enableConfirmationModal,

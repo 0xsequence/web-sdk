@@ -1,7 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { Box, Button, Card, Collapsible, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
+import { Box, Button, Card, Collapsible, Modal, Text, ThemeProvider, ToastProvider } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ethers } from 'ethers'
@@ -141,184 +141,186 @@ export const KitProvider = (props: KitConnectProviderProps) => {
           setPosition: setModalPosition
         }}
       >
-        <GoogleOAuthProvider clientId={googleClientId}>
-          <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
-            <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets }}>
-              <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                <div id="kit-provider">
-                  <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                    <AnimatePresence>
-                      {openConnectModal && (
-                        <Modal
-                          scroll={false}
-                          backdropColor="backgroundBackdrop"
-                          size="sm"
-                          contentProps={{
-                            style: {
-                              maxWidth: '364px',
-                              ...getModalPositionCss(position)
-                            }
-                          }}
-                          onClose={() => setOpenConnectModal(false)}
-                        >
-                          <Box padding="4">
-                            <Box
-                              justifyContent="center"
-                              color="text100"
-                              alignItems="center"
-                              fontWeight="medium"
-                              style={{
-                                marginTop: '4px'
-                              }}
-                            >
-                              <Text>Sign in {projectName ? `to ${projectName}` : ''}</Text>
-                            </Box>
-                            <ConnectWalletContent
-                              openConnectModal={openConnectModal}
-                              setOpenConnectModal={setOpenConnectModal}
-                              {...props}
-                            />
-                            <Box
-                              onClick={poweredBySequenceOnClick}
-                              gap="1"
-                              marginTop="4"
-                              flexDirection="row"
-                              alignItems="center"
-                              justifyContent="center"
-                              userSelect="none"
-                              cursor="pointer"
-                              opacity={{ hover: '80' }}
-                            >
-                              <Text fontSize="small" color="text100">
-                                Powered by Sequence
-                              </Text>
-                              <Box height="5" width="5">
-                                <SequenceLogo />
+        <ToastProvider>
+          <GoogleOAuthProvider clientId={googleClientId}>
+            <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
+              <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets }}>
+                <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
+                  <div id="kit-provider">
+                    <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
+                      <AnimatePresence>
+                        {openConnectModal && (
+                          <Modal
+                            scroll={false}
+                            backdropColor="backgroundBackdrop"
+                            size="sm"
+                            contentProps={{
+                              style: {
+                                maxWidth: '364px',
+                                ...getModalPositionCss(position)
+                              }
+                            }}
+                            onClose={() => setOpenConnectModal(false)}
+                          >
+                            <Box padding="4">
+                              <Box
+                                justifyContent="center"
+                                color="text100"
+                                alignItems="center"
+                                fontWeight="medium"
+                                style={{
+                                  marginTop: '4px'
+                                }}
+                              >
+                                <Text>Sign in {projectName ? `to ${projectName}` : ''}</Text>
+                              </Box>
+                              <ConnectWalletContent
+                                openConnectModal={openConnectModal}
+                                setOpenConnectModal={setOpenConnectModal}
+                                {...props}
+                              />
+                              <Box
+                                onClick={poweredBySequenceOnClick}
+                                gap="1"
+                                marginTop="4"
+                                flexDirection="row"
+                                alignItems="center"
+                                justifyContent="center"
+                                userSelect="none"
+                                cursor="pointer"
+                                opacity={{ hover: '80' }}
+                              >
+                                <Text fontSize="small" color="text100">
+                                  Powered by Sequence
+                                </Text>
+                                <Box height="5" width="5">
+                                  <SequenceLogo />
+                                </Box>
                               </Box>
                             </Box>
-                          </Box>
-                        </Modal>
-                      )}
-                    </AnimatePresence>
-                    <AnimatePresence>
-                      {pendingRequestConfirmation && (
-                        <Modal
-                          scroll={false}
-                          backdropColor="backgroundBackdrop"
-                          size="sm"
-                          contentProps={{
-                            style: {
-                              maxWidth: '364px',
-                              ...getModalPositionCss(position)
-                            }
-                          }}
-                          isDismissible={false}
-                          onClose={() => {
-                            rejectPendingRequest('')
-                          }}
-                        >
-                          <Box paddingX="4" paddingTop="4" paddingBottom="2">
-                            <Box
-                              flexDirection="column"
-                              justifyContent="center"
-                              color="text100"
-                              alignItems="center"
-                              fontWeight="medium"
-                              style={{
-                                marginTop: '4px'
-                              }}
-                            >
-                              <Text as="h1" variant="large" marginBottom="5">
-                                Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
-                              </Text>
+                          </Modal>
+                        )}
+                      </AnimatePresence>
+                      <AnimatePresence>
+                        {pendingRequestConfirmation && (
+                          <Modal
+                            scroll={false}
+                            backdropColor="backgroundBackdrop"
+                            size="sm"
+                            contentProps={{
+                              style: {
+                                maxWidth: '364px',
+                                ...getModalPositionCss(position)
+                              }
+                            }}
+                            isDismissible={false}
+                            onClose={() => {
+                              rejectPendingRequest('')
+                            }}
+                          >
+                            <Box paddingX="4" paddingTop="4" paddingBottom="2">
+                              <Box
+                                flexDirection="column"
+                                justifyContent="center"
+                                color="text100"
+                                alignItems="center"
+                                fontWeight="medium"
+                                style={{
+                                  marginTop: '4px'
+                                }}
+                              >
+                                <Text as="h1" variant="large" marginBottom="5">
+                                  Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
+                                </Text>
 
-                              {pendingRequestConfirmation.type === 'signMessage' && (
-                                <Box flexDirection="column" width="full">
-                                  <Text fontSize="normal" color="text50">
-                                    Message
-                                  </Text>
-                                  <Card marginTop="2" paddingY="6">
-                                    <Text variant="normal" marginBottom="4">
-                                      {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                {pendingRequestConfirmation.type === 'signMessage' && (
+                                  <Box flexDirection="column" width="full">
+                                    <Text fontSize="normal" color="text50">
+                                      Message
                                     </Text>
-                                  </Card>
-                                </Box>
-                              )}
-
-                              {pendingRequestConfirmation.type === 'signTransaction' && (
-                                <Box flexDirection="column" width="full">
-                                  <TxnDetails
-                                    address={address ?? ''}
-                                    txs={pendingRequestConfirmation.txs ?? []}
-                                    chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
-                                  />
-
-                                  <Collapsible label="Transaction data" marginTop="4">
-                                    <Card overflowX="scroll" marginY="3">
-                                      <Text variant="code" marginBottom="4">
-                                        {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
+                                    <Card marginTop="2" paddingY="6">
+                                      <Text variant="normal" marginBottom="4">
+                                        {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
                                       </Text>
                                     </Card>
-                                  </Collapsible>
-                                </Box>
-                              )}
-
-                              {pendingRequestConfirmation.chainId && (
-                                <Box width="full" marginTop="3" justifyContent="flex-end" alignItems="center">
-                                  <Box width="1/2" justifyContent="flex-start">
-                                    <Text variant="small" color="text50">
-                                      Network
-                                    </Text>
                                   </Box>
-                                  <Box width="1/2" justifyContent="flex-end">
-                                    <NetworkBadge chainId={pendingRequestConfirmation.chainId} />
-                                  </Box>
-                                </Box>
-                              )}
+                                )}
 
-                              <Box flexDirection="row" gap="2" width="full" marginTop="5">
-                                <Button
-                                  width="full"
-                                  shape="square"
-                                  size="lg"
-                                  label="Reject"
-                                  onClick={() => {
-                                    rejectPendingRequest(pendingRequestConfirmation?.id)
-                                  }}
-                                />
-                                <Button
-                                  alignItems="center"
-                                  textAlign="center"
-                                  width="full"
-                                  shape="square"
-                                  size="lg"
-                                  label="Confirm"
-                                  variant="primary"
-                                  onClick={() => {
-                                    confirmPendingRequest(pendingRequestConfirmation?.id)
-                                  }}
-                                />
+                                {pendingRequestConfirmation.type === 'signTransaction' && (
+                                  <Box flexDirection="column" width="full">
+                                    <TxnDetails
+                                      address={address ?? ''}
+                                      txs={pendingRequestConfirmation.txs ?? []}
+                                      chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
+                                    />
+
+                                    <Collapsible label="Transaction data" marginTop="4">
+                                      <Card overflowX="scroll" marginY="3">
+                                        <Text variant="code" marginBottom="4">
+                                          {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
+                                        </Text>
+                                      </Card>
+                                    </Collapsible>
+                                  </Box>
+                                )}
+
+                                {pendingRequestConfirmation.chainId && (
+                                  <Box width="full" marginTop="3" justifyContent="flex-end" alignItems="center">
+                                    <Box width="1/2" justifyContent="flex-start">
+                                      <Text variant="small" color="text50">
+                                        Network
+                                      </Text>
+                                    </Box>
+                                    <Box width="1/2" justifyContent="flex-end">
+                                      <NetworkBadge chainId={pendingRequestConfirmation.chainId} />
+                                    </Box>
+                                  </Box>
+                                )}
+
+                                <Box flexDirection="row" gap="2" width="full" marginTop="5">
+                                  <Button
+                                    width="full"
+                                    shape="square"
+                                    size="lg"
+                                    label="Reject"
+                                    onClick={() => {
+                                      rejectPendingRequest(pendingRequestConfirmation?.id)
+                                    }}
+                                  />
+                                  <Button
+                                    alignItems="center"
+                                    textAlign="center"
+                                    width="full"
+                                    shape="square"
+                                    size="lg"
+                                    label="Confirm"
+                                    variant="primary"
+                                    onClick={() => {
+                                      confirmPendingRequest(pendingRequestConfirmation?.id)
+                                    }}
+                                  />
+                                </Box>
+                              </Box>
+                              <Box gap="1" marginTop="4" flexDirection="row" alignItems="center" justifyContent="center">
+                                <Text fontSize="small" color="text80">
+                                  Powered by Sequence
+                                </Text>
+                                <Box height="4" width="4" marginTop="1">
+                                  <SequenceLogo />
+                                </Box>
                               </Box>
                             </Box>
-                            <Box gap="1" marginTop="4" flexDirection="row" alignItems="center" justifyContent="center">
-                              <Text fontSize="small" color="text80">
-                                Powered by Sequence
-                              </Text>
-                              <Box height="4" width="4" marginTop="1">
-                                <SequenceLogo />
-                              </Box>
-                            </Box>
-                          </Box>
-                        </Modal>
-                      )}
-                    </AnimatePresence>
-                  </ThemeProvider>
-                </div>
-                {children}
-              </AnalyticsContextProvider>
-            </WalletConfigContextProvider>
-          </ConnectModalContextProvider>
-        </GoogleOAuthProvider>
+                          </Modal>
+                        )}
+                      </AnimatePresence>
+                    </ThemeProvider>
+                  </div>
+                  {children}
+                </AnalyticsContextProvider>
+              </WalletConfigContextProvider>
+            </ConnectModalContextProvider>
+          </GoogleOAuthProvider>
+        </ToastProvider>
       </ThemeContextProvider>
     </KitConfigContextProvider>
   )
