@@ -9,8 +9,7 @@ import {
   Spinner,
   Image,
   IconButton,
-  PINCodeInput,
-  useToast
+  PINCodeInput
 } from '@0xsequence/design-system'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
@@ -48,7 +47,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
   const [waasEmailPinCode, setWaasEmailPinCode] = useState<string[]>([])
   const { connectors, connect } = useConnect()
-  const toast = useToast()
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
   const baseWalletConnectors = (connectors as ExtendedConnector[])
@@ -123,17 +121,6 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
   })
 
   useEffect(() => {
-    if (emailAuthError && !emailAuthInProgress) {
-      toast({
-        variant: 'error',
-        title: 'Error',
-        description: emailAuthError,
-        duration: 5000
-      })
-    }
-  }, [emailAuthError, emailAuthInProgress])
-
-  useEffect(() => {
     if (isConnected && openConnectModal) {
       setOpenConnectModal(false)
     }
@@ -190,27 +177,31 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
           <Text marginTop="5" marginBottom="4" variant="normal" color="text80">
             Enter code received in email.
           </Text>
-          <PINCodeInput value={waasEmailPinCode} digits={6} onChange={setWaasEmailPinCode} />
+          <PINCodeInput
+            value={waasEmailPinCode}
+            digits={6}
+            group={3}
+            onChange={setWaasEmailPinCode}
+            disabled={emailAuthLoading}
+          />
 
-          <Box gap="2" marginY="4" alignItems="center" justifyContent="center" style={{ height: '44px' }}>
-            {emailAuthLoading ? (
-              <Spinner />
-            ) : (
-              <Button
-                variant="primary"
-                disabled={waasEmailPinCode.includes('')}
-                label="Verify"
-                onClick={() => sendChallengeAnswer(waasEmailPinCode.join(''))}
-                data-id="verifyButton"
-              />
+          <Box gap="4" marginTop="4" alignItems="center" justifyContent="center" flexDirection="column">
+            <Button
+              variant="primary"
+              disabled={waasEmailPinCode.includes('') || emailAuthLoading}
+              label="Confirm"
+              onClick={() => sendChallengeAnswer(waasEmailPinCode.join(''))}
+              data-id="verifyButton"
+            />
+
+            {emailAuthLoading && <Spinner />}
+
+            {emailAuthError && (
+              <Text variant="small" color="negative" textAlign="center">
+                {emailAuthError}
+              </Text>
             )}
           </Box>
-
-          {emailAuthError && (
-            <Text variant="small" color="negative" textAlign="center">
-              {emailAuthError}
-            </Text>
-          )}
         </Box>
       </>
     )
