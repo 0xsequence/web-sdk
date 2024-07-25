@@ -41,16 +41,9 @@ import { mainnet, polygon, Chain } from 'wagmi/chains'
 const queryClient = new QueryClient()
 
 function App() {
+  const projectAccessKey = '<your-project-access-key>'
+
   const chains = getDefaultChains(/* optional array of chain ids to filter */)
-
-  const projectAccessKey = 'xyz'
-
-  const connectors = getDefaultConnectors({
-    walletConnectProjectId: 'wallet-connect-id',
-    defaultChainId: 137,
-    appName: 'demo app',
-    projectAccessKey
-  })
 
   const transports = {}
 
@@ -58,10 +51,34 @@ function App() {
     transports[chain.id] = http()
   })
 
+  // Universal wallet configuration
+  const connectors = getDefaultConnectors({
+    projectAccessKey,
+    walletConnectProjectId: '<your-wallet-connect-id>',
+    defaultChainId: 137,
+    appName: 'Demo Dapp'
+  })
+
+  /* 
+  // ...or for Embedded wallet configuration
+  const connectors = getDefaultWaasConnectors({
+    projectAccessKey,
+    walletConnectProjectId: '<your-wallet-connect-id>',
+    defaultChainId: 137,
+    appName: 'Demo Dapp',
+
+    waasConfigKey: '<your-waas-config-key>',
+    googleClientId,
+    appleClientId,
+    appleRedirectUrl,
+    emailAuthVersion // (default 2), 1 for legacy
+  })
+  */
+
   const config = createConfig({
+    chains,
     transports,
-    connectors,
-    chains
+    connectors
   })
 
   return (
