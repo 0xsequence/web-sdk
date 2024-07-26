@@ -43,30 +43,13 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
   const showConfirmationModal = params.enableConfirmationModal ?? false
 
-  const initialChain = params.network ?? 137
-  const initialChainName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
-
-  const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-    `${nodesUrl}/${initialChainName ?? 'polygon'}/${params.projectAccessKey}`
-  )
-
   const sequenceWaas = new SequenceWaaS({
-    network: initialChain,
+    waasConfigKey: params.waasConfigKey,
     projectAccessKey: params.projectAccessKey,
-    waasConfigKey: params.waasConfigKey
+    network: params.network ?? 137
   })
 
-  sequenceWaas.onEmailConflict(async (info, forceCreate) => {
-    console.log('---- EMAIL CONFLICT', info)
-  })
-
-  const sequenceWaasProvider = new SequenceWaasProvider(
-    sequenceWaas,
-    initialJsonRpcProvider,
-    initialChain,
-    showConfirmationModal,
-    nodesUrl
-  )
+  const sequenceWaasProvider = new SequenceWaasProvider(sequenceWaas, showConfirmationModal, nodesUrl)
 
   return createConnector<Provider, Properties, StorageItem>(config => ({
     id: `sequence-waas`,
@@ -237,27 +220,25 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 }
 
 export class SequenceWaasProvider extends ethers.providers.BaseProvider implements sequence.provider.EIP1193Provider {
+  jsonRpcProvider: ethers.providers.JsonRpcProvider
+  requestConfirmationHandler: WaasRequestConfirmationHandler | undefined
+  feeConfirmationHandler: WaasFeeOptionConfirmationHandler | undefined
+  currentNetwork: ethers.providers.Network = this.network
+
   constructor(
     public sequenceWaas: SequenceWaaS,
-    public jsonRpcProvider: ethers.providers.JsonRpcProvider,
-    network: ethers.providers.Networkish,
     public showConfirmation: boolean,
     public nodesUrl: string
   ) {
-    super(network)
-  }
+    super(sequenceWaas.config.network)
 
-  requestConfirmationHandler: WaasRequestConfirmationHandler | undefined
-  feeConfirmationHandler: WaasFeeOptionConfirmationHandler | undefined
+    const initialChain = sequenceWaas.config.network
+    const initialChainName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
+    const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
+      `${nodesUrl}/${initialChainName}/${sequenceWaas.config.projectAccessKey}`
+    )
 
-  currentNetwork: ethers.providers.Network = this.network
-
-  updateJsonRpcProvider(jsonRpcProvider: ethers.providers.JsonRpcProvider) {
-    this.jsonRpcProvider = jsonRpcProvider
-  }
-
-  updateNetwork(network: ethers.providers.Network) {
-    this.currentNetwork = network
+    this.jsonRpcProvider = initialJsonRpcProvider
   }
 
   async request({ method, params }: { method: string; params?: any[] }) {
@@ -269,8 +250,8 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         `${this.nodesUrl}/${networkName}/${this.sequenceWaas.config.projectAccessKey}`
       )
 
-      this.updateJsonRpcProvider(jsonRpcProvider)
-      this.updateNetwork(ethers.providers.getNetwork(chainId))
+      this.jsonRpcProvider = jsonRpcProvider
+      this.currentNetwork = ethers.providers.getNetwork(chainId)
 
       return null
     }
