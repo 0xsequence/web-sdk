@@ -72,6 +72,11 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
     setLoading(true)
     setError(undefined)
 
+    console.log('!!!!Setting up listener')
+    const disposer = waas.onEmailConflict(async info => {
+      console.log('---- EMAIL CONFLICT', info)
+    })
+
     if (params.emailAuthVersion === 1) {
       try {
         const sessionHash = await waas.getSessionHash()
@@ -94,6 +99,8 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
         setError(e.message || 'Unknown error')
       } finally {
         setLoading(false)
+
+        disposer()
       }
     }
   }
