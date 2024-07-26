@@ -57,7 +57,6 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     waasConfigKey: params.waasConfigKey
   })
 
-  console.log('onEmailConflict listener')
   sequenceWaas.onEmailConflict(async (info, forceCreate) => {
     console.log('---- EMAIL CONFLICT', info)
   })
@@ -126,6 +125,10 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           idToken = appleIdToken
         }
 
+        await config.storage?.removeItem(LocalStorageKey.WaasGoogleIdToken)
+        await config.storage?.removeItem(LocalStorageKey.WaasEmailIdToken)
+        await config.storage?.removeItem(LocalStorageKey.WaasAppleIdToken)
+
         if (idToken) {
           try {
             const signInResponse = await provider.sequenceWaas.signIn({ idToken }, randomName())
@@ -135,22 +138,21 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           } catch (e) {
             console.log(e)
             await this.disconnect()
-          }
-
-          const accounts = await this.getAccounts()
-
-          if (accounts.length) {
-            await config.storage?.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
+            throw e
           }
         }
+      }
 
-        await config.storage?.removeItem(LocalStorageKey.WaasGoogleIdToken)
-        await config.storage?.removeItem(LocalStorageKey.WaasEmailIdToken)
-        await config.storage?.removeItem(LocalStorageKey.WaasAppleIdToken)
+      const accounts = await this.getAccounts()
+
+      if (accounts.length) {
+        await config.storage?.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
+      } else {
+        throw new Error('No accounts found')
       }
 
       return {
-        accounts: await this.getAccounts(),
+        accounts,
         chainId: await this.getChainId()
       }
     },

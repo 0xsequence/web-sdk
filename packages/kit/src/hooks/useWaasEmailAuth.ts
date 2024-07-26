@@ -65,20 +65,18 @@ export function useEmailAuth({
         setInstance(instance)
         setEmail(email)
       } catch (e: any) {
-        setError(e.message || 'Unknown error')
+        setError(e.message || 'Unknown error, email auth version 1 failed')
       } finally {
         setLoading(false)
       }
     } else {
       waas.onEmailAuthCodeRequired(async respondWithCode => {
-        console.log('email auth code required')
         setRespondWithCode(() => respondWithCode)
       })
 
       waas
         .signIn({ email }, randomName())
         .then(res => {
-          console.log('email auth version 2 success', res)
           onSuccess({ version: 2, signInResponse: res })
 
           if (res.email) {
@@ -86,8 +84,7 @@ export function useEmailAuth({
           }
         })
         .catch(e => {
-          console.log('email auth version 2 error', e)
-          setError(e.message || 'Unknown error')
+          setError(e.message || 'Unknown error, email auth version 2 failed')
         })
 
       setLoading(false)
