@@ -117,6 +117,12 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
       if (emailConnector) {
         connect({ connector: emailConnector })
       }
+    },
+    onEmailV2Success: async signInResponse => {
+      console.log('email v2 success', signInResponse)
+      if (emailConnector) {
+        connect({ connector: emailConnector })
+      }
     }
   })
 

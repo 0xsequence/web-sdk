@@ -1,10 +1,19 @@
-import { Challenge, SequenceWaaS } from '@0xsequence/waas'
+import { Challenge, SequenceWaaS, SignInResponse } from '@0xsequence/waas'
 import { useState } from 'react'
 
 import { EmailWaasOptions } from '../connectors/email/emailWaas'
 import { ExtendedConnector } from '../types'
+import { randomName } from '../connectors/wagmiConnectors'
 
-export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedConnector; onSuccess: (idToken: string) => void }) {
+export function useEmailAuth({
+  connector,
+  onSuccess,
+  onEmailV2Success
+}: {
+  connector?: ExtendedConnector
+  onSuccess: (idToken: string) => void
+  onEmailV2Success: (signInResponse: SignInResponse) => void
+}) {
   if (!connector) {
     return {
       inProgress: false,
@@ -20,6 +29,7 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
   const [loading, setLoading] = useState(false)
   const [instance, setInstance] = useState('')
   const [challenge, setChallenge] = useState<Challenge | undefined>()
+  const [respondWithCode, setRespondWithCode] = useState<((code: string) => Promise<void>) | null>()
 
   const getSequenceWaas = () => {
     if (!connector) {
@@ -53,15 +63,25 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
         setLoading(false)
       }
     } else {
-      try {
-        const challenge = await waas.initAuth({ email })
-        setChallenge(challenge)
-        setEmail(email)
-      } catch (e: any) {
-        setError(e.message || 'Unknown error')
-      } finally {
-        setLoading(false)
-      }
+      waas.onEmailAuthCodeRequired(async respondWithCode => {
+        console.log('email auth code required')
+        setRespondWithCode(() => respondWithCode)
+      })
+
+      waas
+        .signIn({ email }, randomName())
+        .then(res => {
+          console.log('email auth version 2 success', res)
+          onEmailV2Success(res)
+          if (res.email) {
+            setEmail(res.email)
+          }
+        })
+        .catch(e => {
+          console.log('email auth version 2 error', e)
+          setError(e.message || 'Unknown error')
+        })
+      setLoading(false)
     }
   }
 
@@ -71,11 +91,6 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
 
     setLoading(true)
     setError(undefined)
-
-    console.log('!!!!Setting up listener')
-    const disposer = waas.onEmailConflict(async info => {
-      console.log('---- EMAIL CONFLICT', info)
-    })
 
     if (params.emailAuthVersion === 1) {
       try {
@@ -88,21 +103,18 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
         setLoading(false)
       }
     } else {
-      try {
-        if (!challenge) {
-          throw new Error('Challenge is not defined')
-        }
-
-        const res = await waas.completeAuth(challenge.withAnswer(answer))
-        onSuccess(res.sessionId)
-      } catch (e: any) {
-        setError(e.message || 'Unknown error')
-      } finally {
-        setLoading(false)
-
-        disposer()
+      if (!respondWithCode) {
+        throw new Error('Email v2 auth, respondWithCode is not defined')
       }
+
+      respondWithCode(answer)
     }
+  }
+
+  const cancel = () => {
+    setLoading(false)
+    setChallenge(undefined)
+    setRespondWithCode(null)
   }
 
   return {
@@ -110,6 +122,7 @@ export function useEmailAuth({ connector, onSuccess }: { connector?: ExtendedCon
     loading,
     error,
     initiateAuth,
-    sendChallengeAnswer
+    sendChallengeAnswer,
+    cancel
   }
 }

@@ -57,6 +57,11 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     waasConfigKey: params.waasConfigKey
   })
 
+  console.log('onEmailConflict listener')
+  sequenceWaas.onEmailConflict(async (info, forceCreate) => {
+    console.log('---- EMAIL CONFLICT', info)
+  })
+
   const sequenceWaasProvider = new SequenceWaasProvider(
     sequenceWaas,
     initialJsonRpcProvider,
