@@ -1,18 +1,26 @@
-import { Challenge, SequenceWaaS, SignInResponse } from '@0xsequence/waas'
+import { SequenceWaaS, SignInResponse } from '@0xsequence/waas'
 import { useState } from 'react'
 
 import { EmailWaasOptions } from '../connectors/email/emailWaas'
-import { ExtendedConnector } from '../types'
 import { randomName } from '../connectors/wagmiConnectors'
+import { ExtendedConnector } from '../types'
+
+interface SuccessResultV1 {
+  version: 1
+  idToken: string
+}
+
+interface SuccessResultV2 {
+  version: 2
+  signInResponse: SignInResponse
+}
 
 export function useEmailAuth({
   connector,
-  onSuccess,
-  onEmailV2Success
+  onSuccess
 }: {
   connector?: ExtendedConnector
-  onSuccess: (idToken: string) => void
-  onEmailV2Success: (signInResponse: SignInResponse) => void
+  onSuccess: (result: SuccessResultV1 | SuccessResultV2) => void
 }) {
   if (!connector) {
     return {
@@ -28,7 +36,6 @@ export function useEmailAuth({
   const [error, setError] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
   const [instance, setInstance] = useState('')
-  const [challenge, setChallenge] = useState<Challenge | undefined>()
   const [respondWithCode, setRespondWithCode] = useState<((code: string) => Promise<void>) | null>()
 
   const getSequenceWaas = () => {
@@ -72,7 +79,8 @@ export function useEmailAuth({
         .signIn({ email }, randomName())
         .then(res => {
           console.log('email auth version 2 success', res)
-          onEmailV2Success(res)
+          onSuccess({ version: 2, signInResponse: res })
+
           if (res.email) {
             setEmail(res.email)
           }
@@ -81,6 +89,7 @@ export function useEmailAuth({
           console.log('email auth version 2 error', e)
           setError(e.message || 'Unknown error')
         })
+
       setLoading(false)
     }
   }
@@ -93,27 +102,35 @@ export function useEmailAuth({
     setError(undefined)
 
     if (params.emailAuthVersion === 1) {
+      // version 1
       try {
         const sessionHash = await waas.getSessionHash()
         const { idToken } = await waas.email.finalizeAuth({ instance, answer, email, sessionHash })
-        onSuccess(idToken)
+
+        onSuccess({ version: 1, idToken })
       } catch (e: any) {
         setError(e.message || 'Unknown error')
       } finally {
         setLoading(false)
       }
     } else {
+      // version 2
       if (!respondWithCode) {
         throw new Error('Email v2 auth, respondWithCode is not defined')
       }
 
-      respondWithCode(answer)
+      try {
+        await respondWithCode(answer)
+      } catch (e: any) {
+        setError(e.message || 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
   const cancel = () => {
     setLoading(false)
-    setChallenge(undefined)
     setRespondWithCode(null)
   }
 

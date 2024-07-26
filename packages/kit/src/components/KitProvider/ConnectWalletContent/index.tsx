@@ -111,16 +111,16 @@ export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
     initiateAuth: initiateEmailAuth,
     sendChallengeAnswer
   } = useEmailAuth({
-    connector: socialAuthConnectors.find(c => c._wallet.id === 'email-waas'),
-    onSuccess: async idToken => {
-      storage?.setItem(LocalStorageKey.WaasEmailIdToken, idToken)
+    connector: emailConnector,
+    onSuccess: async result => {
+      console.log('Successfult email auth', result)
+
       if (emailConnector) {
-        connect({ connector: emailConnector })
-      }
-    },
-    onEmailV2Success: async signInResponse => {
-      console.log('email v2 success', signInResponse)
-      if (emailConnector) {
+        if (result.version === 1) {
+          // Store the version 1 idToken so that it can be used to authenticate during a refresh
+          storage?.setItem(LocalStorageKey.WaasEmailIdToken, result.idToken)
+        }
+
         connect({ connector: emailConnector })
       }
     }
