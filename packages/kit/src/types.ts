@@ -79,7 +79,6 @@ export interface KitConfig {
 export type StorageItem = {
   [LocalStorageKey.EthAuthProof]: ETHAuthProof
   [LocalStorageKey.EthAuthSettings]: EthAuthSettings
-  [LocalStorageKey.WaasSessionHash]: string
   [LocalStorageKey.WaasEmailIdToken]: string
   [LocalStorageKey.WaasGoogleClientID]: string
   [LocalStorageKey.WaasGoogleIdToken]: string

@@ -49,7 +49,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const { connector, onConnect } = props
   const storage = useStorage()
-  const { data: sessionHash, isPending: isPendingNonce } = useStorageItem(LocalStorageKey.WaasSessionHash)
+
   const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
   const { theme } = useTheme()
   const walletProps = connector._wallet
@@ -62,7 +62,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
     }, 300)
   })
 
-  return !isPendingNonce ? (
+  return (
     <Tooltip message="Google" disabled={!enableGoogleTooltip}>
       <Card
         clickable
@@ -86,7 +86,6 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
             type="icon"
             size="large"
             width="56"
-            nonce={sessionHash}
             onSuccess={credentialResponse => {
               if (credentialResponse.credential) {
                 storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
@@ -115,17 +114,17 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
         </Box>
       </Card>
     </Tooltip>
-  ) : null
+  )
 }
 
 export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
   const { connector, onConnect } = props
   const storage = useStorage()
-  const { data: sessionHash, isPending: isPendingNonce } = useStorageItem(LocalStorageKey.WaasSessionHash)
+
   const { data: appleClientId } = useStorageItem(LocalStorageKey.WaasAppleClientID)
   const { data: appleRedirectUri } = useStorageItem(LocalStorageKey.WaasAppleRedirectURI)
 
-  return !isPendingNonce && appleClientId && appleRedirectUri ? (
+  return appleClientId && appleRedirectUri ? (
     <ConnectButton
       connector={connector}
       onConnect={() => {
@@ -133,7 +132,6 @@ export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
           authOptions: {
             clientId: appleClientId,
             redirectURI: appleRedirectUri,
-            nonce: sessionHash,
             scope: 'openid email',
             usePopup: true
           },

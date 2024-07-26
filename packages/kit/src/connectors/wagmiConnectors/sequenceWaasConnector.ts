@@ -28,7 +28,6 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     params: BaseSequenceWaasConnectorOptions
   }
   type StorageItem = {
-    [LocalStorageKey.WaasSessionHash]: string
     [LocalStorageKey.WaasActiveLoginType]: string
     [LocalStorageKey.WaasGoogleIdToken]: string
     [LocalStorageKey.WaasEmailIdToken]: string
@@ -93,12 +92,6 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
       if (params.appleRedirectURI) {
         await config.storage?.setItem(LocalStorageKey.WaasAppleRedirectURI, params.appleRedirectURI)
-      }
-
-      const isConnected = await provider.sequenceWaas.isSignedIn()
-      if (!isConnected) {
-        const sessionHash = await provider.sequenceWaas.getSessionHash()
-        await config.storage?.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
       }
 
       provider.on('disconnect', () => {
@@ -166,11 +159,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         console.log(e)
       }
 
-      await config.storage?.removeItem(LocalStorageKey.WaasSessionHash)
       await config.storage?.removeItem(LocalStorageKey.WaasActiveLoginType)
-
-      const sessionHash = await provider.sequenceWaas.getSessionHash()
-      await config.storage?.setItem(LocalStorageKey.WaasSessionHash, sessionHash)
     },
 
     async getAccounts() {
