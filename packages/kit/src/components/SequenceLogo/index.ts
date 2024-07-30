@@ -1,0 +1,1 @@
+export { SequenceLogo } from './SequenceLogo'

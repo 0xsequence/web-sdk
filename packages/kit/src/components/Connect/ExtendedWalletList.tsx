@@ -1,8 +1,7 @@
 import { Box, Button, Text, useTheme } from '@0xsequence/design-system'
-import React from 'react'
 import { useConnect } from 'wagmi'
 
-import { ExtendedConnector } from '../../../types'
+import { ExtendedConnector } from '../../types'
 
 interface ExtendedWalletListProps {
   onConnect: (connector: ExtendedConnector) => void

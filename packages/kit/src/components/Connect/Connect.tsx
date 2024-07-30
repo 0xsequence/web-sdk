@@ -15,13 +15,13 @@ import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useAccount } from 'wagmi'
 
-import { LocalStorageKey } from '../../../constants'
-import { useStorage } from '../../../hooks/useStorage'
-import { useEmailAuth } from '../../../hooks/useWaasEmailAuth'
-import { ExtendedConnector, KitConfig, LogoProps } from '../../../types'
-import { isEmailValid } from '../../../utils/helpers'
-import { AppleWaasConnectButton, ConnectButton, EmailConnectButton, GoogleWaasConnectButton } from '../../ConnectButton'
-import { KitConnectProviderProps } from '../index'
+import { LocalStorageKey } from '../../constants'
+import { useStorage } from '../../hooks/useStorage'
+import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
+import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
+import { isEmailValid } from '../../utils/helpers'
+import { AppleWaasConnectButton, ConnectButton, EmailConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
+import { KitConnectProviderProps } from '../KitProvider/KitProvider'
 
 import { Banner } from './Banner'
 import { ExtendedWalletList } from './ExtendedWalletList'
@@ -31,7 +31,7 @@ interface ConnectWalletContentProps extends KitConnectProviderProps {
   setOpenConnectModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ConnectWalletContent = (props: ConnectWalletContentProps) => {
+export const Connect = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const storage = useStorage()

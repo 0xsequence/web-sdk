@@ -5,11 +5,11 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useTokenMetadata, useBalances } from '../../../hooks/data'
-import { useAPIClient } from '../../../hooks/useAPIClient'
-import { compareAddress, capitalize } from '../../../utils/helpers'
-import { getNativeTokenInfoByChainId } from '../../../utils/tokens'
-import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../../utils/txnDecoding'
+import { useTokenMetadata, useBalances } from '../../hooks/data'
+import { useAPIClient } from '../../hooks/useAPIClient'
+import { compareAddress, capitalize } from '../../utils/helpers'
+import { getNativeTokenInfoByChainId } from '../../utils/tokens'
+import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../CollectibleTileImage'
 
 interface TxnDetailsProps {
