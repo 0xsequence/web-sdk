@@ -129,6 +129,7 @@ export function useEmailAuth({
   const cancel = () => {
     setLoading(false)
     setRespondWithCode(null)
+    setError(undefined)
   }
 
   return {
