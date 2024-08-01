@@ -25,7 +25,7 @@ import { getModalPositionCss } from '../../utils/styling'
 import { Connect } from '../Connect'
 import { NetworkBadge } from '../NetworkBadge'
 import { PageHeading } from '../PageHeading'
-import { SequenceLogo } from '../SequenceLogo'
+import { PoweredBySequence } from '../SequenceLogo'
 import { TxnDetails } from '../TxnDetails'
 
 export type KitConnectProviderProps = {
@@ -83,12 +83,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
       analytics?.identify(address.toLowerCase())
     }
   }, [analytics, address, isConnected])
-
-  const poweredBySequenceOnClick = () => {
-    if (typeof window !== 'undefined') {
-      window.open('https://sequence.xyz')
-    }
-  }
 
   useEffect(() => {
     if (!disableAnalytics) {
@@ -176,25 +170,13 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             >
                               <Text>Sign in {projectName ? `to ${projectName}` : ''}</Text>
                             </Box>
-                            <Connect openConnectModal={openConnectModal} setOpenConnectModal={setOpenConnectModal} {...props} />
-                            <Box
-                              onClick={poweredBySequenceOnClick}
-                              gap="1"
-                              marginTop="4"
-                              flexDirection="row"
-                              alignItems="center"
-                              justifyContent="center"
-                              userSelect="none"
-                              cursor="pointer"
-                              opacity={{ hover: '80' }}
-                            >
-                              <Text fontSize="small" color="text100">
-                                Powered by Sequence
-                              </Text>
-                              <Box height="5" width="5">
-                                <SequenceLogo />
-                              </Box>
-                            </Box>
+                            <Connect
+                              onClose={() => {
+                                setOpenConnectModal(false)
+                              }}
+                              {...props}
+                              emailConflictInfo={emailConflictInfo}
+                            />
                           </Box>
                         </Modal>
                       )}
@@ -298,14 +280,8 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 />
                               </Box>
                             </Box>
-                            <Box gap="1" marginTop="4" flexDirection="row" alignItems="center" justifyContent="center">
-                              <Text fontSize="small" color="text80">
-                                Powered by Sequence
-                              </Text>
-                              <Box height="4" width="4" marginTop="1">
-                                <SequenceLogo />
-                              </Box>
-                            </Box>
+
+                            <PoweredBySequence />
                           </Box>
                         </Modal>
                       )}

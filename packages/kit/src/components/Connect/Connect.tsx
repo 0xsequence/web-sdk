@@ -8,9 +8,9 @@ import {
   TextInput,
   Spinner,
   Image,
-  IconButton,
-  PINCodeInput
+  IconButton
 } from '@0xsequence/design-system'
+import { EmailConflictInfo } from '@0xsequence/waas'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useAccount } from 'wagmi'
@@ -22,30 +22,29 @@ import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, EmailConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
 import { KitConnectProviderProps } from '../KitProvider/KitProvider'
+import { PoweredBySequence } from '../SequenceLogo'
 
 import { Banner } from './Banner'
+import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
-  openConnectModal: boolean
-  setOpenConnectModal: React.Dispatch<React.SetStateAction<boolean>>
+  emailConflictInfo?: EmailConflictInfo | null
+  onClose: () => void
 }
 
 export const Connect = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
-  const storage = useStorage()
-  const { isConnected } = useAccount()
-  const { config = {} } = props
+  const { onClose, emailConflictInfo, config = {} } = props
   const { signIn = {} } = config as KitConfig
-
-  const { openConnectModal, setOpenConnectModal } = props
+  const { isConnected } = useAccount()
+  const storage = useStorage()
 
   const [email, setEmail] = useState('')
   const [showEmailInput, setShowEmailInput] = useState<boolean>(false)
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
-  const [waasEmailPinCode, setWaasEmailPinCode] = useState<string[]>([])
   const { connectors, connect } = useConnect()
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
@@ -104,33 +103,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
     setEmail(ev.target.value)
   }
 
-  const {
-    inProgress: emailAuthInProgress,
-    loading: emailAuthLoading,
-    error: emailAuthError,
-    initiateAuth: initiateEmailAuth,
-    sendChallengeAnswer
-  } = useEmailAuth({
-    connector: emailConnector,
-    onSuccess: async result => {
-      console.log('Successfult email auth', result)
-
-      if (emailConnector) {
-        if (result.version === 1) {
-          // Store the version 1 idToken so that it can be used to authenticate during a refresh
-          storage?.setItem(LocalStorageKey.WaasEmailIdToken, result.idToken)
-        }
-
-        connect({ connector: emailConnector })
-      }
-    }
-  })
-
+  // Close after successful connection
   useEffect(() => {
-    if (isConnected && openConnectModal) {
-      setOpenConnectModal(false)
+    if (isConnected) {
+      onClose()
     }
-  }, [isConnected, openConnectModal])
+  }, [isConnected])
 
   const onConnect = (connector: ExtendedConnector) => {
     if (signIn.useMock && mockConnector) {
@@ -176,41 +154,37 @@ export const Connect = (props: ConnectWalletContentProps) => {
     }
   }
 
+  const {
+    inProgress: emailAuthInProgress,
+    loading: emailAuthLoading,
+    error: emailAuthError,
+    initiateAuth: initiateEmailAuth,
+    sendChallengeAnswer
+  } = useEmailAuth({
+    connector: emailConnector,
+    onSuccess: async result => {
+      console.log('Successfult email auth', result)
+
+      if (emailConnector) {
+        if (result.version === 1) {
+          // Store the version 1 idToken so that it can be used to authenticate during a refresh
+          storage?.setItem(LocalStorageKey.WaasEmailIdToken, result.idToken)
+        }
+
+        connect({ connector: emailConnector })
+      }
+    }
+  })
+
+  // Hide the email input if there is an email conflict
+  useEffect(() => {
+    if (emailConflictInfo) {
+      setShowEmailWaasPinInput(false)
+    }
+  }, [emailConflictInfo])
+
   if (showEmailWaasPinInput) {
-    return (
-      <>
-        <Box paddingY="6" alignItems="center" justifyContent="center" flexDirection="column">
-          <Text marginTop="5" marginBottom="4" variant="normal" color="text80">
-            Enter code received in email.
-          </Text>
-          <PINCodeInput
-            value={waasEmailPinCode}
-            digits={6}
-            group={3}
-            onChange={setWaasEmailPinCode}
-            disabled={emailAuthLoading}
-          />
-
-          <Box gap="4" marginTop="4" alignItems="center" justifyContent="center" flexDirection="column">
-            <Button
-              variant="primary"
-              disabled={waasEmailPinCode.includes('') || emailAuthLoading}
-              label="Confirm"
-              onClick={() => sendChallengeAnswer(waasEmailPinCode.join(''))}
-              data-id="verifyButton"
-            />
-
-            {emailAuthLoading && <Spinner />}
-
-            {emailAuthError && (
-              <Text variant="small" color="negative" textAlign="center">
-                {emailAuthError}
-              </Text>
-            )}
-          </Box>
-        </Box>
-      </>
-    )
+    return <EmailWaasVerify error={emailAuthError} isLoading={emailAuthLoading} onConfirm={sendChallengeAnswer} />
   }
 
   if (showExtendedList) {
@@ -284,6 +258,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                     </Box>
                   </>
                 )}
+
                 <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
                   {walletConnectors.slice(0, 7).map(connector => {
                     return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
@@ -306,6 +281,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
           </>
         )}
       </Box>
+
+      <PoweredBySequence />
     </>
   )
 }

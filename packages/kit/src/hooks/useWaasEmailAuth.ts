@@ -33,7 +33,7 @@ export function useEmailAuth({
   }
 
   const [email, setEmail] = useState('')
-  const [error, setError] = useState<string | undefined>()
+  const [error, setError] = useState<Error | undefined>()
   const [loading, setLoading] = useState(false)
   const [instance, setInstance] = useState('')
   const [respondWithCode, setRespondWithCode] = useState<((code: string) => Promise<void>) | null>()
@@ -64,8 +64,8 @@ export function useEmailAuth({
         const { instance } = await waas.email.initiateAuth({ email })
         setInstance(instance)
         setEmail(email)
-      } catch (e: any) {
-        setError(e.message || 'Unknown error, email auth version 1 failed')
+      } catch (err: any) {
+        setError(err)
       } finally {
         setLoading(false)
       }
@@ -76,15 +76,15 @@ export function useEmailAuth({
 
       waas
         .signIn({ email }, randomName())
-        .then(res => {
-          onSuccess({ version: 2, signInResponse: res })
+        .then(signInResponse => {
+          onSuccess({ version: 2, signInResponse })
 
-          if (res.email) {
-            setEmail(res.email)
+          if (signInResponse.email) {
+            setEmail(signInResponse.email)
           }
         })
-        .catch(e => {
-          setError(e.message || 'Unknown error, email auth version 2 failed')
+        .catch(err => {
+          setError(err)
         })
 
       setLoading(false)
@@ -105,8 +105,8 @@ export function useEmailAuth({
         const { idToken } = await waas.email.finalizeAuth({ instance, answer, email, sessionHash })
 
         onSuccess({ version: 1, idToken })
-      } catch (e: any) {
-        setError(e.message || 'Unknown error')
+      } catch (err: any) {
+        setError(err)
       } finally {
         setLoading(false)
       }
@@ -118,8 +118,8 @@ export function useEmailAuth({
 
       try {
         await respondWithCode(answer)
-      } catch (e: any) {
-        setError(e.message || 'Unknown error')
+      } catch (err: any) {
+        setError(err)
       } finally {
         setLoading(false)
       }
