@@ -10,7 +10,6 @@ import {
   Image,
   IconButton
 } from '@0xsequence/design-system'
-import { EmailConflictInfo } from '@0xsequence/waas'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useAccount } from 'wagmi'
@@ -18,6 +17,7 @@ import { useConnect, useAccount } from 'wagmi'
 import { LocalStorageKey } from '../../constants'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
+import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, EmailConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
@@ -29,7 +29,7 @@ import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
-  emailConflictInfo?: EmailConflictInfo | null
+  emailConflictInfo?: FormattedEmailConflictInfo | null
   onClose: () => void
 }
 

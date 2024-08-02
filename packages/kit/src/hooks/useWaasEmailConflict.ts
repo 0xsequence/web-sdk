@@ -1,6 +1,38 @@
-import { EmailConflictInfo, SequenceWaaS } from '@0xsequence/waas'
+import { IdentityType, EmailConflictInfo, SequenceWaaS } from '@0xsequence/waas'
 import { useEffect, useRef, useState } from 'react'
 import { useConnect } from 'wagmi'
+
+export type FormattedEmailConflictInfo = {
+  email: string
+  type: string
+}
+
+const accountTypeText = (info: EmailConflictInfo | null) => {
+  if (!info) {
+    return 'Unknown account type'
+  }
+
+  if (info.type === IdentityType.PlayFab) {
+    return 'PlayFab login'
+  }
+
+  if (info.type === IdentityType.Email) {
+    return 'Email login'
+  }
+
+  if (info.type === IdentityType.OIDC) {
+    switch (info.issuer) {
+      case 'https://accounts.google.com':
+        return 'Google login'
+      case 'https://appleid.apple.com':
+        return 'Apple login'
+      default:
+        return 'Unknown account type'
+    }
+  }
+
+  return info.type
+}
 
 export const useEmailConflict = () => {
   const { connectors } = useConnect()
@@ -26,7 +58,10 @@ export const useEmailConflict = () => {
   return {
     toggleEmailConflictModal: toggleModal,
     isEmailConflictOpen: isOpen,
-    emailConflictInfo,
+    emailConflictInfo: {
+      email: emailConflictInfo?.email ?? 'Unknown',
+      type: accountTypeText(emailConflictInfo)
+    } as FormattedEmailConflictInfo,
     forceCreate: async () => {
       return forceCreateFuncRef.current?.(true)
     }
