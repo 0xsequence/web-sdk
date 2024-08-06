@@ -66,28 +66,14 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
       cursor="pointer"
       opacity={{ hover: '80' }}
     >
-      <Box gap="3" flexDirection="row" alignItems="center" justifyContent="center">
-        <TokenImage src={logoURI} symbol={symbol} size="md" />
-        <Box gap="1" flexDirection="row" alignItems="center" justifyContent="center">
-          <Text
-            color="text100"
-            fontWeight="bold"
-            fontSize="normal"
-            style={{
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              maxWidth: '250px',
-              // @ts-ignore-next-line
-              textWrap: 'nowrap'
-            }}
-          >
-            {tokenName}
-          </Text>
-          <NetworkImage chainId={balance.chainId} size="xs" />
-        </Box>
+      <Box gap="3" flexDirection="row" alignItems="center" justifyContent="center" minWidth="0">
+        <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} />
+        <Text variant="normal" color="text100" fontWeight="bold" overflow="hidden" whiteSpace="nowrap" ellipsis>
+          {tokenName}
+        </Text>
       </Box>
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="1">
-        <Text color="text50" fontWeight="bold" fontSize="normal">
+        <Text variant="normal" color="text50" fontWeight="bold" textAlign="right" whiteSpace="nowrap">
           {getQuantity()}
         </Text>
         <ChevronRightIcon color="text50" />
