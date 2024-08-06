@@ -1,7 +1,6 @@
 import { Box, NetworkImage, Text } from '@0xsequence/design-system'
 import React from 'react'
 
-import { capitalize } from '../../utils/helpers'
 import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '../../utils/networks'
 
 interface NetworkBadgeProps {
@@ -16,28 +15,28 @@ export const NetworkBadge = ({ chainId }: NetworkBadgeProps) => {
   return (
     <Box
       height="6"
-      paddingY="1"
-      paddingLeft="1.5"
-      paddingRight="2"
+      paddingX="2"
       gap="1"
-      style={{
-        background: chainBGColor
-      }}
       borderRadius="xs"
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
       width="fit"
+      style={{
+        background: chainBGColor
+      }}
     >
       <NetworkImage chainId={chainId} size="xs" />
       <Text
+        variant="xsmall"
         fontWeight="bold"
-        fontSize="xsmall"
         style={{
           color: chainColor
         }}
+        capitalize
+        ellipsis
       >
-        {capitalize(network.title ?? network.name)}
+        {network.title ?? network.name}
       </Text>
     </Box>
   )

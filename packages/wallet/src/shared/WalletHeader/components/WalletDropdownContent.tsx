@@ -87,7 +87,7 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
       <Box flexDirection="row" justifyContent="space-between" alignItems="flex-start">
         <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3" marginLeft="2" color="text100">
           <GradientAvatar style={{ width: '28px' }} size="md" address={address || ''} />
-          <Text fontSize="large" style={{ fontWeight: '700' }} color="text100">
+          <Text variant="large" fontWeight="bold" color="text100">
             {formatAddress(address || '')}
           </Text>
           <CopyButton buttonVariant="icon" size="md" text={address || ''} color="text100" style={{ marginLeft: '-16px' }} />

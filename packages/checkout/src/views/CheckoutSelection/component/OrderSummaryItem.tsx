@@ -36,7 +36,7 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
         <Box flexDirection="column" alignItems="flex-start" justifyContent="center" gap="2">
           <Box gap="1" alignItems="center">
             <TokenImage src={collectionLogoURI} size="xs" />
-            <Text marginLeft="1" fontSize="small" color="text80" fontWeight="bold">
+            <Text marginLeft="1" variant="small" color="text80" fontWeight="bold">
               {collectionName}
             </Text>
             <NetworkImage chainId={chainId} size="xs" />
@@ -49,15 +49,15 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
               width: '180px'
             }}
           >
-            <Text color="text100" fontSize="normal" fontWeight="normal">
+            <Text variant="normal" color="text100">
               {name}
             </Text>
-            <Text color="text50" fontSize="normal" fontWeight="normal">{`#${tokenId}`}</Text>
+            <Text variant="normal" color="text50">{`#${tokenId}`}</Text>
           </Box>
         </Box>
       </Box>
-      <Box height="full" fontSize="small" color="text50" fontWeight="bold">
-        {`x${formatDisplay(balanceFormatted)}`}
+      <Box height="full">
+        <Text variant="small" color="text50" fontWeight="bold">{`x${formatDisplay(balanceFormatted)}`}</Text>
       </Box>
     </Card>
   )

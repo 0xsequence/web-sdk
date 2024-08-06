@@ -27,7 +27,7 @@ export const CollectibleDetailsSkeleton = () => {
         <Box>
           {/* balance */}
           <Box>
-            <Text fontWeight="medium" color="text50" fontSize="normal">
+            <Text variant="normal" fontWeight="medium" color="text50">
               Balance
             </Text>
             <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
@@ -46,7 +46,7 @@ export const CollectibleDetailsSkeleton = () => {
           />
         </Box>
         <Box>
-          <Text fontSize="normal" color="text50" fontWeight="medium">
+          <Text variant="normal" color="text50" fontWeight="medium">
             This week
           </Text>
           <TransactionHistorySkeleton />

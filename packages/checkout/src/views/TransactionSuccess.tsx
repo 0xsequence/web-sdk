@@ -30,8 +30,8 @@ export const TransactionSuccess = () => {
         style={{ top: '50%', right: '50%', transform: 'translate(50%, -50%)' }}
       >
         <NotificationSuccessIcon />
-        <Text fontSize="xlarge">Success!</Text>
-        <Text textAlign="center" variant="normal" color="text80">
+        <Text variant="xlarge">Success!</Text>
+        <Text variant="normal" textAlign="center" color="text80">
           Purchase was successful, item was sent to your wallet.
         </Text>
         {navigation.params.transactionHash && (

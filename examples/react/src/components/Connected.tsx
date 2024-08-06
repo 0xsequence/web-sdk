@@ -292,7 +292,7 @@ export const Connected = () => {
       <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4" style={{ maxWidth: breakpoints.md }}>
           <Box flexDirection="column" gap="2">
-            <Text color="text50" fontSize="small" fontWeight="medium">
+            <Text variant="small" color="text50" fontWeight="medium">
               Demos
             </Text>
             {/* <CardButton
@@ -397,10 +397,10 @@ export const Connected = () => {
                 options={[
                   ...pendingFeeOptionConfirmation?.options?.map(option => ({
                     label: (
-                      <Box alignItems="flex-start" flexDirection="column" fontSize="xsmall">
+                      <Box alignItems="flex-start" flexDirection="column">
                         <Box flexDirection="row">
-                          <Text>Fee (in {option.token.name}): </Text>{' '}
-                          <Text>{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                          <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
+                          <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
                         </Box>
                         <Box flexDirection="row">
                           <Text>Wallet balance for {option.token.name}: </Text>{' '}

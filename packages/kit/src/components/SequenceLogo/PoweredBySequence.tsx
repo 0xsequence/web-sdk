@@ -19,7 +19,7 @@ export const PoweredBySequence = () => {
       cursor="pointer"
       opacity={{ hover: '80' }}
     >
-      <Text fontSize="small" color="text100">
+      <Text variant="small" color="text100">
         Powered by Sequence
       </Text>
       <Box height="5" width="5">

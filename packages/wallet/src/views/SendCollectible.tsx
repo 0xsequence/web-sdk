@@ -264,7 +264,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         )}
       </Box>
       <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
-        <Text fontSize="normal" color="text50">
+        <Text variant="normal" color="text50">
           To
         </Text>
         {isEthAddress(toAddress) ? (

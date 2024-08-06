@@ -19,7 +19,7 @@ export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
           <NetworkBadge chainId={chainId} />
         </Box>
         <Box>
-          <Text fontWeight="medium" color="text50" fontSize="normal">
+          <Text variant="normal" fontWeight="medium" color="text50">
             Balance
           </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">

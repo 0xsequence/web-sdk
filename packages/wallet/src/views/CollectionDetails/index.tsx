@@ -57,16 +57,16 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
     >
       <Box flexDirection="column" gap="2" justifyContent="center" alignItems="center">
         <TokenImage src={collectionLogoURI} size="lg" />
-        <Text fontWeight="bold" fontSize="large" color="text100">
+        <Text variant="large" fontWeight="bold" color="text100">
           {contractInfo?.name || 'Unknown'}
         </Text>
         <NetworkBadge chainId={chainId} />
-        <Text fontWeight="medium" fontSize="normal" color="text50">{`${
+        <Text variant="normal" fontWeight="medium" color="text50">{`${
           collectionBalanceData?.length || 0
         } Unique Collectibles`}</Text>
       </Box>
       <Box width="full">
-        <Text fontWeight="medium" fontSize="normal" color="text50">
+        <Text variant="normal" fontWeight="medium" color="text50">
           {`Owned (${collectionBalanceData?.length || 0})`}
         </Text>
         <Box
@@ -97,12 +97,12 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
                   <Image style={{ height: '100%' }} src={balance.tokenMetadata?.image} />
                 </Box>
                 <Box>
-                  <Text fontWeight="bold" fontSize="normal" color="text100">
+                  <Text variant="normal" fontWeight="bold" color="text100">
                     {`${balance.tokenMetadata?.name}`}
                   </Text>
                 </Box>
                 <Box>
-                  <Text marginTop="1" fontWeight="medium" fontSize="normal" color="text50">
+                  <Text variant="normal" marginTop="1" fontWeight="medium" color="text50">
                     {formattedBalance} Owned
                   </Text>
                 </Box>

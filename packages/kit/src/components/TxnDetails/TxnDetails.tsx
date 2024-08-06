@@ -154,7 +154,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
 
       {toAddress !== undefined && (
         <Box>
-          <Text fontSize="normal" color="text50">
+          <Text variant="normal" color="text50">
             To
           </Text>
           <Box
@@ -215,7 +215,7 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
 
       {awardItemProps.to !== undefined && (
         <Box>
-          <Text fontSize="normal" color="text50">
+          <Text variant="normal" color="text50">
             To
           </Text>
           <Box

@@ -103,7 +103,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
       textColor = vars.colors.positive
     }
 
-    return <Text fontWeight="bold" fontSize="normal" style={{ color: textColor }}>{`${sign}${amount} ${symbol}`}</Text>
+    return <Text variant="normal" fontWeight="bold" style={{ color: textColor }}>{`${sign}${amount} ${symbol}`}</Text>
   }
 
   interface GetTransfer {
@@ -119,14 +119,14 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
         <Box flexDirection="row" justifyContent="space-between">
           <Box color="text50" gap="1" flexDirection="row" justifyContent="center" alignItems="center">
             {getTransactionIconByType(transfer.transferType)}
-            <Text fontWeight="medium" fontSize="normal" color="text100">
+            <Text variant="normal" fontWeight="medium" color="text100">
               {getTansactionLabelByType(transfer.transferType)}
             </Text>
             <NetworkImage chainId={transaction.chainId} size="xs" />
           </Box>
           {isFirstItem && (
             <Box>
-              <Text fontWeight="medium" fontSize="normal" color="text50">
+              <Text variant="normal" fontWeight="medium" color="text50">
                 {date}
               </Text>
             </Box>
@@ -159,7 +159,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
               </Box>
               {isPending && <Skeleton style={{ width: '35px', height: '20px' }} />}
               {fiatConversionRate && (
-                <Text fontWeight="medium" fontSize="normal" color="text50">
+                <Text variant="normal" fontWeight="medium" color="text50">
                   {`${fiatCurrency.sign}${(Number(amountValue) * fiatConversionRate * conversionRate).toFixed(2)}`}
                 </Text>
               )}

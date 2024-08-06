@@ -214,7 +214,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
                               {pendingRequestConfirmation.type === 'signMessage' && (
                                 <Box flexDirection="column" width="full">
-                                  <Text fontSize="normal" color="text50">
+                                  <Text variant="normal" color="text50" fontWeight="medium">
                                     Message
                                   </Text>
                                   <Card marginTop="2" paddingY="6">

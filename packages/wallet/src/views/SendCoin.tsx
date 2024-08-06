@@ -227,7 +227,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 {`~${fiatCurrency.sign}${amountToSendFiat}`}
               </Text>
               <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
-              <Text fontSize="xlarge" fontWeight="bold" color="text100">
+              <Text variant="xlarge" fontWeight="bold" color="text100">
                 {symbol}
               </Text>
             </>
@@ -240,7 +240,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
         )}
       </Box>
       <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
-        <Text fontSize="normal" color="text50">
+        <Text variant="normal" color="text50">
           To
         </Text>
         {isEthAddress(toAddress) ? (

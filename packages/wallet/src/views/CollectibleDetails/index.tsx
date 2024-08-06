@@ -115,17 +115,17 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
               }}
             />
             <Box gap="1" flexDirection="row" justifyContent="center" alignItems="center">
-              <Text fontWeight="bold" fontSize="small" color="text100">
+              <Text variant="small" fontWeight="bold" color="text100">
                 {collectionName}
               </Text>
               <NetworkImage chainId={chainId} size="xs" />
             </Box>
           </Box>
           <Box flexDirection="column" justifyContent="center" alignItems="center">
-            <Text color="text100" fontWeight="bold" fontSize="large">
+            <Text variant="large" color="text100" fontWeight="bold">
               {dataCollectibleBalance?.tokenMetadata?.name || 'Unknown Collectible'}
             </Text>
-            <Text color="text50" fontSize="small" fontWeight="medium">
+            <Text variant="small" color="text50" fontWeight="medium">
               {`#${tokenId}`}
             </Text>
           </Box>
@@ -136,15 +136,15 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
         <Box>
           {/* balance */}
           <Box>
-            <Text fontWeight="medium" color="text50" fontSize="normal">
+            <Text variant="normal" fontWeight="medium" color="text50">
               Balance
             </Text>
             <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
-              <Text fontWeight="bold" color="text100" fontSize="xlarge">
+              <Text variant="xlarge" fontWeight="bold" color="text100">
                 {formattedBalance}
               </Text>
               {dataCollectiblePrices && dataCollectiblePrices[0].price?.value && (
-                <Text fontWeight="medium" color="text50" fontSize="normal">{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
+                <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
               )}
             </Box>
           </Box>

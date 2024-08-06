@@ -1,4 +1,4 @@
-import { Box, Button, Image, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { Box, Button, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,

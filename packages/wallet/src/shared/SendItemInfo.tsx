@@ -57,7 +57,7 @@ export const SendItemInfo = ({
             <CollectibleTileImage imageUrl={imageUrl} />
           </Box>
         ) : (
-          <TokenImage src={imageUrl} size="xl" />
+          <TokenImage src={imageUrl} size="lg" />
         )}
         <Box flexDirection="column" alignItems="flex-start">
           <Box flexDirection="row" alignItems="center" gap="1">

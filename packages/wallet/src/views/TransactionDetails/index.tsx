@@ -136,13 +136,13 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
               >
                 <TokenImage src={logoURI} symbol={symbol} size="sm" />
                 <Box gap="0.5" flexDirection="column" alignItems="flex-start" justifyContent="center">
-                  <Text fontWeight="bold" fontSize="xsmall" color="text100">
+                  <Text variant="xsmall" fontWeight="bold" color="text100">
                     {`${balanceDisplayed} ${symbol}`}
                   </Text>
                   {arePricesLoading ? (
                     <Skeleton style={{ width: '44px', height: '12px' }} />
                   ) : (
-                    <Text fontWeight="bold" fontSize="xsmall" color="text50">
+                    <Text variant="xsmall" fontWeight="bold" color="text50">
                       {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
                     </Text>
                   )}
@@ -161,7 +161,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
                 style={{ flexBasis: '100%' }}
               >
                 <GradientAvatar address={recipientAddress} style={{ width: '20px' }} />
-                <Text fontWeight="bold" fontSize="xsmall" color="text100">
+                <Text variant="xsmall" fontWeight="bold" color="text100">
                   {recipientAddressFormatted}
                 </Text>
               </Box>
@@ -175,10 +175,10 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
   return (
     <Box padding="5" paddingTop="3" flexDirection="column" alignItems="center" justifyContent="center" gap="10" marginTop="5">
       <Box marginTop="6" flexDirection="column" justifyContent="center" alignItems="center" gap="1">
-        <Text fontSize="normal" fontWeight="medium">
+        <Text variant="normal" fontWeight="medium" color="text100">
           Transaction details
         </Text>
-        <Text marginBottom="1" fontSize="small" fontWeight="medium" color="text50">
+        <Text variant="small" marginBottom="1" fontWeight="medium" color="text50">
           {date}
         </Text>
         <NetworkBadge chainId={transaction.chainId} />
@@ -194,7 +194,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
         borderRadius="md"
       >
         <Box width="full" gap="1" flexDirection="row" alignItems="center" justifyContent="flex-start">
-          <Text fontSize="normal" fontWeight="medium" color="text50">
+          <Text variant="normal" fontWeight="medium" color="text50">
             Transfer
           </Text>
           <NetworkImage chainId={transaction.chainId} size="xs" />
@@ -216,19 +216,19 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
       <Box>
         <Box width="full" flexDirection="column" gap="2" justifyContent="center" alignItems="flex-start">
           <Divider width="full" margin="0" style={{ marginBottom: '-4px' }} />
-          <Text color="text50" fontSize="normal" fontWeight="medium">
+          <Text variant="normal" color="text50" fontWeight="medium">
             Status
           </Text>
-          <Text fontSize="normal" fontWeight="medium" color="text100">
+          <Text variant="normal" fontWeight="medium" color="text100">
             Complete
           </Text>
         </Box>
         <Box width="full" flexDirection="column" gap="2" justifyContent="center" alignItems="flex-start">
           <Divider width="full" margin="0" style={{ marginBottom: '-4px' }} />
-          <Text color="text50" fontSize="normal" fontWeight="medium">
+          <Text variant="normal" color="text50" fontWeight="medium">
             Transaction Hash
           </Text>
-          <Text color="text100" fontSize="normal" fontWeight="medium" style={{ overflowWrap: 'anywhere' }}>
+          <Text variant="normal" color="text100" fontWeight="medium" style={{ overflowWrap: 'anywhere' }}>
             {transaction.txnHash}
           </Text>
           <CopyButton marginTop="2" buttonVariant="with-label" text={transaction.txnHash} />

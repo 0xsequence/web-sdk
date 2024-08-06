@@ -99,7 +99,7 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
   const TimeLabel = ({ label }: TimeLabelProps) => {
     return (
       <Box>
-        <Text color="text50" fontWeight="medium" fontSize="normal">
+        <Text variant="normal" color="text50" fontWeight="medium">
           {label}
         </Text>
       </Box>

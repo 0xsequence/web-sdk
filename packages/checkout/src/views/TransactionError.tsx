@@ -26,8 +26,8 @@ export const TransactionError = () => {
         style={{ top: '50%', right: '50%', transform: 'translate(50%, -50%)' }}
       >
         <NotificationErrorIcon />
-        <Text fontSize="xlarge">Error</Text>
-        <Text textAlign="center" variant="normal" color="text80">
+        <Text variant="xlarge">Error</Text>
+        <Text variant="normal" textAlign="center" color="text80">
           An error occurred while processing the transaction.
         </Text>
       </Box>

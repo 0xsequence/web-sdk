@@ -107,7 +107,7 @@ export const CheckoutSelection = () => {
       {orderSummaryItems.length > 0 && (
         <>
           <Box flexDirection="row" gap="2" alignItems="center">
-            <Text fontWeight="normal" fontSize="normal" color="text50">
+            <Text variant="normal" color="text50">
               Order summary
             </Text>
             <Tooltip
@@ -143,7 +143,7 @@ export const CheckoutSelection = () => {
 
       {displayCryptoCheckout && (
         <Box justifyContent="space-between" alignItems="center">
-          <Text fontWeight="normal" fontSize="normal" color="text50">
+          <Text variant="normal" color="text50">
             Total
           </Text>
           {isPending ? (
@@ -151,7 +151,7 @@ export const CheckoutSelection = () => {
           ) : (
             <Box flexDirection="row" gap="1" alignItems="center">
               <TokenImage src={coinImageUrl} size="xs" />
-              <Text fontWeight="normal" fontSize="normal" color="text100">
+              <Text variant="normal" color="text100">
                 {`${formatDisplay(requestAmount)} ${coinSymbol}`}
               </Text>
             </Box>
@@ -210,7 +210,7 @@ export const CheckoutSelection = () => {
           {isPending ? (
             <Skeleton style={{ width: '102px', height: '14px' }} />
           ) : (
-            <Text fontWeight="bold" fontSize="small" color="text50">
+            <Text variant="small" fontWeight="bold" color="text50">
               Balance: {`${formatDisplay(userBalance)} ${coinSymbol}`}
             </Text>
           )}
