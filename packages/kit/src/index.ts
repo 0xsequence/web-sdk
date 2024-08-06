@@ -25,7 +25,7 @@ export { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from './constants'
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'
 export { isEmailValid, compareAddress, formatDisplay, capitalize } from './utils/helpers'
-export { defaultNativeTokenInfo, getNativeTokenInfoByChainId, getChainIdList } from './utils/tokens'
+export { getNativeTokenInfoByChainId } from './utils/tokens'
 export { getModalPositionCss } from './utils/styling'
 export { getNetwork, getNetworkColor, getNetworkBackgroundColor } from './utils/networks'
 export { walletClientToSigner, publicClientToProvider } from './utils/adapters'
