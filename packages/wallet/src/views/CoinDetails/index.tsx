@@ -1,4 +1,4 @@
-import { Box, Button, Image, SendIcon, Text } from '@0xsequence/design-system'
+import { Box, Button, Image, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
@@ -97,19 +97,19 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
         <Box marginBottom="10" gap="2" alignItems="center" justifyContent="center" flexDirection="column">
-          <Image width="8" src={logo} alt="logo" />
-          <Text color="text100" fontWeight="bold" fontSize="large">
+          <TokenImage src={logo} size="xl" />
+          <Text variant="large" color="text100" fontWeight="bold">
             {name}
           </Text>
           <NetworkBadge chainId={chainId} />
         </Box>
         <Box>
-          <Text fontWeight="medium" color="text50" fontSize="normal">
+          <Text variant="normal" fontWeight="medium" color="text50">
             Balance
           </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
-            <Text fontWeight="bold" color="text100" fontSize="xlarge">{`${balanceDisplayed} ${symbol}`}</Text>
-            <Text fontWeight="medium" color="text50" fontSize="normal">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
+            <Text variant="xlarge" fontWeight="bold" color="text100">{`${balanceDisplayed} ${symbol}`}</Text>
+            <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </Box>
         </Box>
         <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
