@@ -70,8 +70,7 @@ function App() {
     waasConfigKey: '<your-waas-config-key>',
     googleClientId,
     appleClientId,
-    appleRedirectUrl,
-    emailAuthVersion // (default 2), 1 for legacy
+    appleRedirectUrl
   })
   */
 

@@ -83,7 +83,7 @@ interface GetDefaultWaasConnectors {
   appName: string
   defaultChainId?: number
 
-  emailAuthVersion?: 1 | 2
+  legacyEmailAuth?: boolean
 
   enableConfirmationModal?: boolean
 
@@ -100,16 +100,16 @@ export const getDefaultWaasConnectors = ({
   appName,
   defaultChainId,
   enableConfirmationModal,
-  emailAuthVersion,
+  legacyEmailAuth = false,
   isDev = false
 }: GetDefaultWaasConnectors): CreateConnectorFn[] => {
   const wallets: any[] = [
     emailWaas({
-      emailAuthVersion,
       projectAccessKey,
       waasConfigKey,
       enableConfirmationModal,
       network: defaultChainId,
+      legacyEmailAuth,
       isDev
     }),
     coinbaseWallet({

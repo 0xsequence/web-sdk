@@ -59,7 +59,7 @@ export function useEmailAuth({
     setLoading(true)
     setError(undefined)
 
-    if (params.emailAuthVersion === 1) {
+    if (params.legacyEmailAuth) {
       try {
         const { instance } = await waas.email.initiateAuth({ email })
         setInstance(instance)
@@ -98,7 +98,7 @@ export function useEmailAuth({
     setLoading(true)
     setError(undefined)
 
-    if (params.emailAuthVersion === 1) {
+    if (params.legacyEmailAuth) {
       // version 1
       try {
         const sessionHash = await waas.getSessionHash()

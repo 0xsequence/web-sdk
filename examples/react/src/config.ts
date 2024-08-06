@@ -47,7 +47,7 @@ const getWaasConnectors = () => {
       appleRedirectURI,
       appName: 'Kit Demo',
       projectAccessKey,
-      // emailAuthVersion: 1,
+      // legacyEmailAuth: true,
       enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
       isDev: isDebugMode
     })
