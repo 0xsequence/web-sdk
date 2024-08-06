@@ -27,11 +27,11 @@ export const WalletLink = ({ toLocation, label }: WalletLinkProps) => {
       cursor="pointer"
       opacity={{ hover: '80' }}
     >
-      <Text color="text50" fontSize="normal" fontWeight="medium">
+      <Text variant="normal" color="text50" fontWeight="medium">
         {label}
       </Text>
       <Box flexDirection="row" justifyContent="center" alignItems="center">
-        <Text color="text50" fontSize="normal" fontWeight="medium">
+        <Text variant="normal" color="text50" fontWeight="medium">
           View all
         </Text>
         <ChevronRightIcon color="text50" size="sm" />
