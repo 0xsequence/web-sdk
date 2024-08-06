@@ -21,6 +21,10 @@ const accountTypeText = (info: EmailConflictInfo | null) => {
   }
 
   if (info.type === IdentityType.OIDC) {
+    if (info.issuer.includes('cognito-idp')) {
+      return 'Legacy Email login'
+    }
+
     switch (info.issuer) {
       case 'https://accounts.google.com':
         return 'Google login'
