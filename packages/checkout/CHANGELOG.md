@@ -1,5 +1,16 @@
 # @0xsequence/kit-connectors
 
+## 2.11.0
+
+### Minor Changes
+
+- Sequence Waas v2 upgrade
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.11.0
+
 ## 2.10.1
 
 ### Patch Changes

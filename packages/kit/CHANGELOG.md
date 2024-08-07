@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.11.0
+
+### Minor Changes
+
+- Sequence Waas v2 upgrade
+
 ## 2.10.1
 
 ### Patch Changes
