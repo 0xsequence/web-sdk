@@ -9,7 +9,7 @@
   },
   "peerDependencies": {
     "@0xsequence/design-system": ">= 1.7.3",
-    "@0xsequence/network": ">= 1.10.7",
+    "@0xsequence/network": ">= 1.10.9",
     "wagmi": "*"
   },
   "private": true
