@@ -1,5 +1,6 @@
-// Provider
 export { SequenceKit } from './components/SequenceKit'
+
+// Provider
 export { KitProvider } from './components/KitProvider'
 export { KitPreviewProvider } from './components/KitPreviewProvider'
 
