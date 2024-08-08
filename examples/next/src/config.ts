@@ -1,7 +1,7 @@
 import { KitConfig, getDefaultChains, getDefaultConfig } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
-import { cookieStorage, createConfig, createStorage } from 'wagmi'
+import { cookieStorage, createStorage } from 'wagmi'
 
 export type ConnectionMode = 'waas' | 'universal'
 
@@ -16,30 +16,28 @@ const googleClientId = '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googl
 const appleClientId = 'com.horizon.sequence.waas'
 const appleRedirectURI = 'http://localhost:3000'
 
-export const wagmiConfig = createConfig(
-  getDefaultConfig({
-    appName: 'Kit Demo',
-    projectAccessKey,
-    walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-    chains: getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON]),
-    defaultChainId: ChainId.ARBITRUM_NOVA,
+export const wagmiConfig = getDefaultConfig({
+  appName: 'Kit Demo',
+  projectAccessKey,
+  walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
+  chains: getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON]),
+  defaultChainId: ChainId.ARBITRUM_NOVA,
 
-    // Next.js doesn't support localStorage in SSR
-    storage: createStorage({ storage: cookieStorage }),
-    ssr: true,
+  // Next.js doesn't support localStorage in SSR
+  storage: createStorage({ storage: cookieStorage }),
+  ssr: true,
 
-    // Waas specific config options
-    ...(connectionMode === 'waas'
-      ? {
-          waasConfigKey,
-          googleClientId,
-          appleClientId,
-          appleRedirectURI,
-          enableConfirmationModal
-        }
-      : undefined)
-  })
-)
+  // Waas specific config options
+  ...(connectionMode === 'waas'
+    ? {
+        waasConfigKey,
+        googleClientId,
+        appleClientId,
+        appleRedirectURI,
+        enableConfirmationModal
+      }
+    : undefined)
+})
 
 export const kitConfig: KitConfig = {
   projectAccessKey,

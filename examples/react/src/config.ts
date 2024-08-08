@@ -1,7 +1,6 @@
 import { KitConfig, getDefaultConfig, getDefaultChains } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
-import { createConfig } from 'wagmi'
 
 export type ConnectionMode = 'waas' | 'universal'
 
@@ -23,27 +22,25 @@ const googleClientId = isDebugMode
 const appleClientId = 'com.horizon.sequence.waas'
 const appleRedirectURI = window.location.origin + window.location.pathname
 
-export const wagmiConfig = createConfig(
-  getDefaultConfig({
-    appName: 'Kit Demo',
-    projectAccessKey,
-    walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-    chains: getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON]),
-    defaultChainId: ChainId.ARBITRUM_NOVA,
+export const wagmiConfig = getDefaultConfig({
+  appName: 'Kit Demo',
+  projectAccessKey,
+  walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
+  chains: getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON]),
+  defaultChainId: ChainId.ARBITRUM_NOVA,
 
-    // Waas specific config options
-    ...(connectionMode === 'waas'
-      ? {
-          waasConfigKey,
-          googleClientId,
-          appleClientId,
-          appleRedirectURI,
-          enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
-          isDev: isDebugMode
-        }
-      : undefined)
-  })
-)
+  // Waas specific config options
+  ...(connectionMode === 'waas'
+    ? {
+        waasConfigKey,
+        googleClientId,
+        appleClientId,
+        appleRedirectURI,
+        enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
+        isDev: isDebugMode
+      }
+    : undefined)
+})
 
 export const kitConfig: KitConfig = {
   isDev: isDebugMode,
