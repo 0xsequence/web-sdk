@@ -1,4 +1,4 @@
-import { createConfig, http, type CreateConfigParameters } from 'wagmi'
+import { createConfig, http, type CreateConfigParameters, type Config } from 'wagmi'
 
 import { getDefaultChains } from './defaultChains'
 import {
@@ -26,7 +26,7 @@ export const getDefaultConfig = ({
   isDev,
 
   ...props
-}: DefaultConfigProps) => {
+}: DefaultConfigProps): Config => {
   const chains = props.chains || getDefaultChains()
   const transports = props.transports || Object.fromEntries(chains.map(chain => [chain.id, http()]))
   const connectors =
