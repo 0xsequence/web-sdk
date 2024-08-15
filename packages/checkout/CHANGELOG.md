@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 2.11.1
+
+### Patch Changes
+
+- Connect wallet content separation
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.11.1
+
 ## 2.11.0
 
 ### Minor Changes
