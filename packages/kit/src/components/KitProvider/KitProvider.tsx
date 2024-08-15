@@ -22,7 +22,7 @@ import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandl
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
 import { getModalPositionCss } from '../../utils/styling'
-import { Connect } from '../Connect'
+import { ConnectWalletContent } from '../Connect'
 import { NetworkBadge } from '../NetworkBadge'
 import { PageHeading } from '../PageHeading'
 import { PoweredBySequence } from '../SequenceLogo'
@@ -48,7 +48,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
   const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth
 
-  const { projectName } = signIn
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
@@ -158,26 +157,11 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                           }}
                           onClose={() => setOpenConnectModal(false)}
                         >
-                          <Box padding="4">
-                            <Box
-                              justifyContent="center"
-                              color="text100"
-                              alignItems="center"
-                              fontWeight="medium"
-                              style={{
-                                marginTop: '4px'
-                              }}
-                            >
-                              <Text>Sign in {projectName ? `to ${projectName}` : ''}</Text>
-                            </Box>
-                            <Connect
-                              onClose={() => {
-                                setOpenConnectModal(false)
-                              }}
-                              {...props}
-                              emailConflictInfo={emailConflictInfo}
-                            />
-                          </Box>
+                          <ConnectWalletContent
+                            onClose={() => setOpenConnectModal(false)}
+                            emailConflictInfo={emailConflictInfo}
+                            {...props}
+                          />
                         </Modal>
                       )}
 

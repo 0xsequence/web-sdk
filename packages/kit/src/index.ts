@@ -1,6 +1,9 @@
 // Provider
 export { KitProvider } from './components/KitProvider'
 
+// Components
+export { ConnectWalletContent } from './components/Connect'
+
 // Types
 export type {
   Wallet,
