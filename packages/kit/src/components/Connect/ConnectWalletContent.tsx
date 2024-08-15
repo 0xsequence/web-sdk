@@ -1,3 +1,5 @@
+'use client'
+
 import { Box, Text } from '@0xsequence/design-system'
 
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
