@@ -1,8 +1,6 @@
 // Provider
 export { KitProvider } from './components/KitProvider'
-
-// Components
-export { ConnectWalletContent } from './components/Connect'
+export { KitPreviewProvider } from './components/KitPreviewProvider'
 
 // Types
 export type {
