@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.11.2
+
+### Patch Changes
+
+- New component for sequence kit previews
+
 ## 2.11.1
 
 ### Patch Changes

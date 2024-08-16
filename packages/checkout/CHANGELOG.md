@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 2.11.2
+
+### Patch Changes
+
+- New component for sequence kit previews
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.11.2
+
 ## 2.11.1
 
 ### Patch Changes

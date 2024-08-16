@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-example-react",
-  "version": "0.7.16",
+  "version": "0.7.17",
   "private": true,
   "homepage": "kit",
   "type": "module",
