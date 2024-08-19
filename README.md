@@ -32,34 +32,31 @@ yarn add @0xsequence/kit wagmi ethers@5.7.2 viem 0xsequence @tanstack/react-quer
 React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
 ```js
-import MyPage from './components/MyPage'
+import Content from './components/Content'
 import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
 
-const queryClient = new QueryClient()
+const projectAccessKey = '<your-project-access-key>'
 
-function App() {
-  const projectAccessKey = '<your-project-access-key>'
+const chains = getDefaultChains(/* optional array of chain ids to filter */)
 
-  const chains = getDefaultChains(/* optional array of chain ids to filter */)
+const transports = {}
 
-  const transports = {}
+chains.forEach(chain => {
+  transports[chain.id] = http()
+})
 
-  chains.forEach(chain => {
-    transports[chain.id] = http()
-  })
+// Universal wallet configuration
+const connectors = getDefaultConnectors({
+  projectAccessKey,
+  walletConnectProjectId: '<your-wallet-connect-id>',
+  defaultChainId: 137,
+  appName: 'Demo Dapp'
+})
 
-  // Universal wallet configuration
-  const connectors = getDefaultConnectors({
-    projectAccessKey,
-    walletConnectProjectId: '<your-wallet-connect-id>',
-    defaultChainId: 137,
-    appName: 'Demo Dapp'
-  })
-
-  /* 
+/* 
   // ...or for Embedded wallet configuration
   const connectors = getDefaultWaasConnectors({
     projectAccessKey,
@@ -74,17 +71,20 @@ function App() {
   })
   */
 
-  const config = createConfig({
-    chains,
-    transports,
-    connectors
-  })
+const config = createConfig({
+  chains,
+  transports,
+  connectors
+})
 
+const queryClient = new QueryClient()
+
+function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <KitProvider>
-          <MyPage />
+          <Content />
         </KitProvider>
       </QueryClientProvider>
     </WagmiProvider>
