@@ -29,7 +29,8 @@ export const NavigationHeader = ({ secondaryText, primaryText, disableBack = fal
       style={{
         height: HEADER_HEIGHT,
         paddingTop: '6px',
-        backgroundColor: vars.colors.backgroundPrimary
+        backgroundColor: vars.colors.backgroundPrimary,
+        position: 'absolute'
       }}
     >
       {history.length > 0 && !disableBack ? (
