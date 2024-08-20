@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.11.3
+
+### Patch Changes
+
+- Changed urls for nft checkout
+
 ## 2.11.2
 
 ### Patch Changes

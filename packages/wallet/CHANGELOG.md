@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 2.11.3
+
+### Patch Changes
+
+- Changed urls for nft checkout
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.11.3
+
 ## 2.11.2
 
 ### Patch Changes
