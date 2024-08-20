@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 2.11.4
+
+### Patch Changes
+
+- Fix for nft checkout modal
+
+- Updated dependencies []:
+  - @0xsequence/kit@2.11.4
+
 ## 2.11.3
 
 ### Patch Changes

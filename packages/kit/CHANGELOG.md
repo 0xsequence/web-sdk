@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 2.11.4
+
+### Patch Changes
+
+- Fix for nft checkout modal
+
 ## 2.11.3
 
 ### Patch Changes
