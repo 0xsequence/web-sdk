@@ -15,7 +15,7 @@ interface BalanceItemProps {
 export const BalanceItem = ({ balance }: BalanceItemProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
-  const isNativeToken = compareAddress(balance.contractAddress, ethers.constants.AddressZero)
+  const isNativeToken = compareAddress(balance.contractAddress, ethers.ZeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
   const logoURI = isNativeToken ? nativeTokenInfo.logoURI : balance?.contractInfo?.logoURI
   const tokenName = isNativeToken ? nativeTokenInfo.name : balance?.contractInfo?.name || 'Unknown'
@@ -26,7 +26,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
       return balance.balance
     }
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
-    const bal = ethers.utils.formatUnits(balance.balance, decimals || 0)
+    const bal = ethers.formatUnits(balance.balance, decimals || 0)
     const displayBalance = formatDisplay(bal)
     const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 

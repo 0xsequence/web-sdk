@@ -17,7 +17,7 @@ interface CoinTileProps {
 export const CoinTile = ({ balance }: CoinTileProps) => {
   const { chains } = useConfig()
   const { fiatCurrency } = useSettings()
-  const isNativeToken = compareAddress(balance.contractAddress, ethers.constants.AddressZero)
+  const isNativeToken = compareAddress(balance.contractAddress, ethers.ZeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
   const { data: dataCoinPrices = [], isPending: isPendingCoinPrice } = useCoinPrices([
@@ -44,7 +44,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
       decimals: nativeTokenInfo.decimals
     })
     const priceChangePercentage = getPercentagePriceChange(balance, dataCoinPrices)
-    const formattedBalance = ethers.utils.formatUnits(balance.balance, nativeTokenInfo.decimals)
+    const formattedBalance = ethers.formatUnits(balance.balance, nativeTokenInfo.decimals)
     const balanceDisplayed = formatDisplay(formattedBalance)
 
     return (
@@ -70,7 +70,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
   })
   const priceChangePercentage = getPercentagePriceChange(balance, dataCoinPrices)
 
-  const formattedBalance = ethers.utils.formatUnits(balance.balance, decimals)
+  const formattedBalance = ethers.formatUnits(balance.balance, decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   const name = contractInfo?.name || 'Unknown'

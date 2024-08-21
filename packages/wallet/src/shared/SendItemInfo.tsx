@@ -46,7 +46,7 @@ export const SendItemInfo = ({
   showSquareImage
 }: SendItemInfoProps) => {
   const { fiatCurrency } = useSettings()
-  const formattedBalance = ethers.utils.formatUnits(balance, decimals)
+  const formattedBalance = ethers.formatUnits(balance, decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   return (

@@ -42,8 +42,8 @@ export const signEthAuthProof = async (
 
   typedData.domain.verifyingContract
 
-  const signer = walletClientToSigner(walletClient)
-  const signature = await signer._signTypedData(typedData.domain, typedData.types, typedData.message)
+  const signer = await walletClientToSigner(walletClient)
+  const signature = await signer.signTypedData(typedData.domain, typedData.types, typedData.message)
 
   proof.signature = signature
 

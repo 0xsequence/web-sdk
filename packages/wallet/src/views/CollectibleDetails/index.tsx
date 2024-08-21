@@ -79,7 +79,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const decimals = dataCollectibleBalance?.tokenMetadata?.decimals || 0
   const rawBalance = dataCollectibleBalance?.balance || '0'
-  const balance = ethers.utils.formatUnits(rawBalance, decimals)
+  const balance = ethers.formatUnits(rawBalance, decimals)
   const formattedBalance = formatDisplay(Number(balance))
 
   const valueFiat = dataCollectibleBalance

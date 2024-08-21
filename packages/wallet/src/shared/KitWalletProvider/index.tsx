@@ -34,7 +34,7 @@ const DEFAULT_LOCATION: Navigation = {
 // const DEFAULT_LOCATION: Navigation = {
 //   location: 'coin-details',
 //   params: {
-//     contractAddress: ethers.constants.AddressZero,
+//     contractAddress: ethers.ZeroAddress,
 //     chainId: 137,
 //   }
 // }

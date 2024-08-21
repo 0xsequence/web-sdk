@@ -41,7 +41,7 @@ export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }
     return '0.00'
   }
   const priceFiat = priceForToken.price?.value || 0
-  const valueFormatted = ethers.utils.formatUnits(balance.balance, decimals)
+  const valueFormatted = ethers.formatUnits(balance.balance, decimals)
   const usdValue = parseFloat(valueFormatted) * priceFiat
   totalUsd += usdValue
 
@@ -67,7 +67,7 @@ export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByType
 
   balances.forEach(balance => {
     // Note: contractType for the native token should be "UNKNOWN"
-    if (balance.contractAddress === ethers.constants.AddressZero) {
+    if (balance.contractAddress === ethers.ZeroAddress) {
       nativeTokens.push(balance)
     } else if (balance.contractType === 'ERC20') {
       erc20Tokens.push(balance)

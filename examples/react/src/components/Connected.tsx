@@ -211,7 +211,7 @@ export const Connected = () => {
     }
 
     // const [account] = await walletClient.getAddresses()
-    const contractAbiInterface = new ethers.utils.Interface(['function demo()'])
+    const contractAbiInterface = new ethers.Interface(['function demo()'])
 
     // sendTransaction({ to: account, value: BigInt(0), gas: null })
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`

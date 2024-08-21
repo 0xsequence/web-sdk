@@ -47,8 +47,8 @@ export const getBalancesAssetsSummary = async (
 
   try {
     if (customDisplayAssets) {
-      const nativeTokens = displayAssets.filter(asset => compareAddress(asset.contractAddress, ethers.constants.AddressZero))
-      const otherAssets = displayAssets.filter(asset => !compareAddress(asset.contractAddress, ethers.constants.AddressZero))
+      const nativeTokens = displayAssets.filter(asset => compareAddress(asset.contractAddress, ethers.ZeroAddress))
+      const otherAssets = displayAssets.filter(asset => !compareAddress(asset.contractAddress, ethers.ZeroAddress))
 
       interface AssetsByChainId {
         [chainId: number]: DisplayedAsset[]
@@ -209,8 +209,8 @@ export const getBalancesAssetsSummary = async (
       const aDecimals = contractInfoMapByChainId[a.chainId].contractInfoMap[a.contractAddress]?.decimals
       const bDecimals = contractInfoMapByChainId[b.chainId].contractInfoMap[b.contractAddress]?.decimals
 
-      const aFormattedBalance = aDecimals === undefined ? 0 : Number(ethers.utils.formatUnits(a.balance, aDecimals))
-      const bFormattedBalance = bDecimals === undefined ? 0 : Number(ethers.utils.formatUnits(b.balance, bDecimals))
+      const aFormattedBalance = aDecimals === undefined ? 0 : Number(ethers.formatUnits(a.balance, aDecimals))
+      const bFormattedBalance = bDecimals === undefined ? 0 : Number(ethers.formatUnits(b.balance, bDecimals))
 
       const aValue = aFormattedBalance * aPrice
       const bValue = bFormattedBalance * bPrice

@@ -1,19 +1,19 @@
-import { providers } from 'ethers'
+import { ethers } from 'ethers'
 import { type HttpTransport, Account, Chain, Client, Transport } from 'viem'
 
-export function walletClientToSigner(walletClient: Client<Transport, Chain, Account>) {
+export const walletClientToSigner = async (walletClient: Client<Transport, Chain, Account>) => {
   const { account, chain, transport } = walletClient
   const network = {
     chainId: chain.id,
     name: chain.name,
     ensAddress: chain.contracts?.ensRegistry?.address
   }
-  const provider = new providers.Web3Provider(transport, network)
-  const signer = provider.getSigner(account.address)
+  const provider = new ethers.BrowserProvider(transport, network)
+  const signer = await provider.getSigner(account.address)
   return signer
 }
 
-export function publicClientToProvider(publicClient: Client<Transport, Chain>) {
+export const publicClientToProvider = (publicClient: Client<Transport, Chain>) => {
   const { chain, transport } = publicClient
   const network = {
     chainId: chain.id,
@@ -21,8 +21,8 @@ export function publicClientToProvider(publicClient: Client<Transport, Chain>) {
     ensAddress: chain.contracts?.ensRegistry?.address
   }
   if (transport.type === 'fallback')
-    return new providers.FallbackProvider(
-      (transport.transports as ReturnType<HttpTransport>[]).map(({ value }) => new providers.JsonRpcProvider(value?.url, network))
+    return new ethers.FallbackProvider(
+      (transport.transports as ReturnType<HttpTransport>[]).map(({ value }) => new ethers.JsonRpcProvider(value?.url, network))
     )
-  return new providers.JsonRpcProvider(transport.url, network)
+  return new ethers.JsonRpcProvider(transport.url, network)
 }

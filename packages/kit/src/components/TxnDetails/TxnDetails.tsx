@@ -36,7 +36,6 @@ export const TxnDetailsSkeleton = () => {
   )
 }
 
-// @ts-ignore-next-line
 export const TxnDetails = ({ address, txs, chainId }: TxnDetailsProps) => {
   const apiClient = useAPIClient()
   // const { fiatCurrency } = useSettings()
@@ -90,7 +89,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const { chains } = useConfig()
   const contractAddress = transferProps.contractAddress
   const toAddress: string | undefined = transferProps.to
-  const isNativeCoin = contractAddress ? compareAddress(contractAddress, ethers.constants.AddressZero) : true
+  const isNativeCoin = contractAddress ? compareAddress(contractAddress, ethers.ZeroAddress) : true
   const is1155 = transferProps.contractType === ContractType.ERC1155
   const isNFT = transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
@@ -143,10 +142,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
 
             <Text color="text50" variant="normal">
               {' '}
-              {`${ethers.utils.formatUnits(
-                amountSending,
-                is1155 ? tokenMetadata?.[0]?.decimals : isNFT ? 0 : decimals
-              )} ${symbol} `}
+              {`${ethers.formatUnits(amountSending, is1155 ? tokenMetadata?.[0]?.decimals : isNFT ? 0 : decimals)} ${symbol} `}
             </Text>
           </Box>
         </Box>

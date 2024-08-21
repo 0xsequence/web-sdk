@@ -81,7 +81,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
           {collectionBalanceData?.map((balance, index) => {
             const unformattedBalance = balance.balance
             const decimals = balance?.tokenMetadata?.decimals || 0
-            const formattedBalance = formatDisplay(ethers.utils.formatUnits(unformattedBalance, decimals))
+            const formattedBalance = formatDisplay(ethers.formatUnits(unformattedBalance, decimals))
 
             return (
               <Box key={index} onClick={() => onClickItem(balance)} userSelect="none" cursor="pointer" opacity={{ hover: '80' }}>

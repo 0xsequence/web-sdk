@@ -45,7 +45,7 @@ export const CheckoutSelection = () => {
 
   const isPending = (isPendingContractInfo || isPendingBalances) && cryptoCheckoutSettings
 
-  const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.constants.AddressZero)
+  const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.ZeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(cryptoCheckoutSettings?.chainId || 1, chains)
 
   const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : contractInfoData?.decimals || 0
@@ -56,9 +56,9 @@ export const CheckoutSelection = () => {
   )
   const userBalanceRaw = coinBalance ? coinBalance.balance : '0'
   const requestedAmountRaw = cryptoCheckoutSettings?.coinQuantity?.amountRequiredRaw || '0'
-  const userBalance = ethers.utils.formatUnits(userBalanceRaw, coinDecimals)
-  const requestAmount = ethers.utils.formatUnits(requestedAmountRaw, coinDecimals)
-  const isInsufficientBalance = ethers.BigNumber.from(userBalanceRaw).lt(ethers.BigNumber.from(requestedAmountRaw))
+  const userBalance = ethers.formatUnits(userBalanceRaw, coinDecimals)
+  const requestAmount = ethers.formatUnits(requestedAmountRaw, coinDecimals)
+  const isInsufficientBalance = BigInt(userBalanceRaw) < BigInt(requestedAmountRaw)
 
   const orderSummaryItems = settings?.orderSummaryItems || []
 

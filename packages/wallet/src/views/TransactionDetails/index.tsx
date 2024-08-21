@@ -51,7 +51,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
         }
       })
     } else {
-      const contractAddress = transfer?.contractInfo?.address || ethers.constants.AddressZero
+      const contractAddress = transfer?.contractInfo?.address || ethers.ZeroAddress
       const foundCoin = coins.find(
         coin => coin.chainId === transaction.chainId && compareAddress(coin.contractAddress, contractAddress)
       )
@@ -92,7 +92,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     const recipientAddress = transfer.to
     const recipientAddressFormatted =
       recipientAddress.substring(0, 10) + '...' + recipientAddress.substring(transfer.to.length - 4, transfer.to.length)
-    const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', ethers.constants.AddressZero)
+    const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', ethers.ZeroAddress)
     const logoURI = isNativeToken ? nativeTokenInfo.logoURI : transfer?.contractInfo?.logoURI
     const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer?.contractInfo?.symbol || ''
 
@@ -104,7 +104,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           const collectibleDecimals = transfer?.tokenMetadata?.[tokenId]?.decimals || 0
           const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : transfer?.contractInfo?.decimals || 0
           const decimals = isCollectible ? collectibleDecimals : coinDecimals
-          const formattedBalance = ethers.utils.formatUnits(amount, decimals)
+          const formattedBalance = ethers.formatUnits(amount, decimals)
           const balanceDisplayed = formatDisplay(formattedBalance)
           const fiatPrice = isCollectible
             ? collectiblePricesData?.find(
@@ -115,7 +115,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
               )?.price?.value
             : coinPricesData?.find(
                 coin =>
-                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.constants.AddressZero) &&
+                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.ZeroAddress) &&
                   coin.token.chainId === transaction.chainId
               )?.price?.value
 

@@ -66,12 +66,12 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     return <CoinDetailsSkeleton chainId={chainId} />
   }
 
-  const isNativeToken = compareAddress(contractAddress, ethers.constants.AddressZero)
+  const isNativeToken = compareAddress(contractAddress, ethers.ZeroAddress)
   const logo = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).logoURI : dataCoinBalance?.contractInfo?.logoURI
   const symbol = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).symbol : dataCoinBalance?.contractInfo?.symbol
   const name = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).name : dataCoinBalance?.contractInfo?.name
   const decimals = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).decimals : dataCoinBalance?.contractInfo?.decimals
-  const formattedBalance = ethers.utils.formatUnits(dataCoinBalance?.balance || '0', decimals)
+  const formattedBalance = ethers.formatUnits(dataCoinBalance?.balance || '0', decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   const coinBalanceFiat = dataCoinBalance

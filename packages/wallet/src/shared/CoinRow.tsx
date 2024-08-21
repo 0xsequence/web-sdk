@@ -41,7 +41,7 @@ export const CoinRowSkeleton = () => {
 }
 
 export const CoinRow = ({ imageUrl, name, decimals, balance, symbol, fiatValue, priceChangePercentage }: CoinRowProps) => {
-  const formattedBalance = ethers.utils.formatUnits(balance, decimals)
+  const formattedBalance = ethers.formatUnits(balance, decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   return (

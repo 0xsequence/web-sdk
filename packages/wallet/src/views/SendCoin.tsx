@@ -41,8 +41,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { chains } = useConfig()
   const connectedChainId = useChainId()
   const { address: accountAddress = '', connector } = useAccount()
-  /* @ts-ignore-next-line */
-  const isConnectorSequenceBased = !!connector?._wallet?.isSequenceBased
+  const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
   const isCorrectChainId = connectedChainId === chainId
   const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
   const { switchChainAsync } = useSwitchChain()
@@ -74,13 +73,13 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     return null
   }
 
-  const isNativeCoin = compareAddress(contractAddress, ethers.constants.AddressZero)
+  const isNativeCoin = compareAddress(contractAddress, ethers.ZeroAddress)
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
   const name = isNativeCoin ? nativeTokenInfo.name : tokenBalance?.contractInfo?.name || ''
   const imageUrl = isNativeCoin ? nativeTokenInfo.logoURI : tokenBalance?.contractInfo?.logoURI
   const symbol = isNativeCoin ? nativeTokenInfo.symbol : tokenBalance?.contractInfo?.symbol || ''
   const amountToSendFormatted = amount === '' ? '0' : amount
-  const amountRaw = ethers.utils.parseUnits(amountToSendFormatted, decimals)
+  const amountRaw = ethers.parseUnits(amountToSendFormatted, decimals)
 
   const amountToSendFiat = computeBalanceFiat({
     balance: {
@@ -92,8 +91,8 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     decimals
   })
 
-  const insufficientFunds = amountRaw.gt(tokenBalance?.balance || '0')
-  const isNonZeroAmount = amountRaw.gt(0)
+  const insufficientFunds = amountRaw > BigInt(tokenBalance?.balance || '0')
+  const isNonZeroAmount = amountRaw > 0n
 
   const handleChangeAmount = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.target
@@ -106,7 +105,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
   const handleMax = () => {
     amountInputRef.current?.focus()
-    const maxAmount = ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals).toString()
+    const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
 
     setAmount(maxAmount)
   }
@@ -127,7 +126,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     e.preventDefault()
 
-    const sendAmount = ethers.utils.parseUnits(amountToSendFormatted, decimals)
+    const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
 
     if (isNativeCoin) {
       analytics?.track({
@@ -167,9 +166,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       sendTransaction(
         {
           to: tokenBalance?.contractAddress as `0x${string}}`,
-          data: new ethers.utils.Interface(ERC_20_ABI).encodeFunctionData('transfer', [
+          data: new ethers.Interface(ERC_20_ABI).encodeFunctionData('transfer', [
             toAddress,
-            sendAmount.toHexString()
+            ethers.toQuantity(sendAmount)
           ]) as `0x${string}`,
           gas: null
         },

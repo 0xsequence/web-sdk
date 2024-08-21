@@ -16,7 +16,7 @@
     "@0xsequence/kit-checkout": "workspace:*",
     "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/kit-example-shared-components": "workspace:*",
-    "@0xsequence/network": "^1.10.9",
+    "@0xsequence/network": "0.0.0-20240820173337",
     "@tanstack/react-query": "^5.37.1",
     "framer-motion": "^8.5.2",
     "react": "^18.3.1",

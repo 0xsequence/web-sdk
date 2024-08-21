@@ -31,10 +31,30 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
   return url.href
 }
 
+interface CountriesResult {
+  response: Country[]
+}
+
+interface Country {
+  alpha2: string
+  alpha3: string
+  isAllowed: boolean
+  isLightKycAllowed: boolean
+  name: string
+  supportedDocuments: string[]
+  currencyCode: string
+  partners: Partner[]
+}
+
+interface Partner {
+  name: string
+  isCardPayment: boolean
+  currencyCode: string
+}
+
 export const fetchTransakSupportedCountries = async () => {
   const res = await fetch('https://api.transak.com/api/v2/countries')
-  const data = await res.json()
+  const data = (await res.json()) as CountriesResult
 
-  // @ts-ignore-next-line
   return data.response.filter(x => x.isAllowed).map(x => x.alpha2)
 }

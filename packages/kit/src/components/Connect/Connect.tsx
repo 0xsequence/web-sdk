@@ -140,7 +140,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
         ;(emailConnector as any).setEmail(email)
       }
 
-      /* @ts-ignore-next-line */
       if (emailConnector._wallet.id === 'email-waas') {
         try {
           await initiateEmailAuth(email)

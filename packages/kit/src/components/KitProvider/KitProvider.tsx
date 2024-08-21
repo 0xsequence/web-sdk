@@ -201,7 +201,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                   </Text>
                                   <Card marginTop="2" paddingY="6">
                                     <Text variant="normal" marginBottom="4">
-                                      {ethers.utils.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                      {ethers.toUtf8String(pendingRequestConfirmation.message ?? '')}
                                     </Text>
                                   </Card>
                                 </Box>

@@ -1,8 +1,7 @@
 import { ContractCall, SequenceAPIClient } from '@0xsequence/api'
 import { commons } from '@0xsequence/core'
 import { ContractType, TxnTransferType } from '@0xsequence/indexer'
-import { BigNumber, BigNumberish, BytesLike, ethers } from 'ethers'
-import { getAddress } from 'ethers/lib/utils'
+import { ethers } from 'ethers'
 
 interface TransactionEncodedWithCall extends commons.transaction.TransactionEncoded {
   call?: ContractCall
@@ -84,9 +83,9 @@ const transformArgs = (args: ContractCallArg[]): any => {
   )
 }
 
-const createTxnData = (to: string, call: ContractCall, value: BigNumberish, data: BytesLike): TxnData => {
+const createTxnData = (to: string, call: ContractCall, value: ethers.BigNumberish, data: ethers.BytesLike): TxnData => {
   const args = transformArgs(call.args)
-  const byteSignature = ethers.utils.hexDataSlice(data, 0, 4)
+  const byteSignature = ethers.dataSlice(data, 0, 4)
 
   let objs: TxnData['objs'] = []
   switch (call.signature) {
@@ -99,12 +98,12 @@ const createTxnData = (to: string, call: ContractCall, value: BigNumberish, data
           : {
               to: txn.target,
               signature: '',
-              byteSignature: ethers.utils.hexDataSlice(txn.data, 0, 4),
+              byteSignature: ethers.dataSlice(txn.data, 0, 4),
               methodName: '',
               args: {},
               objs: [],
-              value: BigNumber.from(txn.value).toString(),
-              data: ethers.utils.hexlify(txn.data)
+              value: BigInt(txn.value).toString(),
+              data: ethers.hexlify(txn.data)
             }
       )
     }
@@ -117,8 +116,8 @@ const createTxnData = (to: string, call: ContractCall, value: BigNumberish, data
     methodName: call.function,
     args,
     objs,
-    value: BigNumber.from(value).toString(),
-    data: ethers.utils.hexlify(data)
+    value: BigInt(value).toString(),
+    data: ethers.hexlify(data)
   }
 }
 
@@ -242,7 +241,7 @@ type DecodedTxnData =
   | AwardItemTxnData
 
 const decodeTxnData = async (apiClient: SequenceAPIClient, txns: commons.transaction.TransactionEncoded[]): Promise<TxnData> => {
-  const mainModule = new ethers.utils.Interface(mainModuleAbi)
+  const mainModule = new ethers.Interface(mainModuleAbi)
   const callData = mainModule.encodeFunctionData('selfExecute', [txns])
 
   try {
@@ -262,12 +261,12 @@ export const decodeTransactions = async (
   const encodedTxns = encodeTransactions(txns)
   const decodedTxnDatas = (await decodeTxnData(apiClient, encodedTxns)).objs as DecodedTxnData[]
 
-  const from = getAddress(accountAddress)
+  const from = ethers.getAddress(accountAddress)
 
   const txnProps = encodedTxns.map((txn, i): TxnProps | undefined => {
     const decodedTxnData = decodedTxnDatas[i] as DecodedTxnData
     const data = txn.data.toString()
-    const value = BigNumber.from(txn.value).toString()
+    const value = BigInt(txn.value).toString()
     const target = txn.target
 
     if (data === '0x' || !data) {
@@ -278,10 +277,10 @@ export const decodeTransactions = async (
         type: DecodingType.TRANSFER,
         methodName: 'nativeTokenTransfer',
         transferType: TxnTransferType.SEND,
-        contractAddress: ethers.constants.AddressZero,
+        contractAddress: ethers.ZeroAddress,
         contractType: ContractType.UNKNOWN,
         from,
-        to: getAddress(txn.target),
+        to: ethers.getAddress(txn.target),
         tokenIds: ['0'],
         amounts: [value],
         target,
@@ -293,7 +292,7 @@ export const decodeTransactions = async (
       return undefined
     }
 
-    const contractAddress = getAddress(txn.target)
+    const contractAddress = ethers.getAddress(txn.target)
 
     const baseDecoding: BaseDecoding = {
       type: DecodingType.UNIMPLEMENTED,
@@ -315,7 +314,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC20,
           from,
-          to: getAddress(args.recipient),
+          to: ethers.getAddress(args.recipient),
           tokenIds: ['0'],
           amounts: [String(args.amount)]
         }
@@ -331,7 +330,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC721,
           from,
-          to: getAddress(args.to),
+          to: ethers.getAddress(args.to),
           tokenIds: [args.tokenId],
           amounts: ['1']
         }
@@ -347,7 +346,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC1155,
           from,
-          to: getAddress(args._to),
+          to: ethers.getAddress(args._to),
           tokenIds: [args._id],
           amounts: [args._amount]
         }
@@ -363,7 +362,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC1155,
           from,
-          to: getAddress(args._to),
+          to: ethers.getAddress(args._to),
           tokenIds: args._ids,
           amounts: args._amounts
         }
@@ -376,8 +375,7 @@ export const decodeTransactions = async (
           ...baseDecoding,
           type: DecodingType.AWARD_ITEM,
           contractAddress,
-          // @ts-ignore-next-line
-          to: getAddress(args._0),
+          to: ethers.getAddress((args as any)._0),
           amount: '1'
         }
       }

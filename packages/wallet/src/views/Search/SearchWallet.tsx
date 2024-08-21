@@ -24,9 +24,7 @@ export const SearchWallet = () => {
   })
 
   const coinBalancesUnordered =
-    tokenBalancesData?.filter(
-      b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.constants.AddressZero)
-    ) || []
+    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
 
   const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices(
     coinBalancesUnordered.map(token => ({
@@ -78,7 +76,7 @@ export const SearchWallet = () => {
   })
 
   const indexedCoinBalances: IndexedData[] = coinBalances.map((balance, index) => {
-    if (compareAddress(balance.contractAddress, ethers.constants.AddressZero)) {
+    if (compareAddress(balance.contractAddress, ethers.ZeroAddress)) {
       const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
       return {

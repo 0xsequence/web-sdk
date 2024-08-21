@@ -134,7 +134,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
         </Box>
         {amounts.map((amount, index) => {
           const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
-          const isNativeToken = compareAddress(transfer.contractAddress, ethers.constants.AddressZero)
+          const isNativeToken = compareAddress(transfer.contractAddress, ethers.ZeroAddress)
           const isCollectible = transfer.contractInfo?.type === 'ERC721' || transfer.contractInfo?.type === 'ERC1155'
           let decimals
           const tokenId = transfer.tokenIds?.[index]
@@ -143,7 +143,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
           } else {
             decimals = isNativeToken ? nativeTokenInfo.decimals : transfer.contractInfo?.decimals
           }
-          const amountValue = ethers.utils.formatUnits(amount, decimals)
+          const amountValue = ethers.formatUnits(amount, decimals)
           const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer.contractInfo?.symbol || ''
           const tokenLogoUri = isNativeToken ? nativeTokenInfo.logoURI : transfer.contractInfo?.logoURI
 

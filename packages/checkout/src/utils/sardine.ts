@@ -1,5 +1,5 @@
 import { ChainId, networks } from '@0xsequence/network'
-import { constants } from 'ethers'
+import { ethers } from 'ethers'
 
 export interface CheckSardineWhitelistStatusArgs {
   isDev: boolean
@@ -36,7 +36,7 @@ export const checkSardineWhitelistStatus = async (
         name: 'whitelist-check',
         imageUrl: 'https://www.sequence.market/images/placeholder.png',
         network: networks[chainId as ChainId].name,
-        recipientAddress: constants.AddressZero,
+        recipientAddress: ethers.ZeroAddress,
         contractAddress: marketplaceAddress,
         platform: 'calldata_execution',
         executionType: 'smart_contract',

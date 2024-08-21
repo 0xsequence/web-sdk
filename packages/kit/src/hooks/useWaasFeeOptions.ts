@@ -44,8 +44,7 @@ export function useWaasFeeOptions(): [
         return
       }
 
-      // @ts-ignore-next-line
-      const waasProvider = waasConnector.sequenceWaasProvider
+      const waasProvider = (waasConnector as any).sequenceWaasProvider
 
       if (!waasProvider) {
         return

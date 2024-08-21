@@ -21,11 +21,11 @@ View the [demo](https://0xsequence.github.io/kit)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/kit wagmi ethers@5.7.2 viem 0xsequence @0xsequence/design-system @tanstack/react-query
+npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
 # or
-pnpm install @0xsequence/kit wagmi ethers@5.7.2 viem 0xsequence @0xsequence/design-system @tanstack/react-query
+pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
 # or
-yarn add @0xsequence/kit wagmi ethers@5.7.2 viem 0xsequence @0xsequence/design-system @tanstack/react-query
+yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
 ```
 
 ### Setting up the Library
@@ -146,7 +146,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
     // limits the digital assets displayed on the assets summary screen
     displayedAssets: [
       {
-        contractAddress: ethers.constants.AddressZero,
+        contractAddress: ethers.ZeroAddress,
         chainId: 137,
       },
       {

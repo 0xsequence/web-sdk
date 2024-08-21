@@ -1,4 +1,4 @@
-import { sequence } from '0xsequence'
+import { allNetworks, EIP1193Provider } from '@0xsequence/network'
 import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, Transaction, FeeOption } from '@0xsequence/waas'
 import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
@@ -186,7 +186,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
       await provider.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: ethers.utils.hexValue(chainId) }]
+        params: [{ chainId: ethers.toQuantity(chainId) }]
       })
 
       config.emitter.emit('change', { chainId })
@@ -196,7 +196,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
     async getChainId() {
       const provider = await this.getProvider()
-      return provider.getChainId()
+      return Number(provider.getChainId())
     },
 
     async onAccountsChanged(accounts) {
@@ -219,11 +219,11 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   }))
 }
 
-export class SequenceWaasProvider extends ethers.providers.BaseProvider implements sequence.provider.EIP1193Provider {
-  jsonRpcProvider: ethers.providers.JsonRpcProvider
+export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP1193Provider {
+  jsonRpcProvider: ethers.JsonRpcProvider
   requestConfirmationHandler: WaasRequestConfirmationHandler | undefined
   feeConfirmationHandler: WaasFeeOptionConfirmationHandler | undefined
-  currentNetwork: ethers.providers.Network = this.network
+  currentNetwork: ethers.Network
 
   constructor(
     public sequenceWaas: SequenceWaaS,
@@ -233,31 +233,32 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
     super(sequenceWaas.config.network)
 
     const initialChain = sequenceWaas.config.network
-    const initialChainName = sequence.network.allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
-    const initialJsonRpcProvider = new ethers.providers.JsonRpcProvider(
+    const initialChainName = allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
+    const initialJsonRpcProvider = new ethers.JsonRpcProvider(
       `${nodesUrl}/${initialChainName}/${sequenceWaas.config.projectAccessKey}`
     )
 
     this.jsonRpcProvider = initialJsonRpcProvider
+    this.currentNetwork = ethers.Network.from(sequenceWaas.config.network)
   }
 
   async request({ method, params }: { method: string; params?: any[] }) {
     if (method === 'wallet_switchEthereumChain') {
       const chainId = normalizeChainId(params?.[0].chainId)
 
-      const networkName = sequence.network.allNetworks.find(n => n.chainId === chainId)?.name
-      const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+      const networkName = allNetworks.find(n => n.chainId === chainId)?.name
+      const jsonRpcProvider = new ethers.JsonRpcProvider(
         `${this.nodesUrl}/${networkName}/${this.sequenceWaas.config.projectAccessKey}`
       )
 
       this.jsonRpcProvider = jsonRpcProvider
-      this.currentNetwork = ethers.providers.getNetwork(chainId)
+      this.currentNetwork = ethers.Network.from(chainId)
 
       return null
     }
 
     if (method === 'eth_chainId') {
-      return ethers.utils.hexValue(this.currentNetwork.chainId)
+      return ethers.toQuantity(this.currentNetwork.chainId)
     }
 
     if (method === 'eth_accounts') {
@@ -267,7 +268,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
     }
 
     if (method === 'eth_sendTransaction') {
-      const txns: ethers.Transaction[] = await ethers.utils.resolveProperties(params?.[0])
+      const txns: ethers.Transaction[] = await ethers.resolveProperties(params?.[0])
 
       const chainId = this.getChainId()
 
@@ -310,7 +311,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
       }
 
       const response = await this.sequenceWaas.sendTransaction({
-        transactions: [await ethers.utils.resolveProperties(params?.[0])],
+        transactions: [await ethers.resolveProperties(params?.[0])],
         network: chainId,
         transactionsFeeOption: selectedFeeOption,
         transactionsFeeQuote: feeOptionsResponse?.feeQuote
@@ -341,7 +342,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
         const confirmation = await this.requestConfirmationHandler.confirmSignMessageRequest(
           id,
           params?.[0],
-          this.currentNetwork.chainId
+          Number(this.currentNetwork.chainId)
         )
 
         if (!confirmation.confirmed) {
@@ -352,7 +353,7 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
           throw new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }
-      const sig = await this.sequenceWaas.signMessage({ message: params?.[0], network: this.currentNetwork.chainId })
+      const sig = await this.sequenceWaas.signMessage({ message: params?.[0], network: Number(this.currentNetwork.chainId) })
 
       return sig.data.signature
     }
@@ -364,12 +365,12 @@ export class SequenceWaasProvider extends ethers.providers.BaseProvider implemen
     return await this.jsonRpcProvider.getTransaction(txHash)
   }
 
-  detectNetwork(): Promise<ethers.providers.Network> {
+  detectNetwork(): Promise<ethers.Network> {
     return Promise.resolve(this.currentNetwork)
   }
 
   getChainId() {
-    return this.currentNetwork.chainId
+    return Number(this.currentNetwork.chainId)
   }
 
   async checkTransactionFeeOptions({

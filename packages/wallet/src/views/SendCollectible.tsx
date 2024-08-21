@@ -37,8 +37,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const { chains } = useConfig()
   const connectedChainId = useChainId()
   const { address: accountAddress = '', connector } = useAccount()
-  /* @ts-ignore-next-line */
-  const isConnectorSequenceBased = !!connector?._wallet?.isSequenceBased
+  const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
   const isCorrectChainId = connectedChainId === chainId
   const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
   const { switchChain } = useSwitchChain()
@@ -63,7 +62,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         setAmount('1')
         setShowAmountControls(false)
       } else if (contractType === 'ERC1155') {
-        if (Number(ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals)) >= 1) {
+        if (Number(ethers.formatUnits(tokenBalance?.balance || 0, decimals)) >= 1) {
           setAmount('1')
         }
         setShowAmountControls(true)
@@ -83,10 +82,10 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const name = tokenBalance?.tokenMetadata?.name || 'Unknown'
   const imageUrl = tokenBalance?.tokenMetadata?.image || tokenBalance?.contractInfo?.logoURI || ''
   const amountToSendFormatted = amount === '' ? '0' : amount
-  const amountRaw = ethers.utils.parseUnits(amountToSendFormatted, decimals)
+  const amountRaw = ethers.parseUnits(amountToSendFormatted, decimals)
 
-  const insufficientFunds = amountRaw.gt(tokenBalance?.balance || '0')
-  const isNonZeroAmount = amountRaw.gt(0)
+  const insufficientFunds = amountRaw > BigInt(tokenBalance?.balance || '0')
+  const isNonZeroAmount = amountRaw > 0n
 
   const handleChangeAmount = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.target
@@ -108,7 +107,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const handleAddOne = () => {
     amountInputRef.current?.focus()
     const incrementedAmount = Number(amount) + 1
-    const maxAmount = Number(ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals))
+    const maxAmount = Number(ethers.formatUnits(tokenBalance?.balance || 0, decimals))
 
     const newAmount = Math.min(incrementedAmount, maxAmount).toString()
 
@@ -117,7 +116,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   const handleMax = () => {
     amountInputRef.current?.focus()
-    const maxAmount = ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals).toString()
+    const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
 
     setAmount(maxAmount)
   }
@@ -138,7 +137,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       switchChain({ chainId })
     }
 
-    const sendAmount = ethers.utils.parseUnits(amountToSendFormatted, decimals)
+    const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
 
     switch (contractType) {
       case 'ERC721':
@@ -154,7 +153,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         sendTransaction(
           {
             to: (tokenBalance as TokenBalance).contractAddress as `0x${string}}`,
-            data: new ethers.utils.Interface(ERC_721_ABI).encodeFunctionData('safeTransferFrom', [
+            data: new ethers.Interface(ERC_721_ABI).encodeFunctionData('safeTransferFrom', [
               accountAddress,
               toAddress,
               tokenId
@@ -187,11 +186,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         sendTransaction(
           {
             to: (tokenBalance as TokenBalance).contractAddress as `0x${string}}`,
-            data: new ethers.utils.Interface(ERC_1155_ABI).encodeFunctionData('safeBatchTransferFrom', [
+            data: new ethers.Interface(ERC_1155_ABI).encodeFunctionData('safeBatchTransferFrom', [
               accountAddress,
               toAddress,
               [tokenId],
-              [sendAmount.toHexString()],
+              [ethers.toQuantity(sendAmount)],
               []
             ]) as `0x${string}`,
             gas: null
@@ -210,7 +209,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     }
   }
 
-  const maxAmount = ethers.utils.formatUnits(tokenBalance?.balance || 0, decimals).toString()
+  const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
 
   const isMinimum = Number(amount) === 0
   const isMaximum = Number(amount) >= Number(maxAmount)

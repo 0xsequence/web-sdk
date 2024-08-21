@@ -25,7 +25,7 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
 
   const { logoURI: collectionLogoURI, name: collectionName = 'Unknown Collection' } = contractInfo || {}
 
-  const balanceFormatted = ethers.utils.formatUnits(quantityRaw, decimals)
+  const balanceFormatted = ethers.formatUnits(quantityRaw, decimals)
 
   return (
     <Card flexDirection="row" alignItems="flex-start" justifyContent="space-between">
