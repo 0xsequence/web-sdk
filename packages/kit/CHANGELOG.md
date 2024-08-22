@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 3.0.0
+
+### Major Changes
+
+- Moved the design system library to a peer dependency. The associated css imports will now have to be added to the top-level of the application
+
 ## 2.11.4
 
 ### Patch Changes

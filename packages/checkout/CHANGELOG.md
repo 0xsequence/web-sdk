@@ -1,5 +1,16 @@
 # @0xsequence/kit-connectors
 
+## 3.0.0
+
+### Major Changes
+
+- Moved the design system library to a peer dependency. The associated css imports will now have to be added to the top-level of the application
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@3.0.0
+
 ## 2.11.4
 
 ### Patch Changes

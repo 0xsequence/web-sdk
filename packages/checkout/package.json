@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-checkout",
-  "version": "2.11.4",
+  "version": "3.0.0",
   "description": "Checkout UI for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/checkout",
   "author": "Horizon Blockchain Games",
