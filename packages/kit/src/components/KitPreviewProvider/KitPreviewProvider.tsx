@@ -6,8 +6,6 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { useState, useEffect } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
-import '@0xsequence/design-system/styles.css'
-
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
 import { AnalyticsContextProvider } from '../../contexts/Analytics'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal'

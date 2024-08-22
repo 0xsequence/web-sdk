@@ -11,8 +11,6 @@ import { History, Navigation, NavigationContextProvider, WalletModalContextProvi
 
 import { getHeader, getContent } from './utils'
 
-import '@0xsequence/design-system/styles.css'
-
 export type KitWalletProviderProps = {
   children: React.ReactNode
 }

@@ -18,8 +18,6 @@ import {
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelection, AddFundsContent } from '../../views'
 
-import '@0xsequence/design-system/styles.css'
-
 export type KitCheckoutProvider = {
   children: React.ReactNode
 }
