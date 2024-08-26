@@ -13,10 +13,19 @@ import {
   CheckoutModalContextProvider,
   CheckoutSettings,
   AddFundsContextProvider,
-  AddFundsSettings
+  AddFundsSettings,
+  SelectPaymentContextProvider,
+  SelectPaymentSettings
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import { PendingTransaction, TransactionError, TransactionSuccess, CheckoutSelection, AddFundsContent } from '../../views'
+import {
+  PendingTransaction,
+  TransactionError,
+  TransactionSuccess,
+  CheckoutSelection,
+  AddFundsContent,
+  PaymentSelection,
+} from '../../views'
 
 export type KitCheckoutProvider = {
   children: React.ReactNode
@@ -36,7 +45,9 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
   const { theme, position } = useTheme()
   const [openCheckoutModal, setOpenCheckoutModal] = useState<boolean>(false)
   const [openAddFundsModal, setOpenAddFundsModal] = useState<boolean>(false)
+  const [openPaymentSelectionModal, setOpenPaymentSelectionModal] = useState<boolean>(false)
   const [settings, setSettings] = useState<CheckoutSettings>()
+  const [selectPaymentSettings, setSelectPaymentSettings] = useState<SelectPaymentSettings>()
   const [addFundsSettings, setAddFundsSettings] = useState<AddFundsSettings>()
   const [history, setHistory] = useState<History>([])
 
@@ -76,6 +87,15 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
 
   const closeAddFunds = () => {
     setOpenAddFundsModal(false)
+  }
+
+  const openSelectPaymentModal = (settings: SelectPaymentSettings) => {
+    setSelectPaymentSettings(settings)
+    setOpenPaymentSelectionModal(true)
+  }
+
+  const closeSelectPaymentModal = () => {
+    setOpenPaymentSelectionModal(false)
   }
 
   const getCheckoutContent = () => {
@@ -127,75 +147,100 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
   }
 
   useEffect(() => {
-    if (openCheckoutModal || openAddFundsModal) {
+    if (openCheckoutModal || openAddFundsModal || openPaymentSelectionModal) {
       setHistory([])
     }
-  }, [openCheckoutModal, openAddFundsModal])
+  }, [openCheckoutModal, openAddFundsModal, openPaymentSelectionModal])
 
   return (
-    <AddFundsContextProvider
+    <SelectPaymentContextProvider
       value={{
-        triggerAddFunds,
-        closeAddFunds,
-        addFundsSettings
+        openSelectPaymentModal,
+        closeSelectPaymentModal,
+        selectPaymentSettings
       }}
     >
-      <CheckoutModalContextProvider
+      <AddFundsContextProvider
         value={{
-          triggerCheckout,
-          closeCheckout,
-          settings,
-          theme
+          triggerAddFunds,
+          closeAddFunds,
+          addFundsSettings
         }}
       >
-        <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>
-          <div id="kit-checkout">
-            <ThemeProvider root="#kit-checkout" scope="kit" theme={theme}>
-              <AnimatePresence>
-                {openCheckoutModal && (
-                  <Modal
-                    contentProps={{
-                      style: {
-                        maxWidth: '400px',
-                        height: 'auto',
-                        ...getModalPositionCss(position)
-                      }
-                    }}
-                    scroll={false}
-                    backdropColor="backgroundBackdrop"
-                    onClose={() => setOpenCheckoutModal(false)}
-                  >
-                    <Box id="sequence-kit-checkout-content">
-                      {getCheckoutHeader()}
-                      {getCheckoutContent()}
-                    </Box>
-                  </Modal>
-                )}
-                {openAddFundsModal && (
-                  <Modal
-                    contentProps={{
-                      style: {
-                        maxWidth: '400px',
-                        height: 'auto',
-                        ...getModalPositionCss(position)
-                      }
-                    }}
-                    scroll={false}
-                    backdropColor="backgroundBackdrop"
-                    onClose={() => setOpenAddFundsModal(false)}
-                  >
-                    <Box id="sequence-kit-add-funds-content">
-                      {getAddFundsHeader()}
-                      {getAddFundsContent()}
-                    </Box>
-                  </Modal>
-                )}
-              </AnimatePresence>
-            </ThemeProvider>
-          </div>
-          {children}
-        </NavigationContextProvider>
-      </CheckoutModalContextProvider>
-    </AddFundsContextProvider>
+        <CheckoutModalContextProvider
+          value={{
+            triggerCheckout,
+            closeCheckout,
+            settings,
+            theme
+          }}
+        >
+          <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>
+            <div id="kit-checkout">
+              <ThemeProvider root="#kit-checkout" scope="kit" theme={theme}>
+                <AnimatePresence>
+                  {openCheckoutModal && (
+                    <Modal
+                      contentProps={{
+                        style: {
+                          maxWidth: '400px',
+                          height: 'auto',
+                          ...getModalPositionCss(position)
+                        }
+                      }}
+                      scroll={false}
+                      backdropColor="backgroundBackdrop"
+                      onClose={() => setOpenCheckoutModal(false)}
+                    >
+                      <Box id="sequence-kit-checkout-content">
+                        {getCheckoutHeader()}
+                        {getCheckoutContent()}
+                      </Box>
+                    </Modal>
+                  )}
+                  {openAddFundsModal && (
+                    <Modal
+                      contentProps={{
+                        style: {
+                          maxWidth: '400px',
+                          height: 'auto',
+                          ...getModalPositionCss(position)
+                        }
+                      }}
+                      scroll={false}
+                      backdropColor="backgroundBackdrop"
+                      onClose={() => setOpenAddFundsModal(false)}
+                    >
+                      <Box id="sequence-kit-add-funds-content">
+                        {getAddFundsHeader()}
+                        {getAddFundsContent()}
+                      </Box>
+                    </Modal>
+                  )}
+                  {openPaymentSelectionModal && (
+                    <Modal
+                      contentProps={{
+                        style: {
+                          maxWidth: '400px',
+                          height: 'auto',
+                          ...getModalPositionCss(position)
+                        }
+                      }}
+                      backdropColor="backgroundBackdrop"
+                      onClose={() => setOpenPaymentSelectionModal(false)}
+                    >
+                      <Box id="sequence-kit-payment-selection-content">
+                        <PaymentSelection />
+                      </Box>
+                    </Modal>
+                  )}
+                </AnimatePresence>
+              </ThemeProvider>
+            </div>
+            {children}
+          </NavigationContextProvider>
+        </CheckoutModalContextProvider>
+      </AddFundsContextProvider>
+    </SelectPaymentContextProvider>
   )
 }

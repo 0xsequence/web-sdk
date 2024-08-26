@@ -7,7 +7,7 @@ import {
   validateEthProof,
   getModalPositionCss
 } from '@0xsequence/kit'
-import { useCheckoutModal, useAddFundsModal } from '@0xsequence/kit-checkout'
+import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
@@ -38,6 +38,7 @@ export const Connected = () => {
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
+  const { openSelectPaymentModal } = useSelectPaymentModal()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -242,6 +243,10 @@ export const Connected = () => {
     setIsCheckoutInfoModalOpen(true)
   }
 
+  const onClickSelectPayment = () => {
+    openSelectPaymentModal({})
+  }
+
   const onCheckoutInfoConfirm = () => {
     setIsCheckoutInfoModalOpen(false)
     if (checkoutOrderId !== '' && checkoutTokenContractAddress !== '' && checkoutTokenId !== '') {
@@ -375,6 +380,12 @@ export const Connected = () => {
                   title="NFT Checkout"
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
+                />
+
+                <CardButton
+                  title="Select Payment Method"
+                  description="Purchase an NFT through various purchase methods"
+                  onClick={onClickSelectPayment}
                 />
               </>
             )}
