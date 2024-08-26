@@ -1,5 +1,18 @@
 # @0xsequence/kit-example-next
 
+## 1.0.0
+
+### Major Changes
+
+- Migrated to Ethers v6.13.0 and Sequence v2.0.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit-checkout@4.0.0
+  - @0xsequence/kit@4.0.0
+  - @0xsequence/kit-wallet@4.0.0
+
 ## 0.6.20
 
 ### Patch Changes
