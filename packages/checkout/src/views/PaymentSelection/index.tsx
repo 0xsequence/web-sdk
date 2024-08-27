@@ -1,6 +1,11 @@
 import { Box, Text } from '@0xsequence/design-system'
+
+import { PayWithCrypto } from './PayWithCrypto'
+import { PayWithCreditCard } from './PayWithCreditCard'
+
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { HEADER_HEIGHT } from '../../constants'
+import { useSelectPaymentModal } from '../../hooks'
 
 export const PaymentSelection = () => {
   return (
@@ -18,19 +23,40 @@ export const PaymentSelectionHeader = () => {
 }
 
 export const PaymentSelectionContent = () => {
+  const { selectPaymentSettings = {} } = useSelectPaymentModal()
+
+  const { payWithCrypto, payWithCreditCard } = selectPaymentSettings
+
+
+  const noPayentOptionFound = !payWithCreditCard && !payWithCreditCard
+
   return (
     <Box
-      paddingTop="0"
-      paddingX="5"
-      paddingBottom="5"
-      style={{
-        marginTop: HEADER_HEIGHT
-      }}
+      flexDirection="column"
+      gap='2'
+      alignItems="flex-start"
+      width="full"
+      paddingX="4"
+      paddingBottom="4"
+      height="full"
+      style={{ height: '600px', paddingTop: HEADER_HEIGHT }}
     >
-      <Text color="text100">Payment Selection Content</Text>
-      <Text color="text100">Payment Selection Content</Text>
-      <Text color="text100">Payment Selection Content</Text>
-      <Text color="text100">Payment Selection Content</Text>
+      {payWithCreditCard && (
+        <PayWithCreditCard settings={payWithCreditCard} />
+      )}
+      {payWithCrypto && (
+        <PayWithCrypto settings={payWithCrypto} />
+      )}
+      {noPayentOptionFound && (
+        <Box
+          width="full"
+          justifyContent="center"
+          alignItems="center"
+          marginTop="10"
+        >
+          <Text color="text100">No Payment Option Found</Text>
+        </Box>
+      )}
     </Box>
   )
 }

@@ -1,7 +1,26 @@
 import { createGenericContext } from './genericContext'
+import { Hex } from 'viem'
+
+export interface PayWithCryptoSettings {
+  chainId: number,
+  currencyAddress: string,
+  currencyRawAmount: string,
+  targetContractAddress: string,
+  txData: Hex,
+  enableSwapPayments: boolean,
+}
+
+export interface PayWithCreditCardSettings {
+  chainId: number,
+  currencyAddress: string,
+  currencyRawAmount: string,
+  targetContractAddress: string,
+  txData: Hex,
+}
 
 export interface SelectPaymentSettings {
-  // TODO: add options for each option type....
+  payWithCrypto?: PayWithCryptoSettings
+  payWithCreditCard?: PayWithCreditCardSettings
 }
 
 type SelectPaymentModalContext = {
