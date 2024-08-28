@@ -221,7 +221,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                     <Modal
                       contentProps={{
                         style: {
-                          maxWidth: '400px',
                           height: 'auto',
                           ...getModalPositionCss(position)
                         }

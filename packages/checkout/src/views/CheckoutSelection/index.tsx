@@ -17,7 +17,7 @@ import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation, useCheckoutModal } from '../../hooks'
+import { useNavigation, useCheckoutModal, useClearCachedBalances } from '../../hooks'
 import { compareAddress, formatDisplay } from '../../utils'
 
 import { OrderSummaryItem } from './component/OrderSummaryItem'

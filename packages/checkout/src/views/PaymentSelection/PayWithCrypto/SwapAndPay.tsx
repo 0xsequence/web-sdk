@@ -1,9 +1,19 @@
-import { Box } from '@0xsequence/design-system'
+import { Card, Text } from '@0xsequence/design-system'
 
-export const SwapAndPay = () => {
+import { PayWithCryptoSettings } from '../../../contexts'
+
+interface SwapAndPayProps {
+  settings: PayWithCryptoSettings
+}
+
+export const SwapAndPay = ({
+  settings
+}: SwapAndPayProps) => {
   return (
-    <Box>
-      Swap and pay options
-    </Box>
+    <Card>
+      <Text color="text100">
+        Swap and pay options
+      </Text>
+    </Card>
   )
 }

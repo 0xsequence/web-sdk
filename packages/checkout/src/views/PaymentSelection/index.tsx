@@ -1,6 +1,6 @@
 import { Box, Text } from '@0xsequence/design-system'
 
-import { PayWithCrypto } from './PayWithCrypto'
+import { PayWithCrypto } from './PayWithCrypto/index'
 import { PayWithCreditCard } from './PayWithCreditCard'
 
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
@@ -27,8 +27,7 @@ export const PaymentSelectionContent = () => {
 
   const { payWithCrypto, payWithCreditCard } = selectPaymentSettings
 
-
-  const noPayentOptionFound = !payWithCreditCard && !payWithCreditCard
+  const noPaymentOptionFound = !payWithCrypto && !payWithCreditCard
 
   return (
     <Box
@@ -41,13 +40,13 @@ export const PaymentSelectionContent = () => {
       height="full"
       style={{ height: '600px', paddingTop: HEADER_HEIGHT }}
     >
-      {payWithCreditCard && (
+      {!!payWithCreditCard && (
         <PayWithCreditCard settings={payWithCreditCard} />
       )}
-      {payWithCrypto && (
+      {!!payWithCrypto && (
         <PayWithCrypto settings={payWithCrypto} />
       )}
-      {noPayentOptionFound && (
+      {noPaymentOptionFound && (
         <Box
           width="full"
           justifyContent="center"

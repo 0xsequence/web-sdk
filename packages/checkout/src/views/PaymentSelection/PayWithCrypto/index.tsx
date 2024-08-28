@@ -15,9 +15,9 @@ export const PayWithCrypto = ({
 
   return (
     <>
-      <PayWithMainCurrency />
+      <PayWithMainCurrency settings={settings} />
       {enableSwapPayments && (
-        <SwapAndPay />
+        <SwapAndPay settings={settings} />
       )}
     </>
   )

@@ -8,6 +8,7 @@ export interface PayWithCryptoSettings {
   targetContractAddress: string,
   txData: Hex,
   enableSwapPayments: boolean,
+  transactionConfirmations?: number
 }
 
 export interface PayWithCreditCardSettings {

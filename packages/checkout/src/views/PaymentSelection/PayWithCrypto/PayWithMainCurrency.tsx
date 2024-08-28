@@ -1,9 +1,268 @@
-import { Box } from '@0xsequence/design-system'
+import { useState } from 'react'
+import { useBalances, useContractInfo, compareAddress } from '@0xsequence/kit'
+import type { SequenceWaaS } from '@0xsequence/waas'
+import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0xsequence/design-system'
 
-export const PayWithMainCurrency = () => {
+import { encodeFunctionData, formatUnits, Hex } from 'viem'
+import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
+
+import { PayWithCryptoSettings } from '../../../contexts'
+import { CARD_HEIGHT, TRANSACTION_CONFIRMATIONS_DEFAULT } from '../../../constants'
+import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
+import { useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
+
+interface PayWithMainCurrencyProps {
+  settings: PayWithCryptoSettings
+}
+
+export const PayWithMainCurrency = ({
+  settings
+}: PayWithMainCurrencyProps) => {
+  const {
+    chainId,
+    currencyAddress,
+    targetContractAddress,
+    currencyRawAmount,
+    txData,
+    transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
+  } = settings
+  const { address: userAddress, connector } = useAccount()
+  const isMobile = useMediaQuery('isMobile')
+  const { data: walletClient } = useWalletClient()
+  const publicClient = usePublicClient()
+  const [purchaseInProgress, setPurchaseInProgress] = useState(false)
+  const { clearCachedBalances } = useClearCachedBalances()
+  const { closeSelectPaymentModal } = useSelectPaymentModal()
+
+  const {
+    data: allowanceData,
+    isLoading: allowanceIsLoading,
+    refetch: refechAllowance
+  } = useReadContract({
+    abi: ERC_20_CONTRACT_ABI,
+    functionName: 'allowance',
+    chainId: chainId,
+    address: currencyAddress as Hex,
+    args: [userAddress, targetContractAddress],
+    query: {
+      enabled: !!userAddress
+    }
+  })
+
+  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalances({
+    chainIds: [chainId],
+    contractAddress: currencyAddress,
+    accountAddress: userAddress || '',
+    // includeMetadata must be false to work around a bug
+    includeMetadata: false
+  })
+
+  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(
+    chainId,
+    currencyAddress
+  )
+
+  const isLoading = allowanceIsLoading || currencyBalanceIsLoading ||isLoadingCurrencyInfo
+
+  if (isLoading) {
+    return (
+      <Card
+        width="full"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{
+          minHeight: CARD_HEIGHT
+        }}
+      >
+        <Spinner />
+      </Card>
+    )
+  }
+
+  const priceFormatted = formatUnits(BigInt(currencyRawAmount), currencyInfoData?.decimals || 0)
+  const isApproved: boolean = (allowanceData as bigint) >= BigInt(currencyRawAmount)
+
+  const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
+
+  const balance: bigint = BigInt(balanceInfo?.balance || '0')
+  let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
+  balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
+
+  const isNotEnoughFunds: boolean = BigInt(currencyRawAmount) > balance
+
+  const onClickPurchase = async () => {
+    if (!walletClient || !userAddress || !publicClient || !userAddress || !connector) {
+      return
+    }
+
+    setPurchaseInProgress(true)
+
+    try {
+      const walletClientChainId = await walletClient.getChainId()
+      if (walletClientChainId !== chainId) {
+        await walletClient.switchChain({ id: chainId })
+      }
+
+      const approveTxData = encodeFunctionData({
+        abi: ERC_20_CONTRACT_ABI,
+        functionName: 'approve',
+        args: [targetContractAddress, currencyRawAmount]
+      })
+
+
+      const transactions = [
+        ...(isApproved
+          ? []
+          : [
+              {
+                to: currencyAddress,
+                data: approveTxData as string,
+                chainId
+              }
+            ]),
+        {
+          to: targetContractAddress,
+          data: txData as string,
+          chainId
+        }
+      ]
+
+      const sequenceWaaS = (connector as  any)?.['sequenceWaas'] as SequenceWaaS | undefined
+
+      let txnHash = ''
+      if (sequenceWaaS) {
+        // waas connector logic
+        const resp = await sequenceWaaS.feeOptions({
+          transactions: transactions,
+          network: chainId
+        })
+
+        const transactionsFeeOption = resp.data.feeOptions[0]
+        const transactionsFeeQuote = resp.data.feeQuote
+
+        const response = await sequenceWaaS.sendTransaction({
+          transactions,
+          transactionsFeeOption,
+          transactionsFeeQuote
+        })
+
+        if (response.code === 'transactionFailed') {
+          throw new Error(response.data.error)
+        }
+
+        txnHash = response.data.txHash
+
+        // wait for at least two block confirmations
+        // for changes to be reflected by the indexer
+        await publicClient.waitForTransactionReceipt({
+          hash: txnHash as Hex,
+          confirmations: transactionConfirmations
+        })
+      } else {
+        // We fire the transactions one at a time since the cannot be batched
+        for (const transaction of transactions) {
+          txnHash = await walletClient.sendTransaction({
+            account: userAddress,
+            to: transaction.to as Hex,
+            data: transaction.data as Hex
+          })
+          // wait for a block confirmation otherwise metamask throws an error
+          await publicClient.waitForTransactionReceipt({
+            hash: txnHash as Hex,
+            confirmations: transactionConfirmations
+          })
+        }
+      }
+
+      closeSelectPaymentModal()
+      refechAllowance()
+      clearCachedBalances()
+    } catch (e) {
+      console.error('Failed to purchase...', e)
+    }
+
+    setPurchaseInProgress(false)
+  }
+
+
+  const StatusMessage = () => {
+    if (isNotEnoughFunds) {
+      return (
+        <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
+          <Text variant="small" color="negative">
+            Not enough funds
+          </Text>
+          <Box style={{ height: '22px', width: '22px' }} />
+        </Box>
+      )
+    }
+
+    if (purchaseInProgress) {
+      return (
+        <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
+          <Text variant="small" color="text100">
+            In progress...
+          </Text>
+          <Box justifyContent="center" alignItems="center" style={{ height: '22px', width: '22px' }}>
+            <Spinner size="sm" />
+          </Box>
+        </Box>
+      )
+    }
+
+    return null
+  }
+
   return (
-    <Box>
-      Pay with main currency
-    </Box>
+    <Card
+      width="full"
+      flexDirection={isMobile ? 'column' : 'row'}
+      alignItems="center"
+      justifyContent="space-between"
+      gap={isMobile ? '2' : '0'}
+      style={{
+        minHeight: '200px'
+      }}
+    >
+      <Box
+        flexDirection="column"
+        gap="2"
+        justifyContent={isMobile ? 'center' : 'flex-start'}
+        style={{ ...(isMobile ? { width: '200px' } : {}) }}
+      >
+        <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
+          <Text color="text100">Buy With {currencyInfoData?.name}</Text>
+        </Box>
+        <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
+          <Text variant="small" color="text100">
+            {`Price: ${priceFormatted} ${currencyInfoData?.symbol}`}
+          </Text>
+          <TokenImage size="xs" src={currencyInfoData?.logoURI} />
+        </Box>
+        <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
+          <Text variant="small" color="text100">
+            {`Balance: ${balanceFormatted} ${currencyInfoData?.symbol}`}
+          </Text>
+          <TokenImage size="xs" src={currencyInfoData?.logoURI} />
+        </Box>
+        <StatusMessage />
+      </Box>
+      <Box
+        flexDirection="column"
+        gap="2"
+        alignItems={isMobile ? 'center' : 'flex-start'}
+        style={{ ...(isMobile ? { width: '200px' } : {}) }}
+      >
+        <Button
+          label="Purchase"
+          onClick={onClickPurchase}
+          disabled={purchaseInProgress || isNotEnoughFunds}
+          variant="primary"
+          shape="square"
+          pending={purchaseInProgress}
+        />
+      </Box>
+    </Card>
   )
 }
