@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.0.1
+
+### Patch Changes
+
+- Update ethauth to fix ethers-v6 compat.
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.1
+
 ## 4.0.0
 
 ### Major Changes

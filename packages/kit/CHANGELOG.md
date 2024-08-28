@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.0.1
+
+### Patch Changes
+
+- Update ethauth to fix ethers-v6 compat.
+
 ## 4.0.0
 
 ### Major Changes
