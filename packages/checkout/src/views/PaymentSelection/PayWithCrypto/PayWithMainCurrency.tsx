@@ -1,5 +1,11 @@
 import { useState } from 'react'
-import { useBalances, useContractInfo, compareAddress } from '@0xsequence/kit'
+import {
+  useBalances,
+  useContractInfo,
+  compareAddress,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  sendTransactions
+} from '@0xsequence/kit'
 import type { SequenceWaaS } from '@0xsequence/waas'
 import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0xsequence/design-system'
 
@@ -7,7 +13,7 @@ import { encodeFunctionData, formatUnits, Hex } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
 import { PayWithCryptoSettings } from '../../../contexts'
-import { CARD_HEIGHT, TRANSACTION_CONFIRMATIONS_DEFAULT } from '../../../constants'
+import { CARD_HEIGHT } from '../../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
 import { useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
 
@@ -116,64 +122,26 @@ export const PayWithMainCurrency = ({
           ? []
           : [
               {
-                to: currencyAddress,
-                data: approveTxData as string,
+                to: currencyAddress as Hex,
+                data: approveTxData,
                 chainId
               }
             ]),
         {
-          to: targetContractAddress,
-          data: txData as string,
+          to: targetContractAddress as Hex,
+          data: txData,
           chainId
         }
       ]
 
-      const sequenceWaaS = (connector as  any)?.['sequenceWaas'] as SequenceWaaS | undefined
-
-      let txnHash = ''
-      if (sequenceWaaS) {
-        // waas connector logic
-        const resp = await sequenceWaaS.feeOptions({
-          transactions: transactions,
-          network: chainId
-        })
-
-        const transactionsFeeOption = resp.data.feeOptions[0]
-        const transactionsFeeQuote = resp.data.feeQuote
-
-        const response = await sequenceWaaS.sendTransaction({
-          transactions,
-          transactionsFeeOption,
-          transactionsFeeQuote
-        })
-
-        if (response.code === 'transactionFailed') {
-          throw new Error(response.data.error)
-        }
-
-        txnHash = response.data.txHash
-
-        // wait for at least two block confirmations
-        // for changes to be reflected by the indexer
-        await publicClient.waitForTransactionReceipt({
-          hash: txnHash as Hex,
-          confirmations: transactionConfirmations
-        })
-      } else {
-        // We fire the transactions one at a time since the cannot be batched
-        for (const transaction of transactions) {
-          txnHash = await walletClient.sendTransaction({
-            account: userAddress,
-            to: transaction.to as Hex,
-            data: transaction.data as Hex
-          })
-          // wait for a block confirmation otherwise metamask throws an error
-          await publicClient.waitForTransactionReceipt({
-            hash: txnHash as Hex,
-            confirmations: transactionConfirmations
-          })
-        }
-      }
+      await sendTransactions({
+        chainId,
+        senderAddress: userAddress,
+        publicClient,
+        walletClient,
+        connector,
+        transactions,
+      })
 
       closeSelectPaymentModal()
       refechAllowance()
