@@ -88,5 +88,8 @@ export {
   useCollectiblePrices,
   useTokenMetadata,
   useContractInfo,
-  useTransactionHistory
+  useTransactionHistory,
+  useSwapQuotes
 } from './hooks/data'
+
+export type { SwapQuotesWithCurrencyInfo } from './hooks/data'

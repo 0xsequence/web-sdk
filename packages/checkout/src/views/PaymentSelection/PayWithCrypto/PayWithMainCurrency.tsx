@@ -6,7 +6,6 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions
 } from '@0xsequence/kit'
-import type { SequenceWaaS } from '@0xsequence/waas'
 import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0xsequence/design-system'
 
 import { encodeFunctionData, formatUnits, Hex } from 'viem'
