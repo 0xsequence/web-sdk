@@ -8,7 +8,7 @@
     "typescript": "latest"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": ">= 1.7.3",
+    "@0xsequence/design-system": ">= 1.7.6",
     "@0xsequence/network": ">= 2.0.0",
     "wagmi": "*"
   },
