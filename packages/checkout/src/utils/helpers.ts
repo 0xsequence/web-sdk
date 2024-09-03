@@ -1,3 +1,8 @@
+import { ethers } from "ethers"
+import { encodeFunctionData, toHex } from 'viem'
+
+import { SelectPaymentSettings } from '../contexts'
+
 export const compareAddress = (a: string, b: string) => {
   return a.toLowerCase() === b.toLowerCase()
 }
@@ -84,4 +89,70 @@ export const formatDisplay = (_val: number | string): string => {
 
 export const capitalize = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1)
+}
+
+interface GetSalesContractConfigArgs {
+  chainId: number
+  priceRaw: string
+  salesContractAddress: string
+  recipientAddress: string
+  currencyAddress?: string
+  disablePayWithCrypto?: boolean
+  disablePayWithCreditCard?: boolean
+}
+
+export const getSalesContractConfig = ({
+  chainId,
+  priceRaw,
+  salesContractAddress,
+  recipientAddress,
+  currencyAddress = ethers.ZeroAddress,
+  disablePayWithCrypto = false,
+  disablePayWithCreditCard = false,
+}: GetSalesContractConfigArgs): SelectPaymentSettings => {
+  const salesContractAbi = [
+    {
+      type: 'function',
+      name: 'mint',
+      inputs: [
+        { name: 'to', type: 'address', internalType: 'address' },
+        { name: 'tokenIds', type: 'uint256[]', internalType: 'uint256[]' },
+        { name: 'amounts', type: 'uint256[]', internalType: 'uint256[]' },
+        { name: 'data', type: 'bytes', internalType: 'bytes' },
+        { name: 'expectedPaymentToken', type: 'address', internalType: 'address' },
+        { name: 'maxTotal', type: 'uint256', internalType: 'uint256' },
+        { name: 'proof', type: 'bytes32[]', internalType: 'bytes32[]' }
+      ],
+      outputs: [],
+      stateMutability: 'payable'
+    },
+  ]
+
+  const purchaseTransactionData = encodeFunctionData({
+    abi: salesContractAbi,
+    functionName: 'mint',
+    args: [recipientAddress, [BigInt(1)], [BigInt(1)], toHex(0), currencyAddress, priceRaw, [toHex(0, { size: 32 })]]
+  })
+
+  return ({
+    ...(!disablePayWithCrypto ? {
+      payWithCrypto: {
+        chainId,
+        currencyAddress,
+        currencyRawAmount: priceRaw,
+        targetContractAddress: salesContractAddress,
+        txData: purchaseTransactionData,
+        enableSwapPayments: true,
+      } 
+    } : {}),
+    ...(!disablePayWithCreditCard ? {
+      payWithCreditCard: {
+        chainId,
+        currencyAddress,
+        currencyRawAmount: priceRaw,
+        targetContractAddress: salesContractAddress,
+        txData: purchaseTransactionData,
+      } 
+    } : {})  
+  })
 }

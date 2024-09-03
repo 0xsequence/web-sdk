@@ -12,3 +12,4 @@ export { type AddFundsSettings } from './contexts/AddFundsModal'
 
 // utils
 export { fetchTransakSupportedCountries, getTransakLink } from './utils/transak'
+export { getSalesContractConfig } from './utils'

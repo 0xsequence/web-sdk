@@ -7,7 +7,12 @@ import {
   validateEthProof,
   getModalPositionCss
 } from '@0xsequence/kit'
-import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal } from '@0xsequence/kit-checkout'
+import {
+  useCheckoutModal,
+  useAddFundsModal,
+  useSelectPaymentModal,
+  getSalesContractConfig
+} from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
@@ -244,46 +249,21 @@ export const Connected = () => {
   }
 
   const onClickSelectPayment = () => {
+    if (!address) {
+      return
+    }
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
     const priceRaw = '20000'
     const chainId = 137
 
-    const salesContractAbi = [
-      {
-        type: 'function',
-        name: 'mint',
-        inputs: [
-          { name: 'to', type: 'address', internalType: 'address' },
-          { name: 'tokenIds', type: 'uint256[]', internalType: 'uint256[]' },
-          { name: 'amounts', type: 'uint256[]', internalType: 'uint256[]' },
-          { name: 'data', type: 'bytes', internalType: 'bytes' },
-          { name: 'expectedPaymentToken', type: 'address', internalType: 'address' },
-          { name: 'maxTotal', type: 'uint256', internalType: 'uint256' },
-          { name: 'proof', type: 'bytes32[]', internalType: 'bytes32[]' }
-        ],
-        outputs: [],
-        stateMutability: 'payable'
-      },
-    ]
-
-    const purchaseTransactionData = encodeFunctionData({
-      abi: salesContractAbi,
-      functionName: 'mint',
-      args: [address, [BigInt(1)], [BigInt(1)], toHex(0), currencyAddress, priceRaw, [toHex(0, { size: 32 })]]
-    })
-
-
-    openSelectPaymentModal({
-      payWithCrypto: {
-        chainId,
-        currencyAddress,
-        currencyRawAmount: priceRaw,
-        targetContractAddress: salesContractAddress,
-        txData: purchaseTransactionData,
-        enableSwapPayments: true,        
-      }
-    })
+    openSelectPaymentModal(getSalesContractConfig({
+      chainId,
+      priceRaw,
+      salesContractAddress,
+      recipientAddress: address,
+      currencyAddress,
+    }))
   }
 
   const onCheckoutInfoConfirm = () => {
