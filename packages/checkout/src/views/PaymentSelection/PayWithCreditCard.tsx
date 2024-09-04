@@ -13,7 +13,7 @@ import { useAccount } from 'wagmi'
 import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../hooks'
 import { PayWithCreditCardSettings } from '../../contexts'
 import { CheckoutSettings } from '../../contexts/CheckoutModal'
-import { CARD_HEIGHT } from '../../constants'
+import { getCardHeight } from '../../utils/sizing'
 
 interface PayWithCreditCardProps {
   settings: PayWithCreditCardSettings
@@ -89,7 +89,7 @@ export const PayWithCreditCard = ({
         alignItems="center"
         justifyContent="center"
         style={{
-          minHeight: CARD_HEIGHT
+          minHeight: getCardHeight(isMobile)
         }}
       >
         <Spinner />
@@ -105,7 +105,7 @@ export const PayWithCreditCard = ({
       justifyContent="space-between"
       gap={isMobile ? '2' : '0'}
       style={{
-        minHeight: CARD_HEIGHT
+        minHeight: getCardHeight(isMobile)
       }}
     >
       <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
