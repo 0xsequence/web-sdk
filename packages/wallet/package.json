@@ -31,13 +31,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/api": "^2.0.0",
-    "@0xsequence/indexer": "^2.0.0",
-    "@0xsequence/metadata": "^2.0.0",
-    "@0xsequence/network": "^2.0.0",
+    "@0xsequence/api": "^2.0.1",
+    "@0xsequence/indexer": "^2.0.1",
+    "@0xsequence/metadata": "^2.0.1",
+    "@0xsequence/network": "^2.0.1",
     "@radix-ui/react-popover": "^1.0.7",
     "@tanstack/react-query": "^5.37.1",
-    "0xsequence": "^2.0.0",
+    "0xsequence": "^2.0.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.11",
     "fuse.js": "^6.6.2",
