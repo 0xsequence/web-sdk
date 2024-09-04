@@ -9,6 +9,8 @@ export interface PayWithCryptoSettings {
   txData: Hex,
   enableSwapPayments: boolean,
   transactionConfirmations?: number
+  onSuccess?: () => void
+  onError?: (error: Error) => void
 }
 
 export interface PayWithCreditCardSettings {
@@ -17,6 +19,8 @@ export interface PayWithCreditCardSettings {
   currencyRawAmount: string,
   targetContractAddress: string,
   txData: Hex,
+  onSuccess?: () => void
+  onError?: (error: Error) => void
 }
 
 export interface SelectPaymentSettings {

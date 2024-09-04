@@ -29,7 +29,9 @@ export const PayWithMainCurrency = ({
     targetContractAddress,
     currencyRawAmount,
     txData,
-    transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
+    transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onSuccess = () => {},
+    onError = () => {},
   } = settings
   const { address: userAddress, connector } = useAccount()
   const isMobile = useMediaQuery('isMobile')
@@ -140,13 +142,16 @@ export const PayWithMainCurrency = ({
         walletClient,
         connector,
         transactions,
+        transactionConfirmations,
       })
 
       closeSelectPaymentModal()
       refechAllowance()
       clearCachedBalances()
+      onSuccess()
     } catch (e) {
       console.error('Failed to purchase...', e)
+      onError(e as Error)
     }
 
     setPurchaseInProgress(false)

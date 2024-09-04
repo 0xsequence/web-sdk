@@ -1,8 +1,13 @@
-import type { SequenceWaaS } from '@0xsequence/waas'
 import { useState, useEffect } from 'react'
-import { useSwapQuotes, SwapQuotesWithCurrencyInfo, compareAddress, sendTransactions } from '@0xsequence/kit'
+import {
+  useSwapQuotes,
+  SwapQuotesWithCurrencyInfo,
+  compareAddress,
+  sendTransactions,
+  TRANSACTION_CONFIRMATIONS_DEFAULT
+} from '@0xsequence/kit'
 import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0xsequence/design-system'
-import { formatUnits, zeroAddress, Hex, toHex, encodeFunctionData } from 'viem'
+import { formatUnits, Hex, encodeFunctionData } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
@@ -16,6 +21,17 @@ interface SwapAndPayProps {
 export const SwapAndPay = ({
   settings
 }: SwapAndPayProps) => {
+  const {
+    chainId,
+    currencyAddress,
+    targetContractAddress,
+    currencyRawAmount,
+    txData,
+    transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onSuccess = () => {},
+    onError = () => {},
+  } = settings
+
   const isMobile = useMediaQuery('isMobile')
   const { address: userAddress, connector } = useAccount()
   const { clearCachedBalances } = useClearCachedBalances()
@@ -31,22 +47,22 @@ export const SwapAndPay = ({
   } = useReadContract({
     abi: ERC_20_CONTRACT_ABI,
     functionName: 'allowance',
-    chainId: settings.chainId,
-    address: settings.targetContractAddress as Hex,
-    args: [userAddress, settings.targetContractAddress],
+    chainId: chainId,
+    address: targetContractAddress as Hex,
+    args: [userAddress, targetContractAddress],
     query: {
       enabled: !!userAddress
     }
   })
 
-  const price = BigInt(settings.currencyRawAmount) || 0n
+  const price = BigInt(currencyRawAmount) || 0n
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price)
 
   const { data: swapQuotes, isLoading: swapQuotesIsLoading } = useSwapQuotes({
     userAddress: userAddress ?? '',
     currencyAddress: settings?.currencyAddress,
-    chainId: settings.chainId,
-    currencyAmount: settings.currencyRawAmount,
+    chainId: chainId,
+    currencyAmount: currencyRawAmount,
     withContractInfo: true
   })
 
@@ -105,14 +121,14 @@ export const SwapAndPay = ({
 
     try {
       const walletClientChainId = await walletClient.getChainId()
-      if (walletClientChainId !== settings.chainId) {
-        await walletClient.switchChain({ id: settings.chainId })
+      if (walletClientChainId !== chainId) {
+        await walletClient.switchChain({ id: chainId })
       }
 
       const approveTxData = encodeFunctionData({
         abi: ERC_20_CONTRACT_ABI,
         functionName: 'approve',
-        args: [settings.targetContractAddress, price]
+        args: [targetContractAddress, price]
       })
 
       const transactions = [
@@ -122,7 +138,7 @@ export const SwapAndPay = ({
               {
                 to: swapQuote.quote.currencyAddress as Hex,
                 data: swapQuote.quote.approveData as Hex,
-                chain: settings.chainId
+                chain: chainId
               }
             ]
           : []),
@@ -130,41 +146,44 @@ export const SwapAndPay = ({
         {
           to: swapQuote.quote.to as Hex,
           data: swapQuote.quote.transactionData as Hex,
-          chain: settings.chainId
+          chain: chainId
         },
         // Actual transaction optional approve step
         ...(isApproved
           ? []
           : [
               {
-                to: settings.currencyAddress as  Hex,
+                to: currencyAddress as  Hex,
                 data: approveTxData as Hex,
-                chainId: settings.chainId
+                chainId: chainId
               }
           ]
         ),
         // transaction on the contract
         {
-          to: settings.targetContractAddress  as  Hex,
-          data: settings.txData as Hex,
-          chainId: settings.chainId
+          to: targetContractAddress  as  Hex,
+          data: txData as Hex,
+          chainId
         }
       ]
 
       await sendTransactions({
-        chainId: settings.chainId,
+        chainId,
         senderAddress: userAddress,
         publicClient,
         walletClient,
         connector,
         transactions,
+        transactionConfirmations,
       })
 
       closeSelectPaymentModal()
       refechAllowance()
       clearCachedBalances()
+      onSuccess()
     } catch (e) {
       console.error('Failed to purchase...', e)
+      onError(e as Error)
     }
 
     setSwapsInProgress([...swapsInProgress.filter(address => compareAddress(address, swapQuoteAddress))])
@@ -195,7 +214,7 @@ export const SwapAndPay = ({
           style={{ ...(isMobile ? { width: '200px' } : {}) }}
         >
           <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-            <Text color="text100">Buy With {swapQuote.info?.name}</Text>
+            <Text color="text100">Buy With {swapQuote.info?.name || 'Unknown'}</Text>
           </Box>
           <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
             <Text variant="small" color="text100">
