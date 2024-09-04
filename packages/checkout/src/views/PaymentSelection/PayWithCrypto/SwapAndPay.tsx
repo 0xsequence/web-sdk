@@ -13,6 +13,7 @@ import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'w
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
 import { PayWithCryptoSettings } from '../../../contexts'
 import { useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
+import { CARD_HEIGHT } from '../../../constants'
 
 interface SwapAndPayProps {
   settings: PayWithCryptoSettings
@@ -102,7 +103,7 @@ export const SwapAndPay = ({
         alignItems="center"
         justifyContent="center"
         style={{
-          minHeight: '200px'
+          minHeight: CARD_HEIGHT
         }}
       >
         <Spinner />
@@ -194,6 +195,11 @@ export const SwapAndPay = ({
     const balanceFormatted = formatUnits(BigInt(swapQuote.balance?.balance || 0), swapQuote.info?.decimals || 18)
     const swapQuoteAddress = swapQuote.info?.address || ''
     const purchaseInProgress = swapsInProgress.includes(swapQuoteAddress)
+    const currencyInfoNotFound = !swapQuote.info || swapQuote?.info?.decimals === undefined || !swapQuote.balance?.balance
+
+    if (currencyInfoNotFound) {
+      return null
+    }
 
     return (
       <Card
@@ -204,7 +210,7 @@ export const SwapAndPay = ({
         justifyContent="space-between"
         gap={isMobile ? '2' : '0'}
         style={{
-          minHeight: '200px'
+          minHeight: CARD_HEIGHT
         }}
       >
         <Box

@@ -1,9 +1,19 @@
-import { Box, Button, Card, Text, useMediaQuery } from '@0xsequence/design-system'
+import { useContractInfo } from '@0xsequence/kit'
+import {
+  Box,
+  Button,
+  Card,
+  Spinner,
+  Text,
+  useMediaQuery
+} from '@0xsequence/design-system'
 
-import { usePublicClient, useWalletClient, useAccount } from 'wagmi'
+import { useAccount } from 'wagmi'
 
 import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../hooks'
 import { PayWithCreditCardSettings } from '../../contexts'
+import { CheckoutSettings } from '../../contexts/CheckoutModal'
+import { CARD_HEIGHT } from '../../constants'
 
 interface PayWithCreditCardProps {
   settings: PayWithCreditCardSettings
@@ -12,16 +22,79 @@ interface PayWithCreditCardProps {
 export const PayWithCreditCard = ({
   settings
 }: PayWithCreditCardProps) => {
-  const { address: userAddress, connector } = useAccount()
+  const {
+    chainId,
+    currencyAddress,
+    targetContractAddress,
+    currencyRawAmount,
+    txData,
+    nftId,
+    nftAddress,
+    nftQuantity,
+    nftDecimals = '0',
+    isDev = false,
+    onSuccess = () => {},
+    onError = () => {},
+  } = settings
+
+  const { address: userAddress } = useAccount()
   const isMobile = useMediaQuery('isMobile')
-  const { data: walletClient } = useWalletClient()
-  const publicClient = usePublicClient()
   const { clearCachedBalances } = useClearCachedBalances()
   const { closeSelectPaymentModal } = useSelectPaymentModal()
   const { triggerCheckout } = useCheckoutModal()
+  const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useContractInfo(
+    chainId,
+    currencyAddress
+  )
+  const isLoading = isLoadingContractInfo
 
   const onClickPurchase = () => {
+    if (!userAddress || !currencyInfoData) {
+      return
+    }
 
+    const checkoutSettings: CheckoutSettings = {
+      creditCardCheckout: {
+        onSuccess: () => {
+          clearCachedBalances()
+          onSuccess()
+        },
+        onError,
+        chainId,
+        recipientAddress: userAddress,
+        contractAddress: targetContractAddress,
+        currencyQuantity: currencyRawAmount,
+        currencySymbol: currencyInfoData.symbol,
+        currencyAddress,
+        currencyDecimals: String(currencyInfoData?.decimals || 0),
+        nftId,
+        nftAddress,
+        nftQuantity,
+        nftDecimals: nftDecimals,
+        isDev,
+        calldata: txData,
+        approvedSpenderAddress: targetContractAddress,
+      }
+    }
+
+    closeSelectPaymentModal()
+    triggerCheckout(checkoutSettings)
+  }
+
+  if (isLoading) {
+    return (
+      <Card
+        width="full"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{
+          minHeight: CARD_HEIGHT
+        }}
+      >
+        <Spinner />
+      </Card>
+    )
   }
 
   return (
@@ -32,11 +105,11 @@ export const PayWithCreditCard = ({
       justifyContent="space-between"
       gap={isMobile ? '2' : '0'}
       style={{
-        minHeight: '200px'
+        minHeight: CARD_HEIGHT
       }}
     >
       <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-        <Text color="text100">Buy With Credit</Text>
+        <Text color="text100">Buy With Credit Card</Text>
       </Box>
       <Box
         flexDirection="column"

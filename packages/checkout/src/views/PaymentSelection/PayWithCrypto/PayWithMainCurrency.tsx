@@ -194,7 +194,7 @@ export const PayWithMainCurrency = ({
       justifyContent="space-between"
       gap={isMobile ? '2' : '0'}
       style={{
-        minHeight: '200px'
+        minHeight: CARD_HEIGHT
       }}
     >
       <Box

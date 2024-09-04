@@ -19,6 +19,11 @@ export interface PayWithCreditCardSettings {
   currencyRawAmount: string,
   targetContractAddress: string,
   txData: Hex,
+  nftId: string
+  nftAddress: string
+  nftQuantity: string
+  nftDecimals?: string
+  isDev?: boolean,
   onSuccess?: () => void
   onError?: (error: Error) => void
 }

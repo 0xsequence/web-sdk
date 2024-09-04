@@ -96,9 +96,14 @@ interface GetSalesContractConfigArgs {
   priceRaw: string
   salesContractAddress: string
   recipientAddress: string
+  nftId: string,
+  nftAddress: string,
+  nftQuantity: string,
+  nftDecimals?: string,
   currencyAddress?: string
   disablePayWithCrypto?: boolean
   disablePayWithCreditCard?: boolean
+  isDev?: boolean,
 }
 
 export const getSalesContractConfig = ({
@@ -109,6 +114,11 @@ export const getSalesContractConfig = ({
   currencyAddress = ethers.ZeroAddress,
   disablePayWithCrypto = false,
   disablePayWithCreditCard = false,
+  nftId,
+  nftAddress,
+  nftQuantity,
+  nftDecimals = '0',
+  isDev = false,
 }: GetSalesContractConfigArgs): SelectPaymentSettings => {
   const salesContractAbi = [
     {
@@ -152,6 +162,11 @@ export const getSalesContractConfig = ({
         currencyRawAmount: priceRaw,
         targetContractAddress: salesContractAddress,
         txData: purchaseTransactionData,
+        nftId,
+        nftAddress,
+        nftQuantity,
+        nftDecimals,
+        isDev
       } 
     } : {})  
   })
