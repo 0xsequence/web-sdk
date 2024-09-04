@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated to Sequence v2.0.1
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.2
+
 ## 4.0.1
 
 ### Patch Changes
