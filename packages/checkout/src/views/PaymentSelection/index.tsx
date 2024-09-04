@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Box, Text } from '@0xsequence/design-system'
 
 import { PayWithCrypto } from './PayWithCrypto/index'
@@ -26,6 +27,7 @@ export const PaymentSelectionContent = () => {
   const { selectPaymentSettings = {} } = useSelectPaymentModal()
 
   const { payWithCrypto, payWithCreditCard } = selectPaymentSettings
+  const [disableButtons, setDisableButtons] = useState(false)
 
   const noPaymentOptionFound = !payWithCrypto && !payWithCreditCard
 
@@ -41,10 +43,17 @@ export const PaymentSelectionContent = () => {
       style={{ height: '600px', paddingTop: HEADER_HEIGHT }}
     >
       {!!payWithCreditCard && (
-        <PayWithCreditCard settings={payWithCreditCard} />
+        <PayWithCreditCard
+          settings={payWithCreditCard}
+          disableButtons={disableButtons}
+        />
       )}
       {!!payWithCrypto && (
-        <PayWithCrypto settings={payWithCrypto} />
+        <PayWithCrypto
+          settings={payWithCrypto}
+          disableButtons={disableButtons}
+          setDisableButtons={setDisableButtons}
+        />
       )}
       {noPaymentOptionFound && (
         <Box

@@ -17,10 +17,12 @@ import { getCardHeight } from '../../utils/sizing'
 
 interface PayWithCreditCardProps {
   settings: PayWithCreditCardSettings
+  disableButtons: boolean
 }
 
 export const PayWithCreditCard = ({
-  settings
+  settings,
+  disableButtons,
 }: PayWithCreditCardProps) => {
   const {
     chainId,
@@ -118,6 +120,7 @@ export const PayWithCreditCard = ({
         style={{ ...(isMobile ? { width: '200px' } : {}) }}
       >
         <Button
+          disabled={disableButtons}
           label="Purchase"
           onClick={onClickPurchase}
           variant="primary"

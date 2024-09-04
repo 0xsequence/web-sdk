@@ -18,10 +18,14 @@ import { useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
 
 interface PayWithMainCurrencyProps {
   settings: PayWithCryptoSettings
+  disableButtons: boolean
+  setDisableButtons: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const PayWithMainCurrency = ({
-  settings
+  settings,
+  disableButtons,
+  setDisableButtons
 }: PayWithMainCurrencyProps) => {
   const {
     chainId,
@@ -104,6 +108,7 @@ export const PayWithMainCurrency = ({
     }
 
     setPurchaseInProgress(true)
+    setDisableButtons(true)
 
     try {
       const walletClientChainId = await walletClient.getChainId()
@@ -155,6 +160,7 @@ export const PayWithMainCurrency = ({
     }
 
     setPurchaseInProgress(false)
+    setDisableButtons(false)
   }
 
 
@@ -228,7 +234,7 @@ export const PayWithMainCurrency = ({
         <Button
           label="Purchase"
           onClick={onClickPurchase}
-          disabled={purchaseInProgress || isNotEnoughFunds}
+          disabled={purchaseInProgress || isNotEnoughFunds || disableButtons}
           variant="primary"
           shape="square"
           pending={purchaseInProgress}

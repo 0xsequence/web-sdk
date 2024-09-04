@@ -17,10 +17,14 @@ import { getCardHeight } from '../../../utils/sizing'
 
 interface SwapAndPayProps {
   settings: PayWithCryptoSettings
+  disableButtons: boolean
+  setDisableButtons: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const SwapAndPay = ({
-  settings
+  settings,
+  disableButtons,
+  setDisableButtons
 }: SwapAndPayProps) => {
   const {
     chainId,
@@ -118,6 +122,7 @@ export const SwapAndPay = ({
 
     const swapQuoteAddress = swapQuote.info?.address || ''
 
+    setDisableButtons(true)
     setSwapsInProgress([...swapsInProgress.filter(address => compareAddress(address, swapQuoteAddress)), swapQuoteAddress])
 
     try {
@@ -187,6 +192,7 @@ export const SwapAndPay = ({
       onError(e as Error)
     }
 
+    setDisableButtons(false)
     setSwapsInProgress([...swapsInProgress.filter(address => compareAddress(address, swapQuoteAddress))])
   }
 
@@ -244,7 +250,7 @@ export const SwapAndPay = ({
           <Button
             label="Purchase"
             onClick={() => onClickPurchase(swapQuote)}
-            disabled={purchaseInProgress}
+            disabled={purchaseInProgress || disableButtons}
             variant="primary"
             shape="square"
             pending={purchaseInProgress}
