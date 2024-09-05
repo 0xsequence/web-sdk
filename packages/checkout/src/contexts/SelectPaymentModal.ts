@@ -4,7 +4,7 @@ import { Hex } from 'viem'
 export interface PayWithCryptoSettings {
   chainId: number,
   currencyAddress: string,
-  currencyRawAmount: string,
+  price: string,
   targetContractAddress: string,
   txData: Hex,
   enableSwapPayments: boolean,
@@ -16,11 +16,11 @@ export interface PayWithCryptoSettings {
 export interface PayWithCreditCardSettings {
   chainId: number,
   currencyAddress: string,
-  currencyRawAmount: string,
+  price: string,
   targetContractAddress: string,
   txData: Hex,
-  nftId: string
-  nftAddress: string
+  tokenId: string
+  collectionAddress: string
   nftQuantity: string
   nftDecimals?: string
   isDev?: boolean,

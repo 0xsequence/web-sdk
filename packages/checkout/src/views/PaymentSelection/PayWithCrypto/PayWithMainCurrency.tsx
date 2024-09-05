@@ -31,7 +31,7 @@ export const PayWithMainCurrency = ({
     chainId,
     currencyAddress,
     targetContractAddress,
-    currencyRawAmount,
+    price,
     txData,
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess = () => {},
@@ -91,8 +91,8 @@ export const PayWithMainCurrency = ({
     )
   }
 
-  const priceFormatted = formatUnits(BigInt(currencyRawAmount), currencyInfoData?.decimals || 0)
-  const isApproved: boolean = (allowanceData as bigint) >= BigInt(currencyRawAmount)
+  const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
+  const isApproved: boolean = (allowanceData as bigint) >= BigInt(price)
 
   const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
 
@@ -100,7 +100,7 @@ export const PayWithMainCurrency = ({
   let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
   balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
 
-  const isNotEnoughFunds: boolean = BigInt(currencyRawAmount) > balance
+  const isNotEnoughFunds: boolean = BigInt(price) > balance
 
   const onClickPurchase = async () => {
     if (!walletClient || !userAddress || !publicClient || !userAddress || !connector) {
@@ -119,7 +119,7 @@ export const PayWithMainCurrency = ({
       const approveTxData = encodeFunctionData({
         abi: ERC_20_CONTRACT_ABI,
         functionName: 'approve',
-        args: [targetContractAddress, currencyRawAmount]
+        args: [targetContractAddress, price]
       })
 
 

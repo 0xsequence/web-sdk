@@ -12,11 +12,11 @@ export const useSelectPaymentModal = () => {
 
 export interface SaleContractSettings {
   chainId: number
-  priceRaw: string
+  price: string
   salesContractAddress: string
   recipientAddress: string
-  nftId: string,
-  nftAddress: string,
+  tokenId: string,
+  collectionAddress: string,
   nftQuantity: string,
   nftDecimals?: string,
   currencyAddress?: string
@@ -27,14 +27,14 @@ export interface SaleContractSettings {
 
 export const getSaleContractConfig = ({
   chainId,
-  priceRaw,
+  price,
   salesContractAddress,
   recipientAddress,
   currencyAddress = ethers.ZeroAddress,
   disablePayWithCrypto = false,
   disablePayWithCreditCard = false,
-  nftId,
-  nftAddress,
+  tokenId,
+  collectionAddress,
   nftQuantity,
   nftDecimals = '0',
   isDev = false,
@@ -60,7 +60,7 @@ export const getSaleContractConfig = ({
   const purchaseTransactionData = encodeFunctionData({
     abi: salesContractAbi,
     functionName: 'mint',
-    args: [recipientAddress, [BigInt(1)], [BigInt(1)], toHex(0), currencyAddress, priceRaw, [toHex(0, { size: 32 })]]
+    args: [recipientAddress, [BigInt(1)], [BigInt(1)], toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
   })
 
   return ({
@@ -68,7 +68,7 @@ export const getSaleContractConfig = ({
       payWithCrypto: {
         chainId,
         currencyAddress,
-        currencyRawAmount: priceRaw,
+        price,
         targetContractAddress: salesContractAddress,
         txData: purchaseTransactionData,
         enableSwapPayments: true,
@@ -78,11 +78,11 @@ export const getSaleContractConfig = ({
       payWithCreditCard: {
         chainId,
         currencyAddress,
-        currencyRawAmount: priceRaw,
+        price,
         targetContractAddress: salesContractAddress,
         txData: purchaseTransactionData,
-        nftId,
-        nftAddress,
+        tokenId,
+        collectionAddress,
         nftQuantity,
         nftDecimals,
         isDev

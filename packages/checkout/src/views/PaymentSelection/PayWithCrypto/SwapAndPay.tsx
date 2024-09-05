@@ -30,7 +30,7 @@ export const SwapAndPay = ({
     chainId,
     currencyAddress,
     targetContractAddress,
-    currencyRawAmount,
+    price: priceRaw,
     txData,
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess = () => {},
@@ -60,14 +60,14 @@ export const SwapAndPay = ({
     }
   })
 
-  const price = BigInt(currencyRawAmount) || 0n
+  const price = BigInt(priceRaw) || 0n
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price)
 
   const { data: swapQuotes, isLoading: swapQuotesIsLoading } = useSwapQuotes({
     userAddress: userAddress ?? '',
     currencyAddress: settings?.currencyAddress,
     chainId: chainId,
-    currencyAmount: currencyRawAmount,
+    currencyAmount: priceRaw,
     withContractInfo: true
   })
 

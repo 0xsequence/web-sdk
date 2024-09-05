@@ -253,20 +253,20 @@ export const Connected = () => {
     }
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-    const priceRaw = '20000'
+    const price = '20000'
     const chainId = 137
     const tokenId = '1'
     const nftQuantity = '1'
-    const nftAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
+    const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
 
     openSaleContractPaymentModal({
       chainId,
-      priceRaw,
+      price,
       salesContractAddress,
       recipientAddress: address,
       currencyAddress,
-      nftId: tokenId,
-      nftAddress,
+      tokenId,
+      collectionAddress,
       nftQuantity,
       isDev: true,
     })
