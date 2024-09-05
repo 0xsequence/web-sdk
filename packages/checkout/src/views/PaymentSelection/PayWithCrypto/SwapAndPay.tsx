@@ -7,6 +7,7 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT
 } from '@0xsequence/kit'
 import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0xsequence/design-system'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits, Hex, encodeFunctionData } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
@@ -27,7 +28,7 @@ export const SwapAndPay = ({
   setDisableButtons
 }: SwapAndPayProps) => {
   const {
-    chainId,
+    chain,
     currencyAddress,
     targetContractAddress,
     price: priceRaw,
@@ -44,6 +45,8 @@ export const SwapAndPay = ({
   const publicClient = usePublicClient()
   const [swapsInProgress, setSwapsInProgress] = useState<string[]>([])
   const { closeSelectPaymentModal } = useSelectPaymentModal()
+  const network = findSupportedNetwork(chain)
+  const chainId = network?.chainId || 137
 
   const {
     data: allowanceData,

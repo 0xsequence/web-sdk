@@ -7,6 +7,7 @@ import {
   Text,
   useMediaQuery
 } from '@0xsequence/design-system'
+import { findSupportedNetwork } from '@0xsequence/network'
 
 import { useAccount } from 'wagmi'
 
@@ -25,7 +26,7 @@ export const PayWithCreditCard = ({
   disableButtons,
 }: PayWithCreditCardProps) => {
   const {
-    chainId,
+    chain,
     currencyAddress,
     targetContractAddress,
     price,
@@ -44,6 +45,8 @@ export const PayWithCreditCard = ({
   const { clearCachedBalances } = useClearCachedBalances()
   const { closeSelectPaymentModal } = useSelectPaymentModal()
   const { triggerCheckout } = useCheckoutModal()
+  const network = findSupportedNetwork(chain)
+  const chainId = network?.chainId || 137
   const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useContractInfo(
     chainId,
     currencyAddress

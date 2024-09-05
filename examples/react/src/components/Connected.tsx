@@ -260,7 +260,7 @@ export const Connected = () => {
     const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
 
     openSaleContractPaymentModal({
-      chainId,
+      chain: chainId,
       price,
       salesContractAddress,
       recipientAddress: address,

@@ -6,6 +6,7 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions
 } from '@0xsequence/kit'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0xsequence/design-system'
 
 import { encodeFunctionData, formatUnits, Hex } from 'viem'
@@ -28,7 +29,7 @@ export const PayWithMainCurrency = ({
   setDisableButtons
 }: PayWithMainCurrencyProps) => {
   const {
-    chainId,
+    chain,
     currencyAddress,
     targetContractAddress,
     price,
@@ -44,6 +45,8 @@ export const PayWithMainCurrency = ({
   const [purchaseInProgress, setPurchaseInProgress] = useState(false)
   const { clearCachedBalances } = useClearCachedBalances()
   const { closeSelectPaymentModal } = useSelectPaymentModal()
+  const network = findSupportedNetwork(chain)
+  const chainId = network?.chainId || 137
 
   const {
     data: allowanceData,

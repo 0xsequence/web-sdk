@@ -2,7 +2,7 @@ import { createGenericContext } from './genericContext'
 import { Hex } from 'viem'
 
 export interface PayWithCryptoSettings {
-  chainId: number,
+  chain: number | string,
   currencyAddress: string,
   price: string,
   targetContractAddress: string,
@@ -14,7 +14,7 @@ export interface PayWithCryptoSettings {
 }
 
 export interface PayWithCreditCardSettings {
-  chainId: number,
+  chain: number | string,
   currencyAddress: string,
   price: string,
   targetContractAddress: string,

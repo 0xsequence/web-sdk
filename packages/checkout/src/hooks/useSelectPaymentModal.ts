@@ -11,7 +11,7 @@ export const useSelectPaymentModal = () => {
 }
 
 export interface SaleContractSettings {
-  chainId: number
+  chain: number | string,
   price: string
   salesContractAddress: string
   recipientAddress: string
@@ -26,7 +26,7 @@ export interface SaleContractSettings {
 }
 
 export const getSaleContractConfig = ({
-  chainId,
+  chain,
   price,
   salesContractAddress,
   recipientAddress,
@@ -66,7 +66,7 @@ export const getSaleContractConfig = ({
   return ({
     ...(!disablePayWithCrypto ? {
       payWithCrypto: {
-        chainId,
+        chain,
         currencyAddress,
         price,
         targetContractAddress: salesContractAddress,
@@ -76,7 +76,7 @@ export const getSaleContractConfig = ({
     } : {}),
     ...(!disablePayWithCreditCard ? {
       payWithCreditCard: {
-        chainId,
+        chain,
         currencyAddress,
         price,
         targetContractAddress: salesContractAddress,
