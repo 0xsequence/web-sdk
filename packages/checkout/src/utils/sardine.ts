@@ -54,7 +54,7 @@ export const checkSardineWhitelistStatus = async (
 
   const resJson = await res.json()
 
-  if (typeof resJson?.cause === 'string' && resJson.cause.includes('It must me allow listed')) {
+  if (typeof resJson?.cause === 'string' && resJson.cause.includes('It must be allow listed')) {
     return false
   }
 
