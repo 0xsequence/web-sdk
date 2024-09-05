@@ -10,8 +10,7 @@ import {
 import {
   useCheckoutModal,
   useAddFundsModal,
-  useSelectPaymentModal,
-  getSalesContractConfig
+  useSaleContractPaymentModal
 } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -19,7 +18,7 @@ import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
+import { formatUnits, parseUnits, toHex } from 'viem'
 import {
   useAccount,
   useChainId,
@@ -43,7 +42,7 @@ export const Connected = () => {
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
-  const { openSelectPaymentModal } = useSelectPaymentModal()
+  const { openSaleContractPaymentModal } = useSaleContractPaymentModal()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -256,11 +255,11 @@ export const Connected = () => {
     const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
     const priceRaw = '20000'
     const chainId = 137
-    const tokenId = '2'
+    const tokenId = '1'
     const nftQuantity = '1'
     const nftAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
 
-    openSelectPaymentModal(getSalesContractConfig({
+    openSaleContractPaymentModal({
       chainId,
       priceRaw,
       salesContractAddress,
@@ -270,7 +269,7 @@ export const Connected = () => {
       nftAddress,
       nftQuantity,
       isDev: true,
-    }))
+    })
   }
 
   const onCheckoutInfoConfirm = () => {
