@@ -22,6 +22,8 @@ export interface SaleContractSettings {
   currencyAddress?: string
   disablePayWithCrypto?: boolean
   disablePayWithCreditCard?: boolean
+  disableTransferFunds?: boolean
+  disableFiatOnRamp?: boolean
   isDev?: boolean,
 }
 
@@ -33,6 +35,8 @@ export const getSaleContractConfig = ({
   currencyAddress = ethers.ZeroAddress,
   disablePayWithCrypto = false,
   disablePayWithCreditCard = false,
+  disableTransferFunds = false,
+  disableFiatOnRamp = false,
   tokenId,
   collectionAddress,
   nftQuantity,
@@ -87,7 +91,11 @@ export const getSaleContractConfig = ({
         nftDecimals,
         isDev
       } 
-    } : {})  
+    } : {}),
+    otherOptions: {
+      enableFiatOnRamp: !disableTransferFunds,
+      enableTransferFunds: !disableTransferFunds
+    },
   })
 }
 

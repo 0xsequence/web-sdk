@@ -3,6 +3,8 @@ import { Box, Text } from '@0xsequence/design-system'
 
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { PayWithCreditCard } from './PayWithCreditCard'
+import { TransferFunds } from './TransferFunds'
+import { FiatOnRamp } from './FiatOnRamp'
 
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { HEADER_HEIGHT } from '../../constants'
@@ -26,10 +28,16 @@ export const PaymentSelectionHeader = () => {
 export const PaymentSelectionContent = () => {
   const { selectPaymentSettings = {} } = useSelectPaymentModal()
 
-  const { payWithCrypto, payWithCreditCard } = selectPaymentSettings
+  const { payWithCrypto, payWithCreditCard, otherOptions = {} } = selectPaymentSettings
   const [disableButtons, setDisableButtons] = useState(false)
 
-  const noPaymentOptionFound = !payWithCrypto && !payWithCreditCard
+  const enableTransferFunds = otherOptions?.enableTransferFunds || false
+  const enableFiatOnRamp = otherOptions?.enableFiatOnRamp || false
+
+  const noPaymentOptionFound = !payWithCrypto &&
+    !payWithCreditCard &&
+    !enableTransferFunds &&
+    !enableFiatOnRamp
 
   return (
     <Box
@@ -53,6 +61,16 @@ export const PaymentSelectionContent = () => {
           settings={payWithCrypto}
           disableButtons={disableButtons}
           setDisableButtons={setDisableButtons}
+        />
+      )}
+      {enableTransferFunds && (
+        <TransferFunds
+          disableButtons={disableButtons}
+        />
+      )}
+      {enableFiatOnRamp && (
+        <FiatOnRamp
+          disableButtons={disableButtons}
         />
       )}
       {noPaymentOptionFound && (

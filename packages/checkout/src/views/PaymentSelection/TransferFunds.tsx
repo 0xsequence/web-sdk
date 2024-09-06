@@ -1,27 +1,26 @@
-import { Box, Button, Card, Text, useMediaQuery } from '@0xsequence/design-system'
-import { getCardHeight } from '../../utils/sizing'
-<<<<<<< HEAD
-import { useAddFundsModal, useSelectPaymentModal } from '../../hooks'
+import { Box,Button, Card, Text, useMediaQuery } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
-=======
->>>>>>> 7473a71 (transfer funds modal)
 
-interface FiatOnRampProps {
+import { getCardHeight } from '../../utils/sizing'
+import { useTransferFundsModal } from '../../hooks'
+
+interface TransferFundsProps {
   disableButtons: boolean
 }
 
-export const FiatOnRamp = ({
+export const TransferFunds = ({
   disableButtons
-}: FiatOnRampProps) => {
+}: TransferFundsProps) => {
   const isMobile = useMediaQuery('isMobile')
-  const { closeSelectPaymentModal } = useSelectPaymentModal()
-  const { triggerAddFunds } = useAddFundsModal()
+  const { openTransferFundsModal } = useTransferFundsModal()
   const { address: userAddress } = useAccount()
 
-  const onClickPurchase = () => {
-    closeSelectPaymentModal()
-    triggerAddFunds({
-      walletAddress: userAddress || ''
+  const onClickTransfer = () => {
+    if (!userAddress) {
+      return
+    }
+    openTransferFundsModal({
+      walletAddress: userAddress
     })
   }
 
@@ -37,7 +36,7 @@ export const FiatOnRamp = ({
       }}
     >
       <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-        <Text color="text100">Purchase Crypto</Text>
+        <Text color="text100">Transfer Funds to Wallet</Text>
       </Box>
       <Box
         flexDirection="column"
@@ -47,8 +46,8 @@ export const FiatOnRamp = ({
       >
         <Button
           disabled={disableButtons}
-          label="Purchase"
-          onClick={onClickPurchase}
+          label="Transfer"
+          onClick={onClickTransfer}
           variant="primary"
           shape="square"
         />

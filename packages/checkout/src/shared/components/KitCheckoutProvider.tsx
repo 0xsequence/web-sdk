@@ -266,6 +266,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                         onClose={() => setOpenTransferFundsModal(false)}
                       >
                         <Box id="sequence-kit-transfer-funds-modal">
+                          <NavigationHeader primaryText="Receive" />
                           <TransferToWallet />
                         </Box>
                       </Modal>

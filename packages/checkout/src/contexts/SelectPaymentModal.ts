@@ -28,9 +28,15 @@ export interface PayWithCreditCardSettings {
   onError?: (error: Error) => void
 }
 
+export interface OtherOptionsSettings {
+  enableTransferFunds?: boolean
+  enableFiatOnRamp?: boolean
+}
+
 export interface SelectPaymentSettings {
   payWithCrypto?: PayWithCryptoSettings
   payWithCreditCard?: PayWithCreditCardSettings
+  otherOptions?: OtherOptionsSettings
 }
 
 type SelectPaymentModalContext = {
