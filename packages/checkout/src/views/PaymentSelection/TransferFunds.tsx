@@ -2,7 +2,7 @@ import { Box,Button, Card, Text, useMediaQuery } from '@0xsequence/design-system
 import { useAccount } from 'wagmi'
 
 import { getCardHeight } from '../../utils/sizing'
-import { useTransferFundsModal } from '../../hooks'
+import { useTransferFundsModal, useSelectPaymentModal } from '../../hooks'
 
 interface TransferFundsProps {
   disableButtons: boolean
@@ -14,11 +14,13 @@ export const TransferFunds = ({
   const isMobile = useMediaQuery('isMobile')
   const { openTransferFundsModal } = useTransferFundsModal()
   const { address: userAddress } = useAccount()
+  const { closeSelectPaymentModal } = useSelectPaymentModal()
 
   const onClickTransfer = () => {
     if (!userAddress) {
       return
     }
+    closeSelectPaymentModal()
     openTransferFundsModal({
       walletAddress: userAddress
     })

@@ -3,6 +3,7 @@ import React from 'react'
 
 import { useAddFundsModal } from '../hooks'
 import { getTransakLink } from '../utils/transak'
+import { HEADER_HEIGHT } from '../constants'
 
 export const AddFundsContent = () => {
   const { addFundsSettings } = useAddFundsModal()
@@ -14,7 +15,17 @@ export const AddFundsContent = () => {
   const link = getTransakLink(addFundsSettings)
 
   return (
-    <Box alignItems="center" width="full" paddingX="4" paddingBottom="4" height="full" style={{ height: '600px' }}>
+    <Box
+      alignItems="center"
+      width="full"
+      paddingX="4"
+      paddingBottom="4"
+      height="full"
+      style={{
+        height: '600px',
+        paddingTop: HEADER_HEIGHT 
+      }}
+    >
       <Box as="iframe" width="full" height="full" borderWidth="none" src={link} />
     </Box>
   )

@@ -1,10 +1,7 @@
 import { Box, Button, Card, Text, useMediaQuery } from '@0xsequence/design-system'
 import { getCardHeight } from '../../utils/sizing'
-<<<<<<< HEAD
 import { useAddFundsModal, useSelectPaymentModal } from '../../hooks'
 import { useAccount } from 'wagmi'
-=======
->>>>>>> 7473a71 (transfer funds modal)
 
 interface FiatOnRampProps {
   disableButtons: boolean
