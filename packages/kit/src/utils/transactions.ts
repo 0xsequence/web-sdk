@@ -30,7 +30,7 @@ export const sendTransactions = async ({
   connector,
   transactions,
   transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
-}: SendTransactionsInput) => {
+}: SendTransactionsInput): Promise<string> => {
   const walletClientChainId = await walletClient.getChainId()
   if (walletClientChainId !== chainId) {
     await walletClient.switchChain({ id: chainId })
@@ -68,6 +68,8 @@ export const sendTransactions = async ({
       confirmations: transactionConfirmations
     })
 
+    return txnHash
+
   // Sequence-Based Connector
   } else if (isSequenceUniversalWallet) {
     const wallet = sequence.getWallet()
@@ -77,8 +79,11 @@ export const sendTransactions = async ({
       hash: response.hash as Hex,
       confirmations: transactionConfirmations
     })
+
+    return response.hash
   // Other connectors (metamask, eip-6963, etc...)
   } else {
+    let txHash: string = ''
     // We fire the transactions one at a time since the cannot be batched
     for (const transaction of transactions) {
       const txnHash = await walletClient.sendTransaction({
@@ -93,6 +98,11 @@ export const sendTransactions = async ({
         hash: txnHash as Hex,
         confirmations: transactionConfirmations
       })
+
+      // The transaction hash of the last transaction is the one that should be returned
+      txHash = txnHash
     }
+
+    return txHash
   }
 }

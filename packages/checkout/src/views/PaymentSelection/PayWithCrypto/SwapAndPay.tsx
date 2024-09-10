@@ -176,7 +176,7 @@ export const SwapAndPay = ({
         }
       ]
 
-      await sendTransactions({
+      const txHash = await sendTransactions({
         chainId,
         senderAddress: userAddress,
         publicClient,
@@ -189,7 +189,7 @@ export const SwapAndPay = ({
       closeSelectPaymentModal()
       refechAllowance()
       clearCachedBalances()
-      onSuccess()
+      onSuccess(txHash)
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)

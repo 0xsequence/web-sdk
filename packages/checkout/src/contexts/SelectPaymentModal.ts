@@ -9,7 +9,7 @@ export interface PayWithCryptoSettings {
   txData: Hex,
   enableSwapPayments: boolean,
   transactionConfirmations?: number
-  onSuccess?: () => void
+  onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
 }
 
@@ -24,7 +24,7 @@ export interface PayWithCreditCardSettings {
   nftQuantity: string
   nftDecimals?: string
   isDev?: boolean,
-  onSuccess?: () => void
+  onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
 }
 

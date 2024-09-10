@@ -60,9 +60,9 @@ export const PayWithCreditCard = ({
 
     const checkoutSettings: CheckoutSettings = {
       creditCardCheckout: {
-        onSuccess: () => {
+        onSuccess: (txHash: string) => {
           clearCachedBalances()
-          onSuccess()
+          onSuccess(txHash)
         },
         onError,
         chainId,

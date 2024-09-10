@@ -143,7 +143,7 @@ export const PayWithMainCurrency = ({
         }
       ]
 
-      await sendTransactions({
+      const txHash = await sendTransactions({
         chainId,
         senderAddress: userAddress,
         publicClient,
@@ -156,7 +156,7 @@ export const PayWithMainCurrency = ({
       closeSelectPaymentModal()
       refechAllowance()
       clearCachedBalances()
-      onSuccess()
+      onSuccess(txHash)
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
