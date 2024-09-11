@@ -10,7 +10,7 @@ export const useSelectPaymentModal = () => {
   return { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings }
 }
 
-export interface SaleContractSettings {
+export interface ERC1155SaleContractSettings {
   chain: number | string,
   price: string
   salesContractAddress: string
@@ -27,7 +27,7 @@ export interface SaleContractSettings {
   isDev?: boolean,
 }
 
-export const getSaleContractConfig = ({
+export const getERC1155SaleContractConfig = ({
   chain,
   price,
   salesContractAddress,
@@ -42,8 +42,8 @@ export const getSaleContractConfig = ({
   nftQuantity,
   nftDecimals = '0',
   isDev = false,
-}: SaleContractSettings): SelectPaymentSettings => {
-  const salesContractAbi = [
+}: ERC1155SaleContractSettings): SelectPaymentSettings => {
+  const erc1155SalesContractAbi = [
     {
       type: 'function',
       name: 'mint',
@@ -62,9 +62,9 @@ export const getSaleContractConfig = ({
   ]
 
   const purchaseTransactionData = encodeFunctionData({
-    abi: salesContractAbi,
+    abi: erc1155SalesContractAbi,
     functionName: 'mint',
-    args: [recipientAddress, [BigInt(1)], [BigInt(1)], toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
+    args: [recipientAddress, [BigInt(tokenId)], [BigInt(nftQuantity)], toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
   })
 
   return ({
@@ -93,21 +93,21 @@ export const getSaleContractConfig = ({
       } 
     } : {}),
     otherOptions: {
-      enableFiatOnRamp: !disableTransferFunds,
+      enableFiatOnRamp: !disableFiatOnRamp,
       enableTransferFunds: !disableTransferFunds
     },
   })
 }
 
-export const useSaleContractPaymentModal = () => {
+export const useERC1155SaleContractPaymentModal = () => {
   const { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
-  const openSaleContractPaymentModal = (saleContractSettings: SaleContractSettings) => {
-    openSelectPaymentModal(getSaleContractConfig(saleContractSettings))
+  const openERC1155SaleContractPaymentModal = (saleContractSettings: ERC1155SaleContractSettings) => {
+    openSelectPaymentModal(getERC1155SaleContractConfig(saleContractSettings))
   }
 
   return ({
-    openSaleContractPaymentModal,
-    closeSaleContractPaymentModal: closeSelectPaymentModal,
+    openERC1155SaleContractPaymentModal,
+    closeERC1155SaleContractPaymentModal: closeSelectPaymentModal,
     selectPaymentSettings
   })
 }

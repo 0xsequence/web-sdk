@@ -10,7 +10,7 @@ import {
 import {
   useCheckoutModal,
   useAddFundsModal,
-  useSaleContractPaymentModal
+  useERC1155SaleContractPaymentModal
 } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -42,7 +42,7 @@ export const Connected = () => {
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
-  const { openSaleContractPaymentModal } = useSaleContractPaymentModal()
+  const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -259,7 +259,7 @@ export const Connected = () => {
     const nftQuantity = '1'
     const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
 
-    openSaleContractPaymentModal({
+    openERC1155SaleContractPaymentModal({
       chain: chainId,
       price,
       salesContractAddress,

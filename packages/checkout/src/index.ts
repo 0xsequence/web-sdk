@@ -4,7 +4,7 @@ export { KitCheckoutProvider } from './shared/components/KitCheckoutProvider'
 // Hooks
 export { useCheckoutModal } from './hooks/useCheckoutModal'
 export { useAddFundsModal } from './hooks/useAddFundsModal'
-export { useSelectPaymentModal, useSaleContractPaymentModal } from './hooks/useSelectPaymentModal'
+export { useSelectPaymentModal, useERC1155SaleContractPaymentModal } from './hooks/useSelectPaymentModal'
 export { useTransferFundsModal } from './hooks/useTransferFundsModal'
 export { useCheckoutWhitelistStatus } from './hooks/useCheckoutWhitelistStatus'
 
