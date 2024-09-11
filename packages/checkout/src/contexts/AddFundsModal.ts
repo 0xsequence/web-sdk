@@ -8,6 +8,7 @@ export interface AddFundsSettings {
   defaultFiatAmount?: string
   defaultCryptoCurrency?: string
   networks?: string
+  onClose?: () => void
 }
 
 type AddFundsModalContext = {

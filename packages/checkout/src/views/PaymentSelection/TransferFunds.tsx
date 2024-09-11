@@ -14,7 +14,11 @@ export const TransferFunds = ({
   const isMobile = useMediaQuery('isMobile')
   const { openTransferFundsModal } = useTransferFundsModal()
   const { address: userAddress } = useAccount()
-  const { closeSelectPaymentModal } = useSelectPaymentModal()
+  const {
+    closeSelectPaymentModal,
+    openSelectPaymentModal,
+    selectPaymentSettings
+  } = useSelectPaymentModal()
 
   const onClickTransfer = () => {
     if (!userAddress) {
@@ -22,7 +26,14 @@ export const TransferFunds = ({
     }
     closeSelectPaymentModal()
     openTransferFundsModal({
-      walletAddress: userAddress
+      walletAddress: userAddress,
+      onClose: () => {
+        setTimeout(() => {
+          if (selectPaymentSettings) {
+            openSelectPaymentModal(selectPaymentSettings)
+          }          
+        }, 500)
+      }
     })
   }
 

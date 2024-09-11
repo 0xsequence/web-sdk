@@ -92,6 +92,9 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
 
   const closeAddFunds = () => {
     setOpenAddFundsModal(false)
+    if (addFundsSettings?.onClose) {
+      addFundsSettings.onClose()
+    }
   }
 
   const openTransferFunds = (settings: TransferFundsSettings) => {
@@ -100,7 +103,12 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
   }
 
   const closeTransferFunds = () => {
-    setOpenTransferFundsModal(false)
+    if (openTransferFundsModal) {
+      setOpenTransferFundsModal(false)
+      if (transferFundsSettings?.onClose) {
+        transferFundsSettings.onClose()
+      }
+    }
   }
 
   const openSelectPaymentModal = (settings: SelectPaymentSettings) => {
@@ -230,7 +238,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                         }}
                         scroll={false}
                         backdropColor="backgroundBackdrop"
-                        onClose={() => setOpenAddFundsModal(false)}
+                        onClose={closeAddFunds}
                       >
                         <Box id="sequence-kit-add-funds-content">
                           {getAddFundsHeader()}
@@ -263,7 +271,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                           }
                         }}
                         backdropColor="backgroundBackdrop"
-                        onClose={() => setOpenTransferFundsModal(false)}
+                        onClose={closeTransferFunds}
                       >
                         <Box id="sequence-kit-transfer-funds-modal">
                           <NavigationHeader primaryText="Receive" />

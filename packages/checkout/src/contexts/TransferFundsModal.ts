@@ -4,6 +4,7 @@ import { createGenericContext } from './genericContext'
 
 export interface TransferFundsSettings {
   walletAddress: string | Hex
+  onClose?: () => void
 }
 
 type TransferFundsModalContext = {

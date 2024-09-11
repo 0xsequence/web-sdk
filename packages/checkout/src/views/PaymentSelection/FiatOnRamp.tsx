@@ -11,14 +11,25 @@ export const FiatOnRamp = ({
   disableButtons
 }: FiatOnRampProps) => {
   const isMobile = useMediaQuery('isMobile')
-  const { closeSelectPaymentModal } = useSelectPaymentModal()
+  const {
+    closeSelectPaymentModal,
+    openSelectPaymentModal,
+    selectPaymentSettings
+  } = useSelectPaymentModal()
   const { triggerAddFunds } = useAddFundsModal()
   const { address: userAddress } = useAccount()
 
   const onClickPurchase = () => {
     closeSelectPaymentModal()
     triggerAddFunds({
-      walletAddress: userAddress || ''
+      walletAddress: userAddress || '',
+      onClose: () => {
+        setTimeout(() => {
+          if (selectPaymentSettings) {
+            openSelectPaymentModal(selectPaymentSettings)
+          }
+        }, 500)
+      }
     })
   }
 
