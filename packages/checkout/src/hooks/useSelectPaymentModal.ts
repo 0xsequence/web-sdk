@@ -25,6 +25,8 @@ export interface ERC1155SaleContractSettings {
   disableTransferFunds?: boolean
   disableFiatOnRamp?: boolean
   isDev?: boolean,
+  onSuccess?: (hash: string) => void
+  onError?: (error: Error) => void
 }
 
 export const getERC1155SaleContractConfig = ({
@@ -42,6 +44,8 @@ export const getERC1155SaleContractConfig = ({
   nftQuantity,
   nftDecimals = '0',
   isDev = false,
+  onSuccess,
+  onError
 }: ERC1155SaleContractSettings): SelectPaymentSettings => {
   const erc1155SalesContractAbi = [
     {
@@ -76,6 +80,8 @@ export const getERC1155SaleContractConfig = ({
         targetContractAddress: salesContractAddress,
         txData: purchaseTransactionData,
         enableSwapPayments: true,
+        onSuccess,
+        onError
       } 
     } : {}),
     ...(!disablePayWithCreditCard ? {
@@ -89,7 +95,9 @@ export const getERC1155SaleContractConfig = ({
         collectionAddress,
         nftQuantity,
         nftDecimals,
-        isDev
+        isDev,
+        onSuccess,
+        onError
       } 
     } : {}),
     otherOptions: {

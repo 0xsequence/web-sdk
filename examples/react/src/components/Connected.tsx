@@ -269,6 +269,8 @@ export const Connected = () => {
       collectionAddress,
       nftQuantity,
       isDev: true,
+      onSuccess: (txnHash) => { console.log('success!', txnHash) },
+      onError: (error) => { console.error(error) }
     })
   }
 
