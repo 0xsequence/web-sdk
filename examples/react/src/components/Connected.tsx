@@ -409,13 +409,13 @@ export const Connected = () => {
                   onClick={onClickCheckout}
                 />
 
-                <CardButton
-                  title="Select Payment Method"
-                  description="Purchase an NFT through various purchase methods"
-                  onClick={onClickSelectPayment}
-                />
               </>
             )}
+            <CardButton
+              title="Select Payment Method"
+              description="Purchase an NFT through various purchase methods"
+              onClick={onClickSelectPayment}
+            />
           </Box>
 
           {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
