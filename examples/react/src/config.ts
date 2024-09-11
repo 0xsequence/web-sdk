@@ -95,7 +95,7 @@ export const kitConfig: KitConfig = {
   signIn: {
     projectName: 'Kit Demo',
     // logoUrl: 'sw-logo-white.svg',
-    useMock: isDebugMode
+    // useMock: isDebugMode
   },
   displayedAssets: [
     // Native token
