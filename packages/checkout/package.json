@@ -31,12 +31,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/api": "^2.0.1",
-    "@0xsequence/indexer": "^2.0.1",
-    "@0xsequence/metadata": "^2.0.1",
-    "@0xsequence/network": "^2.0.1",
+    "@0xsequence/api": "^2.0.6",
+    "@0xsequence/indexer": "^2.0.6",
+    "@0xsequence/metadata": "^2.0.6",
+    "@0xsequence/network": "^2.0.6",
     "@tanstack/react-query": "^5.37.1",
-    "0xsequence": "^2.0.1",
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
