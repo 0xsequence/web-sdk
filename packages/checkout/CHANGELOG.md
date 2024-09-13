@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.0.3
+
+### Patch Changes
+
+- Update sequence.js
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.3
+
 ## 4.0.2
 
 ### Patch Changes
