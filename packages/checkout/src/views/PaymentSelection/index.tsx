@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { Box, Text } from '@0xsequence/design-system'
+import {
+  Box,
+  Divider.
+  TabsContent,
+  TabsHeader,
+  TabsRoot,
+  Text,
+} from '@0xsequence/design-system'
 
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { PayWithCreditCard } from './PayWithCreditCard'
@@ -21,7 +28,7 @@ export const PaymentSelection = () => {
 
 export const PaymentSelectionHeader = () => {
   return (
-    <NavigationHeader primaryText="Select Payment Method" />
+    <NavigationHeader primaryText="Checkout" />
   )
 }
 
@@ -53,11 +60,21 @@ export const PaymentSelectionContent = () => {
       gap='2'
       alignItems="flex-start"
       width="full"
-      paddingX="4"
       paddingBottom="4"
       height="full"
       style={{ height: '600px', paddingTop: HEADER_HEIGHT }}
     >
+      <Box>
+        <Text color="text100">Item description</Text>
+      </Box>
+      <Divider />
+      <Box>
+      <Text color="text100">Price</Text>
+      </Box>
+      <Divider />
+      <Box>
+      <Text color="text100">Toggle</Text>
+      </Box>
       {enableCreditCardPayments && (
         <PayWithCreditCard
           settings={selectPaymentSettings}
@@ -71,7 +88,7 @@ export const PaymentSelectionContent = () => {
           setDisableButtons={setDisableButtons}
         />
       )}
-      {enableTransferFunds && (
+      {/* {enableTransferFunds && (
         <TransferFunds
           disableButtons={disableButtons}
         />
@@ -80,7 +97,7 @@ export const PaymentSelectionContent = () => {
         <FiatOnRamp
           disableButtons={disableButtons}
         />
-      )}
+      )} */}
       {noPaymentOptionFound && (
         <Box
           width="full"
