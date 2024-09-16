@@ -12,13 +12,13 @@ import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0x
 import { encodeFunctionData, formatUnits, Hex } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
-import { PayWithCryptoSettings } from '../../../contexts'
+import { SelectPaymentSettings } from '../../../contexts'
 import { getCardHeight } from '../../../utils/sizing'
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
 import { useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
 
 interface PayWithMainCurrencyProps {
-  settings: PayWithCryptoSettings
+  settings: SelectPaymentSettings
   disableButtons: boolean
   setDisableButtons: React.Dispatch<React.SetStateAction<boolean>>
 }

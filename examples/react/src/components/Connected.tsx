@@ -262,15 +262,15 @@ export const Connected = () => {
     openERC1155SaleContractPaymentModal({
       chain: chainId,
       price,
-      salesContractAddress,
+      targetContractAddress: salesContractAddress,
       recipientAddress: address,
       currencyAddress,
       tokenId,
       collectionAddress,
       nftQuantity,
       isDev: true,
-      onSuccess: (txnHash) => { console.log('success!', txnHash) },
-      onError: (error) => { console.error(error) }
+      onSuccess: (txnHash: string) => { console.log('success!', txnHash) },
+      onError: (error: Error) => { console.error(error) }
     })
   }
 

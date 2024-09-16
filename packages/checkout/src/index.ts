@@ -10,6 +10,7 @@ export { useCheckoutWhitelistStatus } from './hooks/useCheckoutWhitelistStatus'
 
 export { type CheckoutSettings } from './contexts/CheckoutModal'
 export { type AddFundsSettings } from './contexts/AddFundsModal'
+export { type SelectPaymentSettings } from './contexts/SelectPaymentModal'
 
 // utils
 export { fetchTransakSupportedCountries, getTransakLink } from './utils/transak'

@@ -2,10 +2,10 @@ import { useState } from 'react'
 
 import { PayWithMainCurrency } from './PayWithMainCurrency'
 import { SwapAndPay } from './SwapAndPay'
-import { PayWithCryptoSettings } from '../../../contexts'
+import { SelectPaymentSettings } from '../../../contexts'
 
 interface PayWithCryptoProps {
-  settings: PayWithCryptoSettings
+  settings: SelectPaymentSettings
   disableButtons: boolean
   setDisableButtons: React.Dispatch<React.SetStateAction<boolean>>
 }

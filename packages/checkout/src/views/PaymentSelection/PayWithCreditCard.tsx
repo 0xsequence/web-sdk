@@ -12,12 +12,12 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import { useAccount } from 'wagmi'
 
 import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../hooks'
-import { PayWithCreditCardSettings } from '../../contexts'
+import { SelectPaymentSettings } from '../../contexts'
 import { CheckoutSettings } from '../../contexts/CheckoutModal'
 import { getCardHeight } from '../../utils/sizing'
 
 interface PayWithCreditCardProps {
-  settings: PayWithCreditCardSettings
+  settings: SelectPaymentSettings
   disableButtons: boolean
 }
 

@@ -10,43 +10,19 @@ export const useSelectPaymentModal = () => {
   return { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings }
 }
 
-export interface ERC1155SaleContractSettings {
-  chain: number | string,
-  price: string
-  salesContractAddress: string
-  recipientAddress: string
-  tokenId: string,
-  collectionAddress: string,
-  nftQuantity: string,
-  nftDecimals?: string,
-  currencyAddress?: string
-  disablePayWithCrypto?: boolean
-  disablePayWithCreditCard?: boolean
-  disableTransferFunds?: boolean
-  disableFiatOnRamp?: boolean
-  isDev?: boolean,
-  onSuccess?: (hash: string) => void
-  onError?: (error: Error) => void
-}
+type ERC1155SaleContractSettings = Omit<SelectPaymentSettings, "txData">
 
 export const getERC1155SaleContractConfig = ({
   chain,
   price,
-  salesContractAddress,
-  recipientAddress,
   currencyAddress = ethers.ZeroAddress,
-  disablePayWithCrypto = false,
-  disablePayWithCreditCard = false,
-  disableTransferFunds = false,
-  disableFiatOnRamp = false,
+  recipientAddress,
   tokenId,
   collectionAddress,
   nftQuantity,
-  nftDecimals = '0',
   isDev = false,
-  onSuccess,
-  onError
-}: ERC1155SaleContractSettings): SelectPaymentSettings => {
+  ...restProps
+}: ERC1155SaleContractSettings): SelectPaymentSettings  => {
   const erc1155SalesContractAbi = [
     {
       type: 'function',
@@ -72,38 +48,16 @@ export const getERC1155SaleContractConfig = ({
   })
 
   return ({
-    ...(!disablePayWithCrypto ? {
-      payWithCrypto: {
-        chain,
-        currencyAddress,
-        price,
-        targetContractAddress: salesContractAddress,
-        txData: purchaseTransactionData,
-        enableSwapPayments: true,
-        onSuccess,
-        onError
-      } 
-    } : {}),
-    ...(!disablePayWithCreditCard ? {
-      payWithCreditCard: {
-        chain,
-        currencyAddress,
-        price,
-        targetContractAddress: salesContractAddress,
-        txData: purchaseTransactionData,
-        tokenId,
-        collectionAddress,
-        nftQuantity,
-        nftDecimals,
-        isDev,
-        onSuccess,
-        onError
-      } 
-    } : {}),
-    otherOptions: {
-      enableFiatOnRamp: !disableFiatOnRamp,
-      enableTransferFunds: !disableTransferFunds
-    },
+    chain,
+    price,
+    currencyAddress,
+    recipientAddress,
+    tokenId,
+    collectionAddress,
+    nftQuantity,
+    isDev,
+    txData: purchaseTransactionData,
+    ...restProps,
   })
 }
 

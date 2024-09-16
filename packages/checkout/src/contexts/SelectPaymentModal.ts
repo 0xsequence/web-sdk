@@ -1,42 +1,26 @@
 import { createGenericContext } from './genericContext'
 import { Hex } from 'viem'
 
-export interface PayWithCryptoSettings {
+export interface SelectPaymentSettings {
   chain: number | string,
-  currencyAddress: string,
+  currencyAddress: string | Hex,
   price: string,
-  targetContractAddress: string,
+  targetContractAddress: string | Hex,
   txData: Hex,
-  enableSwapPayments: boolean,
+  tokenId: string
+  collectionAddress: string | Hex
+  nftQuantity: string
+  recipientAddress: string | Hex
+  nftDecimals?: string
+  isDev?: boolean,
   transactionConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
-}
-
-export interface PayWithCreditCardSettings {
-  chain: number | string,
-  currencyAddress: string,
-  price: string,
-  targetContractAddress: string,
-  txData: Hex,
-  tokenId: string
-  collectionAddress: string
-  nftQuantity: string
-  nftDecimals?: string
-  isDev?: boolean,
-  onSuccess?: (txHash: string) => void
-  onError?: (error: Error) => void
-}
-
-export interface OtherOptionsSettings {
+  enableMainCurrencyPayment?: boolean
+  enableSwapPayments?: boolean
+  enableCreditCardPayments?: boolean
   enableTransferFunds?: boolean
   enableFiatOnRamp?: boolean
-}
-
-export interface SelectPaymentSettings {
-  payWithCrypto?: PayWithCryptoSettings
-  payWithCreditCard?: PayWithCreditCardSettings
-  otherOptions?: OtherOptionsSettings
 }
 
 type SelectPaymentModalContext = {

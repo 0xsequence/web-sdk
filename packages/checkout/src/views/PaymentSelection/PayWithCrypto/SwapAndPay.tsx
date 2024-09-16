@@ -12,12 +12,12 @@ import { formatUnits, Hex, encodeFunctionData } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
-import { PayWithCryptoSettings } from '../../../contexts'
+import { SelectPaymentSettings } from '../../../contexts'
 import { useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
 import { getCardHeight } from '../../../utils/sizing'
 
 interface SwapAndPayProps {
-  settings: PayWithCryptoSettings
+  settings: SelectPaymentSettings
   disableButtons: boolean
   setDisableButtons: React.Dispatch<React.SetStateAction<boolean>>
 }

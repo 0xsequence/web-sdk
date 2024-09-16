@@ -26,18 +26,26 @@ export const PaymentSelectionHeader = () => {
 }
 
 export const PaymentSelectionContent = () => {
-  const { selectPaymentSettings = {} } = useSelectPaymentModal()
+  const { selectPaymentSettings } = useSelectPaymentModal()
 
-  const { payWithCrypto, payWithCreditCard, otherOptions = {} } = selectPaymentSettings
   const [disableButtons, setDisableButtons] = useState(false)
 
-  const enableTransferFunds = otherOptions?.enableTransferFunds || false
-  const enableFiatOnRamp = otherOptions?.enableFiatOnRamp || false
+  if (!selectPaymentSettings) {
+    return null
+  }
 
-  const noPaymentOptionFound = !payWithCrypto &&
-    !payWithCreditCard &&
+  const enableMainCurrencyPayment = selectPaymentSettings?.enableMainCurrencyPayment === undefined ?? true
+  const enableSwapPayments = selectPaymentSettings?.enableSwapPayments === undefined ?? true
+  const enableCreditCardPayments = selectPaymentSettings?.enableCreditCardPayments ?? true
+  const enableTransferFunds = selectPaymentSettings?.enableTransferFunds ?? true
+  const enableFiatOnRamp = selectPaymentSettings?.enableFiatOnRamp ?? true
+
+  const noPaymentOptionFound =
+    !enableMainCurrencyPayment &&
+    !enableSwapPayments &&
     !enableTransferFunds &&
-    !enableFiatOnRamp
+    !enableFiatOnRamp &&
+    !enableCreditCardPayments
 
   return (
     <Box
@@ -50,15 +58,15 @@ export const PaymentSelectionContent = () => {
       height="full"
       style={{ height: '600px', paddingTop: HEADER_HEIGHT }}
     >
-      {!!payWithCreditCard && (
+      {enableCreditCardPayments && (
         <PayWithCreditCard
-          settings={payWithCreditCard}
+          settings={selectPaymentSettings}
           disableButtons={disableButtons}
         />
       )}
-      {!!payWithCrypto && (
+      {(enableMainCurrencyPayment || enableSwapPayments) && (
         <PayWithCrypto
-          settings={payWithCrypto}
+          settings={selectPaymentSettings}
           disableButtons={disableButtons}
           setDisableButtons={setDisableButtons}
         />
