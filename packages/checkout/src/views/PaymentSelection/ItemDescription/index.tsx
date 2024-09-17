@@ -59,7 +59,7 @@ export const ItemDescription = () => {
         >
           {tokenMetadata?.name || "Unknown"}
         </Text>
-        <Text variant="normal" color="text50">
+        <Text variant="normal" color="text50" fontWeight="medium">
           {Number(nftQuantity) === 1 ? `${nftQuantity} item` : `${nftQuantity} items`}
         </Text>
         <Box marginTop="1">
