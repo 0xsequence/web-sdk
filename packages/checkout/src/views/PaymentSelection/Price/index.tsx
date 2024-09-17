@@ -1,6 +1,7 @@
 import { useContractInfo } from '@0xsequence/kit'
 import { Box, Spinner, Text, TokenImage, tokenImageUrl } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'
 
@@ -13,6 +14,7 @@ export const Price = () => {
   const chainId = network?.chainId || 137
   const currencyAddress = selectPaymentSettings!.currencyAddress
   const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+  const fullPrice = BigInt(price) * BigInt(nftQuantity)
 
   const isLoading = isLoadingCurrencyInfo
 
@@ -35,7 +37,9 @@ export const Price = () => {
   const tokenLogo = currencyInfo?.logoURI
   const tokenSymbol = currencyInfo?.symbol
   const tokenDecimals = currencyInfo?.decimals
-  const formattedPrice = '2.4'
+  const formattedPrice = formatUnits(fullPrice, tokenDecimals || 0)
+  
+  // TODO: get fiat price and convert the full price
   const priceFiat = '~111 USD'
 
   return (
@@ -56,7 +60,7 @@ export const Price = () => {
       <Box
         flexDirection="column"
         justifyContent="space-between"
-        alignItems="center"
+        alignItems="flex-end"
       >
         <Box
           gap="2"
