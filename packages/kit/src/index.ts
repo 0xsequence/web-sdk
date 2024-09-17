@@ -15,6 +15,7 @@ export type {
   KitConfig,
   StorageItem
 } from './types'
+export type { SwapQuotesWithCurrencyInfo } from './hooks/data'
 
 // Config
 export { getDefaultConnectors, getDefaultWaasConnectors } from './config/defaultConnectors'
@@ -92,4 +93,6 @@ export {
   useSwapQuotes
 } from './hooks/data'
 
-export type { SwapQuotesWithCurrencyInfo } from './hooks/data'
+// Components
+export { NetworkBadge } from './components/NetworkBadge'
+export { CollectibleTileImage } from './components/CollectibleTileImage'

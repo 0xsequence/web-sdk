@@ -1,13 +1,18 @@
 import { useState } from 'react'
 import {
   Box,
-  Divider.
+  Divider,
+  Tabs,
   TabsContent,
   TabsHeader,
   TabsRoot,
   Text,
+  WalletIcon,
+  PaymentsIcon
 } from '@0xsequence/design-system'
 
+import { ItemDescription } from './ItemDescription'
+import { Price } from './Price'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { TransferFunds } from './TransferFunds'
@@ -32,8 +37,12 @@ export const PaymentSelectionHeader = () => {
   )
 }
 
+type Tabs = 'crypto' | 'credit_card'
+
 export const PaymentSelectionContent = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
+  const defaultTab: Tabs = 'crypto' 
+  const [selectedTab, setSelectedTab] = useState<Tabs>(defaultTab)
 
   const [disableButtons, setDisableButtons] = useState(false)
 
@@ -64,18 +73,31 @@ export const PaymentSelectionContent = () => {
       height="full"
       style={{ height: '600px', paddingTop: HEADER_HEIGHT }}
     >
-      <Box>
-        <Text color="text100">Item description</Text>
+      <ItemDescription />
+      <Divider width="full" />
+      <Price />
+      <Divider width="full" />
+      <Box width="full" paddingX="6" gap="3" flexDirection="column">
+        <Text variant="small" color="text50">
+          Select a payment method
+        </Text>
+        <TabsRoot value={selectedTab} onValueChange={value => setSelectedTab(value as Tabs)}>
+          <TabsHeader
+            value={selectedTab}
+            tabs={[
+              { label: <Box gap="1" alignItems="center" justifyContent="center"><WalletIcon/>Crypto</Box>, value: 'crypto' },
+              { label: <Box gap="1" alignItems="center" justifyContent="center"><PaymentsIcon />Credit card</Box>, value: 'credit_card' }
+            ]}
+          />
+          <TabsContent value="crypto">
+            <Text color="text100">crypto content</Text>
+          </TabsContent>
+          <TabsContent value="credit_card">
+            <Text color="text100">credit card content</Text>
+          </TabsContent>
+        </TabsRoot>
       </Box>
-      <Divider />
-      <Box>
-      <Text color="text100">Price</Text>
-      </Box>
-      <Divider />
-      <Box>
-      <Text color="text100">Toggle</Text>
-      </Box>
-      {enableCreditCardPayments && (
+      {/* {enableCreditCardPayments && (
         <PayWithCreditCard
           settings={selectPaymentSettings}
           disableButtons={disableButtons}
@@ -87,7 +109,7 @@ export const PaymentSelectionContent = () => {
           disableButtons={disableButtons}
           setDisableButtons={setDisableButtons}
         />
-      )}
+      )} */}
       {/* {enableTransferFunds && (
         <TransferFunds
           disableButtons={disableButtons}
