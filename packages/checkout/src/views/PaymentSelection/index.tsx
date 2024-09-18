@@ -17,9 +17,10 @@ import { PayWithCrypto } from './PayWithCrypto/index'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { TransferFunds } from './TransferFunds'
 import { FiatOnRamp } from './FiatOnRamp'
+import { Footer } from './Footer'
 
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import { HEADER_HEIGHT } from '../../constants'
+import { HEADER_HEIGHT, PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
 import { useSelectPaymentModal } from '../../hooks'
 
 export const PaymentSelection = () => {
@@ -71,12 +72,12 @@ export const PaymentSelectionContent = () => {
       width="full"
       paddingBottom="4"
       height="full"
-      style={{ height: '600px', paddingTop: HEADER_HEIGHT }}
+      style={{ height: PAYMENT_SELECTION_MODAL_HEIGHT, paddingTop: HEADER_HEIGHT }}
     >
       <ItemDescription />
-      <Divider width="full" />
+      <Divider width="full" color="backgroundSecondary" />
       <Price />
-      <Divider width="full" />
+      <Divider width="full" color="backgroundSecondary" />
       <Box width="full" paddingX="6" gap="3" flexDirection="column">
         <Text variant="small" color="text50">
           Select a payment method
@@ -90,7 +91,13 @@ export const PaymentSelectionContent = () => {
             ]}
           />
           <TabsContent value="crypto">
-            <Text color="text100">crypto content</Text>
+            {(enableMainCurrencyPayment || enableSwapPayments) && (
+              <PayWithCrypto
+                settings={selectPaymentSettings}
+                disableButtons={disableButtons}
+                setDisableButtons={setDisableButtons}
+              />
+            )}
           </TabsContent>
           <TabsContent value="credit_card">
             <Text color="text100">credit card content</Text>
@@ -103,13 +110,6 @@ export const PaymentSelectionContent = () => {
           disableButtons={disableButtons}
         />
       )}
-      {(enableMainCurrencyPayment || enableSwapPayments) && (
-        <PayWithCrypto
-          settings={selectPaymentSettings}
-          disableButtons={disableButtons}
-          setDisableButtons={setDisableButtons}
-        />
-      )} */}
       {/* {enableTransferFunds && (
         <TransferFunds
           disableButtons={disableButtons}
@@ -120,7 +120,7 @@ export const PaymentSelectionContent = () => {
           disableButtons={disableButtons}
         />
       )} */}
-      {noPaymentOptionFound && (
+      {/* {noPaymentOptionFound && (
         <Box
           width="full"
           justifyContent="center"
@@ -129,7 +129,8 @@ export const PaymentSelectionContent = () => {
         >
           <Text color="text100">No Payment Option Found</Text>
         </Box>
-      )}
+      )} */}
+      <Footer />
     </Box>
   )
 }

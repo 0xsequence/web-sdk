@@ -19,6 +19,7 @@ import {
   TransferFundsContextProvider,
   TransferFundsSettings,
 } from '../../contexts'
+import { PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import {
   PendingTransaction,
@@ -250,7 +251,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                       <Modal
                         contentProps={{
                           style: {
-                            height: 'auto',
+                            height: PAYMENT_SELECTION_MODAL_HEIGHT,
                             width: '420px',
                             ...getModalPositionCss(position)
                           }

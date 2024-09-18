@@ -1,4 +1,4 @@
-import { useContractInfo } from '@0xsequence/kit'
+import { useContractInfo, useCoinPrices } from '@0xsequence/kit'
 import { Box, Spinner, Text, TokenImage, tokenImageUrl } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
@@ -15,8 +15,14 @@ export const Price = () => {
   const currencyAddress = selectPaymentSettings!.currencyAddress
   const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
   const fullPrice = BigInt(price) * BigInt(nftQuantity)
+  const { data: coinPricesData, isLoading: isLoadingCoinPrice } = useCoinPrices([
+    {
+      chainId,
+      contractAddress: currencyAddress
+    }
+  ])
 
-  const isLoading = isLoadingCurrencyInfo
+  const isLoading = isLoadingCurrencyInfo || isLoadingCoinPrice
 
   if (isLoading) {
     return (
@@ -38,9 +44,10 @@ export const Price = () => {
   const tokenSymbol = currencyInfo?.symbol
   const tokenDecimals = currencyInfo?.decimals
   const formattedPrice = formatUnits(fullPrice, tokenDecimals || 0)
-  
-  // TODO: get fiat price and convert the full price
-  const priceFiat = '~111 USD'
+  const fiatConversionRate = coinPricesData?.[0].price?.value || 0
+
+  const priceFiat = fiatConversionRate * Number(formattedPrice)
+  const priceFiatFormatted = `~${Number(priceFiat).toFixed(2)} USD`
 
   return (
     <Box
@@ -76,7 +83,7 @@ export const Price = () => {
         </Box>
         <Box>
           <Text variant="normal" fontWeight="medium" color="text50">
-            {priceFiat}
+            {priceFiatFormatted}
           </Text>
         </Box>
       </Box>
