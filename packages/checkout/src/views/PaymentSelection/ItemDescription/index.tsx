@@ -22,13 +22,13 @@ export const ItemDescription = () => {
   const isLoading = isLoadingTokenMetadatas
 
   if (isLoading) {
-    <Box paddingX="6" gap="3" style={{ height: '72px' }}>
+    <Box marginBottom="2" paddingX="6" gap="3" style={{ height: '72px' }}>
       <Spinner />
     </Box>
   }
 
   return (
-    <Box paddingX="6" gap="5" alignItems="center">
+    <Box marginBottom="2" paddingX="6" gap="5" alignItems="center">
       <Box position="relative">
         <Box
           background="backgroundControl"

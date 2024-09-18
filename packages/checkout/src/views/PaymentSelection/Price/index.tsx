@@ -27,6 +27,7 @@ export const Price = () => {
   if (isLoading) {
     return (
       <Box
+        marginY="2"
         paddingX="6"
         justifyContent="center"
         alignItems="center"

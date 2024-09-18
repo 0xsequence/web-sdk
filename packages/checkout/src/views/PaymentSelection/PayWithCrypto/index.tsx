@@ -16,7 +16,7 @@ export const PayWithCrypto = ({
   disableButtons,
   setDisableButtons
 }: PayWithCryptoProps) => {
-  const { enableSwapPayments } = settings
+  const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
   const [search, setSearch] = useState('')
 
   return (
@@ -42,11 +42,13 @@ export const PayWithCrypto = ({
         </Text>
       </Box>
       <Scroll paddingTop="3" style={{ height: '285px' }}>
-        <PayWithMainCurrency
-          settings={settings}
-          disableButtons={disableButtons}
-          setDisableButtons={setDisableButtons}
-        />
+        {enableMainCurrencyPayment && (
+          <PayWithMainCurrency
+            settings={settings}
+            disableButtons={disableButtons}
+            setDisableButtons={setDisableButtons}
+          />
+        )}
         {enableSwapPayments && (
           <SwapAndPay
             settings={settings}
@@ -56,6 +58,7 @@ export const PayWithCrypto = ({
         )}
       </Scroll>
       <Button
+        marginTop="2"
         shape="square"
         variant="primary"
         width="full"
