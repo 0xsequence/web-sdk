@@ -12,6 +12,7 @@ import { Box, Button, Card, Spinner, Text, TokenImage, useMediaQuery } from '@0x
 import { encodeFunctionData, formatUnits, Hex } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
+import { CryptoOption } from './CryptoOption'
 import { SelectPaymentSettings } from '../../../contexts'
 import { getCardHeight } from '../../../utils/sizing'
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
@@ -196,53 +197,63 @@ export const PayWithMainCurrency = ({
   }
 
   return (
-    <Card
-      width="full"
-      flexDirection={isMobile ? 'column' : 'row'}
-      alignItems="center"
-      justifyContent="space-between"
-      gap={isMobile ? '2' : '0'}
-      style={{
-        minHeight: getCardHeight(isMobile)
-      }}
-    >
-      <Box
-        flexDirection="column"
-        gap="2"
-        justifyContent={isMobile ? 'center' : 'flex-start'}
-      >
-        <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-          <Text color="text100">Buy With {currencyInfoData?.name}</Text>
-        </Box>
-        <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
-          <Text variant="small" color="text100">
-            {`Price: ${priceFormatted} ${currencyInfoData?.symbol}`}
-          </Text>
-          <TokenImage size="xs" src={currencyInfoData?.logoURI} />
-        </Box>
-        <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
-          <Text variant="small" color="text100">
-            {`Balance: ${balanceFormatted} ${currencyInfoData?.symbol}`}
-          </Text>
-          <TokenImage size="xs" src={currencyInfoData?.logoURI} />
-        </Box>
-        <StatusMessage />
-      </Box>
-      <Box
-        flexDirection="column"
-        gap="2"
-        alignItems={isMobile ? 'center' : 'flex-start'}
-        style={{ ...(isMobile ? { width: '200px' } : {}) }}
-      >
-        <Button
-          label="Purchase"
-          onClick={onClickPurchase}
-          disabled={purchaseInProgress || isNotEnoughFunds || disableButtons}
-          variant="primary"
-          shape="square"
-          pending={purchaseInProgress}
-        />
-      </Box>
-    </Card>
+    // <Card
+    //   width="full"
+    //   flexDirection={isMobile ? 'column' : 'row'}
+    //   alignItems="center"
+    //   justifyContent="space-between"
+    //   gap={isMobile ? '2' : '0'}
+    //   style={{
+    //     minHeight: getCardHeight(isMobile)
+    //   }}
+    // >
+    //   <Box
+    //     flexDirection="column"
+    //     gap="2"
+    //     justifyContent={isMobile ? 'center' : 'flex-start'}
+    //   >
+    //     <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
+    //       <Text color="text100">Buy With {currencyInfoData?.name}</Text>
+    //     </Box>
+    //     <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
+    //       <Text variant="small" color="text100">
+    //         {`Price: ${priceFormatted} ${currencyInfoData?.symbol}`}
+    //       </Text>
+    //       <TokenImage size="xs" src={currencyInfoData?.logoURI} />
+    //     </Box>
+    //     <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
+    //       <Text variant="small" color="text100">
+    //         {`Balance: ${balanceFormatted} ${currencyInfoData?.symbol}`}
+    //       </Text>
+    //       <TokenImage size="xs" src={currencyInfoData?.logoURI} />
+    //     </Box>
+    //     <StatusMessage />
+    //   </Box>
+    //   <Box
+    //     flexDirection="column"
+    //     gap="2"
+    //     alignItems={isMobile ? 'center' : 'flex-start'}
+    //     style={{ ...(isMobile ? { width: '200px' } : {}) }}
+    //   >
+    //     <Button
+    //       label="Purchase"
+    //       onClick={onClickPurchase}
+    //       disabled={purchaseInProgress || isNotEnoughFunds || disableButtons}
+    //       variant="primary"
+    //       shape="square"
+    //       pending={purchaseInProgress}
+    //     />
+    //   </Box>
+    // </Card>
+    <CryptoOption
+      chainId={chainId}
+      iconUrl={currencyInfoData?.logoURI}
+      symbol={currencyInfoData?.symbol || ''}
+      onClick={() => { console.log('clicked') }}
+      balance="4.000"
+      price="0.6909"
+      isSelected={true}
+      isInsufficientFunds={true}
+    />
   )
 }

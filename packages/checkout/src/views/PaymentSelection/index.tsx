@@ -42,8 +42,6 @@ type Tabs = 'crypto' | 'credit_card'
 
 export const PaymentSelectionContent = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
-  const defaultTab: Tabs = 'crypto' 
-  const [selectedTab, setSelectedTab] = useState<Tabs>(defaultTab)
 
   const [disableButtons, setDisableButtons] = useState(false)
 
@@ -63,6 +61,20 @@ export const PaymentSelectionContent = () => {
     !enableTransferFunds &&
     !enableFiatOnRamp &&
     !enableCreditCardPayments
+
+  const tabs = [
+    ...((enableMainCurrencyPayment || enableSwapPayments) ? [
+      { label: <Box gap="1" alignItems="center" justifyContent="center"><WalletIcon/>Crypto</Box>, value: 'crypto' },
+    ] : []
+    ),
+    ...(enableCreditCardPayments ? [
+      { label: <Box gap="1" alignItems="center" justifyContent="center"><PaymentsIcon />Credit card</Box>, value: 'credit_card' }
+    ] : [])
+  ]
+
+  const defaultTab: Tabs = tabs[0]?.value as Tabs || 'crypto'
+
+  const [selectedTab, setSelectedTab] = useState<Tabs>(defaultTab)
 
   return (
     <Box
@@ -85,10 +97,7 @@ export const PaymentSelectionContent = () => {
         <TabsRoot value={selectedTab} onValueChange={value => setSelectedTab(value as Tabs)}>
           <TabsHeader
             value={selectedTab}
-            tabs={[
-              { label: <Box gap="1" alignItems="center" justifyContent="center"><WalletIcon/>Crypto</Box>, value: 'crypto' },
-              { label: <Box gap="1" alignItems="center" justifyContent="center"><PaymentsIcon />Credit card</Box>, value: 'credit_card' }
-            ]}
+            tabs={tabs}
           />
           <TabsContent value="crypto">
             {(enableMainCurrencyPayment || enableSwapPayments) && (
