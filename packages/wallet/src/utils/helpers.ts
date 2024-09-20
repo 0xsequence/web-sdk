@@ -103,6 +103,7 @@ export const isEthAddress = (value: string) => {
 
 // Gets n random elements at unique keys from collection up to the size of collection.
 export const sampleSize = <T>(collection: T[], n: number): T[] => {
+  const random = seededRandom(1)
   const length = collection.length
 
   if (!length || n < 1) {
@@ -114,15 +115,27 @@ export const sampleSize = <T>(collection: T[], n: number): T[] => {
 
   const sampled = new Array(n)
   const indexes = new Set<number>()
+
+  // Find n unique indexes
   while (indexes.size < n) {
-    indexes.add(Math.floor(Math.random() * length))
+    indexes.add(Math.floor(random() * length))
   }
 
-  let index = 0
-  for (const i of indexes) {
-    sampled[index++] = collection[i]
+  for (const [idx, value] of Array.from(indexes).entries()) {
+    console.log(value, idx)
+
+    sampled[idx] = collection[value]
   }
+
   return sampled
 }
 
 export const isTruthy = <T>(value: T | undefined | null): value is T => Boolean(value)
+
+// Deterministic random function
+export const seededRandom = (seed: number) => {
+  return () => {
+    const x = Math.sin(seed++) * 10000
+    return x - Math.floor(x)
+  }
+}
