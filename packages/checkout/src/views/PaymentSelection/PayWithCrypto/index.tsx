@@ -3,6 +3,7 @@ import {
   useEffect,
   memo
 } from 'react'
+import Fuse from 'fuse.js'
 
 import {
   useBalances,
@@ -96,7 +97,7 @@ export const PayWithCrypto = ({
     currencyAddress
   )
 
-  const { data: swapQuotes, isLoading: swapQuotesIsLoading } = useSwapQuotes({
+  const { data: swapQuotes = [], isLoading: swapQuotesIsLoading } = useSwapQuotes({
     userAddress: userAddress ?? '',
     currencyAddress: settings?.currencyAddress,
     chainId: chainId,
@@ -105,6 +106,36 @@ export const PayWithCrypto = ({
   })
 
   const isLoading = allowanceIsLoading || currencyBalanceIsLoading ||isLoadingCurrencyInfo || swapQuotesIsLoading
+
+  interface IndexedData {
+    index: number
+    name: string
+    symbol: string
+    currencyAddress: string
+  }
+
+  const indexedCoins: IndexedData[] = [
+    {
+      index: 0,
+      name: currencyInfoData?.name || 'Unknown',
+      symbol: currencyInfoData?.symbol || '',
+      currencyAddress,
+    },
+    ...(swapQuotes.map((quote, index ) => {
+      return ({
+        index: index + 1,
+        name: quote.info?.name || 'Unknown',
+        symbol: quote.info?.symbol || '',
+        currencyAddress: quote.info?.address || ''
+      })
+    }))
+  ]
+
+  const fuzzySearchCoins = new Fuse(indexedCoins, {
+    keys: ['name', 'symbol', 'currencyAddress']
+  })
+
+  const foundCoins = search === '' ? indexedCoins : fuzzySearchCoins.search(search).map(result => result.item)
 
   const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price)
