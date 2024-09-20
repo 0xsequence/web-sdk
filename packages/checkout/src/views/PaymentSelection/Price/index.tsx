@@ -7,14 +7,13 @@ import { useSelectPaymentModal } from '../../../hooks'
 
 export const Price = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
-  const nftQuantity = selectPaymentSettings!.nftQuantity
   const price = selectPaymentSettings!.price
   const chain = selectPaymentSettings!.chain
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
   const currencyAddress = selectPaymentSettings!.currencyAddress
   const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
-  const fullPrice = BigInt(price) * BigInt(nftQuantity)
+  const fullPrice = BigInt(price)
   const { data: coinPricesData, isLoading: isLoadingCoinPrice } = useCoinPrices([
     {
       chainId,
