@@ -317,7 +317,14 @@ export const PayWithCrypto = ({
 
 
   const onClickPurchase = () => {
-
+    if (selectedCurrency === currencyAddress) {
+      onPurchaseMainCurrency()
+    } else  {
+      const foundSwap = swapQuotes?.find(quote => (quote.info?.address === selectedCurrency))
+      if (foundSwap) {
+        onClickPurchaseSwap(foundSwap)
+      }
+    }
   }
 
   return (
@@ -352,9 +359,7 @@ export const PayWithCrypto = ({
         )}
       </Scroll>
       <Button
-        onClick={() => {
-
-        }}
+        onClick={onClickPurchase}
         disabled={isLoading || disableButtons || !selectedCurrency}
         marginTop="2"
         shape="square"

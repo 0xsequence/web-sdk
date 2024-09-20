@@ -13,7 +13,7 @@ export const TokenWithChainImage = (props: TokenWithChainImageProps) => {
 
   return (
     <Box position="relative">
-      <TokenImage size="lg" src={src} symbol={symbol} />
+      <TokenImage disableAnimation size="lg" src={src} symbol={symbol} />
       <Box
         position="absolute"
         zIndex="1"
@@ -25,7 +25,7 @@ export const TokenWithChainImage = (props: TokenWithChainImageProps) => {
         placeItems="center"
         style={{ width: SIZE + 2, height: SIZE + 2, right: -2, bottom: -2 }}
       >
-        <NetworkImage chainId={chainId} style={{ width: SIZE, height: SIZE }} />
+        <NetworkImage disableAnimation chainId={chainId} style={{ width: SIZE, height: SIZE }} />
       </Box>
     </Box>
   )
