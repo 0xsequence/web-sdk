@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.0.4
+
+### Patch Changes
+
+- Added New payment providers
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.4
+
 ## 4.0.3
 
 ### Patch Changes

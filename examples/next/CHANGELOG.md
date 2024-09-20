@@ -1,5 +1,14 @@
 # @0xsequence/kit-example-next
 
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit-checkout@4.0.4
+  - @0xsequence/kit@4.0.4
+  - @0xsequence/kit-wallet@4.0.4
+
 ## 1.0.3
 
 ### Patch Changes

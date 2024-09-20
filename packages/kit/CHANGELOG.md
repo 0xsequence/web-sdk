@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.0.4
+
+### Patch Changes
+
+- Added New payment providers
+
 ## 4.0.3
 
 ### Patch Changes
