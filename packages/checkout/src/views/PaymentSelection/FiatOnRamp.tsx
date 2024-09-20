@@ -45,7 +45,7 @@ export const FiatOnRamp = ({
       }}
     >
       <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-        <Text color="text100">Purchase Crypto</Text>
+        <Text variant="normal" color="text100">Purchase Crypto</Text>
       </Box>
       <Box
         flexDirection="column"

@@ -114,7 +114,7 @@ export const PayWithCreditCard = ({
       }}
     >
       <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-        <Text color="text100">Buy With Credit Card</Text>
+        <Text variant="normal" color="text100">Buy With Credit Card</Text>
       </Box>
       <Box
         flexDirection="column"

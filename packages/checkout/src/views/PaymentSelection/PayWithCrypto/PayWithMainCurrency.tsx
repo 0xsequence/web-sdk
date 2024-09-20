@@ -212,7 +212,7 @@ export const PayWithMainCurrency = ({
         justifyContent={isMobile ? 'center' : 'flex-start'}
       >
         <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-          <Text color="text100">Buy With {currencyInfoData?.name}</Text>
+          <Text variant="normal" color="text100">Buy With {currencyInfoData?.name}</Text>
         </Box>
         <Box flexDirection="row" gap="1" alignItems="center" justifyContent={isMobile ? 'center' : 'flex-start'}>
           <Text variant="small" color="text100">
