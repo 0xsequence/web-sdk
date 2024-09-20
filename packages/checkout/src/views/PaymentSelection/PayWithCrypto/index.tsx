@@ -1,7 +1,6 @@
 import {
   useState,
   useEffect,
-  memo
 } from 'react'
 import Fuse from 'fuse.js'
 
@@ -32,7 +31,6 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
 import { CryptoOption } from './CryptoOption'
-import { getCardHeight } from '../../../utils/sizing'
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi'
 import { useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
 
@@ -293,34 +291,37 @@ export const PayWithCrypto = ({
   const Options = () => {
     return (
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
-        {enableMainCurrencyPayment && (
-          <CryptoOption
-            key={currencyAddress}
-            currencyName={currencyInfoData?.name || 'Unknown'}
-            chainId={chainId}
-            iconUrl={currencyInfoData?.logoURI}
-            symbol={currencyInfoData?.symbol || ''}
-            onClick={() => {
-              setSelectedCurrency(currencyAddress)
-            }}
-            balance={String(balanceFormatted)}
-            price={priceFormatted}
-            fiatPrice="5"
-            disabled={disableButtons}
-            isSelected={selectedCurrency === currencyAddress}
-            isInsufficientFunds={isNotEnoughFunds}
-          />
-        )}
-        {enableSwapPayments && (
-          swapQuotes?.map((swapQuote, index) => {
+        {foundCoins.map((coin) => {
+          if (compareAddress(coin.currencyAddress, currencyAddress) && enableMainCurrencyPayment) {
+            return (
+              <CryptoOption
+                key={currencyAddress}
+                currencyName={currencyInfoData?.name || 'Unknown'}
+                chainId={chainId}
+                iconUrl={currencyInfoData?.logoURI}
+                symbol={currencyInfoData?.symbol || ''}
+                onClick={() => {
+                  setSelectedCurrency(currencyAddress)
+                }}
+                balance={String(balanceFormatted)}
+                price={priceFormatted}
+                fiatPrice="5"
+                disabled={disableButtons}
+                isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
+                isInsufficientFunds={isNotEnoughFunds}
+              />
+            )
+          } else {
+            const swapQuote = swapQuotes?.find(quote => (
+              compareAddress(quote.info?.address || '', coin.currencyAddress)
+            ))
+            const currencyInfoNotFound = !swapQuote || !swapQuote.info || swapQuote?.info?.decimals === undefined || !swapQuote.balance?.balance
+            if (currencyInfoNotFound || !enableSwapPayments) {
+              return null
+            }
             const swapQuotePriceFormatted = formatUnits(BigInt(swapQuote.quote.price), swapQuote.info?.decimals || 18)
             const balanceFormatted = formatUnits(BigInt(swapQuote.balance?.balance || 0), swapQuote.info?.decimals || 18)
             const swapQuoteAddress = swapQuote.info?.address || ''
-            const currencyInfoNotFound = !swapQuote.info || swapQuote?.info?.decimals === undefined || !swapQuote.balance?.balance
-        
-            if (currencyInfoNotFound) {
-              return null
-            }
 
             return (
               <CryptoOption
@@ -336,12 +337,13 @@ export const PayWithCrypto = ({
                 price={String(Number(swapQuotePriceFormatted).toPrecision(4))}
                 fiatPrice="5"
                 disabled={disableButtons}
-                isSelected={selectedCurrency === swapQuoteAddress}
+                isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
                 isInsufficientFunds={false}
               />
             )
-          })
-        )}
+          }
+
+        })}
       </Box>
     )
   }
