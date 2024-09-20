@@ -14,7 +14,7 @@ export const useWaasSignInEmail = () => {
     const key = LocalStorageKey.WaasSignInEmail
     const storedEmail = await storage?.getItem(key as any)
 
-    setEmail(storedEmail)
+    setEmail(storedEmail as string)
   }
 
   useEffect(() => {
