@@ -254,7 +254,7 @@ export const useBalancesAssetsSummary = (args: GetBalancesAssetsArgs) => {
     queryKey: ['balancesAssetsSummary', args],
     queryFn: () => getBalancesAssetsSummary(apiClient, metadataClient, indexerClients, args),
     retry: true,
-    refetchInterval: time.oneSecond * 4,
+    refetchInterval: time.oneSecond * 30,
     refetchOnMount: true,
     staleTime: time.oneSecond,
     enabled: args.chainIds.length > 0 && !!args.accountAddress
