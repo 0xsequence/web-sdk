@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useContractInfo } from '@0xsequence/kit'
 import {
   Box,
@@ -5,21 +6,26 @@ import {
   Card,
   Spinner,
   Text,
+  Scroll,
   useMediaQuery
 } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
 
 import { useAccount } from 'wagmi'
 
-import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../hooks'
-import { SelectPaymentSettings } from '../../contexts'
-import { CheckoutSettings } from '../../contexts/CheckoutModal'
-import { getCardHeight } from '../../utils/sizing'
+import { PaymentProviderOption } from './PaymentProviderOption'
+import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
+import { SelectPaymentSettings } from '../../../contexts'
+import { CheckoutSettings } from '../../../contexts/CheckoutModal'
+import { getCardHeight } from '../../../utils/sizing'
+// import SardineLogo from './paymentProviders/sardine.png'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings
   disableButtons: boolean
 }
+
+type PaymentProviderOptions = 'sardine'
 
 export const PayWithCreditCard = ({
   settings,
@@ -51,9 +57,20 @@ export const PayWithCreditCard = ({
     chainId,
     currencyAddress
   )
+  const [selectedPaymentProvider, setSelecterPaymentProvider] = useState<PaymentProviderOptions>()
   const isLoading = isLoadingContractInfo
 
   const onClickPurchase = () => {
+    switch(selectedPaymentProvider) {
+      case 'sardine':
+        onPurchaseSardine();
+        return;
+      default:
+        return;
+    }
+  }
+
+  const onPurchaseSardine = () => {
     if (!userAddress || !currencyInfoData) {
       return
     }
@@ -102,34 +119,56 @@ export const PayWithCreditCard = ({
     )
   }
 
-  return (
-    <Card
-      width="full"
-      flexDirection={isMobile ? 'column' : 'row'}
-      alignItems="center"
-      justifyContent="space-between"
-      gap={isMobile ? '2' : '0'}
-      style={{
-        minHeight: getCardHeight(isMobile)
-      }}
-    >
-      <Box justifyContent={isMobile ? 'center' : 'flex-start'}>
-        <Text color="text100">Buy With Credit Card</Text>
-      </Box>
-      <Box
-        flexDirection="column"
-        gap="2"
-        alignItems={isMobile ? 'center' : 'flex-start'}
-        style={{ ...(isMobile ? { width: '200px' } : {}) }}
-      >
-        <Button
-          disabled={disableButtons}
-          label="Purchase"
-          onClick={onClickPurchase}
-          variant="primary"
-          shape="square"
+  const Options = () => {
+    return (
+      <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
+        <PaymentProviderOption
+          name="Sardine"
+          iconUrl={'/images/sardine.png'}
+          onClick={() => { setSelecterPaymentProvider('sardine') }}
+          isSelected={selectedPaymentProvider === 'sardine'}
+          isRecommended={true}
         />
       </Box>
-    </Card>
+    )
+  }
+
+  return (
+    <Box>
+      <Box marginTop="3" flexDirection="column" gap="1">
+        <Text
+          variant="medium"
+          fontWeight="medium"
+          color="text80"
+        >
+          Debit and credit card
+        </Text>
+        <Text
+          variant="small"
+          fontWeight="medium"
+          color="text50"
+        >
+          Select a payment provider to purchase crypto directly
+        </Text>
+      </Box>
+      <Scroll paddingTop="3" style={{ height: '328px' }}>
+        {isLoading ? (
+          <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
+            <Spinner />
+          </Box>
+        ) : (
+          <Options />
+        )}
+      </Scroll>
+      <Button
+        onClick={onClickPurchase}
+        disabled={isLoading || disableButtons || !selectedPaymentProvider}
+        marginTop="2"
+        shape="square"
+        variant="primary"
+        width="full"
+        label="Complete Purchase"
+      />
+    </Box>
   )
 }

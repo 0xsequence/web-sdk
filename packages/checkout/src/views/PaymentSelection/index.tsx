@@ -15,8 +15,6 @@ import { ItemDescription } from './ItemDescription'
 import { Price } from './Price'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { PayWithCreditCard } from './PayWithCreditCard'
-import { TransferFunds } from './TransferFunds'
-import { FiatOnRamp } from './FiatOnRamp'
 import { Footer } from './Footer'
 
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
@@ -49,18 +47,9 @@ export const PaymentSelectionContent = () => {
     return null
   }
 
-  const enableMainCurrencyPayment = selectPaymentSettings?.enableMainCurrencyPayment === undefined ?? true
-  const enableSwapPayments = selectPaymentSettings?.enableSwapPayments === undefined ?? true
-  const enableCreditCardPayments = selectPaymentSettings?.enableCreditCardPayments ?? true
-  const enableTransferFunds = selectPaymentSettings?.enableTransferFunds ?? true
-  const enableFiatOnRamp = selectPaymentSettings?.enableFiatOnRamp ?? true
-
-  const noPaymentOptionFound =
-    !enableMainCurrencyPayment &&
-    !enableSwapPayments &&
-    !enableTransferFunds &&
-    !enableFiatOnRamp &&
-    !enableCreditCardPayments
+  const enableMainCurrencyPayment = selectPaymentSettings.enableMainCurrencyPayment ?? true
+  const enableSwapPayments = selectPaymentSettings.enableSwapPayments ?? true
+  const enableCreditCardPayments = selectPaymentSettings.enableCreditCardPayments ?? true
 
   const tabs = [
     ...((enableMainCurrencyPayment || enableSwapPayments) ? [
@@ -99,46 +88,26 @@ export const PaymentSelectionContent = () => {
             value={selectedTab}
             tabs={tabs}
           />
-          <TabsContent value="crypto">
-            {(enableMainCurrencyPayment || enableSwapPayments) && (
+          {(enableMainCurrencyPayment || enableSwapPayments) && (
+            <TabsContent value="crypto">
               <PayWithCrypto
                 settings={selectPaymentSettings}
                 disableButtons={disableButtons}
                 setDisableButtons={setDisableButtons}
               />
-            )}
-          </TabsContent>
-          <TabsContent value="credit_card">
-            <Text color="text100">credit card content</Text>
-          </TabsContent>
+            </TabsContent>
+          )}
+          {enableCreditCardPayments && (
+            <TabsContent value="credit_card">
+              <PayWithCreditCard
+                settings={selectPaymentSettings}
+                disableButtons={disableButtons}
+              />
+            </TabsContent>
+          )}
+
         </TabsRoot>
       </Box>
-      {/* {enableCreditCardPayments && (
-        <PayWithCreditCard
-          settings={selectPaymentSettings}
-          disableButtons={disableButtons}
-        />
-      )}
-      {/* {enableTransferFunds && (
-        <TransferFunds
-          disableButtons={disableButtons}
-        />
-      )}
-      {enableFiatOnRamp && (
-        <FiatOnRamp
-          disableButtons={disableButtons}
-        />
-      )} */}
-      {/* {noPaymentOptionFound && (
-        <Box
-          width="full"
-          justifyContent="center"
-          alignItems="center"
-          marginTop="10"
-        >
-          <Text color="text100">No Payment Option Found</Text>
-        </Box>
-      )} */}
       <Footer />
     </Box>
   )

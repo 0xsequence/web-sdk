@@ -32,15 +32,6 @@ export const CryptoOption = ({
   isInsufficientFunds,
   disabled
 }: CryptoOptionProps) => {
-
-  useEffect(() => {
-    console.log('mounted...')
-  }, [])
-
-  useEffect(() => {
-    console.log('rendered...')
-  })
-
   const onClickCard = () => {
     if (!isInsufficientFunds && !disabled) {
      onClick()
