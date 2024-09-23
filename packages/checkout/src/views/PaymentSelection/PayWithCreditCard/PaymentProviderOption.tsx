@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 
 import { Box, Card, Image, Text } from '@0xsequence/design-system'
 
-
 interface PaymentProviderOptionProps {
   name: string
   iconUrl?: string
