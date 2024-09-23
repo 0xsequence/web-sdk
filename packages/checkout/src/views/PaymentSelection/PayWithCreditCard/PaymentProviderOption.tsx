@@ -1,27 +1,25 @@
-import { useEffect } from 'react'
-
-import { Box, Card, Image, Text } from '@0xsequence/design-system'
+import { Box, Card, Text } from '@0xsequence/design-system'
 
 interface PaymentProviderOptionProps {
   name: string
-  iconUrl?: string
   onClick: () => void
   isSelected: boolean
   isRecommended: boolean
+  logo: JSX.Element
 }
 
 export const PaymentProviderOption = ({
-  iconUrl,
   name,
   onClick,
   isSelected,
   isRecommended,
+  logo
 }: PaymentProviderOptionProps) => {
-
   return (
     <Card
-      borderColor={isSelected ? 'text50' : 'transparent' }
-      borderWidth="thin"
+      borderColor={isSelected ? 'backgroundRaised' : 'transparent' }
+      borderWidth="thick"
+      borderStyle="solid"
       justifyContent="space-between"
       padding="4"
       onClick={onClick}
@@ -31,21 +29,24 @@ export const PaymentProviderOption = ({
       }}
       cursor="pointer"
     >
-      <Box flexDirection="row" gap="3">
-        <Box flexDirection="column" justifyContent="space-between">
-          <Text
-            variant="normal"
-            fontWeight="bold"
+      <Box justifyContent="space-between" width="full">
+        <Box justifyContent="space-between" alignItems="center" gap="3">
+            <Box borderRadius="md">
+              {logo}
+            </Box>
+            <Text
+              variant="normal"
+              fontWeight="bold"
+              color="text80"
             >
               {name}
             </Text>
-            <Image src={iconUrl} />
         </Box>
-      </Box>
-      <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3">
-        {isRecommended && (
-          <Text color="text50">hello</Text>
-        )}
+        <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3">
+          {isRecommended && (
+            <Text color="text50" variant="small">Recommended</Text>
+          )}
+        </Box>
       </Box>
     </Card>
   )

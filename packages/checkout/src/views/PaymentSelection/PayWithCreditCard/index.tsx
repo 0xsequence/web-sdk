@@ -18,7 +18,7 @@ import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from 
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
 import { getCardHeight } from '../../../utils/sizing'
-import sardineLogo from './providers/sardine.png'
+import { SardineLogo } from './providers/SardineLogo'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings
@@ -124,7 +124,7 @@ export const PayWithCreditCard = ({
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
         <PaymentProviderOption
           name="Sardine"
-          // iconUrl={sardineLogo}
+          logo={SardineLogo()}
           onClick={() => { setSelecterPaymentProvider('sardine') }}
           isSelected={selectedPaymentProvider === 'sardine'}
           isRecommended={true}
