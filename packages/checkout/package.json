@@ -43,7 +43,7 @@
   "peerDependencies": {
     "0xsequence": ">= 2.0.1",
     "@0xsequence/api": ">= 2.0.1",
-    "@0xsequence/design-system": ">= 1.7.6",
+    "@0xsequence/design-system": ">= 1.7.7",
     "@0xsequence/indexer": ">= 2.0.1",
     "@0xsequence/metadata": ">= 2.0.1",
     "@0xsequence/network": ">= 2.0.1",
@@ -57,7 +57,7 @@
     "wagmi": ">= 2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.7.6",
+    "@0xsequence/design-system": "^1.7.7",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@vitejs/plugin-react": "^4.3.0",
