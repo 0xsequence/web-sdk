@@ -7,11 +7,12 @@ import Fuse from 'fuse.js'
 import {
   useBalances,
   useContractInfo,
+  useCoinPrices,
   useSwapQuotes,
   compareAddress,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions,
-  SwapQuotesWithCurrencyInfo
+  SwapQuotesWithCurrencyInfo,
 } from '@0xsequence/kit'
 import {
   Box,
@@ -103,7 +104,23 @@ export const PayWithCrypto = ({
     withContractInfo: true
   })
 
-  const isLoading = allowanceIsLoading || currencyBalanceIsLoading ||isLoadingCurrencyInfo || swapQuotesIsLoading
+  const tokens = [{
+    chainId,
+    contractAddress: currencyAddress
+  },
+  ...swapQuotes.map(quote => ({
+    chainId,
+    contractAddress: quote.info?.address || ''
+  }))
+  ]
+
+  const disableCoinPricesQuery = swapQuotesIsLoading
+
+  const { data: coinPrices = [], isLoading: coinPricesIsLoading } = useCoinPrices([
+    ...tokens
+  ], disableCoinPricesQuery)
+
+  const isLoading = allowanceIsLoading || currencyBalanceIsLoading ||isLoadingCurrencyInfo || swapQuotesIsLoading || coinPricesIsLoading
 
   interface IndexedData {
     index: number
@@ -292,7 +309,14 @@ export const PayWithCrypto = ({
     return (
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
         {foundCoins.map((coin) => {
+          const foundCoinPrice = coinPrices.find(coinPrice => (
+            compareAddress(coinPrice.token.contractAddress, coin.currencyAddress)
+          ))
+          const exchangeRate = foundCoinPrice?.price?.value || 0
+
           if (compareAddress(coin.currencyAddress, currencyAddress) && enableMainCurrencyPayment) {
+            const priceFiat = (exchangeRate * Number(priceFormatted)).toFixed(2)
+
             return (
               <CryptoOption
                 key={currencyAddress}
@@ -305,7 +329,7 @@ export const PayWithCrypto = ({
                 }}
                 balance={String(balanceFormatted)}
                 price={priceFormatted}
-                fiatPrice="5"
+                fiatPrice={priceFiat}
                 disabled={disableButtons}
                 isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
                 isInsufficientFunds={isNotEnoughFunds}
@@ -323,6 +347,8 @@ export const PayWithCrypto = ({
             const balanceFormatted = formatUnits(BigInt(swapQuote.balance?.balance || 0), swapQuote.info?.decimals || 18)
             const swapQuoteAddress = swapQuote.info?.address || ''
 
+            const priceFiat = (exchangeRate * Number(swapQuotePriceFormatted)).toFixed(2)
+
             return (
               <CryptoOption
                 key={swapQuoteAddress}
@@ -335,7 +361,7 @@ export const PayWithCrypto = ({
                 }}
                 balance={String(Number(balanceFormatted).toPrecision(4))}
                 price={String(Number(swapQuotePriceFormatted).toPrecision(4))}
-                fiatPrice="5"
+                fiatPrice={priceFiat}
                 disabled={disableButtons}
                 isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
                 isInsufficientFunds={false}

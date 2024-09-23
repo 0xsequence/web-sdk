@@ -215,7 +215,7 @@ export const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[
   return res?.tokenPrices || []
 }
 
-export const useCoinPrices = (tokens: Token[]) => {
+export const useCoinPrices = (tokens: Token[], disabled?: boolean) => {
   const apiClient = useAPIClient()
 
   return useQuery({
@@ -223,7 +223,7 @@ export const useCoinPrices = (tokens: Token[]) => {
     queryFn: () => getCoinPrices(apiClient, tokens),
     retry: true,
     staleTime: time.oneMinute,
-    enabled: tokens.length > 0
+    enabled: tokens.length > 0 && !disabled
   })
 }
 
