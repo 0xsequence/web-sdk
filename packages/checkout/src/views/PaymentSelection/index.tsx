@@ -61,6 +61,8 @@ export const PaymentSelectionContent = () => {
     ] : [])
   ]
 
+  const isOneTab = tabs.length === 1
+
   const defaultTab: Tabs = tabs[0]?.value as Tabs || 'crypto'
 
   const [selectedTab, setSelectedTab] = useState<Tabs>(defaultTab)
@@ -80,14 +82,16 @@ export const PaymentSelectionContent = () => {
       <Price />
       <Divider width="full" color="backgroundSecondary" style={{ margin: '0px' }} />
       <Box marginY="2" width="full" paddingX="6" gap="3" flexDirection="column">
-        <Text variant="small" color="text50">
+        <Text display={isOneTab ? 'none' : "block"} variant="small" color="text50">
           Select a payment method
         </Text>
         <TabsRoot value={selectedTab} onValueChange={value => setSelectedTab(value as Tabs)}>
-          <TabsHeader
-            value={selectedTab}
-            tabs={tabs}
-          />
+          {!isOneTab && (
+            <TabsHeader
+              value={selectedTab}
+              tabs={tabs}
+            />
+          )}
           {(enableMainCurrencyPayment || enableSwapPayments) && (
             <TabsContent value="crypto">
               <PayWithCrypto
