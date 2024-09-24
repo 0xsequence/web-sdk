@@ -19,8 +19,6 @@ export interface SelectPaymentSettings {
   enableMainCurrencyPayment?: boolean
   enableSwapPayments?: boolean
   enableCreditCardPayments?: boolean
-  enableTransferFunds?: boolean
-  enableFiatOnRamp?: boolean
 }
 
 type SelectPaymentModalContext = {
