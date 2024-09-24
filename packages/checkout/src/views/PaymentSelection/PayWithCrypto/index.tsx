@@ -96,13 +96,15 @@ export const PayWithCrypto = ({
     currencyAddress
   )
 
-  const { data: swapQuotes = [], isLoading: swapQuotesIsLoading } = useSwapQuotes({
+  const { data: swapQuotes = [], isLoading: swapQuotesIsLoading, isError: swapQuotesIsError } = useSwapQuotes({
     userAddress: userAddress ?? '',
     currencyAddress: settings?.currencyAddress,
     chainId: chainId,
     currencyAmount: price,
     withContractInfo: true
   })
+
+  console.log('swapQuotes...', swapQuotes, swapQuotesIsLoading, swapQuotesIsError)
 
   const tokens = [{
     chainId,

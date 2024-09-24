@@ -362,53 +362,58 @@ const getSwapQuotes = async (
     return []
   }
 
-  const res = await apiClient.getSwapQuotes({
-    ...args,
-    includeApprove: true
-  })
+  try {
+    const res = await apiClient.getSwapQuotes({
+      ...args,
+      includeApprove: true
+    })
 
-  if (res.swapQuotes === null) {
-    return []
-  }
+    if (res.swapQuotes === null) {
+      return []
+    }
 
-  const currencyInfoMap = new Map<string, Promise<ContractInfo | undefined>>()
-  if (args.withContractInfo) {
+    const currencyInfoMap = new Map<string, Promise<ContractInfo | undefined>>()
+    if (args.withContractInfo) {
+      res?.swapQuotes.forEach(quote => {
+        const { currencyAddress } = quote
+        if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
+          currencyInfoMap.set(currencyAddress, metadataClient.getContractInfo({
+            chainID: String(args.chainId),
+            contractAddress: currencyAddress
+          }).then(data => data.contractInfo))
+        }
+      })
+    }
+
+    const currencyBalanceInfoMap = new Map<string, Promise<TokenBalance>>()
     res?.swapQuotes.forEach(quote => {
       const { currencyAddress } = quote
-      if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
-        currencyInfoMap.set(currencyAddress, metadataClient.getContractInfo({
-          chainID: String(args.chainId),
-          contractAddress: currencyAddress
-        }).then(data => data.contractInfo))
+      if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
+        currencyBalanceInfoMap.set(
+          currencyAddress,
+          indexerClient.getTokenBalances({
+            accountAddress: args.userAddress,
+            contractAddress: currencyAddress,
+            includeMetadata: true,
+            metadataOptions: {
+              verifiedOnly: true
+            }
+          }).then(balances => (balances.balances?.[0] || []))
+        )
       }
     })
+
+    return Promise.all(
+      res?.swapQuotes.map(async quote => ({
+        quote,
+        info: (await currencyInfoMap.get(quote.currencyAddress)) || undefined,
+        balance: (await currencyBalanceInfoMap.get(quote.currencyAddress)) || undefined
+      })) || []
+    )
+  } catch (e) {
+    console.error(e)
+    return []
   }
-
-  const currencyBalanceInfoMap = new Map<string, Promise<TokenBalance>>()
-  res?.swapQuotes.forEach(quote => {
-    const { currencyAddress } = quote
-    if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
-      currencyBalanceInfoMap.set(
-        currencyAddress,
-        indexerClient.getTokenBalances({
-          accountAddress: args.userAddress,
-          contractAddress: currencyAddress,
-          includeMetadata: true,
-          metadataOptions: {
-            verifiedOnly: true
-          }
-        }).then(balances => (balances.balances?.[0] || []))
-      )
-    }
-  })
-
-  return Promise.all(
-    res?.swapQuotes.map(async quote => ({
-      quote,
-      info: (await currencyInfoMap.get(quote.currencyAddress)) || undefined,
-      balance: (await currencyBalanceInfoMap.get(quote.currencyAddress)) || undefined
-    })) || []
-  )
 }
 
 interface UseSwapQuotesArgs {
