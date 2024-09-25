@@ -227,22 +227,22 @@ importers:
         specifier: '>= 2.0.1'
         version: 2.0.8(bufferutil@4.0.8)(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
       '@0xsequence/api':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8
       '@0xsequence/indexer':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8
       '@0xsequence/metadata':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8
       '@0xsequence/network':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
         specifier: '>= 2.0.0'
         version: 2.0.8(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@tanstack/react-query':
-        specifier: ^5.37.1
+        specifier: '>= 5.0.0'
         version: 5.56.2(react@18.3.1)
       fuse.js:
         specifier: ^6.6.2
@@ -364,22 +364,22 @@ importers:
   packages/wallet:
     dependencies:
       '@0xsequence/api':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8
       '@0xsequence/indexer':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8
       '@0xsequence/metadata':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8
       '@0xsequence/network':
-        specifier: ^2.0.6
+        specifier: '>= 2.0.1'
         version: 2.0.8(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@radix-ui/react-popover':
         specifier: ^1.0.7
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.37.1
+        specifier: '>= 5.0.0'
         version: 5.56.2(react@18.3.1)
       clsx:
         specifier: ^2.1.1

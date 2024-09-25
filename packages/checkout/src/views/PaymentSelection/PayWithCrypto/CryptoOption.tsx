@@ -48,7 +48,7 @@ export const CryptoOption = ({
     >
       <Box flexDirection="row" gap="3">
         <Box width="fit">
-          <TokenImage src={iconUrl} symbol={symbol} withNetwork={chainId} />
+          <TokenImage src={iconUrl} symbol={symbol} withNetwork={chainId} disableAnimation />
         </Box>
         <Box flexDirection="column" justifyContent="space-between">
           <Text
