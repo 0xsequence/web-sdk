@@ -17,7 +17,9 @@ export const Footer = () => {
           cursor="pointer"
         >
           <SequenceIcon color="text50" />
-          <Text color="text50" variant="xsmall">Sequence</Text>
+          <Text color="text50" variant="xsmall">
+            Sequence
+          </Text>
         </Box>
         <Box
           as="a"

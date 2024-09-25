@@ -93,7 +93,7 @@ export const kitConfig: KitConfig = {
   projectAccessKey,
   defaultTheme: 'dark',
   signIn: {
-    projectName: 'Kit Demo',
+    projectName: 'Kit Demo'
     // logoUrl: 'sw-logo-white.svg',
     // useMock: isDebugMode
   },

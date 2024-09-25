@@ -2,8 +2,9 @@ import { Box, Text } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { QRCode } from './QRCode'
 import { useTransferFundsModal } from '../../hooks'
+
+import { QRCode } from './QRCode'
 
 export const TransferToWallet = () => {
   const { address: userAddress } = useAccount()
@@ -14,7 +15,7 @@ export const TransferToWallet = () => {
   return (
     <Box
       flexDirection="column"
-      gap='2'
+      gap="2"
       alignItems="center"
       justifyContent="center"
       width="full"
@@ -28,13 +29,13 @@ export const TransferToWallet = () => {
           <Text as="p" variant="normal" color="text50" textAlign="center">
             Share your wallet address to receive coins
           </Text>
-            <Box marginY="4">
-              <QRCode value={address} data-id="receiveQR" />
-            </Box>
+          <Box marginY="4">
+            <QRCode value={address} data-id="receiveQR" />
+          </Box>
 
-            <Text as="div" width="full" variant="normal" color="text50" textAlign="center" data-id="receiveAddress">
-              {address}
-            </Text>
+          <Text as="div" width="full" variant="normal" color="text50" textAlign="center" data-id="receiveAddress">
+            {address}
+          </Text>
         </Box>
       </Box>
     </Box>

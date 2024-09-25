@@ -1,4 +1,4 @@
-import { ethers } from "ethers"
+import { ethers } from 'ethers'
 import { encodeFunctionData, toHex } from 'viem'
 
 import { SelectPaymentSettings } from '../contexts'
@@ -10,7 +10,7 @@ export const useSelectPaymentModal = () => {
   return { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings }
 }
 
-type ERC1155SaleContractSettings = Omit<SelectPaymentSettings, "txData">
+type ERC1155SaleContractSettings = Omit<SelectPaymentSettings, 'txData'>
 
 export const getERC1155SaleContractConfig = ({
   chain,
@@ -22,7 +22,7 @@ export const getERC1155SaleContractConfig = ({
   nftQuantity,
   isDev = false,
   ...restProps
-}: ERC1155SaleContractSettings): SelectPaymentSettings  => {
+}: ERC1155SaleContractSettings): SelectPaymentSettings => {
   const erc1155SalesContractAbi = [
     {
       type: 'function',
@@ -38,7 +38,7 @@ export const getERC1155SaleContractConfig = ({
       ],
       outputs: [],
       stateMutability: 'payable'
-    },
+    }
   ]
 
   const purchaseTransactionData = encodeFunctionData({
@@ -47,7 +47,7 @@ export const getERC1155SaleContractConfig = ({
     args: [recipientAddress, [BigInt(tokenId)], [BigInt(nftQuantity)], toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
   })
 
-  return ({
+  return {
     chain,
     price,
     currencyAddress,
@@ -57,8 +57,8 @@ export const getERC1155SaleContractConfig = ({
     nftQuantity,
     isDev,
     txData: purchaseTransactionData,
-    ...restProps,
-  })
+    ...restProps
+  }
 }
 
 export const useERC1155SaleContractPaymentModal = () => {
@@ -67,9 +67,9 @@ export const useERC1155SaleContractPaymentModal = () => {
     openSelectPaymentModal(getERC1155SaleContractConfig(saleContractSettings))
   }
 
-  return ({
+  return {
     openERC1155SaleContractPaymentModal,
     closeERC1155SaleContractPaymentModal: closeSelectPaymentModal,
     selectPaymentSettings
-  })
+  }
 }

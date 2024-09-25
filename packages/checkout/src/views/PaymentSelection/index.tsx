@@ -1,28 +1,17 @@
-import { useState } from 'react'
-import {
-  Box,
-  Divider,
-  Tabs,
-  TabsContent,
-  TabsHeader,
-  TabsRoot,
-  Text,
-  WalletIcon,
-  PaymentsIcon,
-} from '@0xsequence/design-system'
+import { Box, Divider, Tabs, TabsContent, TabsHeader, TabsRoot, Text, WalletIcon, PaymentsIcon } from '@0xsequence/design-system'
 import { compareAddress } from '@0xsequence/kit'
-
+import { useState } from 'react'
 import { zeroAddress } from 'viem'
 
-import { ItemDescription } from './ItemDescription'
-import { Price } from './Price'
-import { PayWithCrypto } from './PayWithCrypto/index'
-import { PayWithCreditCard } from './PayWithCreditCard'
-import { Footer } from './Footer'
-
-import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { HEADER_HEIGHT, PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
 import { useSelectPaymentModal } from '../../hooks'
+import { NavigationHeader } from '../../shared/components/NavigationHeader'
+
+import { Footer } from './Footer'
+import { ItemDescription } from './ItemDescription'
+import { PayWithCreditCard } from './PayWithCreditCard'
+import { PayWithCrypto } from './PayWithCrypto/index'
+import { Price } from './Price'
 
 export const PaymentSelection = () => {
   return (
@@ -34,9 +23,7 @@ export const PaymentSelection = () => {
 }
 
 export const PaymentSelectionHeader = () => {
-  return (
-    <NavigationHeader primaryText="Checkout" />
-  )
+  return <NavigationHeader primaryText="Checkout" />
 }
 
 type Tabs = 'crypto' | 'credit_card'
@@ -58,25 +45,44 @@ export const PaymentSelectionContent = () => {
   const enableCreditCardPayments = selectPaymentSettings.enableCreditCardPayments ?? true
 
   const tabs = [
-    ...((enableMainCurrencyPayment || enableSwapPayments) ? [
-      { label: <Box gap="1" alignItems="center" justifyContent="center"><WalletIcon/>Crypto</Box>, value: 'crypto' },
-    ] : []
-    ),
-    ...(enableCreditCardPayments ? [
-      { label: <Box gap="1" alignItems="center" justifyContent="center"><PaymentsIcon />Credit card</Box>, value: 'credit_card' }
-    ] : [])
+    ...(enableMainCurrencyPayment || enableSwapPayments
+      ? [
+          {
+            label: (
+              <Box gap="1" alignItems="center" justifyContent="center">
+                <WalletIcon />
+                Crypto
+              </Box>
+            ),
+            value: 'crypto'
+          }
+        ]
+      : []),
+    ...(enableCreditCardPayments
+      ? [
+          {
+            label: (
+              <Box gap="1" alignItems="center" justifyContent="center">
+                <PaymentsIcon />
+                Credit card
+              </Box>
+            ),
+            value: 'credit_card'
+          }
+        ]
+      : [])
   ]
 
   const isOneTab = tabs.length === 1
 
-  const defaultTab: Tabs = tabs[0]?.value as Tabs || 'crypto'
+  const defaultTab: Tabs = (tabs[0]?.value as Tabs) || 'crypto'
 
   const [selectedTab, setSelectedTab] = useState<Tabs>(defaultTab)
 
   return (
     <Box
       flexDirection="column"
-      gap='2'
+      gap="2"
       alignItems="flex-start"
       width="full"
       paddingBottom="4"
@@ -88,16 +94,11 @@ export const PaymentSelectionContent = () => {
       <Price />
       <Divider width="full" color="backgroundSecondary" marginY="1" />
       <Box marginY="2" width="full" paddingX="6" gap="3" flexDirection="column">
-        <Text display={isOneTab ? 'none' : "block"} variant="small" color="text50">
+        <Text display={isOneTab ? 'none' : 'block'} variant="small" color="text50">
           Select a payment method
         </Text>
         <TabsRoot value={selectedTab} onValueChange={value => setSelectedTab(value as Tabs)}>
-          {!isOneTab && (
-            <TabsHeader
-              value={selectedTab}
-              tabs={tabs}
-            />
-          )}
+          {!isOneTab && <TabsHeader value={selectedTab} tabs={tabs} />}
           {(enableMainCurrencyPayment || enableSwapPayments) && (
             <TabsContent value="crypto">
               <PayWithCrypto
@@ -109,13 +110,9 @@ export const PaymentSelectionContent = () => {
           )}
           {enableCreditCardPayments && (
             <TabsContent value="credit_card">
-              <PayWithCreditCard
-                settings={selectPaymentSettings}
-                disableButtons={disableButtons}
-              />
+              <PayWithCreditCard settings={selectPaymentSettings} disableButtons={disableButtons} />
             </TabsContent>
           )}
-
         </TabsRoot>
       </Box>
       <Footer />

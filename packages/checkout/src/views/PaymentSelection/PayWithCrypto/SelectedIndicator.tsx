@@ -1,4 +1,4 @@
-import { Box, vars } from '@0xsequence/design-system'
+import { Box } from '@0xsequence/design-system'
 
 interface SelectedIndicatorProps {
   selected: boolean
@@ -18,7 +18,7 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
       width="7"
       height="7"
       style={{
-        borderWidth: '2px',
+        borderWidth: '2px'
       }}
     >
       <Box

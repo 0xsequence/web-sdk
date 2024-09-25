@@ -1,18 +1,19 @@
-import { createGenericContext } from './genericContext'
 import { Hex } from 'viem'
 
+import { createGenericContext } from './genericContext'
+
 export interface SelectPaymentSettings {
-  chain: number | string,
-  currencyAddress: string | Hex,
-  price: string,
-  targetContractAddress: string | Hex,
-  txData: Hex,
+  chain: number | string
+  currencyAddress: string | Hex
+  price: string
+  targetContractAddress: string | Hex
+  txData: Hex
   tokenId: string
   collectionAddress: string | Hex
   nftQuantity: string
   recipientAddress: string | Hex
   nftDecimals?: string
-  isDev?: boolean,
+  isDev?: boolean
   transactionConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void

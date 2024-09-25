@@ -7,11 +7,7 @@ import {
   validateEthProof,
   getModalPositionCss
 } from '@0xsequence/kit'
-import {
-  useCheckoutModal,
-  useAddFundsModal,
-  useERC1155SaleContractPaymentModal
-} from '@0xsequence/kit-checkout'
+import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
@@ -274,8 +270,12 @@ export const Connected = () => {
       collectionAddress,
       nftQuantity,
       isDev: true,
-      onSuccess: (txnHash: string) => { console.log('success!', txnHash) },
-      onError: (error: Error) => { console.error(error) }
+      onSuccess: (txnHash: string) => {
+        console.log('success!', txnHash)
+      },
+      onError: (error: Error) => {
+        console.error(error)
+      }
     })
   }
 
@@ -413,7 +413,6 @@ export const Connected = () => {
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
                 />
-
               </>
             )}
             <CardButton

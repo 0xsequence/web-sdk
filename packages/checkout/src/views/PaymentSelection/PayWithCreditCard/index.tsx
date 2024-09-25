@@ -1,23 +1,15 @@
-import { useState } from 'react'
+import { Box, Button, Card, Spinner, Text, Scroll, useMediaQuery } from '@0xsequence/design-system'
 import { useContractInfo } from '@0xsequence/kit'
-import {
-  Box,
-  Button,
-  Card,
-  Spinner,
-  Text,
-  Scroll,
-  useMediaQuery
-} from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
-
+import { useState } from 'react'
 import { useAccount } from 'wagmi'
 
-import { PaymentProviderOption } from './PaymentProviderOption'
-import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
+import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
 import { getCardHeight } from '../../../utils/sizing'
+
+import { PaymentProviderOption } from './PaymentProviderOption'
 import { SardineLogo } from './providers/SardineLogo'
 
 interface PayWithCreditCardProps {
@@ -27,10 +19,7 @@ interface PayWithCreditCardProps {
 
 type PaymentProviderOptions = 'sardine'
 
-export const PayWithCreditCard = ({
-  settings,
-  disableButtons,
-}: PayWithCreditCardProps) => {
+export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCardProps) => {
   const {
     chain,
     currencyAddress,
@@ -43,7 +32,7 @@ export const PayWithCreditCard = ({
     nftDecimals = '0',
     isDev = false,
     onSuccess = () => {},
-    onError = () => {},
+    onError = () => {}
   } = settings
 
   const { address: userAddress } = useAccount()
@@ -53,20 +42,17 @@ export const PayWithCreditCard = ({
   const { triggerCheckout } = useCheckoutModal()
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
-  const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useContractInfo(
-    chainId,
-    currencyAddress
-  )
+  const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useContractInfo(chainId, currencyAddress)
   const [selectedPaymentProvider, setSelecterPaymentProvider] = useState<PaymentProviderOptions>()
   const isLoading = isLoadingContractInfo
 
   const onClickPurchase = () => {
-    switch(selectedPaymentProvider) {
+    switch (selectedPaymentProvider) {
       case 'sardine':
-        onPurchaseSardine();
-        return;
+        onPurchaseSardine()
+        return
       default:
-        return;
+        return
     }
   }
 
@@ -95,7 +81,7 @@ export const PayWithCreditCard = ({
         nftDecimals: nftDecimals,
         isDev,
         calldata: txData,
-        approvedSpenderAddress: targetContractAddress,
+        approvedSpenderAddress: targetContractAddress
       }
     }
 
@@ -125,7 +111,9 @@ export const PayWithCreditCard = ({
         <PaymentProviderOption
           name="Sardine"
           logo={SardineLogo()}
-          onClick={() => { setSelecterPaymentProvider('sardine') }}
+          onClick={() => {
+            setSelecterPaymentProvider('sardine')
+          }}
           isSelected={selectedPaymentProvider === 'sardine'}
           isRecommended={true}
         />
@@ -136,18 +124,10 @@ export const PayWithCreditCard = ({
   return (
     <Box>
       <Box marginTop="3" flexDirection="column" gap="1">
-        <Text
-          variant="medium"
-          fontWeight="medium"
-          color="text80"
-        >
+        <Text variant="medium" fontWeight="medium" color="text80">
           Debit and credit card
         </Text>
-        <Text
-          variant="small"
-          fontWeight="medium"
-          color="text50"
-        >
+        <Text variant="small" fontWeight="medium" color="text50">
           Select a payment provider to purchase crypto directly
         </Text>
       </Box>

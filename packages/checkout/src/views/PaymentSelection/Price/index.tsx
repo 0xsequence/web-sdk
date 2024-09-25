@@ -1,5 +1,5 @@
+import { Box, Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useContractInfo, useCoinPrices } from '@0xsequence/kit'
-import { Box, Spinner, Text, TokenImage, tokenImageUrl } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 
@@ -25,14 +25,7 @@ export const Price = () => {
 
   if (isLoading) {
     return (
-      <Box
-        marginY="2"
-        paddingX="6"
-        justifyContent="center"
-        alignItems="center"
-        width="full"
-        height="12"
-      >
+      <Box marginY="2" paddingX="6" justifyContent="center" alignItems="center" width="full" height="12">
         <Spinner />
       </Box>
     )
@@ -48,31 +41,15 @@ export const Price = () => {
   const priceFiatFormatted = `~${Number(priceFiat).toFixed(2)} USD`
 
   return (
-    <Box
-      paddingX="6"
-      justifyContent="space-between"
-      alignItems="center"
-      width="full"
-      height="12"
-    >
+    <Box paddingX="6" justifyContent="space-between" alignItems="center" width="full" height="12">
       <Box>
         <Text variant="small" color="text50" fontWeight="medium">
           Price
         </Text>
       </Box>
-      <Box
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="flex-end"
-      >
-        <Box
-          gap="2"
-          alignItems="center"
-        >
-          <TokenImage
-            src={tokenLogo}
-            width="5"
-          />
+      <Box flexDirection="column" justifyContent="space-between" alignItems="flex-end">
+        <Box gap="2" alignItems="center">
+          <TokenImage src={tokenLogo} width="5" />
           <Text variant="large" fontWeight="bold" color="text100">{`${formattedPrice} ${tokenSymbol}`}</Text>
         </Box>
         <Box>

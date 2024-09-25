@@ -31,7 +31,7 @@ export const CryptoOption = ({
 }: CryptoOptionProps) => {
   const onClickCard = () => {
     if (!isInsufficientFunds && !disabled) {
-     onClick()
+      onClick()
     }
   }
 
@@ -60,10 +60,10 @@ export const CryptoOption = ({
             style={{
               overflow: 'hidden',
               width: '100px'
-             }}
-            >
-              {currencyName}
-            </Text>
+            }}
+          >
+            {currencyName}
+          </Text>
           <Text
             variant="normal"
             color="text50"
@@ -72,7 +72,7 @@ export const CryptoOption = ({
             style={{
               overflow: 'hidden',
               width: '100px'
-             }}
+            }}
           >
             {`${balance} ${symbol}`}
           </Text>
@@ -82,12 +82,14 @@ export const CryptoOption = ({
         <Box flexDirection="column" justifyContent="space-between" alignItems="flex-end">
           <Text variant="normal" color="text50">{`${price} ${symbol}`}</Text>
           {isInsufficientFunds ? (
-            <Text variant="normal" color="negative">Insufficient funds</Text>
+            <Text variant="normal" color="negative">
+              Insufficient funds
+            </Text>
           ) : (
             <Text variant="normal" color="text50">{`$${fiatPrice}`}</Text>
           )}
         </Box>
-        <SelectedIndicator selected={isSelected} />  
+        <SelectedIndicator selected={isSelected} />
       </Box>
     </Card>
   )

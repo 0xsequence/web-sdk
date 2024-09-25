@@ -8,16 +8,10 @@ interface PaymentProviderOptionProps {
   logo: JSX.Element
 }
 
-export const PaymentProviderOption = ({
-  name,
-  onClick,
-  isSelected,
-  isRecommended,
-  logo
-}: PaymentProviderOptionProps) => {
+export const PaymentProviderOption = ({ name, onClick, isSelected, isRecommended, logo }: PaymentProviderOptionProps) => {
   return (
     <Card
-      borderColor={isSelected ? 'backgroundRaised' : 'transparent' }
+      borderColor={isSelected ? 'backgroundRaised' : 'transparent'}
       borderWidth="thick"
       borderStyle="solid"
       justifyContent="space-between"
@@ -31,20 +25,16 @@ export const PaymentProviderOption = ({
     >
       <Box justifyContent="space-between" width="full">
         <Box justifyContent="space-between" alignItems="center" gap="3">
-            <Box borderRadius="md">
-              {logo}
-            </Box>
-            <Text
-              variant="normal"
-              fontWeight="bold"
-              color="text80"
-            >
-              {name}
-            </Text>
+          <Box borderRadius="md">{logo}</Box>
+          <Text variant="normal" fontWeight="bold" color="text80">
+            {name}
+          </Text>
         </Box>
         <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3">
           {isRecommended && (
-            <Text color="text50" variant="small">Recommended</Text>
+            <Text color="text50" variant="small">
+              Recommended
+            </Text>
           )}
         </Box>
       </Box>

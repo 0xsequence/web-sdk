@@ -1,9 +1,5 @@
-import {
-  NetworkBadge,
-  CollectibleTileImage,
-  useTokenMetadata
-} from '@0xsequence/kit'
 import { Box, Spinner, Text } from '@0xsequence/design-system'
+import { NetworkBadge, CollectibleTileImage, useTokenMetadata } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 
 import { useSelectPaymentModal } from '../../../hooks'
@@ -22,7 +18,7 @@ export const ItemDescription = () => {
   const isLoading = isLoadingTokenMetadatas
 
   if (isLoading) {
-    <Box marginBottom="2" paddingX="6" gap="3" style={{ height: '72px' }}>
+    ;<Box marginBottom="2" paddingX="6" gap="3" style={{ height: '72px' }}>
       <Spinner />
     </Box>
   }
@@ -34,17 +30,17 @@ export const ItemDescription = () => {
           background="backgroundControl"
           borderRadius="md"
           style={{
-            height: "60px",
-            width: "60px",
-            transform: "rotate(-15deg)"
+            height: '60px',
+            width: '60px',
+            transform: 'rotate(-15deg)'
           }}
         />
         <Box
           position="absolute"
           borderRadius="md"
           style={{
-            height: "60px",
-            width: "60px",
+            height: '60px',
+            width: '60px',
             bottom: '0'
           }}
         >
@@ -52,12 +48,8 @@ export const ItemDescription = () => {
         </Box>
       </Box>
       <Box flexDirection="column" gap="0.5">
-        <Text
-          variant="normal"
-          color="text100"
-          fontWeight="bold"
-        >
-          {tokenMetadata?.name || "Unknown"}
+        <Text variant="normal" color="text100" fontWeight="bold">
+          {tokenMetadata?.name || 'Unknown'}
         </Text>
         <Text variant="normal" color="text50" fontWeight="medium">
           {Number(nftQuantity) === 1 ? `${nftQuantity} item` : `${nftQuantity} items`}

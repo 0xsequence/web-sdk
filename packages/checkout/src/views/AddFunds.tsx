@@ -1,9 +1,9 @@
 import { Box } from '@0xsequence/design-system'
 import React from 'react'
 
+import { HEADER_HEIGHT } from '../constants'
 import { useAddFundsModal } from '../hooks'
 import { getTransakLink } from '../utils/transak'
-import { HEADER_HEIGHT } from '../constants'
 
 export const AddFundsContent = () => {
   const { addFundsSettings } = useAddFundsModal()
@@ -23,7 +23,7 @@ export const AddFundsContent = () => {
       height="full"
       style={{
         height: '600px',
-        paddingTop: HEADER_HEIGHT 
+        paddingTop: HEADER_HEIGHT
       }}
     >
       <Box as="iframe" width="full" height="full" borderWidth="none" src={link} />

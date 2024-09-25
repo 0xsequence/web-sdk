@@ -286,10 +286,12 @@ export const useContractInfo = (chainId: number, contractAddress: string) => {
 
       return {
         ...res.contractInfo,
-        ...((isNativeToken && network) ? {
-          ...network.nativeToken,
-          logoURI: network.logoURI
-        } : {})
+        ...(isNativeToken && network
+          ? {
+              ...network.nativeToken,
+              logoURI: network.logoURI
+            }
+          : {})
       }
     },
     retry: true,
@@ -387,10 +389,15 @@ const getSwapQuotes = async (
       res?.swapQuotes.forEach(quote => {
         const { currencyAddress } = quote
         if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
-          currencyInfoMap.set(currencyAddress, metadataClient.getContractInfo({
-            chainID: String(args.chainId),
-            contractAddress: currencyAddress
-          }).then(data => data.contractInfo))
+          currencyInfoMap.set(
+            currencyAddress,
+            metadataClient
+              .getContractInfo({
+                chainID: String(args.chainId),
+                contractAddress: currencyAddress
+              })
+              .then(data => data.contractInfo)
+          )
         }
       })
     }
@@ -401,14 +408,16 @@ const getSwapQuotes = async (
       if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
         currencyBalanceInfoMap.set(
           currencyAddress,
-          indexerClient.getTokenBalances({
-            accountAddress: args.userAddress,
-            contractAddress: currencyAddress,
-            includeMetadata: true,
-            metadataOptions: {
-              verifiedOnly: true
-            }
-          }).then(balances => (balances.balances?.[0] || []))
+          indexerClient
+            .getTokenBalances({
+              accountAddress: args.userAddress,
+              contractAddress: currencyAddress,
+              includeMetadata: true,
+              metadataOptions: {
+                verifiedOnly: true
+              }
+            })
+            .then(balances => balances.balances?.[0] || [])
         )
       }
     })

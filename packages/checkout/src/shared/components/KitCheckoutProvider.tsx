@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
 
+import { PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
 import {
   History,
   Navigation,
@@ -17,9 +18,8 @@ import {
   SelectPaymentContextProvider,
   SelectPaymentSettings,
   TransferFundsContextProvider,
-  TransferFundsSettings,
+  TransferFundsSettings
 } from '../../contexts'
-import { PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import {
   PendingTransaction,
