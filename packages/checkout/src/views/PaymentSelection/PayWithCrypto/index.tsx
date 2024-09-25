@@ -23,7 +23,7 @@ import {
   Scroll,
   Spinner,
 } from '@0xsequence/design-system'
-import { encodeFunctionData, formatUnits, Hex } from 'viem'
+import { encodeFunctionData, formatUnits, Hex, zeroAddress } from 'viem'
 
 import { SelectPaymentSettings } from '../../../contexts'
 
@@ -104,8 +104,6 @@ export const PayWithCrypto = ({
     withContractInfo: true
   })
 
-  console.log('swapQuotes...', swapQuotes, swapQuotesIsLoading, swapQuotesIsError)
-
   const tokens = [{
     chainId,
     contractAddress: currencyAddress
@@ -155,7 +153,8 @@ export const PayWithCrypto = ({
   const foundCoins = search === '' ? indexedCoins : fuzzySearchCoins.search(search).map(result => result.item)
 
   const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
-  const isApproved: boolean = (allowanceData as bigint) >= BigInt(price)
+  const isNativeToken = compareAddress(currencyAddress, zeroAddress)
+  const isApproved: boolean = ((allowanceData as bigint) >= BigInt(price)) || isNativeToken
 
   const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
 

@@ -1,6 +1,7 @@
 import { SequenceAPIClient, Token, SwapQuote } from '@0xsequence/api'
 import { ContractType, Page, SequenceIndexer, TokenBalance } from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { zeroAddress } from 'viem'
 
@@ -275,12 +276,21 @@ export const useContractInfo = (chainId: number, contractAddress: string) => {
   return useQuery({
     queryKey: ['contractInfo', chainId, contractAddress],
     queryFn: async () => {
+      const isNativeToken = compareAddress(zeroAddress, contractAddress)
+
       const res = await metadataClient.getContractInfo({
         chainID: String(chainId),
         contractAddress
       })
+      const network = findSupportedNetwork(chainId)
 
-      return res.contractInfo
+      return {
+        ...res.contractInfo,
+        ...((isNativeToken && network) ? {
+          ...network.nativeToken,
+          logoURI: network.logoURI
+        } : {})
+      }
     },
     retry: true,
     staleTime: time.oneMinute * 10,
