@@ -8,8 +8,11 @@ import {
   TabsRoot,
   Text,
   WalletIcon,
-  PaymentsIcon
+  PaymentsIcon,
 } from '@0xsequence/design-system'
+import { compareAddress } from '@0xsequence/kit'
+
+import { zeroAddress } from 'viem'
 
 import { ItemDescription } from './ItemDescription'
 import { Price } from './Price'
@@ -47,8 +50,11 @@ export const PaymentSelectionContent = () => {
     return null
   }
 
+  const isNativeToken = compareAddress(selectPaymentSettings.currencyAddress, zeroAddress)
+
   const enableMainCurrencyPayment = selectPaymentSettings.enableMainCurrencyPayment ?? true
-  const enableSwapPayments = selectPaymentSettings.enableSwapPayments ?? true
+  // Swap payments with native tokens are disabled due to lack of testing
+  const enableSwapPayments = !isNativeToken && (selectPaymentSettings.enableSwapPayments ?? true)
   const enableCreditCardPayments = selectPaymentSettings.enableCreditCardPayments ?? true
 
   const tabs = [
