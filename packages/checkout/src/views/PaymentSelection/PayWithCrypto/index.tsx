@@ -187,7 +187,6 @@ export const PayWithCrypto = ({
         args: [targetContractAddress, price]
       })
 
-
       const transactions = [
         ...(isApproved
           ? []
@@ -201,7 +200,10 @@ export const PayWithCrypto = ({
         {
           to: targetContractAddress as Hex,
           data: txData,
-          chainId
+          chainId,
+          ...(isNativeToken ? {
+            value: BigInt(settings.price)
+          } : {})
         }
       ]
 
@@ -232,8 +234,6 @@ export const PayWithCrypto = ({
       return
     }
 
-    const swapQuoteAddress = swapQuote.info?.address || ''
-
     setDisableButtons(true)
 
     try {
@@ -248,9 +248,11 @@ export const PayWithCrypto = ({
         args: [targetContractAddress, price]
       })
 
+      const isSwapNativeToken = compareAddress(currencyAddress, swapQuote.quote.currencyAddress)
+
       const transactions = [
         // Swap quote optional approve step
-        ...(swapQuote.quote.approveData
+        ...(swapQuote.quote.approveData && !isSwapNativeToken
           ? [
               {
                 to: swapQuote.quote.currencyAddress as Hex,
@@ -263,7 +265,10 @@ export const PayWithCrypto = ({
         {
           to: swapQuote.quote.to as Hex,
           data: swapQuote.quote.transactionData as Hex,
-          chain: chainId
+          chain: chainId,
+          ...(isSwapNativeToken ? {
+            value: BigInt(swapQuote.quote.price)
+          } : {})
         },
         // Actual transaction optional approve step
         ...(isApproved
@@ -272,7 +277,7 @@ export const PayWithCrypto = ({
               {
                 to: currencyAddress as  Hex,
                 data: approveTxData as Hex,
-                chainId: chainId
+                chainId: chainId,
               }
           ]
         ),
@@ -280,7 +285,10 @@ export const PayWithCrypto = ({
         {
           to: targetContractAddress  as  Hex,
           data: txData as Hex,
-          chainId
+          chainId,
+          ...(isNativeToken ? {
+            value: BigInt(settings.price)
+          } : {})
         }
       ]
 
