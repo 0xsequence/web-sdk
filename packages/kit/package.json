@@ -36,21 +36,21 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/api": "^2.0.6",
-    "@0xsequence/auth": "^2.0.6",
-    "@0xsequence/core": "^2.0.6",
+    "@0xsequence/api": "^2.0.9",
+    "@0xsequence/auth": "^2.0.9",
+    "@0xsequence/core": "^2.0.9",
     "@0xsequence/ethauth": "^1.0.0",
-    "@0xsequence/indexer": "^2.0.6",
-    "@0xsequence/metadata": "^2.0.6",
-    "@0xsequence/network": "^2.0.6",
-    "@0xsequence/provider": "^2.0.6",
-    "@0xsequence/utils": "^2.0.6",
-    "@0xsequence/waas": "^2.0.6",
+    "@0xsequence/indexer": "^2.0.9",
+    "@0xsequence/metadata": "^2.0.9",
+    "@0xsequence/network": "^2.0.9",
+    "@0xsequence/provider": "^2.0.9",
+    "@0xsequence/utils": "^2.0.9",
+    "@0xsequence/waas": "^2.0.9",
     "framer-motion": "^8.5.2",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
-    "0xsequence": ">= 2.0.6",
+    "0xsequence": ">= 2.0.9",
     "@0xsequence/design-system": ">=1.7.8",
     "@react-oauth/google": ">= 0.11.1",
     "@tanstack/react-query": ">= 5.0.0",
@@ -62,7 +62,7 @@
     "wagmi": ">= 2.0.0"
   },
   "devDependencies": {
-    "0xsequence": "^2.0.6",
+    "0xsequence": "^2.0.9",
     "@tanstack/react-query": "^5.37.1",
     "@types/uuid": "^9.0.8",
     "ethers": "6.13.0",
