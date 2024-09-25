@@ -14,8 +14,7 @@
     "sourceMap": true,
     "declaration": false,
     "lib": ["es2022", "dom", "dom.iterable"],
-    "jsx": "react-jsx",
-    "types": ["vite/client"]
+    "jsx": "react-jsx"
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }
