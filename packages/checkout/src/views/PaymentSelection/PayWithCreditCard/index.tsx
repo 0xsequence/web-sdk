@@ -151,7 +151,7 @@ export const PayWithCreditCard = ({
           Select a payment provider to purchase crypto directly
         </Text>
       </Box>
-      <Scroll paddingTop="3" style={{ height: '328px' }}>
+      <Scroll paddingTop="3" style={{ height: '312px' }}>
         {isLoading ? (
           <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
             <Spinner />

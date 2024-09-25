@@ -14,21 +14,19 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
       alignItems="center"
       justifyContent="center"
       flexShrink="0"
+      borderRadius="circle"
+      width="7"
+      height="7"
       style={{
         borderWidth: '2px',
-        borderRadius: vars.radii.circle,
-        width: '28px',
-        height: '28px'
       }}
     >
       <Box
         background={selected ? 'text80' : 'transparent'}
         position="absolute"
-        style={{
-          borderRadius: vars.radii.circle,
-          width: '16px',
-          height: '16px'
-        }}
+        borderRadius="circle"
+        width="4"
+        height="4"
         justifyContent="center"
         alignItems="center"
       />

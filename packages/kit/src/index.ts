@@ -96,4 +96,3 @@ export {
 // Components
 export { NetworkBadge } from './components/NetworkBadge'
 export { CollectibleTileImage } from './components/CollectibleTileImage'
-export { TokenWithChainImage } from './components/TokenWithChainImage'

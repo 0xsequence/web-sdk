@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
-
-import { Box, Card, Text } from '@0xsequence/design-system'
-import { TokenWithChainImage } from '@0xsequence/kit'
+import { Box, Card, Text, TokenImage } from '@0xsequence/design-system'
 
 import { SelectedIndicator } from './SelectedIndicator'
 
@@ -51,7 +48,7 @@ export const CryptoOption = ({
     >
       <Box flexDirection="row" gap="3">
         <Box width="fit">
-          <TokenWithChainImage src={iconUrl} symbol={symbol} chainId={chainId} />
+          <TokenImage src={iconUrl} symbol={symbol} withNetwork={chainId} />
         </Box>
         <Box flexDirection="column" justifyContent="space-between">
           <Text
@@ -59,7 +56,7 @@ export const CryptoOption = ({
             fontWeight="bold"
             color="text100"
             whiteSpace="nowrap"
-            textOverflow="ellipsis"
+            ellipsis
             style={{
               overflow: 'hidden',
               width: '100px'
@@ -71,7 +68,7 @@ export const CryptoOption = ({
             variant="normal"
             color="text50"
             whiteSpace="nowrap"
-            textOverflow="ellipsis"
+            ellipsis
             style={{
               overflow: 'hidden',
               width: '100px'

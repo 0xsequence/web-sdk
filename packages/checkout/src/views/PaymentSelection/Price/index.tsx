@@ -31,9 +31,7 @@ export const Price = () => {
         justifyContent="center"
         alignItems="center"
         width="full"
-        style={{
-          height: '48px'
-        }}
+        height="12"
       >
         <Spinner />
       </Box>
@@ -55,9 +53,7 @@ export const Price = () => {
       justifyContent="space-between"
       alignItems="center"
       width="full"
-      style={{
-        height: '48px'
-      }}
+      height="12"
     >
       <Box>
         <Text variant="small" color="text50" fontWeight="medium">
@@ -75,9 +71,7 @@ export const Price = () => {
         >
           <TokenImage
             src={tokenLogo}
-            style={{
-              width: '20px'
-            }}
+            width="5"
           />
           <Text variant="large" fontWeight="bold" color="text100">{`${formattedPrice} ${tokenSymbol}`}</Text>
         </Box>

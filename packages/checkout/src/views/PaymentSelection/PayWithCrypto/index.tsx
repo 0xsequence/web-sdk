@@ -417,7 +417,7 @@ export const PayWithCrypto = ({
           Select a crypto
         </Text>
       </Box>
-      <Scroll paddingTop="3" style={{ height: '285px' }}>
+      <Scroll paddingTop="3" style={{ height: '269px' }}>
         {isLoading ? (
           <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
             <Spinner />

@@ -84,9 +84,9 @@ export const PaymentSelectionContent = () => {
       style={{ height: PAYMENT_SELECTION_MODAL_HEIGHT, paddingTop: HEADER_HEIGHT }}
     >
       <ItemDescription />
-      <Divider width="full" color="backgroundSecondary" style={{ margin: '0px' }} />
+      <Divider width="full" color="backgroundSecondary" marginY="1" />
       <Price />
-      <Divider width="full" color="backgroundSecondary" style={{ margin: '0px' }} />
+      <Divider width="full" color="backgroundSecondary" marginY="1" />
       <Box marginY="2" width="full" paddingX="6" gap="3" flexDirection="column">
         <Text display={isOneTab ? 'none' : "block"} variant="small" color="text50">
           Select a payment method
