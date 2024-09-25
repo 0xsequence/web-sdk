@@ -1,6 +1,6 @@
 import { Box, Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import QRCode from 'qrcode.react'
+import { QRCodeCanvas } from 'qrcode.react'
 import React, { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount, useConfig } from 'wagmi'
@@ -44,7 +44,7 @@ export const Receive = () => {
           justifyContent="center"
           padding="4"
         >
-          <QRCode value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
+          <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
         </Box>
         <Box>
           <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
