@@ -65,7 +65,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         return
       }
 
-      const provider = await this.getProvider()
+      // const provider = await this.getProvider()
 
       if (params.googleClientId) {
         await config.storage?.setItem(LocalStorageKey.WaasGoogleClientID, params.googleClientId)
@@ -77,9 +77,9 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         await config.storage?.setItem(LocalStorageKey.WaasAppleRedirectURI, params.appleRedirectURI)
       }
 
-      provider.on('disconnect', () => {
-        this.onDisconnect()
-      })
+      // provider.on('disconnect', () => {
+      //   this.onDisconnect()
+      // })
     },
 
     async connect(_connectInfo) {
