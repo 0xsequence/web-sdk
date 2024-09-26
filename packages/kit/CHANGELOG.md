@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.0.5
+
+### Patch Changes
+
+- Update sequence deps
+
 ## 4.0.4
 
 ### Patch Changes

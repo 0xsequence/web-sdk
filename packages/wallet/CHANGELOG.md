@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.0.5
+
+### Patch Changes
+
+- Update sequence deps
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.5
+
 ## 4.0.4
 
 ### Patch Changes
