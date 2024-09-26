@@ -75,7 +75,11 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
 
-  const { data: swapQuotes = [], isLoading: swapQuotesIsLoading } = useSwapQuotes({
+  const {
+    data: swapQuotes = [],
+    isLoading: swapQuotesIsLoading,
+    isError: swapQuotesIsError
+  } = useSwapQuotes({
     userAddress: userAddress ?? '',
     currencyAddress: settings?.currencyAddress,
     chainId: chainId,
