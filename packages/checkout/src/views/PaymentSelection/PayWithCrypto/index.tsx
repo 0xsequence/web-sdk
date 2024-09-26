@@ -83,23 +83,32 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
     withContractInfo: true
   })
 
-  const tokens = [
+  const nativeToken = [
     {
       chainId,
       contractAddress: currencyAddress
-    },
+    }
+  ]
+
+  const swapTokens = [
     ...swapQuotes.map(quote => ({
       chainId,
       contractAddress: quote.info?.address || ''
     }))
   ]
 
+  const { data: mainCoinPrice = [], isLoading: mainCoinsPricesIsLoading } = useCoinPrices([...nativeToken])
+
   const disableCoinPricesQuery = swapQuotesIsLoading
 
-  const { data: coinPrices = [], isLoading: coinPricesIsLoading } = useCoinPrices([...tokens], disableCoinPricesQuery)
+  const { data: swapTokensPrices = [], isLoading: swapTokensPricesIsLoading } = useCoinPrices(
+    [...swapTokens],
+    disableCoinPricesQuery
+  )
 
-  const isLoading =
-    allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo || swapQuotesIsLoading || coinPricesIsLoading
+  const isLoading = allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo || mainCoinsPricesIsLoading
+
+  const swapsIsLoading = swapQuotesIsLoading || swapTokensPricesIsLoading
 
   interface IndexedData {
     index: number
@@ -302,33 +311,42 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
     return (
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
         {foundCoins.map(coin => {
-          const foundCoinPrice = coinPrices.find(coinPrice =>
-            compareAddress(coinPrice.token.contractAddress, coin.currencyAddress)
-          )
-          const exchangeRate = foundCoinPrice?.price?.value || 0
-
           if (compareAddress(coin.currencyAddress, currencyAddress) && enableMainCurrencyPayment) {
+            const coinPrice = mainCoinPrice[0]
+            const exchangeRate = coinPrice?.price?.value || 0
             const priceFiat = (exchangeRate * Number(priceFormatted)).toFixed(2)
 
             return (
-              <CryptoOption
-                key={currencyAddress}
-                currencyName={currencyInfoData?.name || 'Unknown'}
-                chainId={chainId}
-                iconUrl={currencyInfoData?.logoURI}
-                symbol={currencyInfoData?.symbol || ''}
-                onClick={() => {
-                  setSelectedCurrency(currencyAddress)
-                }}
-                balance={String(balanceFormatted)}
-                price={priceFormatted}
-                fiatPrice={priceFiat}
-                disabled={disableButtons}
-                isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
-                isInsufficientFunds={isNotEnoughFunds}
-              />
+              <>
+                <CryptoOption
+                  key={currencyAddress}
+                  currencyName={currencyInfoData?.name || 'Unknown'}
+                  chainId={chainId}
+                  iconUrl={currencyInfoData?.logoURI}
+                  symbol={currencyInfoData?.symbol || ''}
+                  onClick={() => {
+                    setSelectedCurrency(currencyAddress)
+                  }}
+                  balance={String(balanceFormatted)}
+                  price={priceFormatted}
+                  fiatPrice={priceFiat}
+                  disabled={disableButtons}
+                  isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
+                  isInsufficientFunds={isNotEnoughFunds}
+                />
+                {swapsIsLoading && (
+                  <Box justifyContent="center" alignItems="center" width="full" marginTop="4">
+                    <Spinner />
+                  </Box>
+                )}
+              </>
             )
           } else {
+            const foundCoinPrice = swapTokensPrices.find(coinPrice =>
+              compareAddress(coinPrice.token.contractAddress, coin.currencyAddress)
+            )
+            const exchangeRate = foundCoinPrice?.price?.value || 0
+
             const swapQuote = swapQuotes?.find(quote => compareAddress(quote.info?.address || '', coin.currencyAddress))
             const currencyInfoNotFound =
               !swapQuote || !swapQuote.info || swapQuote?.info?.decimals === undefined || !swapQuote.balance?.balance
