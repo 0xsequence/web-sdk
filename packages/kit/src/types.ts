@@ -9,6 +9,8 @@ export interface LogoProps {
   style?: React.CSSProperties
 }
 
+export type WalletType = 'waas' | 'universal'
+
 export interface WalletProperties {
   id: string
   logoDark: FunctionComponent<LogoProps>

@@ -9,6 +9,7 @@ export type {
   Wallet,
   WalletField,
   WalletProperties,
+  WalletType,
   DisplayedAsset,
   ExtendedConnector,
   EthAuthSettings,

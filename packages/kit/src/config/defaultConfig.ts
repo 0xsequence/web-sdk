@@ -1,59 +1,24 @@
 import { createConfig, http, type CreateConfigParameters, type Config } from 'wagmi'
 
+import { WalletType } from '../types'
+
 import { getDefaultChains } from './defaultChains'
-import {
-  DefaultConnectorsProps,
-  DefaultWaasConnectorsProps,
-  getDefaultConnectors,
-  getDefaultWaasConnectors
-} from './defaultConnectors'
+import { DefaultConnectorsProps, getDefaultConnectors } from './defaultConnectors'
 
-type DefaultConfigProps = DefaultConnectorsProps &
-  Partial<DefaultWaasConnectorsProps> &
-  Partial<Omit<CreateConfigParameters, 'client'>>
+type DefaultConfigProps<T extends WalletType> = DefaultConnectorsProps<T> & {
+  chainIds?: number[]
+  wagmiConfig?: Partial<Omit<CreateConfigParameters, 'client'>>
+}
 
-export const getDefaultConfig = ({
-  appName,
-  projectAccessKey,
-  walletConnectProjectId,
-  defaultChainId,
+export const getDefaultConfig = <T extends WalletType>(walletType: T, props: DefaultConfigProps<T>): Config => {
+  const { wagmiConfig } = props
 
-  waasConfigKey,
-  googleClientId,
-  appleClientId,
-  appleRedirectURI,
-  enableConfirmationModal,
-  isDev,
-
-  ...props
-}: DefaultConfigProps): Config => {
-  const chains = props.chains || getDefaultChains()
-  const transports = props.transports || Object.fromEntries(chains.map(chain => [chain.id, http()]))
-  const connectors =
-    props.connectors ??
-    (waasConfigKey
-      ? getDefaultWaasConnectors({
-          appName,
-          projectAccessKey,
-          walletConnectProjectId,
-          defaultChainId,
-
-          waasConfigKey,
-          googleClientId,
-          appleClientId,
-          appleRedirectURI,
-          enableConfirmationModal,
-          isDev
-        })
-      : getDefaultConnectors({
-          appName,
-          projectAccessKey,
-          walletConnectProjectId,
-          defaultChainId
-        }))
+  const chains = wagmiConfig?.chains || getDefaultChains(props.chainIds)
+  const transports = wagmiConfig?.transports || Object.fromEntries(chains.map(chain => [chain.id, http()]))
+  const connectors = wagmiConfig?.connectors || getDefaultConnectors(walletType, props)
 
   const config = createConfig({
-    ...props,
+    ...wagmiConfig,
     chains,
     transports,
     connectors
