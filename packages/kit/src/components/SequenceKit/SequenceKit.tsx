@@ -6,37 +6,15 @@ import { KitProvider } from '../KitProvider'
 
 const defaultQueryClient = new QueryClient()
 
-// Combined Wagmi and Kit Config
-export type SequenceKitConfig = Config &
-  KitConfig & {
-    queryClient?: QueryClient
-  }
+interface SequenceKitProps {
+  wagmiConfig: Config
+  kitConfig: KitConfig
+  queryClient?: QueryClient
+  children: React.ReactNode
+}
 
-export const SequenceKit = (props: { config: SequenceKitConfig; children: React.ReactNode }) => {
-  const { config, children } = props
-  const {
-    queryClient,
-    projectAccessKey,
-    disableAnalytics,
-    defaultTheme,
-    position,
-    signIn,
-    displayedAssets,
-    ethAuth,
-    isDev,
-    ...wagmiConfig
-  } = config
-
-  const kitConfig: KitConfig = {
-    projectAccessKey,
-    disableAnalytics,
-    defaultTheme,
-    position,
-    signIn,
-    displayedAssets,
-    ethAuth,
-    isDev
-  }
+export const SequenceKit = (props: SequenceKitProps) => {
+  const { wagmiConfig, kitConfig, queryClient, children } = props
 
   return (
     <WagmiProvider config={wagmiConfig}>

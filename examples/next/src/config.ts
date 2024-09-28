@@ -1,42 +1,31 @@
-import { KitConfig, getDefaultChains, getDefaultConfig } from '@0xsequence/kit'
+import { KitConfig, getDefaultConfig } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'
 
-export type ConnectionMode = 'waas' | 'universal'
-
-export const connectionMode = 'waas' as ConnectionMode
 export const isDebugMode = false
-const enableConfirmationModal = false
 
 const projectAccessKey = 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
-const waasConfigKey = 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
-const googleClientId = '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
-const appleClientId = 'com.horizon.sequence.waas'
-const appleRedirectURI = 'http://localhost:3000'
-
-export const wagmiConfig = getDefaultConfig({
-  appName: 'Kit Demo',
+export const wagmiConfig = getDefaultConfig('waas', {
   projectAccessKey,
+  appName: 'Kit Demo',
   walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-  chains: getDefaultChains([ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON]),
+  chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
   defaultChainId: ChainId.ARBITRUM_NOVA,
 
-  // Next.js doesn't support localStorage in SSR
-  storage: createStorage({ storage: cookieStorage }),
-  ssr: true,
-
   // Waas specific config options
-  ...(connectionMode === 'waas'
-    ? {
-        waasConfigKey,
-        googleClientId,
-        appleClientId,
-        appleRedirectURI,
-        enableConfirmationModal
-      }
-    : undefined)
+  waasConfigKey: 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0=',
+  googleClientId: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com',
+  appleClientId: 'com.horizon.sequence.waas',
+  appleRedirectURI: 'http://localhost:3000',
+  enableConfirmationModal: false,
+
+  wagmiConfig: {
+    // Next.js doesn't support localStorage in SSR
+    storage: createStorage({ storage: cookieStorage }),
+    ssr: true
+  }
 })
 
 export const kitConfig: KitConfig = {
