@@ -33,18 +33,18 @@ yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-que
 #### The 'easy' way
 
 ```js
-import { SequenceKit } from '@0xsequence/kit'
+import { SequenceKit, getDefaultConfig } from '@0xsequence/kit'
 
 import Content from './components/Content'
 
 const projectAccessKey = '<your-project-access-key>'
 
-const config = {
+const config = getDefaultConfig('waas', {
   projectAccessKey,
   chainIds: [1, 137]
   defaultChainId: 1
   appName: 'Demo Dapp'
-}
+})
 
 function App() {
   return (
