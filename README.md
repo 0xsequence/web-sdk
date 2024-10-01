@@ -31,6 +31,34 @@ yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-que
 
 ### Setting up the Library
 
+#### The 'easy' way
+
+```js
+import { SequenceKit } from '@0xsequence/kit'
+
+import Content from './components/Content'
+
+const projectAccessKey = '<your-project-access-key>'
+
+const config = {
+  projectAccessKey,
+  chainIds: [1, 137]
+  defaultChainId: 1
+  appName: 'Demo Dapp'
+}
+
+function App() {
+  return (
+    <SequenceKit config={config}>
+      <Content />
+    </SequenceKit>
+  )
+}
+
+```
+
+#### Need more customization?
+
 React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
 ```js
@@ -75,19 +103,23 @@ const connectors = getDefaultConnectors({
   })
   */
 
-const config = createConfig({
+const wagmiConfig = createConfig({
   chains,
   transports,
   connectors
 })
 
+const kitConfig = {
+  projectAccessKey: '...'
+}
+
 const queryClient = new QueryClient()
 
 function App() {
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <KitProvider>
+        <KitProvider config={kitConfig}>
           <Content />
         </KitProvider>
       </QueryClientProvider>
