@@ -78,7 +78,7 @@ export const Connected = () => {
 
   useEffect(() => {
     if (error?.message) {
-      console.log(error?.message)
+      console.log(error.message)
     }
   }, [error])
 
