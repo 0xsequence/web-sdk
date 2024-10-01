@@ -1,4 +1,4 @@
-import { KitConfig, getDefaultConfig } from '@0xsequence/kit'
+import { KitConfig, createConfig } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'
@@ -43,7 +43,7 @@ export const kitConfig: KitConfig = {
   ]
 }
 
-export const config = getDefaultConfig('waas', {
+export const config = createConfig('waas', {
   ...kitConfig,
   appName: 'Kit Demo',
   walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',

@@ -1,4 +1,4 @@
-import { KitConfig, getDefaultConfig, WalletType } from '@0xsequence/kit'
+import { KitConfig, createConfig, WalletType } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
@@ -51,7 +51,7 @@ export const kitConfig: KitConfig = {
 
 export const config =
   walletType === 'waas'
-    ? getDefaultConfig('waas', {
+    ? createConfig('waas', {
         ...kitConfig,
         appName: 'Kit Demo',
         walletConnectProjectId,
@@ -67,7 +67,7 @@ export const config =
         appleRedirectURI: window.location.origin + window.location.pathname,
         enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true'
       })
-    : getDefaultConfig('universal', {
+    : createConfig('universal', {
         ...kitConfig,
         appName: 'Kit Demo',
         walletConnectProjectId,
