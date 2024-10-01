@@ -90,9 +90,8 @@ export const PaymentSelectionContent = () => {
       style={{ height: PAYMENT_SELECTION_MODAL_HEIGHT, paddingTop: HEADER_HEIGHT }}
     >
       <Box flexDirection="column" width="full" gap="2">
-        {selectPaymentSettings.tokenIds.map((tokenId, index) => {
-          const nftQuantity = selectPaymentSettings.nftQuantities[index]
-          return <ItemDescription tokenId={tokenId} nftQuantity={nftQuantity} />
+        {selectPaymentSettings.collectibles.map(collectible => {
+          return <ItemDescription key={collectible.tokenId} tokenId={collectible.tokenId} nftQuantity={collectible.quantity} />
         })}
       </Box>
       <Divider width="full" color="backgroundSecondary" marginY="1" />

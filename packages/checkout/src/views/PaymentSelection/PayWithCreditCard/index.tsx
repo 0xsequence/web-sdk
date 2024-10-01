@@ -26,10 +26,8 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
     targetContractAddress,
     price,
     txData,
-    tokenIds,
+    collectibles,
     collectionAddress,
-    nftQuantities,
-    nftDecimals = ['0'],
     isDev = false,
     onSuccess = () => {},
     onError = () => {},
@@ -62,6 +60,8 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
       return
     }
 
+    const collectible = collectibles[0]
+
     const checkoutSettings: CheckoutSettings = {
       creditCardCheckout: {
         onSuccess: (txHash: string) => {
@@ -76,10 +76,10 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
         currencySymbol: currencyInfoData.symbol,
         currencyAddress,
         currencyDecimals: String(currencyInfoData?.decimals || 0),
-        nftId: tokenIds[0],
+        nftId: collectible.tokenId,
         nftAddress: collectionAddress,
-        nftQuantity: nftQuantities[0],
-        nftDecimals: nftDecimals[0],
+        nftQuantity: collectible.quantity,
+        nftDecimals: collectible.decimals,
         isDev,
         calldata: txData,
         approvedSpenderAddress: targetContractAddress

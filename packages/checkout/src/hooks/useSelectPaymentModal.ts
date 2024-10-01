@@ -17,9 +17,8 @@ export const getERC1155SaleContractConfig = ({
   price,
   currencyAddress = ethers.ZeroAddress,
   recipientAddress,
-  tokenIds,
+  collectibles,
   collectionAddress,
-  nftQuantities,
   isDev = false,
   ...restProps
 }: ERC1155SaleContractSettings): SelectPaymentSettings => {
@@ -44,7 +43,7 @@ export const getERC1155SaleContractConfig = ({
   const purchaseTransactionData = encodeFunctionData({
     abi: erc1155SalesContractAbi,
     functionName: 'mint',
-    args: [recipientAddress, tokenIds.map(tokenId => BigInt(tokenId)), nftQuantities.map(nftQuantity => BigInt(nftQuantity)), toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
+    args: [recipientAddress, collectibles.map(c => BigInt(c.tokenId)), collectibles.map(c => BigInt(c.quantity)), toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
   })
 
   return {
@@ -52,9 +51,8 @@ export const getERC1155SaleContractConfig = ({
     price,
     currencyAddress,
     recipientAddress,
-    tokenIds,
+    collectibles,
     collectionAddress,
-    nftQuantities,
     isDev,
     txData: purchaseTransactionData,
     ...restProps
