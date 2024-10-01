@@ -26,13 +26,14 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
     targetContractAddress,
     price,
     txData,
-    tokenId,
+    tokenIds,
     collectionAddress,
-    nftQuantity,
-    nftDecimals = '0',
+    nftQuantities,
+    nftDecimals = ['0'],
     isDev = false,
     onSuccess = () => {},
-    onError = () => {}
+    onError = () => {},
+    creditCardProviders = []
   } = settings
 
   const { address: userAddress } = useAccount()
@@ -75,10 +76,10 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
         currencySymbol: currencyInfoData.symbol,
         currencyAddress,
         currencyDecimals: String(currencyInfoData?.decimals || 0),
-        nftId: tokenId,
+        nftId: tokenIds[0],
         nftAddress: collectionAddress,
-        nftQuantity,
-        nftDecimals: nftDecimals,
+        nftQuantity: nftQuantities[0],
+        nftDecimals: nftDecimals[0],
         isDev,
         calldata: txData,
         approvedSpenderAddress: targetContractAddress
@@ -108,15 +109,24 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
   const Options = () => {
     return (
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
-        <PaymentProviderOption
-          name="Sardine"
-          logo={SardineLogo()}
-          onClick={() => {
-            setSelecterPaymentProvider('sardine')
-          }}
-          isSelected={selectedPaymentProvider === 'sardine'}
-          isRecommended={true}
-        />
+        {creditCardProviders.map(creditCardProvider => {
+          switch (creditCardProvider) {
+            case 'sardine':
+              return (
+                <PaymentProviderOption
+                  name="Sardine"
+                  logo={SardineLogo()}
+                  onClick={() => {
+                    setSelecterPaymentProvider('sardine')
+                  }}
+                  isSelected={selectedPaymentProvider === 'sardine'}
+                  isRecommended={true}
+                />
+              )
+            default:
+              return null
+          }
+        })}
       </Box>
     )
   }
@@ -131,7 +141,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
           Select a payment provider to purchase crypto directly
         </Text>
       </Box>
-      <Scroll paddingTop="3" style={{ height: '312px' }}>
+      <Scroll paddingTop="3" style={{ height: '302px' }}>
         {isLoading ? (
           <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
             <Spinner />

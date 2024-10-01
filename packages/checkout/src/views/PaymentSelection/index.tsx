@@ -42,7 +42,7 @@ export const PaymentSelectionContent = () => {
   const enableMainCurrencyPayment = selectPaymentSettings.enableMainCurrencyPayment ?? true
   // Swap payments with native tokens are disabled due to lack of testing
   const enableSwapPayments = !isNativeToken && (selectPaymentSettings.enableSwapPayments ?? true)
-  const enableCreditCardPayments = selectPaymentSettings.enableCreditCardPayments ?? true
+  const creditCardProviders = selectPaymentSettings.creditCardProviders ?? []
 
   const tabs = [
     ...(enableMainCurrencyPayment || enableSwapPayments
@@ -58,7 +58,7 @@ export const PaymentSelectionContent = () => {
           }
         ]
       : []),
-    ...(enableCreditCardPayments
+    ...(creditCardProviders.length > 0
       ? [
           {
             label: (
@@ -89,7 +89,12 @@ export const PaymentSelectionContent = () => {
       height="full"
       style={{ height: PAYMENT_SELECTION_MODAL_HEIGHT, paddingTop: HEADER_HEIGHT }}
     >
-      <ItemDescription />
+      <Box flexDirection="column" width="full" gap="2">
+        {selectPaymentSettings.tokenIds.map((tokenId, index) => {
+          const nftQuantity = selectPaymentSettings.nftQuantities[index]
+          return <ItemDescription tokenId={tokenId} nftQuantity={nftQuantity} />
+        })}
+      </Box>
       <Divider width="full" color="backgroundSecondary" marginY="1" />
       <Price />
       <Divider width="full" color="backgroundSecondary" marginY="1" />
@@ -108,7 +113,7 @@ export const PaymentSelectionContent = () => {
               />
             </TabsContent>
           )}
-          {enableCreditCardPayments && (
+          {creditCardProviders.length > 0 && (
             <TabsContent value="credit_card">
               <PayWithCreditCard settings={selectPaymentSettings} disableButtons={disableButtons} />
             </TabsContent>

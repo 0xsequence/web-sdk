@@ -257,8 +257,8 @@ export const Connected = () => {
     const price = '20000'
 
     const chainId = 137
-    const tokenId = '1'
-    const nftQuantity = '1'
+    const tokenIds = ['1']
+    const nftQuantities = ['1']
 
     openERC1155SaleContractPaymentModal({
       chain: chainId,
@@ -266,9 +266,10 @@ export const Connected = () => {
       targetContractAddress: salesContractAddress,
       recipientAddress: address,
       currencyAddress,
-      tokenId,
+      tokenIds,
       collectionAddress,
-      nftQuantity,
+      nftQuantities,
+      creditCardProviders: ['sardine'],
       isDev: true,
       onSuccess: (txnHash: string) => {
         console.log('success!', txnHash)

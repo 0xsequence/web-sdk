@@ -4,23 +4,28 @@ import { findSupportedNetwork } from '@0xsequence/network'
 
 import { useSelectPaymentModal } from '../../../hooks'
 
-export const ItemDescription = () => {
+export interface ItemDescriptionProps {
+  tokenId: string
+  nftQuantity: string
+}
+
+export const ItemDescription = ({ tokenId, nftQuantity }: ItemDescriptionProps) => {
   const { selectPaymentSettings } = useSelectPaymentModal()
-  const nftQuantity = selectPaymentSettings!.nftQuantity
   const chain = selectPaymentSettings!.chain
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
   const collectionAddress = selectPaymentSettings!.collectionAddress
-  const tokenId = selectPaymentSettings!.tokenId
   const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useTokenMetadata(chainId, collectionAddress, [tokenId])
   const tokenMetadata = tokenMetadatas?.[0]
 
   const isLoading = isLoadingTokenMetadatas
 
   if (isLoading) {
-    ;<Box marginBottom="2" paddingX="6" gap="3" style={{ height: '72px' }}>
-      <Spinner />
-    </Box>
+    return (
+      <Box marginBottom="2" paddingX="6" gap="3" style={{ height: '72px' }}>
+        <Spinner />
+      </Box>
+    )
   }
 
   return (

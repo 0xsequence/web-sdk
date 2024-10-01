@@ -407,7 +407,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
           leftIcon={SearchIcon}
           value={search}
           onChange={ev => setSearch(ev.target.value)}
-          placeholder="Search your wallet"
+          placeholder="Search your coins"
           data-1p-ignore
         />
       </Box>
@@ -416,7 +416,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
           Select a crypto
         </Text>
       </Box>
-      <Scroll paddingTop="3" style={{ height: '269px' }}>
+      <Scroll paddingTop="3" style={{ height: '259px' }}>
         {isLoading ? (
           <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
             <Spinner />

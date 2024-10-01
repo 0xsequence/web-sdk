@@ -2,7 +2,7 @@ import { Box, Text, SequenceIcon } from '@0xsequence/design-system'
 
 export const Footer = () => {
   return (
-    <Box position="fixed" height="7" marginTop="2" width="full" style={{ bottom: '4px' }}>
+    <Box paddingBottom="8" height="7" marginTop="1" width="full" style={{ bottom: '4px' }}>
       <Box gap="4" justifyContent="center" alignItems="center">
         <Box
           as="a"
