@@ -25,14 +25,10 @@ import { KitWalletProvider } from '@0xsequence/kit-wallet'
 
 const App = () => {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <KitProvider>
-          <KitWalletProvider>
-            <Page />
-          </KitWalletProvider>
-        </KitProvider>
-      </QueryClientProvider>
+    <SequenceKit config={config}>
+      <KitWalletProvider>
+        <Page />
+      </KitWalletProvider>
     </WagmiProvider>
   )
 }

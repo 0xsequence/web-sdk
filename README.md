@@ -33,18 +33,57 @@ yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-que
 
 #### The 'easy' way
 
+- `createConfig(walletType, options)` method is used to create your initial config and prepare sensible defaults that can be overridden
+
+`walletType` is either 'waas' or 'universal'
+
+```ts
+interface CreateConfigOptions {
+  appName: string
+  projectAccessKey: string
+  chainIds?: number[]
+  defaultChainId?: number
+  disableAnalytics?: boolean
+  defaultTheme?: Theme
+  position?: ModalPosition
+  signIn?: {
+    logoUrl?: string
+    projectName?: string
+    useMock?: boolean
+  }
+  displayedAssets?: Array<{
+    contractAddress: string
+    chainId: number
+  }>
+  ethAuth?: EthAuthSettings
+  isDev?: boolean
+
+  // optional wagmiConfig overrides
+  wagmiConfig?: WagmiConfig
+
+  walletConnectProjectId: string
+
+  // embedded wallet (waas) specific connector options
+  waasConfigKey: string
+  googleClientId?: string
+  appleClientId?: string
+  appleRedirectURI?: string
+  enableConfirmationModal?: boolean
+  legacyEmailAuth?: boolean
+}
+```
+
 ```js
 import { SequenceKit, createConfig } from '@0xsequence/kit'
 
 import Content from './components/Content'
 
-const projectAccessKey = '<your-project-access-key>'
-
 const config = createConfig('waas', {
-  projectAccessKey,
+  projectAccessKey: '<your-project-access-key>',
   chainIds: [1, 137]
   defaultChainId: 1
-  appName: 'Demo Dapp'
+  appName: 'Demo Dapp',
+  waasConfigKey: '<your-waas-config-key>'
 })
 
 function App() {

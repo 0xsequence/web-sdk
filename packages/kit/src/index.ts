@@ -21,8 +21,15 @@ export type {
 export type { SwapQuotesWithCurrencyInfo } from './hooks/data'
 
 // Config
-export { createConfig } from './config/createConfig'
-export { getDefaultConnectors, getDefaultWaasConnectors } from './config/defaultConnectors'
+export { createConfig, type CreateConfigOptions } from './config/createConfig'
+export {
+  getDefaultConnectors,
+  getDefaultWaasConnectors,
+  getDefaultUniversalConnectors,
+  type DefaultConnectorOptions,
+  type DefaultWaasConnectorOptions,
+  type DefaultUniversalConnectorOptions
+} from './config/defaultConnectors'
 export { getDefaultChains } from './config/defaultChains'
 export { getDefaultTransports } from './config/defaultTransports'
 

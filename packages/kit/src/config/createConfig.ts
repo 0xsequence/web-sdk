@@ -3,11 +3,11 @@ import { createConfig as createWagmiConfig, type CreateConfigParameters, type Co
 import { KitConfig, WalletType } from '../types'
 
 import { getDefaultChains } from './defaultChains'
-import { DefaultConnectorsProps, getDefaultConnectors } from './defaultConnectors'
+import { DefaultConnectorOptions, getDefaultConnectors } from './defaultConnectors'
 import { getDefaultTransports } from './defaultTransports'
 
-type DefaultConfigProps<T extends WalletType> = KitConfig &
-  DefaultConnectorsProps<T> & {
+export type CreateConfigOptions<T extends WalletType> = KitConfig &
+  DefaultConnectorOptions<T> & {
     chainIds?: number[]
     wagmiConfig?: Partial<Omit<CreateConfigParameters, 'client'>>
   }
@@ -17,12 +17,12 @@ export interface SequenceKitConfig {
   kitConfig: KitConfig
 }
 
-export const createConfig = <T extends WalletType>(walletType: T, props: DefaultConfigProps<T>): SequenceKitConfig => {
-  const { projectAccessKey, chainIds, wagmiConfig, ...rest } = props
+export const createConfig = <T extends WalletType>(walletType: T, options: CreateConfigOptions<T>): SequenceKitConfig => {
+  const { projectAccessKey, chainIds, wagmiConfig, ...rest } = options
 
   const chains = wagmiConfig?.chains || getDefaultChains(chainIds)
   const transports = wagmiConfig?.transports || getDefaultTransports(chains)
-  const connectors = wagmiConfig?.connectors || getDefaultConnectors(walletType, props)
+  const connectors = wagmiConfig?.connectors || getDefaultConnectors(walletType, options)
 
   return {
     kitConfig: {

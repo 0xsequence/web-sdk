@@ -14,14 +14,14 @@ import { walletConnect } from '../connectors/walletConnect'
 import { WalletType } from '../types'
 import { getKitConnectWallets } from '../utils/getKitConnectWallets'
 
-export interface CommonConnectorsProps {
+export interface CommonConnectorOptions {
   appName: string
   projectAccessKey: string
   walletConnectProjectId: string
   defaultChainId?: number
 }
 
-export interface DefaultWaasConnectorsProps extends CommonConnectorsProps {
+export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
   waasConfigKey: string
   googleClientId?: string
   appleClientId?: string
@@ -31,17 +31,17 @@ export interface DefaultWaasConnectorsProps extends CommonConnectorsProps {
   isDev?: boolean
 }
 
-export interface DefaultUniversalConnectorsProps extends CommonConnectorsProps {}
+export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions {}
 
-export type DefaultConnectorsProps<T extends WalletType> = T extends 'waas'
-  ? DefaultWaasConnectorsProps
-  : DefaultUniversalConnectorsProps
+export type DefaultConnectorOptions<T extends WalletType> = T extends 'waas'
+  ? DefaultWaasConnectorOptions
+  : DefaultUniversalConnectorOptions
 
-export const getDefaultConnectors = <T extends WalletType>(walletType: T, props: DefaultConnectorsProps<T>) => {
+export const getDefaultConnectors = <T extends WalletType>(walletType: T, options: DefaultConnectorOptions<T>) => {
   if (walletType === 'waas') {
-    return getDefaultWaasConnectors(props as DefaultWaasConnectorsProps)
+    return getDefaultWaasConnectors(options as DefaultWaasConnectorOptions)
   } else if (walletType === 'universal') {
-    return getDefaultUniversalConnectors(props as DefaultUniversalConnectorsProps)
+    return getDefaultUniversalConnectors(options as DefaultUniversalConnectorOptions)
   }
 }
 
@@ -58,7 +58,7 @@ export const getDefaultWaasConnectors = ({
   enableConfirmationModal,
   legacyEmailAuth = false,
   isDev = false
-}: DefaultWaasConnectorsProps): CreateConnectorFn[] => {
+}: DefaultWaasConnectorOptions): CreateConnectorFn[] => {
   const wallets: any[] = [
     emailWaas({
       projectAccessKey,
@@ -111,7 +111,7 @@ export const getDefaultUniversalConnectors = ({
   projectAccessKey,
   walletConnectProjectId,
   defaultChainId
-}: DefaultUniversalConnectorsProps): CreateConnectorFn[] => {
+}: DefaultUniversalConnectorOptions): CreateConnectorFn[] => {
   const connectors = getKitConnectWallets(projectAccessKey, [
     email({
       defaultNetwork: defaultChainId,
