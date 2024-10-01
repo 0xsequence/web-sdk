@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.0.6
+
+### Patch Changes
+
+- Payment Selection Modal
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.6
+
 ## 4.0.5
 
 ### Patch Changes
