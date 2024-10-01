@@ -7,27 +7,6 @@ export const isDebugMode = false
 
 const projectAccessKey = 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
-export const wagmiConfig = getDefaultConfig('waas', {
-  projectAccessKey,
-  appName: 'Kit Demo',
-  walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
-  chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
-  defaultChainId: ChainId.ARBITRUM_NOVA,
-
-  // Waas specific config options
-  waasConfigKey: 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0=',
-  googleClientId: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com',
-  appleClientId: 'com.horizon.sequence.waas',
-  appleRedirectURI: 'http://localhost:3000',
-  enableConfirmationModal: false,
-
-  wagmiConfig: {
-    // Next.js doesn't support localStorage in SSR
-    storage: createStorage({ storage: cookieStorage }),
-    ssr: true
-  }
-})
-
 export const kitConfig: KitConfig = {
   projectAccessKey,
   defaultTheme: 'dark',
@@ -63,3 +42,24 @@ export const kitConfig: KitConfig = {
     }
   ]
 }
+
+export const config = getDefaultConfig('waas', {
+  ...kitConfig,
+  appName: 'Kit Demo',
+  walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
+  chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
+  defaultChainId: ChainId.ARBITRUM_NOVA,
+
+  // Waas specific config options
+  waasConfigKey: 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0=',
+  googleClientId: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com',
+  appleClientId: 'com.horizon.sequence.waas',
+  appleRedirectURI: 'http://localhost:3000',
+  enableConfirmationModal: false,
+
+  wagmiConfig: {
+    // Next.js doesn't support localStorage in SSR
+    storage: createStorage({ storage: cookieStorage }),
+    ssr: true
+  }
+})

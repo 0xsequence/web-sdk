@@ -12,41 +12,14 @@ const isDebugMode = searchParams.has('debug')
 const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
-export const wagmiConfig =
-  walletType === 'waas'
-    ? getDefaultConfig('waas', {
-        projectAccessKey,
-        appName: 'Kit Demo',
-        walletConnectProjectId,
-        chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
-        defaultChainId: ChainId.ARBITRUM_NOVA,
-        waasConfigKey: isDebugMode
-          ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
-          : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9',
-        googleClientId: isDebugMode
-          ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
-          : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com',
-        appleClientId: 'com.horizon.sequence.waas',
-        appleRedirectURI: window.location.origin + window.location.pathname,
-        enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
-        isDev: isDebugMode
-      })
-    : getDefaultConfig('universal', {
-        projectAccessKey,
-        appName: 'Kit Demo',
-        walletConnectProjectId,
-        chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
-        defaultChainId: ChainId.ARBITRUM_NOVA
-      })
-
 export const kitConfig: KitConfig = {
-  isDev: isDebugMode,
   projectAccessKey,
   defaultTheme: 'dark',
   signIn: {
     projectName: 'Kit Demo',
     useMock: isDebugMode
   },
+  isDev: isDebugMode,
   displayedAssets: [
     // Native token
     {
@@ -75,3 +48,29 @@ export const kitConfig: KitConfig = {
     }
   ]
 }
+
+export const config =
+  walletType === 'waas'
+    ? getDefaultConfig('waas', {
+        ...kitConfig,
+        appName: 'Kit Demo',
+        walletConnectProjectId,
+        chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
+        defaultChainId: ChainId.ARBITRUM_NOVA,
+        waasConfigKey: isDebugMode
+          ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
+          : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9',
+        googleClientId: isDebugMode
+          ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
+          : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com',
+        appleClientId: 'com.horizon.sequence.waas',
+        appleRedirectURI: window.location.origin + window.location.pathname,
+        enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true'
+      })
+    : getDefaultConfig('universal', {
+        ...kitConfig,
+        appName: 'Kit Demo',
+        walletConnectProjectId,
+        chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
+        defaultChainId: ChainId.ARBITRUM_NOVA
+      })

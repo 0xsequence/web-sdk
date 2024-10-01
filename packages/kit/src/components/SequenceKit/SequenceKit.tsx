@@ -1,20 +1,21 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Config, WagmiProvider } from 'wagmi'
+import { State, WagmiProvider } from 'wagmi'
 
-import { KitConfig } from '../../types'
+import { SequenceKitConfig } from '../../config/defaultConfig'
 import { KitProvider } from '../KitProvider'
 
 const defaultQueryClient = new QueryClient()
 
 interface SequenceKitProps {
-  wagmiConfig: Config
-  kitConfig: KitConfig
+  config: SequenceKitConfig
   queryClient?: QueryClient
+  initialState?: State | undefined
   children: React.ReactNode
 }
 
 export const SequenceKit = (props: SequenceKitProps) => {
-  const { wagmiConfig, kitConfig, queryClient, children } = props
+  const { config, queryClient, children } = props
+  const { kitConfig, wagmiConfig } = config
 
   return (
     <WagmiProvider config={wagmiConfig}>
