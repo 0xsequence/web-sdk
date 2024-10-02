@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.1.0
+
+### Minor Changes
+
+- Added createConfig and SequenceKit wrapper component to simplify dapp setup
+
 ## 4.0.6
 
 ### Patch Changes
