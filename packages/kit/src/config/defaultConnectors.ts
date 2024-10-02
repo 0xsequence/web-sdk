@@ -17,8 +17,8 @@ import { getKitConnectWallets } from '../utils/getKitConnectWallets'
 export interface CommonConnectorOptions {
   appName: string
   projectAccessKey: string
-  walletConnectProjectId: string
   defaultChainId?: number
+  walletConnectProjectId?: string
 }
 
 export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
@@ -48,8 +48,8 @@ export const getDefaultConnectors = <T extends WalletType>(walletType: T, option
 export const getDefaultWaasConnectors = ({
   appName,
   projectAccessKey,
-  walletConnectProjectId,
   defaultChainId,
+  walletConnectProjectId,
 
   waasConfigKey,
   googleClientId,
@@ -70,11 +70,17 @@ export const getDefaultWaasConnectors = ({
     }),
     coinbaseWallet({
       appName
-    }),
-    walletConnect({
-      projectId: walletConnectProjectId
     })
   ]
+
+  if (walletConnectProjectId) {
+    wallets.push(
+      walletConnect({
+        projectId: walletConnectProjectId
+      })
+    )
+  }
+
   if (googleClientId) {
     wallets.push(
       googleWaas({
@@ -87,6 +93,7 @@ export const getDefaultWaasConnectors = ({
       })
     )
   }
+
   if (appleClientId && appleRedirectURI) {
     wallets.push(
       appleWaas({
@@ -101,18 +108,16 @@ export const getDefaultWaasConnectors = ({
     )
   }
 
-  const connectors = getKitConnectWallets(projectAccessKey, wallets)
-
-  return connectors
+  return getKitConnectWallets(projectAccessKey, wallets)
 }
 
 export const getDefaultUniversalConnectors = ({
   appName,
   projectAccessKey,
-  walletConnectProjectId,
-  defaultChainId
+  defaultChainId,
+  walletConnectProjectId
 }: DefaultUniversalConnectorOptions): CreateConnectorFn[] => {
-  const connectors = getKitConnectWallets(projectAccessKey, [
+  const wallets: any[] = [
     email({
       defaultNetwork: defaultChainId,
       connect: {
@@ -148,11 +153,16 @@ export const getDefaultUniversalConnectors = ({
       connect: {
         app: appName
       }
-    }),
-    walletConnect({
-      projectId: walletConnectProjectId
     })
-  ])
+  ]
 
-  return connectors
+  if (walletConnectProjectId) {
+    wallets.push(
+      walletConnect({
+        projectId: walletConnectProjectId
+      })
+    )
+  }
+
+  return getKitConnectWallets(projectAccessKey, wallets)
 }

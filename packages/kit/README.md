@@ -60,7 +60,7 @@ interface CreateConfigOptions {
   // optional wagmiConfig overrides
   wagmiConfig?: WagmiConfig
 
-  walletConnectProjectId: string
+  walletConnectProjectId?: string
 
   // embedded wallet (waas) specific connector options
   waasConfigKey: string
