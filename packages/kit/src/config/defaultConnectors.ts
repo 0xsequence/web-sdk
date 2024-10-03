@@ -11,27 +11,87 @@ import { googleWaas } from '../connectors/google/googleWaas'
 import { sequence } from '../connectors/sequence'
 import { twitch } from '../connectors/twitch'
 import { walletConnect } from '../connectors/walletConnect'
-import { WalletType } from '../types'
+import { Wallet, WalletType } from '../types'
 import { getKitConnectWallets } from '../utils/getKitConnectWallets'
 
 export interface CommonConnectorOptions {
   appName: string
   projectAccessKey: string
   defaultChainId?: number
-  walletConnectProjectId?: string
 }
 
 export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
   waasConfigKey: string
-  googleClientId?: string
-  appleClientId?: string
-  appleRedirectURI?: string
   enableConfirmationModal?: boolean
-  legacyEmailAuth?: boolean
   isDev?: boolean
+
+  email?:
+    | boolean
+    | {
+        legacyEmailAuth: boolean
+      }
+  google?:
+    | false
+    | {
+        clientId: string
+      }
+  apple?:
+    | false
+    | {
+        clientId: string
+        redirectURI: string
+      }
+  coinbase?: boolean
+  walletConnect?:
+    | false
+    | {
+        projectId: string
+      }
+
+  /**
+   * @deprecated use connectors.walletConnect.projectId instead
+   */
+  walletConnectProjectId?: string
+
+  /**
+   * @deprecated, use connectors.google.clientId instead
+   */
+  googleClientId?: string
+
+  /**
+   * @deprecated, use connectors.apple.clientId instead
+   */
+  appleClientId?: string
+
+  /**
+   * @deprecated, use connectors.apple.redirectURI instead
+   */
+  appleRedirectURI?: string
+
+  /**
+   * @deprecated, use connectors.email.legacyAuth instead
+   */
+  legacyEmailAuth?: boolean
 }
 
-export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions {}
+export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions {
+  sequence?: boolean
+  email?: boolean
+  google?: boolean
+  facebook?: boolean
+  twitch?: boolean
+  apple?: boolean
+  walletConnect?:
+    | false
+    | {
+        projectId: string
+      }
+
+  /**
+   * @deprecated, use connectors.walletConnect.projectId instead
+   */
+  walletConnectProjectId?: string
+}
 
 export type DefaultConnectorOptions<T extends WalletType> = T extends 'waas'
   ? DefaultWaasConnectorOptions
@@ -45,48 +105,32 @@ export const getDefaultConnectors = <T extends WalletType>(walletType: T, option
   }
 }
 
-export const getDefaultWaasConnectors = ({
-  appName,
-  projectAccessKey,
-  defaultChainId,
-  walletConnectProjectId,
+export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): CreateConnectorFn[] => {
+  const { projectAccessKey, waasConfigKey, appName, enableConfirmationModal, defaultChainId, isDev } = options
 
-  waasConfigKey,
-  googleClientId,
-  appleClientId,
-  appleRedirectURI,
-  enableConfirmationModal,
-  legacyEmailAuth = false,
-  isDev = false
-}: DefaultWaasConnectorOptions): CreateConnectorFn[] => {
-  const wallets: any[] = [
-    emailWaas({
-      projectAccessKey,
-      waasConfigKey,
-      enableConfirmationModal,
-      network: defaultChainId,
-      legacyEmailAuth,
-      isDev
-    }),
-    coinbaseWallet({
-      appName
-    })
-  ]
+  const wallets: Wallet[] = []
 
-  if (walletConnectProjectId) {
+  if (options.email !== false) {
     wallets.push(
-      walletConnect({
-        projectId: walletConnectProjectId
+      emailWaas({
+        projectAccessKey,
+        waasConfigKey,
+        enableConfirmationModal,
+        network: defaultChainId,
+        legacyEmailAuth: (typeof options.email === 'object' && options.email.legacyEmailAuth) || options.legacyEmailAuth,
+        isDev
       })
     )
   }
 
-  if (googleClientId) {
+  if (options.google || options.googleClientId) {
+    const googleClientId = (options.google && options.google.clientId) || options.googleClientId!
+
     wallets.push(
       googleWaas({
         projectAccessKey,
-        googleClientId,
         waasConfigKey,
+        googleClientId,
         enableConfirmationModal,
         network: defaultChainId,
         isDev
@@ -94,16 +138,37 @@ export const getDefaultWaasConnectors = ({
     )
   }
 
-  if (appleClientId && appleRedirectURI) {
+  if (options.apple || (options.appleClientId && options.appleRedirectURI)) {
+    const appleClientId = (options.apple && options.apple.clientId) || options.appleClientId!
+    const appleRedirectURI = (options.apple && options.apple.redirectURI) || options.appleRedirectURI!
+
     wallets.push(
       appleWaas({
         projectAccessKey,
+        waasConfigKey,
         appleClientId,
         appleRedirectURI,
-        waasConfigKey,
         enableConfirmationModal,
         network: defaultChainId,
         isDev
+      })
+    )
+  }
+
+  if (options.coinbase !== false) {
+    wallets.push(
+      coinbaseWallet({
+        appName
+      })
+    )
+  }
+
+  if (options.walletConnect || options.walletConnectProjectId) {
+    const projectId = (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
+
+    wallets.push(
+      walletConnect({
+        projectId
       })
     )
   }
@@ -111,55 +176,83 @@ export const getDefaultWaasConnectors = ({
   return getKitConnectWallets(projectAccessKey, wallets)
 }
 
-export const getDefaultUniversalConnectors = ({
-  appName,
-  projectAccessKey,
-  defaultChainId,
-  walletConnectProjectId
-}: DefaultUniversalConnectorOptions): CreateConnectorFn[] => {
-  const wallets: any[] = [
-    email({
-      defaultNetwork: defaultChainId,
-      connect: {
-        app: appName
-      }
-    }),
-    google({
-      defaultNetwork: defaultChainId,
-      connect: {
-        app: appName
-      }
-    }),
-    facebook({
-      defaultNetwork: defaultChainId,
-      connect: {
-        app: appName
-      }
-    }),
-    twitch({
-      defaultNetwork: defaultChainId,
-      connect: {
-        app: appName
-      }
-    }),
-    apple({
-      defaultNetwork: defaultChainId,
-      connect: {
-        app: appName
-      }
-    }),
-    sequence({
-      defaultNetwork: defaultChainId,
-      connect: {
-        app: appName
-      }
-    })
-  ]
+export const getDefaultUniversalConnectors = (options: DefaultUniversalConnectorOptions): CreateConnectorFn[] => {
+  const { projectAccessKey, appName, defaultChainId } = options
 
-  if (walletConnectProjectId) {
+  const wallets: Wallet[] = []
+
+  if (options.email !== false) {
+    wallets.push(
+      email({
+        defaultNetwork: defaultChainId,
+        connect: {
+          app: appName
+        }
+      })
+    )
+  }
+
+  if (options.google !== false) {
+    wallets.push(
+      google({
+        defaultNetwork: defaultChainId,
+        connect: {
+          app: appName
+        }
+      })
+    )
+  }
+
+  if (options.facebook !== false) {
+    wallets.push(
+      facebook({
+        defaultNetwork: defaultChainId,
+        connect: {
+          app: appName
+        }
+      })
+    )
+  }
+
+  if (options.twitch !== false) {
+    wallets.push(
+      twitch({
+        defaultNetwork: defaultChainId,
+        connect: {
+          app: appName
+        }
+      })
+    )
+  }
+
+  if (options.apple !== false) {
+    wallets.push(
+      apple({
+        defaultNetwork: defaultChainId,
+        connect: {
+          app: appName
+        }
+      })
+    )
+  }
+
+  if (options.sequence !== false) {
+    wallets.push(
+      sequence({
+        defaultNetwork: defaultChainId,
+        connect: {
+          app: appName
+        }
+      })
+    )
+  }
+
+  if (options.walletConnect || options.walletConnectProjectId) {
+    const projectId = (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
+
     wallets.push(
       walletConnect({
-        projectId: walletConnectProjectId
+        projectId
       })
     )
   }
