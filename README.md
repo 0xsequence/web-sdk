@@ -58,18 +58,35 @@ interface CreateConfigOptions {
   ethAuth?: EthAuthSettings
   isDev?: boolean
 
-  // optional wagmiConfig overrides
-  wagmiConfig?: WagmiConfig
+  wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
 
-  walletConnectProjectId?: string
-
-  // embedded wallet (waas) specific connector options
   waasConfigKey: string
-  googleClientId?: string
-  appleClientId?: string
-  appleRedirectURI?: string
   enableConfirmationModal?: boolean
-  legacyEmailAuth?: boolean
+
+  walletConnect?:
+    | boolean
+    | {
+        projectId: string
+      }
+
+  google?:
+    | boolean
+    | {
+        clientId: string
+      }
+
+  apple?:
+    | boolean
+    | {
+        clientId: string
+        rediretURI: string
+      }
+
+  email?:
+    | boolean
+    | {
+        legacyEmailAuth?: boolean
+      }
 }
 ```
 
@@ -83,7 +100,20 @@ const config = createConfig('waas', {
   chainIds: [1, 137]
   defaultChainId: 1
   appName: 'Demo Dapp',
-  waasConfigKey: '<your-waas-config-key>'
+  waasConfigKey: '<your-waas-config-key>',
+
+  google: {
+    clientId: '<your-google-client-id>'
+  },
+
+  apple: {
+    clientId: '<your-apple-client-id>',
+    redirectUrl: '...'
+  },
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
+  }
 })
 
 function App() {
@@ -119,25 +149,36 @@ chains.forEach(chain => {
 })
 
 // Universal wallet configuration
-const connectors = getDefaultConnectors({
+const connectors = getDefaultConnectors('universal', {
   projectAccessKey,
-  walletConnectProjectId: '<your-wallet-connect-id>',
+  appName: 'Demo Dapp',
   defaultChainId: 137,
-  appName: 'Demo Dapp'
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
+  }
 })
 
 /* 
-  // ...or for Embedded wallet configuration
-  const connectors = getDefaultWaasConnectors({
+  const connectors = getDefaultWaasConnectors('{
     projectAccessKey,
-    walletConnectProjectId: '<your-wallet-connect-id>',
     defaultChainId: 137,
     appName: 'Demo Dapp',
 
     waasConfigKey: '<your-waas-config-key>',
-    googleClientId,
-    appleClientId,
-    appleRedirectUrl
+    
+    google: {
+      clientId
+    },
+
+    apple: {
+      clientId,
+      redirectUrl
+    },
+
+    walletConnect: {
+      projectId: '<your-wallet-connect-id>'
+    }
   })
   */
 

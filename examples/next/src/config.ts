@@ -46,16 +46,23 @@ export const kitConfig: KitConfig = {
 export const config = createConfig('waas', {
   ...kitConfig,
   appName: 'Kit Demo',
-  walletConnectProjectId: 'c65a6cb1aa83c4e24500130f23a437d8',
   chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
   defaultChainId: ChainId.ARBITRUM_NOVA,
 
   // Waas specific config options
   waasConfigKey: 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0=',
-  googleClientId: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com',
-  appleClientId: 'com.horizon.sequence.waas',
-  appleRedirectURI: 'http://localhost:3000',
   enableConfirmationModal: false,
+
+  google: {
+    clientId: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
+  },
+  apple: {
+    clientId: 'com.horizon.sequence.waas',
+    redirectURI: 'http://localhost:3000'
+  },
+  walletConnect: {
+    projectId: 'c65a6cb1aa83c4e24500130f23a437d8'
+  },
 
   wagmiConfig: {
     // Next.js doesn't support localStorage in SSR

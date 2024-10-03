@@ -57,18 +57,35 @@ interface CreateConfigOptions {
   ethAuth?: EthAuthSettings
   isDev?: boolean
 
-  // optional wagmiConfig overrides
-  wagmiConfig?: WagmiConfig
+  wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
 
-  walletConnectProjectId?: string
-
-  // embedded wallet (waas) specific connector options
   waasConfigKey: string
-  googleClientId?: string
-  appleClientId?: string
-  appleRedirectURI?: string
   enableConfirmationModal?: boolean
-  legacyEmailAuth?: boolean
+
+  walletConnect?:
+    | boolean
+    | {
+        projectId: string
+      }
+
+  google?:
+    | boolean
+    | {
+        clientId: string
+      }
+
+  apple?:
+    | boolean
+    | {
+        clientId: string
+        rediretURI: string
+      }
+
+  email?:
+    | boolean
+    | {
+        legacyEmailAuth?: boolean
+      }
 }
 ```
 
@@ -82,7 +99,20 @@ const config = createConfig('waas', {
   chainIds: [1, 137]
   defaultChainId: 1
   appName: 'Demo Dapp',
-  waasConfigKey: '<your-waas-config-key>'
+  waasConfigKey: '<your-waas-config-key>',
+
+  google: {
+    clientId: '<your-google-client-id>'
+  },
+
+  apple: {
+    clientId: '<your-apple-client-id>',
+    redirectUrl: '...'
+  },
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
+  }
 })
 
 function App() {
@@ -117,11 +147,14 @@ chains.forEach(chain => {
   transports[chain.id] = http()
 })
 
-const connectors = getDefaultConnectors({
-  walletConnectProjectId: 'wallet-connect-id',
-  defaultChainId: 137,
+const connectors = getDefaultConnectors('universal', {
+  projectAccessKey,
   appName: 'demo app',
-  projectAccessKey
+  defaultChainId: 137,
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-project-id>'
+  }
 })
 
 const config = createConfig({
