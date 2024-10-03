@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.2.0
+
+### Minor Changes
+
+- Updating enabling/disabling connector options
+
 ## 4.1.0
 
 ### Minor Changes

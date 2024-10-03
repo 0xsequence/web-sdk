@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 4.2.0
+
+### Minor Changes
+
+- Updating enabling/disabling connector options
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.2.0
+
 ## 4.1.0
 
 ### Minor Changes
