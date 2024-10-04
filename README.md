@@ -64,26 +64,26 @@ interface CreateConfigOptions {
   enableConfirmationModal?: boolean
 
   walletConnect?:
-    | boolean
+    | false
     | {
         projectId: string
       }
 
   google?:
-    | boolean
+    | false
     | {
         clientId: string
       }
 
   apple?:
-    | boolean
+    | false
     | {
         clientId: string
         rediretURI: string
       }
 
   email?:
-    | boolean
+    | false
     | {
         legacyEmailAuth?: boolean
       }
