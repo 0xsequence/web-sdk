@@ -21,11 +21,11 @@ View the [demo](https://0xsequence.github.io/kit)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 # or
-pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 # or
-yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library
@@ -135,7 +135,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
 
-import '@0xsequence/design-system/styles.css'
+import '@0xsequence/kit/styles.css'
 
 const projectAccessKey = 'xyz'
 

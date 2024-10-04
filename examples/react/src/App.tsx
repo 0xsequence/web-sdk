@@ -1,4 +1,4 @@
-import '@0xsequence/design-system/styles.css'
+import '@0xsequence/kit/styles.css'
 
 import { ThemeProvider } from '@0xsequence/design-system'
 import { SequenceKit } from '@0xsequence/kit'

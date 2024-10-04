@@ -5,7 +5,7 @@ import { headers } from 'next/headers'
 import { cookieToInitialState } from 'wagmi'
 
 import './globals.css'
-import '@0xsequence/design-system/styles.css'
+import '@0xsequence/kit/styles.css'
 
 import { config } from '../config'
 
