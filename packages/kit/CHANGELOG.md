@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.3.0
+
+### Minor Changes
+
+- Removed peer dependency on design-system moved custom css file to kit package
+
 ## 4.2.0
 
 ### Minor Changes

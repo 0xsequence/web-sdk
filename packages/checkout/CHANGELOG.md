@@ -1,5 +1,16 @@
 # @0xsequence/kit-connectors
 
+## 4.3.0
+
+### Minor Changes
+
+- Removed peer dependency on design-system moved custom css file to kit package
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.3.0
+
 ## 4.2.0
 
 ### Minor Changes
