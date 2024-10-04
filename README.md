@@ -79,11 +79,11 @@ interface CreateConfigOptions {
     | false
     | {
         clientId: string
-        rediretURI: string
+        redirectURI: string
       }
 
   email?:
-    | false
+    | boolean
     | {
         legacyEmailAuth?: boolean
       }
