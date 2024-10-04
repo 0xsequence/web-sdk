@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Text } from '@0xsequence/design-system'
+import { Box, ModalPrimitive, Text } from '@0xsequence/design-system'
 
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { KitConnectProviderProps } from '../KitProvider/KitProvider'
@@ -26,7 +26,9 @@ export const ConnectWalletContent = (props: ConnectWalletContent) => {
           marginTop: '4px'
         }}
       >
-        <Text>Sign in {projectName ? `to ${projectName}` : ''}</Text>
+        <ModalPrimitive.Title asChild>
+          <Text>Sign in {projectName ? `to ${projectName}` : ''}</Text>
+        </ModalPrimitive.Title>
       </Box>
       <Connect emailConflictInfo={emailConflictInfo} {...props} />
     </Box>
