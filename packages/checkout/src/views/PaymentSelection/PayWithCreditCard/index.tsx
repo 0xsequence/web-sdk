@@ -114,6 +114,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
             case 'sardine':
               return (
                 <PaymentProviderOption
+                  key={creditCardProvider}
                   name="Sardine"
                   logo={SardineLogo()}
                   onClick={() => {

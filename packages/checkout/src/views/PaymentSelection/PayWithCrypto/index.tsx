@@ -11,7 +11,7 @@ import {
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import Fuse from 'fuse.js'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { encodeFunctionData, formatUnits, Hex, zeroAddress } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
@@ -321,9 +321,8 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
             const priceFiat = (exchangeRate * Number(priceFormatted)).toFixed(2)
 
             return (
-              <>
+              <Fragment key={currencyAddress}>
                 <CryptoOption
-                  key={currencyAddress}
                   currencyName={currencyInfoData?.name || 'Unknown'}
                   chainId={chainId}
                   iconUrl={currencyInfoData?.logoURI}
@@ -343,7 +342,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
                     <Spinner />
                   </Box>
                 )}
-              </>
+              </Fragment>
             )
           } else {
             const foundCoinPrice = swapTokensPrices.find(coinPrice =>
