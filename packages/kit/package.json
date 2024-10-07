@@ -20,17 +20,18 @@
       "import": "./dist/esm/index.js",
       "default": "./dist/esm/index.js"
     },
-    "./styles.css": "./node_modules/@0xsequence/design-system/dist/style.css"
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "src",
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types",
+    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types && pnpm build:copy-styles",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
     "build:esm": "tsc --module es2022 --outDir dist/esm/",
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
+    "build:copy-styles": "cp ./node_modules/@0xsequence/design-system/dist/style.css ./dist/styles.css",
     "build:clean": "rimraf -g ./dist",
     "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "test": "echo",
