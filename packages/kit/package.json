@@ -33,7 +33,7 @@
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
     "build:copy-styles": "cp ./node_modules/@0xsequence/design-system/dist/style.css ./dist/styles.css",
     "build:clean": "rimraf -g ./dist",
-    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "dev": "pnpm build:types && pnpm build:copy-styles && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
