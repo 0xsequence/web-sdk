@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.3.2
+
+### Patch Changes
+
+- Updated swap api calls
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.3.2
+
 ## 4.3.1
 
 ### Patch Changes

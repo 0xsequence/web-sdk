@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-wallet",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "description": "Wallet UI for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/wallet",
   "author": "Horizon Blockchain Games",
