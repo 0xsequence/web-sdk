@@ -123,12 +123,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
     disableCoinPricesQuery
   )
 
-  const isLoading =
-    allowanceIsLoading ||
-    currencyBalanceIsLoading ||
-    isLoadingCurrencyInfo ||
-    mainCoinsPricesIsLoading ||
-    (!disableSwapQuote && isLoadingSwapQuote)
+  const isLoading = allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo || mainCoinsPricesIsLoading
 
   const swapsIsLoading = swapPricesIsLoading || swapTokensPricesIsLoading
 
@@ -444,7 +439,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
       </Scroll>
       <Button
         onClick={onClickPurchase}
-        disabled={isLoading || disableButtons || !selectedCurrency}
+        disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
         marginTop="2"
         shape="square"
         variant="primary"
