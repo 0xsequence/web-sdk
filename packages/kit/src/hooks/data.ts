@@ -6,10 +6,12 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { blobsToProofsErrorType, zeroAddress } from 'viem'
 
 import { compareAddress } from '../utils/helpers'
+import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
 
 import { useAPIClient } from './useAPIClient'
 import { useIndexerClient, useIndexerClients } from './useIndexerClient'
 import { useMetadataClient } from './useMetadataClient'
+import { indexer } from '0xsequence/dist/declarations/src/sequence'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -358,10 +360,14 @@ export const useTransactionHistory = (args: UseTransactionHistoryArgs) => {
   })
 }
 
+interface Balance {
+  balance: string
+}
+
 export type SwapPricesWithCurrencyInfo = {
   price: SwapPrice
   info: ContractInfo | undefined
-  balance: TokenBalance | undefined
+  balance: Balance
 }
 
 const getSwapPrices = async (
@@ -375,6 +381,8 @@ const getSwapPrices = async (
   }
 
   try {
+    const network = findSupportedNetwork(args.chainId)
+
     const { withContractInfo, ...swapPricesArgs } = args
 
     const res = await apiClient.getSwapPrices({
@@ -389,6 +397,7 @@ const getSwapPrices = async (
     if (withContractInfo) {
       res?.swapPrices.forEach(price => {
         const { currencyAddress } = price
+        const isNativeToken = compareAddress(currencyAddress, NATIVE_TOKEN_ADDRESS_0X)
         if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
           currencyInfoMap.set(
             currencyAddress,
@@ -397,28 +406,48 @@ const getSwapPrices = async (
                 chainID: String(args.chainId),
                 contractAddress: currencyAddress
               })
-              .then(data => data.contractInfo)
+              .then(data => {
+                return ({
+                  ...data.contractInfo,
+                  ...(isNativeToken ? {
+                    ...network?.nativeToken,
+                    logoURI: network?.logoURI || ''
+                  } : {})
+                })
+              })
           )
         }
       })
     }
 
-    const currencyBalanceInfoMap = new Map<string, Promise<TokenBalance>>()
+    const currencyBalanceInfoMap = new Map<string, Promise<Balance>>()
     res?.swapPrices.forEach(price => {
       const { currencyAddress } = price
+      const isNativeToken = compareAddress(currencyAddress, NATIVE_TOKEN_ADDRESS_0X)
       if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
         currencyBalanceInfoMap.set(
           currencyAddress,
+          isNativeToken ?
+            indexerClient.getEtherBalance({
+              accountAddress: args.userAddress
+            }).then(res => ({
+              balance: res.balance.balanceWei
+            }))
+          :
           indexerClient
             .getTokenBalances({
               accountAddress: args.userAddress,
               contractAddress: currencyAddress,
-              includeMetadata: true,
+              includeMetadata: false,
               metadataOptions: {
                 verifiedOnly: true
               }
             })
-            .then(balances => balances.balances?.[0] || [])
+            .then(balances => {
+              return ({
+                balance: balances.balances?.[0].balance || '0'
+              })
+            })
         )
       }
     })
@@ -427,7 +456,7 @@ const getSwapPrices = async (
       res?.swapPrices.map(async price => ({
         price,
         info: (await currencyInfoMap.get(price.currencyAddress)) || undefined,
-        balance: (await currencyBalanceInfoMap.get(price.currencyAddress)) || undefined
+        balance: (await currencyBalanceInfoMap.get(price.currencyAddress)) || { balance: '0' }
       })) || []
     )
   } catch (e) {

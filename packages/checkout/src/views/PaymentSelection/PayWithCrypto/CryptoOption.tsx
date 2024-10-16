@@ -9,7 +9,6 @@ interface CryptoOptionProps {
   symbol: string
   balance: string
   price: string
-  fiatPrice: string
   onClick: () => void
   isSelected: boolean
   disabled: boolean
@@ -23,7 +22,6 @@ export const CryptoOption = ({
   symbol,
   balance,
   price,
-  fiatPrice,
   onClick,
   isSelected,
   isInsufficientFunds,
@@ -85,9 +83,7 @@ export const CryptoOption = ({
             <Text variant="normal" color="negative">
               Insufficient funds
             </Text>
-          ) : (
-            <Text variant="normal" color="text50">{`$${fiatPrice}`}</Text>
-          )}
+          ) : null}
         </Box>
         <SelectedIndicator selected={isSelected} />
       </Box>

@@ -34,7 +34,7 @@ export { getDefaultChains } from './config/defaultChains'
 export { getDefaultTransports } from './config/defaultTransports'
 
 // Constants
-export { LocalStorageKey, DEFAULT_SESSION_EXPIRATION, TRANSACTION_CONFIRMATIONS_DEFAULT } from './constants'
+export { LocalStorageKey, DEFAULT_SESSION_EXPIRATION, TRANSACTION_CONFIRMATIONS_DEFAULT, NATIVE_TOKEN_ADDRESS_0X } from './constants'
 
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'

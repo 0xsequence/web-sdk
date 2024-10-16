@@ -8,10 +8,10 @@ import {
   compareAddress,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions,
-  SwapPricesWithCurrencyInfo
+  SwapPricesWithCurrencyInfo,
+  NATIVE_TOKEN_ADDRESS_0X
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import Fuse from 'fuse.js'
 import { useState, useEffect, Fragment } from 'react'
 import { encodeFunctionData, formatUnits, Hex, zeroAddress } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
@@ -30,7 +30,6 @@ interface PayWithCryptoProps {
 
 export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: PayWithCryptoProps) => {
   const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
-  const [search, setSearch] = useState('')
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
 
   const {
@@ -76,9 +75,13 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
 
+  const buyCurrencyAddress = compareAddress(settings?.currencyAddress, zeroAddress)
+    ? NATIVE_TOKEN_ADDRESS_0X
+    : settings?.currencyAddress
+
   const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices({
     userAddress: userAddress ?? '',
-    buyCurrencyAddress: settings?.currencyAddress,
+    buyCurrencyAddress,
     chainId: chainId,
     buyAmount: price,
     withContractInfo: true
@@ -100,41 +103,27 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
     }
   )
 
-  const nativeToken = [
+  const mainToken = [
     {
       chainId,
       contractAddress: currencyAddress
     }
   ]
 
-  const swapTokens = [
-    ...swapPrices.map(price => ({
-      chainId,
-      contractAddress: price.info?.address || ''
-    }))
-  ]
-
-  const { data: mainCoinPrice = [], isLoading: mainCoinsPricesIsLoading } = useCoinPrices([...nativeToken])
-
-  const disableCoinPricesQuery = swapPricesIsLoading
-
-  const { data: swapTokensPrices = [], isLoading: swapTokensPricesIsLoading } = useCoinPrices(
-    [...swapTokens],
-    disableCoinPricesQuery
-  )
+  const { data: mainCoinPrice = [], isLoading: mainCoinsPricesIsLoading } = useCoinPrices([...mainToken])
 
   const isLoading = allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo || mainCoinsPricesIsLoading
 
-  const swapsIsLoading = swapPricesIsLoading || swapTokensPricesIsLoading
+  const swapsIsLoading = swapPricesIsLoading
 
-  interface IndexedData {
+  interface Coin {
     index: number
     name: string
     symbol: string
     currencyAddress: string
   }
 
-  const indexedCoins: IndexedData[] = [
+  const coins: Coin[] = [
     {
       index: 0,
       name: currencyInfoData?.name || 'Unknown',
@@ -150,12 +139,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
       }
     })
   ]
-
-  const fuzzySearchCoins = new Fuse(indexedCoins, {
-    keys: ['name', 'symbol', 'currencyAddress']
-  })
-
-  const foundCoins = search === '' ? indexedCoins : fuzzySearchCoins.search(search).map(result => result.item)
 
   const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
@@ -255,7 +238,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
         args: [targetContractAddress, price]
       })
 
-      const isSwapNativeToken = compareAddress(currencyAddress, swapPrice.price.currencyAddress)
+      const isSwapNativeToken = compareAddress(NATIVE_TOKEN_ADDRESS_0X, swapPrice.price.currencyAddress)
 
       const transactions = [
         // Swap quote optional approve step
@@ -275,12 +258,12 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
           chain: chainId,
           ...(isSwapNativeToken
             ? {
-                value: BigInt(swapQuote.price)
+                value: BigInt(swapQuote.transactionValue)
               }
             : {})
         },
         // Actual transaction optional approve step
-        ...(isApproved
+        ...(isApproved || isNativeToken
           ? []
           : [
               {
@@ -327,12 +310,8 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
   const Options = () => {
     return (
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
-        {foundCoins.map(coin => {
+        {coins.map(coin => {
           if (compareAddress(coin.currencyAddress, currencyAddress) && enableMainCurrencyPayment) {
-            const coinPrice = mainCoinPrice[0]
-            const exchangeRate = coinPrice?.price?.value || 0
-            const priceFiat = (exchangeRate * Number(priceFormatted)).toFixed(2)
-
             return (
               <Fragment key={currencyAddress}>
                 <CryptoOption
@@ -345,7 +324,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
                   }}
                   balance={String(balanceFormatted)}
                   price={priceFormatted}
-                  fiatPrice={priceFiat}
                   disabled={disableButtons}
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
                   isInsufficientFunds={isNotEnoughFunds}
@@ -358,22 +336,18 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
               </Fragment>
             )
           } else {
-            const foundCoinPrice = swapTokensPrices.find(coinPrice =>
-              compareAddress(coinPrice.token.contractAddress, coin.currencyAddress)
-            )
-            const exchangeRate = foundCoinPrice?.price?.value || 0
-
             const swapPrice = swapPrices?.find(price => compareAddress(price.info?.address || '', coin.currencyAddress))
             const currencyInfoNotFound =
               !swapPrice || !swapPrice.info || swapPrice?.info?.decimals === undefined || !swapPrice.balance?.balance
+
             if (currencyInfoNotFound || !enableSwapPayments) {
+              console.log('currency not found!', swapPrice, coin)
+
               return null
             }
             const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
             const balanceFormatted = formatUnits(BigInt(swapPrice.balance?.balance || 0), swapPrice.info?.decimals || 18)
             const swapQuoteAddress = swapPrice.info?.address || ''
-
-            const priceFiat = (exchangeRate * Number(swapQuotePriceFormatted)).toFixed(2)
 
             return (
               <CryptoOption
@@ -387,7 +361,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
                 }}
                 balance={String(Number(balanceFormatted).toPrecision(4))}
                 price={String(Number(swapQuotePriceFormatted).toPrecision(4))}
-                fiatPrice={priceFiat}
                 disabled={disableButtons}
                 isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
                 isInsufficientFunds={false}
@@ -412,17 +385,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
 
   return (
     <Box>
-      <Box width="full" marginTop="4">
-        <TextInput
-          autoFocus
-          name="Search"
-          leftIcon={SearchIcon}
-          value={search}
-          onChange={ev => setSearch(ev.target.value)}
-          placeholder="Search your coins"
-          data-1p-ignore
-        />
-      </Box>
       <Box marginTop="3">
         <Text variant="small" fontWeight="medium" color="text50">
           Select a crypto

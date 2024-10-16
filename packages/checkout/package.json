@@ -31,7 +31,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "fuse.js": "^6.6.2",
     "qrcode.react": "^4.0.1",
     "react-copy-to-clipboard": "^5.1.0"
   },

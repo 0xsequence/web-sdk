@@ -419,7 +419,7 @@ export const Connected = () => {
               </>
             )}
             <CardButton
-              title="Select Payment Method"
+              title="Checkout with Sequence Pay"
               description="Purchase an NFT through various purchase methods"
               onClick={onClickSelectPayment}
             />
