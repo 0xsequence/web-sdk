@@ -24,8 +24,8 @@ export const TransferFunds = () => {
   }
 
   return (
-    <Box width="full" paddingX="6">
-      <Box marginY="3">
+    <Box width="full">
+      <Box marginBottom="3">
         <Text variant="small" fontWeight="medium" color="white">
           Transfer funds to your connected wallet
         </Text>

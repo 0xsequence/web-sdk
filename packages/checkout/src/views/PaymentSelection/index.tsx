@@ -12,6 +12,7 @@ import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
+import { CryptoOption } from './PayWithCrypto/CryptoOption'
 
 export const PaymentSelection = () => {
   return (
@@ -25,8 +26,6 @@ export const PaymentSelection = () => {
 export const PaymentSelectionHeader = () => {
   return <NavigationHeader primaryText="Checkout" />
 }
-
-type Tabs = 'crypto' | 'credit_card'
 
 export const PaymentSelectionContent = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
@@ -52,25 +51,28 @@ export const PaymentSelectionContent = () => {
       alignItems="flex-start"
       width="full"
       paddingBottom="4"
+      paddingX="6"
       height="full"
       style={{ height: PAYMENT_SELECTION_MODAL_HEIGHT, paddingTop: HEADER_HEIGHT }}
     >
       <Box flexDirection="column" width="full" gap="2">
         <OrderSummary />
-        {/* {selectPaymentSettings.collectibles.map(collectible => {
-          return <ItemDescription key={collectible.tokenId} tokenId={collectible.tokenId} nftQuantity={collectible.quantity} />
-        })} */}
       </Box>
-      <Divider width="full" color="backgroundSecondary" marginY="1" />
-      {/* <Box marginY="2" width="full" paddingX="6" gap="3" flexDirection="column">
-        {creditCardProviders.length > 0 && <PayWithCreditCard settings={selectPaymentSettings} disableButtons={disableButtons} />}
-        {(enableMainCurrencyPayment || enableSwapPayments) && (
+      {(enableMainCurrencyPayment || enableSwapPayments) && (
+        <>
+          <Divider width="full" color="backgroundSecondary" marginY="3" />
           <PayWithCrypto settings={selectPaymentSettings} disableButtons={disableButtons} setDisableButtons={setDisableButtons} />
-        )}
-      </Box> */}
+        </>
+      )}
+      {creditCardProviders.length > 0 && (
+        <>
+          <Divider width="full" color="backgroundSecondary" marginY="3" />
+          <PayWithCreditCard settings={selectPaymentSettings} disableButtons={disableButtons} />
+        </>
+      )}
       {enableTransferFunds && (
         <>
-          <Divider width="full" color="backgroundSecondary" marginY="1" />
+          <Divider width="full" color="backgroundSecondary" marginY="3" />
           <TransferFunds />
         </>
       )}

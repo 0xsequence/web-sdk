@@ -1,8 +1,7 @@
-import { Box, Button, Text, TextInput, SearchIcon, Scroll, Spinner } from '@0xsequence/design-system'
+import { Box, Button, Text, Scroll, Spinner } from '@0xsequence/design-system'
 import {
   useBalances,
   useContractInfo,
-  useCoinPrices,
   useSwapPrices,
   useSwapQuote,
   compareAddress,
@@ -110,9 +109,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
     }
   ]
 
-  const { data: mainCoinPrice = [], isLoading: mainCoinsPricesIsLoading } = useCoinPrices([...mainToken])
-
-  const isLoading = allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo || mainCoinsPricesIsLoading
+  const isLoading = allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo
 
   const swapsIsLoading = swapPricesIsLoading
 
@@ -322,7 +319,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
                   onClick={() => {
                     setSelectedCurrency(currencyAddress)
                   }}
-                  balance={String(balanceFormatted)}
                   price={priceFormatted}
                   disabled={disableButtons}
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
@@ -346,7 +342,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
               return null
             }
             const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
-            const balanceFormatted = formatUnits(BigInt(swapPrice.balance?.balance || 0), swapPrice.info?.decimals || 18)
             const swapQuoteAddress = swapPrice.info?.address || ''
 
             return (
@@ -359,7 +354,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
                 onClick={() => {
                   setSelectedCurrency(swapQuoteAddress)
                 }}
-                balance={String(Number(balanceFormatted).toPrecision(4))}
                 price={String(Number(swapQuotePriceFormatted).toPrecision(4))}
                 disabled={disableButtons}
                 isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
@@ -384,10 +378,10 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
   }
 
   return (
-    <Box>
+    <Box width="full">
       <Box marginTop="3">
-        <Text variant="small" fontWeight="medium" color="text50">
-          Select a crypto
+        <Text variant="small" fontWeight="medium" color="white">
+          Pay with crypto
         </Text>
       </Box>
       <Scroll paddingTop="3" style={{ height: '259px' }}>

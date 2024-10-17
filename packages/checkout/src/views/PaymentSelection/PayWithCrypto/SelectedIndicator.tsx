@@ -21,15 +21,7 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
         borderWidth: '2px'
       }}
     >
-      <Box
-        background={selected ? 'text80' : 'transparent'}
-        position="absolute"
-        borderRadius="circle"
-        width="4"
-        height="4"
-        justifyContent="center"
-        alignItems="center"
-      />
+      {selected && <Box>stufff</Box>}
     </Box>
   )
 }

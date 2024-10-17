@@ -1,4 +1,15 @@
-import { Box, Button, Card, Spinner, Text, Scroll, useMediaQuery } from '@0xsequence/design-system'
+import { useEffect } from 'react'
+import {
+  ArrowRightIcon,
+  Box,
+  Card,
+  PaymentsIcon,
+  SendIcon,
+  Spinner,
+  Text,
+  Scroll,
+  useMediaQuery
+} from '@0xsequence/design-system'
 import { useContractInfo } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
@@ -42,10 +53,16 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
   const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useContractInfo(chainId, currencyAddress)
-  const [selectedPaymentProvider, setSelecterPaymentProvider] = useState<PaymentProviderOptions>()
+  const [selectedPaymentProvider, setSelectedPaymentProvider] = useState<PaymentProviderOptions>()
   const isLoading = isLoadingContractInfo
 
-  const onClickPurchase = () => {
+  useEffect(() => {
+    if (selectedPaymentProvider) {
+      payWithSelectedProvider()
+    }
+  }, [selectedPaymentProvider])
+
+  const payWithSelectedProvider = () => {
     switch (selectedPaymentProvider) {
       case 'sardine':
         onPurchaseSardine()
@@ -90,22 +107,6 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
     triggerCheckout(checkoutSettings)
   }
 
-  if (isLoading) {
-    return (
-      <Card
-        width="full"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        style={{
-          minHeight: getCardHeight(isMobile)
-        }}
-      >
-        <Spinner />
-      </Card>
-    )
-  }
-
   const Options = () => {
     return (
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
@@ -113,16 +114,29 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
           switch (creditCardProvider) {
             case 'sardine':
               return (
-                <PaymentProviderOption
-                  key={creditCardProvider}
-                  name="Sardine"
-                  logo={SardineLogo()}
+                <Card
+                  justifyContent="space-between"
+                  alignItems="center"
+                  padding="4"
                   onClick={() => {
-                    setSelecterPaymentProvider('sardine')
+                    setSelectedPaymentProvider('sardine')
                   }}
-                  isSelected={selectedPaymentProvider === 'sardine'}
-                  isRecommended={true}
-                />
+                  opacity={{
+                    hover: '80',
+                    base: '100'
+                  }}
+                  cursor="pointer"
+                >
+                  <Box flexDirection="row" gap="3" alignItems="center">
+                    <PaymentsIcon color="white" />
+                    <Text color="text100" variant="normal" fontWeight="bold">
+                      Pay with credit or debit card
+                    </Text>
+                  </Box>
+                  <Box style={{ transform: 'rotate(-45deg)' }}>
+                    <ArrowRightIcon color="white" />
+                  </Box>
+                </Card>
               )
             default:
               return null
@@ -133,33 +147,14 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
   }
 
   return (
-    <Box>
-      <Box marginTop="3" flexDirection="column" gap="1">
-        <Text variant="medium" fontWeight="medium" color="text80">
-          Debit and credit card
-        </Text>
-        <Text variant="small" fontWeight="medium" color="text50">
-          Select a payment provider to purchase crypto directly
-        </Text>
-      </Box>
-      <Scroll paddingTop="3" style={{ height: '302px' }}>
-        {isLoading ? (
-          <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
-            <Spinner />
-          </Box>
-        ) : (
-          <Options />
-        )}
-      </Scroll>
-      <Button
-        onClick={onClickPurchase}
-        disabled={isLoading || disableButtons || !selectedPaymentProvider}
-        marginTop="2"
-        shape="square"
-        variant="primary"
-        width="full"
-        label="Complete Purchase"
-      />
+    <Box width="full">
+      {isLoading ? (
+        <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
+          <Spinner />
+        </Box>
+      ) : (
+        <Options />
+      )}
     </Box>
   )
 }

@@ -7,7 +7,6 @@ interface CryptoOptionProps {
   chainId: number
   iconUrl?: string
   symbol: string
-  balance: string
   price: string
   onClick: () => void
   isSelected: boolean
@@ -20,7 +19,6 @@ export const CryptoOption = ({
   chainId,
   iconUrl,
   symbol,
-  balance,
   price,
   onClick,
   isSelected,
@@ -35,6 +33,7 @@ export const CryptoOption = ({
 
   return (
     <Card
+      width="full"
       justifyContent="space-between"
       padding="4"
       onClick={onClickCard}
@@ -46,7 +45,7 @@ export const CryptoOption = ({
     >
       <Box flexDirection="row" gap="3">
         <Box width="fit">
-          <TokenImage src={iconUrl} symbol={symbol} withNetwork={chainId} disableAnimation />
+          <TokenImage src={iconUrl} size="lg" symbol={symbol} withNetwork={chainId} disableAnimation />
         </Box>
         <Box flexDirection="column" justifyContent="space-between">
           <Text
@@ -72,13 +71,12 @@ export const CryptoOption = ({
               width: '100px'
             }}
           >
-            {`${balance} ${symbol}`}
+            {`${price} ${symbol}`}
           </Text>
         </Box>
       </Box>
       <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3">
         <Box flexDirection="column" justifyContent="space-between" alignItems="flex-end">
-          <Text variant="normal" color="text50">{`${price} ${symbol}`}</Text>
           {isInsufficientFunds ? (
             <Text variant="normal" color="negative">
               Insufficient funds

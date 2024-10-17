@@ -32,7 +32,7 @@ export const OrderSummary = () => {
 
   if (isLoading) {
     return (
-      <Box marginBottom="2" paddingX="6" gap="3" style={{ height: '72px' }}>
+      <Box marginBottom="2" gap="3" style={{ height: '72px' }}>
         <Spinner />
       </Box>
     )
@@ -52,7 +52,7 @@ export const OrderSummary = () => {
   console.log(fiatExchangeRate, dataCoinPrices)
 
   return (
-    <Box flexDirection="column" gap="5" paddingX="6">
+    <Box flexDirection="column" gap="5">
       <Box>
         <Text
           variant="small"
