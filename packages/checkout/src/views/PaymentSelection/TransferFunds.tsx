@@ -58,7 +58,12 @@ export const TransferFunds = () => {
         </Box>
         <Box>
           <CopyToClipboard text={userAddress || ''} onCopy={handleCopy}>
-            <IconButton color="text50" variant="base" size="md" icon={isCopied ? CheckmarkIcon : CopyIcon} />
+            <IconButton
+              color="text50"
+              variant="base"
+              size="md"
+              icon={isCopied ? () => <CheckmarkIcon size="lg" /> : () => <CopyIcon size="lg" />}
+            />
           </CopyToClipboard>
         </Box>
       </Card>

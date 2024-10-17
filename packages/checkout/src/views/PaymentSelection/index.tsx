@@ -8,10 +8,9 @@ import { useSelectPaymentModal } from '../../hooks'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 
 import { Footer } from './Footer'
-import { ItemDescription } from './ItemDescription'
+import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
-import { Price } from './Price'
 import { TransferFunds } from './TransferFunds'
 
 export const PaymentSelection = () => {
@@ -57,12 +56,11 @@ export const PaymentSelectionContent = () => {
       style={{ height: PAYMENT_SELECTION_MODAL_HEIGHT, paddingTop: HEADER_HEIGHT }}
     >
       <Box flexDirection="column" width="full" gap="2">
-        {selectPaymentSettings.collectibles.map(collectible => {
+        <OrderSummary />
+        {/* {selectPaymentSettings.collectibles.map(collectible => {
           return <ItemDescription key={collectible.tokenId} tokenId={collectible.tokenId} nftQuantity={collectible.quantity} />
-        })}
+        })} */}
       </Box>
-      <Divider width="full" color="backgroundSecondary" marginY="1" />
-      <Price />
       <Divider width="full" color="backgroundSecondary" marginY="1" />
       {/* <Box marginY="2" width="full" paddingX="6" gap="3" flexDirection="column">
         {creditCardProviders.length > 0 && <PayWithCreditCard settings={selectPaymentSettings} disableButtons={disableButtons} />}
