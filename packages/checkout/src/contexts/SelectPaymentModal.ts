@@ -25,6 +25,7 @@ export interface SelectPaymentSettings {
   onError?: (error: Error) => void
   enableMainCurrencyPayment?: boolean
   enableSwapPayments?: boolean
+  enableTransferFunds?: boolean
   creditCardProviders?: string[]
 }
 

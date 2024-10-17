@@ -30,27 +30,14 @@ export const ItemDescription = ({ tokenId, nftQuantity }: ItemDescriptionProps) 
 
   return (
     <Box marginBottom="2" paddingX="6" gap="5" alignItems="center">
-      <Box position="relative">
-        <Box
-          background="backgroundControl"
-          borderRadius="md"
-          style={{
-            height: '60px',
-            width: '60px',
-            transform: 'rotate(-15deg)'
-          }}
-        />
-        <Box
-          position="absolute"
-          borderRadius="md"
-          style={{
-            height: '60px',
-            width: '60px',
-            bottom: '0'
-          }}
-        >
-          <CollectibleTileImage imageUrl={tokenMetadata?.image} />
-        </Box>
+      <Box
+        borderRadius="md"
+        style={{
+          height: '60px',
+          width: '60px'
+        }}
+      >
+        <CollectibleTileImage imageUrl={tokenMetadata?.image} />
       </Box>
       <Box flexDirection="column" gap="0.5">
         <Text variant="normal" color="text100" fontWeight="bold">
