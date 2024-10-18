@@ -78,13 +78,16 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
     ? NATIVE_TOKEN_ADDRESS_0X
     : settings?.currencyAddress
 
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices({
-    userAddress: userAddress ?? '',
-    buyCurrencyAddress,
-    chainId: chainId,
-    buyAmount: price,
-    withContractInfo: true
-  })
+  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
+    {
+      userAddress: userAddress ?? '',
+      buyCurrencyAddress,
+      chainId: chainId,
+      buyAmount: price,
+      withContractInfo: true
+    },
+    { disabled: !enableSwapPayments }
+  )
 
   const disableSwapQuote = !selectedCurrency || compareAddress(settings.currencyAddress, selectedCurrency || '')
 
@@ -337,8 +340,6 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
               !swapPrice || !swapPrice.info || swapPrice?.info?.decimals === undefined || !swapPrice.balance?.balance
 
             if (currencyInfoNotFound || !enableSwapPayments) {
-              console.log('currency not found!', swapPrice, coin)
-
               return null
             }
             const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
@@ -377,6 +378,14 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
     }
   }
 
+  const gutterHeight = 8
+  const optionHeight = 72
+  const displayedOptionsAmount = Math.min(coins.length, 3)
+  const displayedGuttersAmount = displayedOptionsAmount - 1
+  const viewheight = swapsIsLoading
+    ? '174px'
+    : `${24 + optionHeight * displayedOptionsAmount + gutterHeight * displayedGuttersAmount}px`
+
   return (
     <Box width="full">
       <Box marginTop="3">
@@ -384,7 +393,7 @@ export const PayWithCrypto = ({ settings, disableButtons, setDisableButtons }: P
           Pay with crypto
         </Text>
       </Box>
-      <Scroll paddingTop="3" style={{ height: '259px' }}>
+      <Scroll paddingY="3" style={{ height: viewheight }}>
         {isLoading ? (
           <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
             <Spinner />

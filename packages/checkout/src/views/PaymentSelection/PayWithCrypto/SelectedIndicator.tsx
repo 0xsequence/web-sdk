@@ -1,4 +1,4 @@
-import { Box } from '@0xsequence/design-system'
+import { Box, CheckmarkIcon } from '@0xsequence/design-system'
 
 interface SelectedIndicatorProps {
   selected: boolean
@@ -9,7 +9,8 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
   return (
     <Box
       borderStyle="solid"
-      borderColor={'text50'}
+      borderColor={selected ? 'white' : 'text50'}
+      background={selected ? 'white' : 'transparent'}
       position="relative"
       alignItems="center"
       justifyContent="center"
@@ -21,7 +22,7 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
         borderWidth: '2px'
       }}
     >
-      {selected && <Box>stufff</Box>}
+      {selected && <CheckmarkIcon color="black" size="md" />}
     </Box>
   )
 }

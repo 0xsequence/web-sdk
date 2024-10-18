@@ -251,7 +251,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                       <Modal
                         contentProps={{
                           style: {
-                            maxHeight: PAYMENT_SELECTION_MODAL_HEIGHT,
+                            // maxHeight: PAYMENT_SELECTION_MODAL_HEIGHT,
                             maxWidth: '420px',
                             ...getModalPositionCss(position)
                           }

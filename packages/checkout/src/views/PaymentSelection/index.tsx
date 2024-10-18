@@ -3,7 +3,7 @@ import { compareAddress } from '@0xsequence/kit'
 import { useState } from 'react'
 import { zeroAddress } from 'viem'
 
-import { HEADER_HEIGHT, PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
+import { HEADER_HEIGHT } from '../../constants'
 import { useSelectPaymentModal } from '../../hooks'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 
@@ -53,7 +53,9 @@ export const PaymentSelectionContent = () => {
       paddingBottom="4"
       paddingX="6"
       height="full"
-      style={{ height: PAYMENT_SELECTION_MODAL_HEIGHT, paddingTop: HEADER_HEIGHT }}
+      style={{
+        paddingTop: HEADER_HEIGHT
+      }}
     >
       <Box flexDirection="column" width="full" gap="2">
         <OrderSummary />

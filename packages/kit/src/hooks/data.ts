@@ -473,13 +473,17 @@ interface UseSwapPricesArgs {
   withContractInfo?: boolean
 }
 
-export const useSwapPrices = (args: UseSwapPricesArgs) => {
+interface SwapPricesOptions {
+  disabled?: boolean
+}
+
+export const useSwapPrices = (args: UseSwapPricesArgs, options: SwapPricesOptions) => {
   const apiClient = useAPIClient()
   const metadataClient = useMetadataClient()
   const indexerClient = useIndexerClient(args.chainId)
 
   const enabled =
-    !!args.chainId && !!args.userAddress && !!args.buyCurrencyAddress && !!args.buyAmount && args.buyAmount !== '0'
+    !!args.chainId && !!args.userAddress && !!args.buyCurrencyAddress && !!args.buyAmount && args.buyAmount !== '0' && !options.disabled
 
   return useQuery({
     queryKey: ['swapPrices', args],
