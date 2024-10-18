@@ -49,8 +49,6 @@ export const OrderSummary = () => {
   const fiatExchangeRate = dataCoinPrices?.[0].price?.value || 0
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
 
-  console.log(fiatExchangeRate, dataCoinPrices)
-
   return (
     <Box flexDirection="column" gap="5">
       <Box>

@@ -273,6 +273,7 @@ export const Connected = () => {
       collectionAddress,
       creditCardProviders: ['sardine'],
       isDev: true,
+      copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash: string) => {
         console.log('success!', txnHash)
       },

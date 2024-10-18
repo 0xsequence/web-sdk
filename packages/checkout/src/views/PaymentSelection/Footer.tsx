@@ -1,8 +1,24 @@
-import { Box, Text, SequenceIcon } from '@0xsequence/design-system'
+import { Box, Text } from '@0xsequence/design-system'
+import { useSelectPaymentModal } from '../../hooks'
 
 export const Footer = () => {
+  const { selectPaymentSettings } = useSelectPaymentModal()
+
   return (
-    <Box paddingBottom="8" height="7" marginTop="1" width="full" style={{ bottom: '4px' }}>
+    <Box
+      paddingBottom="6"
+      paddingTop="5"
+      marginTop="1"
+      width="full"
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="column"
+    >
+      {selectPaymentSettings?.copyrightText && (
+        <Text color="text50" variant="normal" fontWeight="bold">
+          {selectPaymentSettings.copyrightText}
+        </Text>
+      )}
       <Box gap="4" justifyContent="center" alignItems="center">
         <Box
           as="a"
@@ -13,7 +29,7 @@ export const Footer = () => {
           opacity={{ hover: '80' }}
           cursor="pointer"
         >
-          <Text color="text50" variant="xsmall">
+          <Text color="text50" variant="normal" fontWeight="bold">
             Help
           </Text>
         </Box>
@@ -26,7 +42,7 @@ export const Footer = () => {
           opacity={{ hover: '80' }}
           cursor="pointer"
         >
-          <Text color="text50" variant="xsmall">
+          <Text color="text50" variant="normal" fontWeight="bold">
             Privacy Policy
           </Text>
         </Box>
@@ -39,7 +55,7 @@ export const Footer = () => {
           opacity={{ hover: '80' }}
           cursor="pointer"
         >
-          <Text color="text50" variant="xsmall">
+          <Text color="text50" variant="normal" fontWeight="bold">
             Terms of Service
           </Text>
         </Box>

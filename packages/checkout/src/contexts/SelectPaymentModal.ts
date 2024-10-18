@@ -27,6 +27,7 @@ export interface SelectPaymentSettings {
   enableSwapPayments?: boolean
   enableTransferFunds?: boolean
   creditCardProviders?: string[]
+  copyrightText?: string
 }
 
 type SelectPaymentModalContext = {
