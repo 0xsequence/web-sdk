@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
 
-import { PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
 import {
   History,
   Navigation,
@@ -251,7 +250,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                       <Modal
                         contentProps={{
                           style: {
-                            // maxHeight: PAYMENT_SELECTION_MODAL_HEIGHT,
                             maxWidth: '420px',
                             ...getModalPositionCss(position)
                           }
