@@ -126,6 +126,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
                     base: '100'
                   }}
                   cursor="pointer"
+                  disabled={disableButtons}
                 >
                   <Box flexDirection="row" gap="3" alignItems="center">
                     <PaymentsIcon color="white" />
