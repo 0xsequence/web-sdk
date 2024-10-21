@@ -13,10 +13,12 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
     apiKey: TRANSAK_API_KEY,
     referrerDomain: window.location.origin,
     walletAddress: addFundsSettings.walletAddress,
+    fiatAmount: addFundsSettings?.fiatAmount,
     fiatCurrency: addFundsSettings?.fiatCurrency,
     disableWalletAddressForm: 'true',
     defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
     defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',
+    cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList,
     networks: addFundsSettings?.networks || defaultNetworks
   }
 

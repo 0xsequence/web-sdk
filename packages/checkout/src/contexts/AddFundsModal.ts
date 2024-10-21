@@ -4,9 +4,11 @@ import { createGenericContext } from './genericContext'
 
 export interface AddFundsSettings {
   walletAddress: string | Hex
+  fiatAmount?: string
   fiatCurrency?: string
   defaultFiatAmount?: string
   defaultCryptoCurrency?: string
+  cryptoCurrencyList?: string
   networks?: string
   onClose?: () => void
 }
