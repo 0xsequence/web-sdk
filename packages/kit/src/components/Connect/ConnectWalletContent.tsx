@@ -10,10 +10,11 @@ import { Connect } from './Connect'
 interface ConnectWalletContent extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
   onClose: () => void
+  isPreview?: boolean
 }
 
 export const ConnectWalletContent = (props: ConnectWalletContent) => {
-  const { emailConflictInfo, config } = props
+  const { emailConflictInfo, config, isPreview = false } = props
   const projectName = config?.signIn?.projectName
   return (
     <Box padding="4">
@@ -26,11 +27,19 @@ export const ConnectWalletContent = (props: ConnectWalletContent) => {
           marginTop: '4px'
         }}
       >
-        <ModalPrimitive.Title asChild>
+        <TitleWrapper isPreview={isPreview}>
           <Text>Sign in {projectName ? `to ${projectName}` : ''}</Text>
-        </ModalPrimitive.Title>
+        </TitleWrapper>
       </Box>
       <Connect emailConflictInfo={emailConflictInfo} {...props} />
     </Box>
   )
+}
+
+const TitleWrapper = ({ children, isPreview }: { children: React.ReactNode; isPreview: boolean }) => {
+  if (isPreview) {
+    return <>{children}</>
+  }
+
+  return <ModalPrimitive.Title asChild>{children}</ModalPrimitive.Title>
 }

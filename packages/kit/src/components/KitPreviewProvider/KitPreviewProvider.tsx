@@ -126,6 +126,7 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
                     <ConnectWalletContent
                       onClose={() => setOpenConnectModal(false)}
                       emailConflictInfo={emailConflictInfo}
+                      isPreview
                       {...props}
                     />
                   </ThemeProvider>
