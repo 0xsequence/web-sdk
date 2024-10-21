@@ -7,18 +7,14 @@ import {
   validateEthProof,
   getModalPositionCss
 } from '@0xsequence/kit'
-import {
-  useCheckoutModal,
-  useAddFundsModal,
-  useERC1155SaleContractPaymentModal
-} from '@0xsequence/kit-checkout'
+import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
-import { formatUnits, parseUnits, toHex } from 'viem'
+import { formatUnits, parseUnits } from 'viem'
 import {
   useAccount,
   useChainId,
@@ -82,7 +78,7 @@ export const Connected = () => {
 
   useEffect(() => {
     if (error?.message) {
-      console.log(error?.message)
+      console.log(error.message)
     }
   }, [error])
 
@@ -106,10 +102,6 @@ export const Connected = () => {
       const tokenBalances = await indexerClient.getTokenBalances({
         accountAddress: account
       })
-
-      console.log('feeOptions', pendingFeeOptionConfirmation.options)
-      console.log('nativeTokenBalance', nativeTokenBalance)
-      console.log('tokenBalances', tokenBalances)
 
       const balances = pendingFeeOptionConfirmation.options.map(option => {
         if (option.token.contractAddress === null) {
@@ -251,26 +243,42 @@ export const Connected = () => {
     if (!address) {
       return
     }
+
+    // NATIVE token sale
+    // const currencyAddress = ethers.ZeroAddress
+    // const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
+    // const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
+    // const price = '200000000000000'
+
+    // // ERC-20 contract
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-    const price = '20000'
-    const chainId = 137
-    const tokenId = '1'
-    const nftQuantity = '1'
     const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
+    const price = '20000'
+
+    const chainId = 137
 
     openERC1155SaleContractPaymentModal({
+      collectibles: [
+        {
+          tokenId: '1',
+          quantity: '1'
+        }
+      ],
       chain: chainId,
       price,
       targetContractAddress: salesContractAddress,
       recipientAddress: address,
       currencyAddress,
-      tokenId,
       collectionAddress,
-      nftQuantity,
+      creditCardProviders: ['sardine'],
       isDev: true,
-      onSuccess: (txnHash: string) => { console.log('success!', txnHash) },
-      onError: (error: Error) => { console.error(error) }
+      onSuccess: (txnHash: string) => {
+        console.log('success!', txnHash)
+      },
+      onError: (error: Error) => {
+        console.error(error)
+      }
     })
   }
 
@@ -408,7 +416,6 @@ export const Connected = () => {
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
                 />
-
               </>
             )}
             <CardButton

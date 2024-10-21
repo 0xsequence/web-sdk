@@ -1,5 +1,7 @@
 import { sequence } from '0xsequence'
 import { ETHAuthProof } from '@0xsequence/auth'
+import { ChainIdLike } from '@0xsequence/network'
+import { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
 import { UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 
@@ -8,8 +10,8 @@ import { EthAuthSettings } from '../../types'
 
 export interface BaseSequenceConnectorOptions {
   walletAppURL?: string
-  defaultNetwork?: sequence.network.ChainIdLike
-  connect: sequence.provider.ConnectOptions
+  defaultNetwork?: ChainIdLike
+  connect: ConnectOptions
 }
 
 sequenceWallet.type = 'sequence' as const
@@ -41,7 +43,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
   //   name = newName
   // }
 
-  type Provider = sequence.provider.SequenceProvider
+  type Provider = SequenceProvider
   type Properties = {
     params: BaseSequenceConnectorOptions
     setEmail: (email: string) => void

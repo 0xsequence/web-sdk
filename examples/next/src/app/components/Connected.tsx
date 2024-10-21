@@ -42,7 +42,9 @@ export const Connected = () => {
   }, [pendingFeeOptionConfirmation])
 
   useEffect(() => {
-    console.log(error?.message)
+    if (error?.message) {
+      console.log(error.message)
+    }
   }, [error])
 
   const chainId = useChainId()

@@ -4,6 +4,8 @@
 
 # Sequence Kit 🧰
 
+[![npm version](https://badge.fury.io/js/@0xsequence%2Fkit.svg)](https://badge.fury.io/js/@0xsequence%2Fkit)
+
 Easily integrate web3 wallets in your app with Sequence Kit 🧰. Based on [wagmi](https://wagmi.sh/), and supporting all wagmi features.
 
 - Connect via social logins eg: facebook, google, discord, etc...! 🔐🪪
@@ -20,14 +22,110 @@ View the [demo](https://0xsequence.github.io/kit)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 # or
-pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 # or
-yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library
+
+#### The 'easy' way
+
+- `createConfig(walletType, options)` method is used to create your initial config and prepare sensible defaults that can be overridden
+
+`walletType` is either 'waas' or 'universal'
+
+```ts
+interface CreateConfigOptions {
+  appName: string
+  projectAccessKey: string
+  chainIds?: number[]
+  defaultChainId?: number
+  disableAnalytics?: boolean
+  defaultTheme?: Theme
+  position?: ModalPosition
+  signIn?: {
+    logoUrl?: string
+    projectName?: string
+    useMock?: boolean
+  }
+  displayedAssets?: Array<{
+    contractAddress: string
+    chainId: number
+  }>
+  ethAuth?: EthAuthSettings
+  isDev?: boolean
+
+  wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
+
+  waasConfigKey?: string
+  enableConfirmationModal?: boolean
+
+  walletConnect?:
+    | false
+    | {
+        projectId: string
+      }
+
+  google?:
+    | false
+    | {
+        clientId: string
+      }
+
+  apple?:
+    | false
+    | {
+        clientId: string
+        redirectURI: string
+      }
+
+  email?:
+    | boolean
+    | {
+        legacyEmailAuth?: boolean
+      }
+}
+```
+
+```js
+import { SequenceKit, createConfig } from '@0xsequence/kit'
+
+import Content from './components/Content'
+
+const config = createConfig('waas', {
+  projectAccessKey: '<your-project-access-key>',
+  chainIds: [1, 137]
+  defaultChainId: 1
+  appName: 'Demo Dapp',
+  waasConfigKey: '<your-waas-config-key>',
+
+  google: {
+    clientId: '<your-google-client-id>'
+  },
+
+  apple: {
+    clientId: '<your-apple-client-id>',
+    redirectUrl: '...'
+  },
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
+  }
+})
+
+function App() {
+  return (
+    <SequenceKit config={config}>
+      <Content />
+    </SequenceKit>
+  )
+}
+```
+
+#### Need more customization?
 
 React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
@@ -38,7 +136,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
 
-import '@0xsequence/design-system/styles.css'
+import '@0xsequence/kit/styles.css'
 
 const projectAccessKey = '<your-project-access-key>'
 
@@ -51,41 +149,56 @@ chains.forEach(chain => {
 })
 
 // Universal wallet configuration
-const connectors = getDefaultConnectors({
+const connectors = getDefaultConnectors('universal', {
   projectAccessKey,
-  walletConnectProjectId: '<your-wallet-connect-id>',
+  appName: 'Demo Dapp',
   defaultChainId: 137,
-  appName: 'Demo Dapp'
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
+  }
 })
 
 /* 
-  // ...or for Embedded wallet configuration
-  const connectors = getDefaultWaasConnectors({
+  const connectors = getDefaultWaasConnectors('{
     projectAccessKey,
-    walletConnectProjectId: '<your-wallet-connect-id>',
     defaultChainId: 137,
     appName: 'Demo Dapp',
 
     waasConfigKey: '<your-waas-config-key>',
-    googleClientId,
-    appleClientId,
-    appleRedirectUrl
+    
+    google: {
+      clientId
+    },
+
+    apple: {
+      clientId,
+      redirectUrl
+    },
+
+    walletConnect: {
+      projectId: '<your-wallet-connect-id>'
+    }
   })
   */
 
-const config = createConfig({
+const wagmiConfig = createConfig({
   chains,
   transports,
   connectors
 })
 
+const kitConfig = {
+  projectAccessKey: '...'
+}
+
 const queryClient = new QueryClient()
 
 function App() {
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <KitProvider>
+        <KitProvider config={kitConfig}>
           <Content />
         </KitProvider>
       </QueryClientProvider>

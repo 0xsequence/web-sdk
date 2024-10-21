@@ -122,8 +122,6 @@ export const sampleSize = <T>(collection: T[], n: number): T[] => {
   }
 
   for (const [idx, value] of Array.from(indexes).entries()) {
-    console.log(value, idx)
-
     sampled[idx] = collection[value]
   }
 

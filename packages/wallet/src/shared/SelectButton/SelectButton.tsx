@@ -1,5 +1,4 @@
 import { BoxProps, Card } from '@0xsequence/design-system'
-import { clsx } from 'clsx'
 import React, { ReactNode } from 'react'
 
 import { SelectedIndicator } from './SelectedIndicator'
@@ -22,7 +21,7 @@ export const SelectButton = (props: SelectButtonProps) => {
     <Card
       as="button"
       clickable
-      className={clsx(className)}
+      className={className}
       disabled={disabled}
       onClick={() => onClick(value)}
       userSelect="none"

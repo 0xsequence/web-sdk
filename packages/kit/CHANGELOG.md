@@ -1,5 +1,47 @@
 # @0xsequence/kit
 
+## 4.3.2
+
+### Patch Changes
+
+- Updated swap api calls
+
+## 4.3.1
+
+### Patch Changes
+
+- Fixing css export
+
+## 4.3.0
+
+### Minor Changes
+
+- Removed peer dependency on design-system moved custom css file to kit package
+
+## 4.2.0
+
+### Minor Changes
+
+- Updating enabling/disabling connector options
+
+## 4.1.0
+
+### Minor Changes
+
+- Added createConfig and SequenceKit wrapper component to simplify dapp setup
+
+## 4.0.6
+
+### Patch Changes
+
+- Payment Selection Modal
+
+## 4.0.5
+
+### Patch Changes
+
+- Update sequence deps
+
 ## 4.0.4
 
 ### Patch Changes

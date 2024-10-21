@@ -18,5 +18,5 @@ export const ERC_20_CONTRACT_ABI = [
     ],
     outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
     stateMutability: 'nonpayable'
-  },
+  }
 ]

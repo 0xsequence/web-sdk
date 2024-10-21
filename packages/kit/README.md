@@ -21,14 +21,110 @@ View the [demo](https://0xsequence.github.io/kit)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 # or
-pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 # or
-yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @0xsequence/design-system
+yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library
+
+#### The 'easy' way
+
+- `createConfig(walletType, options)` method is used to create your initial config and prepare sensible defaults that can be overridden
+
+`walletType` is either 'waas' or 'universal'
+
+```ts
+interface CreateConfigOptions {
+  appName: string
+  projectAccessKey: string
+  chainIds?: number[]
+  defaultChainId?: number
+  disableAnalytics?: boolean
+  defaultTheme?: Theme
+  position?: ModalPosition
+  signIn?: {
+    logoUrl?: string
+    projectName?: string
+    useMock?: boolean
+  }
+  displayedAssets?: Array<{
+    contractAddress: string
+    chainId: number
+  }>
+  ethAuth?: EthAuthSettings
+  isDev?: boolean
+
+  wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
+
+  waasConfigKey: string
+  enableConfirmationModal?: boolean
+
+  walletConnect?:
+    | boolean
+    | {
+        projectId: string
+      }
+
+  google?:
+    | boolean
+    | {
+        clientId: string
+      }
+
+  apple?:
+    | boolean
+    | {
+        clientId: string
+        rediretURI: string
+      }
+
+  email?:
+    | boolean
+    | {
+        legacyEmailAuth?: boolean
+      }
+}
+```
+
+```js
+import { SequenceKit, createConfig } from '@0xsequence/kit'
+
+import Content from './components/Content'
+
+const config = createConfig('waas', {
+  projectAccessKey: '<your-project-access-key>',
+  chainIds: [1, 137]
+  defaultChainId: 1
+  appName: 'Demo Dapp',
+  waasConfigKey: '<your-waas-config-key>',
+
+  google: {
+    clientId: '<your-google-client-id>'
+  },
+
+  apple: {
+    clientId: '<your-apple-client-id>',
+    redirectUrl: '...'
+  },
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
+  }
+})
+
+function App() {
+  return (
+    <SequenceKit config={config}>
+      <Content />
+    </SequenceKit>
+  )
+}
+```
+
+#### Need more customization?
 
 React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
@@ -39,7 +135,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
 
-import '@0xsequence/design-system/styles.css'
+import '@0xsequence/kit/styles.css'
 
 const projectAccessKey = 'xyz'
 
@@ -51,11 +147,14 @@ chains.forEach(chain => {
   transports[chain.id] = http()
 })
 
-const connectors = getDefaultConnectors({
-  walletConnectProjectId: 'wallet-connect-id',
-  defaultChainId: 137,
+const connectors = getDefaultConnectors('universal', {
+  projectAccessKey,
   appName: 'demo app',
-  projectAccessKey
+  defaultChainId: 137,
+
+  walletConnect: {
+    projectId: '<your-wallet-connect-project-id>'
+  }
 })
 
 const config = createConfig({

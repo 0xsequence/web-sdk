@@ -1,6 +1,6 @@
-import { sequence } from '0xsequence'
 import { ETHAuthProof } from '@0xsequence/auth'
 import { ETHAuth, Proof } from '@0xsequence/ethauth'
+import { isValidTypedDataSignature } from '@0xsequence/provider'
 import { UsePublicClientReturnType, Storage } from 'wagmi'
 import { GetWalletClientData } from 'wagmi/query'
 
@@ -67,7 +67,7 @@ export const validateEthProof = async (
   const decodedProof = await ethAuth.decodeProof(proof.proofString, true)
   const provider = publicClientToProvider(publicClient)
 
-  const isValid = await sequence.utils.isValidTypedDataSignature(walletAddress, proof.typedData, decodedProof.signature, provider)
+  const isValid = await isValidTypedDataSignature(walletAddress, proof.typedData, decodedProof.signature, provider)
 
   return isValid
 }

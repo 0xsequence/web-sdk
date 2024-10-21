@@ -5,9 +5,9 @@ import { headers } from 'next/headers'
 import { cookieToInitialState } from 'wagmi'
 
 import './globals.css'
-import '@0xsequence/design-system/styles.css'
+import '@0xsequence/kit/styles.css'
 
-import { wagmiConfig } from '../config'
+import { config } from '../config'
 
 import { Providers } from './Providers'
 
@@ -23,7 +23,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const initialState = cookieToInitialState(wagmiConfig, headers().get('cookie'))
+  const initialState = cookieToInitialState(config.wagmiConfig, headers().get('cookie'))
 
   return (
     <html lang="en">

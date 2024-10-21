@@ -1,5 +1,74 @@
 # @0xsequence/kit-wallet
 
+## 4.3.2
+
+### Patch Changes
+
+- Updated swap api calls
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.3.2
+
+## 4.3.1
+
+### Patch Changes
+
+- Fixing css export
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.3.1
+
+## 4.3.0
+
+### Minor Changes
+
+- Removed peer dependency on design-system moved custom css file to kit package
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.3.0
+
+## 4.2.0
+
+### Minor Changes
+
+- Updating enabling/disabling connector options
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.2.0
+
+## 4.1.0
+
+### Minor Changes
+
+- Added createConfig and SequenceKit wrapper component to simplify dapp setup
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.1.0
+
+## 4.0.6
+
+### Patch Changes
+
+- Payment Selection Modal
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.6
+
+## 4.0.5
+
+### Patch Changes
+
+- Update sequence deps
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.0.5
+
 ## 4.0.4
 
 ### Patch Changes

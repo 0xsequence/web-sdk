@@ -96,7 +96,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const socialAuthConnectors = (connectors as ExtendedConnector[]).filter(c => c._wallet?.type === 'social')
   const walletConnectors = [...baseWalletConnectors, ...injectedConnectors]
   const emailConnector = socialAuthConnectors.find(c => c._wallet.id.includes('email'))
-  const isEmailOnly = emailConnector && socialAuthConnectors.length === 1 && walletConnectors.length === 0
+  const isEmailOnly = emailConnector && socialAuthConnectors.length === 1
   const displayExtendedListButton = walletConnectors.length > 7
 
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = ev => {
@@ -244,38 +244,38 @@ export const Connect = (props: ConnectWalletContentProps) => {
                 })}
               </Box>
             )}
+          </>
+        )}
 
-            {walletConnectors.length > 0 && (
+        {walletConnectors.length > 0 && !showEmailInput && (
+          <>
+            {socialAuthConnectors.length > 0 && (
               <>
-                {socialAuthConnectors.length > 0 && (
-                  <>
-                    <Divider color="backgroundSecondary" />
-                    <Box justifyContent="center" alignItems="center">
-                      <Text variant="small" color="text50">
-                        or select a wallet
-                      </Text>
-                    </Box>
-                  </>
-                )}
-
-                <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
-                  {walletConnectors.slice(0, 7).map(connector => {
-                    return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
-                  })}
+                <Divider color="backgroundSecondary" />
+                <Box justifyContent="center" alignItems="center">
+                  <Text variant="small" color="text50">
+                    or select a wallet
+                  </Text>
                 </Box>
-
-                {displayExtendedListButton && (
-                  <Box marginTop="4" justifyContent="center">
-                    <Button
-                      shape="square"
-                      size="xs"
-                      onClick={() => setShowExtendedList(true)}
-                      label="More options"
-                      rightIcon={ChevronRightIcon}
-                    />
-                  </Box>
-                )}
               </>
+            )}
+
+            <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+              {walletConnectors.slice(0, 7).map(connector => {
+                return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+              })}
+            </Box>
+
+            {displayExtendedListButton && (
+              <Box marginTop="4" justifyContent="center">
+                <Button
+                  shape="square"
+                  size="xs"
+                  onClick={() => setShowExtendedList(true)}
+                  label="More options"
+                  rightIcon={ChevronRightIcon}
+                />
+              </Box>
             )}
           </>
         )}

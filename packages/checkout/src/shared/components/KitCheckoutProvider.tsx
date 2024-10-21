@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
 
+import { PAYMENT_SELECTION_MODAL_HEIGHT } from '../../constants'
 import {
   History,
   Navigation,
@@ -17,7 +18,7 @@ import {
   SelectPaymentContextProvider,
   SelectPaymentSettings,
   TransferFundsContextProvider,
-  TransferFundsSettings,
+  TransferFundsSettings
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import {
@@ -250,7 +251,8 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                       <Modal
                         contentProps={{
                           style: {
-                            height: 'auto',
+                            maxHeight: PAYMENT_SELECTION_MODAL_HEIGHT,
+                            maxWidth: '420px',
                             ...getModalPositionCss(position)
                           }
                         }}

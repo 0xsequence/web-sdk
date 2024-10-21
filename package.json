@@ -21,6 +21,9 @@
     "dev:react": "pnpm --filter @0xsequence/kit-example-react dev",
     "serve:react": "pnpm --filter @0xsequence/kit-example-react serve",
     "build:react": "pnpm --filter @0xsequence/kit-example-react build",
+    "dev:react-boilerplate": "pnpm --filter @0xsequence/kit-example-react-boilerplate dev",
+    "serve:react-boilerplate": "pnpm --filter @0xsequence/kit-example-react-boilerplate serve",
+    "build:react-boilerplate": "pnpm --filter @0xsequence/kit-example-react-boilerplate build",
     "dev:next": "pnpm --filter @0xsequence/kit-example-next dev",
     "serve:next": "pnpm --filter @0xsequence/kit-example-next start",
     "build:next": "pnpm --filter @0xsequence/kit-example-next build"

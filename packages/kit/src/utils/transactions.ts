@@ -36,7 +36,7 @@ export const sendTransactions = async ({
     await walletClient.switchChain({ id: chainId })
   }
 
-  const sequenceWaaS = (connector as  any)?.['sequenceWaas'] as SequenceWaaS | undefined
+  const sequenceWaaS = (connector as any)?.['sequenceWaas'] as SequenceWaaS | undefined
   const isEmbeddedWallet = !!sequenceWaaS
   const isSequenceUniversalWallet = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
 
@@ -70,7 +70,7 @@ export const sendTransactions = async ({
 
     return txnHash
 
-  // Sequence-Based Connector
+    // Sequence-Based Connector
   } else if (isSequenceUniversalWallet) {
     const wallet = sequence.getWallet()
     const signer = wallet.getSigner()
@@ -81,7 +81,7 @@ export const sendTransactions = async ({
     })
 
     return response.hash
-  // Other connectors (metamask, eip-6963, etc...)
+    // Other connectors (metamask, eip-6963, etc...)
   } else {
     let txHash: string = ''
     // We fire the transactions one at a time since the cannot be batched
@@ -91,7 +91,7 @@ export const sendTransactions = async ({
         to: transaction.to,
         value: transaction?.value,
         data: transaction?.data,
-        chain: undefined,
+        chain: undefined
       })
 
       await publicClient.waitForTransactionReceipt({

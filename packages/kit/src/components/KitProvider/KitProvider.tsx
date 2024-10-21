@@ -1,8 +1,9 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { Box, Button, Card, Collapsible, Modal, Text, ThemeProvider } from '@0xsequence/design-system'
+import { Box, Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
+import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
@@ -50,7 +51,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
-  const [analytics, setAnalytics] = useState<sequence.SequenceClient['analytics']>()
+  const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
   const wagmiConfig = useConfig()
   const storage = useStorage()
@@ -190,9 +191,11 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 marginTop: '4px'
                               }}
                             >
-                              <Text as="h1" variant="large" marginBottom="5">
-                                Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
-                              </Text>
+                              <ModalPrimitive.Title asChild>
+                                <Text as="h1" variant="large" marginBottom="5">
+                                  Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
+                                </Text>
+                              </ModalPrimitive.Title>
 
                               {pendingRequestConfirmation.type === 'signMessage' && (
                                 <Box flexDirection="column" width="full">
@@ -271,7 +274,9 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                       {isEmailConflictOpen && emailConflictInfo && (
                         <Modal size="sm" scroll={false} onClose={() => toggleEmailConflictModal(false)}>
                           <Box padding="4">
-                            <PageHeading>Email already in use</PageHeading>
+                            <ModalPrimitive.Title asChild>
+                              <PageHeading>Email already in use</PageHeading>
+                            </ModalPrimitive.Title>
                             <Box>
                               <Text variant="normal" color="text80" textAlign="center">
                                 Another account with this email address <Text color="text100">({emailConflictInfo.email})</Text>{' '}

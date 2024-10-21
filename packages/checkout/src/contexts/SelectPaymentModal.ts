@@ -1,26 +1,31 @@
-import { createGenericContext } from './genericContext'
 import { Hex } from 'viem'
 
-export interface SelectPaymentSettings {
-  chain: number | string,
-  currencyAddress: string | Hex,
-  price: string,
-  targetContractAddress: string | Hex,
-  txData: Hex,
+import { createGenericContext } from './genericContext'
+
+export type CreditCardProviders = 'sardine' | 'transak'
+
+interface Collectible {
   tokenId: string
+  quantity: string
+  decimals?: string
+ }
+
+export interface SelectPaymentSettings {
+  collectibles: Collectible[]
+  chain: number | string
+  currencyAddress: string | Hex
+  price: string
+  targetContractAddress: string | Hex
+  txData: Hex
   collectionAddress: string | Hex
-  nftQuantity: string
   recipientAddress: string | Hex
-  nftDecimals?: string
-  isDev?: boolean,
+  isDev?: boolean
   transactionConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
   enableMainCurrencyPayment?: boolean
   enableSwapPayments?: boolean
-  enableCreditCardPayments?: boolean
-  enableTransferFunds?: boolean
-  enableFiatOnRamp?: boolean
+  creditCardProviders?: string[]
 }
 
 type SelectPaymentModalContext = {

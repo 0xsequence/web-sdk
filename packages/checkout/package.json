@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-checkout",
-  "version": "4.0.4",
+  "version": "4.3.2",
   "description": "Checkout UI for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/checkout",
   "author": "Horizon Blockchain Games",
@@ -31,23 +31,20 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/api": "^2.0.6",
-    "@0xsequence/indexer": "^2.0.6",
-    "@0xsequence/metadata": "^2.0.6",
-    "@0xsequence/network": "^2.0.6",
-    "@tanstack/react-query": "^5.37.1",
-    "qrcode.react": "^3.1.0",
+    "fuse.js": "^6.6.2",
+    "qrcode.react": "^4.0.1",
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": ">= 1.7.6",
-    "0xsequence": ">= 2.0.1",
-    "@0xsequence/api": ">= 2.0.1",
-    "@0xsequence/indexer": ">= 2.0.1",
-    "@0xsequence/metadata": ">= 2.0.1",
-    "@0xsequence/network": ">= 2.0.1",
+    "0xsequence": ">= 2.0.12",
+    "@0xsequence/api": ">= 2.0.12",
+    "@0xsequence/design-system": ">= 1.7.8",
+    "@0xsequence/indexer": ">= 2.0.12",
+    "@0xsequence/metadata": ">= 2.0.12",
+    "@0xsequence/network": ">= 2.0.12",
     "@0xsequence/kit": "workspace:*",
-    "@0xsequence/waas": ">= 2.0.0",
+    "@0xsequence/waas": ">= 2.0.12",
+    "@tanstack/react-query": ">= 5.0.0",
     "ethers": ">= 6.13.0",
     "framer-motion": ">= 8.5.2",
     "react": ">= 17",
@@ -56,13 +53,14 @@
     "wagmi": ">= 2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.7.6",
+    "@0xsequence/design-system": "^1.7.8",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",
     "framer-motion": "^8.5.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "vite": "^5.2.11",
     "wagmi": "^2.9.5"
   }
 }

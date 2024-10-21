@@ -1,4 +1,4 @@
-import { Box, IconButton, ChevronLeftIcon, Text } from '@0xsequence/design-system'
+import { Box, IconButton, ChevronLeftIcon, Text, Modal, ModalPrimitive } from '@0xsequence/design-system'
 import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -36,9 +36,11 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
         <Text fontWeight="medium" variant="small" color="text50">
           {secondaryText}
         </Text>
-        <Text fontWeight="medium" variant="small" color="text100">
-          {primaryText}
-        </Text>
+        <ModalPrimitive.Title asChild>
+          <Text fontWeight="medium" variant="small" color="text100">
+            {primaryText}
+          </Text>
+        </ModalPrimitive.Title>
       </Box>
       <Box
         style={{

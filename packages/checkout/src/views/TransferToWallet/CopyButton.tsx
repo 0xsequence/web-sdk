@@ -30,7 +30,7 @@ export const CopyButton = (props: CopyButtonProps) => {
       {inline ? (
         <Button size={size} variant="text" leftIcon={isCopied ? CheckmarkIcon : CopyIcon} />
       ) : (
-        <Button size={size} leftIcon={isCopied ? CheckmarkIcon : CopyIcon} label={isCopied ? "Copied" : "Copy"} {...rest} />
+        <Button size={size} leftIcon={isCopied ? CheckmarkIcon : CopyIcon} label={isCopied ? 'Copied' : 'Copy'} {...rest} />
       )}
     </CopyToClipboard>
   )

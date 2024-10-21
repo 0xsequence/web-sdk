@@ -1,8 +1,9 @@
-import { SequenceAPIClient, Token, SwapQuote } from '@0xsequence/api'
+import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs } from '@0xsequence/api'
 import { ContractType, Page, SequenceIndexer, TokenBalance } from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { zeroAddress } from 'viem'
+import { blobsToProofsErrorType, zeroAddress } from 'viem'
 
 import { compareAddress } from '../utils/helpers'
 
@@ -215,7 +216,7 @@ export const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[
   return res?.tokenPrices || []
 }
 
-export const useCoinPrices = (tokens: Token[]) => {
+export const useCoinPrices = (tokens: Token[], disabled?: boolean) => {
   const apiClient = useAPIClient()
 
   return useQuery({
@@ -223,7 +224,7 @@ export const useCoinPrices = (tokens: Token[]) => {
     queryFn: () => getCoinPrices(apiClient, tokens),
     retry: true,
     staleTime: time.oneMinute,
-    enabled: tokens.length > 0
+    enabled: tokens.length > 0 && !disabled
   })
 }
 
@@ -275,12 +276,23 @@ export const useContractInfo = (chainId: number, contractAddress: string) => {
   return useQuery({
     queryKey: ['contractInfo', chainId, contractAddress],
     queryFn: async () => {
+      const isNativeToken = compareAddress(zeroAddress, contractAddress)
+
       const res = await metadataClient.getContractInfo({
         chainID: String(chainId),
         contractAddress
       })
+      const network = findSupportedNetwork(chainId)
 
-      return res.contractInfo
+      return {
+        ...res.contractInfo,
+        ...(isNativeToken && network
+          ? {
+              ...network.nativeToken,
+              logoURI: network.logoURI
+            }
+          : {})
+      }
     },
     retry: true,
     staleTime: time.oneMinute * 10,
@@ -346,94 +358,128 @@ export const useTransactionHistory = (args: UseTransactionHistoryArgs) => {
   })
 }
 
-export type SwapQuotesWithCurrencyInfo = {
-  quote: SwapQuote
+export type SwapPricesWithCurrencyInfo = {
+  price: SwapPrice
   info: ContractInfo | undefined
   balance: TokenBalance | undefined
 }
 
-const getSwapQuotes = async (
+const getSwapPrices = async (
   apiClient: SequenceAPIClient,
   metadataClient: SequenceMetadata,
   indexerClient: SequenceIndexer,
-  args: UseSwapQuotesArgs
-): Promise<SwapQuotesWithCurrencyInfo[]> => {
-  if (!args.chainId || !args.userAddress || !args.currencyAddress || !args.currencyAmount || args.currencyAmount === '0') {
+  args: UseSwapPricesArgs
+): Promise<SwapPricesWithCurrencyInfo[]> => {
+  if (!args.chainId || !args.userAddress || !args.buyCurrencyAddress || !args.buyAmount || args.buyAmount === '0') {
     return []
   }
 
-  const res = await apiClient.getSwapQuotes({
-    ...args,
-    includeApprove: true
-  })
+  try {
+    const { withContractInfo, ...swapPricesArgs } = args
 
-  if (res.swapQuotes === null) {
-    return []
-  }
+    const res = await apiClient.getSwapPrices({
+      ...swapPricesArgs,
+    })
 
-  const currencyInfoMap = new Map<string, Promise<ContractInfo | undefined>>()
-  if (args.withContractInfo) {
-    res?.swapQuotes.forEach(quote => {
-      const { currencyAddress } = quote
-      if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
-        currencyInfoMap.set(currencyAddress, metadataClient.getContractInfo({
-          chainID: String(args.chainId),
-          contractAddress: currencyAddress
-        }).then(data => data.contractInfo))
+    if (res.swapPrices === null) {
+      return []
+    }
+
+    const currencyInfoMap = new Map<string, Promise<ContractInfo | undefined>>()
+    if (withContractInfo) {
+      res?.swapPrices.forEach(price => {
+        const { currencyAddress } = price
+        if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
+          currencyInfoMap.set(
+            currencyAddress,
+            metadataClient
+              .getContractInfo({
+                chainID: String(args.chainId),
+                contractAddress: currencyAddress
+              })
+              .then(data => data.contractInfo)
+          )
+        }
+      })
+    }
+
+    const currencyBalanceInfoMap = new Map<string, Promise<TokenBalance>>()
+    res?.swapPrices.forEach(price => {
+      const { currencyAddress } = price
+      if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
+        currencyBalanceInfoMap.set(
+          currencyAddress,
+          indexerClient
+            .getTokenBalances({
+              accountAddress: args.userAddress,
+              contractAddress: currencyAddress,
+              includeMetadata: true,
+              metadataOptions: {
+                verifiedOnly: true
+              }
+            })
+            .then(balances => balances.balances?.[0] || [])
+        )
       }
     })
+
+    return Promise.all(
+      res?.swapPrices.map(async price => ({
+        price,
+        info: (await currencyInfoMap.get(price.currencyAddress)) || undefined,
+        balance: (await currencyBalanceInfoMap.get(price.currencyAddress)) || undefined
+      })) || []
+    )
+  } catch (e) {
+    console.error(e)
+    return []
   }
-
-  const currencyBalanceInfoMap = new Map<string, Promise<TokenBalance>>()
-  res?.swapQuotes.forEach(quote => {
-    const { currencyAddress } = quote
-    if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
-      currencyBalanceInfoMap.set(
-        currencyAddress,
-        indexerClient.getTokenBalances({
-          accountAddress: args.userAddress,
-          contractAddress: currencyAddress,
-          includeMetadata: true,
-          metadataOptions: {
-            verifiedOnly: true
-          }
-        }).then(balances => (balances.balances?.[0] || []))
-      )
-    }
-  })
-
-  return Promise.all(
-    res?.swapQuotes.map(async quote => ({
-      quote,
-      info: (await currencyInfoMap.get(quote.currencyAddress)) || undefined,
-      balance: (await currencyBalanceInfoMap.get(quote.currencyAddress)) || undefined
-    })) || []
-  )
 }
 
-interface UseSwapQuotesArgs {
+interface UseSwapPricesArgs {
   userAddress: string
-  currencyAddress: string
-  currencyAmount: string
+  buyCurrencyAddress: string
+  buyAmount: string
   chainId: number
   withContractInfo?: boolean
 }
 
-export const useSwapQuotes = (args: UseSwapQuotesArgs) => {
+export const useSwapPrices = (args: UseSwapPricesArgs) => {
   const apiClient = useAPIClient()
   const metadataClient = useMetadataClient()
   const indexerClient = useIndexerClient(args.chainId)
 
   const enabled =
-    !!args.chainId && !!args.userAddress && !!args.currencyAddress && !!args.currencyAmount && args.currencyAmount !== '0'
+    !!args.chainId && !!args.userAddress && !!args.buyCurrencyAddress && !!args.buyAmount && args.buyAmount !== '0'
 
   return useQuery({
-    queryKey: ['swapQuotes', args],
-    queryFn: () => getSwapQuotes(apiClient, metadataClient, indexerClient, args),
+    queryKey: ['swapPrices', args],
+    queryFn: () => getSwapPrices(apiClient, metadataClient, indexerClient, args),
     retry: true,
     // We must keep a long staletime to avoid the list of quotes being refreshed while the user is doing the transactions
     // Instead, we will invalidate the query manually
     staleTime: time.oneHour,
     enabled
+  })
+}
+
+interface UseSwapQuoteOptions {
+  disabled?: boolean
+}
+
+export const useSwapQuote  = (args:GetSwapQuoteArgs,  options: UseSwapQuoteOptions) => {
+  const apiClient = useAPIClient()
+  const { disabled = false } = options
+
+  return useQuery({
+    queryKey: ['useSwapQuote', args],
+    queryFn: async () => {
+      const res = await apiClient.getSwapQuote(args)
+
+      return res.swapQuote
+    },
+    retry: true,
+    staleTime: time.oneMinute * 1,
+    enabled: !disabled || !args.userAddress || !args.chainId || !args.buyCurrencyAddress
   })
 }

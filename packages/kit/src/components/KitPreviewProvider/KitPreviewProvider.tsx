@@ -1,6 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
+import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
 import { ThemeProvider } from '@0xsequence/design-system'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { useState, useEffect } from 'react'
@@ -41,7 +42,7 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
-  const [analytics, setAnalytics] = useState<sequence.SequenceClient['analytics']>()
+  const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
   const wagmiConfig = useConfig()
   const storage = useStorage()

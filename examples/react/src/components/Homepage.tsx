@@ -1,25 +1,23 @@
 import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
-import { useOpenConnectModal } from '@0xsequence/kit'
+import { useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useAccount } from 'wagmi'
-
-import { ConnectionMode } from '../config'
 
 import { Connected } from './Connected'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
-const connectionMode: ConnectionMode = searchParams.get('mode') === 'universal' ? 'universal' : 'waas'
+const walletType: WalletType = searchParams.get('type') === 'universal' ? 'universal' : 'waas'
 
 export const Homepage = () => {
   const { theme } = useTheme()
   const { isConnected } = useAccount()
   const { setOpenConnectModal } = useOpenConnectModal()
 
-  const handleSwitchConnectionMode = (mode: ConnectionMode) => {
+  const handleSwitchWalletType = (type: WalletType) => {
     const searchParams = new URLSearchParams()
 
-    searchParams.set('mode', mode)
+    searchParams.set('type', type)
     window.location.search = searchParams.toString()
   }
 
@@ -47,18 +45,18 @@ export const Homepage = () => {
           </Box>
 
           <Box gap="2" flexDirection="column" paddingX="4" marginTop="10" width="full" style={{ maxWidth: breakpoints.md }}>
-            <ConnectionModeSelect
-              mode="waas"
+            <WalletTypeSelect
+              type="waas"
               title="Embedded Wallet (WaaS)"
               description="Connect to an embedded wallet for a seamless experience."
-              onClick={handleSwitchConnectionMode}
+              onClick={handleSwitchWalletType}
             />
 
-            <ConnectionModeSelect
-              mode="universal"
+            <WalletTypeSelect
+              type="universal"
               title="Universal Wallet"
               description="Connect to the universal sequence wallet or EIP6963 Injected wallet providers (web extension wallets)."
-              onClick={handleSwitchConnectionMode}
+              onClick={handleSwitchWalletType}
             />
           </Box>
         </Box>
@@ -71,17 +69,17 @@ export const Homepage = () => {
   )
 }
 
-interface ConnectionModeSelectProps {
-  mode: ConnectionMode
+interface WalletTypeSelectProps {
+  type: WalletType
   title: string
   description: string
-  onClick: (mode: ConnectionMode) => void
+  onClick: (type: WalletType) => void
 }
 
-const ConnectionModeSelect = (props: ConnectionModeSelectProps) => {
-  const { mode, title, description, onClick } = props
+const WalletTypeSelect = (props: WalletTypeSelectProps) => {
+  const { type, title, description, onClick } = props
 
-  const isSelected = connectionMode === mode
+  const isSelected = walletType === type
 
   return (
     <Card
@@ -93,7 +91,7 @@ const ConnectionModeSelect = (props: ConnectionModeSelectProps) => {
         boxShadow: isSelected ? '0 0 24px rgb(127 59 158 / 0.8)' : 'none',
         borderColor: isSelected ? 'rgb(127 59 200)' : 'var(--seq-colors-border-normal)'
       }}
-      onClick={() => onClick(mode)}
+      onClick={() => onClick(type)}
     >
       <Box gap="2">
         <Box>

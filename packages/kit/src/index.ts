@@ -1,3 +1,5 @@
+export { SequenceKit } from './components/SequenceKit'
+
 // Provider
 export { KitProvider } from './components/KitProvider'
 export { KitPreviewProvider } from './components/KitPreviewProvider'
@@ -7,6 +9,7 @@ export type {
   Wallet,
   WalletField,
   WalletProperties,
+  WalletType,
   DisplayedAsset,
   ExtendedConnector,
   EthAuthSettings,
@@ -15,10 +18,20 @@ export type {
   KitConfig,
   StorageItem
 } from './types'
+export type { SwapPricesWithCurrencyInfo } from './hooks/data'
 
 // Config
-export { getDefaultConnectors, getDefaultWaasConnectors } from './config/defaultConnectors'
+export { createConfig, type CreateConfigOptions } from './config/createConfig'
+export {
+  getDefaultConnectors,
+  getDefaultWaasConnectors,
+  getDefaultUniversalConnectors,
+  type DefaultConnectorOptions,
+  type DefaultWaasConnectorOptions,
+  type DefaultUniversalConnectorOptions
+} from './config/defaultConnectors'
 export { getDefaultChains } from './config/defaultChains'
+export { getDefaultTransports } from './config/defaultTransports'
 
 // Constants
 export { LocalStorageKey, DEFAULT_SESSION_EXPIRATION, TRANSACTION_CONFIRMATIONS_DEFAULT } from './constants'
@@ -89,7 +102,10 @@ export {
   useTokenMetadata,
   useContractInfo,
   useTransactionHistory,
-  useSwapQuotes
+  useSwapPrices,
+  useSwapQuote
 } from './hooks/data'
 
-export type { SwapQuotesWithCurrencyInfo } from './hooks/data'
+// Components
+export { NetworkBadge } from './components/NetworkBadge'
+export { CollectibleTileImage } from './components/CollectibleTileImage'
