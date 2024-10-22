@@ -251,7 +251,9 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                         contentProps={{
                           style: {
                             maxWidth: '420px',
-                            ...getModalPositionCss(position)
+                            ...getModalPositionCss(position),
+                            scrollbarColor: 'gray black',
+                            scrollbarWidth: 'thin'
                           }
                         }}
                         backdropColor="backgroundBackdrop"

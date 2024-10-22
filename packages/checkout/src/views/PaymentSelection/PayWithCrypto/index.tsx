@@ -175,7 +175,15 @@ export const PayWithCrypto = ({
           Pay with crypto
         </Text>
       </Box>
-      <Scroll paddingY="3" style={{ height: viewheight, marginBottom: '-12px' }}>
+      <Scroll
+        paddingY="3"
+        style={{
+          height: viewheight,
+          marginBottom: '-12px',
+          scrollbarColor: 'gray black',
+          scrollbarWidth: 'thin'
+        }}
+      >
         {isLoadingOptions ? (
           <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
             <Spinner />
