@@ -115,17 +115,17 @@ export const PaymentSelectionContent = () => {
 
   const disableSwapQuote = !selectedCurrency || compareAddress(currencyAddress, selectedCurrency || '')
 
-  const swapQuotesBuyCurrency = compareAddress(currencyAddress || '', zeroAddress)
+  const swapQuotesSellCurrency = compareAddress(currencyAddress || '', zeroAddress)
     ? NATIVE_TOKEN_ADDRESS_0X
     : selectedCurrency || ''
 
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
     {
       userAddress: userAddress ?? '',
-      buyCurrencyAddress: swapQuotesBuyCurrency,
+      buyCurrencyAddress: currencyAddress,
       buyAmount: price,
       chainId: chainId,
-      sellCurrencyAddress: selectedCurrency || '',
+      sellCurrencyAddress: swapQuotesSellCurrency,
       includeApprove: true
     },
     {
