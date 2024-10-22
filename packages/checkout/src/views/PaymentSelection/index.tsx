@@ -44,6 +44,7 @@ export const PaymentSelectionContent = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
 
   const [disableButtons, setDisableButtons] = useState(false)
+  const [isError, setIsError] = useState<boolean>(false)
 
   if (!selectPaymentSettings) {
     return null
@@ -66,14 +67,15 @@ export const PaymentSelectionContent = () => {
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
 
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
-
-  const { address: userAddress, connector } = useAccount()
-  const { data: walletClient } = useWalletClient()
-  const publicClient = usePublicClient()
-  const { clearCachedBalances } = useClearCachedBalances()
-  const { closeSelectPaymentModal } = useSelectPaymentModal()
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
+  const { address: userAddress, connector } = useAccount()
+  const { data: walletClient } = useWalletClient()
+  const publicClient = usePublicClient({
+    chainId
+  })
+  const { clearCachedBalances } = useClearCachedBalances()
+  const { closeSelectPaymentModal } = useSelectPaymentModal()
 
   const {
     data: allowanceData,
@@ -152,6 +154,7 @@ export const PaymentSelectionContent = () => {
       return
     }
 
+    setIsError(false)
     setDisableButtons(true)
 
     try {
@@ -205,6 +208,7 @@ export const PaymentSelectionContent = () => {
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
+      setIsError(true)
     }
 
     setDisableButtons(false)
@@ -215,6 +219,7 @@ export const PaymentSelectionContent = () => {
       return
     }
 
+    setIsError(false)
     setDisableButtons(true)
 
     try {
@@ -293,6 +298,7 @@ export const PaymentSelectionContent = () => {
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
+      setIsError(true)
     }
 
     setDisableButtons(false)
@@ -351,31 +357,40 @@ export const PaymentSelectionContent = () => {
           </>
         )}
         {(enableMainCurrencyPayment || enableSwapPayments) && (
-          <Box width="full">
-            <Button
-              onClick={onClickPurchase}
-              disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
-              marginTop="6"
-              shape="square"
-              variant="primary"
-              width="full"
-              label="Complete Purchase"
-            />
-            <Box width="full" justifyContent="center" alignItems="center" gap="0.5" marginY="2">
-              {/* Replace by icon from design-system once new release is out */}
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M8.82807 5.24497V3.52873C8.82807 2.24258 7.78549 1.19995 6.49934 1.19995C5.21319 1.19995 4.17057 2.24258 4.17057 3.52873L4.17057 5.24497H3.9832C3.32046 5.24497 2.7832 5.78223 2.7832 6.44497V9.49529C2.7832 10.158 3.32046 10.6953 3.9832 10.6953H9.01546C9.6782 10.6953 10.2155 10.158 10.2155 9.49529V6.44497C10.2155 5.78223 9.6782 5.24497 9.01546 5.24497H8.82807ZM6.49934 2.06705C5.69209 2.06705 5.03769 2.72144 5.03766 3.52867L5.03767 5.24497H7.96097V3.52867C7.96094 2.72144 7.30658 2.06705 6.49934 2.06705Z"
-                  fill="#6D6D6D"
-                />
-              </svg>
-              <Text variant="xsmall" color="text50" marginTop="0.5">
-                Secure Checkout
-              </Text>
+          <>
+            {isError && (
+              <Box width="full" style={{ marginBottom: '-18px' }}>
+                <Text color="negative" variant="small">
+                  A problem occurred while executing the transaction.
+                </Text>
+              </Box>
+            )}
+            <Box width="full">
+              <Button
+                onClick={onClickPurchase}
+                disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
+                marginTop="6"
+                shape="square"
+                variant="primary"
+                width="full"
+                label="Complete Purchase"
+              />
+              <Box width="full" justifyContent="center" alignItems="center" gap="0.5" marginY="2">
+                {/* Replace by icon from design-system once new release is out */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M8.82807 5.24497V3.52873C8.82807 2.24258 7.78549 1.19995 6.49934 1.19995C5.21319 1.19995 4.17057 2.24258 4.17057 3.52873L4.17057 5.24497H3.9832C3.32046 5.24497 2.7832 5.78223 2.7832 6.44497V9.49529C2.7832 10.158 3.32046 10.6953 3.9832 10.6953H9.01546C9.6782 10.6953 10.2155 10.158 10.2155 9.49529V6.44497C10.2155 5.78223 9.6782 5.24497 9.01546 5.24497H8.82807ZM6.49934 2.06705C5.69209 2.06705 5.03769 2.72144 5.03766 3.52867L5.03767 5.24497H7.96097V3.52867C7.96094 2.72144 7.30658 2.06705 6.49934 2.06705Z"
+                    fill="#6D6D6D"
+                  />
+                </svg>
+                <Text variant="xsmall" color="text50" marginTop="0.5">
+                  Secure Checkout
+                </Text>
+              </Box>
             </Box>
-          </Box>
+          </>
         )}
       </Box>
       <Divider marginY="0" />

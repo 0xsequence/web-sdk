@@ -18,10 +18,6 @@ import { useAccount } from 'wagmi'
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
 import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
-import { getCardHeight } from '../../../utils/sizing'
-
-import { PaymentProviderOption } from './PaymentProviderOption'
-import { SardineLogo } from './providers/SardineLogo'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings
@@ -115,6 +111,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
             case 'sardine':
               return (
                 <Card
+                  key="sardine"
                   justifyContent="space-between"
                   alignItems="center"
                   padding="4"

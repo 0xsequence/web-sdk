@@ -1,7 +1,7 @@
 import { sequence } from '0xsequence'
 import { SequenceWaaS } from '@0xsequence/waas'
 import { PublicClient, WalletClient, Hex } from 'viem'
-import { Connector } from 'wagmi'
+import { Connector, Config , } from 'wagmi'
 
 import { TRANSACTION_CONFIRMATIONS_DEFAULT } from '../constants'
 import { ExtendedConnector } from '../types'
@@ -32,8 +32,13 @@ export const sendTransactions = async ({
   transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
 }: SendTransactionsInput): Promise<string> => {
   const walletClientChainId = await walletClient.getChainId()
+
   if (walletClientChainId !== chainId) {
-    await walletClient.switchChain({ id: chainId })
+    throw new Error ('The Wallet Client is using the wrong network')
+  }
+
+  if (publicClient.chain?.id !== chainId) {
+    throw new Error ('The Public Client is using the wrong network')
   }
 
   const sequenceWaaS = (connector as any)?.['sequenceWaas'] as SequenceWaaS | undefined
@@ -54,7 +59,8 @@ export const sendTransactions = async ({
     const response = await sequenceWaaS.sendTransaction({
       transactions,
       transactionsFeeOption,
-      transactionsFeeQuote
+      transactionsFeeQuote,
+      network: chainId
     })
 
     if (response.code === 'transactionFailed') {
@@ -65,7 +71,7 @@ export const sendTransactions = async ({
 
     await publicClient.waitForTransactionReceipt({
       hash: txnHash as Hex,
-      confirmations: transactionConfirmations
+      confirmations: transactionConfirmations,
     })
 
     return txnHash
