@@ -21,7 +21,7 @@ export const TransactionSuccess = () => {
   }, [])
 
   return (
-    <Box style={{ height: '500px' }}>
+    <Box style={{ height: '650px' }}>
       <Box
         flexDirection="column"
         alignItems="center"

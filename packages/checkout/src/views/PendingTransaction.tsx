@@ -115,7 +115,7 @@ export const PendingTransaction = () => {
         alignItems="center"
         gap="6"
         style={{
-          height: '500px',
+          height: '650px',
           width: '380px'
         }}
       >
@@ -134,7 +134,7 @@ export const PendingTransaction = () => {
         alignItems="center"
         gap="6"
         style={{
-          height: '500px',
+          height: '650px',
           width: '380px'
         }}
       >
@@ -146,11 +146,11 @@ export const PendingTransaction = () => {
   }
 
   return (
-    <Box alignItems="center" justifyContent="center" style={{ height: '620px' }}>
+    <Box alignItems="center" justifyContent="center" style={{ height: '770px' }}>
       <iframe
         src={url}
         style={{
-          maxHeight: '500px',
+          maxHeight: '650px',
           height: '100%',
           maxWidth: '380px',
           width: '100%'
