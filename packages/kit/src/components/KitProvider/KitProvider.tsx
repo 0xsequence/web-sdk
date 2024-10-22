@@ -151,6 +151,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                           contentProps={{
                             style: {
                               maxWidth: '364px',
+                              overflow: 'visible',
                               ...getModalPositionCss(position)
                             }
                           }}
