@@ -1,5 +1,16 @@
 # @0xsequence/kit-connectors
 
+## 4.4.0
+
+### Minor Changes
+
+- Updating sequence.js and fixing multiple isSignedIn request issues
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.4.0
+
 ## 4.3.2
 
 ### Patch Changes

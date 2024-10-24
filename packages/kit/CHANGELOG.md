@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.4.0
+
+### Minor Changes
+
+- Updating sequence.js and fixing multiple isSignedIn request issues
+
 ## 4.3.2
 
 ### Patch Changes
