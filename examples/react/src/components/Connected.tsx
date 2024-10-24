@@ -52,7 +52,7 @@ export const Connected = () => {
 
   const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
 
-  const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error } = useSendTransaction()
+  const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error: sendTransactionError } = useSendTransaction()
   const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
@@ -77,10 +77,16 @@ export const Connected = () => {
   }, [pendingFeeOptionConfirmation])
 
   useEffect(() => {
-    if (error?.message) {
-      console.log(error.message)
+    if (!sendTransactionError) {
+      return
     }
-  }, [error])
+
+    if (sendTransactionError instanceof Error) {
+      console.error(sendTransactionError.cause)
+    } else {
+      console.error(sendTransactionError)
+    }
+  }, [sendTransactionError])
 
   const chainId = useChainId()
 
@@ -188,7 +194,11 @@ export const Connected = () => {
       console.log('isValid?', isValid)
     } catch (e) {
       setIsSigningMessage(false)
-      console.error(e)
+      if (e instanceof Error) {
+        console.error(e.cause)
+      } else {
+        console.error(e)
+      }
     }
   }
 
