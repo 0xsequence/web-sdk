@@ -30,7 +30,9 @@ export const getNativeTokenBalance = async (indexerClient: SequenceIndexer, chai
     contractType: ContractType.UNKNOWN,
     blockHash: '',
     blockNumber: 0,
-    tokenID: ''
+    tokenID: '',
+    uniqueCollectibles: '',
+    isSummary: false
   }
 
   return tokenBalance
