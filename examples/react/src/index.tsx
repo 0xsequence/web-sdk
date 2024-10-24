@@ -7,8 +7,4 @@ import { App } from './App'
 console.log('VERSION:', process.env.PACKAGE_VERSION)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+root.render(<App />)
