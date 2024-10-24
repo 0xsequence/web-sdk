@@ -1,8 +1,21 @@
 import { allNetworks, EIP1193Provider } from '@0xsequence/network'
-import { SequenceWaaS, SequenceConfig, ExtendedSequenceConfig, Transaction, FeeOption } from '@0xsequence/waas'
+import {
+  SequenceWaaS,
+  SequenceConfig,
+  ExtendedSequenceConfig,
+  Transaction,
+  FeeOption,
+  WebrpcEndpointError
+} from '@0xsequence/waas'
 import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
-import { TransactionRejectedRpcError, UserRejectedRequestError, getAddress } from 'viem'
+import {
+  InternalRpcError,
+  ProviderDisconnectedError,
+  TransactionRejectedRpcError,
+  UserRejectedRequestError,
+  getAddress
+} from 'viem'
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
@@ -65,8 +78,6 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         return
       }
 
-      // const provider = await this.getProvider()
-
       if (params.googleClientId) {
         await config.storage?.setItem(LocalStorageKey.WaasGoogleClientID, params.googleClientId)
       }
@@ -77,9 +88,11 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         await config.storage?.setItem(LocalStorageKey.WaasAppleRedirectURI, params.appleRedirectURI)
       }
 
-      // provider.on('disconnect', () => {
-      //   this.onDisconnect()
-      // })
+      sequenceWaasProvider.on('error', error => {
+        if (isSessionInvalidOrNotFoundError(error)) {
+          this.disconnect()
+        }
+      })
     },
 
     async connect(_connectInfo) {
@@ -137,12 +150,14 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       const provider = await this.getProvider()
 
       try {
-        await provider.sequenceWaas.dropSession({ sessionId: await provider.sequenceWaas.getSessionId() })
+        await provider.sequenceWaas.dropSession({ sessionId: await provider.sequenceWaas.getSessionId(), strict: false })
       } catch (e) {
         console.log(e)
       }
 
       await config.storage?.removeItem(LocalStorageKey.WaasActiveLoginType)
+
+      config.emitter.emit('disconnect')
     },
 
     async getAccounts() {
@@ -204,11 +219,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
 
     async onChainChanged(chain) {
-      // const provider = await this.getProvider()
-
       config.emitter.emit('change', { chainId: normalizeChainId(chain) })
-
-      // provider.setDefaultChainId(normalizeChainId(chain))
     },
 
     async onConnect(_connectInfo) {},
@@ -272,14 +283,30 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
 
       const chainId = this.getChainId()
 
-      const feeOptionsResponse = await this.checkTransactionFeeOptions({ transactions: [txns] as Transaction[], chainId })
+      let feeOptionsResponse
+
+      try {
+        feeOptionsResponse = await this.checkTransactionFeeOptions({ transactions: [txns] as Transaction[], chainId })
+      } catch (error: unknown) {
+        if (isSessionInvalidOrNotFoundError(error)) {
+          await this.emit('error', error)
+          throw new ProviderDisconnectedError(new Error('Provider is not connected'))
+        } else {
+          const message =
+            typeof error === 'object' && error !== null && 'cause' in error
+              ? (String(error.cause) ?? 'Failed to check transaction fee options')
+              : 'Failed to check transaction fee options'
+          throw new InternalRpcError(new Error(message))
+        }
+      }
+
       const feeOptions = feeOptionsResponse?.feeOptions
       let selectedFeeOption: FeeOption | undefined
 
       if (!feeOptionsResponse?.isSponsored && feeOptions && feeOptions.length > 0) {
         if (!this.feeConfirmationHandler) {
           throw new TransactionRejectedRpcError(
-            new Error('Unable to send transaction: please use UseWaasFeeOptions hook and pick a fee option')
+            new Error('Unable to send transaction: please use useWaasFeeOptions hook and pick a fee option')
           )
         }
 
@@ -310,14 +337,27 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
         }
       }
 
-      const response = await this.sequenceWaas.sendTransaction({
-        transactions: [await ethers.resolveProperties(params?.[0])],
-        network: chainId,
-        transactionsFeeOption: selectedFeeOption,
-        transactionsFeeQuote: feeOptionsResponse?.feeQuote
-      })
+      let response
 
-      console.log('response', response)
+      try {
+        response = await this.sequenceWaas.sendTransaction({
+          transactions: [await ethers.resolveProperties(params?.[0])],
+          network: chainId,
+          transactionsFeeOption: selectedFeeOption,
+          transactionsFeeQuote: feeOptionsResponse?.feeQuote
+        })
+      } catch (error) {
+        if (isSessionInvalidOrNotFoundError(error)) {
+          await this.emit('error', error)
+          throw new ProviderDisconnectedError(new Error('Provider is not connected'))
+        } else {
+          const message =
+            typeof error === 'object' && error !== null && 'cause' in error
+              ? (String(error.cause) ?? 'Failed to check transaction fee options')
+              : 'Failed to check transaction fee options'
+          throw new InternalRpcError(new Error(message))
+        }
+      }
 
       if (response.code === 'transactionFailed') {
         // Failed
@@ -353,7 +393,23 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
           throw new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
       }
-      const sig = await this.sequenceWaas.signMessage({ message: params?.[0], network: Number(this.currentNetwork.chainId) })
+
+      let sig
+
+      try {
+        sig = await this.sequenceWaas.signMessage({ message: params?.[0], network: Number(this.currentNetwork.chainId) })
+      } catch (error) {
+        if (isSessionInvalidOrNotFoundError(error)) {
+          await this.emit('error', error)
+          throw new ProviderDisconnectedError(new Error('Provider is not connected'))
+        } else {
+          const message =
+            typeof error === 'object' && error !== null && 'cause' in error
+              ? (String(error.cause) ?? 'Failed to check transaction fee options')
+              : 'Failed to check transaction fee options'
+          throw new InternalRpcError(new Error(message))
+        }
+      }
 
       return sig.data.signature
     }
@@ -433,4 +489,8 @@ function normalizeChainId(chainId: string | number | bigint | { chainId: string 
   if (typeof chainId === 'string') return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
   if (typeof chainId === 'bigint') return Number(chainId)
   return chainId
+}
+
+function isSessionInvalidOrNotFoundError(error: unknown) {
+  return error instanceof WebrpcEndpointError && error.cause === 'session invalid or not found'
 }
