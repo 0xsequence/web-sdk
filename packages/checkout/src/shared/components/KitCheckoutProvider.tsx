@@ -66,10 +66,16 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
       chainId: 137,
       currencyAddress: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
       collectionAddress: '0xdeb398f41ccd290ee5114df7e498cf04fac916cb',
+      txHash: '0x07e5818034862a3907596a3773e7ca7387640914bb308b572e62f32318990cf3',
       items: [
         {
           price: '20000',
           tokenId: '1',
+          quantity: '1'
+        },
+        {
+          price: '20000',
+          tokenId: '2',
           quantity: '1'
         }
       ]

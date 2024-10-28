@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { Box, Card, Spinner, Text } from '@0xsequence/design-system'
+import { Box, Card, Spinner, Text, CheckmarkIcon, CloseIcon, truncateAddress } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
 import { NetworkBadge, CollectibleTileImage, useContractInfo, useTokenMetadata, useCoinPrices } from '@0xsequence/kit'
+import { findSupportedNetwork } from '@0xsequence/network'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransactionStatusModal } from '../../hooks'
+import { network } from '0xsequence/dist/declarations/src/sequence'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 
@@ -39,7 +41,10 @@ export const TransactionStatusHeader = ({ status }: TransactionStatusHeaderProps
 export const TransactionStatus = () => {
   const { address: userAddress } = useAccount()
   const { transactionStatusSettings } = useTransactionStatusModal()
-  const { collectionAddress, chainId, items } = transactionStatusSettings!
+  const { collectionAddress, chainId, items, txHash, currencyAddress } = transactionStatusSettings!
+  const [transactionHash, setTransactionHash] = useState<string | undefined>(txHash)
+  const networkConfig = findSupportedNetwork(chainId)
+  const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}/tx/${transactionHash}`
 
   const [status, setStatus] = useState<TxStatus>('pending')
   const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useTokenMetadata(
@@ -69,6 +74,60 @@ export const TransactionStatus = () => {
     }
   }
 
+  const StatusIndicator = () => {
+    switch (status) {
+      case 'success':
+        return (
+          <Box gap="2" justifyContent="center" alignItems="center">
+            <Box width="6" height="6" borderRadius="circle" background="positive">
+              <CheckmarkIcon color="white" position="relative" style={{ top: '3px', right: '-1px' }} />
+            </Box>
+            <Text variant="normal" color="text50">
+              Transaction complete
+            </Text>
+          </Box>
+        )
+      case 'error':
+        return (
+          <Box gap="2" justifyContent="center" alignItems="center">
+            <Box width="6" height="6" borderRadius="circle" background="negative">
+              <CloseIcon color="white" position="relative" style={{ top: '2px', right: '-2px' }} />
+            </Box>
+            <Text variant="normal" color="text50">
+              Transaction failed
+            </Text>
+          </Box>
+        )
+      case 'pending':
+      default:
+        return (
+          <Box gap="2" justifyContent="center" alignItems="center">
+            <Spinner />
+            <Text variant="normal" color="text50">
+              Processing transaction
+            </Text>
+          </Box>
+        )
+    }
+  }
+
+  const ItemsInfo = () => {
+    return (
+      <Box gap="2" flexDirection="column">
+        {items.map(item => (
+          <Box key={item.tokenId} flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Box>
+              <Text color="white">item!</Text>
+            </Box>
+            <Box>
+              <Text color="white">price!</Text>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    )
+  }
+
   return (
     <Box width="full" paddingX="6" paddingBottom="6">
       <TransactionStatusHeader status={status} />
@@ -92,12 +151,24 @@ export const TransactionStatus = () => {
               </Text>
             </Box>
             <Card padding="4">
-              <Box>
-                <Text color="text100">transaction status is here...</Text>
-              </Box>
+              <ItemsInfo />
             </Card>
-            <Box width="full">
-              <Text color="text100">transaction status is here...</Text>
+            <Box width="full" justifyContent="space-between" alignItems="center">
+              <StatusIndicator />
+              {transactionHash ? (
+                <Text
+                  href={blockExplorerUrl}
+                  textDecoration="none"
+                  variant="normal"
+                  cursor="pointer"
+                  as="a"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: '#8E7EFF' }}
+                >
+                  {truncateAddress(transactionHash || '', 4, 4)}
+                </Text>
+              ) : null}
             </Box>
           </>
         )}
