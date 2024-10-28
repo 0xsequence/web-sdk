@@ -72,11 +72,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
           price: '20000',
           tokenId: '1',
           quantity: '1'
-        },
-        {
-          price: '20000',
-          tokenId: '2',
-          quantity: '1'
         }
       ]
     }

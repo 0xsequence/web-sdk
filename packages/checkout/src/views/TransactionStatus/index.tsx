@@ -1,12 +1,23 @@
 import { useState } from 'react'
-import { Box, Card, Spinner, Text, CheckmarkIcon, CloseIcon, truncateAddress } from '@0xsequence/design-system'
-import { useAccount } from 'wagmi'
-import { NetworkBadge, CollectibleTileImage, useContractInfo, useTokenMetadata, useCoinPrices } from '@0xsequence/kit'
+import {
+  ArrowDownIcon,
+  Box,
+  Card,
+  NetworkImage,
+  Spinner,
+  Text,
+  TokenImage,
+  CheckmarkIcon,
+  CloseIcon,
+  truncateAddress
+} from '@0xsequence/design-system'
+import TimeAgo from 'timeago-react'
+import { formatUnits } from 'viem'
+import { CollectibleTileImage, useContractInfo, useTokenMetadata, formatDisplay } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransactionStatusModal } from '../../hooks'
-import { network } from '0xsequence/dist/declarations/src/sequence'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 
@@ -22,8 +33,8 @@ export const TransactionStatusHeader = ({ status }: TransactionStatusHeaderProps
       case 'error':
         return 'Your purchase has failed'
       case 'pending':
-        return 'Your purchase is processing'
       default:
+        return 'Your purchase is processing'
     }
   }
 
@@ -39,13 +50,13 @@ export const TransactionStatusHeader = ({ status }: TransactionStatusHeaderProps
 }
 
 export const TransactionStatus = () => {
-  const { address: userAddress } = useAccount()
   const { transactionStatusSettings } = useTransactionStatusModal()
   const { collectionAddress, chainId, items, txHash, currencyAddress } = transactionStatusSettings!
   const [transactionHash, setTransactionHash] = useState<string | undefined>(txHash)
   const networkConfig = findSupportedNetwork(chainId)
   const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}/tx/${transactionHash}`
 
+  const [startTime] = useState(new Date())
   const [status, setStatus] = useState<TxStatus>('pending')
   const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useTokenMetadata(
     chainId,
@@ -53,7 +64,10 @@ export const TransactionStatus = () => {
     items.map(i => i.tokenId)
   )
 
-  const isLoading = isLoadingTokenMetadatas
+  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(chainId, collectionAddress)
+  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+
+  const isLoading = isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo
 
   const getInformationText = () => {
     const tokenNames =
@@ -113,17 +127,72 @@ export const TransactionStatus = () => {
 
   const ItemsInfo = () => {
     return (
-      <Box gap="2" flexDirection="column">
-        {items.map(item => (
-          <Box key={item.tokenId} flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Box>
-              <Text color="white">item!</Text>
+      <Box gap="3" flexDirection="column">
+        {items.map(item => {
+          const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
+          const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
+
+          const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0))
+
+          return (
+            <Box key={item.tokenId} flexDirection="row" alignItems="center" justifyContent="space-between">
+              <Box flexDirection="row" gap="2">
+                <Box
+                  borderRadius="md"
+                  style={{
+                    height: '36px',
+                    width: '36px'
+                  }}
+                >
+                  <CollectibleTileImage imageUrl={tokenMetadata?.image} />
+                </Box>
+                <Box flexDirection="column" gap="0.5">
+                  <Text variant="small" color="text80" fontWeight="medium">
+                    {dataCollectionInfo?.name || null}
+                  </Text>
+                  <Text variant="small" color="text100" fontWeight="bold">
+                    {`${tokenMetadata?.name || 'Collectible'} #${item.tokenId} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
+                  </Text>
+                </Box>
+              </Box>
+              <Box flexDirection="row" gap="1" alignItems="center" justifyContent="center">
+                <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" symbol={dataCurrencyInfo?.symbol} disableAnimation />
+                <Text variant="normal" fontWeight="bold" color="white">{`${price} ${dataCurrencyInfo?.symbol}`}</Text>
+              </Box>
             </Box>
-            <Box>
-              <Text color="white">price!</Text>
-            </Box>
-          </Box>
-        ))}
+          )
+        })}
+      </Box>
+    )
+  }
+
+  const TxInfo = () => {
+    const getStatusText = () => {
+      switch (status) {
+        case 'success':
+          return 'Sent!'
+        case 'error':
+          return 'Not sent'
+        case 'pending':
+        default:
+          return 'Sending...'
+      }
+    }
+
+    return (
+      <Box marginBottom="2" flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Box flexDirection="row" gap="1" alignItems="center" justifyContent="space-between">
+          <ArrowDownIcon color="text80" size="xs" style={{ transform: 'rotate(180deg)', marginRight: '-4px' }} />
+          <Text color="text80" variant="small" fontWeight="medium">
+            {getStatusText()}
+          </Text>
+          <NetworkImage chainId={chainId} size="xs" />
+        </Box>
+        <Box>
+          <Text color="text50" variant="small" fontWeight="medium">
+            <TimeAgo datetime={startTime} />
+          </Text>
+        </Box>
       </Box>
     )
   }
@@ -151,6 +220,7 @@ export const TransactionStatus = () => {
               </Text>
             </Box>
             <Card padding="4">
+              <TxInfo />
               <ItemsInfo />
             </Card>
             <Box width="full" justifyContent="space-between" alignItems="center">

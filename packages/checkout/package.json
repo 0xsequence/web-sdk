@@ -32,7 +32,8 @@
   },
   "dependencies": {
     "qrcode.react": "^4.0.1",
-    "react-copy-to-clipboard": "^5.1.0"
+    "react-copy-to-clipboard": "^5.1.0",
+    "timeago-react": "^3.0.6"
   },
   "peerDependencies": {
     "0xsequence": ">= 2.0.20",
