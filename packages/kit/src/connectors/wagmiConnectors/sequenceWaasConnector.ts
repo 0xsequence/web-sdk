@@ -118,12 +118,9 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         await config.storage?.removeItem(LocalStorageKey.WaasEmailIdToken)
         await config.storage?.removeItem(LocalStorageKey.WaasAppleIdToken)
 
-        console.log('id token...', idToken)
-
         if (idToken) {
           try {
             const signInResponse = await provider.sequenceWaas.signIn({ idToken }, randomName())
-            console.log('sign in response....', signInResponse)
             if (signInResponse?.email) {
               await config.storage?.setItem(LocalStorageKey.WaasSignInEmail, signInResponse.email)
             }
