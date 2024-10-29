@@ -34,7 +34,12 @@ export { getDefaultChains } from './config/defaultChains'
 export { getDefaultTransports } from './config/defaultTransports'
 
 // Constants
-export { LocalStorageKey, DEFAULT_SESSION_EXPIRATION, TRANSACTION_CONFIRMATIONS_DEFAULT, NATIVE_TOKEN_ADDRESS_0X } from './constants'
+export {
+  LocalStorageKey,
+  DEFAULT_SESSION_EXPIRATION,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  NATIVE_TOKEN_ADDRESS_0X
+} from './constants'
 
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'
@@ -80,6 +85,7 @@ export { useTheme } from './hooks/useTheme'
 export { useWalletSettings } from './hooks/useWalletSettings'
 export { useWaasFeeOptions } from './hooks/useWaasFeeOptions'
 export { useWaasSignInEmail } from './hooks/useWaasSignInEmail'
+export { useSignInEmail } from './hooks/useSignInEmail'
 export { useProjectAccessKey } from './hooks/useProjectAccessKey'
 export { useAPIClient } from './hooks/useAPIClient'
 export { useMetadataClient } from './hooks/useMetadataClient'

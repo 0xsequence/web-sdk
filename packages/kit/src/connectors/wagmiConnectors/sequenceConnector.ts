@@ -52,6 +52,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     [LocalStorageKey.EthAuthProof]: ETHAuthProof
     [LocalStorageKey.Theme]: string
     [LocalStorageKey.EthAuthSettings]: EthAuthSettings
+    [LocalStorageKey.SignInEmail]: string | null
   }
 
   return createConnector<Provider, Properties, StorageItem>(config => ({
@@ -86,6 +87,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
 
         const connectOptionsWithTheme = {
           authorize: true,
+          askForEmail: true,
           ...ethAuthSettings,
           ...connect,
           settings: {
@@ -112,6 +114,9 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
 
           await config.storage?.setItem(LocalStorageKey.EthAuthProof, jsonEthAuthProof)
         }
+
+        // Save the email used to sign in
+        await config.storage?.setItem(LocalStorageKey.SignInEmail, e.email || null)
       }
 
       const accounts = await this.getAccounts()
