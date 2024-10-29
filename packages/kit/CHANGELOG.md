@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.4.1
+
+### Patch Changes
+
+- fix for payment selection modal
+
 ## 4.4.0
 
 ### Minor Changes

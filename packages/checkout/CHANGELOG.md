@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.4.1
+
+### Patch Changes
+
+- fix for payment selection modal
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.4.1
+
 ## 4.4.0
 
 ### Minor Changes
