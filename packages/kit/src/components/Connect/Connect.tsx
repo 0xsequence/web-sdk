@@ -162,7 +162,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
   } = useEmailAuth({
     connector: emailConnector,
     onSuccess: async result => {
-      console.log('Successfult email auth', result)
+      if ('signInResponse' in result && result.signInResponse?.email) {
+        storage?.setItem(LocalStorageKey.WaasSignInEmail, result.signInResponse.email)
+      }
 
       if (emailConnector) {
         if (result.version === 1) {
