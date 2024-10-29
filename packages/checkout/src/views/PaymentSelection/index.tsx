@@ -344,7 +344,7 @@ export const PaymentSelectionContent = () => {
             />
           </>
         )}
-        {creditCardProviders.length > 0 && (
+        {creditCardProviders?.length > 0 && (
           <>
             <Divider width="full" marginY="3" />
             <PayWithCreditCard settings={selectPaymentSettings} disableButtons={disableButtons} />
