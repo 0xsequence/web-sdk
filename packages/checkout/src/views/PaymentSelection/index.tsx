@@ -25,7 +25,7 @@ import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'w
 import { HEADER_HEIGHT } from '../../constants'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { useClearCachedBalances, useSelectPaymentModal } from '../../hooks'
+import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal } from '../../hooks'
 
 export const PaymentSelection = () => {
   return (
@@ -41,6 +41,7 @@ export const PaymentSelectionHeader = () => {
 }
 
 export const PaymentSelectionContent = () => {
+  const { openTransactionStatusModal } = useTransactionStatusModal()
   const { selectPaymentSettings } = useSelectPaymentModal()
 
   const [disableButtons, setDisableButtons] = useState(false)
@@ -51,6 +52,8 @@ export const PaymentSelectionContent = () => {
   }
   const {
     chain,
+    collectibles,
+    collectionAddress,
     currencyAddress,
     targetContractAddress,
     price,
@@ -77,11 +80,7 @@ export const PaymentSelectionContent = () => {
   const { clearCachedBalances } = useClearCachedBalances()
   const { closeSelectPaymentModal } = useSelectPaymentModal()
 
-  const {
-    data: allowanceData,
-    isLoading: allowanceIsLoading,
-    refetch: refechAllowance
-  } = useReadContract({
+  const { data: allowanceData, isLoading: allowanceIsLoading } = useReadContract({
     abi: ERC_20_CONTRACT_ABI,
     functionName: 'allowance',
     chainId: chainId,
@@ -198,13 +197,30 @@ export const PaymentSelectionContent = () => {
         walletClient,
         connector,
         transactions,
-        transactionConfirmations
+        transactionConfirmations,
+        waitConfirmationForLastTransaction: false
       })
 
       closeSelectPaymentModal()
-      refechAllowance()
-      clearCachedBalances()
-      onSuccess(txHash)
+
+      setTimeout(() => {
+        openTransactionStatusModal({
+          chainId,
+          currencyAddress,
+          collectionAddress,
+          txHash,
+          items: collectibles.map(collectible => ({
+            tokenId: collectible.tokenId,
+            quantity: collectible.quantity,
+            decimals: collectible.decimals,
+            price: collectible.price || price
+          })),
+          onSuccess: () => {
+            clearCachedBalances()
+            onSuccess(txHash)
+          }
+        })
+      }, 300)
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
@@ -288,12 +304,11 @@ export const PaymentSelectionContent = () => {
         walletClient,
         connector,
         transactions,
-        transactionConfirmations
+        transactionConfirmations,
+        waitConfirmationForLastTransaction: false
       })
 
       closeSelectPaymentModal()
-      refechAllowance()
-      clearCachedBalances()
       onSuccess(txHash)
     } catch (e) {
       console.error('Failed to purchase...', e)

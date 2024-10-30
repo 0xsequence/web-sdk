@@ -20,6 +20,7 @@ interface SendTransactionsInput {
   connector: Connector
   transactions: Transaction[]
   transactionConfirmations?: number
+  waitConfirmationForLastTransaction?: boolean
 }
 
 export const sendTransactions = async ({
@@ -29,7 +30,8 @@ export const sendTransactions = async ({
   walletClient,
   connector,
   transactions,
-  transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
+  transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+  waitConfirmationForLastTransaction = true
 }: SendTransactionsInput): Promise<string> => {
   const walletClientChainId = await walletClient.getChainId()
 
@@ -69,10 +71,12 @@ export const sendTransactions = async ({
 
     const txnHash = response.data.txHash
 
-    await publicClient.waitForTransactionReceipt({
-      hash: txnHash as Hex,
-      confirmations: transactionConfirmations,
-    })
+    if (waitConfirmationForLastTransaction) {
+      await publicClient.waitForTransactionReceipt({
+        hash: txnHash as Hex,
+        confirmations: transactionConfirmations,
+      })
+    }
 
     return txnHash
 
@@ -81,17 +85,20 @@ export const sendTransactions = async ({
     const wallet = sequence.getWallet()
     const signer = wallet.getSigner()
     const response = await signer.sendTransaction(transactions)
-    await publicClient.waitForTransactionReceipt({
-      hash: response.hash as Hex,
-      confirmations: transactionConfirmations
-    })
+
+    if (waitConfirmationForLastTransaction) {
+      await publicClient.waitForTransactionReceipt({
+        hash: response.hash as Hex,
+        confirmations: transactionConfirmations
+      })
+    }
 
     return response.hash
     // Other connectors (metamask, eip-6963, etc...)
   } else {
     let txHash: string = ''
     // We fire the transactions one at a time since the cannot be batched
-    for (const transaction of transactions) {
+    for (const [index, transaction] of transactions.entries()) {
       const txnHash = await walletClient.sendTransaction({
         account: senderAddress,
         to: transaction.to,
@@ -100,10 +107,14 @@ export const sendTransactions = async ({
         chain: undefined
       })
 
-      await publicClient.waitForTransactionReceipt({
-        hash: txnHash as Hex,
-        confirmations: transactionConfirmations
-      })
+      const isLastTransaction = index === transactions.length - 1
+
+      if (!isLastTransaction || (isLastTransaction && waitConfirmationForLastTransaction)) {
+        await publicClient.waitForTransactionReceipt({
+          hash: txnHash as Hex,
+          confirmations: transactionConfirmations
+        })
+      }
 
       // The transaction hash of the last transaction is the one that should be returned
       txHash = txnHash

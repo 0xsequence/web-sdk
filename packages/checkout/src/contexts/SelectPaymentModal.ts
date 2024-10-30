@@ -7,7 +7,8 @@ export type CreditCardProviders = 'sardine' | 'transak'
 export interface Collectible {
   tokenId: string
   quantity: string
-  decimals?: string
+  decimals?: number
+  price?: string
  }
 
 export interface SelectPaymentSettings {

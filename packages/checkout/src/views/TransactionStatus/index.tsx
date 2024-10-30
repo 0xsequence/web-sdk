@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   ArrowDownIcon,
   Box,
@@ -12,8 +12,15 @@ import {
   truncateAddress
 } from '@0xsequence/design-system'
 import TimeAgo from 'timeago-react'
-import { formatUnits } from 'viem'
-import { CollectibleTileImage, useContractInfo, useTokenMetadata, formatDisplay } from '@0xsequence/kit'
+import { formatUnits, Hex, PublicClient } from 'viem'
+import { usePublicClient } from 'wagmi'
+import {
+  CollectibleTileImage,
+  useContractInfo,
+  useTokenMetadata,
+  formatDisplay,
+  TRANSACTION_CONFIRMATIONS_DEFAULT
+} from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -51,7 +58,14 @@ export const TransactionStatusHeader = ({ status }: TransactionStatusHeaderProps
 
 export const TransactionStatus = () => {
   const { transactionStatusSettings } = useTransactionStatusModal()
-  const { collectionAddress, chainId, items, txHash, currencyAddress } = transactionStatusSettings!
+  const {
+    collectionAddress,
+    chainId,
+    items,
+    txHash,
+    currencyAddress,
+    blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
+  } = transactionStatusSettings!
   const [transactionHash, setTransactionHash] = useState<string | undefined>(txHash)
   const networkConfig = findSupportedNetwork(chainId)
   const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}/tx/${transactionHash}`
@@ -63,6 +77,29 @@ export const TransactionStatus = () => {
     collectionAddress,
     items.map(i => i.tokenId)
   )
+
+  const publicClient = usePublicClient()
+
+  const waitForTransaction = async (client: PublicClient, txnHash: string) => {
+    try {
+      await client.waitForTransactionReceipt({
+        hash: txnHash as Hex,
+        confirmations: blockConfirmations
+      })
+      setStatus('success')
+    } catch (e) {
+      console.error('An error occurred while waiting for transaction confirmation', e)
+      setStatus('error')
+    }
+  }
+
+  useEffect(() => {
+    // TODO: Handle case when no TX hash
+
+    if (status === 'pending' && publicClient && txHash) {
+      waitForTransaction(publicClient, txHash)
+    }
+  }, [status, publicClient, txHash])
 
   const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(chainId, collectionAddress)
   const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
