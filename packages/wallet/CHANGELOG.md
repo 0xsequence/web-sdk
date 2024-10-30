@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.4.3
+
+### Patch Changes
+
+- Fixing sequence logo svg linear gradient in Safari
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.4.3
+
 ## 4.4.2
 
 ### Patch Changes

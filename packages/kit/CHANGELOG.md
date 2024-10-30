@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.4.3
+
+### Patch Changes
+
+- Fixing sequence logo svg linear gradient in Safari
+
 ## 4.4.2
 
 ### Patch Changes
