@@ -52,7 +52,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     [LocalStorageKey.EthAuthProof]: ETHAuthProof
     [LocalStorageKey.Theme]: string
     [LocalStorageKey.EthAuthSettings]: EthAuthSettings
-    [LocalStorageKey.SignInEmail]: string | null
+    [LocalStorageKey.WaasSignInEmail]: string | null
   }
 
   return createConnector<Provider, Properties, StorageItem>(config => ({
@@ -116,7 +116,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
         }
 
         // Save the email used to sign in
-        await config.storage?.setItem(LocalStorageKey.SignInEmail, e.email || null)
+        await config.storage?.setItem(LocalStorageKey.WaasSignInEmail, e.email || null)
       }
 
       const accounts = await this.getAccounts()
@@ -131,6 +131,8 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       const provider = await this.getProvider()
 
       provider.disconnect()
+
+      await config.storage?.removeItem(LocalStorageKey.WaasSignInEmail)
     },
 
     async getAccounts() {

@@ -11,7 +11,7 @@ export const useSignInEmail = () => {
   const [email, setEmail] = useState<null | string>(null)
 
   const storeEmail = async () => {
-    const storedEmail = await storage?.getItem(LocalStorageKey.SignInEmail)
+    const storedEmail = await storage?.getItem(LocalStorageKey.WaasSignInEmail)
 
     setEmail(storedEmail as string)
   }

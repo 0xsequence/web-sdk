@@ -5,6 +5,9 @@ import { useConfig, useAccount } from 'wagmi'
 
 import { LocalStorageKey } from '../constants/localStorage'
 
+/**
+ * @deprecated use useSignInEmail instead
+ */
 export const useWaasSignInEmail = () => {
   const { storage } = useConfig()
   const { isConnected } = useAccount()
