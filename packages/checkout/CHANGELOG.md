@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.4.2
+
+### Patch Changes
+
+- Allow useSignInEmail to get email for waas and universal wallets
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.4.2
+
 ## 4.4.1
 
 ### Patch Changes
