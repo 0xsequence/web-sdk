@@ -5,8 +5,7 @@ import {
   useIndexerClient,
   signEthAuthProof,
   validateEthProof,
-  getModalPositionCss,
-  useSignInEmail
+  getModalPositionCss
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
@@ -42,9 +41,6 @@ export const Connected = () => {
   const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
-  const email = useSignInEmail()
-
-  console.log('MY EMAIL', email)
 
   const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
 
