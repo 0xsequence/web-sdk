@@ -68,27 +68,25 @@ export const PendingTransaction = () => {
       }
       if (status === 'Complete') {
         closeCheckout()
-        setTimeout(() => {
-          openTransactionStatusModal({
-            chainId: creditCardCheckout.chainId,
-            currencyAddress: creditCardCheckout.currencyAddress,
-            collectionAddress: creditCardCheckout.nftAddress,
-            txHash: transactionHash,
-            items: [
-              {
-                tokenId: creditCardCheckout.nftId,
-                quantity: creditCardCheckout.nftQuantity,
-                decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
-                price: creditCardCheckout.currencyQuantity
-              }
-            ],
-            onSuccess: () => {
-              if (creditCardCheckout.onSuccess) {
-                creditCardCheckout.onSuccess(transactionHash, creditCardCheckout)
-              }
+        openTransactionStatusModal({
+          chainId: creditCardCheckout.chainId,
+          currencyAddress: creditCardCheckout.currencyAddress,
+          collectionAddress: creditCardCheckout.nftAddress,
+          txHash: transactionHash,
+          items: [
+            {
+              tokenId: creditCardCheckout.nftId,
+              quantity: creditCardCheckout.nftQuantity,
+              decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
+              price: creditCardCheckout.currencyQuantity
             }
-          })
-        }, 300)
+          ],
+          onSuccess: () => {
+            if (creditCardCheckout.onSuccess) {
+              creditCardCheckout.onSuccess(transactionHash, creditCardCheckout)
+            }
+          }
+        })
         return
       }
       if (status === 'Declined' || status === 'Cancelled') {

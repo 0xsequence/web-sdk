@@ -203,24 +203,22 @@ export const PaymentSelectionContent = () => {
 
       closeSelectPaymentModal()
 
-      setTimeout(() => {
-        openTransactionStatusModal({
-          chainId,
-          currencyAddress,
-          collectionAddress,
-          txHash,
-          items: collectibles.map(collectible => ({
-            tokenId: collectible.tokenId,
-            quantity: collectible.quantity,
-            decimals: collectible.decimals,
-            price: collectible.price || price
-          })),
-          onSuccess: () => {
-            clearCachedBalances()
-            onSuccess(txHash)
-          }
-        })
-      }, 300)
+      openTransactionStatusModal({
+        chainId,
+        currencyAddress,
+        collectionAddress,
+        txHash,
+        items: collectibles.map(collectible => ({
+          tokenId: collectible.tokenId,
+          quantity: collectible.quantity,
+          decimals: collectible.decimals,
+          price: collectible.price || price
+        })),
+        onSuccess: () => {
+          clearCachedBalances()
+          onSuccess(txHash)
+        }
+      })
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
@@ -309,7 +307,23 @@ export const PaymentSelectionContent = () => {
       })
 
       closeSelectPaymentModal()
-      onSuccess(txHash)
+
+      openTransactionStatusModal({
+        chainId,
+        currencyAddress,
+        collectionAddress,
+        txHash,
+        items: collectibles.map(collectible => ({
+          tokenId: collectible.tokenId,
+          quantity: collectible.quantity,
+          decimals: collectible.decimals,
+          price: collectible.price || price
+        })),
+        onSuccess: () => {
+          clearCachedBalances()
+          onSuccess(txHash)
+        }
+      })
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
