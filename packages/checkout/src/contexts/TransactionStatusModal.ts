@@ -14,10 +14,12 @@ export interface TransactionStatusSettings {
   currencyAddress: string
   chainId: number
   items: Item[]
+  creditCardProvider?: string
+  isDev?: boolean
   blockConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
-  txHash?: string
+  txHash: string
 }
 
 type TransactionStatusContext = {

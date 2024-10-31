@@ -66,9 +66,8 @@ export const TransactionStatus = () => {
     currencyAddress,
     blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
   } = transactionStatusSettings!
-  const [transactionHash, setTransactionHash] = useState<string | undefined>(txHash)
   const networkConfig = findSupportedNetwork(chainId)
-  const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}/tx/${transactionHash}`
+  const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}/tx/${txHash}`
 
   const [startTime] = useState(new Date())
   const [status, setStatus] = useState<TxStatus>('pending')
@@ -94,9 +93,7 @@ export const TransactionStatus = () => {
   }
 
   useEffect(() => {
-    // TODO: Handle case when no TX hash
-
-    if (status === 'pending' && publicClient && txHash) {
+    if (status === 'pending' && publicClient) {
       waitForTransaction(publicClient, txHash)
     }
   }, [status, publicClient, txHash])
@@ -262,20 +259,18 @@ export const TransactionStatus = () => {
             </Card>
             <Box width="full" justifyContent="space-between" alignItems="center">
               <StatusIndicator />
-              {transactionHash ? (
-                <Text
-                  href={blockExplorerUrl}
-                  textDecoration="none"
-                  variant="normal"
-                  cursor="pointer"
-                  as="a"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ color: '#8E7EFF' }}
-                >
-                  {truncateAddress(transactionHash || '', 4, 4)}
-                </Text>
-              ) : null}
+              <Text
+                href={blockExplorerUrl}
+                textDecoration="none"
+                variant="normal"
+                cursor="pointer"
+                as="a"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: '#8E7EFF' }}
+              >
+                {truncateAddress(txHash, 4, 4)}
+              </Text>
             </Box>
           </>
         )}

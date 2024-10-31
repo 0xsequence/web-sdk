@@ -4,13 +4,14 @@ import React, { useEffect } from 'react'
 
 import { fetchSardineOrderStatus } from '../api'
 import { TransactionPendingNavigation } from '../contexts'
-import { useNavigation, useCheckoutModal, useSardineClientToken } from '../hooks'
+import { useNavigation, useCheckoutModal, useSardineClientToken, useTransactionStatusModal } from '../hooks'
 
 const POLLING_TIME = 10 * 1000
 
 export const PendingTransaction = () => {
+  const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
-  const { settings } = useCheckoutModal()
+  const { settings, closeCheckout } = useCheckoutModal()
 
   const {
     params: { creditCardCheckout }
@@ -66,13 +67,28 @@ export const PendingTransaction = () => {
         return
       }
       if (status === 'Complete') {
-        setNavigation &&
-          setNavigation({
-            location: 'transaction-success',
-            params: {
-              transactionHash
+        closeCheckout()
+        setTimeout(() => {
+          openTransactionStatusModal({
+            chainId: creditCardCheckout.chainId,
+            currencyAddress: creditCardCheckout.currencyAddress,
+            collectionAddress: creditCardCheckout.nftAddress,
+            txHash: transactionHash,
+            items: [
+              {
+                tokenId: creditCardCheckout.nftId,
+                quantity: creditCardCheckout.nftQuantity,
+                decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
+                price: creditCardCheckout.currencyQuantity
+              }
+            ],
+            onSuccess: () => {
+              if (creditCardCheckout.onSuccess) {
+                creditCardCheckout.onSuccess(transactionHash, creditCardCheckout)
+              }
             }
           })
+        }, 300)
         return
       }
       if (status === 'Declined' || status === 'Cancelled') {
