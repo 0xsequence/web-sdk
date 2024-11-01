@@ -25,11 +25,8 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
   enableConfirmationModal?: boolean
   isDev?: boolean
 
-  email?:
-    | boolean
-    | {
-        legacyEmailAuth: boolean
-      }
+  email?: boolean
+
   google?:
     | false
     | {
@@ -67,11 +64,6 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
    * @deprecated, use connectors.apple.redirectURI instead
    */
   appleRedirectURI?: string
-
-  /**
-   * @deprecated, use connectors.email.legacyAuth instead
-   */
-  legacyEmailAuth?: boolean
 }
 
 export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions {
@@ -117,7 +109,6 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         waasConfigKey,
         enableConfirmationModal,
         network: defaultChainId,
-        legacyEmailAuth: (typeof options.email === 'object' && options.email.legacyEmailAuth) || options.legacyEmailAuth,
         isDev
       })
     )

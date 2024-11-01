@@ -59,36 +59,24 @@ export function useEmailAuth({
     setLoading(true)
     setError(undefined)
 
-    if (params.legacyEmailAuth) {
-      try {
-        const { instance } = await waas.email.initiateAuth({ email })
-        setInstance(instance)
-        setEmail(email)
-      } catch (err: any) {
+    waas.onEmailAuthCodeRequired(async respondWithCode => {
+      setRespondWithCode(() => respondWithCode)
+    })
+
+    waas
+      .signIn({ email }, randomName())
+      .then(signInResponse => {
+        onSuccess({ version: 2, signInResponse })
+
+        if (signInResponse.email) {
+          setEmail(signInResponse.email)
+        }
+      })
+      .catch(err => {
         setError(err)
-      } finally {
-        setLoading(false)
-      }
-    } else {
-      waas.onEmailAuthCodeRequired(async respondWithCode => {
-        setRespondWithCode(() => respondWithCode)
       })
 
-      waas
-        .signIn({ email }, randomName())
-        .then(signInResponse => {
-          onSuccess({ version: 2, signInResponse })
-
-          if (signInResponse.email) {
-            setEmail(signInResponse.email)
-          }
-        })
-        .catch(err => {
-          setError(err)
-        })
-
-      setLoading(false)
-    }
+    setLoading(false)
   }
 
   const sendChallengeAnswer = async (answer: string) => {
@@ -98,31 +86,17 @@ export function useEmailAuth({
     setLoading(true)
     setError(undefined)
 
-    if (params.legacyEmailAuth) {
-      // version 1
-      try {
-        const sessionHash = await waas.getSessionHash()
-        const { idToken } = await waas.email.finalizeAuth({ instance, answer, email, sessionHash })
+    // version 2
+    if (!respondWithCode) {
+      throw new Error('Email v2 auth, respondWithCode is not defined')
+    }
 
-        onSuccess({ version: 1, idToken })
-      } catch (err: any) {
-        setError(err)
-      } finally {
-        setLoading(false)
-      }
-    } else {
-      // version 2
-      if (!respondWithCode) {
-        throw new Error('Email v2 auth, respondWithCode is not defined')
-      }
-
-      try {
-        await respondWithCode(answer)
-      } catch (err: any) {
-        setError(err)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      await respondWithCode(answer)
+    } catch (err: any) {
+      setError(err)
+    } finally {
+      setLoading(false)
     }
   }
 
