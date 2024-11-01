@@ -53,13 +53,20 @@ export const Connected = () => {
 
   const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
 
-  const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error: sendTransactionError } = useSendTransaction()
-  const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
+  const {
+    data: txnData,
+    sendTransaction,
+    isPending: isPendingSendTxn,
+    error: sendTransactionError,
+    reset: resetSendTransaction
+  } = useSendTransaction()
+  const { data: txnData2, isPending: isPendingMintTxn, writeContract, reset: resetWriteContract } = useWriteContract()
   const {
     data: txnData3,
     sendTransaction: sendUnsponsoredTransaction,
     isPending: isPendingSendUnsponsoredTxn,
-    error: sendUnsponsoredTransactionError
+    error: sendUnsponsoredTransactionError,
+    reset: resetSendUnsponsoredTransaction
   } = useSendTransaction()
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
@@ -368,6 +375,10 @@ export const Connected = () => {
     setLastTxnDataHash2(undefined)
     setLastTxnDataHash3(undefined)
     setIsMessageValid(undefined)
+    resetWriteContract()
+    resetSendUnsponsoredTransaction()
+    resetSendTransaction()
+    setFeeOptionBalances([])
   }, [chainId])
 
   return (
@@ -457,12 +468,14 @@ export const Connected = () => {
               </Card>
             )}
             <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
-            <CardButton
-              title="Mint an NFT"
-              description="Test minting an NFT to your wallet"
-              isPending={isPendingMintTxn}
-              onClick={runMintNFT}
-            />
+            {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA) && (
+              <CardButton
+                title="Mint an NFT"
+                description="Test minting an NFT to your wallet"
+                isPending={isPendingMintTxn}
+                onClick={runMintNFT}
+              />
+            )}
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash2 &&
               ((txnData2 as any)?.chainId === chainId || txnData2) && (
