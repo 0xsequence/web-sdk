@@ -199,7 +199,7 @@ export const Connected = () => {
     const sponsorAddress = sponsoredContractAddresses[chainId]
 
     sendTransaction({
-      to: sponsorAddress as `0x${string}`,
+      to: sponsorAddress,
       data,
       gas: null
     })

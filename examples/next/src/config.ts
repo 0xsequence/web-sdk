@@ -7,7 +7,7 @@ export const isDebugMode = false
 
 const projectAccessKey = 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
-export const sponsoredContractAddresses: Record<number, string> = {
+export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
   [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470',
   [ChainId.ARBITRUM_SEPOLIA]: '0x37470dac8a0255141745906c972e414b1409b470',
   [ChainId.POLYGON]: '0xefb6aa53e49f0fe617710bd4a911f43246d22208'
