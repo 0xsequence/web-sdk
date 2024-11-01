@@ -28,7 +28,7 @@ import {
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
-import { sponsoredContractAddresses, testNetChains } from '../config'
+import { sponsoredContractAddresses } from '../config'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -234,7 +234,7 @@ export const Connected = () => {
     const contractAbiInterface = new ethers.Interface(['function demo()'])
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
 
-    if (testNetChains[chainId]) {
+    if (networkForCurrentChainId.testnet) {
       const [account] = await walletClient.getAddresses()
 
       sendTransaction({
@@ -391,7 +391,7 @@ export const Connected = () => {
               onClick={() => setOpenWalletModal(true)}
             />
 
-            {(sponsoredContractAddresses[chainId] || testNetChains[chainId]) && (
+            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
               <CardButton
                 title="Send sponsored transaction"
                 description="Send a transaction with your wallet without paying any fees"
@@ -413,7 +413,7 @@ export const Connected = () => {
               </Text>
             )}
 
-            {!testNetChains[chainId] && (
+            {!networkForCurrentChainId.testnet && (
               <CardButton
                 title="Send unsponsored transaction"
                 description="Send an unsponsored transaction with your wallet"
