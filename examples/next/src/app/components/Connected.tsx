@@ -9,11 +9,10 @@ import { ComponentProps, useEffect, useState } from 'react'
 import { formatUnits, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
-import { isDebugMode, sponsoredContractAddresses, testNetChains } from '../../config'
+import { isDebugMode, sponsoredContractAddresses } from '../../config'
 
 import { messageToSign } from '@/constants'
 import { abi } from '@/constants/nft-abi'
-import { send } from 'process'
 
 export const Connected = () => {
   const { address } = useAccount()
@@ -197,19 +196,15 @@ export const Connected = () => {
       return
     }
 
-    const contractAbiInterface = new ethers.Interface(['function demo()'])
-    const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
-
-    if (testNetChains[chainId]) {
+    if (networkForCurrentChainId.testnet) {
       const [account] = await walletClient.getAddresses()
 
-      sendTransaction({
-        to: account,
-        data,
-        gas: null
-      })
+      sendTransaction({ to: account, value: BigInt(0), gas: null })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
+
+      const contractAbiInterface = new ethers.Interface(['function demo()'])
+      const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
 
       sendTransaction({
         to: sponsoredContractAddress,
@@ -278,7 +273,7 @@ export const Connected = () => {
                 description="Checkout screen before placing a purchase on coins or collections"
                 onClick={onClickCheckout}
               /> */}
-            {(sponsoredContractAddresses[chainId] || testNetChains[chainId]) && (
+            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
               <CardButton
                 title="Send sponsored transaction"
                 description="Send a transaction with your wallet without paying any fees"
@@ -300,7 +295,7 @@ export const Connected = () => {
               </Text>
             )}
 
-            {!testNetChains[chainId] && (
+            {networkForCurrentChainId.testnet && (
               <CardButton
                 title="Send unsponsored transaction"
                 description="Send an unsponsored transaction with your wallet"

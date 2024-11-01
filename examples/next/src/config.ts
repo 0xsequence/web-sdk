@@ -11,10 +11,6 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
   [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470'
 }
 
-export const testNetChains: Record<number, boolean> = {
-  [ChainId.ARBITRUM_SEPOLIA]: true
-}
-
 export const kitConfig: KitConfig = {
   projectAccessKey,
   defaultTheme: 'dark',

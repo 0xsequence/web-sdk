@@ -25,10 +25,10 @@ import {
   useWriteContract
 } from 'wagmi'
 
+import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
-import { sponsoredContractAddresses } from '../config'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -231,19 +231,19 @@ export const Connected = () => {
       return
     }
 
-    const contractAbiInterface = new ethers.Interface(['function demo()'])
-    const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
-
     if (networkForCurrentChainId.testnet) {
       const [account] = await walletClient.getAddresses()
 
       sendTransaction({
         to: account,
-        data,
+        value: BigInt(0),
         gas: null
       })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
+
+      const contractAbiInterface = new ethers.Interface(['function demo()'])
+      const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
 
       sendTransaction({
         to: sponsoredContractAddress,
