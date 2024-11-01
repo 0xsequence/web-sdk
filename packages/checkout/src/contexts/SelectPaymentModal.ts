@@ -20,6 +20,7 @@ export interface SelectPaymentSettings {
   txData: Hex
   collectionAddress: string | Hex
   recipientAddress: string | Hex
+  approvedSpenderAddress?: string
   isDev?: boolean
   transactionConfirmations?: number
   onSuccess?: (txHash: string) => void
