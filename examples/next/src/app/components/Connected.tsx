@@ -250,6 +250,7 @@ export const Connected = () => {
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
+    setLastTxnDataHash3(undefined)
     setIsMessageValid(undefined)
   }, [chainId])
 
