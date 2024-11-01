@@ -9,7 +9,7 @@ import { ComponentProps, useEffect, useState } from 'react'
 import { formatUnits, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
-import { isDebugMode, sponsorAddressConfig } from '../../config'
+import { isDebugMode, sponsoredContractAddresses } from '../../config'
 
 import { messageToSign } from '@/constants'
 import { abi } from '@/constants/nft-abi'
@@ -196,10 +196,10 @@ export const Connected = () => {
     const contractAbiInterface = new ethers.Interface(['function demo()'])
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
 
-    const sponsorAddress = sponsorAddressConfig[chainId]
+    const sponsorAddress = sponsoredContractAddresses[chainId]
 
     sendTransaction({
-      to: `0x${sponsorAddress}`,
+      to: sponsorAddress as `0x${string}`,
       data,
       gas: null
     })

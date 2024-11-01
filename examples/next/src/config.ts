@@ -7,11 +7,10 @@ export const isDebugMode = false
 
 const projectAccessKey = 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 
-// Removed 0x prefix from config as it is explicitly required in wagmi's sendTransaction
-export const sponsorAddressConfig: Record<number, string> = {
-  [ChainId.ARBITRUM_NOVA]: '37470dac8a0255141745906c972e414b1409b470',
-  [ChainId.ARBITRUM_SEPOLIA]: '37470dac8a0255141745906c972e414b1409b470',
-  [ChainId.POLYGON]: 'efb6aa53e49f0fe617710bd4a911f43246d22208'
+export const sponsoredContractAddresses: Record<number, string> = {
+  [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470',
+  [ChainId.ARBITRUM_SEPOLIA]: '0x37470dac8a0255141745906c972e414b1409b470',
+  [ChainId.POLYGON]: '0xefb6aa53e49f0fe617710bd4a911f43246d22208'
 }
 
 export const kitConfig: KitConfig = {

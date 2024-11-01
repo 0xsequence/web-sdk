@@ -28,7 +28,7 @@ import {
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
-import { sponsorAddressConfig } from '../config'
+import { sponsoredContractAddresses } from '../config'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -247,10 +247,10 @@ export const Connected = () => {
     // sendTransaction({ to: account, value: BigInt(0), gas: null })
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
 
-    const sponsorAddress = sponsorAddressConfig[chainId]
+    const sponsorAddress = sponsoredContractAddresses[chainId]
 
     sendTransaction({
-      to: `0x${sponsorAddress}`,
+      to: sponsorAddress as `0x${string}`,
       data,
       gas: null
     })
