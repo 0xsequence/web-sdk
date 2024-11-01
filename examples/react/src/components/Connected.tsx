@@ -227,26 +227,12 @@ export const Connected = () => {
   }
 
   const runSendTransaction = async () => {
-    // NOTE: commented code is how to send ETH value to the account
-    // if (!walletClient) {
-    //   return
-    // }
-    // const [account] = await walletClient.getAddresses()
-    // sendTransaction({ to: account, value: '0', gas: null })
-
-    // NOTE: below is a a simple contract call. See `runMintNFT`
-    // on another example where you can use the wagmi `writeContract`
-    // method to do the same thing.
     if (!walletClient) {
       return
     }
 
-    // const [account] = await walletClient.getAddresses()
     const contractAbiInterface = new ethers.Interface(['function demo()'])
-
-    // sendTransaction({ to: account, value: BigInt(0), gas: null })
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
-
     const sponsorAddress = sponsoredContractAddresses[chainId]
 
     sendTransaction({
@@ -260,7 +246,9 @@ export const Connected = () => {
     if (!walletClient) {
       return
     }
+
     const [account] = await walletClient.getAddresses()
+
     sendUnsponsoredTransaction({ to: account, value: BigInt(0), gas: null })
   }
 

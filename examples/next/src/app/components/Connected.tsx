@@ -193,9 +193,12 @@ export const Connected = () => {
   }
 
   const runSendTransaction = async () => {
+    if (!walletClient) {
+      return
+    }
+
     const contractAbiInterface = new ethers.Interface(['function demo()'])
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
-
     const sponsorAddress = sponsoredContractAddresses[chainId]
 
     sendTransaction({
