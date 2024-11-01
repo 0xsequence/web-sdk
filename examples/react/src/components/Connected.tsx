@@ -28,7 +28,7 @@ import {
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
-import { sponsoredContractAddresses } from '../config'
+import { sponsoredContractAddresses, testNetChains } from '../config'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -233,13 +233,24 @@ export const Connected = () => {
 
     const contractAbiInterface = new ethers.Interface(['function demo()'])
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
-    const sponsorAddress = sponsoredContractAddresses[chainId]
 
-    sendTransaction({
-      to: sponsorAddress,
-      data,
-      gas: null
-    })
+    if (testNetChains[chainId]) {
+      const [account] = await walletClient.getAddresses()
+
+      sendTransaction({
+        to: account,
+        data,
+        gas: null
+      })
+    } else {
+      const sponsoredContractAddress = sponsoredContractAddresses[chainId]
+
+      sendTransaction({
+        to: sponsoredContractAddress,
+        data,
+        gas: null
+      })
+    }
   }
 
   const runSendUnsponsoredTransaction = async () => {
@@ -379,12 +390,15 @@ export const Connected = () => {
               description="Connect a Sequence wallet to view, swap, send, and receive collections"
               onClick={() => setOpenWalletModal(true)}
             />
-            <CardButton
-              title="Send transaction"
-              description="Send a transaction with your wallet"
-              isPending={isPendingSendTxn}
-              onClick={runSendTransaction}
-            />
+
+            {(sponsoredContractAddresses[chainId] || testNetChains[chainId]) && (
+              <CardButton
+                title="Send sponsored transaction"
+                description="Send a transaction with your wallet without paying any fees"
+                isPending={isPendingSendTxn}
+                onClick={runSendTransaction}
+              />
+            )}
             {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
               <Text
                 as="a"
@@ -399,12 +413,14 @@ export const Connected = () => {
               </Text>
             )}
 
-            <CardButton
-              title="Send unsponsored transaction"
-              description="Send an unsponsored transaction with your wallet"
-              isPending={isPendingSendUnsponsoredTxn}
-              onClick={runSendUnsponsoredTransaction}
-            />
+            {!testNetChains[chainId] && (
+              <CardButton
+                title="Send unsponsored transaction"
+                description="Send an unsponsored transaction with your wallet"
+                isPending={isPendingSendUnsponsoredTxn}
+                onClick={runSendUnsponsoredTransaction}
+              />
+            )}
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash3 &&
               ((txnData3 as any)?.chainId === chainId || txnData3) && (

@@ -13,9 +13,11 @@ const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : '
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
-  [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470',
-  [ChainId.ARBITRUM_SEPOLIA]: '0x37470dac8a0255141745906c972e414b1409b470',
-  [ChainId.POLYGON]: '0xefb6aa53e49f0fe617710bd4a911f43246d22208'
+  [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470'
+}
+
+export const testNetChains: Record<number, boolean> = {
+  [ChainId.ARBITRUM_SEPOLIA]: true
 }
 
 export const kitConfig: KitConfig = {
