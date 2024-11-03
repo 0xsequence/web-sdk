@@ -7,7 +7,8 @@ import {
   validateEthProof,
   getModalPositionCss
 } from '@0xsequence/kit'
-import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal } from '@0xsequence/kit-checkout'
+import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
+import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
@@ -35,6 +36,7 @@ const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
   const { address } = useAccount()
+  const { openSwapModal } = useSwapModal()
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
@@ -249,6 +251,30 @@ export const Connected = () => {
     setIsCheckoutInfoModalOpen(true)
   }
 
+  const onClickSwap = () => {
+    const chainId = 137
+    const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+    const currencyAmount = '20000'
+
+    const contractAbiInterface = new ethers.Interface(['function demo()'])
+
+    const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+
+    const swapModalSettings: SwapModalSettings = {
+      chainId,
+      currencyAddress,
+      currencyAmount,
+      postSwapTransactions: [
+        {
+          to: '0x37470dac8a0255141745906c972e414b1409b470',
+          data
+        }
+      ]
+    }
+
+    openSwapModal(swapModalSettings)
+  }
+
   const onClickSelectPayment = () => {
     if (!address) {
       return
@@ -427,6 +453,8 @@ export const Connected = () => {
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
                 />
+
+                <CardButton title="Swap" description="Swap between currencies and send transactions" onClick={onClickSwap} />
               </>
             )}
             <CardButton
