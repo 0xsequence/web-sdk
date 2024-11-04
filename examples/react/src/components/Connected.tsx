@@ -269,7 +269,10 @@ export const Connected = () => {
           to: '0x37470dac8a0255141745906c972e414b1409b470',
           data
         }
-      ]
+      ],
+      title: 'Swap and Pay',
+      description:
+        'Customizable swap and pay flow which can be plugged in with arbitrary transactions. This text is customizable.'
     }
 
     openSwapModal(swapModalSettings)
