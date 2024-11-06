@@ -119,7 +119,7 @@ export const PendingTransaction = () => {
     return () => {
       clearInterval(interval)
     }
-  }, [])
+  }, [isLoading])
 
   if (isError) {
     return (
