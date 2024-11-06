@@ -11,7 +11,7 @@ interface CryptoOptionProps {
   onClick: () => void
   isSelected: boolean
   disabled: boolean
-  isInsufficientFunds: boolean
+  isInsufficientFunds?: boolean
 }
 
 export const CryptoOption = ({
@@ -22,7 +22,7 @@ export const CryptoOption = ({
   price,
   onClick,
   isSelected,
-  isInsufficientFunds,
+  isInsufficientFunds = false,
   disabled
 }: CryptoOptionProps) => {
   const onClickCard = () => {
@@ -56,7 +56,7 @@ export const CryptoOption = ({
             ellipsis
             style={{
               overflow: 'hidden',
-              width: '100px'
+              width: '150px'
             }}
           >
             {currencyName}
@@ -68,7 +68,7 @@ export const CryptoOption = ({
             ellipsis
             style={{
               overflow: 'hidden',
-              width: '100px'
+              width: '150px'
             }}
           >
             {`${price} ${symbol}`}

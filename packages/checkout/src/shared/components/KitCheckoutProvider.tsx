@@ -341,6 +341,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                           <Modal
                             contentProps={{
                               style: {
+                                maxWidth: '450px',
                                 height: 'auto',
                                 ...getModalPositionCss(position)
                               }
@@ -349,7 +350,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                             onClose={closeSwapModal}
                           >
                             <Box id="sequence-kit-swap-modal">
-                              <NavigationHeader primaryText="Swap" />
+                              <NavigationHeader primaryText={swapModalSettings?.title || 'Swap'} />
                               <Swap />
                             </Box>
                           </Modal>

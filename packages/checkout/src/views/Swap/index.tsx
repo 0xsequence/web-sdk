@@ -6,22 +6,36 @@ import {
   useContractInfo,
   useSwapPrices,
   useSwapQuote,
-  NATIVE_TOKEN_ADDRESS_0X
+  NATIVE_TOKEN_ADDRESS_0X,
+  sendTransactions
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { zeroAddress, formatUnits } from 'viem'
-import { useAccount } from 'wagmi'
+import { zeroAddress, formatUnits, Hex } from 'viem'
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { ClickableOption } from './ClickableOption'
+import { CryptoOption } from '../PaymentSelection/PayWithCrypto/CryptoOption'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal } from '../../hooks'
 
 export const Swap = () => {
-  const { swapModalSettings } = useSwapModal()
-  const { currencyAddress, currencyAmount, chainId, disableMainCurrency = false, description } = swapModalSettings!
-  const { address: userAddress } = useAccount()
+  const { swapModalSettings, closeSwapModal } = useSwapModal()
+  const {
+    currencyAddress,
+    currencyAmount,
+    chainId,
+    disableMainCurrency = false,
+    description,
+    postSwapTransactions,
+    blockConfirmations,
+    onSuccess = () => {}
+  } = swapModalSettings!
+  const { address: userAddress, connector } = useAccount()
   const [isTxsPending, setIsTxsPending] = useState(false)
+  const [isError, setIsError] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
+  const publicClient = usePublicClient()
+  const { data: walletClient } = useWalletClient()
 
   const buyCurrencyAddress = compareAddress(currencyAddress, zeroAddress) ? NATIVE_TOKEN_ADDRESS_0X : currencyAddress
 
@@ -61,14 +75,72 @@ export const Swap = () => {
     }
   )
 
-  const isMainCurrencySelected = compareAddress(currencyAddress, zeroAddress)
+  const isMainCurrencySelected = compareAddress(selectedCurrency || '', currencyAddress)
   const quoteFetchInProgress = isLoadingSwapQuote && !isMainCurrencySelected
 
   const isLoading = isLoadingCurrencyInfo || swapPricesIsLoading
 
-  const onClickProceed = () => {
+  const onClickProceed = async () => {
+    if (!userAddress || !publicClient || !walletClient || !connector) {
+      return
+    }
+
+    setIsError(false)
     setIsTxsPending(true)
-    console.log('swapQuote..', swapQuote)
+
+    try {
+      const swapPrice = swapPrices?.find(price => price.info?.address === selectedCurrency)
+      const isSwapNativeToken = compareAddress(NATIVE_TOKEN_ADDRESS_0X, swapPrice?.price.currencyAddress || '')
+
+      const getSwapTransactions = () => {
+        if (isMainCurrencySelected || !swapQuote || !swapPrice) {
+          return []
+        }
+
+        const swapTransactions = [
+          // Swap quote optional approve step
+          ...(swapQuote?.approveData && !isSwapNativeToken
+            ? [
+                {
+                  to: swapPrice.price.currencyAddress as Hex,
+                  data: swapQuote.approveData as Hex,
+                  chain: chainId
+                }
+              ]
+            : []),
+          // Swap quote tx
+          {
+            to: swapQuote.to as Hex,
+            data: swapQuote.transactionData as Hex,
+            chain: chainId,
+            ...(isSwapNativeToken
+              ? {
+                  value: BigInt(swapQuote.transactionValue)
+                }
+              : {})
+          }
+        ]
+        return swapTransactions
+      }
+
+      // TODO: Implement transaction status modal
+      const txHash = await sendTransactions({
+        connector,
+        walletClient,
+        publicClient,
+        chainId,
+        senderAddress: userAddress,
+        transactionConfirmations: blockConfirmations,
+        transactions: [...getSwapTransactions(), ...(postSwapTransactions ?? [])]
+      })
+
+      closeSwapModal()
+      onSuccess(txHash)
+    } catch (e) {
+      setIsTxsPending(false)
+      setIsError(true)
+      console.error('Failed to send transactions', e)
+    }
   }
 
   const noOptionsFound = disableMainCurrency && swapPrices.length === 0
@@ -96,16 +168,19 @@ export const Swap = () => {
           </Text>
           <Box width="full" flexDirection="column" gap="2">
             {!disableMainCurrency && (
-              <ClickableOption
+              <CryptoOption
                 key={currencyAddress}
+                chainId={chainId}
+                currencyName={mainCurrencyName || mainCurrencySymbol || ''}
                 price={formattedPrice}
-                logoURI={mainCurrencyLogo}
+                iconUrl={mainCurrencyLogo}
                 symbol={mainCurrencySymbol || ''}
                 isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
                 onClick={() => {
+                  setIsError(false)
                   setSelectedCurrency(currencyAddress)
                 }}
-                isDisabled={isTxsPending}
+                disabled={isTxsPending}
               />
             )}
             {swapPrices.map(swapPrice => {
@@ -116,22 +191,34 @@ export const Swap = () => {
               const formattedPrice = formatDisplay(formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 0))
 
               return (
-                <ClickableOption
+                <CryptoOption
                   key={sellCurrencyAddress}
+                  chainId={chainId}
+                  currencyName={swapPrice.info?.name || swapPrice.info?.symbol || ''}
                   symbol={swapPrice.info?.symbol || ''}
                   isSelected={compareAddress(selectedCurrency || '', sellCurrencyAddress)}
-                  logoURI={swapPrice.info?.logoURI}
+                  iconUrl={swapPrice.info?.logoURI}
                   price={formattedPrice}
-                  onClick={() => setSelectedCurrency(sellCurrencyAddress)}
-                  isDisabled={isTxsPending}
+                  onClick={() => {
+                    setIsError(false)
+                    setSelectedCurrency(sellCurrencyAddress)
+                  }}
+                  disabled={isTxsPending}
                 />
               )
             })}
           </Box>
+          {isError && (
+            <Box width="full">
+              <Text color="negative" variant="small">
+                A problem occurred while executing the transaction.
+              </Text>
+            </Box>
+          )}
           <Button
-            disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress}
+            disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending}
             variant="primary"
-            label="Proceed"
+            label={quoteFetchInProgress ? 'Preparing swap...' : 'Proceed'}
             onClick={onClickProceed}
           />
         </Box>

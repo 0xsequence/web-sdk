@@ -19,6 +19,7 @@ export interface SwapModalSettings {
   disableMainCurrency?: boolean
   postSwapTransactions?: Transaction[]
   blockConfirmations?: number
+  onSuccess?: (txHash: string) => void
 }
 
 type SwapModalContext = {

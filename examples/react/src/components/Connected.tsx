@@ -261,6 +261,9 @@ export const Connected = () => {
     const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
 
     const swapModalSettings: SwapModalSettings = {
+      onSuccess: () => {
+        console.log('swap successful!')
+      },
       chainId,
       currencyAddress,
       currencyAmount,
@@ -456,10 +459,14 @@ export const Connected = () => {
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
                 />
-
-                <CardButton title="Swap" description="Swap between currencies and send transactions" onClick={onClickSwap} />
               </>
             )}
+            <CardButton
+              title="Customizable Swapping with Sequence Pay"
+              description="Swap between currencies and send transactions"
+              onClick={onClickSwap}
+            />
+
             <CardButton
               title="Checkout with Sequence Pay"
               description="Purchase an NFT through various purchase methods"
