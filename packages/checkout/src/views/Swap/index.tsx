@@ -13,7 +13,6 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
-import { ClickableOption } from './ClickableOption'
 import { CryptoOption } from '../PaymentSelection/PayWithCrypto/CryptoOption'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal } from '../../hooks'
