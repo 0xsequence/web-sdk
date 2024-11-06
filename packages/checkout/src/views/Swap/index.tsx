@@ -122,7 +122,6 @@ export const Swap = () => {
         return swapTransactions
       }
 
-      // TODO: Implement transaction status modal
       const txHash = await sendTransactions({
         connector,
         walletClient,
