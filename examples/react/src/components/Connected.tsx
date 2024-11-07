@@ -274,8 +274,7 @@ export const Connected = () => {
         }
       ],
       title: 'Swap and Pay',
-      description:
-        'Customizable swap and pay flow which can be plugged in with arbitrary transactions. This text is customizable.'
+      description: 'Customizable swap and pay flow. This text is customizable.'
     }
 
     openSwapModal(swapModalSettings)
