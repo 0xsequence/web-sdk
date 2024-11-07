@@ -187,7 +187,6 @@ export const Connected = () => {
     }
     if (txnData3) {
       setLastTxnDataHash3((txnData3 as any).hash ?? txnData3)
-      console.log('txnData3', txnData3)
     }
   }, [txnData, txnData2, txnData3])
 

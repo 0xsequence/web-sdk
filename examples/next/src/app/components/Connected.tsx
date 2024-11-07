@@ -142,10 +142,10 @@ export const Connected = () => {
       setLastTxnDataHash((txnData as any).hash ?? txnData)
     }
     if (txnData2) {
-      setLastTxnDataHash2((txnData2 as any).hash ?? txnData)
+      setLastTxnDataHash2((txnData2 as any).hash ?? txnData2)
     }
     if (txnData3) {
-      setLastTxnDataHash2((txnData2 as any).hash ?? txnData)
+      setLastTxnDataHash3((txnData3 as any).hash ?? txnData3)
     }
   }, [txnData, txnData2, txnData3])
 
