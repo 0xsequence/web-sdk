@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.4.4
+
+### Patch Changes
+
+- Added generic swap modal and transaction status modal
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.4.4
+
 ## 4.4.3
 
 ### Patch Changes

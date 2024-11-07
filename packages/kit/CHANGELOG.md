@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.4.4
+
+### Patch Changes
+
+- Added generic swap modal and transaction status modal
+
 ## 4.4.3
 
 ### Patch Changes
