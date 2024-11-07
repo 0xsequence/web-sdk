@@ -254,7 +254,7 @@ export const useCollectiblePrices = (tokens: Token[]) => {
   })
 }
 
-export const useTokenMetadata = (chainId: number, contractAddress: string, tokenIds: string[]) => {
+export const useTokenMetadata = (chainId: number, contractAddress: string, tokenIds: string[], disabled?: boolean) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
@@ -270,11 +270,11 @@ export const useTokenMetadata = (chainId: number, contractAddress: string, token
     },
     retry: true,
     staleTime: time.oneMinute * 10,
-    enabled: !!chainId && !!contractAddress
+    enabled: !!chainId && !!contractAddress && !disabled
   })
 }
 
-export const useContractInfo = (chainId: number, contractAddress: string) => {
+export const useContractInfo = (chainId: number, contractAddress: string, disabled?: boolean) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
@@ -300,7 +300,7 @@ export const useContractInfo = (chainId: number, contractAddress: string) => {
     },
     retry: true,
     staleTime: time.oneMinute * 10,
-    enabled: !!chainId && !!contractAddress
+    enabled: !!chainId && !!contractAddress && !disabled
   })
 }
 

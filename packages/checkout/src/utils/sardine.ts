@@ -16,8 +16,8 @@ export const checkSardineWhitelistStatus = async (
   const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
 
   const url = isDev
-    ? 'https://dev-api.sequence.app/rpc/API/GetSardineNFTCheckoutToken'
-    : 'https://api.sequence.app/rpc/API/GetSardineNFTCheckoutToken'
+    ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
+    : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
 
   const res = await fetch(url, {
     method: 'POST',

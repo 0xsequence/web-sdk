@@ -15,9 +15,10 @@ import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { CryptoOption } from '../PaymentSelection/PayWithCrypto/CryptoOption'
 import { HEADER_HEIGHT } from '../../constants'
-import { useSwapModal } from '../../hooks'
+import { useSwapModal, useTransactionStatusModal } from '../../hooks'
 
 export const Swap = () => {
+  const { openTransactionStatusModal } = useTransactionStatusModal()
   const { swapModalSettings, closeSwapModal } = useSwapModal()
   const {
     currencyAddress,
@@ -133,7 +134,13 @@ export const Swap = () => {
       })
 
       closeSwapModal()
-      onSuccess(txHash)
+      openTransactionStatusModal({
+        chainId,
+        txHash,
+        onSuccess: () => {
+          onSuccess(txHash)
+        }
+      })
     } catch (e) {
       setIsTxsPending(false)
       setIsError(true)

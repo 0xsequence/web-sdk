@@ -10,12 +10,10 @@ interface Item {
 }
 
 export interface TransactionStatusSettings {
-  collectionAddress: string
-  currencyAddress: string
+  collectionAddress?: string
+  currencyAddress?: string
   chainId: number
-  items: Item[]
-  creditCardProvider?: string
-  isDev?: boolean
+  items?: Item[]
   blockConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void

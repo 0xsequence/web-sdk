@@ -30,18 +30,31 @@ export type TxStatus = 'pending' | 'success' | 'error'
 
 interface TransactionStatusHeaderProps {
   status: TxStatus
+  noItemsToDisplay: boolean
 }
 
-export const TransactionStatusHeader = ({ status }: TransactionStatusHeaderProps) => {
+export const TransactionStatusHeader = ({ status, noItemsToDisplay }: TransactionStatusHeaderProps) => {
   const getHeaderText = () => {
-    switch (status) {
-      case 'success':
-        return 'Your purchase has processed'
-      case 'error':
-        return 'Your purchase has failed'
-      case 'pending':
-      default:
-        return 'Your purchase is processing'
+    if (noItemsToDisplay) {
+      switch (status) {
+        case 'success':
+          return 'Your transaction has been processed'
+        case 'error':
+          return 'Your transaction has failed'
+        case 'pending':
+        default:
+          return 'Your transaction is processing'
+      }
+    } else {
+      switch (status) {
+        case 'success':
+          return 'Your purchase has been processed'
+        case 'error':
+          return 'Your purchase has failed'
+        case 'pending':
+        default:
+          return 'Your purchase is processing'
+      }
     }
   }
 
@@ -71,10 +84,12 @@ export const TransactionStatus = () => {
 
   const [startTime] = useState(new Date())
   const [status, setStatus] = useState<TxStatus>('pending')
+  const noItemsToDisplay = !items || !collectionAddress
   const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useTokenMetadata(
     chainId,
-    collectionAddress,
-    items.map(i => i.tokenId)
+    collectionAddress || '',
+    items?.map(i => i.tokenId) || [],
+    noItemsToDisplay
   )
 
   const publicClient = usePublicClient()
@@ -98,27 +113,47 @@ export const TransactionStatus = () => {
     }
   }, [status, publicClient, txHash])
 
-  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(chainId, collectionAddress)
-  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(
+    chainId,
+    collectionAddress || '',
+    noItemsToDisplay
+  )
+  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(
+    chainId,
+    currencyAddress || '',
+    noItemsToDisplay
+  )
 
   const isLoading = isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo
 
   const getInformationText = () => {
-    const tokenNames =
-      tokenMetadatas
-        ?.map(metadata => {
-          return `${metadata.name} #${metadata.tokenId}`
-        })
-        .join(', ') || ''
+    if (noItemsToDisplay) {
+      switch (status) {
+        case 'success':
+          return 'The transaction has been confirmed on the blockchain!'
+        case 'error':
+          return 'An error occurred while processing the transaction.'
+        case 'pending':
+        default:
+          return `The transaction will be confirmed on the blockchain shortly.`
+      }
+    } else {
+      const tokenNames =
+        tokenMetadatas
+          ?.map(metadata => {
+            return `${metadata.name} #${metadata.tokenId}`
+          })
+          .join(', ') || ''
 
-    switch (status) {
-      case 'success':
-        return `You just purchased ${tokenNames}. It’s been confirmed on the blockchain!`
-      case 'error':
-        return `You just purchased ${tokenNames}, but an error occurred.`
-      case 'pending':
-      default:
-        return `You just purchased ${tokenNames}. It should be confirmed on the blockchain shortly.`
+      switch (status) {
+        case 'success':
+          return `You just purchased ${tokenNames}. It’s been confirmed on the blockchain!`
+        case 'error':
+          return `You just purchased ${tokenNames}, but an error occurred.`
+        case 'pending':
+        default:
+          return `You just purchased ${tokenNames}. It should be confirmed on the blockchain shortly.`
+      }
     }
   }
 
@@ -162,7 +197,7 @@ export const TransactionStatus = () => {
   const ItemsInfo = () => {
     return (
       <Box gap="3" flexDirection="column">
-        {items.map(item => {
+        {items?.map(item => {
           const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
 
@@ -233,7 +268,7 @@ export const TransactionStatus = () => {
 
   return (
     <Box width="full" paddingX="6" paddingBottom="6">
-      <TransactionStatusHeader status={status} />
+      <TransactionStatusHeader status={status} noItemsToDisplay={noItemsToDisplay} />
       <Box
         flexDirection="column"
         gap="6"
@@ -253,10 +288,12 @@ export const TransactionStatus = () => {
                 {getInformationText()}
               </Text>
             </Box>
-            <Card padding="4">
-              <TxInfo />
-              <ItemsInfo />
-            </Card>
+            {!noItemsToDisplay && (
+              <Card padding="4">
+                <TxInfo />
+                <ItemsInfo />
+              </Card>
+            )}
             <Box width="full" justifyContent="space-between" alignItems="center">
               <StatusIndicator />
               <Text
