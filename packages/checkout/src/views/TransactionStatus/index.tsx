@@ -92,7 +92,9 @@ export const TransactionStatus = () => {
     noItemsToDisplay
   )
 
-  const publicClient = usePublicClient()
+  const publicClient = usePublicClient({
+    chainId
+  })
 
   const waitForTransaction = async (client: PublicClient, txnHash: string) => {
     try {
