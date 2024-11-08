@@ -34,7 +34,7 @@ export const Swap = () => {
   const [isTxsPending, setIsTxsPending] = useState(false)
   const [isError, setIsError] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
-  const publicClient = usePublicClient()
+  const publicClient = usePublicClient({ chainId })
   const { data: walletClient } = useWalletClient()
 
   const buyCurrencyAddress = compareAddress(currencyAddress, zeroAddress) ? NATIVE_TOKEN_ADDRESS_0X : currencyAddress
