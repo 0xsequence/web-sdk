@@ -274,7 +274,7 @@ export const Connected = () => {
         }
       ],
       title: 'Swap and Pay',
-      description: 'Customizable swap and pay flow. This text is customizable.'
+      description: 'Select a token in your wallet to swap to 0.2 USDC.'
     }
 
     openSwapModal(swapModalSettings)
@@ -461,8 +461,8 @@ export const Connected = () => {
               </>
             )}
             <CardButton
-              title="Customizable Swapping with Sequence Pay"
-              description="Swap between currencies and send transactions"
+              title="Swap with Sequence Pay"
+              description="Seamlessly swap eligible currencies in your wallet to a target currency"
               onClick={onClickSwap}
             />
 

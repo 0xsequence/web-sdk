@@ -16,7 +16,7 @@ export const Swap = () => {
     currencyAddress,
     currencyAmount,
     chainId,
-    disableMainCurrency = false,
+    disableMainCurrency = true,
     description,
     postSwapTransactions,
     blockConfirmations,
