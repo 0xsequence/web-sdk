@@ -398,11 +398,27 @@ const getSwapPrices = async (
     const currencyInfoMap = new Map<string, Promise<ContractInfo | undefined>>()
     if (withContractInfo) {
       res?.swapPrices.forEach(price => {
-        const { currencyAddress } = price
-        const isNativeToken = compareAddress(currencyAddress, NATIVE_TOKEN_ADDRESS_0X)
+        const { currencyAddress: rawCurrencyAddress } = price
+        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
+          ? zeroAddress
+          : rawCurrencyAddress
+        const isNativeToken = compareAddress(currencyAddress, zeroAddress)
         if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
+          const getNativeTokenInfo = () =>new Promise<ContractInfo>((resolve, reject) => {
+            resolve({
+              ...network?.nativeToken,
+            logoURI: network?.logoURI || '',
+            address: zeroAddress
+            } as ContractInfo)
+          })
+
           currencyInfoMap.set(
             currencyAddress,
+            isNativeToken ? 
+            getNativeTokenInfo().then(data => {
+              return data
+            })
+        :
             metadataClient
               .getContractInfo({
                 chainID: String(args.chainId),
@@ -411,10 +427,6 @@ const getSwapPrices = async (
               .then(data => {
                 return ({
                   ...data.contractInfo,
-                  ...(isNativeToken ? {
-                    ...network?.nativeToken,
-                    logoURI: network?.logoURI || ''
-                  } : {})
                 })
               })
           )
@@ -424,8 +436,11 @@ const getSwapPrices = async (
 
     const currencyBalanceInfoMap = new Map<string, Promise<Balance>>()
     res?.swapPrices.forEach(price => {
-      const { currencyAddress } = price
-      const isNativeToken = compareAddress(currencyAddress, NATIVE_TOKEN_ADDRESS_0X)
+      const { currencyAddress: rawCurrencyAddress } = price
+      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
+        ? zeroAddress
+        : rawCurrencyAddress
+      const isNativeToken = compareAddress(currencyAddress, zeroAddress)
       if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
         currencyBalanceInfoMap.set(
           currencyAddress,
@@ -455,11 +470,21 @@ const getSwapPrices = async (
     })
 
     return Promise.all(
-      res?.swapPrices.map(async price => ({
-        price,
-        info: (await currencyInfoMap.get(price.currencyAddress)) || undefined,
-        balance: (await currencyBalanceInfoMap.get(price.currencyAddress)) || { balance: '0' }
-      })) || []
+      res?.swapPrices.map(async price => {
+        const { currencyAddress: rawCurrencyAddress } = price
+        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
+          ? zeroAddress
+          : rawCurrencyAddress
+
+        return ({
+          price: {
+            ...price,
+            currencyAddress
+          },
+          info: (await currencyInfoMap.get(currencyAddress)) || undefined,
+          balance: (await currencyBalanceInfoMap.get(currencyAddress)) || { balance: '0' }
+        })
+      }) || []
     )
   } catch (e) {
     console.error(e)
@@ -509,9 +534,22 @@ export const useSwapQuote  = (args:GetSwapQuoteArgs,  options: UseSwapQuoteOptio
   return useQuery({
     queryKey: ['useSwapQuote', args],
     queryFn: async () => {
-      const res = await apiClient.getSwapQuote(args)
+      const res = await apiClient.getSwapQuote({
+        ...args,
+        buyCurrencyAddress: compareAddress(args.buyCurrencyAddress, zeroAddress)
+          ? NATIVE_TOKEN_ADDRESS_0X
+          : args.buyCurrencyAddress,
+        sellCurrencyAddress: compareAddress(args.sellCurrencyAddress, zeroAddress)
+          ? NATIVE_TOKEN_ADDRESS_0X
+          : args.sellCurrencyAddress
+      })
 
-      return res.swapQuote
+      return {
+        ...res.swapQuote,
+        currencyAddress: compareAddress(res.swapQuote.currencyAddress, NATIVE_TOKEN_ADDRESS_0X)
+          ? zeroAddress
+          : res.swapQuote.currencyAddress
+      }
     },
     retry: true,
     staleTime: time.oneMinute * 1,

@@ -1,14 +1,6 @@
 import { useState } from 'react'
 import { Box, Button, Spinner, Text } from '@0xsequence/design-system'
-import {
-  compareAddress,
-  formatDisplay,
-  useContractInfo,
-  useSwapPrices,
-  useSwapQuote,
-  NATIVE_TOKEN_ADDRESS_0X,
-  sendTransactions
-} from '@0xsequence/kit'
+import { compareAddress, formatDisplay, useContractInfo, useSwapPrices, useSwapQuote, sendTransactions } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
@@ -37,7 +29,8 @@ export const Swap = () => {
   const publicClient = usePublicClient({ chainId })
   const { data: walletClient } = useWalletClient()
 
-  const buyCurrencyAddress = compareAddress(currencyAddress, zeroAddress) ? NATIVE_TOKEN_ADDRESS_0X : currencyAddress
+  const buyCurrencyAddress = currencyAddress
+  const sellCurrencyAddress = selectedCurrency || ''
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
 
@@ -52,7 +45,6 @@ export const Swap = () => {
     { disabled: false }
   )
 
-  const sellCurrency0x = compareAddress(selectedCurrency || '', zeroAddress) ? NATIVE_TOKEN_ADDRESS_0X : selectedCurrency
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
   const network = findSupportedNetwork(chainId)
 
@@ -61,17 +53,19 @@ export const Swap = () => {
   const mainCurrencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfoData?.symbol
   const mainCurrencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfoData?.decimals
 
+  const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
+
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress: currencyAddress,
       buyAmount: currencyAmount,
       chainId: chainId,
-      sellCurrencyAddress: sellCurrency0x || '',
+      sellCurrencyAddress,
       includeApprove: true
     },
     {
-      disabled: !selectedCurrency
+      disabled: disableSwapQuote
     }
   )
 
@@ -90,7 +84,7 @@ export const Swap = () => {
 
     try {
       const swapPrice = swapPrices?.find(price => price.info?.address === selectedCurrency)
-      const isSwapNativeToken = compareAddress(NATIVE_TOKEN_ADDRESS_0X, swapPrice?.price.currencyAddress || '')
+      const isSwapNativeToken = compareAddress(zeroAddress, swapPrice?.price.currencyAddress || '')
 
       const getSwapTransactions = () => {
         if (isMainCurrencySelected || !swapQuote || !swapPrice) {
@@ -189,9 +183,7 @@ export const Swap = () => {
               />
             )}
             {swapPrices.map(swapPrice => {
-              const sellCurrencyAddress = compareAddress(swapPrice.info?.address || '', NATIVE_TOKEN_ADDRESS_0X)
-                ? zeroAddress
-                : swapPrice.info?.address || ''
+              const sellCurrencyAddress = swapPrice.info?.address || ''
 
               const formattedPrice = formatDisplay(formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 0))
 

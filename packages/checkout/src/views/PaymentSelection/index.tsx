@@ -7,8 +7,7 @@ import {
   compareAddress,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions,
-  SwapPricesWithCurrencyInfo,
-  NATIVE_TOKEN_ADDRESS_0X
+  SwapPricesWithCurrencyInfo
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
@@ -101,7 +100,8 @@ export const PaymentSelectionContent = () => {
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
 
-  const buyCurrencyAddress = compareAddress(currencyAddress, zeroAddress) ? NATIVE_TOKEN_ADDRESS_0X : currencyAddress
+  const buyCurrencyAddress = currencyAddress
+  const sellCurrencyAddress = selectedCurrency || ''
 
   const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
     {
@@ -114,11 +114,7 @@ export const PaymentSelectionContent = () => {
     { disabled: !enableSwapPayments }
   )
 
-  const disableSwapQuote = !selectedCurrency || compareAddress(currencyAddress, selectedCurrency || '')
-
-  const swapQuotesSellCurrency = compareAddress(currencyAddress || '', zeroAddress)
-    ? NATIVE_TOKEN_ADDRESS_0X
-    : selectedCurrency || ''
+  const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
     {
@@ -126,11 +122,11 @@ export const PaymentSelectionContent = () => {
       buyCurrencyAddress: currencyAddress,
       buyAmount: price,
       chainId: chainId,
-      sellCurrencyAddress: swapQuotesSellCurrency,
+      sellCurrencyAddress,
       includeApprove: true
     },
     {
-      disabled: !selectedCurrency
+      disabled: disableSwapQuote
     }
   )
 
@@ -248,7 +244,7 @@ export const PaymentSelectionContent = () => {
         args: [targetContractAddress, price]
       })
 
-      const isSwapNativeToken = compareAddress(NATIVE_TOKEN_ADDRESS_0X, swapPrice.price.currencyAddress)
+      const isSwapNativeToken = compareAddress(zeroAddress, swapPrice.price.currencyAddress)
 
       const transactions = [
         // Swap quote optional approve step
