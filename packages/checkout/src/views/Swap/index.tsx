@@ -117,6 +117,11 @@ export const Swap = () => {
         return swapTransactions
       }
 
+      const walletClientChainId = await walletClient.getChainId()
+      if (walletClientChainId !== chainId) {
+        await walletClient.switchChain({ id: chainId })
+      }
+
       const txHash = await sendTransactions({
         connector,
         walletClient,
