@@ -50,7 +50,13 @@ export const kitConfig: KitConfig = {
 export const config = createConfig('waas', {
   ...kitConfig,
   appName: 'Kit Demo',
-  chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
+  chainIds: [
+    ChainId.ARBITRUM_NOVA,
+    ChainId.ARBITRUM_SEPOLIA,
+    ChainId.POLYGON,
+    ChainId.IMMUTABLE_ZKEVM,
+    ChainId.IMMUTABLE_ZKEVM_TESTNET
+  ],
   defaultChainId: ChainId.ARBITRUM_NOVA,
 
   // Waas specific config options

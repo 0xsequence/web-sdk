@@ -111,8 +111,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/wallet
       '@0xsequence/network':
-        specifier: 2.0.12
-        version: 2.0.12(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+        specifier: 2.0.20
+        version: 2.0.20(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.56.2(react@18.3.1)
@@ -172,8 +172,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/wallet
       '@0xsequence/network':
-        specifier: 2.0.12
-        version: 2.0.12(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+        specifier: 2.0.20
+        version: 2.0.20(ethers@6.13.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.56.2(react@18.3.1)

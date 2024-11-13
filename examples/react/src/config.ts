@@ -58,7 +58,13 @@ export const config =
     ? createConfig('waas', {
         ...kitConfig,
         appName: 'Kit Demo',
-        chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
+        chainIds: [
+          ChainId.ARBITRUM_NOVA,
+          ChainId.ARBITRUM_SEPOLIA,
+          ChainId.POLYGON,
+          ChainId.IMMUTABLE_ZKEVM,
+          ChainId.IMMUTABLE_ZKEVM_TESTNET
+        ],
         defaultChainId: ChainId.ARBITRUM_NOVA,
         waasConfigKey: isDebugMode
           ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
@@ -81,7 +87,13 @@ export const config =
     : createConfig('universal', {
         ...kitConfig,
         appName: 'Kit Demo',
-        chainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
+        chainIds: [
+          ChainId.ARBITRUM_NOVA,
+          ChainId.ARBITRUM_SEPOLIA,
+          ChainId.POLYGON,
+          ChainId.IMMUTABLE_ZKEVM,
+          ChainId.IMMUTABLE_ZKEVM_TESTNET
+        ],
         defaultChainId: ChainId.ARBITRUM_NOVA,
 
         walletConnect: {
