@@ -42,7 +42,7 @@ const App = () => {
   <img src="../../public/docs/checkout-modal.png">
 </div>
 
-Sequence Pay Checkout allows users to purchase NFTs using various payment methods. Users can pay with the main currency (e.g., ETH), swap tokens for payment, or use a credit card (if the smart contract is whitelisted).
+Sequence Pay Checkout allows users to purchase NFTs using various payment methods. Users can pay with the main currency (e.g., ETH), swap tokens for payment, or use a credit card provided the smart contract is whitelisted (contact a member of the Sequence team to whitelist your contract for credit card payments).
 
 ## Basic Usage
 
@@ -134,8 +134,6 @@ The `@0xsequence/kit-checkout` library indeed simplifies the integration of Web3
 
 ```js
 import { useERC1155SaleContractPaymentModal } from '@0xsequence/kit-checkout'
-
-const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
 
 const MyComponent = () => {
   const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
