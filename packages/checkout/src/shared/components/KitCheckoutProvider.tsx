@@ -25,7 +25,7 @@ import {
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import {
-  PendingTransaction,
+  PendingCreditCardTransaction,
   TransactionError,
   TransactionSuccess,
   CheckoutSelection,
@@ -153,7 +153,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
       case 'select-method-checkout':
         return <CheckoutSelection />
       case 'transaction-pending':
-        return <PendingTransaction />
+        return <PendingCreditCardTransaction />
       case 'transaction-success':
         return <TransactionSuccess />
       case 'transaction-error':

@@ -8,7 +8,28 @@ import { useNavigation, useCheckoutModal, useSardineClientToken, useTransactionS
 
 const POLLING_TIME = 10 * 1000
 
-export const PendingTransaction = () => {
+export const PendingCreditCardTransaction = () => {
+  const nav = useNavigation()
+  const {
+    params: {
+      creditCardCheckout: { provider }
+    }
+  } = nav.navigation as TransactionPendingNavigation
+
+  switch (provider) {
+    case 'transak':
+      return <PendingCreditCardTransactionSardine />
+    case 'sardine':
+    default:
+      return <PendingCreditCardTransactionSardine />
+  }
+}
+
+export const PendingCreditCardTransactionTransak = () => {
+  return null
+}
+
+export const PendingCreditCardTransactionSardine = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
   const { settings, closeCheckout } = useCheckoutModal()

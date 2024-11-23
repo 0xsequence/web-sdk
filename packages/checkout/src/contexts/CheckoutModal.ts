@@ -29,6 +29,7 @@ export interface CreditCardCheckout {
   nftQuantity: string
   nftDecimals?: string
   calldata: string
+  provider?: 'sardine' | 'transak'
   onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
   onError?: (error: Error, settings: CreditCardCheckout) => void
   isDev?: boolean

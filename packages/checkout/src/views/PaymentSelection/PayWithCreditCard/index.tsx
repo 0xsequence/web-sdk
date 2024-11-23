@@ -24,7 +24,7 @@ interface PayWithCreditCardProps {
   disableButtons: boolean
 }
 
-type PaymentProviderOptions = 'sardine'
+type PaymentProviderOptions = 'sardine' | 'transak'
 
 export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCardProps) => {
   const {
@@ -61,14 +61,15 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
   const payWithSelectedProvider = () => {
     switch (selectedPaymentProvider) {
       case 'sardine':
-        onPurchaseSardine()
+      case 'transak':
+        onPurchase()
         return
       default:
         return
     }
   }
 
-  const onPurchaseSardine = () => {
+  const onPurchase = () => {
     if (!userAddress || !currencyInfoData) {
       return
     }
@@ -94,6 +95,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
         nftQuantity: collectible.quantity,
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
         isDev,
+        provider: selectedPaymentProvider,
         calldata: txData,
         approvedSpenderAddress: approvedSpenderAddress || targetContractAddress
       }
@@ -106,9 +108,11 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
   const Options = () => {
     return (
       <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
-        {creditCardProviders.map(creditCardProvider => {
+        {/* Only 1 option will be displayed, even if multiple providers are passed */}
+        {creditCardProviders.slice(0, 1).map(creditCardProvider => {
           switch (creditCardProvider) {
             case 'sardine':
+            case 'transak':
               return (
                 <Card
                   key="sardine"
@@ -116,7 +120,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
                   alignItems="center"
                   padding="4"
                   onClick={() => {
-                    setSelectedPaymentProvider('sardine')
+                    setSelectedPaymentProvider(creditCardProvider)
                   }}
                   opacity={{
                     hover: '80',
