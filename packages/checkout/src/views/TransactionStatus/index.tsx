@@ -77,7 +77,9 @@ export const TransactionStatus = () => {
     items,
     txHash,
     currencyAddress,
-    blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
+    blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onSuccess,
+    onError
   } = transactionStatusSettings!
   const networkConfig = findSupportedNetwork(chainId)
   const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}/tx/${txHash}`
@@ -103,9 +105,11 @@ export const TransactionStatus = () => {
         confirmations: blockConfirmations
       })
       setStatus('success')
+      onSuccess && onSuccess(txnHash)
     } catch (e) {
       console.error('An error occurred while waiting for transaction confirmation', e)
       setStatus('error')
+      onError && onError(e as Error)
     }
   }
 
