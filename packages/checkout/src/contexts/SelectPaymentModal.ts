@@ -1,6 +1,7 @@
 import { Hex } from 'viem'
 
 import { createGenericContext } from './genericContext'
+import type { TransakConfig } from '../contexts/CheckoutModal'
 
 export type CreditCardProviders = 'sardine' | 'transak'
 
@@ -30,6 +31,7 @@ export interface SelectPaymentSettings {
   enableTransferFunds?: boolean
   creditCardProviders?: string[]
   copyrightText?: string
+  transakConfig?: TransakConfig
 }
 
 type SelectPaymentModalContext = {

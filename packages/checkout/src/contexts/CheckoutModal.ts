@@ -16,6 +16,11 @@ interface OrderSummaryItem {
   tokenId: string
 }
 
+export interface TransakConfig {
+  apiKey: string
+  contractId: string
+}
+
 export interface CreditCardCheckout {
   chainId: number
   contractAddress: string
@@ -30,6 +35,7 @@ export interface CreditCardCheckout {
   nftDecimals?: string
   calldata: string
   provider?: 'sardine' | 'transak'
+  transakConfig?: TransakConfig
   onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
   onError?: (error: Error, settings: CreditCardCheckout) => void
   isDev?: boolean
