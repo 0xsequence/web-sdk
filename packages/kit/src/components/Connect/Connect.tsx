@@ -39,8 +39,8 @@ interface ConnectWalletContentProps extends KitConnectProviderProps {
 export const Connect = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
-  const { onClose, emailConflictInfo, config = useKitConfig(), isPreview = false } = props
-  const { signIn = {} } = config as KitConfig
+  const { onClose, emailConflictInfo, config = {} as KitConfig, isPreview = false } = props
+  const { signIn = {} } = config
   const { isConnected } = useAccount()
   const storage = useStorage()
 
@@ -206,7 +206,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
         }}
       >
         <TitleWrapper isPreview={isPreview}>
-          <Text>{isLoading ? 'Signing in...' : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
+          <Text>{isLoading ? `Connecting...` : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
         </TitleWrapper>
       </Box>
 
