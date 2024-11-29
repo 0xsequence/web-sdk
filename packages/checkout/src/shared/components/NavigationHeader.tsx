@@ -21,7 +21,6 @@ export const NavigationHeader = ({ secondaryText, primaryText, disableBack = fal
     <Box
       background="backgroundPrimary"
       zIndex="20"
-      position="fixed"
       width="full"
       flexDirection="row"
       alignItems="center"
