@@ -1,1 +1,1 @@
-export { ConnectWalletContent } from './ConnectWalletContent'
+export { Connect } from './Connect'
