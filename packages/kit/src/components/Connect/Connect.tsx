@@ -28,7 +28,6 @@ import { PoweredBySequence } from '../SequenceLogo'
 import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
-import { useKitConfig } from '../../contexts/KitConfig'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
