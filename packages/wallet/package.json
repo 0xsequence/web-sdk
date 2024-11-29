@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/kit-wallet",
-  "version": "4.4.4",
+  "version": "4.4.5",
   "description": "Wallet UI for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/wallet",
   "author": "Horizon Blockchain Games",
@@ -40,10 +40,10 @@
   "peerDependencies": {
     "@0xsequence/design-system": ">= 1.7.8",
     "@0xsequence/kit": "workspace:*",
-    "@0xsequence/api": ">= 2.0.20",
-    "@0xsequence/indexer": ">= 2.0.20",
-    "@0xsequence/metadata": ">= 2.0.20",
-    "@0xsequence/network": ">= 2.0.20",
+    "@0xsequence/api": ">= 2.1.3",
+    "@0xsequence/indexer": ">= 2.1.3",
+    "@0xsequence/metadata": ">= 2.1.3",
+    "@0xsequence/network": ">= 2.1.3",
     "@tanstack/react-query": ">= 5.0.0",
     "ethers": ">= 6.13.0",
     "framer-motion": ">= 8.5.2",

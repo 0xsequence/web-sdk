@@ -8,8 +8,8 @@
     "typescript": "latest"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": ">= 1.7.8",
-    "@0xsequence/network": ">=2.0.12",
+    "@0xsequence/design-system": "*",
+    "@0xsequence/network": "*",
     "wagmi": "*"
   },
   "private": true

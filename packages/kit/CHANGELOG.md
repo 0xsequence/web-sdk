@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.4.5
+
+### Patch Changes
+
+- Fixing waas time drift
+
 ## 4.4.4
 
 ### Patch Changes

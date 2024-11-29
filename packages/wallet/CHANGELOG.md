@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.4.5
+
+### Patch Changes
+
+- Fixing waas time drift
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.4.5
+
 ## 4.4.4
 
 ### Patch Changes
