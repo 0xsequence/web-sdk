@@ -18,6 +18,7 @@ import { TokenBalance } from '@0xsequence/indexer'
 import { getNativeTokenInfoByChainId, useAnalyticsContext, ExtendedConnector, useCollectibleBalance } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React, { useRef, useState, ChangeEvent, useEffect } from 'react'
+import { zeroAddress } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
@@ -191,7 +192,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               toAddress,
               [tokenId],
               [ethers.toQuantity(sendAmount)],
-              []
+              zeroAddress
             ]) as `0x${string}`,
             gas: null
           },
