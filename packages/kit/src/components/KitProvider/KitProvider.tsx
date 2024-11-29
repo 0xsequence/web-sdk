@@ -21,11 +21,11 @@ import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandl
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
 import { getModalPositionCss } from '../../utils/styling'
-import { ConnectWalletContent } from '../Connect'
 import { NetworkBadge } from '../NetworkBadge'
 import { PageHeading } from '../PageHeading'
 import { PoweredBySequence } from '../SequenceLogo'
 import { TxnDetails } from '../TxnDetails'
+import { Connect } from '../Connect/Connect'
 
 export type KitConnectProviderProps = {
   children: React.ReactNode
@@ -157,11 +157,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                           }}
                           onClose={() => setOpenConnectModal(false)}
                         >
-                          <ConnectWalletContent
-                            onClose={() => setOpenConnectModal(false)}
-                            emailConflictInfo={emailConflictInfo}
-                            {...props}
-                          />
+                          <Connect onClose={() => setOpenConnectModal(false)} emailConflictInfo={emailConflictInfo} {...props} />
                         </Modal>
                       )}
 

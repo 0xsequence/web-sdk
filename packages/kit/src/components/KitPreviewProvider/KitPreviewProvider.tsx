@@ -16,7 +16,7 @@ import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
-import { ConnectWalletContent } from '../Connect'
+import { Connect } from '../Connect/Connect'
 
 export type KitConnectProviderProps = {
   children: React.ReactNode
@@ -123,7 +123,7 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">
                   <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                    <ConnectWalletContent
+                    <Connect
                       onClose={() => setOpenConnectModal(false)}
                       emailConflictInfo={emailConflictInfo}
                       isPreview

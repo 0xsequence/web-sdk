@@ -8,7 +8,8 @@ import {
   TextInput,
   Spinner,
   Image,
-  IconButton
+  IconButton,
+  ModalPrimitive
 } from '@0xsequence/design-system'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
@@ -27,25 +28,30 @@ import { PoweredBySequence } from '../SequenceLogo'
 import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
+import { useKitConfig } from '../../contexts/KitConfig'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
   onClose: () => void
+  isPreview?: boolean
 }
 
 export const Connect = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
-  const { onClose, emailConflictInfo, config = {} } = props
+  const { onClose, emailConflictInfo, config = useKitConfig(), isPreview = false } = props
   const { signIn = {} } = config as KitConfig
   const { isConnected } = useAccount()
   const storage = useStorage()
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const projectName = config?.signIn?.projectName
 
   const [email, setEmail] = useState('')
   const [showEmailInput, setShowEmailInput] = useState<boolean>(false)
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
-  const { connectors, connect } = useConnect()
+  const { status, connectors, connect } = useConnect()
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
   const baseWalletConnectors = (connectors as ExtendedConnector[])
@@ -109,6 +115,10 @@ export const Connect = (props: ConnectWalletContentProps) => {
       onClose()
     }
   }, [isConnected])
+
+  useEffect(() => {
+    setIsLoading(status === 'pending' || status === 'success')
+  }, [status])
 
   const onConnect = (connector: ExtendedConnector) => {
     if (signIn.useMock && mockConnector) {
@@ -184,106 +194,134 @@ export const Connect = (props: ConnectWalletContentProps) => {
     }
   }, [emailConflictInfo])
 
-  if (showEmailWaasPinInput) {
-    return <EmailWaasVerify error={emailAuthError} isLoading={emailAuthLoading} onConfirm={sendChallengeAnswer} />
-  }
-
-  if (showExtendedList) {
-    return (
-      <>
-        <Box position="absolute" top="4">
-          <IconButton icon={ChevronLeftIcon} onClick={() => setShowExtendedList(false)} size="xs" />
-        </Box>
-        <ExtendedWalletList connectors={walletConnectors} onConnect={onConnect} />
-      </>
-    )
-  }
-
   return (
-    <>
-      <Banner config={config as KitConfig} />
-
-      <Box marginTop="6">
-        {emailConnector && (showEmailInput || isEmailOnly) ? (
-          <form onSubmit={onConnectInlineEmail}>
-            <TextInput onChange={onChangeEmail} value={email} name="email" placeholder="Enter email" data-1p-ignore />
-            <Box alignItems="center" justifyContent="center" marginTop="4">
-              {!emailAuthInProgress && (
-                <Box gap="2" width="full">
-                  {!isEmailOnly && <Button label="Back" width="full" onClick={() => setShowEmailInput(false)} />}
-
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    disabled={!isEmailValid(email)}
-                    width="full"
-                    label="Continue"
-                    rightIcon={ChevronRightIcon}
-                  />
-                </Box>
-              )}
-              {emailAuthInProgress && <Spinner />}
-            </Box>
-          </form>
-        ) : (
-          <>
-            {socialAuthConnectors.length > 0 && (
-              <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
-                {socialAuthConnectors.map(connector => {
-                  return (
-                    <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">
-                      {connector._wallet.id === 'google-waas' ? (
-                        <GoogleWaasConnectButton connector={connector} onConnect={onConnect} />
-                      ) : connector._wallet.id === 'apple-waas' ? (
-                        <AppleWaasConnectButton connector={connector} onConnect={onConnect} />
-                      ) : connector._wallet.id.includes('email') ? (
-                        <EmailConnectButton onClick={() => setShowEmailInput(true)} />
-                      ) : (
-                        <ConnectButton connector={connector} onConnect={onConnect} />
-                      )}
-                    </Box>
-                  )
-                })}
-              </Box>
-            )}
-          </>
-        )}
-
-        {walletConnectors.length > 0 && !showEmailInput && (
-          <>
-            {socialAuthConnectors.length > 0 && (
-              <>
-                <Divider color="backgroundSecondary" />
-                <Box justifyContent="center" alignItems="center">
-                  <Text variant="small" color="text50">
-                    or select a wallet
-                  </Text>
-                </Box>
-              </>
-            )}
-
-            <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
-              {walletConnectors.slice(0, 7).map(connector => {
-                return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
-              })}
-            </Box>
-
-            {displayExtendedListButton && (
-              <Box marginTop="4" justifyContent="center">
-                <Button
-                  shape="square"
-                  size="xs"
-                  onClick={() => setShowExtendedList(true)}
-                  label="More options"
-                  rightIcon={ChevronRightIcon}
-                />
-              </Box>
-            )}
-          </>
-        )}
+    <Box padding="4">
+      <Box
+        justifyContent="center"
+        color="text100"
+        alignItems="center"
+        fontWeight="medium"
+        style={{
+          marginTop: '4px'
+        }}
+      >
+        <TitleWrapper isPreview={isPreview}>
+          <Text>{isLoading ? 'Signing in...' : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
+        </TitleWrapper>
       </Box>
 
-      <PoweredBySequence />
-    </>
+      {isLoading ? (
+        <Box justifyContent="center" alignItems="center" paddingTop="4">
+          <Spinner />
+        </Box>
+      ) : (
+        <>
+          {showEmailWaasPinInput ? (
+            <EmailWaasVerify error={emailAuthError} isLoading={emailAuthLoading} onConfirm={sendChallengeAnswer} />
+          ) : showExtendedList ? (
+            <>
+              <Box position="absolute" top="4">
+                <IconButton icon={ChevronLeftIcon} onClick={() => setShowExtendedList(false)} size="xs" />
+              </Box>
+              <ExtendedWalletList connectors={walletConnectors} onConnect={onConnect} />
+            </>
+          ) : (
+            <>
+              <Banner config={config as KitConfig} />
+
+              <Box marginTop="6">
+                {emailConnector && (showEmailInput || isEmailOnly) ? (
+                  <form onSubmit={onConnectInlineEmail}>
+                    <TextInput onChange={onChangeEmail} value={email} name="email" placeholder="Enter email" data-1p-ignore />
+                    <Box alignItems="center" justifyContent="center" marginTop="4">
+                      {!emailAuthInProgress && (
+                        <Box gap="2" width="full">
+                          {!isEmailOnly && <Button label="Back" width="full" onClick={() => setShowEmailInput(false)} />}
+
+                          <Button
+                            type="submit"
+                            variant="primary"
+                            disabled={!isEmailValid(email)}
+                            width="full"
+                            label="Continue"
+                            rightIcon={ChevronRightIcon}
+                          />
+                        </Box>
+                      )}
+                      {emailAuthInProgress && <Spinner />}
+                    </Box>
+                  </form>
+                ) : (
+                  <>
+                    {socialAuthConnectors.length > 0 && (
+                      <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
+                        {socialAuthConnectors.map(connector => {
+                          return (
+                            <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">
+                              {connector._wallet.id === 'google-waas' ? (
+                                <GoogleWaasConnectButton connector={connector} onConnect={onConnect} />
+                              ) : connector._wallet.id === 'apple-waas' ? (
+                                <AppleWaasConnectButton connector={connector} onConnect={onConnect} />
+                              ) : connector._wallet.id.includes('email') ? (
+                                <EmailConnectButton onClick={() => setShowEmailInput(true)} />
+                              ) : (
+                                <ConnectButton connector={connector} onConnect={onConnect} />
+                              )}
+                            </Box>
+                          )
+                        })}
+                      </Box>
+                    )}
+                  </>
+                )}
+
+                {walletConnectors.length > 0 && !showEmailInput && (
+                  <>
+                    {socialAuthConnectors.length > 0 && (
+                      <>
+                        <Divider color="backgroundSecondary" />
+                        <Box justifyContent="center" alignItems="center">
+                          <Text variant="small" color="text50">
+                            or select a wallet
+                          </Text>
+                        </Box>
+                      </>
+                    )}
+
+                    <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+                      {walletConnectors.slice(0, 7).map(connector => {
+                        return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+                      })}
+                    </Box>
+
+                    {displayExtendedListButton && (
+                      <Box marginTop="4" justifyContent="center">
+                        <Button
+                          shape="square"
+                          size="xs"
+                          onClick={() => setShowExtendedList(true)}
+                          label="More options"
+                          rightIcon={ChevronRightIcon}
+                        />
+                      </Box>
+                    )}
+                  </>
+                )}
+              </Box>
+
+              <PoweredBySequence />
+            </>
+          )}
+        </>
+      )}
+    </Box>
   )
+}
+
+const TitleWrapper = ({ children, isPreview }: { children: React.ReactNode; isPreview: boolean }) => {
+  if (isPreview) {
+    return <>{children}</>
+  }
+
+  return <ModalPrimitive.Title asChild>{children}</ModalPrimitive.Title>
 }
