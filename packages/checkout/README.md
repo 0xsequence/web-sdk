@@ -87,8 +87,8 @@ const MyComponent = () => {
       ]
     })
 
-    const swapModalSettings = {
-            collectibles: [
+    const settings = {
+      collectibles: [
         {
           tokenId: '1',
           quantity: '1'
@@ -100,7 +100,6 @@ const MyComponent = () => {
       recipientAddress: address,
       currencyAddress,
       collectionAddress,
-      enable
       creditCardProviders: ['sardine'],
       copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash: string) => {
@@ -112,10 +111,10 @@ const MyComponent = () => {
       txData: purchaseTransactionData,
     }
 
-    openSwapModal(swapModalSettings)
+    openSelectPaymentModal(settings)
   }
 
-  return <button onClick={onClick}>Swap and Pay</button>
+  return <button onClick={onClick}>Purchase collectible</button>
 }
 ```
 
