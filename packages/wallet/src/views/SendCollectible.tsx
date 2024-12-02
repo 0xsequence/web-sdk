@@ -192,7 +192,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               toAddress,
               [tokenId],
               [ethers.toQuantity(sendAmount)],
-              zeroAddress
+              new Uint8Array()
             ]) as `0x${string}`,
             gas: null
           },
