@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.4.6
+
+### Patch Changes
+
+- Updating sequence to include fix for projectAccessKey sending to universal wallet
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.4.6
+
 ## 4.4.5
 
 ### Patch Changes
