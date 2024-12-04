@@ -87,7 +87,7 @@ const MyComponent = () => {
       ]
     })
 
-    const settings = {
+    const settings: SelectPaymentSettings = {
       collectibles: [
         {
           tokenId: '1',
