@@ -21,11 +21,11 @@ import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandl
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
 import { getModalPositionCss } from '../../utils/styling'
+import { Connect } from '../Connect/Connect'
 import { NetworkBadge } from '../NetworkBadge'
 import { PageHeading } from '../PageHeading'
 import { PoweredBySequence } from '../SequenceLogo'
 import { TxnDetails } from '../TxnDetails'
-import { Connect } from '../Connect/Connect'
 
 export type KitConnectProviderProps = {
   children: React.ReactNode
