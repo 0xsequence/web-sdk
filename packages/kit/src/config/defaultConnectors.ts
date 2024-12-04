@@ -151,15 +151,17 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
   }
 
   if (options.metaMask !== false) {
-    wallets.push(
-      metaMask({
-        dappMetadata: {
-          name: appName,
-          url: window.location.origin,
-          iconUrl: window.location.origin + '/favicon.ico'
-        }
-      })
-    )
+    if (typeof window !== 'undefined') {
+      wallets.push(
+        metaMask({
+          dappMetadata: {
+            name: appName,
+            url: window.location.origin,
+            iconUrl: `https://www.google.com/s2/favicons?domain_url=${window.location.origin}`
+          }
+        })
+      )
+    }
   }
 
   if (options.coinbase !== false) {
@@ -255,15 +257,17 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
   }
 
   if (options.metaMask !== false) {
-    wallets.push(
-      metaMask({
-        dappMetadata: {
-          name: appName,
-          url: window.location.origin,
-          iconUrl: window.location.origin + '/favicon.ico'
-        }
-      })
-    )
+    if (typeof window !== 'undefined') {
+      wallets.push(
+        metaMask({
+          dappMetadata: {
+            name: appName,
+            url: window.location.origin,
+            iconUrl: `https://www.google.com/s2/favicons?domain_url=${window.location.origin}`
+          }
+        })
+      )
+    }
   }
 
   if (options.coinbase !== false) {
