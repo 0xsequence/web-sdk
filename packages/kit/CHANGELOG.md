@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.5.0
+
+### Minor Changes
+
+- Adding metamask connector
+
 ## 4.4.6
 
 ### Patch Changes

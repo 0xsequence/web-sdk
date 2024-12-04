@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 4.5.0
+
+### Minor Changes
+
+- Adding metamask connector
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.0
+
 ## 4.4.6
 
 ### Patch Changes
