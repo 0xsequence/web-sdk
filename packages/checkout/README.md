@@ -118,14 +118,20 @@ const MyComponent = () => {
 }
 ```
 
-## Key Parameters
+## Parameters
 
 - **collectibles**: List of NFT collectibles, including their token IDs and quantities.
 - **chain**: The blockchain network ID.
 - **price**: Total price for the transaction in the selected currency.
+- **currencyAddress**: The address of the currency used for executing the transaction on the target contract.
 - **targetContractAddress**: The address of the smart contract handling the minting function.
   creditCardProviders: Providers like sardine for credit card payments.
+- **collectionAddress**: The contract address of the collectible such as an ERC-1155 or ERC-721
+- **creditCardProviders**: The list of credit card providers to execute a payment with. It is up to the developer to make sure that the region, currency and network is compatible.
 - **txData**: Encoded transaction data to interact with the mint function.
+- **copyrightText**: The copyright text shown at the bottom of the modal.
+- **onSuccess**: Callback function triggered once the transaction has been confirmed on the blockchain
+- **onError**: Callback function triggered if an error has occurred before or after sending the transaction.
 
 ## Utility functions
 
