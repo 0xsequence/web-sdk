@@ -50,7 +50,7 @@
     "rimraf": "^5.0.7",
     "turbo": "2.0.1",
     "typescript": "~5.4.5",
-    "wagmi": "^2.9.5"
+    "wagmi": "^2.13.3"
   },
   "resolutions": {},
   "packageManager": "pnpm@9.0.6"
