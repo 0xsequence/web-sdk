@@ -8,6 +8,7 @@ import { emailWaas } from '../connectors/email/emailWaas'
 import { facebook } from '../connectors/facebook'
 import { google } from '../connectors/google'
 import { googleWaas } from '../connectors/google/googleWaas'
+import { metaMask } from '../connectors/metaMask'
 import { sequence } from '../connectors/sequence'
 import { twitch } from '../connectors/twitch'
 import { walletConnect } from '../connectors/walletConnect'
@@ -39,6 +40,7 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
         redirectURI: string
       }
   coinbase?: boolean
+  metaMask?: boolean
   walletConnect?:
     | false
     | {
@@ -73,6 +75,8 @@ export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions
   facebook?: boolean
   twitch?: boolean
   apple?: boolean
+  coinbase?: boolean
+  metaMask?: boolean
   walletConnect?:
     | false
     | {
@@ -142,6 +146,18 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         enableConfirmationModal,
         network: defaultChainId,
         isDev
+      })
+    )
+  }
+
+  if (options.metaMask !== false) {
+    wallets.push(
+      metaMask({
+        dappMetadata: {
+          name: appName,
+          url: window.location.origin,
+          iconUrl: window.location.origin + '/favicon.ico'
+        }
       })
     )
   }
@@ -234,6 +250,26 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
         connect: {
           app: appName
         }
+      })
+    )
+  }
+
+  if (options.metaMask !== false) {
+    wallets.push(
+      metaMask({
+        dappMetadata: {
+          name: appName,
+          url: window.location.origin,
+          iconUrl: window.location.origin + '/favicon.ico'
+        }
+      })
+    )
+  }
+
+  if (options.coinbase !== false) {
+    wallets.push(
+      coinbaseWallet({
+        appName
       })
     )
   }

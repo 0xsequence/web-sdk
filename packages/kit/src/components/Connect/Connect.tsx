@@ -78,6 +78,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
       if (connector.id === 'com.coinbase.wallet') {
         return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet')
       }
+      if (connector.id === 'io.metamask') {
+        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask-wallet')
+      }
 
       return true
     })
