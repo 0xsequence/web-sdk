@@ -122,7 +122,7 @@ const MyComponent = () => {
 
 - **collectibles**: List of NFT collectibles, including their token IDs and quantities.
 - **chain**: The blockchain network ID.
-- **price**: Total price for the transaction in the selected currency.
+- **price**: Total price for the transaction in the selected currency. This value should not contain decimals.
 - **currencyAddress**: The address of the currency used for executing the transaction on the target contract.
 - **targetContractAddress**: The address of the smart contract handling the minting function.
   creditCardProviders: Providers like sardine for credit card payments.
