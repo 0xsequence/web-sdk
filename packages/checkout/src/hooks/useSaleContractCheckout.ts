@@ -8,9 +8,15 @@ import { ERC_1155_SALE_CONTRACT, ERC_721_SALE_CONTRACT } from '../constants/abi'
 import { Abi, Hex } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
-export interface UseSaleContractCheckoutArgs extends CheckoutOptionsSalesContractArgs {
+interface UseSaleContractCheckoutArgs extends CheckoutOptionsSalesContractArgs {
   chain: number | string,
   tokenType: 'ERC1155' | 'ERC721'
+}
+
+interface UseSaleContractCheckoutReturn {
+  data?: undefined,
+  isLoading: boolean,
+  isError: boolean
 }
 
 export const useSaleContractCheckout = ({
@@ -20,7 +26,7 @@ export const useSaleContractCheckout = ({
   wallet,
   collectionAddress,
   items,
-}: UseSaleContractCheckoutArgs) => {
+}: UseSaleContractCheckoutArgs): UseSaleContractCheckoutReturn => {
   const { data: checkoutOptions, isLoading: isLoadingCheckoutOptions, isError: isErrorCheckoutOtions } = useCheckoutOptionsSalesContract(chain, {
     contractAddress,
     wallet,
@@ -30,13 +36,19 @@ export const useSaleContractCheckout = ({
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
-  const data = useSaleContractConfig({ chainId, tokenType, contractAddress, tokenIds: items.map(i => i.tokenId) })
+  const { data: saleConfigData, isLoading: isLoadingSaleConfig, isError: isErrorSaleConfig } = useSaleContractConfig({ chainId, tokenType, contractAddress, tokenIds: items.map(i => i.tokenId) })
 
   // Get sale contract currency data...
   // Get token sale data
   // Pass wrapper to open select modal
-  const isLoading = isLoadingCheckoutOptions
-  const error = isErrorCheckoutOtions
+  const isLoading = isLoadingCheckoutOptions || isLoadingSaleConfig
+  const error = isErrorCheckoutOtions || isErrorSaleConfig
+
+  return ({
+    data: undefined,
+    isLoading,
+    isError: error
+  })
 }
 
 interface UseSaleContractConfigArgs {
@@ -46,12 +58,23 @@ interface UseSaleContractConfigArgs {
   tokenIds: string[]
 }
 
-interface UseSaleContractConfigReturn {
-  currencyAddress: string
-  prices: string[]
+interface SaleConfig {
+  tokenId: string
+  price: string
 }
 
-export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tokenIds, }: UseSaleContractConfigArgs) => {
+interface UseSaleContractConfigData {
+  currencyAddress: string
+  saleConfigs: SaleConfig[]
+}
+
+interface UseSaleContractConfigReturn {
+  data?: UseSaleContractConfigData,
+  isLoading: boolean,
+  isError: boolean
+}
+
+export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tokenIds, }: UseSaleContractConfigArgs): UseSaleContractConfigReturn => {
   const { data: paymentTokenERC1155, isLoading: isLoadingPaymentTokenERC1155, isError: isErrorPaymentTokenERC1155 } = useReadContract({
     chainId,
     abi: ERC_1155_SALE_CONTRACT,
@@ -61,6 +84,9 @@ export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tok
       enabled: tokenType === 'ERC1155'
     }
   })
+
+  // [cost, supplyCap, startTime, endTime, merkleRoot]
+  type SaleDetailsERC1155 = [bigint, bigint, bigint, bigint, string]
 
   const { data: globalSaleDetailsERC1155, isLoading: isLoadingGlobalSaleDetailsERC1155, isError: isErrorGlobalSaleDetailsERC1155 } = useReadContract({
     chainId,
@@ -91,6 +117,8 @@ export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tok
     }
   })
 
+  // [supplyCap, cost, paymentToken, startTime, endTime, merkleRoot]
+  type SaleDetailsERC721 = [bigint, bigint, string, bigint, string, string]
 
   const { data: saleDetailsERC721, isLoading: isLoadingSaleDetailsERC721, isError: isErrorSaleDetailsERC721 } = useReadContract({
     chainId,
@@ -102,7 +130,53 @@ export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tok
     }
   })
 
-  // get currency
-  
-  // get price
+  const isLoadingERC1155 = isLoadingPaymentTokenERC1155 || isLoadingGlobalSaleDetailsERC1155 || isLoadingTokenSaleDetailsERC1155
+  const isLoadingERC721 = isLoadingSaleDetailsERC721
+  const isErrorERC1155 = isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155
+  const isErrorERC721 = isErrorSaleDetailsERC721
+
+  let saleInfos: SaleConfig[] = []
+
+  if (isLoadingERC1155 || isLoadingERC721 || isErrorERC1155 || isErrorERC721) {
+    return ({
+      data: undefined,
+      isLoading: tokenType === 'ERC1155' ? isLoadingERC1155 : isLoadingERC721,
+      isError: tokenType === 'ERC1155' ? isErrorERC1155 : isErrorERC721
+    })
+  }
+
+  const getPrice = () => {
+    if (isLoadingERC1155 || isLoadingERC721 || isErrorERC1155 || isErrorERC721) return
+    if (tokenType === 'ERC1155') {
+      // In the sale contract, the global sale has priority over the token sale
+      // So we need to check if the global sale is set, and if it is, use that
+      // Otherwise, we use the token sale
+      const [costERC721, _, startTime, endTime] = globalSaleDetailsERC1155 as SaleDetailsERC1155
+      const isGlobalSaleValid = endTime === BigInt(0) || (startTime <= BigInt(Math.floor(Date.now() / 1000)) || endTime >= BigInt(Math.floor(Date.now() / 1000)))
+      saleInfos = tokenIds.map((tokenId, index) => {
+        const tokenPrice = (tokenSaleDetailsERC1155?.[index].result as SaleDetailsERC1155)[0] || BigInt(0)
+        return ({
+          tokenId,
+          price: (isGlobalSaleValid ? costERC721 : tokenPrice).toString()
+        })
+      })
+    } else {
+      saleInfos = tokenIds.map((tokenId, index) => {
+        const tokenPrice = (saleDetailsERC721 as SaleDetailsERC721)[1] || BigInt(0)
+        return ({
+          tokenId,
+          price: tokenPrice.toString()
+        })
+      })
+    }
+  }  
+
+  return ({
+    data: {
+      currencyAddress: tokenType === 'ERC1155' ? (paymentTokenERC1155 as string) : (saleDetailsERC721 as SaleDetailsERC721)[2],
+      saleConfigs: saleInfos
+    },
+    isLoading: tokenType === 'ERC1155' ? isLoadingERC1155 : isLoadingERC721,
+    isError: tokenType === 'ERC1155' ? isErrorERC1155 : isErrorERC721
+  })
 }
