@@ -1,7 +1,7 @@
 import { CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
-import { useContractInfo } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 
+import { useSelectPaymentModal } from './useSelectPaymentModal'
 import { useCheckoutOptionsSalesContract } from "./useCheckoutOptionsSalesContract"
 import { ERC_1155_SALE_CONTRACT, ERC_721_SALE_CONTRACT } from '../constants/abi'
 
@@ -43,6 +43,14 @@ export const useSaleContractCheckout = ({
   // Pass wrapper to open select modal
   const isLoading = isLoadingCheckoutOptions || isLoadingSaleConfig
   const error = isErrorCheckoutOtions || isErrorSaleConfig
+
+
+  const openCheckoutModal = () => {
+    if (isLoading || error) return
+
+    // return openCheckoutModal({
+    // })
+  }
 
   return ({
     data: undefined,
@@ -135,8 +143,6 @@ export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tok
   const isErrorERC1155 = isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155
   const isErrorERC721 = isErrorSaleDetailsERC721
 
-  let saleInfos: SaleConfig[] = []
-
   if (isLoadingERC1155 || isLoadingERC721 || isErrorERC1155 || isErrorERC721) {
     return ({
       data: undefined,
@@ -145,8 +151,11 @@ export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tok
     })
   }
 
-  const getPrice = () => {
-    if (isLoadingERC1155 || isLoadingERC721 || isErrorERC1155 || isErrorERC721) return
+  const getSaleConfigs = (): SaleConfig[]  => {
+    let saleInfos: SaleConfig[] = []
+
+    if (isLoadingERC1155 || isLoadingERC721 || isErrorERC1155 || isErrorERC721) return saleInfos
+    
     if (tokenType === 'ERC1155') {
       // In the sale contract, the global sale has priority over the token sale
       // So we need to check if the global sale is set, and if it is, use that
@@ -169,12 +178,14 @@ export const useSaleContractConfig = ({ chainId, tokenType, contractAddress, tok
         })
       })
     }
+
+    return saleInfos
   }  
 
   return ({
     data: {
       currencyAddress: tokenType === 'ERC1155' ? (paymentTokenERC1155 as string) : (saleDetailsERC721 as SaleDetailsERC721)[2],
-      saleConfigs: saleInfos
+      saleConfigs: getSaleConfigs()
     },
     isLoading: tokenType === 'ERC1155' ? isLoadingERC1155 : isLoadingERC721,
     isError: tokenType === 'ERC1155' ? isErrorERC1155 : isErrorERC721
