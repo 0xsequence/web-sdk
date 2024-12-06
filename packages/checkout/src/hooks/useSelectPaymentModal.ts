@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { encodeFunctionData, toHex } from 'viem'
 
+import { ERC_1155_SALE_CONTRACT, ERC_721_SALE_CONTRACT } from '../constants/abi'
 import { SelectPaymentSettings } from '../contexts'
 import { useSelectPaymentContext } from '../contexts/SelectPaymentModal'
 
@@ -22,27 +23,10 @@ export const getERC1155SaleContractConfig = ({
   isDev = false,
   ...restProps
 }: SaleContractSettings): SelectPaymentSettings => {
-  const erc1155SalesContractAbi = [
-    {
-      type: 'function',
-      name: 'mint',
-      inputs: [
-        { name: 'to', type: 'address', internalType: 'address' },
-        { name: 'tokenIds', type: 'uint256[]', internalType: 'uint256[]' },
-        { name: 'amounts', type: 'uint256[]', internalType: 'uint256[]' },
-        { name: 'data', type: 'bytes', internalType: 'bytes' },
-        { name: 'expectedPaymentToken', type: 'address', internalType: 'address' },
-        { name: 'maxTotal', type: 'uint256', internalType: 'uint256' },
-        { name: 'proof', type: 'bytes32[]', internalType: 'bytes32[]' }
-      ],
-      outputs: [],
-      stateMutability: 'payable'
-    }
-  ]
-
   const purchaseTransactionData = encodeFunctionData({
-    abi: erc1155SalesContractAbi,
+    abi: ERC_1155_SALE_CONTRACT,
     functionName: 'mint',
+    // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
     args: [recipientAddress, collectibles.map(c => BigInt(c.tokenId)), collectibles.map(c => BigInt(c.quantity)), toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
   })
 
@@ -72,53 +56,35 @@ export const useERC1155SaleContractPaymentModal = () => {
   }
 }
 
-// TODO: ERC721 utility
-// export const getERC1155SaleContractConfig = ({
-//   chain,
-//   price,
-//   currencyAddress = ethers.ZeroAddress,
-//   recipientAddress,
-//   collectibles,
-//   collectionAddress,
-//   isDev = false,
-//   ...restProps
-// }: SaleContractSettings): SelectPaymentSettings => {
-//   const erc1155SalesContractAbi = [
-//     {
-//       type: 'function',
-//       name: 'mint',
-//       inputs: [
-//         { name: 'to', type: 'address', internalType: 'address' },
-//         { name: 'tokenIds', type: 'uint256[]', internalType: 'uint256[]' },
-//         { name: 'amounts', type: 'uint256[]', internalType: 'uint256[]' },
-//         { name: 'data', type: 'bytes', internalType: 'bytes' },
-//         { name: 'expectedPaymentToken', type: 'address', internalType: 'address' },
-//         { name: 'maxTotal', type: 'uint256', internalType: 'uint256' },
-//         { name: 'proof', type: 'bytes32[]', internalType: 'bytes32[]' }
-//       ],
-//       outputs: [],
-//       stateMutability: 'payable'
-//     }
-//   ]
+export const getERC721SaleContractConfig = ({
+  chain,
+  price,
+  currencyAddress = ethers.ZeroAddress,
+  recipientAddress,
+  collectibles,
+  collectionAddress,
+  isDev = false,
+  ...restProps
+}: SaleContractSettings): SelectPaymentSettings => {
+  const purchaseTransactionData = encodeFunctionData({
+    abi: ERC_721_SALE_CONTRACT,
+    functionName: 'mint',
+    // [to, amount, paymentToken, maxTotal, proof]
+    // args: [recipientAddress, collectibles.map(c => BigInt(c.quantity)), toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
+  })
 
-//   const purchaseTransactionData = encodeFunctionData({
-//     abi: erc1155SalesContractAbi,
-//     functionName: 'mint',
-//     args: [recipientAddress, collectibles.map(c => BigInt(c.tokenId)), collectibles.map(c => BigInt(c.quantity)), toHex(0), currencyAddress, price, [toHex(0, { size: 32 })]]
-//   })
-
-//   return {
-//     chain,
-//     price,
-//     currencyAddress,
-//     recipientAddress,
-//     collectibles,
-//     collectionAddress,
-//     isDev,
-//     txData: purchaseTransactionData,
-//     ...restProps
-//   }
-// }
+  return {
+    chain,
+    price,
+    currencyAddress,
+    recipientAddress,
+    collectibles,
+    collectionAddress,
+    isDev,
+    txData: purchaseTransactionData,
+    ...restProps
+  }
+}
 
 export const useERC721SaleContractPaymentModal = () => {
   const { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
