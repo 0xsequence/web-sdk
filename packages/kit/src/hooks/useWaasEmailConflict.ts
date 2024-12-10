@@ -59,7 +59,7 @@ export const useEmailConflict = () => {
         disposers.forEach(disposer => disposer())
       }
     }
-  }, [waasInstances, waasConnectors])
+  }, [])
 
   return {
     toggleEmailConflictModal: toggleModal,
