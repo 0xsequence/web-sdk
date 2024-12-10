@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.5.1
+
+### Patch Changes
+
+- Updating onEmailConflict listeners to handle multiple providers
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.1
+
 ## 4.5.0
 
 ### Minor Changes
