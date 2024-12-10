@@ -269,7 +269,14 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                       )}
 
                       {isEmailConflictOpen && emailConflictInfo && (
-                        <Modal size="sm" scroll={false} onClose={() => toggleEmailConflictModal(false)}>
+                        <Modal
+                          size="sm"
+                          scroll={false}
+                          onClose={() => {
+                            setOpenConnectModal(false)
+                            toggleEmailConflictModal(false)
+                          }}
+                        >
                           <Box padding="4">
                             <ModalPrimitive.Title asChild>
                               <PageHeading>Email already in use</PageHeading>
@@ -281,7 +288,13 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                 sign in again with the correct account.
                               </Text>
                               <Box marginTop="4" gap="2" alignItems="center" justifyContent="center">
-                                <Button label="OK" onClick={() => toggleEmailConflictModal(false)} />
+                                <Button
+                                  label="OK"
+                                  onClick={() => {
+                                    setOpenConnectModal(false)
+                                    toggleEmailConflictModal(false)
+                                  }}
+                                />
                               </Box>
                             </Box>
                           </Box>

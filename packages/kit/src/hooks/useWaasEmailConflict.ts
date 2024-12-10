@@ -40,20 +40,26 @@ export const useEmailConflict = () => {
   const [isOpen, toggleModal] = useState(false)
   const [emailConflictInfo, setEmailConflictInfo] = useState<EmailConflictInfo | null>(null)
 
-  const waasConnector = connectors.find(connector => !!(connector as any).sequenceWaas)
-  const waas = (waasConnector as any)?.sequenceWaas as SequenceWaaS
+  const waasConnectors = connectors.filter(connector => !!(connector as any).sequenceWaas)
+  const waasInstances = waasConnectors.map(connector => (connector as any).sequenceWaas as SequenceWaaS)
 
   useEffect(() => {
-    if (waas) {
-      const disposer = waas.onEmailConflict(async (info, forceCreate) => {
-        forceCreateFuncRef.current = forceCreate
-        setEmailConflictInfo(info)
-        toggleModal(true)
-      })
+    if (waasInstances.length > 0) {
+      // Set up listeners for all waas instances
+      const disposers = waasInstances.map(waas =>
+        waas.onEmailConflict(async (info, forceCreate) => {
+          forceCreateFuncRef.current = forceCreate
+          setEmailConflictInfo(info)
+          toggleModal(true)
+        })
+      )
 
-      return disposer
+      // Return cleanup function that disposes all listeners
+      return () => {
+        disposers.forEach(disposer => disposer())
+      }
     }
-  }, [])
+  }, [waasInstances, waasConnectors])
 
   return {
     toggleEmailConflictModal: toggleModal,
