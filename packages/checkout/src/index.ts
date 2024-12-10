@@ -8,6 +8,7 @@ export { useSelectPaymentModal, useERC1155SaleContractPaymentModal } from './hoo
 export { useTransferFundsModal } from './hooks/useTransferFundsModal'
 export { useCheckoutWhitelistStatus } from './hooks/useCheckoutWhitelistStatus'
 export { useSwapModal } from './hooks/useSwapModal'
+export { useERC1155SaleContractCheckout } from './hooks/useERC1155SaleContractCheckout'
 
 export { type CheckoutSettings } from './contexts/CheckoutModal'
 export { type AddFundsSettings } from './contexts/AddFundsModal'

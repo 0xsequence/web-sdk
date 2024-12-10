@@ -7,7 +7,13 @@ import {
   validateEthProof,
   getModalPositionCss
 } from '@0xsequence/kit'
-import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
+import {
+  useCheckoutModal,
+  useAddFundsModal,
+  useERC1155SaleContractPaymentModal,
+  useSwapModal,
+  useERC1155SaleContractCheckout
+} from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -26,7 +32,7 @@ import {
   useWriteContract
 } from 'wagmi'
 
-import { sponsoredContractAddresses } from '../config'
+import { sponsoredContractAddresses, getErc1155SaleContractConfig } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
@@ -42,6 +48,9 @@ export const Connected = () => {
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
   const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
+  const { openCheckoutModal, isLoading: isLoadingCheckoutModal } = useERC1155SaleContractCheckout(
+    getErc1155SaleContractConfig(address || '')
+  )
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -325,11 +334,11 @@ export const Connected = () => {
     }
 
     // NATIVE token sale
-    const currencyAddress = ethers.ZeroAddress
-    const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
-    const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
-    const price = '200000000000000'
-    const contractId = '674eb55a3d739107bbd18ecb'
+    // const currencyAddress = ethers.ZeroAddress
+    // const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
+    // const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
+    // const price = '200000000000000'
+    // const contractId = '674eb55a3d739107bbd18ecb'
 
     // // ERC-20 contract
     // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
@@ -338,35 +347,36 @@ export const Connected = () => {
     // const price = '20000'
     // const contractId = '674eb5613d739107bbd18ed2'
 
-    const chainId = 137
+    // const chainId = 137
 
-    openERC1155SaleContractPaymentModal({
-      collectibles: [
-        {
-          tokenId: '1',
-          quantity: '1'
-        }
-      ],
-      chain: chainId,
-      price,
-      targetContractAddress: salesContractAddress,
-      recipientAddress: address,
-      currencyAddress,
-      collectionAddress,
-      creditCardProviders: ['transak'],
-      transakConfig: {
-        contractId,
-        apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
-      },
-      isDev: false,
-      copyrightText: 'ⓒ2024 Sequence',
-      onSuccess: (txnHash: string) => {
-        console.log('success!', txnHash)
-      },
-      onError: (error: Error) => {
-        console.error(error)
-      }
-    })
+    // openERC1155SaleContractPaymentModal({
+    //   collectibles: [
+    //     {
+    //       tokenId: '1',
+    //       quantity: '1'
+    //     }
+    //   ],
+    //   chain: chainId,
+    //   price,
+    //   targetContractAddress: salesContractAddress,
+    //   recipientAddress: address,
+    //   currencyAddress,
+    //   collectionAddress,
+    //   creditCardProviders: ['sardine', 'transak'],
+    //   transakConfig: {
+    //     contractId,
+    //     apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
+    //   },
+    //   isDev: false,
+    //   copyrightText: 'ⓒ2024 Sequence',
+    //   onSuccess: (txnHash: string) => {
+    //     console.log('success!', txnHash)
+    //   },
+    //   onError: (error: Error) => {
+    //     console.error(error)
+    //   }
+    // })
+    openCheckoutModal()
   }
 
   const onCheckoutInfoConfirm = () => {
@@ -549,6 +559,7 @@ export const Connected = () => {
               title="Checkout with Sequence Pay"
               description="Purchase an NFT through various purchase methods"
               onClick={onClickSelectPayment}
+              isPending={isLoadingCheckoutModal}
             />
           </Box>
 

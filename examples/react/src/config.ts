@@ -100,3 +100,20 @@ export const config =
           projectId: walletConnectProjectId
         }
       })
+
+export const getErc1155SaleContractConfig = (walletAddress: string) => ({
+  chain: 137,
+  // ERC20 token sale
+  contractAddress: '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b',
+  collectionAddress: '0xdeb398f41ccd290ee5114df7e498cf04fac916cb',
+  // Native token sale
+  // contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
+  // collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
+  wallet: walletAddress,
+  items: [{
+    tokenId: '1',
+    quantity: '1'
+  }],
+  onSuccess: () => { console.log('success') },
+  isDev: isDebugMode
+})

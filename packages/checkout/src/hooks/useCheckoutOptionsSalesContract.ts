@@ -3,11 +3,12 @@ import { CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { useMarketplaceClient } from './useMarketplaceClient'
 
 export interface UseGenerateBuyTransactionOptions {
-  disabled?: boolean
+  disabled?: boolean,
+  isDev?: boolean
 }
 
 export const useCheckoutOptionsSalesContract = (chain: number | string, args: CheckoutOptionsSalesContractArgs, options?: UseGenerateBuyTransactionOptions) => {
-  const marketplaceClient = useMarketplaceClient({ chain })
+  const marketplaceClient = useMarketplaceClient({ chain, isDev: options?.isDev })
   
   return useQuery({
     queryKey: ['useCheckoutOptionsSalesContract', args],
@@ -18,6 +19,6 @@ export const useCheckoutOptionsSalesContract = (chain: number | string, args: Ch
     },
     retry: false,
     staleTime: 360 * 1000,
-    enabled: !options?.disabled,
+    enabled: !options?.disabled && !!args.wallet,
   })
 }

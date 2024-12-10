@@ -5,16 +5,15 @@ import { useMemo } from 'react'
 
 
 export interface UseMarketplaceClientArgs {
-  chain: ChainNameOrId
+  chain: ChainNameOrId,
+	isDev?: boolean
 }
 
 export const useMarketplaceClient = ({
-  chain
+  chain,
+	isDev = false
 }: UseMarketplaceClientArgs) => {
   const projectAccessKey = useProjectAccessKey()
-
-  // TODO: move to env variable
-  const isDev = false
 
   const marketplaceClient = useMemo(() => {
     const env = isDev ? 'development' : 'production'
