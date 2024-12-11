@@ -47,10 +47,8 @@ export const Connected = () => {
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
-  const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
-  const { openCheckoutModal, isLoading: isLoadingCheckoutModal } = useERC1155SaleContractCheckout(
-    getErc1155SaleContractConfig(address || '')
-  )
+  // const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
+  const { openCheckoutModal } = useERC1155SaleContractCheckout(getErc1155SaleContractConfig(address || ''))
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -559,7 +557,6 @@ export const Connected = () => {
               title="Checkout with Sequence Pay"
               description="Purchase an NFT through various purchase methods"
               onClick={onClickSelectPayment}
-              isPending={isLoadingCheckoutModal}
             />
           </Box>
 

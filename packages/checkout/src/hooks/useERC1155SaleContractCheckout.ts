@@ -44,9 +44,6 @@ export const useERC1155SaleContractCheckout = ({
 
   const { data: saleConfigData, isLoading: isLoadingSaleConfig, isError: isErrorSaleConfig } = useSaleContractConfig({ chainId, contractAddress, tokenIds: items.map(i => i.tokenId) })
 
-  // Get sale contract currency data...
-  // Get token sale data
-  // Pass wrapper to open select modal
   const isLoading = isLoadingCheckoutOptions || isLoadingSaleConfig
   const error = isErrorCheckoutOptions || isErrorSaleConfig
 
@@ -56,27 +53,27 @@ export const useERC1155SaleContractCheckout = ({
       return
     }
 
-    return () => {
-      openERC1155SaleContractPaymentModal({
-        collectibles: items.map(item => ({
-          tokenId: item.tokenId,
-          quantity: item.quantity
-        })),
-        chain: chainId,
-        price: items.reduce((acc, item) => {
-          const price = BigInt(saleConfigData?.saleConfigs.find(sale => sale.tokenId === item.tokenId)?.price || 0)
-          return acc + BigInt(item.quantity) * price
-        }, BigInt(0)).toString(),
-        currencyAddress: saleConfigData?.currencyAddress || '',
-        recipientAddress: wallet,
-        collectionAddress,
-        targetContractAddress: contractAddress,
-        enableMainCurrencyPayment: true,
-        enableSwapPayments: checkoutOptions?.options.swap.includes(TransactionSwapProvider.zerox) || false,
-        creditCardProviders: checkoutOptions?.options.nftCheckout || [],
-        ...restArgs
-      })
-    }
+    openERC1155SaleContractPaymentModal({
+      collectibles: items.map(item => ({
+        tokenId: item.tokenId,
+        quantity: item.quantity
+      })),
+      chain: chainId,
+      price: items.reduce((acc, item) => {
+        const price = BigInt(saleConfigData?.saleConfigs.find(sale => sale.tokenId === item.tokenId)?.price || 0)
+        console.log('price...', price)
+        
+        return acc + BigInt(item.quantity) * price
+      }, BigInt(0)).toString(),
+      currencyAddress: saleConfigData?.currencyAddress || '',
+      recipientAddress: wallet,
+      collectionAddress,
+      targetContractAddress: contractAddress,
+      enableMainCurrencyPayment: true,
+      enableSwapPayments: checkoutOptions?.options?.swap?.includes(TransactionSwapProvider.zerox) || false,
+      creditCardProviders: checkoutOptions?.options.nftCheckout || [],
+      ...restArgs
+    })
   }
 
   return ({
@@ -167,12 +164,12 @@ export const useSaleContractConfig = ({ chainId, contractAddress, tokenIds, }: U
     // So we need to check if the global sale is set, and if it is, use that
     // Otherwise, we use the token sale
     const { cost: globalCost, startTime, endTime } = globalSaleDetailsERC1155 as SaleDetailsERC1155
-    const isGlobalSaleValid = endTime === BigInt(0) || (startTime <= BigInt(Math.floor(Date.now() / 1000)) || endTime >= BigInt(Math.floor(Date.now() / 1000)))
+    const isGlobalSaleInvalid = endTime === BigInt(0) || (BigInt(Math.floor(Date.now() / 1000)) <= startTime || BigInt(Math.floor(Date.now() / 1000)) >= endTime)
     saleInfos = tokenIds.map((tokenId, index) => {
       const tokenPrice = (tokenSaleDetailsERC1155?.[index].result as SaleDetailsERC1155)['cost'] || BigInt(0)
       return ({
         tokenId,
-        price: (isGlobalSaleValid ? globalCost : tokenPrice).toString()
+        price: (!isGlobalSaleInvalid ? globalCost : tokenPrice).toString()
       })
     })
 
