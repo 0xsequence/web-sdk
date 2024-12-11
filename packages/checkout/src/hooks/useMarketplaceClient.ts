@@ -6,13 +6,10 @@ import { useMemo } from 'react'
 
 export interface UseMarketplaceClientArgs {
   chain: ChainNameOrId,
-	isDev?: boolean
+	isDev?: boolean,
 }
 
-export const useMarketplaceClient = ({
-  chain,
-	isDev = false
-}: UseMarketplaceClientArgs) => {
+export const useMarketplaceClient = ({ chain, isDev = false }: UseMarketplaceClientArgs) => {
   const projectAccessKey = useProjectAccessKey()
 
   const marketplaceClient = useMemo(() => {
