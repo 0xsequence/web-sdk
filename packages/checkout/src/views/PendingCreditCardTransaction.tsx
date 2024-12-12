@@ -1,8 +1,9 @@
 import { Box, Spinner, Text } from '@0xsequence/design-system'
 import { useProjectAccessKey, useContractInfo, useTokenMetadata } from '@0xsequence/kit'
+import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
-import React, { useEffect } from 'react'
-import { formatUnits, parseUnits } from 'viem'
+import { useEffect } from 'react'
+import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
 import { TransactionPendingNavigation } from '../contexts'
@@ -20,7 +21,7 @@ export const PendingCreditCardTransaction = () => {
 
   switch (provider) {
     case 'transak':
-      return <PendingCreditCardTransactionSardine />
+      return <PendingCreditCardTransactionTransak />
     case 'sardine':
     default:
       return <PendingCreditCardTransactionSardine />
@@ -49,6 +50,8 @@ export const PendingCreditCardTransactionTransak = () => {
     isLoading: isLoadingCollectionInfo,
     isError: isErrorCollectionInfo
   } = useContractInfo(creditCardCheckout.chainId, creditCardCheckout.nftAddress)
+
+  const network = findSupportedNetwork(creditCardCheckout.chainId)
 
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
@@ -81,10 +84,13 @@ export const PendingCreditCardTransactionTransak = () => {
 
   const partnerOrderId = `${creditCardCheckout.recipientAddress}-${new Date().getTime()}`
 
-  const transakLink = `${baseUrl}?apiKey=${transakConfig?.apiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}`
+  // Note: the network name might not always line up with Transak. A conversion function might be necessary
+  const networkName = network?.name.toLowerCase()
 
-  const isLoading = isLoadingTokenMetadata
-  const isError = isErrorTokenMetadata
+  const transakLink = `${baseUrl}?apiKey=${transakConfig?.apiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+
+  const isLoading = isLoadingTokenMetadata || isLoadingCollectionInfo
+  const isError = isErrorTokenMetadata || isErrorCollectionInfo
 
   useEffect(() => {
     const transakIframeElement = document.getElementById('transakIframe') as HTMLIFrameElement
