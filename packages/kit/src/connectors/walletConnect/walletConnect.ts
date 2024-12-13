@@ -13,7 +13,7 @@ export const walletConnect = (options: WalletConnectOptions): Wallet => ({
   id: 'wallet-connect',
   logoDark: WalletConnectLogo,
   logoLight: WalletConnectLogo,
-  name: 'Walletconnect',
+  name: 'WalletConnect',
   type: 'wallet',
   createConnector: () => {
     const { defaultNetwork, ...walletConnectOptions } = options
