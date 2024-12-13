@@ -64,7 +64,6 @@ export const PendingCreditCardTransactionTransak = () => {
   const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
 
   const price = Number(formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals)))
-  const formattedQuantity = Number(creditCardCheckout.currencyQuantity)
 
   const transakNftDataJson = JSON.stringify([
     {
@@ -73,11 +72,12 @@ export const PendingCreditCardTransactionTransak = () => {
       collectionAddress: creditCardCheckout.nftAddress,
       tokenID: [creditCardCheckout.nftId],
       price: [price],
-      quantity: formattedQuantity,
+      quantity: Number(creditCardCheckout.nftQuantity),
       nftType: collectionInfo?.type || 'ERC721'
     }
   ])
 
+  console.log('transakNftDataJson', JSON.parse(transakNftDataJson))
   const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
 
   const estimatedGasLimit = '500000'
@@ -99,7 +99,7 @@ export const PendingCreditCardTransactionTransak = () => {
     const readMessage = (message: any) => {
       if (message.source !== transakIframe) return
 
-      if (message?.data?.event_id === 'TRANSAK_ORDER_SUCCESSFUL') {
+      if (message?.data?.event_id === 'TRANSAK_ORDER_SUCCESSFUL' && message?.data?.data?.status === 'COMPLETED') {
         console.log('Order Data: ', message?.data?.data)
         const txHash = message?.data?.data?.transactionHash || ''
 

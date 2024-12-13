@@ -354,9 +354,9 @@ export const Connected = () => {
       creditCardProviders: ['transak'],
       transakConfig: {
         // contractId for native sale contract: '0xf0056139095224f4eec53c578ab4de1e227b9597'
-        // contractId: '674eb55a3d739107bbd18ecb',
+        contractId: '674eb55a3d739107bbd18ecb',
         // contractId for ERC20 sale contract: '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-        contractId: '674eb5613d739107bbd18ed2',
+        // contractId: '674eb5613d739107bbd18ed2',
         apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
       },
       isDev: false,
