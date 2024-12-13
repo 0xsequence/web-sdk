@@ -5,20 +5,25 @@ import { Wallet } from '../../types'
 
 import { WalletConnectLogo } from './WalletConnectLogo'
 
-export const walletConnect = (options: WalletConnectParameters): Wallet => ({
+interface WalletConnectOptions extends WalletConnectParameters {
+  defaultNetwork?: number
+}
+
+export const walletConnect = (options: WalletConnectOptions): Wallet => ({
   id: 'wallet-connect',
   logoDark: WalletConnectLogo,
   logoLight: WalletConnectLogo,
   name: 'Walletconnect',
   type: 'wallet',
   createConnector: () => {
-    const baseConnector = walletConnectbase(options)
+    const { defaultNetwork, ...walletConnectOptions } = options
+    const baseConnector = walletConnectbase(walletConnectOptions)
 
     return createConnector(config => {
       const connector = baseConnector(config)
 
       const connect = async (params?: { chainId?: number }) => {
-        const targetChainId = params?.chainId ?? config.chains[0]?.id
+        const targetChainId = params?.chainId ?? defaultNetwork ?? config.chains[0]?.id
         if (!targetChainId) {
           throw new Error('No target chain ID available')
         }

@@ -177,7 +177,8 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
 
     wallets.push(
       walletConnect({
-        projectId
+        projectId,
+        defaultNetwork: defaultChainId
       })
     )
   }
@@ -283,7 +284,8 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
 
     wallets.push(
       walletConnect({
-        projectId
+        projectId,
+        defaultNetwork: defaultChainId
       })
     )
   }
