@@ -325,16 +325,18 @@ export const Connected = () => {
     }
 
     // NATIVE token sale
-    // const currencyAddress = ethers.ZeroAddress
-    // const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
-    // const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
-    // const price = '200000000000000'
+    const currencyAddress = ethers.ZeroAddress
+    const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
+    const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
+    const price = '200000000000000'
+    const contractId = '674eb55a3d739107bbd18ecb'
 
     // // ERC-20 contract
-    const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-    const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
-    const price = '20000'
+    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+    // const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
+    // const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
+    // const price = '20000'
+    // const contractId = '674eb5613d739107bbd18ed2'
 
     const chainId = 137
 
@@ -353,10 +355,7 @@ export const Connected = () => {
       collectionAddress,
       creditCardProviders: ['transak'],
       transakConfig: {
-        // contractId for native sale contract: '0xf0056139095224f4eec53c578ab4de1e227b9597'
-        contractId: '674eb55a3d739107bbd18ecb',
-        // contractId for ERC20 sale contract: '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-        // contractId: '674eb5613d739107bbd18ed2',
+        contractId,
         apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
       },
       isDev: false,

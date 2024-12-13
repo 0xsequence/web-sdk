@@ -8,7 +8,7 @@ import { formatUnits } from 'viem'
 import { fetchSardineOrderStatus } from '../api'
 import { TransactionPendingNavigation } from '../contexts'
 import { useNavigation, useCheckoutModal, useSardineClientToken, useTransactionStatusModal } from '../hooks'
-
+import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
 const POLLING_TIME = 10 * 1000
 
 export const PendingCreditCardTransaction = () => {
@@ -38,7 +38,6 @@ export const PendingCreditCardTransactionTransak = () => {
   } = nav.navigation as TransactionPendingNavigation
 
   const { setNavigation } = nav
-  const projectAccessKey = useProjectAccessKey()
 
   const {
     data: tokensMetadata,
@@ -59,7 +58,19 @@ export const PendingCreditCardTransactionTransak = () => {
 
   const baseUrl = creditCardCheckout.isDev ? 'https://global-stg.transak.com' : 'https://global.transak.com'
 
-  const pakoData = Array.from(pako.deflate(creditCardCheckout.calldata))
+  // Transak requires the recipient address to be the proxy address
+  // so we need to replace the recipient address with the proxy address in the calldata
+  // this is a weird hack so that credit card integrations are as simple as possible and should work 99% of the time
+  // If an issue arises, the user can override the calldata in the transak settings
+
+  const calldataWithProxy =
+    transakConfig?.callDataOverride ??
+    creditCardCheckout.calldata.replace(
+      creditCardCheckout.recipientAddress.toLowerCase().substring(2),
+      TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2)
+    )
+
+  const pakoData = Array.from(pako.deflate(calldataWithProxy))
 
   const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
 
