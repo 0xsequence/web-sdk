@@ -105,15 +105,17 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
       >
         <Box gap="3" alignItems="center" justifyContent="center" flexDirection="column">
           <Box flexDirection="row" gap="2" justifyContent="center" alignItems="center">
-            <Image
-              borderRadius="circle"
-              width="8"
-              src={collectionLogo}
-              alt="collection logo"
-              style={{
-                objectFit: 'cover'
-              }}
-            />
+            {collectionLogo && (
+              <Image
+                borderRadius="circle"
+                width="8"
+                src={collectionLogo}
+                alt="collection logo"
+                style={{
+                  objectFit: 'cover'
+                }}
+              />
+            )}
             <Box gap="1" flexDirection="row" justifyContent="center" alignItems="center">
               <Text variant="small" fontWeight="bold" color="text100">
                 {collectionName}
