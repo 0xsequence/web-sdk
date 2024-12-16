@@ -76,7 +76,9 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
-    navigation.location === 'settings-currency'
+    navigation.location === 'settings-currency' ||
+    navigation.location === 'send-coin' ||
+    navigation.location === 'send-collectible'
 
   useEffect(() => {
     if (openWalletModal) {
