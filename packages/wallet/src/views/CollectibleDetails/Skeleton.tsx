@@ -22,7 +22,7 @@ export const CollectibleDetailsSkeleton = () => {
           <Skeleton style={{ width: '140px', height: '40px' }} />
         </Box>
         <Box>
-          <Skeleton style={{ width: '347px', height: '347px' }} />
+          <Skeleton style={{ width: '100%', aspectRatio: '1/1' }} />
         </Box>
         <Box>
           {/* balance */}
