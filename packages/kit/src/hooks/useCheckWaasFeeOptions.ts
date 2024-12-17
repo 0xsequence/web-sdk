@@ -13,12 +13,20 @@ export function useCheckWaasFeeOptions(): (params: { transactions: Transaction[]
 
   return async ({ transactions, chainId }) => {
     if (!waasConnector) {
-      throw new Error('WaaS connector not found')
+      return {
+        feeQuote: undefined,
+        feeOptions: undefined,
+        isSponsored: true
+      }
     }
 
     const waasProvider = (waasConnector as any).sequenceWaasProvider
     if (!waasProvider) {
-      throw new Error('WaaS provider not found')
+      return {
+        feeQuote: undefined,
+        feeOptions: undefined,
+        isSponsored: true
+      }
     }
 
     return waasProvider.checkTransactionFeeOptions({ transactions, chainId })
