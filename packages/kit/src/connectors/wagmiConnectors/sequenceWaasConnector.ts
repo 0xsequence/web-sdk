@@ -14,7 +14,8 @@ import {
   ProviderDisconnectedError,
   TransactionRejectedRpcError,
   UserRejectedRequestError,
-  getAddress
+  getAddress,
+  zeroAddress
 } from 'viem'
 import { createConnector } from 'wagmi'
 
@@ -322,7 +323,13 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
           throw new UserRejectedRequestError(new Error('User confirmation ids do not match'))
         }
 
-        selectedFeeOption = feeOptions.find(feeOption => feeOption.token.contractAddress === confirmation.feeTokenAddress)
+        selectedFeeOption = feeOptions.find(feeOption => {
+          // Handle the case where feeTokenAddress is ZeroAddress and contractAddress is null
+          if (confirmation.feeTokenAddress === zeroAddress && feeOption.token.contractAddress === null) {
+            return true
+          }
+          return feeOption.token.contractAddress === confirmation.feeTokenAddress
+        })
       }
 
       if (this.requestConfirmationHandler && this.showConfirmation) {
