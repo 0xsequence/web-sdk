@@ -19,35 +19,6 @@ const DEFAULT_LOCATION: Navigation = {
   location: 'home'
 }
 
-// const DEFAULT_LOCATION: Navigation = {
-//   location: 'search',
-// }
-
-// const DEFAULT_LOCATION: Navigation = {
-//   location: 'collection-details',
-//   params: {
-//     contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-//     chainId: 137,
-//   }
-// }
-
-// const DEFAULT_LOCATION: Navigation = {
-//   location: 'coin-details',
-//   params: {
-//     contractAddress: ethers.ZeroAddress,
-//     chainId: 137,
-//   }
-// }
-
-// const DEFAULT_LOCATION: Navigation = {
-//   location: 'collectible-details',
-//   params: {
-//     contractAddress: '0x624e4fa6980afcf8ea27bfe08e2fb5979b64df1c',
-//     chainId: 137,
-//     tokenId: '14641',
-//   }
-// }
-
 export const KitWalletProvider = (props: KitWalletProviderProps) => {
   const queryClient = new QueryClient()
 
@@ -66,6 +37,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
 
   // Navigation Context
   const [history, setHistory] = useState<History>([])
+  const [isBackButtonEnabled, setIsBackButtonEnabled] = useState(true)
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
 
   const displayScrollbar =
@@ -76,9 +48,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
-    navigation.location === 'settings-currency' ||
-    navigation.location === 'send-coin' ||
-    navigation.location === 'send-collectible'
+    navigation.location === 'settings-currency'
 
   useEffect(() => {
     if (openWalletModal) {
@@ -88,7 +58,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
 
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
-      <NavigationContextProvider value={{ setHistory, history }}>
+      <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
         <div id="kit-wallet">
           <ThemeProvider root="#kit-wallet" scope="kit" theme={theme}>
             <AnimatePresence>

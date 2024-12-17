@@ -29,6 +29,7 @@ import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction }
 
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
 import { useSettings, useNavigation } from '../hooks'
+import { useNavigationContext } from '../contexts/Navigation'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
 import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
@@ -40,6 +41,7 @@ interface SendCoinProps {
 
 export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { setNavigation } = useNavigation()
+  const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
@@ -91,6 +93,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
     }
   }, [pendingFeeOption, selectedFeeTokenAddress])
+
+  // Control back button when showing confirmation
+  useEffect(() => {
+    setIsBackButtonEnabled(!showConfirmation)
+  }, [showConfirmation, setIsBackButtonEnabled])
 
   if (isPending) {
     return null
@@ -248,7 +255,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       padding="5"
       paddingTop="3"
       style={{
-        marginTop: showConfirmation && feeOptions?.options?.length ? '0' : HEADER_HEIGHT
+        marginTop: HEADER_HEIGHT
       }}
       gap="2"
       flexDirection="column"
@@ -315,7 +322,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
                   <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
                 </Box>
-                <CloseIcon size="xs" />
+                <CloseIcon size="sm" color="white" />
               </Card>
             ) : (
               <TextInput
@@ -401,7 +408,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             executeTransaction()
             setShowConfirmation(false)
           }}
-          onCancel={() => setShowConfirmation(false)}
+          onCancel={() => {
+            setShowConfirmation(false)
+          }}
         />
       )}
     </Box>

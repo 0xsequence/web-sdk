@@ -1,8 +1,8 @@
-import { Box, IconButton, ChevronLeftIcon, Text, Modal, ModalPrimitive } from '@0xsequence/design-system'
-import React from 'react'
+import { Box, IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks/useNavigation'
+import { useNavigationContext } from '../../contexts/Navigation'
 
 interface NavigationHeaderProps {
   primaryText?: string
@@ -11,8 +11,10 @@ interface NavigationHeaderProps {
 
 export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
+  const { isBackButtonEnabled } = useNavigationContext()
 
   const onClickBack = () => {
+    if (!isBackButtonEnabled) return
     goBack()
   }
 
@@ -31,7 +33,17 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
         paddingTop: '6px'
       }}
     >
-      {history.length > 0 ? <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" /> : <Box />}
+      {history.length > 0 ? (
+        <IconButton
+          onClick={onClickBack}
+          icon={ChevronLeftIcon}
+          size="xs"
+          disabled={!isBackButtonEnabled}
+          style={{ opacity: isBackButtonEnabled ? 1 : 0.5 }}
+        />
+      ) : (
+        <Box />
+      )}
       <Box>
         <Text fontWeight="medium" variant="small" color="text50">
           {secondaryText}

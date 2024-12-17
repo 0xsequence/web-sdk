@@ -25,10 +25,10 @@ import {
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React, { useRef, useState, ChangeEvent, useEffect } from 'react'
-import { zeroAddress } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
+import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
@@ -42,6 +42,7 @@ interface SendCollectibleProps {
 
 export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendCollectibleProps) => {
   const { setNavigation } = useNavigation()
+  const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
@@ -98,6 +99,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
     }
   }, [pendingFeeOption, selectedFeeTokenAddress])
+
+  // Control back button when showing confirmation
+  useEffect(() => {
+    setIsBackButtonEnabled(!showConfirmation)
+  }, [showConfirmation, setIsBackButtonEnabled])
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
@@ -298,7 +304,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       padding="5"
       paddingTop="3"
       style={{
-        marginTop: showConfirmation && feeOptions?.options?.length ? '0' : HEADER_HEIGHT
+        marginTop: HEADER_HEIGHT
       }}
       gap="2"
       flexDirection="column"
@@ -361,7 +367,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
                   <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
                 </Box>
-                <CloseIcon size="xs" />
+                <CloseIcon size="sm" color="white" />
               </Card>
             ) : (
               <TextInput
@@ -447,7 +453,9 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             executeTransaction()
             setShowConfirmation(false)
           }}
-          onCancel={() => setShowConfirmation(false)}
+          onCancel={() => {
+            setShowConfirmation(false)
+          }}
         />
       )}
     </Box>

@@ -102,6 +102,8 @@ export type History = Navigation[]
 type NavigationContext = {
   setHistory: (history: History) => void
   history: History
+  isBackButtonEnabled: boolean
+  setIsBackButtonEnabled: (enabled: boolean) => void
 }
 
 export const [useNavigationContext, NavigationContextProvider] = createGenericContext<NavigationContext>()
