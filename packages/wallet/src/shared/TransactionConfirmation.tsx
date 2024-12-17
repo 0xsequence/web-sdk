@@ -1,11 +1,12 @@
-import { Box, Button, ChevronRightIcon, Text, vars, Card, GradientAvatar } from '@0xsequence/design-system'
-import React, { useState, useEffect } from 'react'
+import { Box, Button, ChevronRightIcon, Text, vars, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/kit'
+import React, { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
-import { SendItemInfo } from './SendItemInfo'
-import { FeeOptionSelector } from './FeeOptionSelector'
 import { truncateAtMiddle } from '../utils'
+
+import { FeeOptionSelector } from './FeeOptionSelector'
+import { SendItemInfo } from './SendItemInfo'
 
 interface FeeOptionToken {
   name: string
@@ -37,6 +38,7 @@ interface TransactionConfirmationProps {
     chainId: number
   }
   onSelectFeeOption?: (feeTokenAddress: string | null) => void
+  isLoading?: boolean
 
   // Callbacks
   onConfirm: () => void
@@ -56,6 +58,7 @@ export const TransactionConfirmation = ({
   decimals,
   feeOptions,
   onSelectFeeOption,
+  isLoading,
   onConfirm,
   onCancel
 }: TransactionConfirmationProps) => {
@@ -191,7 +194,7 @@ export const TransactionConfirmation = ({
             <Card width="full" flexDirection="row" alignItems="center" style={{ height: '52px' }}>
               <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                 <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
+                <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
               </Box>
             </Card>
           </Box>
@@ -209,24 +212,30 @@ export const TransactionConfirmation = ({
         </Box>
 
         <Box marginTop="3" gap="2">
-          <Button
-            color="text100"
-            width="full"
-            variant="primary"
-            onClick={onConfirm}
-            label="Confirm"
-            rightIcon={ChevronRightIcon}
-            disabled={isConfirmDisabled}
-            style={{ height: '52px', borderRadius: vars.radii.md }}
-          />
-          <Button
-            color="text100"
-            width="full"
-            variant="ghost"
-            onClick={onCancel}
-            label="Cancel"
-            style={{ height: '52px', borderRadius: vars.radii.md }}
-          />
+          {isLoading ? (
+            <Box width="full" style={{ height: '52px' }} alignItems="center" justifyContent="center">
+              <Spinner />
+            </Box>
+          ) : (
+            <>
+              <Button
+                width="full"
+                variant="primary"
+                onClick={onConfirm}
+                label="Confirm"
+                rightIcon={ChevronRightIcon}
+                disabled={isConfirmDisabled}
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
+              <Button
+                variant="glass"
+                width="full"
+                onClick={onCancel}
+                label="Cancel"
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
+            </>
+          )}
         </Box>
       </Box>
     </Box>

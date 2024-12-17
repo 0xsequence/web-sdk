@@ -66,6 +66,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       }
     | undefined
   >()
+  const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
@@ -93,14 +94,12 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     }
   }, [tokenBalance])
 
-  // Handle fee option confirmation when pendingFeeOption is available
   useEffect(() => {
     if (pendingFeeOption && selectedFeeTokenAddress !== null) {
       confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
     }
   }, [pendingFeeOption, selectedFeeTokenAddress])
 
-  // Control back button when showing confirmation
   useEffect(() => {
     setIsBackButtonEnabled(!showConfirmation)
   }, [showConfirmation, setIsBackButtonEnabled])
@@ -168,6 +167,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    setIsCheckingFeeOptions(true)
+
     const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
     let transaction
 
@@ -213,6 +214,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     )
 
     setShowConfirmation(true)
+
+    setIsCheckingFeeOptions(false)
   }
 
   const executeTransaction = async () => {
@@ -222,23 +225,16 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
     const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
 
-    // Prepare transaction options with fee token if available
     const txOptions = {
       onSettled: (result: any) => {
+        setIsBackButtonEnabled(true)
+
         if (result) {
           setNavigation({
             location: 'home'
           })
         }
         setIsSendTxnPending(false)
-      }
-    }
-
-    // Add fee token configuration if available
-    if (feeOptions?.id && selectedFeeTokenAddress !== null) {
-      ;(txOptions as any).feeOptions = {
-        feeTokenAddress: selectedFeeTokenAddress,
-        optionId: feeOptions.id
       }
     }
 
@@ -365,7 +361,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               >
                 <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                  <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
+                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </Box>
                 <CloseIcon size="sm" color="white" />
               </Card>
@@ -410,7 +406,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           )}
 
           <Box style={{ height: '52px' }} alignItems="center" justifyContent="center">
-            {isSendTxnPending ? (
+            {isCheckingFeeOptions ? (
               <Spinner />
             ) : (
               <Button
@@ -449,9 +445,9 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
+          isLoading={isSendTxnPending}
           onConfirm={() => {
             executeTransaction()
-            setShowConfirmation(false)
           }}
           onCancel={() => {
             setShowConfirmation(false)

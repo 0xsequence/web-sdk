@@ -28,8 +28,8 @@ import React, { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
-import { useSettings, useNavigation } from '../hooks'
 import { useNavigationContext } from '../contexts/Navigation'
+import { useSettings, useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
 import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
@@ -65,6 +65,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       }
     | undefined
   >()
+  const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
@@ -152,6 +153,8 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    setIsCheckingFeeOptions(true)
+
     const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
     let transaction
 
@@ -187,6 +190,8 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     )
 
     setShowConfirmation(true)
+
+    setIsCheckingFeeOptions(false)
   }
 
   const executeTransaction = async () => {
@@ -206,23 +211,16 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
 
-    // Prepare transaction options with fee token if available
     const txOptions = {
       onSettled: (result: any) => {
+        setIsBackButtonEnabled(true)
+
         if (result) {
           setNavigation({
             location: 'home'
           })
         }
         setIsSendTxnPending(false)
-      }
-    }
-
-    // Add fee token configuration if available
-    if (feeOptions?.id && selectedFeeTokenAddress !== null) {
-      ;(txOptions as any).feeOptions = {
-        feeTokenAddress: selectedFeeTokenAddress,
-        optionId: feeOptions.id
       }
     }
 
@@ -320,7 +318,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               >
                 <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                  <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 8)}`}</Text>
+                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </Box>
                 <CloseIcon size="sm" color="white" />
               </Card>
@@ -365,7 +363,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           )}
 
           <Box style={{ height: '52px' }} alignItems="center" justifyContent="center">
-            {isSendTxnPending ? (
+            {isCheckingFeeOptions ? (
               <Spinner />
             ) : (
               <Button
@@ -404,9 +402,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
+          isLoading={isSendTxnPending}
           onConfirm={() => {
             executeTransaction()
-            setShowConfirmation(false)
           }}
           onCancel={() => {
             setShowConfirmation(false)
