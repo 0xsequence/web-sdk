@@ -80,7 +80,7 @@ export const OrderSummary = () => {
                   {dataCollectionInfo?.name || null}
                 </Text>
                 <Text variant="small" color="text100" fontWeight="bold">
-                  {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : null}`}
+                  {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
                 </Text>
               </Box>
             </Box>
