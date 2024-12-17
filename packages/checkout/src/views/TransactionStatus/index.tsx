@@ -79,7 +79,8 @@ export const TransactionStatus = () => {
     currencyAddress,
     blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess,
-    onError
+    onError,
+    onClose = () => {}
   } = transactionStatusSettings!
   const networkConfig = findSupportedNetwork(chainId)
   const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}/tx/${txHash}`
@@ -118,6 +119,12 @@ export const TransactionStatus = () => {
       waitForTransaction(publicClient, txHash)
     }
   }, [status, publicClient, txHash])
+
+  useEffect(() => {
+    return () => {
+      onClose()
+    }
+  }, [])
 
   const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(
     chainId,

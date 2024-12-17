@@ -365,6 +365,9 @@ export const Connected = () => {
       },
       onError: (error: Error) => {
         console.error(error)
+      },
+      onClose: () => {
+        console.log('modal closed!')
       }
     })
   }

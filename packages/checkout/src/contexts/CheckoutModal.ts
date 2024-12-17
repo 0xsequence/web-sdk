@@ -39,6 +39,7 @@ export interface CreditCardCheckout {
   transakConfig?: TransakConfig
   onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
   onError?: (error: Error, settings: CreditCardCheckout) => void
+  onClose?: () => void
   isDev?: boolean
   approvedSpenderAddress?: string
 }

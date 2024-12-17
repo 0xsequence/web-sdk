@@ -24,7 +24,7 @@ import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'w
 import { HEADER_HEIGHT } from '../../constants'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal } from '../../hooks'
+import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 
 export const PaymentSelection = () => {
   return (
@@ -63,7 +63,8 @@ export const PaymentSelectionContent = () => {
     creditCardProviders = [],
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess = () => {},
-    onError = () => {}
+    onError = () => {},
+    onClose = () => {}
   } = selectPaymentSettings
 
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
@@ -78,6 +79,7 @@ export const PaymentSelectionContent = () => {
   })
   const { clearCachedBalances } = useClearCachedBalances()
   const { closeSelectPaymentModal } = useSelectPaymentModal()
+  const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
 
   const { data: allowanceData, isLoading: allowanceIsLoading } = useReadContract({
     abi: ERC_20_CONTRACT_ABI,
@@ -199,6 +201,8 @@ export const PaymentSelectionContent = () => {
 
       closeSelectPaymentModal()
 
+      skipOnCloseCallback()
+
       openTransactionStatusModal({
         chainId,
         currencyAddress,
@@ -304,6 +308,8 @@ export const PaymentSelectionContent = () => {
 
       closeSelectPaymentModal()
 
+      skipOnCloseCallback()
+
       openTransactionStatusModal({
         chainId,
         currencyAddress,
@@ -318,7 +324,8 @@ export const PaymentSelectionContent = () => {
         onSuccess: () => {
           clearCachedBalances()
           onSuccess(txHash)
-        }
+        },
+        onClose
       })
     } catch (e) {
       console.error('Failed to purchase...', e)
@@ -372,7 +379,11 @@ export const PaymentSelectionContent = () => {
         {creditCardProviders?.length > 0 && (
           <>
             <Divider width="full" marginY="3" />
-            <PayWithCreditCard settings={selectPaymentSettings} disableButtons={disableButtons} />
+            <PayWithCreditCard
+              settings={selectPaymentSettings}
+              disableButtons={disableButtons}
+              skipOnCloseCallback={skipOnCloseCallback}
+            />
           </>
         )}
         {enableTransferFunds && (

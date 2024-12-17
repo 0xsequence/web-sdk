@@ -17,6 +17,7 @@ export interface TransactionStatusSettings {
   blockConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
+  onClose?: () => void
   txHash: string
 }
 

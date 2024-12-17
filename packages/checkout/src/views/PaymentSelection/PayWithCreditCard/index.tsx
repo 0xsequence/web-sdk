@@ -17,16 +17,17 @@ import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
-import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal, useTransactionStatusModal } from '../../../hooks'
+import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings
   disableButtons: boolean
+  skipOnCloseCallback: () => void
 }
 
 type PaymentProviderOptions = 'sardine' | 'transak'
 
-export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCardProps) => {
+export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallback }: PayWithCreditCardProps) => {
   const {
     chain,
     currencyAddress,
@@ -39,6 +40,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
     isDev = false,
     onSuccess = () => {},
     onError = () => {},
+    onClose = () => {},
     creditCardProviders = [],
     transakConfig
   } = settings
@@ -84,6 +86,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
           onSuccess(txHash)
         },
         onError,
+        onClose,
         chainId,
         recipientAddress: userAddress,
         contractAddress: targetContractAddress,
@@ -103,6 +106,7 @@ export const PayWithCreditCard = ({ settings, disableButtons }: PayWithCreditCar
       }
     }
 
+    skipOnCloseCallback()
     closeSelectPaymentModal()
     triggerCheckout(checkoutSettings)
   }

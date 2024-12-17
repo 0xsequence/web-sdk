@@ -26,6 +26,7 @@ export interface SelectPaymentSettings {
   transactionConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
+  onClose?: () => void
   enableMainCurrencyPayment?: boolean
   enableSwapPayments?: boolean
   enableTransferFunds?: boolean
