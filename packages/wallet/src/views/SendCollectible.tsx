@@ -60,7 +60,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [feeOptions, setFeeOptions] = useState<
     | {
-        id: string
         options: any[]
         chainId: number
       }
@@ -96,6 +95,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   useEffect(() => {
     if (pendingFeeOption && selectedFeeTokenAddress !== null) {
+      console.log('options', pendingFeeOption.options)
+      console.log('confirmFeeOption', pendingFeeOption.id, selectedFeeTokenAddress)
       confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
     }
   }, [pendingFeeOption, selectedFeeTokenAddress])
@@ -206,7 +207,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     setFeeOptions(
       feeOptionsResult?.feeOptions
         ? {
-            id: feeOptionsResult.feeQuote || '',
             options: feeOptionsResult.feeOptions,
             chainId
           }
@@ -443,6 +443,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           decimals={decimals}
           feeOptions={feeOptions}
           onSelectFeeOption={feeTokenAddress => {
+            console.log('selectedFeeTokenAddress', feeTokenAddress)
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
           isLoading={isSendTxnPending}

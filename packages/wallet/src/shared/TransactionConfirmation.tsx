@@ -33,7 +33,6 @@ interface TransactionConfirmationProps {
   balance: string
   decimals: number
   feeOptions?: {
-    id: string
     options: FeeOption[]
     chainId: number
   }

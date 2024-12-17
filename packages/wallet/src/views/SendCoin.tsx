@@ -59,7 +59,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [feeOptions, setFeeOptions] = useState<
     | {
-        id: string
         options: any[]
         chainId: number
       }
@@ -182,7 +181,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     setFeeOptions(
       feeOptionsResult?.feeOptions
         ? {
-            id: feeOptionsResult.feeQuote || '',
             options: feeOptionsResult.feeOptions,
             chainId
           }
