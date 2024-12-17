@@ -1,28 +1,36 @@
-import { Box, Button, Text } from '@0xsequence/design-system'
+import { Box, Text, TokenImage } from '@0xsequence/design-system'
 import { ZeroAddress, formatUnits, parseUnits } from 'ethers'
 import React from 'react'
 
 import { Alert, AlertProps } from './Alert'
 
-interface FeeOptionToken {
-  name: string
-  decimals?: number
-  contractAddress: string | null
-}
-
-interface FeeOption {
-  token: FeeOptionToken
+export interface FeeOption {
+  token: FeeToken
+  to: string
   value: string
-  balance?: string
+  gasLimit: number
+}
+export interface FeeToken {
+  chainId: number
+  name: string
+  symbol: string
+  decimals?: number
+  logoURL: string
+  contractAddress?: string
+  tokenID?: string
 }
 
-interface FeeOptionSelectorProps {
+export interface FeeOptionBalance {
+  tokenName: string
+  decimals: number
+  balance: string
+}
+
+export interface FeeOptionSelectorProps {
   txnFeeOptions: FeeOption[]
-  feeOptionBalances: { tokenName: string; decimals: number; balance: string }[]
+  feeOptionBalances: FeeOptionBalance[]
   selectedFeeOptionAddress: string | undefined
   setSelectedFeeOptionAddress: (address: string) => void
-  checkTokenBalancesForFeeOptions: () => void
-  isRefreshingBalance: boolean
 }
 
 const isBalanceSufficient = (balance: string, fee: string, decimals: number) => {
@@ -35,9 +43,7 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
   txnFeeOptions,
   feeOptionBalances,
   selectedFeeOptionAddress,
-  setSelectedFeeOptionAddress,
-  checkTokenBalancesForFeeOptions,
-  isRefreshingBalance
+  setSelectedFeeOptionAddress
 }) => {
   const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>()
 
@@ -56,18 +62,19 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
       </Text>
       <Box flexDirection="column" marginTop="2" gap="2">
         {sortedOptions.map((option, index) => {
+          const isSelected = selectedFeeOptionAddress === (option.token.contractAddress ?? ZeroAddress)
           const balance = feeOptionBalances.find(b => b.tokenName === option.token.name)
           const isSufficient = isBalanceSufficient(balance?.balance || '0', option.value, option.token.decimals || 0)
           return (
             <Box
               key={index}
-              padding="3"
+              paddingX="3"
+              paddingY="2"
               borderRadius="md"
-              background={
-                selectedFeeOptionAddress === (option.token.contractAddress ?? ZeroAddress)
-                  ? 'gradientBackdrop'
-                  : 'backgroundRaised'
-              }
+              borderColor={isSelected ? 'borderFocus' : 'transparent'}
+              borderWidth="thick"
+              borderStyle="solid"
+              background="backgroundRaised"
               onClick={() => {
                 if (isSufficient) {
                   setSelectedFeeOptionAddress(option.token.contractAddress ?? ZeroAddress)
@@ -84,16 +91,19 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
               opacity={isSufficient ? '100' : '50'}
             >
               <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Box flexDirection="column">
-                  <Text variant="small" color="text100" fontWeight="bold">
-                    {option.token.name}
-                  </Text>
-                  <Text variant="xsmall" color="text80">
-                    Fee:{' '}
-                    {parseFloat(formatUnits(BigInt(option.value), option.token.decimals || 0)).toLocaleString(undefined, {
-                      maximumFractionDigits: 6
-                    })}
-                  </Text>
+                <Box flexDirection="row" alignItems="center" gap="2">
+                  <TokenImage src={option.token.logoURL} symbol={option.token.name} />
+                  <Box flexDirection="column">
+                    <Text variant="small" color="text100" fontWeight="bold">
+                      {option.token.name}
+                    </Text>
+                    <Text variant="xsmall" color="text80">
+                      Fee:{' '}
+                      {parseFloat(formatUnits(BigInt(option.value), option.token.decimals || 0)).toLocaleString(undefined, {
+                        maximumFractionDigits: 6
+                      })}
+                    </Text>
+                  </Box>
                 </Box>
                 <Box flexDirection="column" alignItems="flex-end">
                   <Text variant="xsmall" color="text80">
@@ -112,12 +122,6 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
         })}
       </Box>
       <Box marginTop="3" alignItems="flex-end" justifyContent="center" flexDirection="column">
-        <Button
-          size="sm"
-          onClick={checkTokenBalancesForFeeOptions}
-          label={isRefreshingBalance ? 'Refreshing...' : 'Refresh Balance'}
-          disabled={isRefreshingBalance}
-        />
         {feeOptionAlert && (
           <Box marginTop="3">
             <Alert

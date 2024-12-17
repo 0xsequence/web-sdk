@@ -1,24 +1,13 @@
 import { Box, Button, ChevronRightIcon, Text, vars, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/kit'
-import React, { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import React, { useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { truncateAtMiddle } from '../utils'
 
-import { FeeOptionSelector } from './FeeOptionSelector'
+import { FeeOption, FeeOptionSelector, type FeeOptionBalance } from './FeeOptionSelector'
 import { SendItemInfo } from './SendItemInfo'
-
-interface FeeOptionToken {
-  name: string
-  decimals?: number
-  contractAddress: string | null
-}
-
-interface FeeOption {
-  token: FeeOptionToken
-  value: string
-  balance?: string
-}
 
 interface TransactionConfirmationProps {
   // Display data
@@ -44,6 +33,47 @@ interface TransactionConfirmationProps {
   onCancel: () => void
 }
 
+const useFeeOptionBalances = (feeOptions: TransactionConfirmationProps['feeOptions'], chainId: number) => {
+  const { address: accountAddress } = useAccount()
+  const indexerClient = useIndexerClient(chainId)
+
+  return useQuery({
+    queryKey: ['feeOptionBalances', chainId, accountAddress, feeOptions?.options?.length],
+    queryFn: async () => {
+      if (!feeOptions?.options || !accountAddress || !indexerClient) return []
+
+      const nativeTokenBalance = await indexerClient.getEtherBalance({
+        accountAddress
+      })
+
+      const tokenBalances = await indexerClient.getTokenBalances({
+        accountAddress
+      })
+
+      return feeOptions.options.map(option => {
+        if (option.token.contractAddress === null) {
+          return {
+            tokenName: option.token.name,
+            decimals: option.token.decimals || 0,
+            balance: nativeTokenBalance.balance.balanceWei
+          }
+        } else {
+          return {
+            tokenName: option.token.name,
+            decimals: option.token.decimals || 0,
+            balance:
+              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
+                ?.balance || '0'
+          }
+        }
+      })
+    },
+    enabled: Boolean(feeOptions?.options && accountAddress && indexerClient),
+    refetchInterval: 10000,
+    staleTime: 10000
+  })
+}
+
 export const TransactionConfirmation = ({
   name,
   symbol,
@@ -62,93 +92,11 @@ export const TransactionConfirmation = ({
   onCancel
 }: TransactionConfirmationProps) => {
   const [selectedFeeOptionAddress, setSelectedFeeOptionAddress] = useState<string>()
-  const [isRefreshingBalance, setIsRefreshingBalance] = useState(false)
-  const [feeOptionBalances, setFeeOptionBalances] = useState<{ tokenName: string; decimals: number; balance: string }[]>([])
-  const { address: accountAddress } = useAccount()
-  const indexerClient = useIndexerClient(chainId)
-
-  useEffect(() => {
-    const fetchBalances = async () => {
-      if (!feeOptions?.options || !accountAddress || !indexerClient) return
-
-      try {
-        const nativeTokenBalance = await indexerClient.getEtherBalance({
-          accountAddress
-        })
-
-        const tokenBalances = await indexerClient.getTokenBalances({
-          accountAddress
-        })
-
-        const balances = feeOptions.options.map(option => {
-          if (option.token.contractAddress === null) {
-            return {
-              tokenName: option.token.name,
-              decimals: option.token.decimals || 0,
-              balance: nativeTokenBalance.balance.balanceWei
-            }
-          } else {
-            return {
-              tokenName: option.token.name,
-              decimals: option.token.decimals || 0,
-              balance:
-                tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
-                  ?.balance || '0'
-            }
-          }
-        })
-
-        setFeeOptionBalances(balances)
-      } catch (error) {
-        console.error('Error fetching fee option balances:', error)
-      }
-    }
-
-    fetchBalances()
-  }, [feeOptions, accountAddress, chainId, indexerClient])
+  const { data: feeOptionBalances = [] } = useFeeOptionBalances(feeOptions, chainId)
 
   const handleFeeOptionSelect = (address: string) => {
     setSelectedFeeOptionAddress(address)
     onSelectFeeOption?.(address)
-  }
-
-  const checkTokenBalancesForFeeOptions = async () => {
-    setIsRefreshingBalance(true)
-    try {
-      if (!feeOptions?.options || !accountAddress || !indexerClient) return
-
-      const nativeTokenBalance = await indexerClient.getEtherBalance({
-        accountAddress
-      })
-
-      const tokenBalances = await indexerClient.getTokenBalances({
-        accountAddress
-      })
-
-      const balances = feeOptions.options.map(option => {
-        if (option.token.contractAddress === null) {
-          return {
-            tokenName: option.token.name,
-            decimals: option.token.decimals || 0,
-            balance: nativeTokenBalance.balance.balanceWei
-          }
-        } else {
-          return {
-            tokenName: option.token.name,
-            decimals: option.token.decimals || 0,
-            balance:
-              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
-                ?.balance || '0'
-          }
-        }
-      })
-
-      setFeeOptionBalances(balances)
-    } catch (error) {
-      console.error('Error refreshing fee option balances:', error)
-    } finally {
-      setIsRefreshingBalance(false)
-    }
   }
 
   // If feeOptions exist and have options, a selection is required
@@ -159,7 +107,7 @@ export const TransactionConfirmation = ({
   return (
     <Box width="full" height="full" display="flex" alignItems="center" justifyContent="center" background="backgroundPrimary">
       <Box gap="2" flexDirection="column" background="backgroundPrimary" width="full">
-        <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
+        <Box background="backgroundSecondary" borderRadius="md" padding="4" paddingBottom="3" gap="2" flexDirection="column">
           <SendItemInfo
             imageUrl={imageUrl}
             showSquareImage={showSquareImage}
@@ -204,8 +152,6 @@ export const TransactionConfirmation = ({
               feeOptionBalances={feeOptionBalances}
               selectedFeeOptionAddress={selectedFeeOptionAddress}
               setSelectedFeeOptionAddress={handleFeeOptionSelect}
-              checkTokenBalancesForFeeOptions={checkTokenBalancesForFeeOptions}
-              isRefreshingBalance={isRefreshingBalance}
             />
           )}
         </Box>
