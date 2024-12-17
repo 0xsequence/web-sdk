@@ -94,7 +94,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
                   alignItems="center"
                   marginBottom="2"
                 >
-                  <Image style={{ height: '100%' }} src={balance.tokenMetadata?.image} />
+                  <Image style={{ height: '100%' }} borderRadius="sm" src={balance.tokenMetadata?.image} />
                 </Box>
                 <Box>
                   <Text variant="normal" fontWeight="bold" color="text100">
