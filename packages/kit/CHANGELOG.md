@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.5.3
+
+### Patch Changes
+
+- Adding unsponsored fee options
+
 ## 4.5.2
 
 ### Patch Changes

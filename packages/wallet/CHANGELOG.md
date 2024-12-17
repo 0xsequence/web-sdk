@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.5.3
+
+### Patch Changes
+
+- Adding unsponsored fee options
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.3
+
 ## 4.5.2
 
 ### Patch Changes
