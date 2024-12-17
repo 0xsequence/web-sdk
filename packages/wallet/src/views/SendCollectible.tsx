@@ -95,8 +95,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   useEffect(() => {
     if (pendingFeeOption && selectedFeeTokenAddress !== null) {
-      console.log('options', pendingFeeOption.options)
-      console.log('confirmFeeOption', pendingFeeOption.id, selectedFeeTokenAddress)
       confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
     }
   }, [pendingFeeOption, selectedFeeTokenAddress])
@@ -443,7 +441,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           decimals={decimals}
           feeOptions={feeOptions}
           onSelectFeeOption={feeTokenAddress => {
-            console.log('selectedFeeTokenAddress', feeTokenAddress)
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
           isLoading={isSendTxnPending}
