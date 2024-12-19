@@ -379,12 +379,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
       }
     }
 
-    if (
-      method === 'eth_sign' ||
-      method === 'eth_signTypedData' ||
-      method === 'eth_signTypedData_v4' ||
-      method === 'personal_sign'
-    ) {
+    if (method === 'eth_sign' || method === 'personal_sign') {
       if (this.requestConfirmationHandler && this.showConfirmation) {
         const id = uuidv4()
         const confirmation = await this.requestConfirmationHandler.confirmSignMessageRequest(
@@ -415,6 +410,47 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
             typeof error === 'object' && error !== null && 'cause' in error
               ? (String(error.cause) ?? 'Failed to sign message')
               : 'Failed to sign message'
+          throw new InternalRpcError(new Error(message))
+        }
+      }
+
+      return sig.data.signature
+    }
+
+    if (method === 'eth_signTypedData' || method === 'eth_signTypedData_v4') {
+      if (this.requestConfirmationHandler && this.showConfirmation) {
+        const id = uuidv4()
+        const confirmation = await this.requestConfirmationHandler.confirmSignMessageRequest(
+          id,
+          JSON.stringify(JSON.parse(params?.[1]), null, 2), // Pretty print the typed data for confirmation
+          Number(this.currentNetwork.chainId)
+        )
+
+        if (!confirmation.confirmed) {
+          throw new UserRejectedRequestError(new Error('User rejected sign typed data request'))
+        }
+
+        if (id !== confirmation.id) {
+          throw new UserRejectedRequestError(new Error('User confirmation ids do not match'))
+        }
+      }
+
+      let sig
+
+      try {
+        sig = await this.sequenceWaas.signTypedData({
+          typedData: JSON.parse(params?.[1]),
+          network: Number(this.currentNetwork.chainId)
+        })
+      } catch (error) {
+        if (isSessionInvalidOrNotFoundError(error)) {
+          await this.emit('error', error)
+          throw new ProviderDisconnectedError(new Error('Provider is not connected'))
+        } else {
+          const message =
+            typeof error === 'object' && error !== null && 'cause' in error
+              ? (String(error.cause) ?? 'Failed to sign typed data')
+              : 'Failed to sign typed data'
           throw new InternalRpcError(new Error(message))
         }
       }

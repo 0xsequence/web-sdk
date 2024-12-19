@@ -74,6 +74,9 @@ export const Connected = () => {
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
+  const [isSigningTypedData, setIsSigningTypedData] = React.useState(false)
+  const [typedDataSig, setTypedDataSig] = React.useState<string | undefined>()
+  const [isTypedDataValid, setIsTypedDataValid] = React.useState<boolean | undefined>()
 
   const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
@@ -191,6 +194,69 @@ export const Connected = () => {
       setLastTxnDataHash3((txnData3 as any).hash ?? txnData3)
     }
   }, [txnData, txnData2, txnData3])
+
+  const domain = {
+    name: 'Sequence Example',
+    version: '1',
+    chainId: chainId,
+    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  } as const
+
+  const types = {
+    Person: [
+      { name: 'name', type: 'string' },
+      { name: 'wallet', type: 'address' }
+    ]
+  } as const
+
+  const value = {
+    name: 'John Doe',
+    wallet: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  } as const
+
+  const signTypedData = async () => {
+    if (!walletClient || !address || !publicClient) {
+      return
+    }
+
+    setIsSigningTypedData(true)
+
+    try {
+      const sig = await walletClient.signTypedData({
+        account: address,
+        domain,
+        types,
+        primaryType: 'Person',
+        message: value
+      })
+
+      console.log('signature:', sig)
+
+      const [account] = await walletClient.getAddresses()
+
+      const isValid = await publicClient.verifyTypedData({
+        address: account,
+        domain,
+        types,
+        primaryType: 'Person',
+        message: value,
+        signature: sig
+      })
+
+      console.log('isValid?', isValid)
+
+      setTypedDataSig(sig)
+      setIsTypedDataValid(isValid)
+      setIsSigningTypedData(false)
+    } catch (e) {
+      setIsSigningTypedData(false)
+      if (e instanceof Error) {
+        console.error(e.cause)
+      } else {
+        console.error(e)
+      }
+    }
+  }
 
   const signMessage = async () => {
     if (!walletClient || !publicClient) {
@@ -411,6 +477,7 @@ export const Connected = () => {
     setLastTxnDataHash2(undefined)
     setLastTxnDataHash3(undefined)
     setIsMessageValid(undefined)
+    setTypedDataSig(undefined)
     resetWriteContract()
     resetSendUnsponsoredTransaction()
     resetSendTransaction()
@@ -500,6 +567,36 @@ export const Connected = () => {
                 </Text>
                 <Text variant="medium">
                   isValid: <Text variant="code">{isMessageValid.toString()}</Text>
+                </Text>
+              </Card>
+            )}
+            <CardButton
+              title="Sign typed data"
+              description="Sign typed data with your wallet"
+              onClick={signTypedData}
+              isPending={isSigningTypedData}
+            />
+            {typedDataSig && (
+              <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
+                <Text variant="medium">Signed typed data:</Text>
+                <Text variant="code" as="p">
+                  {JSON.stringify(
+                    {
+                      domain,
+                      types,
+                      primaryType: 'Person',
+                      message: value
+                    },
+                    null,
+                    2
+                  )}
+                </Text>
+                <Text variant="medium">Signature:</Text>
+                <Text variant="code" as="p" ellipsis>
+                  {typedDataSig}
+                </Text>
+                <Text variant="medium">
+                  isValid: <Text variant="code">{isTypedDataValid?.toString()}</Text>
                 </Text>
               </Card>
             )}
