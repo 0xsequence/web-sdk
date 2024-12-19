@@ -1,6 +1,8 @@
 import { Box, Button, Divider, Text } from '@0xsequence/design-system'
 import {
   useBalancesSummary,
+  useAnalyticsContext,
+  useBalances,
   useContractInfo,
   useSwapPrices,
   useSwapQuote,
@@ -16,7 +18,7 @@ import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../constants'
+import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
 import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
@@ -43,6 +45,7 @@ export const PaymentSelectionHeader = () => {
 export const PaymentSelectionContent = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const { selectPaymentSettings } = useSelectPaymentModal()
+  const { analytics } = useAnalyticsContext()
 
   const [disableButtons, setDisableButtons] = useState(false)
   const [isError, setIsError] = useState<boolean>(false)
@@ -207,6 +210,23 @@ export const PaymentSelectionContent = () => {
         waitConfirmationForLastTransaction: false
       })
 
+      analytics?.track({
+        event: 'SEND_TRANSACTION_REQUEST',
+        props: {
+          type: 'crypto',
+          source: NFT_CHECKOUT_SOURCE,
+          chainId: String(chainId),
+          listedCurrency: currencyAddress,
+          purchasedCurrency: currencyAddress,
+          origin: window.location.origin,
+          from: userAddress,
+          to: targetContractAddress,
+          item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
+          item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          txHash
+        }
+      })
+
       closeSelectPaymentModal()
 
       skipOnCloseCallback()
@@ -314,6 +334,23 @@ export const PaymentSelectionContent = () => {
         transactions,
         transactionConfirmations,
         waitConfirmationForLastTransaction: false
+      })
+
+      analytics?.track({
+        event: 'SEND_TRANSACTION_REQUEST',
+        props: {
+          type: 'crypto',
+          source: NFT_CHECKOUT_SOURCE,
+          chainId: String(chainId),
+          listedCurrency: swapPrice.price.currencyAddress,
+          purchasedCurrency: currencyAddress,
+          origin: window.location.origin,
+          from: userAddress,
+          to: targetContractAddress,
+          item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
+          item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          txHash
+        }
       })
 
       closeSelectPaymentModal()
