@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.5.4
+
+### Patch Changes
+
+- Adding onClose logic to checkout modals
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.4
+
 ## 4.5.3
 
 ### Patch Changes

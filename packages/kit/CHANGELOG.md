@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.5.4
+
+### Patch Changes
+
+- Adding onClose logic to checkout modals
+
 ## 4.5.3
 
 ### Patch Changes
