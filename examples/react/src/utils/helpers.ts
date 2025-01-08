@@ -35,7 +35,6 @@ export interface GetCheckoutSettings {
   calldata: string
   approvedSpenderAddress?: string
   nftDecimals?: string
-  isDev?: boolean
 }
 
 export const getCheckoutSettings = (args: GetCheckoutSettings) => {

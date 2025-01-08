@@ -388,7 +388,7 @@ const getSwapPrices = async (
     const { withContractInfo, ...swapPricesArgs } = args
 
     const res = await apiClient.getSwapPrices({
-      ...swapPricesArgs,
+      ...swapPricesArgs
     })
 
     if (res.swapPrices === null) {
@@ -399,36 +399,34 @@ const getSwapPrices = async (
     if (withContractInfo) {
       res?.swapPrices.forEach(price => {
         const { currencyAddress: rawCurrencyAddress } = price
-        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
-          ? zeroAddress
-          : rawCurrencyAddress
+        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X) ? zeroAddress : rawCurrencyAddress
         const isNativeToken = compareAddress(currencyAddress, zeroAddress)
         if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
-          const getNativeTokenInfo = () =>new Promise<ContractInfo>((resolve, reject) => {
-            resolve({
-              ...network?.nativeToken,
-            logoURI: network?.logoURI || '',
-            address: zeroAddress
-            } as ContractInfo)
-          })
+          const getNativeTokenInfo = () =>
+            new Promise<ContractInfo>((resolve, reject) => {
+              resolve({
+                ...network?.nativeToken,
+                logoURI: network?.logoURI || '',
+                address: zeroAddress
+              } as ContractInfo)
+            })
 
           currencyInfoMap.set(
             currencyAddress,
-            isNativeToken ? 
-            getNativeTokenInfo().then(data => {
-              return data
-            })
-        :
-            metadataClient
-              .getContractInfo({
-                chainID: String(args.chainId),
-                contractAddress: currencyAddress
-              })
-              .then(data => {
-                return ({
-                  ...data.contractInfo,
+            isNativeToken
+              ? getNativeTokenInfo().then(data => {
+                  return data
                 })
-              })
+              : metadataClient
+                  .getContractInfo({
+                    chainID: String(args.chainId),
+                    contractAddress: currencyAddress
+                  })
+                  .then(data => {
+                    return {
+                      ...data.contractInfo
+                    }
+                  })
           )
         }
       })
@@ -437,34 +435,33 @@ const getSwapPrices = async (
     const currencyBalanceInfoMap = new Map<string, Promise<Balance>>()
     res?.swapPrices.forEach(price => {
       const { currencyAddress: rawCurrencyAddress } = price
-      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
-        ? zeroAddress
-        : rawCurrencyAddress
+      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X) ? zeroAddress : rawCurrencyAddress
       const isNativeToken = compareAddress(currencyAddress, zeroAddress)
       if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
         currencyBalanceInfoMap.set(
           currencyAddress,
-          isNativeToken ?
-            indexerClient.getEtherBalance({
-              accountAddress: args.userAddress
-            }).then(res => ({
-              balance: res.balance.balanceWei
-            }))
-          :
-          indexerClient
-            .getTokenBalances({
-              accountAddress: args.userAddress,
-              contractAddress: currencyAddress,
-              includeMetadata: false,
-              metadataOptions: {
-                verifiedOnly: true
-              }
-            })
-            .then(balances => {
-              return ({
-                balance: balances.balances?.[0].balance || '0'
-              })
-            })
+          isNativeToken
+            ? indexerClient
+                .getEtherBalance({
+                  accountAddress: args.userAddress
+                })
+                .then(res => ({
+                  balance: res.balance.balanceWei
+                }))
+            : indexerClient
+                .getTokenBalances({
+                  accountAddress: args.userAddress,
+                  contractAddress: currencyAddress,
+                  includeMetadata: false,
+                  metadataOptions: {
+                    verifiedOnly: true
+                  }
+                })
+                .then(balances => {
+                  return {
+                    balance: balances.balances?.[0].balance || '0'
+                  }
+                })
         )
       }
     })
@@ -472,18 +469,16 @@ const getSwapPrices = async (
     return Promise.all(
       res?.swapPrices.map(async price => {
         const { currencyAddress: rawCurrencyAddress } = price
-        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
-          ? zeroAddress
-          : rawCurrencyAddress
+        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X) ? zeroAddress : rawCurrencyAddress
 
-        return ({
+        return {
           price: {
             ...price,
             currencyAddress
           },
           info: (await currencyInfoMap.get(currencyAddress)) || undefined,
           balance: (await currencyBalanceInfoMap.get(currencyAddress)) || { balance: '0' }
-        })
+        }
       }) || []
     )
   } catch (e) {
@@ -510,7 +505,12 @@ export const useSwapPrices = (args: UseSwapPricesArgs, options: SwapPricesOption
   const indexerClient = useIndexerClient(args.chainId)
 
   const enabled =
-    !!args.chainId && !!args.userAddress && !!args.buyCurrencyAddress && !!args.buyAmount && args.buyAmount !== '0' && !options.disabled
+    !!args.chainId &&
+    !!args.userAddress &&
+    !!args.buyCurrencyAddress &&
+    !!args.buyAmount &&
+    args.buyAmount !== '0' &&
+    !options.disabled
 
   return useQuery({
     queryKey: ['swapPrices', args],
@@ -527,7 +527,7 @@ interface UseSwapQuoteOptions {
   disabled?: boolean
 }
 
-export const useSwapQuote  = (args:GetSwapQuoteArgs,  options: UseSwapQuoteOptions) => {
+export const useSwapQuote = (args: GetSwapQuoteArgs, options: UseSwapQuoteOptions) => {
   const apiClient = useAPIClient()
   const { disabled = false } = options
 

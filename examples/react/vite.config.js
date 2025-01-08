@@ -21,7 +21,8 @@ export default defineConfig(() => {
       svgrPlugin()
     ],
     define: {
-      'process.env.PACKAGE_VERSION': JSON.stringify(process.env.npm_package_version)
+      'process.env.PACKAGE_VERSION': JSON.stringify(process.env.npm_package_version),
+      'process.env.DEBUG': JSON.stringify(process.env.DEBUG || false)
     },
     resolve: {
       dedupe: ['wagmi', 'viem']

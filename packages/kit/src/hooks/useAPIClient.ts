@@ -7,9 +7,8 @@ import { useProjectAccessKey } from './useProjectAccessKey'
 
 export const useAPIClient = () => {
   const projectAccessKey = useProjectAccessKey()
-  const { isDev = false } = useKitConfig()
 
-  const clientUrl = isDev ? 'https://dev-api.sequence.app' : 'https://api.sequence.app'
+  const clientUrl = process.env.DEBUG ? 'https://dev-api.sequence.app' : 'https://api.sequence.app'
 
   const apiClient = useMemo(() => {
     return new SequenceAPIClient(clientUrl, projectAccessKey)

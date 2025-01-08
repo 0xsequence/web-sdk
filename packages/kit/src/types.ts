@@ -75,7 +75,6 @@ export interface KitConfig {
   }
   displayedAssets?: DisplayedAsset[]
   ethAuth?: EthAuthSettings
-  isDev?: boolean
 }
 
 export type StorageItem = {

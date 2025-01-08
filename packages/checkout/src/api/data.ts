@@ -14,20 +14,18 @@ export interface MethodArguments {
 
 export interface FetchSardineClientTokenArgs {
   order: CreditCardCheckout
-  isDev: boolean
   projectAccessKey: string
   tokenMetadata?: TokenMetadata
 }
 
 export const fetchSardineClientToken = async ({
   order,
-  isDev,
   projectAccessKey,
   tokenMetadata
 }: FetchSardineClientTokenArgs): Promise<FetchSardineClientTokenReturn> => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
-  const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-  const url = isDev
+  const accessKey = process.env.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
+  const url = process.env.DEBUG
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
 
@@ -68,10 +66,10 @@ export const fetchSardineClientToken = async ({
   }
 }
 
-export const fetchSardineOrderStatus = async (orderId: string, isDev: boolean, projectAccessKey: string) => {
+export const fetchSardineOrderStatus = async (orderId: string, projectAccessKey: string) => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
-  const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-  const url = isDev
+  const accessKey = process.env.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
+  const url = process.env.DEBUG
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutOrderStatus'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutOrderStatus'
   const response = await fetch(url, {

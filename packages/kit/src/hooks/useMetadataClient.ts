@@ -8,10 +8,8 @@ import { useProjectAccessKey } from './useProjectAccessKey'
 export const useMetadataClient = () => {
   const projectAccessKey = useProjectAccessKey()
 
-  const { isDev = false } = useKitConfig()
-
   const metadataClient = useMemo(() => {
-    const clientUrl = isDev ? 'https://dev-metadata.sequence.app' : 'https://metadata.sequence.app'
+    const clientUrl = process.env.DEBUG ? 'https://dev-metadata.sequence.app' : 'https://metadata.sequence.app'
 
     return new SequenceMetadata(clientUrl, projectAccessKey)
   }, [projectAccessKey])

@@ -9,14 +9,14 @@ import { useProjectAccessKey } from './useProjectAccessKey'
 export const useIndexerClient = (chainId: ChainId) => {
   const projectAccessKey = useProjectAccessKey()
 
-  const { isDev = false } = useKitConfig()
-
   const indexerClients = useMemo(() => {
     return new Map<ChainId, SequenceIndexer>()
-  }, [projectAccessKey, isDev])
+  }, [projectAccessKey])
 
   const network = networks[chainId]
-  const clientUrl = isDev ? `https://dev-${network.name}-indexer.sequence.app` : `https://${network.name}-indexer.sequence.app`
+  const clientUrl = process.env.DEBUG
+    ? `https://dev-${network.name}-indexer.sequence.app`
+    : `https://${network.name}-indexer.sequence.app`
 
   if (!indexerClients.has(chainId)) {
     indexerClients.set(chainId, new SequenceIndexer(clientUrl, projectAccessKey))
@@ -34,17 +34,17 @@ export const useIndexerClient = (chainId: ChainId) => {
 export const useIndexerClients = (chainIds: ChainId[]) => {
   const projectAccessKey = useProjectAccessKey()
 
-  const { isDev = false } = useKitConfig()
-
   const indexerClients = useMemo(() => {
     return new Map<ChainId, SequenceIndexer>()
-  }, [projectAccessKey, isDev])
+  }, [projectAccessKey])
 
   const result = new Map<ChainId, SequenceIndexer>()
 
   for (const chainId of chainIds) {
     const network = networks[chainId]
-    const clientUrl = isDev ? `https://dev-${network.name}-indexer.sequence.app` : `https://${network.name}-indexer.sequence.app`
+    const clientUrl = process.env.DEBUG
+      ? `https://dev-${network.name}-indexer.sequence.app`
+      : `https://${network.name}-indexer.sequence.app`
 
     if (!indexerClients.has(chainId)) {
       indexerClients.set(chainId, new SequenceIndexer(clientUrl, projectAccessKey))

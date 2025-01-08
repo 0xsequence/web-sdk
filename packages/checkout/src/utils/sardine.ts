@@ -2,20 +2,19 @@ import { ChainId, networks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 
 export interface CheckSardineWhitelistStatusArgs {
-  isDev: boolean
   chainId: number
   marketplaceAddress: string
 }
 
 export const checkSardineWhitelistStatus = async (
-  { isDev, chainId, marketplaceAddress }: CheckSardineWhitelistStatusArgs,
+  { chainId, marketplaceAddress }: CheckSardineWhitelistStatusArgs,
   projectAccessKey: string
 ) => {
   const referenceId = `sequence-kit-sardine-whitelist-check`
 
-  const accessKey = isDev ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
+  const accessKey = process.env.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
 
-  const url = isDev
+  const url = process.env.DEBUG
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
 

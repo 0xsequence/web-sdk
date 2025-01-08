@@ -55,7 +55,6 @@ interface CreateConfigOptions {
     chainId: number
   }>
   ethAuth?: EthAuthSettings
-  isDev?: boolean
 
   wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
 

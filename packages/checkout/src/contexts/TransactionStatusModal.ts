@@ -27,4 +27,5 @@ type TransactionStatusContext = {
   transactionStatusSettings?: TransactionStatusSettings
 }
 
-export const [useTransactionStatusContext, TransactionStatusModalContextProvider] = createGenericContext<TransactionStatusContext>()
+export const [useTransactionStatusContext, TransactionStatusModalContextProvider] =
+  createGenericContext<TransactionStatusContext>()

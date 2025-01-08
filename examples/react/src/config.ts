@@ -23,7 +23,6 @@ export const kitConfig: KitConfig = {
     projectName: 'Kit Demo',
     useMock: isDebugMode
   },
-  isDev: isDebugMode,
   displayedAssets: [
     // Native token
     {
@@ -113,13 +112,16 @@ export const getErc1155SaleContractConfig = (walletAddress: string) => ({
   // collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
   wallet: walletAddress,
   items: [
+    
     {
-      tokenId: '1',
-      quantity: '1'
-    }
+        tokenId: '1',
+        quantity: '1'
+      }
+  
   ],
   onSuccess: () => {
+   
     console.log('success')
-  },
-  isDev: isDebugMode
+ 
+  }
 })

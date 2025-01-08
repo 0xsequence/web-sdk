@@ -424,7 +424,6 @@ export const Connected = () => {
         contractId,
         apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
       },
-      isDev: false,
       copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash: string) => {
         console.log('success!', txnHash)
@@ -457,7 +456,6 @@ export const Connected = () => {
         nftId: checkoutTokenId,
         nftAddress: checkoutTokenContractAddress,
         nftQuantity,
-        isDev: true,
         approvedSpenderAddress: orderbookAddress,
         calldata: getOrderbookCalldata({
           orderId: checkoutOrderId,

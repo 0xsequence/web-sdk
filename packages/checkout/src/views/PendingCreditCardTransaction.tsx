@@ -68,7 +68,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
 
-  const baseUrl = creditCardCheckout.isDev ? 'https://global-stg.transak.com' : 'https://global.transak.com'
+  const baseUrl = process.env.DEBUG ? 'https://global-stg.transak.com' : 'https://global.transak.com'
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -243,14 +243,11 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   )
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
-  const isDev = settings?.creditCardCheckout?.isDev || false
-
   const disableSardineClientTokenFetch = isLoadingTokenMetadata
 
   const { data, isLoading, isError } = useSardineClientToken(
     {
       order: creditCardCheckout,
-      isDev,
       projectAccessKey: projectAccessKey,
       tokenMetadata: tokenMetadata
     },
@@ -259,7 +256,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
   const authToken = data?.token
 
-  const url = isDev
+  const url = process.env.DEBUG
     ? `https://sardine-checkout-sandbox.sequence.info?api_url=https://sardine-api-sandbox.sequence.info&client_token=${authToken}&show_features=true`
     : `https://sardine-checkout.sequence.info?api_url=https://sardine-api.sequence.info&client_token=${authToken}&show_features=true`
 
@@ -272,9 +269,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
       const { orderId } = data
 
       console.log('Polling for transaction status')
-      const isDev = creditCardCheckout?.isDev || false
-
-      const pollResponse = await fetchSardineOrderStatus(orderId, isDev, projectAccessKey)
+      const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey)
       const status = pollResponse.resp.status
       const transactionHash = pollResponse.resp?.transactionHash
 
