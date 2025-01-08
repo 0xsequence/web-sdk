@@ -321,7 +321,7 @@ The React example can be used to test the library locally.
 
 2. `pnpm install`
 3. From the root folder, run `pnpm build` to build the packages OR optionally run `pnpm dev` in a separate terminal to develop in watch mode.
-4. From the root folder, run `pnpm dev:react` or `pnpm dev:next` to run the examples.
+4. From the root folder, run `pnpm dev:react` or `pnpm dev:next` to run the examples. If you want to run the examples in debug mode, run `pnpm debug:react`
 
 ## What to do next?
 
