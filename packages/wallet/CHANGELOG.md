@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.5.5
+
+### Patch Changes
+
+- Embedded wallet signTypedData fix
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.5
+
 ## 4.5.4
 
 ### Patch Changes
