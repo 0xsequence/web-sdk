@@ -82,7 +82,6 @@ export const config =
         walletConnect: {
           projectId: walletConnectProjectId
         },
-        isDev: isDebugMode
       })
     : createConfig('universal', {
         ...kitConfig,
