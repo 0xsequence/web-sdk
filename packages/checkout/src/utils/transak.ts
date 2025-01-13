@@ -1,7 +1,11 @@
 import { AddFundsSettings } from '../contexts'
 
 export const TRANSAK_API_KEY = '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
+export const TRANSAK_API_KEY_STAGING = 'ADD_KEY_HERE'
 export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a'
+
+const TransakUrlProd = 'https://global.transak.com';
+const TransakUrlSandbox = 'https://global-stg.transak.com';
 
 export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
   const defaultNetworks =
@@ -11,8 +15,12 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
     [index: string]: string | undefined
   }
 
+  const useSandbox = addFundsSettings.sandbox ?? false;
+  const url = new URL(useSandbox ? TransakUrlSandbox : TransakUrlProd);
+  const apiKey = useSandbox ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY;
+
   const options: Options = {
-    apiKey: TRANSAK_API_KEY,
+    apiKey: apiKey,
     referrerDomain: window.location.origin,
     walletAddress: addFundsSettings.walletAddress,
     fiatAmount: addFundsSettings?.fiatAmount,
@@ -24,7 +32,6 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
     networks: addFundsSettings?.networks || defaultNetworks
   }
 
-  const url = new URL('https://global.transak.com')
   Object.keys(options).forEach(k => {
     const option = options[k]
     if (option) {
