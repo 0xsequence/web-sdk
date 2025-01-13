@@ -4,7 +4,6 @@ import { createGenericContext } from './genericContext'
 
 export interface AddFundsSettings {
   walletAddress: string | Hex
-  sandbox?: boolean
   fiatAmount?: string
   fiatCurrency?: string
   defaultFiatAmount?: string

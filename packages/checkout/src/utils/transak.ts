@@ -15,9 +15,8 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
     [index: string]: string | undefined
   }
 
-  const useSandbox = addFundsSettings.sandbox ?? false;
-  const url = new URL(useSandbox ? TransakUrlSandbox : TransakUrlProd);
-  const apiKey = useSandbox ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY;
+  const url = new URL(process.env.DEBUG ? TransakUrlSandbox : TransakUrlProd);
+  const apiKey = process.env.DEBUG ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY;
 
   const options: Options = {
     apiKey: apiKey,
