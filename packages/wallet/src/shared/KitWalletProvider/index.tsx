@@ -38,7 +38,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
   // Navigation Context
   const [history, setHistory] = useState<History>([])
   const [isBackButtonEnabled, setIsBackButtonEnabled] = useState(true)
-  const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
+  const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION;
 
   const displayScrollbar =
     navigation.location === 'home' ||
