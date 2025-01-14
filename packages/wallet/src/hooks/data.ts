@@ -7,7 +7,7 @@ import {
   DisplayedAsset,
   getNativeTokenBalance,
   getCoinPrices,
-  getCollectionBalance,
+  getCollectionBalanceDetails,
   useMetadataClient,
   getTokenBalancesSummary,
   getTokenBalancesDetails,
@@ -151,7 +151,7 @@ export const getBalancesAssetsSummary = async (
         throw new Error(`Indexer client not found for chainId: ${collectionBalance.chainId}, did you forget to add this Chain?`)
       }
 
-      const balance = await getCollectionBalance(indexerClient, {
+      const balance = await getCollectionBalanceDetails(indexerClient, {
         filter: {
           accountAddresses: [accountAddress],
           contractStatus: ContractVerificationStatus.ALL,

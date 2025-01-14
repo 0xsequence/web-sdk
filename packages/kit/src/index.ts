@@ -96,6 +96,7 @@ export { useChain } from './hooks/useChain'
 export {
   getNativeTokenBalance,
   getCollectionBalance,
+  getCollectionBalanceDetails,
   getCoinPrices,
   getTransactionHistory,
   useBalances,

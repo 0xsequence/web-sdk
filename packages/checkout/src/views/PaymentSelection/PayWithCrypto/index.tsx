@@ -1,5 +1,5 @@
 import { Box, Text, Scroll, Spinner } from '@0xsequence/design-system'
-import { useBalances, useContractInfo, useSwapPrices, compareAddress, ContractVerificationStatus } from '@0xsequence/kit'
+import { useBalancesSummary, useContractInfo, useSwapPrices, compareAddress, ContractVerificationStatus } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, Fragment, SetStateAction } from 'react'
 import { formatUnits } from 'viem'
@@ -33,7 +33,7 @@ export const PayWithCrypto = ({
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalances({
+  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
