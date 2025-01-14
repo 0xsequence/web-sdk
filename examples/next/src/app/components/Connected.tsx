@@ -264,26 +264,7 @@ export const Connected = () => {
             <Text variant="small" color="text50" fontWeight="medium">
               Demos
             </Text>
-            <CardButton
-              title="Inventory"
-              description="View all tokens in your wallet"
-              onClick={() => setOpenWalletModal(true)}
-            />
-            <CardButton
-              title="Inventory for Aviator Demo Assets on Arbitrum Sepolia"
-              description="View the tokens in your wallet for a specific contract on a specific chain"
-              onClick={() => {
-                setOpenWalletModal(true, {
-                  defaultNavigation: {
-                    location: 'collection-details',
-                    params: {
-                      contractAddress: '0xdbac91902dce61d231154bbcbb16227dca31141c',
-                      chainId: arbitrumSepolia.id
-                    }
-                  }
-                })
-              }}
-            />
+            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
             {/* <CardButton
                 title="Checkout"
                 description="Checkout screen before placing a purchase on coins or collections"
