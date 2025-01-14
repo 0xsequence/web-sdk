@@ -5,7 +5,8 @@ import {
   useIndexerClient,
   signEthAuthProof,
   validateEthProof,
-  getModalPositionCss
+  getModalPositionCss,
+  useOpenConnectModal
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
@@ -20,6 +21,8 @@ import {
   useAccount,
   useChainId,
   useConnections,
+  useConnect,
+  useDisconnect,
   usePublicClient,
   useSendTransaction,
   useWalletClient,
@@ -36,6 +39,8 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
+  const { setOpenConnectModal } = useOpenConnectModal()
+
   const { address } = useAccount()
   const { openSwapModal } = useSwapModal()
   const { setOpenWalletModal } = useOpenWalletModal()
@@ -89,6 +94,20 @@ export const Connected = () => {
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
+
+  const { connectAsync } = useConnect()
+  const { disconnectAsync } = useDisconnect()
+
+  const handleConnectorChange = async (connectorId: string) => {
+    const newConnection = connections.find(c => c.connector.id === connectorId)
+    if (!newConnection) return
+
+    // Disconnect current connections
+    // await Promise.all(connections.map(c => disconnectAsync({ connector: c.connector })))
+
+    // Connect with the selected connector
+    await connectAsync({ connector: newConnection.connector })
+  }
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
@@ -473,6 +492,10 @@ export const Connected = () => {
     })
   }
 
+  const onClickConnect = () => {
+    setOpenConnectModal(true)
+  }
+
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
@@ -760,6 +783,38 @@ export const Connected = () => {
               </Box>
             </Box>
           )}
+
+          <Box marginY="3" flexDirection="column" gap="2">
+            <Text fontWeight="semibold" variant="small" color="text50">
+              Connected Wallets
+            </Text>
+            {connections.map(connection => (
+              <Box
+                key={connection.connector.id}
+                padding="2"
+                borderRadius="md"
+                background="backgroundSecondary"
+                onClick={() => handleConnectorChange(connection.connector.id)}
+                style={{ cursor: 'pointer' }}
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap="2"
+              >
+                <Box
+                  borderColor="text50"
+                  background={connection.connector.id === connections[0]?.connector.id ? 'text100' : 'transparent'}
+                />
+                <Text variant="normal" color="text100">
+                  {connection.connector.name}
+                </Text>
+              </Box>
+            ))}
+          </Box>
+
+          <Box gap="2" flexDirection="row" alignItems="center">
+            <Button onClick={onClickConnect} variant="feature" label="Connect another wallet" />
+          </Box>
         </Box>
       </Box>
 

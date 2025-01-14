@@ -112,11 +112,11 @@ export const Connect = (props: ConnectWalletContentProps) => {
   }
 
   // Close after successful connection
-  useEffect(() => {
-    if (isConnected) {
-      onClose()
-    }
-  }, [isConnected])
+  // useEffect(() => {
+  //   if (isConnected) {
+  //     onClose()
+  //   }
+  // }, [isConnected])
 
   useEffect(() => {
     setIsLoading(status === 'pending' || status === 'success')
@@ -136,7 +136,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
       }
     }
 
-    connect({ connector })
+    connect({ connector }, { onSettled: onClose })
   }
 
   const onConnectInlineEmail = async (e: React.FormEvent<HTMLFormElement>) => {
