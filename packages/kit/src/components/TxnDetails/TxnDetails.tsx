@@ -1,6 +1,6 @@
 import { commons } from '@0xsequence/core'
 import { Box, Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-import { ContractType } from '@0xsequence/indexer'
+import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
@@ -96,8 +96,12 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
 
   const { data: balances = [] } = useBalances({
     chainIds: [chainId],
-    accountAddress: address,
-    contractAddress
+    filter: {
+      accountAddresses: [address],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [contractAddress],
+      contractBlacklist: []
+    }
   })
 
   const { data: tokenMetadata } = useTokenMetadata(chainId, contractAddress, transferProps.tokenIds ?? [])

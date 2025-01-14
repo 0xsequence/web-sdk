@@ -1,8 +1,8 @@
 import { Box, Text, Scroll, Spinner } from '@0xsequence/design-system'
-import { useBalances, useContractInfo, useSwapPrices, compareAddress } from '@0xsequence/kit'
+import { useBalances, useContractInfo, useSwapPrices, compareAddress, ContractVerificationStatus } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useState, useEffect, Fragment, SetStateAction } from 'react'
-import { formatUnits, zeroAddress } from 'viem'
+import { useEffect, Fragment, SetStateAction } from 'react'
+import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
@@ -35,10 +35,13 @@ export const PayWithCrypto = ({
 
   const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalances({
     chainIds: [chainId],
-    contractAddress: currencyAddress,
-    accountAddress: userAddress || '',
-    // includeMetadata must be false to work around a bug
-    includeMetadata: false
+    filter: {
+      accountAddresses: userAddress ? [userAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [currencyAddress],
+      contractBlacklist: []
+    },
+    omitMetadata: true
   })
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)

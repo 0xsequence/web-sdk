@@ -11,9 +11,8 @@ import {
   Skeleton,
   TokenImage
 } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useBalances, useContractInfo } from '@0xsequence/kit'
+import { ContractVerificationStatus, getNativeTokenInfoByChainId, useBalances, useContractInfo } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -40,7 +39,12 @@ export const CheckoutSelection = () => {
 
   const { data: balancesData, isPending: isPendingBalances } = useBalances({
     chainIds: [cryptoCheckoutSettings?.chainId || 1],
-    accountAddress: accountAddress || ''
+    filter: {
+      accountAddresses: accountAddress ? [accountAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [],
+      contractBlacklist: []
+    }
   })
 
   const isPending = (isPendingContractInfo || isPendingBalances) && cryptoCheckoutSettings

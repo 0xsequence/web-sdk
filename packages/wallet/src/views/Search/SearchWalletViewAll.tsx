@@ -1,5 +1,11 @@
 import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalances } from '@0xsequence/kit'
+import {
+  getNativeTokenInfoByChainId,
+  useExchangeRate,
+  useCoinPrices,
+  useBalances,
+  ContractVerificationStatus
+} from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import React, { useState, useEffect } from 'react'
@@ -28,8 +34,12 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalances({
     chainIds: selectedNetworks,
-    accountAddress: accountAddress || '',
-    verifiedOnly: hideUnlistedTokens
+    filter: {
+      accountAddresses: accountAddress ? [accountAddress] : [],
+      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractWhitelist: [],
+      contractBlacklist: []
+    }
   })
 
   const coinBalancesUnordered =

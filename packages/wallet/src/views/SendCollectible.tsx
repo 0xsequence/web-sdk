@@ -14,7 +14,7 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
@@ -24,7 +24,7 @@ import {
   useWaasFeeOptions
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React, { useRef, useState, ChangeEvent, useEffect } from 'react'
+import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
@@ -71,11 +71,14 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
 
   const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalance({
-    accountAddress,
+    filter: {
+      accountAddresses: [accountAddress],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [contractAddress],
+      contractBlacklist: []
+    },
     chainId,
-    contractAddress,
-    tokenId,
-    verifiedOnly: false
+    tokenId
   })
   const { contractType } = tokenBalance as TokenBalance
 

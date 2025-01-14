@@ -101,6 +101,9 @@ export {
   useBalances,
   useExchangeRate,
   getTokenBalances,
+  getTokenBalancesSummary,
+  getTokenBalancesDetails,
+  getTokenBalancesByContract,
   useCoinBalance,
   useCoinPrices,
   useCollectionBalance,
@@ -116,3 +119,6 @@ export {
 // Components
 export { NetworkBadge } from './components/NetworkBadge'
 export { CollectibleTileImage } from './components/CollectibleTileImage'
+
+// Indexer
+export { ContractVerificationStatus } from '@0xsequence/indexer'
