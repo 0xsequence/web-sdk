@@ -266,8 +266,23 @@ export const Connected = () => {
             </Text>
             <CardButton
               title="Inventory"
-              description="Connect a Sequence wallet to view, swap, send, and receive collections"
+              description="View all tokens in your wallet"
               onClick={() => setOpenWalletModal(true)}
+            />
+            <CardButton
+              title="Inventory for Aviator Demo Assets on Arbitrum Sepolia"
+              description="View the tokens in your wallet for a specific contract on a specific chain"
+              onClick={() => {
+                setOpenWalletModal(true, {
+                  defaultNavigation: {
+                    location: 'collection-details',
+                    params: {
+                      contractAddress: '0xdbac91902dce61d231154bbcbb16227dca31141c',
+                      chainId: arbitrumSepolia.id
+                    }
+                  }
+                })
+              }}
             />
             {/* <CardButton
                 title="Checkout"
