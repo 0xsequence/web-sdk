@@ -10,12 +10,13 @@ import {
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
-import { useOpenWalletModal } from '@0xsequence/kit-wallet'
+import { useOpenWalletModal, useWalletNavigation } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
 import { formatUnits, parseUnits } from 'viem'
+import { arbitrumSepolia } from 'viem/chains'
 import {
   useAccount,
   useChainId,
@@ -485,6 +486,8 @@ export const Connected = () => {
     setFeeOptionBalances([])
   }, [chainId])
 
+  const { setNavigation } = useWalletNavigation()
+
   return (
     <>
       <Header />
@@ -505,7 +508,22 @@ export const Connected = () => {
               description="Connect a Sequence wallet to view, swap, send, and receive collections"
               onClick={() => setOpenWalletModal(true)}
             />
-
+            <CardButton
+              title="Inventory for Aviator on Arbitrum Sepolia"
+              description="Connect a Sequence wallet to view, swap, send, and receive collections"
+              onClick={() => {
+                setOpenWalletModal(true)
+                setTimeout(() => {
+                  setNavigation({
+                    location: 'collection-details',
+                    params: {
+                      contractAddress: '0xdbac91902dce61d231154bbcbb16227dca31141c',
+                      chainId: arbitrumSepolia.id
+                    }
+                  })
+                }, 0)
+              }}
+            />
             {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
               <CardButton
                 title="Send sponsored transaction"
