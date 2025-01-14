@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Text } from '@0xsequence/design-system'
 import {
-  useBalances,
+  useBalancesSummary,
   useContractInfo,
   useSwapPrices,
   useSwapQuote,
@@ -93,7 +93,7 @@ export const PaymentSelectionContent = () => {
     }
   })
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalances({
+  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],

@@ -3,7 +3,7 @@ import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
   useCoinPrices,
-  useBalances,
+  useBalancesSummary,
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -23,7 +23,7 @@ export const SearchWallet = () => {
   const [search, setSearch] = useState('')
   const { address: accountAddress } = useAccount()
 
-  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalances({
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalancesSummary({
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],

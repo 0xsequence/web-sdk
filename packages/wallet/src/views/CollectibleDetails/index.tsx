@@ -3,7 +3,7 @@ import {
   useExchangeRate,
   useTransactionHistory,
   useCollectiblePrices,
-  useCollectibleBalance,
+  useCollectibleBalanceDetails,
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -44,7 +44,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCollectibleBalance, isPending: isPendingCollectibleBalance } = useCollectibleBalance({
+  const { data: dataCollectibleBalance, isPending: isPendingCollectibleBalance } = useCollectibleBalanceDetails({
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,

@@ -19,7 +19,7 @@ import {
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
   ExtendedConnector,
-  useCollectibleBalance,
+  useCollectibleBalanceDetails,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
@@ -70,7 +70,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalance({
+  const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalanceDetails({
     filter: {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,

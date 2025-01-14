@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useTokenMetadata, useBalances } from '../../hooks/data'
+import { useTokenMetadata, useBalancesSummary } from '../../hooks/data'
 import { useAPIClient } from '../../hooks/useAPIClient'
 import { compareAddress, capitalize } from '../../utils/helpers'
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
@@ -94,7 +94,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const isNFT = transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const { data: balances = [] } = useBalances({
+  const { data: balances = [] } = useBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: [address],

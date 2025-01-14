@@ -19,7 +19,7 @@ import {
   ExtendedConnector,
   useExchangeRate,
   useCoinPrices,
-  useBalances,
+  useBalancesSummary,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
@@ -69,7 +69,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalances({
+  const { data: balances = [], isPending: isPendingBalances } = useBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: [accountAddress],

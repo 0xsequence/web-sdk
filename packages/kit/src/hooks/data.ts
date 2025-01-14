@@ -201,7 +201,7 @@ export const useCoinBalanceSummary = (args: UseCoinBalanceSummaryArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
   return useQuery({
-    queryKey: ['coinBalance', args],
+    queryKey: ['coinBalanceSummary', args],
     queryFn: async () => {
       if (compareAddress(args?.filter.contractWhitelist[0] || '', zeroAddress)) {
         const res = await getNativeTokenBalance(indexerClient, args.chainId, args.filter.accountAddresses[0] || '')
@@ -248,6 +248,29 @@ export const useCollectibleBalance = (args: UseCollectibleBalanceArgs) => {
     retry: true,
     staleTime: time.oneSecond * 30,
     enabled: !!args.chainId && !!args.accountAddress && !!args.contractAddress && !!args.tokenId
+  })
+}
+
+interface UseCollectibleBalanceDetailsArgs extends GetTokenBalancesDetailsArgs {
+  chainId: number
+  tokenId: string
+}
+
+export const useCollectibleBalanceDetails = (args: UseCollectibleBalanceDetailsArgs) => {
+  const indexerClient = useIndexerClient(args.chainId)
+
+  return useQuery({
+    queryKey: ['collectibleBalanceDetails', args],
+    queryFn: async () => {
+      const res = await indexerClient.getTokenBalancesDetails(args)
+
+      const balance = res.balances.find(balance => balance.tokenID === args.tokenId)
+
+      return balance
+    },
+    retry: true,
+    staleTime: time.oneSecond * 30,
+    enabled: !!args.chainId && !!args.filter.accountAddresses[0] && !!args.filter.contractWhitelist[0] && !!args.tokenId
   })
 }
 

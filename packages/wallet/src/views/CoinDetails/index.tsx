@@ -4,7 +4,7 @@ import {
   useExchangeRate,
   useCoinPrices,
   useTransactionHistory,
-  useCoinBalance,
+  useCoinBalanceSummary,
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -45,7 +45,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useCoinBalance({
+  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useCoinBalanceSummary({
     filter: {
       accountAddresses: [accountAddress || ''],
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
