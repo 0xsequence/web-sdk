@@ -96,15 +96,23 @@ export { useChain } from './hooks/useChain'
 export {
   getNativeTokenBalance,
   getCollectionBalance,
+  getCollectionBalanceDetails,
   getCoinPrices,
   getTransactionHistory,
   useBalances,
+  useBalancesSummary,
   useExchangeRate,
   getTokenBalances,
+  getTokenBalancesSummary,
+  getTokenBalancesDetails,
+  getTokenBalancesByContract,
   useCoinBalance,
+  useCoinBalanceSummary,
   useCoinPrices,
   useCollectionBalance,
+  useCollectionBalanceDetails,
   useCollectibleBalance,
+  useCollectibleBalanceDetails,
   useCollectiblePrices,
   useTokenMetadata,
   useContractInfo,
@@ -116,3 +124,6 @@ export {
 // Components
 export { NetworkBadge } from './components/NetworkBadge'
 export { CollectibleTileImage } from './components/CollectibleTileImage'
+
+// Indexer
+export { ContractVerificationStatus } from '@0xsequence/indexer'

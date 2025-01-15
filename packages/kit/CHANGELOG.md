@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.5.6
+
+### Patch Changes
+
+- Options objects passed to wallet modal to set a default nav
+
 ## 4.5.5
 
 ### Patch Changes

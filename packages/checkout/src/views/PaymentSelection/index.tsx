@@ -1,13 +1,14 @@
 import { Box, Button, Divider, Text } from '@0xsequence/design-system'
 import {
-  useBalances,
+  useBalancesSummary,
   useContractInfo,
   useSwapPrices,
   useSwapQuote,
   compareAddress,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions,
-  SwapPricesWithCurrencyInfo
+  SwapPricesWithCurrencyInfo,
+  ContractVerificationStatus
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
@@ -92,12 +93,16 @@ export const PaymentSelectionContent = () => {
     }
   })
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalances({
+  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
     chainIds: [chainId],
-    contractAddress: currencyAddress,
-    accountAddress: userAddress || '',
-    // includeMetadata must be false to work around a bug
-    includeMetadata: false
+    filter: {
+      accountAddresses: userAddress ? [userAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [currencyAddress],
+      contractBlacklist: []
+    },
+    // omitMetadata must be true to avoid a bug
+    omitMetadata: true
   })
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)

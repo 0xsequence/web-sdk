@@ -1,7 +1,12 @@
 import { Box, Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
-import { useExchangeRate, useTransactionHistory, useCollectiblePrices, useCollectibleBalance } from '@0xsequence/kit'
+import {
+  useExchangeRate,
+  useTransactionHistory,
+  useCollectiblePrices,
+  useCollectibleBalanceDetails,
+  ContractVerificationStatus
+} from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React from 'react'
 import { useAccount } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -39,12 +44,15 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCollectibleBalance, isPending: isPendingCollectibleBalance } = useCollectibleBalance({
-    accountAddress: accountAddress || '',
-    contractAddress,
+  const { data: dataCollectibleBalance, isPending: isPendingCollectibleBalance } = useCollectibleBalanceDetails({
+    filter: {
+      accountAddresses: accountAddress ? [accountAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [contractAddress],
+      contractBlacklist: []
+    },
     chainId,
-    tokenId,
-    verifiedOnly: false
+    tokenId
   })
 
   const { data: dataCollectiblePrices, isPending: isPendingCollectiblePrices } = useCollectiblePrices([

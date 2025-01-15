@@ -4,10 +4,10 @@ import { Box, Modal, ThemeProvider, Scroll } from '@0xsequence/design-system'
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { History, Navigation, NavigationContextProvider, WalletModalContextProvider } from '../../contexts'
+import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
 
 import { getHeader, getContent } from './utils'
 
@@ -33,7 +33,14 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
   const { theme, position } = useTheme()
 
   // Wallet Modal Context
-  const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
+  const [openWalletModal, setOpenWalletModalState] = useState<boolean>(false)
+
+  const setOpenWalletModal = (open: boolean, options?: WalletOptions) => {
+    setOpenWalletModalState(open)
+    setTimeout(() => {
+      setHistory(options?.defaultNavigation ? [options.defaultNavigation] : [])
+    }, 0)
+  }
 
   // Navigation Context
   const [history, setHistory] = useState<History>([])
@@ -49,12 +56,6 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
     navigation.location === 'settings-currency'
-
-  useEffect(() => {
-    if (openWalletModal) {
-      setHistory([])
-    }
-  }, [openWalletModal])
 
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>

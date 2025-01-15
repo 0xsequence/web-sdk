@@ -6,16 +6,18 @@ import {
   useIndexerClients,
   DisplayedAsset,
   getNativeTokenBalance,
-  getTokenBalances,
   getCoinPrices,
-  getCollectionBalance,
-  useMetadataClient
+  getCollectionBalanceDetails,
+  useMetadataClient,
+  getTokenBalancesSummary,
+  getTokenBalancesDetails,
+  ContractVerificationStatus
 } from '@0xsequence/kit'
 import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import { compareAddress, sampleSize, sortBalancesByType, isTruthy } from '../utils'
+import { compareAddress, sortBalancesByType, isTruthy } from '../utils'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -38,8 +40,6 @@ export const getBalancesAssetsSummary = async (
   { accountAddress, displayAssets, hideCollectibles, verifiedOnly }: GetBalancesAssetsArgs
 ) => {
   const indexerClientsArr = Array.from(indexerClients.entries())
-
-  const MAX_COLLECTIBLES_AMOUNTS = 10
 
   let tokenBalances: TokenBalance[] = []
 
@@ -70,7 +70,6 @@ export const getBalancesAssetsSummary = async (
         }
         otherAssetsByChainId[asset.chainId].push(asset)
       })
-
       tokenBalances = (
         await Promise.all([
           ...Object.keys(nativeTokensByChainId).map(chainId => {
@@ -93,12 +92,13 @@ export const getBalancesAssetsSummary = async (
                   return []
                 }
 
-                return getTokenBalances(indexerClient, {
-                  accountAddress,
-                  contractAddress: asset.contractAddress,
-                  includeMetadata: false,
-                  hideCollectibles,
-                  verifiedOnly
+                return getTokenBalancesDetails(indexerClient, {
+                  filter: {
+                    accountAddresses: [accountAddress],
+                    contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+                    contractWhitelist: [asset.contractAddress],
+                    contractBlacklist: []
+                  }
                 })
               })
             )
@@ -112,11 +112,13 @@ export const getBalancesAssetsSummary = async (
         await Promise.all([
           ...indexerClientsArr.map(([chainId, indexerClient]) => getNativeTokenBalance(indexerClient, chainId, accountAddress)),
           ...indexerClientsArr.map(([_chainId, indexerClient]) =>
-            getTokenBalances(indexerClient, {
-              accountAddress,
-              hideCollectibles,
-              includeMetadata: false,
-              verifiedOnly
+            getTokenBalancesSummary(indexerClient, {
+              filter: {
+                accountAddresses: [accountAddress],
+                contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+                contractWhitelist: [],
+                contractBlacklist: []
+              }
             })
           )
         ])
@@ -149,11 +151,15 @@ export const getBalancesAssetsSummary = async (
         throw new Error(`Indexer client not found for chainId: ${collectionBalance.chainId}, did you forget to add this Chain?`)
       }
 
-      const balance = await getCollectionBalance(indexerClient, {
-        accountAddress,
+      const balance = await getCollectionBalanceDetails(indexerClient, {
+        filter: {
+          accountAddresses: [accountAddress],
+          contractStatus: ContractVerificationStatus.ALL,
+          contractWhitelist: [collectionBalance.contractAddress],
+          contractBlacklist: []
+        },
         chainId: collectionBalance.chainId,
-        contractAddress: collectionBalance.contractAddress,
-        includeMetadata: false
+        omitMetadata: false
       })
 
       return balance
@@ -218,23 +224,23 @@ export const getBalancesAssetsSummary = async (
       return bValue - aValue
     })
 
-    const collectibles: TokenBalance[] = sampleSize(collectionCollectibles.flat(), MAX_COLLECTIBLES_AMOUNTS).sort((a, b) => {
+    const collectibles: TokenBalance[] = collectionCollectibles.flat().sort((a, b) => {
       return a.contractAddress.localeCompare(b.contractAddress)
     })
 
     if (hideCollectibles) {
       const summaryBalances: TokenBalance[] = [
-        ...(nativeTokens.length > 0 ? [nativeTokens[0]] : []),
+        ...(nativeTokens.length > 0 ? [...nativeTokens] : []),
         // the spots normally occupied by collectibles will be filled by erc20 tokens
-        ...(erc20HighestValue.length > 0 ? erc20HighestValue.slice(0, MAX_COLLECTIBLES_AMOUNTS + 1) : [])
+        ...(erc20HighestValue.length > 0 ? erc20HighestValue : [])
       ]
 
       return summaryBalances
     }
 
     const summaryBalances: TokenBalance[] = [
-      ...(nativeTokens.length > 0 ? [nativeTokens[0]] : []),
-      ...(erc20HighestValue.length > 0 ? [erc20HighestValue[0]] : []),
+      ...(nativeTokens.length > 0 ? [...nativeTokens] : []),
+      ...(erc20HighestValue.length > 0 ? [...erc20HighestValue] : []),
       ...(collectibles.length > 0 ? [...collectibles] : [])
     ]
 

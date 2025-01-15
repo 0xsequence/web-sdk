@@ -1,8 +1,14 @@
 import { Box, SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalances } from '@0xsequence/kit'
+import {
+  getNativeTokenInfoByChainId,
+  useExchangeRate,
+  useCoinPrices,
+  useBalancesSummary,
+  ContractVerificationStatus
+} from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
@@ -17,10 +23,14 @@ export const SearchWallet = () => {
   const [search, setSearch] = useState('')
   const { address: accountAddress } = useAccount()
 
-  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalances({
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalancesSummary({
     chainIds: selectedNetworks,
-    accountAddress: accountAddress || '',
-    verifiedOnly: hideUnlistedTokens
+    filter: {
+      accountAddresses: accountAddress ? [accountAddress] : [],
+      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractWhitelist: [],
+      contractBlacklist: []
+    }
   })
 
   const coinBalancesUnordered =

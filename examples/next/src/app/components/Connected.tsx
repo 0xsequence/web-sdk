@@ -14,6 +14,8 @@ import { isDebugMode, sponsoredContractAddresses } from '../../config'
 import { messageToSign } from '@/constants'
 import { abi } from '@/constants/nft-abi'
 
+import { ContractVerificationStatus } from '@0xsequence/kit'
+
 export const Connected = () => {
   const { address } = useAccount()
   const { setOpenWalletModal } = useOpenWalletModal()
@@ -85,22 +87,23 @@ export const Connected = () => {
   const checkTokenBalancesForFeeOptions = async () => {
     if (pendingFeeOptionConfirmation) {
       const [account] = await walletClient!.getAddresses()
-      const nativeTokenBalance = await indexerClient.getEtherBalance({ accountAddress: account })
+      const nativeTokenBalance = await indexerClient.getNativeTokenBalance({ accountAddress: account })
 
-      const tokenBalances = await indexerClient.getTokenBalances({
-        accountAddress: account
+      const tokenBalances = await indexerClient.getTokenBalancesSummary({
+        filter: {
+          accountAddresses: [account],
+          contractStatus: ContractVerificationStatus.ALL,
+          contractWhitelist: [],
+          contractBlacklist: []
+        }
       })
-
-      console.log('feeOptions', pendingFeeOptionConfirmation.options)
-      console.log('nativeTokenBalance', nativeTokenBalance)
-      console.log('tokenBalances', tokenBalances)
 
       const balances = pendingFeeOptionConfirmation.options.map(option => {
         if (option.token.contractAddress === null) {
           return {
             tokenName: option.token.name,
             decimals: option.token.decimals || 0,
-            balance: nativeTokenBalance.balance.balanceWei
+            balance: nativeTokenBalance.balance.balance
           }
         } else {
           return {
@@ -264,11 +267,7 @@ export const Connected = () => {
             <Text variant="small" color="text50" fontWeight="medium">
               Demos
             </Text>
-            <CardButton
-              title="Inventory"
-              description="Connect a Sequence wallet to view, swap, send, and receive collections"
-              onClick={() => setOpenWalletModal(true)}
-            />
+            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
             {/* <CardButton
                 title="Checkout"
                 description="Checkout screen before placing a purchase on coins or collections"
