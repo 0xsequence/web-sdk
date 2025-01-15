@@ -114,9 +114,13 @@ export const Connect = (props: ConnectWalletContentProps) => {
     setIsLoading(status === 'pending' || status === 'success')
   }, [status])
 
+  const handleConnect = (connector: ExtendedConnector) => {
+    connect({ connector }, { onSettled: onClose })
+  }
+
   const onConnect = (connector: ExtendedConnector) => {
     if (signIn.useMock && mockConnector) {
-      connect({ connector: mockConnector })
+      handleConnect(mockConnector)
       return
     }
 
@@ -128,14 +132,14 @@ export const Connect = (props: ConnectWalletContentProps) => {
       }
     }
 
-    connect({ connector }, { onSettled: onClose })
+    handleConnect(connector)
   }
 
   const onConnectInlineEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (signIn.useMock && mockConnector) {
-      connect({ connector: mockConnector })
+      handleConnect(mockConnector)
       return
     }
 
@@ -152,7 +156,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
           console.log(e)
         }
       } else {
-        connect({ connector: emailConnector }, { onSettled: onClose })
+        handleConnect(emailConnector)
       }
     }
   }
@@ -176,7 +180,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
           storage?.setItem(LocalStorageKey.WaasEmailIdToken, result.idToken)
         }
 
-        connect({ connector: emailConnector }, { onSettled: onClose })
+        handleConnect(emailConnector)
       }
     }
   })
