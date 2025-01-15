@@ -51,7 +51,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasSignInEmail]: string
   }
 
-  const nodesUrl = process.env.DEBUG ? 'https://dev-nodes.sequence.app' : 'https://nodes.sequence.app'
+  const nodesUrl = typeof process === "object" && process?.env?.DEBUG ? 'https://dev-nodes.sequence.app' : 'https://nodes.sequence.app'
 
   const showConfirmationModal = params.enableConfirmationModal ?? false
 

@@ -14,7 +14,7 @@ export const useIndexerClient = (chainId: ChainId) => {
   }, [projectAccessKey])
 
   const network = networks[chainId]
-  const clientUrl = process.env.DEBUG
+  const clientUrl = typeof process === "object" && process?.env?.DEBUG
     ? `https://dev-${network.name}-indexer.sequence.app`
     : `https://${network.name}-indexer.sequence.app`
 
@@ -42,7 +42,7 @@ export const useIndexerClients = (chainIds: ChainId[]) => {
 
   for (const chainId of chainIds) {
     const network = networks[chainId]
-    const clientUrl = process.env.DEBUG
+    const clientUrl = typeof process === "object" && process?.env?.DEBUG
       ? `https://dev-${network.name}-indexer.sequence.app`
       : `https://${network.name}-indexer.sequence.app`
 

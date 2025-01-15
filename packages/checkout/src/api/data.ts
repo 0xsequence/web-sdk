@@ -24,8 +24,8 @@ export const fetchSardineClientToken = async ({
   tokenMetadata
 }: FetchSardineClientTokenArgs): Promise<FetchSardineClientTokenReturn> => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
-  const accessKey = process.env.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-  const url = process.env.DEBUG
+  const accessKey = typeof process === "object" && process?.env?.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
+  const url = typeof process === "object" && process?.env?.DEBUG
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
 
@@ -68,8 +68,8 @@ export const fetchSardineClientToken = async ({
 
 export const fetchSardineOrderStatus = async (orderId: string, projectAccessKey: string) => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
-  const accessKey = process.env.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-  const url = process.env.DEBUG
+  const accessKey = typeof process === "object" && process?.env?.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
+  const url = typeof process === "object" && process?.env?.DEBUG
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutOrderStatus'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutOrderStatus'
   const response = await fetch(url, {

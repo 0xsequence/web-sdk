@@ -11,7 +11,7 @@ export const useMarketplaceClient = ({ chain }: UseMarketplaceClientArgs) => {
   const projectAccessKey = useProjectAccessKey()
 
   const marketplaceClient = useMemo(() => {
-    const env = process.env.DEBUG ? 'development' : 'production'
+    const env = typeof process === "object" && process?.env?.DEBUG ? 'development' : 'production'
     const clientUrl = marketplaceApiURL(chain, env)
     return new MarketplaceIndexer(clientUrl, projectAccessKey)
   }, [projectAccessKey])
