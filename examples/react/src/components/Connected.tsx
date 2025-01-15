@@ -57,8 +57,10 @@ export const Connected = () => {
   const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
   const connections = useConnections()
+  console.log('connections:', connections)
 
-  const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
+  const waasConnection = connections.find(c => c.connector.id.includes('waas'))
+  const isWaasConnectionActive = waasConnection !== undefined && address === waasConnection.accounts[0]
 
   const {
     data: txnData,
@@ -96,14 +98,11 @@ export const Connected = () => {
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
   const { connectAsync } = useConnect()
-  const { disconnectAsync } = useDisconnect()
+  const { disconnect } = useDisconnect()
 
   const handleConnectorChange = async (connectorId: string) => {
     const newConnection = connections.find(c => c.connector.id === connectorId)
     if (!newConnection) return
-
-    // Disconnect current connections
-    // await Promise.all(connections.map(c => disconnectAsync({ connector: c.connector })))
 
     // Connect with the selected connector
     await connectAsync({ connector: newConnection.connector })
@@ -529,7 +528,7 @@ export const Connected = () => {
               onClick={() => setOpenWalletModal(true)}
             />
 
-            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
+            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"
                 description="Send a transaction with your wallet without paying any fees"
@@ -754,7 +753,7 @@ export const Connected = () => {
             </Box>
           )}
 
-          {isWaasConnection && (
+          {isWaasConnectionActive && (
             <Box marginY="3">
               <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
                 <Text fontWeight="semibold" variant="small" color="text50">
@@ -790,24 +789,38 @@ export const Connected = () => {
             </Text>
             {connections.map(connection => (
               <Box
-                key={connection.connector.id}
+                key={(connection.connector._wallet as any)?.id ?? connection.connector.id}
                 padding="2"
                 borderRadius="md"
                 background="backgroundSecondary"
-                onClick={() => handleConnectorChange(connection.connector.id)}
-                style={{ cursor: 'pointer' }}
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
-                gap="2"
+                justifyContent="space-between"
               >
                 <Box
-                  borderColor="text50"
-                  background={connection.connector.id === connections[0]?.connector.id ? 'text100' : 'transparent'}
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  gap="2"
+                  onClick={() => handleConnectorChange(connection.connector.id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <Box
+                    borderColor="text50"
+                    background={connection.connector.id === connections[0]?.connector.id ? 'text100' : 'transparent'}
+                  />
+                  <Text variant="normal" color="text100">
+                    {connection.connector.id.includes('waas') ? 'Embedded - ' : ''}
+                    {(connection.connector._wallet as any)?.name ?? connection.connector.name}
+                  </Text>
+                </Box>
+                <Button
+                  variant="text"
+                  size="sm"
+                  label="Disconnect"
+                  onClick={() => disconnect({ connector: connection.connector })}
                 />
-                <Text variant="normal" color="text100">
-                  {connection.connector.name}
-                </Text>
               </Box>
             ))}
           </Box>

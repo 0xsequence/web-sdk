@@ -13,7 +13,7 @@ import {
 } from '@0xsequence/design-system'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
-import { useConnect, useAccount } from 'wagmi'
+import { useConnect } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants'
 import { useStorage } from '../../hooks/useStorage'
@@ -40,7 +40,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
   const { onClose, emailConflictInfo, config = {} as KitConfig, isPreview = false } = props
   const { signIn = {} } = config
-  const { isConnected } = useAccount()
   const storage = useStorage()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -111,13 +110,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
     setEmail(ev.target.value)
   }
 
-  // Close after successful connection
-  // useEffect(() => {
-  //   if (isConnected) {
-  //     onClose()
-  //   }
-  // }, [isConnected])
-
   useEffect(() => {
     setIsLoading(status === 'pending' || status === 'success')
   }, [status])
@@ -160,7 +152,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
           console.log(e)
         }
       } else {
-        connect({ connector: emailConnector })
+        connect({ connector: emailConnector }, { onSettled: onClose })
       }
     }
   }
@@ -184,7 +176,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
           storage?.setItem(LocalStorageKey.WaasEmailIdToken, result.idToken)
         }
 
-        connect({ connector: emailConnector })
+        connect({ connector: emailConnector }, { onSettled: onClose })
       }
     }
   })
@@ -208,7 +200,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
         }}
       >
         <TitleWrapper isPreview={isPreview}>
-          <Text>{isLoading ? `Connecting...` : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
+          <Text variant="normal">{isLoading ? `Connecting...` : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
         </TitleWrapper>
       </Box>
 
