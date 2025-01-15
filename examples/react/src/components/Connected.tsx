@@ -29,10 +29,10 @@ import {
   useWriteContract
 } from 'wagmi'
 
-import { sponsoredContractAddresses, getErc1155SaleContractConfig } from '../config'
+import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
-import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
+import { delay, getCheckoutSettings, getOrderbookCalldata, truncateAtMiddle } from '../utils'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -514,14 +514,61 @@ export const Connected = () => {
       <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4" style={{ maxWidth: breakpoints.md }}>
           <Box flexDirection="column" gap="2">
-            <Text variant="small" color="text50" fontWeight="medium">
+            <Box marginY="3" flexDirection="column" gap="2">
+              <Text fontWeight="semibold" variant="small" color="text50">
+                Connected Wallets
+              </Text>
+              {connections.map(connection => (
+                <Box
+                  key={(connection.connector._wallet as any)?.id ?? connection.connector.id}
+                  padding="2"
+                  borderRadius="md"
+                  background={connection.accounts[0] === address ? 'backgroundRaised' : 'backgroundMuted'}
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    gap="2"
+                    onClick={() => handleConnectorChange(connection.connector.id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <Box
+                      borderColor="text50"
+                      background={connection.connector.id === connections[0]?.connector.id ? 'text100' : 'transparent'}
+                    />
+                    <Box flexDirection="column" gap="1">
+                      <Text variant="normal" color="text100">
+                        {connection.connector.id.includes('waas') ? 'Embedded - ' : ''}
+                        {(connection.connector._wallet as any)?.name ?? connection.connector.name}
+                      </Text>
+                      <Text variant="normal" fontWeight="bold" color="text100">
+                        {truncateAtMiddle(connection.accounts[0], 10)}
+                      </Text>
+                    </Box>
+                  </Box>
+                  <Button
+                    variant="text"
+                    size="sm"
+                    label="Disconnect"
+                    onClick={() => disconnect({ connector: connection.connector })}
+                  />
+                </Box>
+              ))}
+            </Box>
+
+            <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
+              <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+            </Box>
+
+            <Text variant="small" color="text50" fontWeight="medium" marginTop="6">
               Demos
             </Text>
-            {/* <CardButton
-        title="NFT Checkout"
-        description="NFT Checkout testing"
-        onClick={onClickCheckout}
-      /> */}
+
             <CardButton
               title="Inventory"
               description="Connect a Sequence wallet to view, swap, send, and receive collections"
@@ -782,52 +829,6 @@ export const Connected = () => {
               </Box>
             </Box>
           )}
-
-          <Box marginY="3" flexDirection="column" gap="2">
-            <Text fontWeight="semibold" variant="small" color="text50">
-              Connected Wallets
-            </Text>
-            {connections.map(connection => (
-              <Box
-                key={(connection.connector._wallet as any)?.id ?? connection.connector.id}
-                padding="2"
-                borderRadius="md"
-                background="backgroundSecondary"
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  gap="2"
-                  onClick={() => handleConnectorChange(connection.connector.id)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <Box
-                    borderColor="text50"
-                    background={connection.connector.id === connections[0]?.connector.id ? 'text100' : 'transparent'}
-                  />
-                  <Text variant="normal" color="text100">
-                    {connection.connector.id.includes('waas') ? 'Embedded - ' : ''}
-                    {(connection.connector._wallet as any)?.name ?? connection.connector.name}
-                  </Text>
-                </Box>
-                <Button
-                  variant="text"
-                  size="sm"
-                  label="Disconnect"
-                  onClick={() => disconnect({ connector: connection.connector })}
-                />
-              </Box>
-            ))}
-          </Box>
-
-          <Box gap="2" flexDirection="row" alignItems="center">
-            <Button onClick={onClickConnect} variant="feature" label="Connect another wallet" />
-          </Box>
         </Box>
       </Box>
 
