@@ -6,18 +6,18 @@ import {
   signEthAuthProof,
   validateEthProof,
   getModalPositionCss,
-  useOpenConnectModal
+  useOpenConnectModal,
+  ContractVerificationStatus
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
-import { useOpenWalletModal, useWalletNavigation } from '@0xsequence/kit-wallet'
+import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
 import { formatUnits, parseUnits } from 'viem'
-import { arbitrumSepolia } from 'viem/chains'
 import {
   useAccount,
   useChainId,
@@ -34,8 +34,6 @@ import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata, truncateAtMiddle } from '../utils'
-
-import { ContractVerificationStatus } from '@0xsequence/kit'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -513,9 +511,7 @@ export const Connected = () => {
     resetSendUnsponsoredTransaction()
     resetSendTransaction()
     setFeeOptionBalances([])
-  }, [chainId])
-
-  const { setNavigation } = useWalletNavigation()
+  }, [chainId, address])
 
   return (
     <>

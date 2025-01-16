@@ -93,6 +93,7 @@ export { useMetadataClient } from './hooks/useMetadataClient'
 export { useIndexerClient, useIndexerClients } from './hooks/useIndexerClient'
 export { useStorage, useStorageItem } from './hooks/useStorage'
 export { useChain } from './hooks/useChain'
+export { useKitWallets } from './hooks/useKitWallets'
 export {
   getNativeTokenBalance,
   getCollectionBalance,
