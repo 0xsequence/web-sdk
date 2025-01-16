@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.5.8
+
+### Patch Changes
+
+- Fixing process.env inclusion
+
 ## 4.5.7
 
 ### Patch Changes

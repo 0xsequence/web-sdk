@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.5.8
+
+### Patch Changes
+
+- Fixing process.env inclusion
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.8
+
 ## 4.5.7
 
 ### Patch Changes
