@@ -1,7 +1,7 @@
 import { sequence } from '0xsequence'
 import { SequenceWaaS } from '@0xsequence/waas'
 import { PublicClient, WalletClient, Hex } from 'viem'
-import { Connector, Config } from 'wagmi'
+import { Connector } from 'wagmi'
 
 import { TRANSACTION_CONFIRMATIONS_DEFAULT } from '../constants'
 import { ExtendedConnector } from '../types'

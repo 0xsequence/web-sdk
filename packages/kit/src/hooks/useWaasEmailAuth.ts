@@ -1,7 +1,7 @@
 import { SequenceWaaS, SignInResponse } from '@0xsequence/waas'
 import { useState } from 'react'
 
-import { EmailWaasOptions } from '../connectors/email/emailWaas'
+// import { EmailWaasOptions } from '../connectors/email/emailWaas'
 import { randomName } from '../connectors/wagmiConnectors'
 import { ExtendedConnector } from '../types'
 
@@ -32,10 +32,10 @@ export function useEmailAuth({
     }
   }
 
-  const [email, setEmail] = useState('')
+  const [_email, setEmail] = useState('')
   const [error, setError] = useState<Error | undefined>()
   const [loading, setLoading] = useState(false)
-  const [instance, setInstance] = useState('')
+  const [instance, _setInstance] = useState('')
   const [respondWithCode, setRespondWithCode] = useState<((code: string) => Promise<void>) | null>()
 
   const getSequenceWaas = () => {
@@ -53,7 +53,7 @@ export function useEmailAuth({
   }
 
   const initiateAuth = async (email: string) => {
-    const params = (connector as any).params as EmailWaasOptions
+    // const params = (connector as any).params as EmailWaasOptions
     const waas = getSequenceWaas()
 
     setLoading(true)
@@ -80,8 +80,8 @@ export function useEmailAuth({
   }
 
   const sendChallengeAnswer = async (answer: string) => {
-    const params = (connector as any).params as EmailWaasOptions
-    const waas = getSequenceWaas()
+    // const params = (connector as any).params as EmailWaasOptions
+    // const waas = getSequenceWaas()
 
     setLoading(true)
     setError(undefined)

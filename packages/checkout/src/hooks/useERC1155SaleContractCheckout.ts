@@ -1,10 +1,6 @@
-import {
-  CheckoutOptionsSalesContractArgs,
-  TransactionSwapProvider,
-  TransactionNFTCheckoutProvider
-} from '@0xsequence/marketplace'
+import { CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { Abi, Hex, padBytes } from 'viem'
+import { Abi, Hex } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi'

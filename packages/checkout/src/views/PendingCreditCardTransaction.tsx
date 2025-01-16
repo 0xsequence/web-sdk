@@ -228,7 +228,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
-  const { settings, closeCheckout } = useCheckoutModal()
+  const { closeCheckout } = useCheckoutModal()
 
   const {
     params: { creditCardCheckout }

@@ -67,7 +67,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
   const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
   const { data: balances = [], isPending: isPendingBalances } = useBalancesSummary({
     chainIds: [chainId],

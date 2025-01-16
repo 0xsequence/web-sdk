@@ -547,7 +547,7 @@ const getSwapPrices = async (
         const isNativeToken = compareAddress(currencyAddress, zeroAddress)
         if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
           const getNativeTokenInfo = () =>
-            new Promise<ContractInfo>((resolve, reject) => {
+            new Promise<ContractInfo>(resolve => {
               resolve({
                 ...network?.nativeToken,
                 logoURI: network?.logoURI || '',

@@ -1,7 +1,5 @@
 'use client'
 
-import React from 'react'
-
 import { createGenericContext } from './genericContext'
 import { Navigation } from './Navigation'
 
