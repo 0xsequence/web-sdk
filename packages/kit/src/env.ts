@@ -1,1 +1,2 @@
-export const DEBUG = (typeof process === 'object' && process?.env?.DEBUG) || false
+// @ts-ignore
+export const DEBUG = !!__SEQUENCE_KIT_DEBUG__
