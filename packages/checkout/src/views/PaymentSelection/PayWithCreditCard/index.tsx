@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import {
   ArrowRightIcon,
   Box,
@@ -12,7 +11,7 @@ import {
 } from '@0xsequence/design-system'
 import { useContractInfo } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'

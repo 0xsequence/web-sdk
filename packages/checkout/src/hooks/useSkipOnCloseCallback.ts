@@ -6,7 +6,7 @@ interface UseSkipOnCloseCallbackReturn {
 
 export const useSkipOnCloseCallback = (onClose: () => void): UseSkipOnCloseCallbackReturn => {
   const skipOnCloseCallbackFlag = useRef(false)
-  
+
   const skipOnCloseCallback = () => {
     skipOnCloseCallbackFlag.current = true
   }

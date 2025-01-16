@@ -13,19 +13,18 @@ import {
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, Hex, zeroAddress } from 'viem'
+import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
+
+import { HEADER_HEIGHT } from '../../constants'
+import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
+import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
+import { NavigationHeader } from '../../shared/components/NavigationHeader'
 
 import { Footer } from './Footer'
 import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
-
-import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
-
-import { HEADER_HEIGHT } from '../../constants'
-import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 
 export const PaymentSelection = () => {
   return (
