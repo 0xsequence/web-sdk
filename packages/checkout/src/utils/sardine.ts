@@ -1,3 +1,4 @@
+import { DEBUG } from '@0xsequence/kit'
 import { ChainId, networks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 
@@ -12,9 +13,9 @@ export const checkSardineWhitelistStatus = async (
 ) => {
   const referenceId = `sequence-kit-sardine-whitelist-check`
 
-  const accessKey = process.env.DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
+  const accessKey = DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
 
-  const url = process.env.DEBUG
+  const url = DEBUG
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
 

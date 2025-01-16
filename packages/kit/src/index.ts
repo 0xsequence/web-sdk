@@ -127,3 +127,6 @@ export { CollectibleTileImage } from './components/CollectibleTileImage'
 
 // Indexer
 export { ContractVerificationStatus } from '@0xsequence/indexer'
+
+// XXX
+export { DEBUG } from './env'
