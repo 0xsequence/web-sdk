@@ -1,4 +1,4 @@
-import { type UseConnectionsReturnType, useAccount, useConnections } from 'wagmi'
+import { type UseConnectionsReturnType, useAccount, useConnect, useConnections } from 'wagmi'
 
 export interface KitWallet {
   id: string
@@ -11,6 +11,7 @@ export interface KitWallet {
 export const useKitWallets = () => {
   const { address } = useAccount()
   const connections = useConnections()
+  const { connectAsync } = useConnect()
 
   const wallets: KitWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
     id: connection.connector.id,
@@ -25,7 +26,7 @@ export const useKitWallets = () => {
     if (!connection) return
 
     try {
-      await connection.connector.connect()
+      await connectAsync({ connector: connection.connector })
     } catch (error) {
       console.error('Failed to set active wallet:', error)
     }

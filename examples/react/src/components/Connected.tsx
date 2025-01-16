@@ -7,7 +7,8 @@ import {
   validateEthProof,
   getModalPositionCss,
   useOpenConnectModal,
-  ContractVerificationStatus
+  ContractVerificationStatus,
+  useKitWallets
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
@@ -21,8 +22,6 @@ import { formatUnits, parseUnits } from 'viem'
 import {
   useAccount,
   useChainId,
-  useConnections,
-  useConnect,
   useDisconnect,
   usePublicClient,
   useSendTransaction,
@@ -57,11 +56,8 @@ export const Connected = () => {
   const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
   const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
-  const connections = useConnections()
-  console.log('connections:', connections)
-
-  const waasConnection = connections.find(c => c.connector.id.includes('waas'))
-  const isWaasConnectionActive = waasConnection !== undefined && address === waasConnection.accounts[0]
+  const { wallets, setActiveWallet } = useKitWallets()
+  const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
 
   const {
     data: txnData,
@@ -98,16 +94,7 @@ export const Connected = () => {
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
-  const { connectAsync } = useConnect()
   const { disconnect } = useDisconnect()
-
-  const handleConnectorChange = async (connectorId: string) => {
-    const newConnection = connections.find(c => c.connector.id === connectorId)
-    if (!newConnection) return
-
-    // Connect with the selected connector
-    await connectAsync({ connector: newConnection.connector })
-  }
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
@@ -524,12 +511,12 @@ export const Connected = () => {
               <Text fontWeight="semibold" variant="small" color="text50">
                 Connected Wallets
               </Text>
-              {connections.map(connection => (
+              {wallets.map(wallet => (
                 <Box
-                  key={(connection.connector._wallet as any)?.id ?? connection.connector.id}
+                  key={wallet.id}
                   padding="2"
                   borderRadius="md"
-                  background={connection.accounts[0] === address ? 'backgroundRaised' : 'backgroundMuted'}
+                  background={wallet.isActive ? 'backgroundRaised' : 'backgroundMuted'}
                   display="flex"
                   flexDirection="row"
                   alignItems="center"
@@ -540,29 +527,21 @@ export const Connected = () => {
                     flexDirection="row"
                     alignItems="center"
                     gap="2"
-                    onClick={() => handleConnectorChange(connection.connector.id)}
+                    onClick={() => setActiveWallet(wallet.address)}
                     style={{ cursor: 'pointer' }}
                   >
-                    <Box
-                      borderColor="text50"
-                      background={connection.connector.id === connections[0]?.connector.id ? 'text100' : 'transparent'}
-                    />
+                    <Box borderColor="text50" background={wallet.isActive ? 'text100' : 'transparent'} />
                     <Box flexDirection="column" gap="1">
                       <Text variant="normal" color="text100">
-                        {connection.connector.id.includes('waas') ? 'Embedded - ' : ''}
-                        {(connection.connector._wallet as any)?.name ?? connection.connector.name}
+                        {wallet.isEmbedded ? 'Embedded - ' : ''}
+                        {wallet.name}
                       </Text>
                       <Text variant="normal" fontWeight="bold" color="text100">
-                        {truncateAtMiddle(connection.accounts[0], 10)}
+                        {truncateAtMiddle(wallet.address, 10)}
                       </Text>
                     </Box>
                   </Box>
-                  <Button
-                    variant="text"
-                    size="sm"
-                    label="Disconnect"
-                    onClick={() => disconnect({ connector: connection.connector })}
-                  />
+                  <Button variant="text" size="sm" label="Disconnect" onClick={() => disconnect()} />
                 </Box>
               ))}
             </Box>
