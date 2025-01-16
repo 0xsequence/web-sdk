@@ -197,6 +197,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
     }
   }, [emailConflictInfo])
 
+  const showSocialConnectorSection = socialAuthConnectors.length > 0
+  const showEmailInputSection = !!emailConnector
+
   return (
     <Box padding="4">
       <Box
@@ -225,9 +228,35 @@ export const Connect = (props: ConnectWalletContentProps) => {
             <>
               <Banner config={config as KitConfig} />
 
-              <Box marginTop="6">
+              <Box marginTop="6" gap="6" flexDirection="column">
                 <>
-                  {!!emailConnector && (
+                  {showSocialConnectorSection && (
+                    <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
+                      {socialAuthConnectors.map(connector => {
+                        return (
+                          <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">
+                            {connector._wallet.id === 'google-waas' ? (
+                              <GoogleWaasConnectButton connector={connector} onConnect={onConnect} />
+                            ) : connector._wallet.id === 'apple-waas' ? (
+                              <AppleWaasConnectButton connector={connector} onConnect={onConnect} />
+                            ) : (
+                              <ConnectButton connector={connector} onConnect={onConnect} />
+                            )}
+                          </Box>
+                        )
+                      })}
+                    </Box>
+                  )}
+                  {showSocialConnectorSection && showEmailInputSection && (
+                    <Box gap="4" flexDirection="row" justifyContent="center" alignItems="center">
+                      <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
+                      <Text lineHeight="4" height="4" variant="normal" fontSize="small" fontWeight="medium" color="text50">
+                        or
+                      </Text>
+                      <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
+                    </Box>
+                  )}
+                  {showEmailInputSection && (
                     <>
                       <form onSubmit={onConnectInlineEmail}>
                         <TextInput
@@ -255,39 +284,11 @@ export const Connect = (props: ConnectWalletContentProps) => {
                       </form>
                     </>
                   )}
-                  {socialAuthConnectors.length > 0 && (
-                    <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
-                      {socialAuthConnectors.map(connector => {
-                        return (
-                          <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">
-                            {connector._wallet.id === 'google-waas' ? (
-                              <GoogleWaasConnectButton connector={connector} onConnect={onConnect} />
-                            ) : connector._wallet.id === 'apple-waas' ? (
-                              <AppleWaasConnectButton connector={connector} onConnect={onConnect} />
-                            ) : (
-                              <ConnectButton connector={connector} onConnect={onConnect} />
-                            )}
-                          </Box>
-                        )
-                      })}
-                    </Box>
-                  )}
                 </>
 
                 {walletConnectors.length > 0 && (
                   <>
-                    {socialAuthConnectors.length > 0 && (
-                      <>
-                        <Divider color="backgroundSecondary" />
-                        <Box justifyContent="center" alignItems="center">
-                          <Text variant="small" color="text50">
-                            or select a wallet
-                          </Text>
-                        </Box>
-                      </>
-                    )}
-
-                    <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+                    <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center">
                       {walletConnectors.slice(0, 7).map(connector => {
                         return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
                       })}
@@ -307,8 +308,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
                   </>
                 )}
               </Box>
-
-              <PoweredBySequence />
+              <Box marginTop="6">
+                <PoweredBySequence />
+              </Box>
             </>
           )}
         </>
