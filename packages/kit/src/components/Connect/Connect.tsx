@@ -13,7 +13,7 @@ import {
 } from '@0xsequence/design-system'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
-import { useConnect } from 'wagmi'
+import { useConnect, useConnections } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants'
 import { useStorage } from '../../hooks/useStorage'
@@ -50,7 +50,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
   const { status, connectors, connect } = useConnect()
+  const connections = useConnections()
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
+  const hasConnectedSocialWallet = connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social')
 
   const baseWalletConnectors = (connectors as ExtendedConnector[])
     .filter(c => {
@@ -228,7 +230,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
               <Banner config={config as KitConfig} />
 
               <Box marginTop="6">
-                {emailConnector && (showEmailInput || isEmailOnly) ? (
+                {!hasConnectedSocialWallet && emailConnector && (showEmailInput || isEmailOnly) ? (
                   <form onSubmit={onConnectInlineEmail}>
                     <TextInput onChange={onChangeEmail} value={email} name="email" placeholder="Enter email" data-1p-ignore />
                     <Box alignItems="center" justifyContent="center" marginTop="4">
@@ -251,7 +253,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                   </form>
                 ) : (
                   <>
-                    {socialAuthConnectors.length > 0 && (
+                    {socialAuthConnectors.length > 0 && !hasConnectedSocialWallet && (
                       <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
                         {socialAuthConnectors.map(connector => {
                           return (
@@ -275,7 +277,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
                 {walletConnectors.length > 0 && !showEmailInput && (
                   <>
-                    {socialAuthConnectors.length > 0 && (
+                    {socialAuthConnectors.length > 0 && !hasConnectedSocialWallet && (
                       <>
                         <Divider color="backgroundSecondary" />
                         <Box justifyContent="center" alignItems="center">
