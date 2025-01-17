@@ -1,4 +1,4 @@
-import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs } from '@0xsequence/api'
+import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
 import {
   ContractType,
   Page,
@@ -698,5 +698,31 @@ export const useSwapQuote = (args: GetSwapQuoteArgs, options: UseSwapQuoteOption
     retry: true,
     staleTime: time.oneMinute * 1,
     enabled: !disabled || !args.userAddress || !args.chainId || !args.buyCurrencyAddress
+  })
+}
+
+const getLinkedWallets = async (
+  apiClient: SequenceAPIClient,
+  args: GetLinkedWalletsArgs,
+  headers?: object,
+  signal?: AbortSignal
+): Promise<Array<LinkedWallet>> => {
+  const res = await apiClient.getLinkedWallets(args, headers, signal)
+  return res.linkedWallets
+}
+
+interface UseLinkedWalletsOptions {
+  enabled?: boolean
+}
+
+export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}) => {
+  const apiClient = useAPIClient()
+
+  return useQuery({
+    queryKey: ['linkedWallets', args],
+    queryFn: () => getLinkedWallets(apiClient, args),
+    retry: true,
+    staleTime: time.oneMinute * 5,
+    enabled: options.enabled ?? !!args // Use provided enabled option or fallback to checking args
   })
 }

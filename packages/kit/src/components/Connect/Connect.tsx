@@ -16,9 +16,11 @@ import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants'
+import { useLinkedWallets } from '../../hooks/data'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
+import { useWaasSignatureForLinking } from '../../hooks/useWaasSignatureForLinking'
 import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, EmailConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
@@ -52,7 +54,35 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { status, connectors, connect } = useConnect()
   const connections = useConnections()
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
+
   const hasConnectedSocialWallet = connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social')
+  const hasConnectedWaasWallet = connections.some(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
+
+  // Get the waas connector from connections
+  const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
+
+  // Get signature for linking wallets
+  const {
+    message,
+    signature,
+    address,
+    chainId,
+    loading: signatureLoading
+  } = useWaasSignatureForLinking(waasConnection?.connector)
+
+  // Only fetch linked wallets for embedded wallets
+  const { data: linkedWallets } = useLinkedWallets(
+    {
+      parentWalletAddress: address || '',
+      parentWalletMessage: message || '',
+      parentWalletSignature: signature || '',
+      signatureChainId: `${chainId}`
+    },
+    {
+      enabled: hasConnectedWaasWallet && !!address && !!message && !!signature && !signatureLoading
+    }
+  )
+  console.log('linked wallets:', linkedWallets)
 
   const baseWalletConnectors = (connectors as ExtendedConnector[])
     .filter(c => {
