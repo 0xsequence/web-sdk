@@ -1,5 +1,3 @@
-import { Sign } from 'crypto'
-
 const PREFIX = '@kit'
 const SETTINGS = 'settings'
 const THEME = 'theme'

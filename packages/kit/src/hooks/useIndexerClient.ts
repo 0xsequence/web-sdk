@@ -2,7 +2,7 @@ import { SequenceIndexer } from '@0xsequence/indexer'
 import { ChainId, networks } from '@0xsequence/network'
 import { useMemo } from 'react'
 
-import { useKitConfig } from '../contexts/KitConfig'
+import { DEBUG } from '../env'
 
 import { useProjectAccessKey } from './useProjectAccessKey'
 
@@ -14,9 +14,7 @@ export const useIndexerClient = (chainId: ChainId) => {
   }, [projectAccessKey])
 
   const network = networks[chainId]
-  const clientUrl = process.env.DEBUG
-    ? `https://dev-${network.name}-indexer.sequence.app`
-    : `https://${network.name}-indexer.sequence.app`
+  const clientUrl = DEBUG ? `https://dev-${network.name}-indexer.sequence.app` : `https://${network.name}-indexer.sequence.app`
 
   if (!indexerClients.has(chainId)) {
     indexerClients.set(chainId, new SequenceIndexer(clientUrl, projectAccessKey))
@@ -42,9 +40,7 @@ export const useIndexerClients = (chainIds: ChainId[]) => {
 
   for (const chainId of chainIds) {
     const network = networks[chainId]
-    const clientUrl = process.env.DEBUG
-      ? `https://dev-${network.name}-indexer.sequence.app`
-      : `https://${network.name}-indexer.sequence.app`
+    const clientUrl = DEBUG ? `https://dev-${network.name}-indexer.sequence.app` : `https://${network.name}-indexer.sequence.app`
 
     if (!indexerClients.has(chainId)) {
       indexerClients.set(chainId, new SequenceIndexer(clientUrl, projectAccessKey))

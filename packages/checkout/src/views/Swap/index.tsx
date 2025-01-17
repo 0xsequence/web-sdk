@@ -1,13 +1,13 @@
-import { useState } from 'react'
 import { Box, Button, Spinner, Text } from '@0xsequence/design-system'
 import { compareAddress, formatDisplay, useContractInfo, useSwapPrices, useSwapQuote, sendTransactions } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { useState } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
-import { CryptoOption } from '../PaymentSelection/PayWithCrypto/CryptoOption'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
+import { CryptoOption } from '../PaymentSelection/PayWithCrypto/CryptoOption'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()

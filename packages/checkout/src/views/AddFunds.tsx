@@ -5,10 +5,10 @@ import { HEADER_HEIGHT } from '../constants'
 import { useAddFundsModal } from '../hooks'
 import { getTransakLink } from '../utils/transak'
 
-const IframeId = 'sequenceOnRamp';
-const EventTypeOrderCreated = 'TRANSAK_ORDER_CREATED';
-const EventTypeOrderSuccessful = 'TRANSAK_ORDER_SUCCESSFUL';
-const EventTypeOrderFailed = 'TRANSAK_ORDER_FAILED';
+const IframeId = 'sequenceOnRamp'
+const EventTypeOrderCreated = 'TRANSAK_ORDER_CREATED'
+const EventTypeOrderSuccessful = 'TRANSAK_ORDER_SUCCESSFUL'
+const EventTypeOrderFailed = 'TRANSAK_ORDER_FAILED'
 
 export const AddFundsContent = () => {
   const { addFundsSettings } = useAddFundsModal()
@@ -18,28 +18,28 @@ export const AddFundsContent = () => {
   }
 
   useEffect(() => {
-    window.addEventListener('message', messageReceived);
+    window.addEventListener('message', messageReceived)
     return () => {
-      window.removeEventListener('message', messageReceived);
-    };
-  }, []);
+      window.removeEventListener('message', messageReceived)
+    }
+  }, [])
 
   function messageReceived(message: MessageEvent<any>) {
-    const element = document.getElementById(IframeId) as HTMLIFrameElement | undefined;
-    const iframe = element?.contentWindow;
+    const element = document.getElementById(IframeId) as HTMLIFrameElement | undefined
+    const iframe = element?.contentWindow
     if (message.source === iframe) {
-      const data = message.data;
-      const eventType = data.eventType as string;
+      const data = message.data
+      const eventType = data.eventType as string
       switch (eventType) {
         case EventTypeOrderCreated:
-          addFundsSettings?.onOrderCreated?.(data);
-          break;
+          addFundsSettings?.onOrderCreated?.(data)
+          break
         case EventTypeOrderSuccessful:
-          addFundsSettings?.onOrderSuccessful?.(data);
-          break;
+          addFundsSettings?.onOrderSuccessful?.(data)
+          break
         case EventTypeOrderFailed:
-          addFundsSettings?.onOrderFailed?.(data);
-          break;
+          addFundsSettings?.onOrderFailed?.(data)
+          break
       }
     }
   }

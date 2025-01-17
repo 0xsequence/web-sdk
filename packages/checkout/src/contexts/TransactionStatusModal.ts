@@ -1,5 +1,3 @@
-import { Hex } from 'viem'
-
 import { createGenericContext } from './genericContext'
 
 interface Item {

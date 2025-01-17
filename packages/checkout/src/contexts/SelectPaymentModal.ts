@@ -1,7 +1,8 @@
 import { Hex } from 'viem'
 
-import { createGenericContext } from './genericContext'
 import type { TransakConfig } from '../contexts/CheckoutModal'
+
+import { createGenericContext } from './genericContext'
 
 export type CreditCardProviders = 'sardine' | 'transak'
 

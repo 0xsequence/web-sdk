@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
 import { Box, Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
+import { QRCodeCanvas } from 'qrcode.react'
+import { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useAccount } from 'wagmi'
 
 import { useSelectPaymentModal, useTransferFundsModal } from '../../hooks'
-import { QRCodeCanvas } from 'qrcode.react'
-import { useAccount } from 'wagmi'
 
 export const TransferFunds = () => {
   const { openTransferFundsModal } = useTransferFundsModal()

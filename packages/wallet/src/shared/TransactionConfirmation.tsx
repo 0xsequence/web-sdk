@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi'
 
 import { truncateAtMiddle } from '../utils'
 
-import { FeeOption, FeeOptionSelector, type FeeOptionBalance } from './FeeOptionSelector'
+import { FeeOption, FeeOptionSelector } from './FeeOptionSelector'
 import { SendItemInfo } from './SendItemInfo'
 
 interface TransactionConfirmationProps {
