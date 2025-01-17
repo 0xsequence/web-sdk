@@ -8,7 +8,7 @@ import { useStorage, useStorageItem } from '../../hooks/useStorage'
 import { ExtendedConnector, WalletProperties } from '../../types'
 
 const BUTTON_HEIGHT = '52px'
-const BUTTON_HEIGHT_FULL_WIDTH = '44px'
+const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
 const ICON_SIZE = '8'
 
 const getLogo = (theme: any, walletProps: WalletProperties) =>
@@ -35,16 +35,19 @@ export const ConnectButton = (props: ConnectButtonProps) => {
     return (
       <Tooltip message={label || walletProps.name}>
         <Card
+          gap="1"
           clickable
           borderRadius="xs"
           justifyContent="center"
           alignItems="center"
           onClick={() => onConnect(connector)}
           width="full"
-          style={{ height: BUTTON_HEIGHT_FULL_WIDTH }}
+          style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
         >
           <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
-          <Text>Continue with label</Text>
+          <Text color="text100" variant="normal" fontWeight="bold">
+            Continue with {label || walletProps.name}
+          </Text>
         </Card>
       </Tooltip>
     )
@@ -70,7 +73,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 }
 
 export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
-  const { connector, onConnect } = props
+  const { connector, onConnect, isDescriptive = false } = props
   const storage = useStorage()
 
   const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
@@ -84,6 +87,68 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
       setEnableGoogleTooltip(true)
     }, 300)
   })
+
+  if (isDescriptive) {
+    return (
+      <Tooltip message="Google" disabled={!enableGoogleTooltip}>
+        <Card
+          clickable
+          background="transparent"
+          borderRadius="xs"
+          padding="0"
+          width="full"
+          position="relative"
+          style={{
+            height: BUTTON_HEIGHT
+          }}
+        >
+          <Box
+            flexDirection="row"
+            height="full"
+            overflow="hidden"
+            borderRadius="sm"
+            alignItems="center"
+            justifyContent="center"
+            style={{
+              opacity: 0.0000001,
+              transform: 'scale(100)'
+            }}
+          >
+            <GoogleLogin
+              type="icon"
+              size="large"
+              width="56"
+              onSuccess={credentialResponse => {
+                if (credentialResponse.credential) {
+                  storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
+                  onConnect(connector)
+                }
+              }}
+              onError={() => {
+                console.log('Login Failed')
+              }}
+            />
+          </Box>
+
+          <Box
+            background="backgroundSecondary"
+            borderRadius="xs"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            position="absolute"
+            pointerEvents="none"
+            width="full"
+            height="full"
+            top="0"
+            right="0"
+          >
+            <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
+          </Box>
+        </Card>
+      </Tooltip>
+    )
+  }
 
   return (
     <Tooltip message="Google" disabled={!enableGoogleTooltip}>

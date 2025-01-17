@@ -47,7 +47,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const storage = useStorage()
 
   // TODO: remove true
-  const descriptiveSocials = !!config?.signIn?.descriptiveSocials
+  const descriptiveSocials = !!config?.signIn?.descriptiveSocials || true
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
 
@@ -205,7 +205,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
   const showMoreSocialOptions = socialAuthConnectors.length > MAX_ITEM_PER_ROW
   const showMoreWalletOptions = walletConnectors.length > MAX_ITEM_PER_ROW
-  const socialConnectorsPerRow = showMoreSocialOptions ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
+  const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
   return (
@@ -239,7 +239,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
               <Box marginTop="6" gap="6" flexDirection="column">
                 <>
                   {showSocialConnectorSection && (
-                    <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+                    <Box
+                      gap="2"
+                      flexDirection={descriptiveSocials ? 'column' : 'row'}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
                       {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                         return (
                           <Box key={connector.uid} width="full">
