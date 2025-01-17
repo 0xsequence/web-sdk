@@ -10,6 +10,7 @@ import { ExtendedConnector, WalletProperties } from '../../types'
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
 const ICON_SIZE = '8'
+const ICON_SIZE_DESCRIPTIVE = '6'
 
 const getLogo = (theme: any, walletProps: WalletProperties) =>
   theme === 'dark'
@@ -44,7 +45,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
           width="full"
           style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
         >
-          <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
+          <Box as={Logo} width={ICON_SIZE_DESCRIPTIVE} height={ICON_SIZE_DESCRIPTIVE} />
           <Text color="text100" variant="normal" fontWeight="bold">
             Continue with {label || walletProps.name}
           </Text>
@@ -88,67 +89,51 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
     }, 300)
   })
 
-  if (isDescriptive) {
-    return (
-      <Tooltip message="Google" disabled={!enableGoogleTooltip}>
-        <Card
-          clickable
-          background="transparent"
+  const WaasLoginContent = () => {
+    if (isDescriptive) {
+      return (
+        <Box
+          gap="1"
           borderRadius="xs"
-          padding="0"
+          justifyContent="center"
+          alignItems="center"
+          background="backgroundSecondary"
+          display="flex"
+          position="absolute"
+          pointerEvents="none"
           width="full"
-          position="relative"
-          style={{
-            height: BUTTON_HEIGHT
-          }}
+          height="full"
+          top="0"
+          right="0"
         >
-          <Box
-            flexDirection="row"
-            height="full"
-            overflow="hidden"
-            borderRadius="sm"
-            alignItems="center"
-            justifyContent="center"
-            style={{
-              opacity: 0.0000001,
-              transform: 'scale(100)'
-            }}
-          >
-            <GoogleLogin
-              type="icon"
-              size="large"
-              width="56"
-              onSuccess={credentialResponse => {
-                if (credentialResponse.credential) {
-                  storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
-                  onConnect(connector)
-                }
-              }}
-              onError={() => {
-                console.log('Login Failed')
-              }}
-            />
-          </Box>
+          <Box as={Logo} width={ICON_SIZE_DESCRIPTIVE} height={ICON_SIZE_DESCRIPTIVE} />
+          <Text color="text100" variant="normal" fontWeight="bold">
+            Continue with Google
+          </Text>
+        </Box>
+      )
+    }
 
-          <Box
-            background="backgroundSecondary"
-            borderRadius="xs"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            position="absolute"
-            pointerEvents="none"
-            width="full"
-            height="full"
-            top="0"
-            right="0"
-          >
-            <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
-          </Box>
-        </Card>
-      </Tooltip>
+    return (
+      <Box
+        background="backgroundSecondary"
+        borderRadius="xs"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        position="absolute"
+        pointerEvents="none"
+        width="full"
+        height="full"
+        top="0"
+        right="0"
+      >
+        <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
+      </Box>
     )
   }
+
+  const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
 
   return (
     <Tooltip message="Google" disabled={!enableGoogleTooltip}>
@@ -160,7 +145,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
         width="full"
         position="relative"
         style={{
-          height: BUTTON_HEIGHT
+          height: buttonHeight
         }}
       >
         <Box
@@ -191,21 +176,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
           />
         </Box>
 
-        <Box
-          background="backgroundSecondary"
-          borderRadius="xs"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          position="absolute"
-          pointerEvents="none"
-          width="full"
-          height="full"
-          top="0"
-          right="0"
-        >
-          <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
-        </Box>
+        <WaasLoginContent />
       </Card>
     </Tooltip>
   )

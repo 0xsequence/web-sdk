@@ -46,8 +46,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { isConnected } = useAccount()
   const storage = useStorage()
 
-  // TODO: remove true
-  const descriptiveSocials = !!config?.signIn?.descriptiveSocials || true
+  const descriptiveSocials = !!config?.signIn?.descriptiveSocials
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
 
