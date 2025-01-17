@@ -76,23 +76,25 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const { connector, onConnect } = props
   const storage = useStorage()
 
-  const getGoogleUserInfoAndLogin = async (access_token: string) => {
-    // TODO: Implement this on backend because of CORS
-    const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: { Authorization: `Bearer ${access_token}` }
-    }).then(res => {
-      const credentials = '...'
-      storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentials)
-      onConnect(connector)
-    })
-  }
   const login = useGoogleLogin({
-    onSuccess: credentialResponse => {
-      getGoogleUserInfoAndLogin(credentialResponse.access_token)
+    onSuccess: async response => {
+      // TODO: GET CREDENTIALS FROM BACKEND USING TOKENS
+      //https://github.com/MomenSherif/react-oauth/issues/12
+      const tokens = await fetch('http://localhost:3001/auth/google', {
+        method: 'POST',
+        body: JSON.stringify({ code: response.code })
+      })
+      // GET CREDENTIALS FROM BACKEND USING TOKENS
+      const credential = ''
+      storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credential)
+      onConnect(connector)
+
+      console.log(tokens)
     },
     onError: () => {
       console.log('Login Failed')
-    }
+    },
+    flow: 'auth-code'
   })
 
   const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
