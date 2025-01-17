@@ -1,6 +1,6 @@
 import { Box, Card, Text, Tooltip, useTheme } from '@0xsequence/design-system'
-import { useGoogleLogin } from '@react-oauth/google'
-import { useEffect, useRef, useState } from 'react'
+import { GoogleLogin } from '@react-oauth/google'
+import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { LocalStorageKey } from '../../constants'
@@ -30,8 +30,6 @@ export const ConnectButton = (props: ConnectButtonProps) => {
   const isDescriptive = props.isDescriptive || false
 
   const Logo = getLogo(theme, walletProps)
-
-  console.log('isDescriptive', props)
 
   if (isDescriptive) {
     return (
@@ -72,30 +70,8 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 }
 
 export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
-  const cardRef = useRef<HTMLDivElement>(null)
   const { connector, onConnect } = props
   const storage = useStorage()
-
-  const login = useGoogleLogin({
-    onSuccess: async response => {
-      // TODO: GET CREDENTIALS FROM BACKEND USING TOKENS
-      //https://github.com/MomenSherif/react-oauth/issues/12
-      const tokens = await fetch('http://localhost:3001/auth/google', {
-        method: 'POST',
-        body: JSON.stringify({ code: response.code })
-      })
-      // GET CREDENTIALS FROM BACKEND USING TOKENS
-      const credential = ''
-      storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credential)
-      onConnect(connector)
-
-      console.log(tokens)
-    },
-    onError: () => {
-      console.log('Login Failed')
-    },
-    flow: 'auth-code'
-  })
 
   const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
   const { theme } = useTheme()
@@ -110,13 +86,63 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   })
 
   return (
-    <ConnectButton
-      {...props}
-      connector={connector}
-      onConnect={() => {
-        login()
-      }}
-    />
+    <Tooltip message="Google" disabled={!enableGoogleTooltip}>
+      <Card
+        clickable
+        background="transparent"
+        borderRadius="xs"
+        padding="0"
+        width="full"
+        position="relative"
+        style={{
+          height: BUTTON_HEIGHT
+        }}
+      >
+        <Box
+          flexDirection="row"
+          height="full"
+          overflow="hidden"
+          borderRadius="sm"
+          alignItems="center"
+          justifyContent="center"
+          style={{
+            opacity: 0.0000001,
+            transform: 'scale(100)'
+          }}
+        >
+          <GoogleLogin
+            type="icon"
+            size="large"
+            width="56"
+            onSuccess={credentialResponse => {
+              if (credentialResponse.credential) {
+                storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
+                onConnect(connector)
+              }
+            }}
+            onError={() => {
+              console.log('Login Failed')
+            }}
+          />
+        </Box>
+
+        <Box
+          background="backgroundSecondary"
+          borderRadius="xs"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          position="absolute"
+          pointerEvents="none"
+          width="full"
+          height="full"
+          top="0"
+          right="0"
+        >
+          <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
+        </Box>
+      </Card>
+    </Tooltip>
   )
 }
 
