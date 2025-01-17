@@ -22,13 +22,15 @@ import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
-import { AppleWaasConnectButton, ConnectButton, EmailConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
+import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
 import { KitConnectProviderProps } from '../KitProvider/KitProvider'
 import { PoweredBySequence } from '../SequenceLogo'
 
 import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
+
+const MAX_ITEM_PER_ROW = 4
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -44,11 +46,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { isConnected } = useAccount()
   const storage = useStorage()
 
+  // TODO: remove true
+  const descriptiveSocials = !!config?.signIn?.descriptiveSocials || true
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
 
   const [email, setEmail] = useState('')
-  // const [showEmailInput, setShowEmailInput] = useState<boolean>(false)
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
   const { status, connectors, connect } = useConnect()
@@ -200,6 +203,11 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const showSocialConnectorSection = socialAuthConnectors.length > 0
   const showEmailInputSection = !!emailConnector
 
+  const showMoreSocialOptions = socialAuthConnectors.length > MAX_ITEM_PER_ROW
+  const showMoreWalletOptions = walletConnectors.length > MAX_ITEM_PER_ROW
+  const socialConnectorsPerRow = showMoreSocialOptions ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
+  const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
+
   return (
     <Box padding="4">
       <Box
@@ -231,16 +239,24 @@ export const Connect = (props: ConnectWalletContentProps) => {
               <Box marginTop="6" gap="6" flexDirection="column">
                 <>
                   {showSocialConnectorSection && (
-                    <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
-                      {socialAuthConnectors.map(connector => {
+                    <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+                      {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                         return (
-                          <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">
+                          <Box key={connector.uid} width="full">
                             {connector._wallet.id === 'google-waas' ? (
-                              <GoogleWaasConnectButton connector={connector} onConnect={onConnect} />
+                              <GoogleWaasConnectButton
+                                isDescriptive={descriptiveSocials}
+                                connector={connector}
+                                onConnect={onConnect}
+                              />
                             ) : connector._wallet.id === 'apple-waas' ? (
-                              <AppleWaasConnectButton connector={connector} onConnect={onConnect} />
+                              <AppleWaasConnectButton
+                                isDescriptive={descriptiveSocials}
+                                connector={connector}
+                                onConnect={onConnect}
+                              />
                             ) : (
-                              <ConnectButton connector={connector} onConnect={onConnect} />
+                              <ConnectButton isDescriptive={descriptiveSocials} connector={connector} onConnect={onConnect} />
                             )}
                           </Box>
                         )
@@ -289,7 +305,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                 {walletConnectors.length > 0 && (
                   <>
                     <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center">
-                      {walletConnectors.slice(0, 7).map(connector => {
+                      {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
                         return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
                       })}
                     </Box>
