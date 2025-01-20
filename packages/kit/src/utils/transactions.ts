@@ -167,9 +167,6 @@ export const waitForTransactionReceipt = async ({
       onMessage: ({
         receipt
       }) => {
-        console.log('receipt', receipt)
-        const transactionStatus = receipt.txnStatus
-        const blockNumber: number = receipt.blockNumber
         resolve(receipt)
       },
       onError: () => {
