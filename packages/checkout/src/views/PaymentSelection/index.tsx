@@ -8,7 +8,8 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions,
   SwapPricesWithCurrencyInfo,
-  ContractVerificationStatus
+  ContractVerificationStatus,
+  useIndexerClient
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
@@ -77,6 +78,7 @@ export const PaymentSelectionContent = () => {
   const publicClient = usePublicClient({
     chainId
   })
+  const indexerClient = useIndexerClient(chainId)
   const { clearCachedBalances } = useClearCachedBalances()
   const { closeSelectPaymentModal } = useSelectPaymentModal()
   const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
@@ -196,6 +198,7 @@ export const PaymentSelectionContent = () => {
         senderAddress: userAddress,
         publicClient,
         walletClient,
+        indexerClient,
         connector,
         transactions,
         transactionConfirmations,
@@ -304,6 +307,7 @@ export const PaymentSelectionContent = () => {
         senderAddress: userAddress,
         publicClient,
         walletClient,
+        indexerClient,
         connector,
         transactions,
         transactionConfirmations,
