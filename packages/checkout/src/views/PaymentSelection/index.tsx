@@ -74,7 +74,9 @@ export const PaymentSelectionContent = () => {
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
   const { address: userAddress, connector } = useAccount()
-  const { data: walletClient } = useWalletClient()
+  const { data: walletClient } = useWalletClient({
+    chainId
+  })
   const publicClient = usePublicClient({
     chainId
   })

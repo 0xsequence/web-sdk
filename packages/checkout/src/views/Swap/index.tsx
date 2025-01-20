@@ -35,7 +35,7 @@ export const Swap = () => {
   const [isError, setIsError] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
   const publicClient = usePublicClient({ chainId })
-  const { data: walletClient } = useWalletClient()
+  const { data: walletClient } = useWalletClient({ chainId })
 
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
