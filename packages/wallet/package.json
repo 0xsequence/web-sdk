@@ -38,7 +38,7 @@
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": ">= 1.7.8",
+    "@0xsequence/design-system": ">= 1.9.0",
     "@0xsequence/kit": "workspace:*",
     "@0xsequence/api": ">= 2.2.4",
     "@0xsequence/indexer": ">= 2.2.4",
@@ -53,7 +53,7 @@
     "viem": ">= 2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.7.8",
+    "@0xsequence/design-system": "^1.9.0",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",

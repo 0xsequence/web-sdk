@@ -1,4 +1,4 @@
-import { Box, Card, Text, Tooltip, useTheme } from '@0xsequence/design-system'
+import { Box, Card, Icon, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
@@ -68,6 +68,30 @@ export const ConnectButton = (props: ConnectButtonProps) => {
         }}
       >
         <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
+      </Card>
+    </Tooltip>
+  )
+}
+
+interface ShowAllWalletsButtonProps {
+  onClick: () => void
+}
+
+export const ShowAllWalletsButton = ({ onClick }: ShowAllWalletsButtonProps) => {
+  return (
+    <Tooltip message="Show more">
+      <Card
+        clickable
+        borderRadius="xs"
+        justifyContent="center"
+        alignItems="center"
+        onClick={onClick}
+        width="full"
+        style={{
+          height: BUTTON_HEIGHT
+        }}
+      >
+        <EllipsisIcon color="text100" size="xl" />
       </Card>
     </Tooltip>
   )

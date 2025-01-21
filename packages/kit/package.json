@@ -48,7 +48,7 @@
     "@0xsequence/utils": ">= 2.2.4",
     "@0xsequence/waas": ">= 2.2.4",
     "@0xsequence/ethauth": "^1.0.0",
-    "@0xsequence/design-system": "^1.7.8",
+    "@0xsequence/design-system": "^1.9.0",
     "framer-motion": "^8.5.2",
     "uuid": "^10.0.0"
   },

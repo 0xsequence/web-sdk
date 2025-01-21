@@ -22,7 +22,7 @@ import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
-import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
+import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
 import { KitConnectProviderProps } from '../KitProvider/KitProvider'
 import { PoweredBySequence } from '../SequenceLogo'
 
@@ -30,7 +30,8 @@ import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
 
-const MAX_ITEM_PER_ROW = 4
+// TODO: put back to 4
+const MAX_ITEM_PER_ROW = 3
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -52,7 +53,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
   const [email, setEmail] = useState('')
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
-  const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
+
+  const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet'>(null)
   const { status, connectors, connect } = useConnect()
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
@@ -207,6 +209,15 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
+  if (showExtendedList) {
+    return (
+      <ExtendedWalletList
+        onConnect={onConnect}
+        connectors={showExtendedList === 'social' ? socialAuthConnectors : walletConnectors}
+      />
+    )
+  }
+
   return (
     <Box padding="4">
       <Box
@@ -265,6 +276,11 @@ export const Connect = (props: ConnectWalletContentProps) => {
                           </Box>
                         )
                       })}
+                      {showMoreSocialOptions && (
+                        <Box width="full">
+                          <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                        </Box>
+                      )}
                     </Box>
                   )}
                   {showSocialConnectorSection && showEmailInputSection && (
@@ -312,19 +328,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
                       {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
                         return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
                       })}
+                      {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
                     </Box>
-                    {/* 
-                    {displayExtendedListButton && (
-                      <Box marginTop="4" justifyContent="center">
-                        <Button
-                          shape="square"
-                          size="xs"
-                          onClick={() => setShowExtendedList(true)}
-                          label="More options"
-                          rightIcon={ChevronRightIcon}
-                        />
-                      </Box>
-                    )} */}
                   </>
                 )}
               </Box>
