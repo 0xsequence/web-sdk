@@ -12,7 +12,7 @@ const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
 const ICON_SIZE = '8'
 const ICON_SIZE_DESCRIPTIVE = '6'
 
-const getLogo = (theme: any, walletProps: WalletProperties) =>
+export const getLogo = (theme: any, walletProps: WalletProperties) =>
   theme === 'dark'
     ? walletProps.logoDark || walletProps.monochromeLogoDark
     : walletProps.logoLight || walletProps.monochromeLogoLight

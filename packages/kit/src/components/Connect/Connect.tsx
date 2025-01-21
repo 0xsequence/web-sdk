@@ -1,9 +1,6 @@
 import {
   ArrowRightIcon,
   Box,
-  Button,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   Divider,
   Text,
   TextInput,
@@ -30,8 +27,7 @@ import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
 
-// TODO: put back to 4
-const MAX_ITEM_PER_ROW = 3
+const MAX_ITEM_PER_ROW = 4
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -212,8 +208,10 @@ export const Connect = (props: ConnectWalletContentProps) => {
   if (showExtendedList) {
     return (
       <ExtendedWalletList
+        onGoBack={() => setShowExtendedList(null)}
         onConnect={onConnect}
         connectors={showExtendedList === 'social' ? socialAuthConnectors : walletConnectors}
+        title={showExtendedList === 'social' ? 'Continue with a social account' : 'Choose a wallet'}
       />
     )
   }
@@ -296,6 +294,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                     <>
                       <form onSubmit={onConnectInlineEmail}>
                         <TextInput
+                          autoFocus
                           onChange={onChangeEmail}
                           value={email}
                           name="email"
