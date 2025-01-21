@@ -13,14 +13,15 @@ import {
 } from '@0xsequence/design-system'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
-import { useConnect, useConnections } from 'wagmi'
+import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants'
 import { useLinkedWallets } from '../../hooks/data'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
-import { useWaasSignatureForLinking } from '../../hooks/useWaasSignatureForLinking'
+import { useWaasGetLinkedWalletsSignature } from '../../hooks/useWaasGetLinkedWalletsSignature'
+import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet'
 import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, EmailConnectButton, GoogleWaasConnectButton } from '../ConnectButton'
@@ -30,6 +31,7 @@ import { PoweredBySequence } from '../SequenceLogo'
 import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -44,6 +46,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { signIn = {} } = config
   const storage = useStorage()
 
+  const queryClient = useQueryClient()
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
 
@@ -53,6 +57,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const [showExtendedList, setShowExtendedList] = useState<boolean>(false)
   const { status, connectors, connect } = useConnect()
   const connections = useConnections()
+  const { signMessageAsync } = useSignMessage()
+
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
   const hasConnectedSocialWallet = connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social')
@@ -68,7 +74,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
     address,
     chainId,
     loading: signatureLoading
-  } = useWaasSignatureForLinking(waasConnection?.connector)
+  } = useWaasGetLinkedWalletsSignature(waasConnection?.connector)
 
   // Only fetch linked wallets for embedded wallets
   const { data: linkedWallets } = useLinkedWallets(
@@ -82,7 +88,60 @@ export const Connect = (props: ConnectWalletContentProps) => {
       enabled: hasConnectedWaasWallet && !!address && !!message && !!signature && !signatureLoading
     }
   )
-  console.log('linked wallets:', linkedWallets)
+
+  // Setup wallet linking
+  const { linkWallet } = useWaasLinkWallet(waasConnection?.connector)
+
+  const [lastConnectedWallet, setLastConnectedWallet] = useState<`0x${string}` | undefined>(undefined)
+
+  useEffect(() => {
+    if (!lastConnectedWallet) {
+      return
+    }
+    const tryLinkWallet = async () => {
+      console.log('linked wallets', linkedWallets)
+      const nonWaasWallets = connections.filter(c => (c.connector as ExtendedConnector)?.type !== 'sequence-waas')
+      console.log('nonWaasWallets', nonWaasWallets)
+      const nonLinkedWallets = nonWaasWallets.filter(
+        c => !linkedWallets?.find(lw => lw.linkedWalletAddress === c.accounts[0].toLowerCase())
+      )
+      console.log('nonLinkedWallets', nonLinkedWallets)
+
+      if (nonLinkedWallets.map(w => w.accounts[0]).includes(lastConnectedWallet as `0x${string}`)) {
+        // make sure active wallet is the one we are trying to link
+        const waasWalletAddress = waasConnection?.accounts[0]
+
+        if (!waasWalletAddress) {
+          return
+        }
+
+        const childMessage = `Link to parent wallet with address ${waasWalletAddress}`
+
+        const childSignature = await signMessageAsync({ account: lastConnectedWallet, message: childMessage })
+
+        if (!childSignature) {
+          return
+        }
+
+        await linkWallet({
+          signatureChainId: chainId,
+          connectorName: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+          childWalletAddress: lastConnectedWallet,
+          childMessage,
+          childSignature
+        })
+
+        // invalidate linked wallets cache to refetch react-query
+        queryClient.invalidateQueries({ queryKey: ['linked-wallets'] })
+      }
+
+      setLastConnectedWallet(undefined)
+      onClose()
+    }
+    if (connections && connections.length > 1) {
+      tryLinkWallet()
+    }
+  }, [connections, lastConnectedWallet])
 
   const baseWalletConnectors = (connectors as ExtendedConnector[])
     .filter(c => {
@@ -146,8 +205,15 @@ export const Connect = (props: ConnectWalletContentProps) => {
     setIsLoading(status === 'pending' || status === 'success')
   }, [status])
 
-  const handleConnect = (connector: ExtendedConnector) => {
-    connect({ connector }, { onSettled: onClose })
+  const handleConnect = async (connector: ExtendedConnector) => {
+    connect(
+      { connector },
+      {
+        onSettled: result => {
+          setLastConnectedWallet(result?.accounts[0])
+        }
+      }
+    )
   }
 
   const onConnect = (connector: ExtendedConnector) => {

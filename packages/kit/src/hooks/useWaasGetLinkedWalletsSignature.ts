@@ -16,7 +16,7 @@ const CHAIN_ID_FOR_SIGNATURE = 137
 
 const getSignatureKey = (address: string) => `waas-signature-${address}`
 
-export const useWaasSignatureForLinking = (connector: Connector | undefined): UseWaasSignatureForLinkingResult => {
+export const useWaasGetLinkedWalletsSignature = (connector: Connector | undefined): UseWaasSignatureForLinkingResult => {
   const [result, setResult] = useState<UseWaasSignatureForLinkingResult>({
     message: undefined,
     signature: undefined,
@@ -26,23 +26,20 @@ export const useWaasSignatureForLinking = (connector: Connector | undefined): Us
     error: null
   })
 
-  const sequenceWaas: SequenceWaaS | undefined = (connector as any).sequenceWaas
-  if (!sequenceWaas) {
-    throw new Error('Connector does not support SequenceWaaS')
-  }
+  const sequenceWaas: SequenceWaaS | undefined = (connector as any)?.sequenceWaas
 
   const [address, setAddress] = useState<string | undefined>(undefined)
 
   // Fetch address
   useEffect(() => {
-    if (!connector) {
+    if (!connector && !sequenceWaas) {
       setAddress(undefined)
       return
     }
 
     const fetchAddress = async () => {
       try {
-        const newAddress = await sequenceWaas.getAddress()
+        const newAddress = await sequenceWaas?.getAddress()
         setAddress(newAddress)
       } catch (error) {
         console.error('Failed to fetch WaaS address:', error)
@@ -101,10 +98,14 @@ export const useWaasSignatureForLinking = (connector: Connector | undefined): Us
         setResult(prev => ({ ...prev, loading: true, error: null }))
 
         const message = `parent wallet with address ${address}`
-        const signedMessage = await sequenceWaas.signMessage({
+        const signedMessage = await sequenceWaas?.signMessage({
           message,
           network: CHAIN_ID_FOR_SIGNATURE
         })
+
+        if (!signedMessage) {
+          throw new Error('Failed to sign message')
+        }
 
         const newResult = {
           message,
