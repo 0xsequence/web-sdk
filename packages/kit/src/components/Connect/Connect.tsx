@@ -206,11 +206,16 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
   if (showExtendedList) {
+    const SEARCHABLE_TRESHOLD = 8
+    const connectors = showExtendedList === 'social' ? socialAuthConnectors : walletConnectors
+    const searchable = connectors.length > SEARCHABLE_TRESHOLD
+
     return (
       <ExtendedWalletList
+        searchable={searchable}
         onGoBack={() => setShowExtendedList(null)}
         onConnect={onConnect}
-        connectors={showExtendedList === 'social' ? socialAuthConnectors : walletConnectors}
+        connectors={connectors}
         title={showExtendedList === 'social' ? 'Continue with a social account' : 'Choose a wallet'}
       />
     )

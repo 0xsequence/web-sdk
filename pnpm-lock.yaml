@@ -341,6 +341,9 @@ importers:
       framer-motion:
         specifier: ^8.5.2
         version: 8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      fuse.js:
+        specifier: ^6.6.2
+        version: 6.6.2
       react:
         specifier: '>= 17'
         version: 18.3.1
