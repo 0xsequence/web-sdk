@@ -9,14 +9,18 @@ import {
   Spinner,
   Image,
   IconButton,
-  ModalPrimitive
+  ModalPrimitive,
+  truncateAddress,
+  CloseIcon
 } from '@0xsequence/design-system'
+import { useQueryClient } from '@tanstack/react-query'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants'
 import { useLinkedWallets } from '../../hooks/data'
+import { useKitWallets } from '../../hooks/useKitWallets'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
@@ -31,7 +35,6 @@ import { PoweredBySequence } from '../SequenceLogo'
 import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
-import { useQueryClient } from '@tanstack/react-query'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -58,6 +61,14 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { status, connectors, connect } = useConnect()
   const connections = useConnections()
   const { signMessageAsync } = useSignMessage()
+  const { wallets, setActiveWallet, disconnectWallet } = useKitWallets()
+
+  // Sort wallets to show embedded wallet first
+  const sortedWallets = [...wallets].sort((a, b) => {
+    if (a.isEmbedded && !b.isEmbedded) return -1
+    if (!a.isEmbedded && b.isEmbedded) return 1
+    return 0
+  })
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
@@ -328,7 +339,49 @@ export const Connect = (props: ConnectWalletContentProps) => {
             <>
               <Banner config={config as KitConfig} />
 
-              <Box marginTop="6">
+              {sortedWallets.length > 0 && !showEmailInput && (
+                <>
+                  <Box marginTop="4" gap="2" flexDirection="column">
+                    <Text variant="small" color="text50">
+                      Connected wallets
+                    </Text>
+                    {sortedWallets.map(wallet => (
+                      <Box
+                        key={wallet.id}
+                        padding="2"
+                        borderRadius="md"
+                        background="backgroundSecondary"
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                      >
+                        <Box display="flex" flexDirection="row" alignItems="center" gap="2">
+                          <Box borderColor="text50" background={wallet.isActive ? 'text100' : 'transparent'} />
+                          <Box flexDirection="column" gap="1">
+                            <Text variant="normal" color="text100">
+                              {wallet.isEmbedded ? 'Embedded - ' : ''}
+                              {wallet.name}
+                            </Text>
+                            <Text variant="normal" fontWeight="bold" color="text100">
+                              {truncateAddress(wallet.address, 10)}
+                            </Text>
+                          </Box>
+                        </Box>
+                        <IconButton size="xs" icon={CloseIcon} onClick={() => disconnectWallet(wallet.address)} />
+                      </Box>
+                    ))}
+                  </Box>
+                  <Divider color="backgroundSecondary" />
+                  <Box justifyContent="center">
+                    <Text variant="small" color="text50">
+                      Connect another wallet
+                    </Text>
+                  </Box>
+                </>
+              )}
+
+              <Box marginTop="2">
                 {!hasConnectedSocialWallet && emailConnector && (showEmailInput || isEmailOnly) ? (
                   <form onSubmit={onConnectInlineEmail}>
                     <TextInput onChange={onChangeEmail} value={email} name="email" placeholder="Enter email" data-1p-ignore />
@@ -376,7 +429,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
                 {walletConnectors.length > 0 && !showEmailInput && (
                   <>
-                    {socialAuthConnectors.length > 0 && !hasConnectedSocialWallet && (
+                    {socialAuthConnectors.length > 0 && !hasConnectedSocialWallet && sortedWallets.length === 0 && (
                       <>
                         <Divider color="backgroundSecondary" />
                         <Box justifyContent="center" alignItems="center">
