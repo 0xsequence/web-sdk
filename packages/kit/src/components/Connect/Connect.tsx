@@ -138,8 +138,11 @@ export const Connect = (props: ConnectWalletContentProps) => {
       setLastConnectedWallet(undefined)
       onClose()
     }
-    if (connections && connections.length > 1) {
+    if (connections && connections.length > 1 && hasConnectedWaasWallet) {
       tryLinkWallet()
+    } else {
+      setLastConnectedWallet(undefined)
+      onClose()
     }
   }, [connections, lastConnectedWallet])
 

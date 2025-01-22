@@ -56,7 +56,7 @@ export const Connected = () => {
   const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
   const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
-  const { wallets, setActiveWallet } = useKitWallets()
+  const { wallets, setActiveWallet, disconnectWallet } = useKitWallets()
   const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
 
   const {
@@ -541,7 +541,7 @@ export const Connected = () => {
                       </Text>
                     </Box>
                   </Box>
-                  <Button variant="text" size="sm" label="Disconnect" onClick={() => disconnect()} />
+                  <Button variant="text" size="sm" label="Disconnect" onClick={() => disconnectWallet(wallet.address)} />
                 </Box>
               ))}
             </Box>

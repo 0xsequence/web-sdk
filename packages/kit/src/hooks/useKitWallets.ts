@@ -1,4 +1,4 @@
-import { type UseConnectionsReturnType, useAccount, useConnect, useConnections } from 'wagmi'
+import { type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
 
 export interface KitWallet {
   id: string
@@ -12,6 +12,7 @@ export const useKitWallets = () => {
   const { address } = useAccount()
   const connections = useConnections()
   const { connectAsync } = useConnect()
+  const { disconnectAsync } = useDisconnect()
 
   const wallets: KitWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
     id: connection.connector.id,
@@ -32,8 +33,20 @@ export const useKitWallets = () => {
     }
   }
 
+  const disconnectWallet = async (walletAddress: string) => {
+    const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
+    if (!connection) return
+
+    try {
+      await disconnectAsync({ connector: connection.connector })
+    } catch (error) {
+      console.error('Failed to disconnect wallet:', error)
+    }
+  }
+
   return {
     wallets,
-    setActiveWallet
+    setActiveWallet,
+    disconnectWallet
   }
 }
