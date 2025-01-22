@@ -88,7 +88,7 @@ export const PaymentSelectionContent = () => {
     address: currencyAddress as Hex,
     args: [userAddress, targetContractAddress],
     query: {
-      enabled: !!userAddress
+      enabled: !!userAddress && !isNativeToken
     }
   })
 
@@ -136,7 +136,7 @@ export const PaymentSelectionContent = () => {
     }
   )
 
-  const isLoading = allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo
+  const isLoading = (allowanceIsLoading && !isNativeToken) || currencyBalanceIsLoading || isLoadingCurrencyInfo
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
