@@ -23,7 +23,7 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
   coinBalances
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  
+
   const endOfPageRefCoins = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -52,23 +52,25 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
   }, [fetchMoreCoinBalances, fetchMoreSearchCoinBalances, isSearching])
 
   return (
-    <Box flexDirection="column" gap="3">
-      {isPending && (
-        <>
-          {Array(8)
-            .fill(null)
-            .map((_, i) => (
-              <Skeleton key={i} width="full" height="8" />
-            ))}
-        </>
-      )}
-      {!isPending && displayedCoinBalances.length === 0 && <Text color="text100">No Coins Found</Text>}
-      {!isPending &&
-        displayedCoinBalances.map((indexItem, index) => {
-          const balance = coinBalances[indexItem.index]
-          return <BalanceItem key={index} balance={balance} />
-        })}
-      {isLoading && <Spinner alignSelf="center" marginTop="3" />}
+    <Box>
+      <Box flexDirection="column" gap="3">
+        {isPending && (
+          <>
+            {Array(8)
+              .fill(null)
+              .map((_, i) => (
+                <Skeleton key={i} width="full" height="8" />
+              ))}
+          </>
+        )}
+        {!isPending && displayedCoinBalances.length === 0 && <Text color="text100">No Coins Found</Text>}
+        {!isPending &&
+          displayedCoinBalances.map((indexItem, index) => {
+            const balance = coinBalances[indexItem.index]
+            return <BalanceItem key={index} balance={balance} />
+          })}
+        {isLoading && <Spinner alignSelf="center" marginTop="3" />}
+      </Box>
       <div ref={endOfPageRefCoins} style={{ height: '1px' }} />
     </Box>
   )

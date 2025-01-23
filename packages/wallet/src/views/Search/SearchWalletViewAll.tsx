@@ -32,12 +32,15 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const [search, setSearch] = useState('')
   const [selectedTab, setSelectedTab] = useState(defaultTab)
 
-  const renderSize = 20
+  const pageSize = 20
   const [displayedCoinBalances, setDisplayedCoinBalances] = useState<IndexedData[]>([])
   const [displayedCollectionBalances, setDisplayedCollectionBalances] = useState<IndexedData[]>([])
 
   const [displayedSearchCoinBalances, setDisplayedSearchCoinBalances] = useState<IndexedData[]>([])
   const [displayedSearchCollectionBalances, setDisplayedSearchCollectionBalances] = useState<IndexedData[]>([])
+
+  const [initCoinBalancesFlag, setInitCoinBalancesFlag] = useState(false)
+  const [initCollectionBalancesFlag, setInitCollectionBalancesFlag] = useState(false)
 
   const { address: accountAddress } = useAccount()
 
@@ -81,7 +84,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const collectionBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC721' || b.contractType === 'ERC1155') || []
-    
+
   const collectionBalances = collectionBalancesUnordered.sort((a, b) => {
     return Number(b.balance) - Number(a.balance)
   })
@@ -112,13 +115,10 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     name: balance.contractInfo?.name || 'Unknown'
   }))
 
-  const [initCoinBalances, setInitCoinBalances] = useState(false)
-  const [initCollectionBalances, setInitCollectionBalances] = useState(false)
-
   useEffect(() => {
-    if (!initCoinBalances && indexedCoinBalances.length > 0) {
-      setDisplayedCoinBalances(indexedCoinBalances.slice(0, renderSize))
-      setInitCoinBalances(true)
+    if (!initCoinBalancesFlag && indexedCoinBalances.length > 0) {
+      setDisplayedCoinBalances(indexedCoinBalances.slice(0, pageSize))
+      setInitCoinBalancesFlag(true)
     }
   }, [indexedCoinBalances])
 
@@ -128,15 +128,15 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
         fuzzySearchCoinBalances
           .search(search)
           .map(result => result.item)
-          .slice(0, renderSize)
+          .slice(0, pageSize)
       )
     }
   }, [search])
 
   useEffect(() => {
-    if (!initCollectionBalances && indexedCollectionBalances.length > 0) {
-      setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, renderSize))
-      setInitCollectionBalances(true)
+    if (!initCollectionBalancesFlag && indexedCollectionBalances.length > 0) {
+      setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, pageSize))
+      setInitCollectionBalancesFlag(true)
     }
   }, [indexedCollectionBalances])
 
@@ -146,7 +146,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
         fuzzySearchCollections
           .search(search)
           .map(result => result.item)
-          .slice(0, renderSize)
+          .slice(0, pageSize)
       )
     }
   }, [search])
@@ -155,14 +155,14 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     if (displayedCoinBalances.length >= indexedCoinBalances.length) {
       return
     }
-    setDisplayedCoinBalances(indexedCoinBalances.slice(0, displayedCoinBalances.length + renderSize))
+    setDisplayedCoinBalances(indexedCoinBalances.slice(0, displayedCoinBalances.length + pageSize))
   }
 
   const fetchMoreCollectionBalances = () => {
     if (displayedCollectionBalances.length >= indexedCollectionBalances.length) {
       return
     }
-    setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, displayedCollectionBalances.length + renderSize))
+    setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, displayedCollectionBalances.length + pageSize))
   }
 
   const fetchMoreSearchCoinBalances = () => {
@@ -173,7 +173,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
       fuzzySearchCoinBalances
         .search(search)
         .map(result => result.item)
-        .slice(0, displayedSearchCoinBalances.length + renderSize)
+        .slice(0, displayedSearchCoinBalances.length + pageSize)
     )
   }
 
@@ -185,7 +185,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
       fuzzySearchCollections
         .search(search)
         .map(result => result.item)
-        .slice(0, displayedSearchCollectionBalances.length + renderSize)
+        .slice(0, displayedSearchCollectionBalances.length + pageSize)
     )
   }
 

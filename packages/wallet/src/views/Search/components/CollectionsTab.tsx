@@ -34,7 +34,7 @@ const CollectionsTab: React.FC<CollectionsTabProps> = ({
       if (endOfPage.isIntersecting) {
         setIsLoading(true)
         setTimeout(() => {
-          if (isSearching) {  
+          if (isSearching) {
             fetchMoreSearchCollectionBalances()
           } else {
             fetchMoreCollectionBalances()
@@ -52,23 +52,25 @@ const CollectionsTab: React.FC<CollectionsTabProps> = ({
   }, [fetchMoreCollectionBalances, fetchMoreSearchCollectionBalances, isSearching])
 
   return (
-    <Box flexDirection="column" gap="3">
-      {isPending && (
-        <>
-          {Array(8)
-            .fill(null)
-            .map((_, i) => (
-              <Skeleton key={i} width="full" height="8" />
-            ))}
-        </>
-      )}
-      {!isPending && displayedCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
-      {!isPending &&
-        displayedCollectionBalances.map((indexItem, index) => {
-          const balance = collectionBalances[indexItem.index]
-          return <BalanceItem key={index} balance={balance} />
-        })}
-      {isLoading && <Spinner alignSelf="center" marginTop="3" />}
+    <Box>
+      <Box flexDirection="column" gap="3">
+        {isPending && (
+          <>
+            {Array(8)
+              .fill(null)
+              .map((_, i) => (
+                <Skeleton key={i} width="full" height="8" />
+              ))}
+          </>
+        )}
+        {!isPending && displayedCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
+        {!isPending &&
+          displayedCollectionBalances.map((indexItem, index) => {
+            const balance = collectionBalances[indexItem.index]
+            return <BalanceItem key={index} balance={balance} />
+          })}
+        {isLoading && <Spinner alignSelf="center" marginTop="3" />}
+      </Box>
       <div ref={endOfPageRefCollections} style={{ height: '1px' }} />
     </Box>
   )
