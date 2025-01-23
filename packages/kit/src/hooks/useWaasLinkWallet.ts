@@ -1,3 +1,5 @@
+'use client'
+
 import { SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 import { Connector } from 'wagmi'
