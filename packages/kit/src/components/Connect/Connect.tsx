@@ -328,13 +328,22 @@ export const Connect = (props: ConnectWalletContentProps) => {
                         gap="2"
                         flexDirection="column"
                         overflowY="auto"
+                        ref={el => {
+                          if (el) {
+                            const isScrollable = el.scrollHeight > el.clientHeight
+                            const fadeElement = el.parentElement?.querySelector('.scroll-fade') as HTMLElement
+                            if (fadeElement) {
+                              fadeElement.style.opacity = isScrollable ? '1' : '0'
+                            }
+                          }
+                        }}
                         onScroll={e => {
                           const target = e.currentTarget
                           const isScrollable = target.scrollHeight > target.clientHeight
                           const isAtBottom = Math.ceil(target.scrollTop + target.clientHeight) >= target.scrollHeight
                           const fadeElement = target.parentElement?.querySelector('.scroll-fade') as HTMLElement
-                          if (fadeElement) {
-                            fadeElement.style.opacity = isScrollable && !isAtBottom ? '1' : '0'
+                          if (fadeElement && isScrollable) {
+                            fadeElement.style.opacity = !isAtBottom ? '1' : '0'
                           }
                         }}
                         style={{
