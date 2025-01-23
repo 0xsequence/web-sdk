@@ -81,6 +81,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const collectionBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC721' || b.contractType === 'ERC1155') || []
+    
   const collectionBalances = collectionBalancesUnordered.sort((a, b) => {
     return Number(b.balance) - Number(a.balance)
   })
@@ -90,16 +91,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
-  let indexedCollectionBalances: IndexedData[] = collectionBalances.map((balance, index) => ({
-    index,
-    name: balance.contractInfo?.name || 'Unknown'
-  }))
-
-  for (let i = 0; i < 10; i++) {
-    indexedCollectionBalances = indexedCollectionBalances.concat(indexedCollectionBalances)
-  }
-
-  let indexedCoinBalances: IndexedData[] = coinBalances.map((balance, index) => {
+  const indexedCoinBalances: IndexedData[] = coinBalances.map((balance, index) => {
     if (compareAddress(balance.contractAddress, ethers.ZeroAddress)) {
       const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
@@ -115,9 +107,10 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     }
   })
 
-  for (let i = 0; i < 10; i++) {
-    indexedCoinBalances = indexedCoinBalances.concat(indexedCoinBalances)
-  }
+  const indexedCollectionBalances: IndexedData[] = collectionBalances.map((balance, index) => ({
+    index,
+    name: balance.contractInfo?.name || 'Unknown'
+  }))
 
   const [initCoinBalances, setInitCoinBalances] = useState(false)
   const [initCollectionBalances, setInitCollectionBalances] = useState(false)
@@ -131,7 +124,12 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   useEffect(() => {
     if (search !== '') {
-      setDisplayedSearchCoinBalances(fuzzySearchCoinBalances.search(search).map(result => result.item).slice(0, renderSize))
+      setDisplayedSearchCoinBalances(
+        fuzzySearchCoinBalances
+          .search(search)
+          .map(result => result.item)
+          .slice(0, renderSize)
+      )
     }
   }, [search])
 
@@ -144,7 +142,12 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   useEffect(() => {
     if (search !== '') {
-      setDisplayedSearchCollectionBalances(fuzzySearchCollections.search(search).map(result => result.item).slice(0, renderSize))
+      setDisplayedSearchCollectionBalances(
+        fuzzySearchCollections
+          .search(search)
+          .map(result => result.item)
+          .slice(0, renderSize)
+      )
     }
   }, [search])
 
@@ -193,20 +196,6 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const fuzzySearchCollections = new Fuse(indexedCollectionBalances, {
     keys: ['name']
   })
-
-  // const foundCoinBalances =
-  //   search === ''
-  //     ? displayedCoinBalances
-  //     : fuzzySearchCoinBalances
-  //         .search(search)
-  //         .map(result => result.item)
-          
-  // const foundCollectionBalances =
-  //   search === ''
-  //     ? displayedCollectionBalances
-  //     : fuzzySearchCollections
-  //         .search(search)
-  //         .map(result => result.item)
 
   return (
     <Box paddingX="4" paddingBottom="5" paddingTop="3" flexDirection="column" gap="5" alignItems="center" justifyContent="center">
