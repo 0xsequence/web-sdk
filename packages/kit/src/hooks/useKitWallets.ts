@@ -1,5 +1,10 @@
 import { type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
 
+import { ExtendedConnector } from '../types'
+
+import { useLinkedWallets } from './data'
+import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
+
 export interface KitWallet {
   id: string
   name: string
@@ -13,6 +18,34 @@ export const useKitWallets = () => {
   const connections = useConnections()
   const { connectAsync } = useConnect()
   const { disconnectAsync } = useDisconnect()
+
+  const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
+
+  const {
+    message: linkedWalletsMessage,
+    signature: linkedWalletsSignature,
+    address: linkedWalletsWaasAddress,
+    chainId: linkedWalletsSigChainId,
+    loading: linkedWalletsSignatureLoading
+  } = useWaasGetLinkedWalletsSignature(waasConnection?.connector)
+
+  // Only fetch linked wallets for embedded wallets
+  const { data: linkedWallets } = useLinkedWallets(
+    {
+      parentWalletAddress: linkedWalletsWaasAddress || '',
+      parentWalletMessage: linkedWalletsMessage || '',
+      parentWalletSignature: linkedWalletsSignature || '',
+      signatureChainId: `${linkedWalletsSigChainId}`
+    },
+    {
+      enabled:
+        waasConnection !== undefined &&
+        !!address &&
+        !!linkedWalletsMessage &&
+        !!linkedWalletsSignature &&
+        !linkedWalletsSignatureLoading
+    }
+  )
 
   const wallets: KitWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
     id: connection.connector.id,
@@ -46,6 +79,7 @@ export const useKitWallets = () => {
 
   return {
     wallets,
+    linkedWallets,
     setActiveWallet,
     disconnectWallet
   }

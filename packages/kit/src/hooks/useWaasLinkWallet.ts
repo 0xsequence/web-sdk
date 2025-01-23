@@ -2,10 +2,9 @@ import { SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 import { Connector } from 'wagmi'
 
-import { useAPIClient } from './useAPIClient'
+import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
 
-// Chain doesn't matter for linking, we can just hardcode a common one
-const CHAIN_ID_FOR_SIGNATURE = 137
+import { useAPIClient } from './useAPIClient'
 
 interface LinkWalletParams {
   signatureChainId: number
