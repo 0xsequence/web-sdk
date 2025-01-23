@@ -218,8 +218,8 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
               <TabsHeader
                 value={selectedTab}
                 tabs={[
-                  { label: `Collections (${collectionBalancesAmount})`, value: 'collections' },
-                  { label: `Coins (${coinBalancesAmount})`, value: 'coins' }
+                  { label: `Coins (${coinBalancesAmount})`, value: 'coins' },
+                  { label: `Collections (${collectionBalancesAmount})`, value: 'collections' }
                 ]}
               />
             )}
