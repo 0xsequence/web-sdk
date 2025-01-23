@@ -16,7 +16,8 @@ import {
   Tooltip
 } from '@0xsequence/design-system'
 import { useQueryClient } from '@tanstack/react-query'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
@@ -36,6 +37,7 @@ import { PoweredBySequence } from '../SequenceLogo'
 import { Banner } from './Banner'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
+import { WalletListItem } from './WalletListItem'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -147,10 +149,40 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
       return true
     })
-
   const mockConnector = baseWalletConnectors.find(connector => {
     return connector._wallet.id === 'mock'
   })
+
+  const allWallets = useMemo(() => {
+    // Get read-only linked wallets that aren't connected
+    const readOnlyLinkedWallets = (linkedWallets ?? [])
+      .filter(lw => !sortedWallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase()))
+      .map(lw => ({
+        id: lw.linkedWalletAddress,
+        name: lw.walletType || 'Linked Wallet',
+        address: lw.linkedWalletAddress,
+        isEmbedded: false,
+        isActive: false,
+        isLinked: true,
+        isReadOnly: true,
+        onDisconnect: () => {} // No-op for read-only wallets
+      }))
+
+    // Map connected wallets
+    const connectedWallets = sortedWallets.map(wallet => ({
+      id: wallet.id,
+      name: wallet.name,
+      address: wallet.address,
+      isEmbedded: wallet.isEmbedded,
+      isActive: wallet.isActive,
+      isLinked: linkedWallets?.some(lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()) ?? false,
+      isReadOnly: false,
+      onDisconnect: () => disconnectWallet(wallet.address)
+    }))
+
+    // Combine all wallets
+    return [...connectedWallets, ...readOnlyLinkedWallets]
+  }, [sortedWallets, linkedWallets, disconnectWallet])
 
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = connectors
@@ -353,86 +385,18 @@ export const Connect = (props: ConnectWalletContentProps) => {
                           borderRadius: '8px'
                         }}
                       >
-                        {sortedWallets.map(wallet => {
-                          const isLinked = linkedWallets?.some(
-                            lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()
-                          )
-                          return (
-                            <Box
-                              key={wallet.id}
-                              padding="2"
-                              borderRadius="md"
-                              background="backgroundSecondary"
-                              display="flex"
-                              flexDirection="row"
-                              alignItems="center"
-                              justifyContent="space-between"
-                            >
-                              <Box display="flex" flexDirection="row" alignItems="center" gap="2">
-                                <Box borderColor="text50" background={wallet.isActive ? 'text100' : 'transparent'} />
-                                <Box flexDirection="column" gap="1">
-                                  <Box display="flex" flexDirection="row" alignItems="center" gap="1">
-                                    <Text variant="normal" color="text100">
-                                      {wallet.isEmbedded ? 'Embedded - ' : ''}
-                                      {wallet.name}
-                                    </Text>
-                                    {isLinked && (
-                                      <Tooltip message="Linked">
-                                        <Box position="relative">
-                                          <LinkIcon size="xs" color="text50" />
-                                        </Box>
-                                      </Tooltip>
-                                    )}
-                                  </Box>
-                                  <Text variant="normal" fontWeight="bold" color="text100">
-                                    {truncateAddress(wallet.address, 8, 5)}
-                                  </Text>
-                                </Box>
-                              </Box>
-                              <IconButton size="xs" icon={CloseIcon} onClick={() => disconnectWallet(wallet.address)} />
-                            </Box>
-                          )
-                        })}
-
-                        {/* Show read-only linked wallets that aren't connected */}
-                        {linkedWallets
-                          ?.filter(
-                            lw => !sortedWallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase())
-                          )
-                          .map(lw => (
-                            <Box
-                              key={lw.linkedWalletAddress}
-                              padding="2"
-                              borderRadius="md"
-                              background="backgroundSecondary"
-                              display="flex"
-                              flexDirection="row"
-                              alignItems="center"
-                              justifyContent="space-between"
-                            >
-                              <Box display="flex" flexDirection="row" alignItems="center" gap="2">
-                                <Box borderColor="text50" background="transparent" />
-                                <Box flexDirection="column" gap="1">
-                                  <Box display="flex" flexDirection="row" alignItems="center" gap="1">
-                                    <Text variant="normal" color="text100">
-                                      {lw.walletType || 'Linked Wallet'}
-                                    </Text>
-                                    <Tooltip message="Linked">
-                                      <Box position="relative">
-                                        <LinkIcon size="xs" color="text50" />
-                                      </Box>
-                                    </Tooltip>
-                                    <Text variant="small" color="text50">
-                                      (read-only)
-                                    </Text>
-                                  </Box>
-                                  <Text variant="normal" fontWeight="bold" color="text100">
-                                    {truncateAddress(lw.linkedWalletAddress, 8, 5)}
-                                  </Text>
-                                </Box>
-                              </Box>
-                            </Box>
-                          ))}
+                        {allWallets.map(wallet => (
+                          <WalletListItem
+                            key={wallet.id}
+                            name={wallet.name}
+                            address={wallet.address}
+                            isEmbedded={wallet.isEmbedded}
+                            isActive={wallet.isActive}
+                            isLinked={wallet.isLinked}
+                            isReadOnly={wallet.isReadOnly}
+                            onDisconnect={wallet.onDisconnect}
+                          />
+                        ))}
                       </Box>
                       <Box
                         position="absolute"
