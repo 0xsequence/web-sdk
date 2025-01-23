@@ -1,4 +1,5 @@
 import { DEBUG } from '@0xsequence/kit'
+import { SequenceAPIClient } from '@0xsequence/api'
 import { ChainId, networks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 
