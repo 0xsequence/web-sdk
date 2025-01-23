@@ -1,7 +1,7 @@
 import { Box, CloseIcon, IconButton, LinkIcon, Text, Tooltip, truncateAddress } from '@0xsequence/design-system'
 import React from 'react'
 
-interface WalletListItemProps {
+export interface WalletListItemProps {
   name: string
   address: string
   isEmbedded: boolean

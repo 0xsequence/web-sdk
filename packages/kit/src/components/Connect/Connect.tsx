@@ -35,6 +35,7 @@ import { KitConnectProviderProps } from '../KitProvider/KitProvider'
 import { PoweredBySequence } from '../SequenceLogo'
 
 import { Banner } from './Banner'
+import { ConnectedWallets } from './ConnectedWallets'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
 import { WalletListItem } from './WalletListItem'
@@ -145,52 +146,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const mockConnector = baseWalletConnectors.find(connector => {
     return connector._wallet.id === 'mock'
   })
-
-  const allWallets = useMemo(() => {
-    // Get read-only linked wallets that aren't connected
-    const readOnlyLinkedWallets = (linkedWallets ?? [])
-      .filter(lw => !wallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase()))
-      .map(lw => ({
-        id: lw.linkedWalletAddress,
-        name: lw.walletType || 'Linked Wallet',
-        address: lw.linkedWalletAddress,
-        isEmbedded: false,
-        isActive: false,
-        isLinked: true,
-        isReadOnly: true,
-        onDisconnect: () => {} // No-op for read-only wallets
-      }))
-
-    // Map and sort connected wallets
-    const connectedWallets = wallets.map(wallet => ({
-      id: wallet.id,
-      name: wallet.name,
-      address: wallet.address,
-      isEmbedded: wallet.isEmbedded,
-      isActive: wallet.isActive,
-      isLinked: linkedWallets?.some(lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()) ?? false,
-      isReadOnly: false,
-      onDisconnect: () => disconnectWallet(wallet.address)
-    }))
-
-    // Sort wallets: embedded first, then by name and address
-    const sortedConnectedWallets = [...connectedWallets].sort((a, b) => {
-      if (a.isEmbedded && !b.isEmbedded) return -1
-      if (!a.isEmbedded && b.isEmbedded) return 1
-      return (
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) || a.address.toLowerCase().localeCompare(b.address.toLowerCase())
-      )
-    })
-
-    // Sort read-only linked wallets by name and address
-    const sortedReadOnlyWallets = [...readOnlyLinkedWallets].sort(
-      (a, b) =>
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) || a.address.toLowerCase().localeCompare(b.address.toLowerCase())
-    )
-
-    // Combine all wallets
-    return [...sortedConnectedWallets, ...sortedReadOnlyWallets]
-  }, [wallets, linkedWallets])
 
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = connectors
@@ -358,122 +313,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
               <Banner config={config as KitConfig} />
 
               {wallets.length > 0 && !showEmailInput && (
-                <>
-                  <Box marginTop="4" flexDirection="column">
-                    <Text variant="small" color="text50" marginBottom="1">
-                      Connected wallets
-                    </Text>
-                    <Box position="relative">
-                      <Box
-                        as={motion.div}
-                        paddingY="1"
-                        gap="2"
-                        flexDirection="column"
-                        overflowY="auto"
-                        onScroll={e => {
-                          const target = e.currentTarget
-                          const isScrollable = target.scrollHeight > target.clientHeight
-                          const isAtBottom = Math.ceil(target.scrollTop + target.clientHeight) >= target.scrollHeight
-                          const isAtTop = target.scrollTop === 0
-
-                          const bottomFadeElement = target.parentElement?.querySelector('.scroll-fade') as HTMLElement
-                          const topFadeElement = target.parentElement?.querySelector('.scroll-fade-top') as HTMLElement
-
-                          if (bottomFadeElement) {
-                            bottomFadeElement.style.opacity = isScrollable && !isAtBottom ? '1' : '0'
-                          }
-                          if (topFadeElement) {
-                            topFadeElement.style.opacity = isScrollable && !isAtTop ? '1' : '0'
-                          }
-                        }}
-                        style={{
-                          maxHeight: '240px',
-                          scrollbarWidth: 'none',
-                          borderRadius: '8px'
-                        }}
-                      >
-                        <AnimatePresence mode="sync">
-                          {allWallets.map((wallet, index) => (
-                            <motion.div
-                              key={wallet.id}
-                              custom={index}
-                              initial="hidden"
-                              animate="visible"
-                              exit="exit"
-                              variants={{
-                                hidden: { opacity: 0, y: 20 },
-                                visible: i => ({
-                                  opacity: 1,
-                                  y: 0,
-                                  transition: {
-                                    type: 'spring',
-                                    stiffness: 400,
-                                    damping: 30,
-                                    delay: i * 0.05
-                                  }
-                                }),
-                                exit: {
-                                  opacity: 0,
-                                  y: -20,
-                                  transition: {
-                                    duration: 0.15,
-                                    ease: 'easeInOut'
-                                  }
-                                }
-                              }}
-                            >
-                              <WalletListItem
-                                name={wallet.name}
-                                address={wallet.address}
-                                isEmbedded={wallet.isEmbedded}
-                                isActive={wallet.isActive}
-                                isLinked={wallet.isLinked}
-                                isReadOnly={wallet.isReadOnly}
-                                onDisconnect={wallet.onDisconnect}
-                              />
-                            </motion.div>
-                          ))}
-                        </AnimatePresence>
-                      </Box>
-                      <Box
-                        position="absolute"
-                        top="0"
-                        left="0"
-                        right="0"
-                        className="scroll-fade-top"
-                        style={{
-                          height: '30px',
-                          background: 'linear-gradient(to top, rgba(0, 0, 0, 0), var(--seq-colors-background-primary))',
-                          pointerEvents: 'none',
-                          opacity: 0,
-                          transition: 'opacity 0.2s'
-                        }}
-                      />
-                      <Box
-                        position="absolute"
-                        bottom="0"
-                        left="0"
-                        right="0"
-                        className="scroll-fade"
-                        style={{
-                          height: '40px',
-                          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--seq-colors-background-primary))',
-                          pointerEvents: 'none',
-                          opacity: 1,
-                          transition: 'opacity 0.2s'
-                        }}
-                      />
-                    </Box>
-
-                    <Divider color="backgroundRaised" width="full" />
-
-                    <Box justifyContent="center">
-                      <Text variant="small" color="text50">
-                        Connect another wallet
-                      </Text>
-                    </Box>
-                  </Box>
-                </>
+                <ConnectedWallets wallets={wallets} linkedWallets={linkedWallets} disconnectWallet={disconnectWallet} />
               )}
 
               <Box marginTop="2">
