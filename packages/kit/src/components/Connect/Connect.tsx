@@ -66,13 +66,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { signMessageAsync } = useSignMessage()
   const { wallets, linkedWallets, setActiveWallet, disconnectWallet } = useKitWallets()
 
-  // Sort wallets to show embedded wallet first
-  const sortedWallets = [...wallets].sort((a, b) => {
-    if (a.isEmbedded && !b.isEmbedded) return -1
-    if (!a.isEmbedded && b.isEmbedded) return 1
-    return 0
-  })
-
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
   const hasConnectedSocialWallet = connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social')
@@ -156,7 +149,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const allWallets = useMemo(() => {
     // Get read-only linked wallets that aren't connected
     const readOnlyLinkedWallets = (linkedWallets ?? [])
-      .filter(lw => !sortedWallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase()))
+      .filter(lw => !wallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase()))
       .map(lw => ({
         id: lw.linkedWalletAddress,
         name: lw.walletType || 'Linked Wallet',
@@ -168,8 +161,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
         onDisconnect: () => {} // No-op for read-only wallets
       }))
 
-    // Map connected wallets
-    const connectedWallets = sortedWallets.map(wallet => ({
+    // Map and sort connected wallets
+    const connectedWallets = wallets.map(wallet => ({
       id: wallet.id,
       name: wallet.name,
       address: wallet.address,
@@ -180,9 +173,24 @@ export const Connect = (props: ConnectWalletContentProps) => {
       onDisconnect: () => disconnectWallet(wallet.address)
     }))
 
+    // Sort wallets: embedded first, then by name and address
+    const sortedConnectedWallets = [...connectedWallets].sort((a, b) => {
+      if (a.isEmbedded && !b.isEmbedded) return -1
+      if (!a.isEmbedded && b.isEmbedded) return 1
+      return (
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) || a.address.toLowerCase().localeCompare(b.address.toLowerCase())
+      )
+    })
+
+    // Sort read-only linked wallets by name and address
+    const sortedReadOnlyWallets = [...readOnlyLinkedWallets].sort(
+      (a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) || a.address.toLowerCase().localeCompare(b.address.toLowerCase())
+    )
+
     // Combine all wallets
-    return [...connectedWallets, ...readOnlyLinkedWallets]
-  }, [sortedWallets, linkedWallets, disconnectWallet])
+    return [...sortedConnectedWallets, ...sortedReadOnlyWallets]
+  }, [wallets, linkedWallets])
 
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = connectors
@@ -349,7 +357,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
             <>
               <Banner config={config as KitConfig} />
 
-              {sortedWallets.length > 0 && !showEmailInput && (
+              {wallets.length > 0 && !showEmailInput && (
                 <>
                   <Box marginTop="4" flexDirection="column">
                     <Text variant="small" color="text50" marginBottom="1">
@@ -384,7 +392,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                           borderRadius: '8px'
                         }}
                       >
-                        <AnimatePresence mode="wait">
+                        <AnimatePresence mode="sync">
                           {allWallets.map((wallet, index) => (
                             <motion.div
                               key={wallet.id}
@@ -516,7 +524,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
                 {walletConnectors.length > 0 && !showEmailInput && (
                   <>
-                    {socialAuthConnectors.length > 0 && !hasConnectedSocialWallet && sortedWallets.length === 0 && (
+                    {socialAuthConnectors.length > 0 && !hasConnectedSocialWallet && wallets.length === 0 && (
                       <>
                         <Divider color="backgroundSecondary" />
                         <Box justifyContent="center" alignItems="center">
