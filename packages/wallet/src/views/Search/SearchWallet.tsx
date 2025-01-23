@@ -60,7 +60,7 @@ export const SearchWallet = () => {
           balance: a,
           prices: coinPrices,
           conversionRate,
-          decimals: b.contractInfo?.decimals || 18
+          decimals: a.contractInfo?.decimals || 18
         })
       )
     return isHigherFiat

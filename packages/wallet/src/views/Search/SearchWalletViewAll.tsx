@@ -1,4 +1,4 @@
-import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
+import { Box, SearchIcon, Skeleton, Spinner, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
@@ -8,16 +8,22 @@ import {
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { compareAddress, computeBalanceFiat } from '../../utils'
 
-import { BalanceItem } from './components/BalanceItem'
+import CoinsTab from './components/CoinsTab'
+import CollectionsTab from './components/CollectionsTab'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
+}
+
+export interface IndexedData {
+  index: number
+  name: string
 }
 
 export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) => {
@@ -26,9 +32,12 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const [search, setSearch] = useState('')
   const [selectedTab, setSelectedTab] = useState(defaultTab)
 
-  useEffect(() => {
-    setSearch('')
-  }, [selectedTab])
+  const renderSize = 20
+  const [displayedCoinBalances, setDisplayedCoinBalances] = useState<IndexedData[]>([])
+  const [displayedCollectionBalances, setDisplayedCollectionBalances] = useState<IndexedData[]>([])
+
+  const [displayedSearchCoinBalances, setDisplayedSearchCoinBalances] = useState<IndexedData[]>([])
+  const [displayedSearchCollectionBalances, setDisplayedSearchCollectionBalances] = useState<IndexedData[]>([])
 
   const { address: accountAddress } = useAccount()
 
@@ -55,24 +64,19 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
-    const isHigherFiat =
-      Number(
-        computeBalanceFiat({
-          balance: b,
-          prices: coinPrices,
-          conversionRate,
-          decimals: b.contractInfo?.decimals || 18
-        })
-      ) -
-      Number(
-        computeBalanceFiat({
-          balance: a,
-          prices: coinPrices,
-          conversionRate,
-          decimals: a.contractInfo?.decimals || 18
-        })
-      )
-    return isHigherFiat
+    const fiatA = computeBalanceFiat({
+      balance: a,
+      prices: coinPrices,
+      conversionRate,
+      decimals: a.contractInfo?.decimals || 18
+    })
+    const fiatB = computeBalanceFiat({
+      balance: b,
+      prices: coinPrices,
+      conversionRate,
+      decimals: b.contractInfo?.decimals || 18
+    })
+    return Number(fiatB) - Number(fiatA)
   })
 
   const collectionBalancesUnordered =
@@ -85,18 +89,17 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const collectionBalancesAmount = collectionBalances.length
 
   const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
-  interface IndexedData {
-    index: number
-    name: string
-  }
-  const indexedCollectionBalances: IndexedData[] = collectionBalances.map((balance, index) => {
-    return {
-      index,
-      name: balance.contractInfo?.name || 'Unknown'
-    }
-  })
 
-  const indexedCoinBalances: IndexedData[] = coinBalances.map((balance, index) => {
+  let indexedCollectionBalances: IndexedData[] = collectionBalances.map((balance, index) => ({
+    index,
+    name: balance.contractInfo?.name || 'Unknown'
+  }))
+
+  for (let i = 0; i < 10; i++) {
+    indexedCollectionBalances = indexedCollectionBalances.concat(indexedCollectionBalances)
+  }
+
+  let indexedCoinBalances: IndexedData[] = coinBalances.map((balance, index) => {
     if (compareAddress(balance.contractAddress, ethers.ZeroAddress)) {
       const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
@@ -112,6 +115,77 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     }
   })
 
+  for (let i = 0; i < 10; i++) {
+    indexedCoinBalances = indexedCoinBalances.concat(indexedCoinBalances)
+  }
+
+  const [initCoinBalances, setInitCoinBalances] = useState(false)
+  const [initCollectionBalances, setInitCollectionBalances] = useState(false)
+
+  useEffect(() => {
+    if (!initCoinBalances && indexedCoinBalances.length > 0) {
+      setDisplayedCoinBalances(indexedCoinBalances.slice(0, renderSize))
+      setInitCoinBalances(true)
+    }
+  }, [indexedCoinBalances])
+
+  useEffect(() => {
+    if (search !== '') {
+      setDisplayedSearchCoinBalances(fuzzySearchCoinBalances.search(search).map(result => result.item).slice(0, renderSize))
+    }
+  }, [search])
+
+  useEffect(() => {
+    if (!initCollectionBalances && indexedCollectionBalances.length > 0) {
+      setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, renderSize))
+      setInitCollectionBalances(true)
+    }
+  }, [indexedCollectionBalances])
+
+  useEffect(() => {
+    if (search !== '') {
+      setDisplayedSearchCollectionBalances(fuzzySearchCollections.search(search).map(result => result.item).slice(0, renderSize))
+    }
+  }, [search])
+
+  const fetchMoreCoinBalances = () => {
+    if (displayedCoinBalances.length >= indexedCoinBalances.length) {
+      return
+    }
+    setDisplayedCoinBalances(indexedCoinBalances.slice(0, displayedCoinBalances.length + renderSize))
+  }
+
+  const fetchMoreCollectionBalances = () => {
+    if (displayedCollectionBalances.length >= indexedCollectionBalances.length) {
+      return
+    }
+    setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, displayedCollectionBalances.length + renderSize))
+  }
+
+  const fetchMoreSearchCoinBalances = () => {
+    if (displayedSearchCoinBalances.length >= fuzzySearchCoinBalances.search(search).length) {
+      return
+    }
+    setDisplayedSearchCoinBalances(
+      fuzzySearchCoinBalances
+        .search(search)
+        .map(result => result.item)
+        .slice(0, displayedSearchCoinBalances.length + renderSize)
+    )
+  }
+
+  const fetchMoreSearchCollectionBalances = () => {
+    if (displayedSearchCollectionBalances.length >= fuzzySearchCollections.search(search).length) {
+      return
+    }
+    setDisplayedSearchCollectionBalances(
+      fuzzySearchCollections
+        .search(search)
+        .map(result => result.item)
+        .slice(0, displayedSearchCollectionBalances.length + renderSize)
+    )
+  }
+
   const fuzzySearchCoinBalances = new Fuse(indexedCoinBalances, {
     keys: ['name']
   })
@@ -120,26 +194,19 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     keys: ['name']
   })
 
-  const foundCoinBalances =
-    search === '' ? indexedCoinBalances : fuzzySearchCoinBalances.search(search).map(result => result.item)
-  const foundCollectionBalances =
-    search === '' ? indexedCollectionBalances : fuzzySearchCollections.search(search).map(result => result.item)
-
-  const TabsHeaderSkeleton = () => {
-    return <Skeleton style={{ width: '360px', height: '48px' }} />
-  }
-
-  const ItemsSkeletons = () => {
-    return (
-      <>
-        {Array(8)
-          .fill(null)
-          .map((_, i) => (
-            <Skeleton key={i} width="full" height="8" />
-          ))}
-      </>
-    )
-  }
+  // const foundCoinBalances =
+  //   search === ''
+  //     ? displayedCoinBalances
+  //     : fuzzySearchCoinBalances
+  //         .search(search)
+  //         .map(result => result.item)
+          
+  // const foundCollectionBalances =
+  //   search === ''
+  //     ? displayedCollectionBalances
+  //     : fuzzySearchCollections
+  //         .search(search)
+  //         .map(result => result.item)
 
   return (
     <Box paddingX="4" paddingBottom="5" paddingTop="3" flexDirection="column" gap="5" alignItems="center" justifyContent="center">
@@ -167,33 +234,29 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
                 ]}
               />
             )}
-            {isPending && <TabsHeaderSkeleton />}
+            {isPending && <Skeleton style={{ width: '360px', height: '48px' }} />}
           </Box>
 
           <TabsContent value="collections">
-            <Box flexDirection="column" gap="3">
-              {isPending && <ItemsSkeletons />}
-              {!isPending && foundCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
-              {!isPending &&
-                foundCollectionBalances.length > 0 &&
-                foundCollectionBalances.map((indexItem, index) => {
-                  const collectionBalance = collectionBalances[indexItem.index]
-                  return <BalanceItem key={index} balance={collectionBalance} />
-                })}
-            </Box>
+            <CollectionsTab
+              displayedCollectionBalances={search ? displayedSearchCollectionBalances : displayedCollectionBalances}
+              fetchMoreCollectionBalances={fetchMoreCollectionBalances}
+              fetchMoreSearchCollectionBalances={fetchMoreSearchCollectionBalances}
+              isSearching={search !== ''}
+              isPending={isPending}
+              collectionBalances={collectionBalances}
+            />
           </TabsContent>
 
           <TabsContent value="coins">
-            <Box flexDirection="column" gap="3">
-              {isPending && <ItemsSkeletons />}
-              {!isPending && coinBalances.length == 0 && <Text color="text100">No Coins Found</Text>}
-              {!isPending &&
-                foundCoinBalances.length > 0 &&
-                foundCoinBalances.map((indexedItem, index) => {
-                  const coinBalance = coinBalances[indexedItem.index]
-                  return <BalanceItem key={index} balance={coinBalance} />
-                })}
-            </Box>
+            <CoinsTab
+              displayedCoinBalances={search ? displayedSearchCoinBalances : displayedCoinBalances}
+              fetchMoreCoinBalances={fetchMoreCoinBalances}
+              fetchMoreSearchCoinBalances={fetchMoreSearchCoinBalances}
+              isSearching={search !== ''}
+              isPending={isPending}
+              coinBalances={coinBalances}
+            />
           </TabsContent>
         </TabsRoot>
       </Box>
