@@ -1,4 +1,5 @@
 import { Box, Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system'
+import { WalletListItem } from './WalletListItem'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -32,7 +33,7 @@ import {
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
-import { delay, getCheckoutSettings, getOrderbookCalldata, truncateAtMiddle } from '../utils'
+import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -512,37 +513,16 @@ export const Connected = () => {
                 Connected Wallets
               </Text>
               {wallets.map(wallet => (
-                <Box
+                <WalletListItem
                   key={wallet.id}
-                  padding="2"
-                  borderRadius="md"
-                  background={wallet.isActive ? 'backgroundRaised' : 'backgroundMuted'}
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    alignItems="center"
-                    gap="2"
-                    onClick={() => setActiveWallet(wallet.address)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <Box borderColor="text50" background={wallet.isActive ? 'text100' : 'transparent'} />
-                    <Box flexDirection="column" gap="1">
-                      <Text variant="normal" color="text100">
-                        {wallet.isEmbedded ? 'Embedded - ' : ''}
-                        {wallet.name}
-                      </Text>
-                      <Text variant="normal" fontWeight="bold" color="text100">
-                        {truncateAtMiddle(wallet.address, 10)}
-                      </Text>
-                    </Box>
-                  </Box>
-                  <Button variant="text" size="sm" label="Disconnect" onClick={() => disconnectWallet(wallet.address)} />
-                </Box>
+                  id={wallet.id}
+                  name={wallet.name}
+                  address={wallet.address}
+                  isActive={wallet.isActive}
+                  isEmbedded={wallet.isEmbedded}
+                  onSelect={() => setActiveWallet(wallet.address)}
+                  onDisconnect={() => disconnectWallet(wallet.address)}
+                />
               ))}
             </Box>
 
