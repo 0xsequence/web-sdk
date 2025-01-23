@@ -322,95 +322,122 @@ export const Connect = (props: ConnectWalletContentProps) => {
                     <Text variant="small" color="text50" marginBottom="1">
                       Connected wallets
                     </Text>
-                    <Box
-                      paddingY="1"
-                      gap="2"
-                      flexDirection="column"
-                      overflowY="auto"
-                      style={{
-                        maxHeight: '240px',
-                        scrollbarWidth: 'none',
-                        borderRadius: '8px'
-                      }}
-                    >
-                      {sortedWallets.map(wallet => {
-                        const isLinked = linkedWallets?.some(
-                          lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()
-                        )
-                        return (
-                          <Box
-                            key={wallet.id}
-                            padding="2"
-                            borderRadius="md"
-                            background="backgroundSecondary"
-                            display="flex"
-                            flexDirection="row"
-                            alignItems="center"
-                            justifyContent="space-between"
-                          >
-                            <Box display="flex" flexDirection="row" alignItems="center" gap="2">
-                              <Box borderColor="text50" background={wallet.isActive ? 'text100' : 'transparent'} />
-                              <Box flexDirection="column" gap="1">
-                                <Box display="flex" flexDirection="row" alignItems="center" gap="1">
-                                  <Text variant="normal" color="text100">
-                                    {wallet.isEmbedded ? 'Embedded - ' : ''}
-                                    {wallet.name}
+                    <Box position="relative">
+                      <Box
+                        paddingY="1"
+                        gap="2"
+                        flexDirection="column"
+                        overflowY="auto"
+                        onScroll={e => {
+                          const target = e.currentTarget
+                          const isScrollable = target.scrollHeight > target.clientHeight
+                          const isAtBottom = Math.ceil(target.scrollTop + target.clientHeight) >= target.scrollHeight
+                          const fadeElement = target.parentElement?.querySelector('.scroll-fade') as HTMLElement
+                          if (fadeElement) {
+                            fadeElement.style.opacity = isScrollable && !isAtBottom ? '1' : '0'
+                          }
+                        }}
+                        style={{
+                          maxHeight: '240px',
+                          scrollbarWidth: 'none',
+                          borderRadius: '8px'
+                        }}
+                      >
+                        {sortedWallets.map(wallet => {
+                          const isLinked = linkedWallets?.some(
+                            lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()
+                          )
+                          return (
+                            <Box
+                              key={wallet.id}
+                              padding="2"
+                              borderRadius="md"
+                              background="backgroundSecondary"
+                              display="flex"
+                              flexDirection="row"
+                              alignItems="center"
+                              justifyContent="space-between"
+                            >
+                              <Box display="flex" flexDirection="row" alignItems="center" gap="2">
+                                <Box borderColor="text50" background={wallet.isActive ? 'text100' : 'transparent'} />
+                                <Box flexDirection="column" gap="1">
+                                  <Box display="flex" flexDirection="row" alignItems="center" gap="1">
+                                    <Text variant="normal" color="text100">
+                                      {wallet.isEmbedded ? 'Embedded - ' : ''}
+                                      {wallet.name}
+                                    </Text>
+                                    {isLinked && (
+                                      <Tooltip message="Linked">
+                                        <Box position="relative">
+                                          <LinkIcon size="xs" color="text50" />
+                                        </Box>
+                                      </Tooltip>
+                                    )}
+                                  </Box>
+                                  <Text variant="normal" fontWeight="bold" color="text100">
+                                    {truncateAddress(wallet.address, 8, 5)}
                                   </Text>
-                                  {isLinked && (
+                                </Box>
+                              </Box>
+                              <IconButton size="xs" icon={CloseIcon} onClick={() => disconnectWallet(wallet.address)} />
+                            </Box>
+                          )
+                        })}
+
+                        {/* Show read-only linked wallets that aren't connected */}
+                        {linkedWallets
+                          ?.filter(
+                            lw => !sortedWallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase())
+                          )
+                          .map(lw => (
+                            <Box
+                              key={lw.linkedWalletAddress}
+                              padding="2"
+                              borderRadius="md"
+                              background="backgroundSecondary"
+                              display="flex"
+                              flexDirection="row"
+                              alignItems="center"
+                              justifyContent="space-between"
+                            >
+                              <Box display="flex" flexDirection="row" alignItems="center" gap="2">
+                                <Box borderColor="text50" background="transparent" />
+                                <Box flexDirection="column" gap="1">
+                                  <Box display="flex" flexDirection="row" alignItems="center" gap="1">
+                                    <Text variant="normal" color="text100">
+                                      {lw.walletType || 'Linked Wallet'}
+                                    </Text>
                                     <Tooltip message="Linked">
                                       <Box position="relative">
                                         <LinkIcon size="xs" color="text50" />
                                       </Box>
                                     </Tooltip>
-                                  )}
-                                </Box>
-                                <Text variant="normal" fontWeight="bold" color="text100">
-                                  {truncateAddress(wallet.address, 8, 5)}
-                                </Text>
-                              </Box>
-                            </Box>
-                            <IconButton size="xs" icon={CloseIcon} onClick={() => disconnectWallet(wallet.address)} />
-                          </Box>
-                        )
-                      })}
-
-                      {/* Show read-only linked wallets that aren't connected */}
-                      {linkedWallets
-                        ?.filter(lw => !sortedWallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase()))
-                        .map(lw => (
-                          <Box
-                            key={lw.linkedWalletAddress}
-                            padding="2"
-                            borderRadius="md"
-                            background="backgroundSecondary"
-                            display="flex"
-                            flexDirection="row"
-                            alignItems="center"
-                            justifyContent="space-between"
-                          >
-                            <Box display="flex" flexDirection="row" alignItems="center" gap="2">
-                              <Box borderColor="text50" background="transparent" />
-                              <Box flexDirection="column" gap="1">
-                                <Box display="flex" flexDirection="row" alignItems="center" gap="1">
-                                  <Text variant="normal" color="text100">
-                                    {lw.walletType || 'Linked Wallet'}
-                                  </Text>
-                                  <Tooltip message="Linked">
-                                    <Box position="relative">
-                                      <LinkIcon size="xs" color="text50" />
-                                    </Box>
-                                  </Tooltip>
-                                  <Text variant="small" color="text50">
-                                    (read-only)
+                                    <Text variant="small" color="text50">
+                                      (read-only)
+                                    </Text>
+                                  </Box>
+                                  <Text variant="normal" fontWeight="bold" color="text100">
+                                    {truncateAddress(lw.linkedWalletAddress, 8, 5)}
                                   </Text>
                                 </Box>
-                                <Text variant="normal" fontWeight="bold" color="text100">
-                                  {truncateAddress(lw.linkedWalletAddress, 8, 5)}
-                                </Text>
                               </Box>
                             </Box>
-                          </Box>
-                        ))}
+                          ))}
+                      </Box>
+                      <Box
+                        position="absolute"
+                        bottom="0"
+                        left="0"
+                        right="0"
+                        className="scroll-fade"
+                        style={{
+                          height: '40px',
+                          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--seq-colors-background-primary))',
+                          pointerEvents: 'none',
+                          opacity: 1,
+                          transition: 'opacity 0.2s'
+                        }}
+                      />
                     </Box>
 
                     <Divider color="backgroundRaised" width="full" />
