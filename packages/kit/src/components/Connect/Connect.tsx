@@ -357,26 +357,25 @@ export const Connect = (props: ConnectWalletContentProps) => {
                     </Text>
                     <Box position="relative">
                       <Box
+                        as={motion.div}
                         paddingY="1"
                         gap="2"
                         flexDirection="column"
                         overflowY="auto"
-                        ref={el => {
-                          if (el) {
-                            const isScrollable = el.scrollHeight > el.clientHeight
-                            const fadeElement = el.parentElement?.querySelector('.scroll-fade') as HTMLElement
-                            if (fadeElement) {
-                              fadeElement.style.opacity = isScrollable ? '1' : '0'
-                            }
-                          }
-                        }}
                         onScroll={e => {
                           const target = e.currentTarget
                           const isScrollable = target.scrollHeight > target.clientHeight
                           const isAtBottom = Math.ceil(target.scrollTop + target.clientHeight) >= target.scrollHeight
-                          const fadeElement = target.parentElement?.querySelector('.scroll-fade') as HTMLElement
-                          if (fadeElement && isScrollable) {
-                            fadeElement.style.opacity = !isAtBottom ? '1' : '0'
+                          const isAtTop = target.scrollTop === 0
+
+                          const bottomFadeElement = target.parentElement?.querySelector('.scroll-fade') as HTMLElement
+                          const topFadeElement = target.parentElement?.querySelector('.scroll-fade-top') as HTMLElement
+
+                          if (bottomFadeElement) {
+                            bottomFadeElement.style.opacity = isScrollable && !isAtBottom ? '1' : '0'
+                          }
+                          if (topFadeElement) {
+                            topFadeElement.style.opacity = isScrollable && !isAtTop ? '1' : '0'
                           }
                         }}
                         style={{
@@ -385,19 +384,63 @@ export const Connect = (props: ConnectWalletContentProps) => {
                           borderRadius: '8px'
                         }}
                       >
-                        {allWallets.map(wallet => (
-                          <WalletListItem
-                            key={wallet.id}
-                            name={wallet.name}
-                            address={wallet.address}
-                            isEmbedded={wallet.isEmbedded}
-                            isActive={wallet.isActive}
-                            isLinked={wallet.isLinked}
-                            isReadOnly={wallet.isReadOnly}
-                            onDisconnect={wallet.onDisconnect}
-                          />
-                        ))}
+                        <AnimatePresence mode="wait">
+                          {allWallets.map((wallet, index) => (
+                            <motion.div
+                              key={wallet.id}
+                              custom={index}
+                              initial="hidden"
+                              animate="visible"
+                              exit="exit"
+                              variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: i => ({
+                                  opacity: 1,
+                                  y: 0,
+                                  transition: {
+                                    type: 'spring',
+                                    stiffness: 400,
+                                    damping: 30,
+                                    delay: i * 0.05
+                                  }
+                                }),
+                                exit: {
+                                  opacity: 0,
+                                  y: -20,
+                                  transition: {
+                                    duration: 0.15,
+                                    ease: 'easeInOut'
+                                  }
+                                }
+                              }}
+                            >
+                              <WalletListItem
+                                name={wallet.name}
+                                address={wallet.address}
+                                isEmbedded={wallet.isEmbedded}
+                                isActive={wallet.isActive}
+                                isLinked={wallet.isLinked}
+                                isReadOnly={wallet.isReadOnly}
+                                onDisconnect={wallet.onDisconnect}
+                              />
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
                       </Box>
+                      <Box
+                        position="absolute"
+                        top="0"
+                        left="0"
+                        right="0"
+                        className="scroll-fade-top"
+                        style={{
+                          height: '30px',
+                          background: 'linear-gradient(to top, rgba(0, 0, 0, 0), var(--seq-colors-background-primary))',
+                          pointerEvents: 'none',
+                          opacity: 0,
+                          transition: 'opacity 0.2s'
+                        }}
+                      />
                       <Box
                         position="absolute"
                         bottom="0"
