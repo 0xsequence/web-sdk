@@ -119,8 +119,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
           childSignature
         })
 
-        // invalidate linked wallets cache
-        queryClient.invalidateQueries({ queryKey: ['linked-wallets'] })
+        await queryClient.invalidateQueries({
+          queryKey: ['linkedWallets']
+        })
       }
 
       setLastConnectedWallet(undefined)
