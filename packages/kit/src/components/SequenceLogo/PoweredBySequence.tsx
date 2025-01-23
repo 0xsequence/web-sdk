@@ -5,6 +5,7 @@ import { SequenceLogo } from './SequenceLogo'
 export const PoweredBySequence = () => {
   return (
     <Box
+      className="powered-by-sequence-footer"
       position="relative"
       onClick={() => {
         if (typeof window !== 'undefined') {
