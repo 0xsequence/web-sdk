@@ -71,27 +71,20 @@ export const useWaasGetLinkedWalletsSignature = (
 
   const [result, setResult] = useState<UseWaasSignatureForLinkingResult>(initialState)
 
-  if (!sequenceWaas) {
-    return result
-  }
-
-  // Clear other cached signatures when account changes
   useEffect(() => {
-    if (address) {
-      // Clean up signatures from other addresses
-      Object.keys(localStorage)
-        .filter(key => key.startsWith(getSignatureKey('')) && key !== getSignatureKey(address))
-        .forEach(key => localStorage.removeItem(key))
+    if (!sequenceWaas) {
+      return
     }
-  }, [address])
-
-  // Check localStorage and generate signature if needed
-  useEffect(() => {
     if (!address) {
       return
     }
 
-    // Try to get cached signature from localStorage
+    // Clean up signatures from other addresses
+    Object.keys(localStorage)
+      .filter(key => key.startsWith(getSignatureKey('')) && key !== getSignatureKey(address))
+      .forEach(key => localStorage.removeItem(key))
+
+    // Try to get cached signature for current address
     const cached = localStorage.getItem(getSignatureKey(address))
     if (cached) {
       try {
@@ -118,6 +111,7 @@ export const useWaasGetLinkedWalletsSignature = (
       }
     }
 
+    // Generate new signature if no valid cached one exists
     const getSignature = async () => {
       try {
         setResult(prev => ({ ...prev, loading: true, error: null }))

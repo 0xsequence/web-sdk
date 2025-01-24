@@ -43,8 +43,6 @@ export const useKitWallets = () => {
     }
   )
 
-  console.log('linked wallets', linkedWallets)
-
   const wallets: KitWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
     id: connection.connector.id,
     name: (connection.connector._wallet as any)?.name ?? connection.connector.name,

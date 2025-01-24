@@ -78,7 +78,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
       return
     }
     const tryLinkWallet = async () => {
-      console.log('linked wallets', linkedWallets)
       const nonWaasWallets = connections.filter(c => (c.connector as ExtendedConnector)?.type !== 'sequence-waas')
 
       const nonLinkedWallets = nonWaasWallets.filter(
@@ -110,7 +109,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
           childSignature
         })
 
-        await queryClient?.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ['linkedWallets', waasWalletAddress]
         })
       }
