@@ -2,6 +2,7 @@
 
 import { SequenceWaaS } from '@0xsequence/waas'
 import { useState, useEffect } from 'react'
+import { Address } from 'viem'
 import { Connector } from 'wagmi'
 
 interface UseWaasSignatureForLinkingResult {
@@ -18,39 +19,61 @@ const CHAIN_ID_FOR_SIGNATURE = 137
 
 const getSignatureKey = (address: string) => `waas-signature-${address}`
 
-export const useWaasGetLinkedWalletsSignature = (connector: Connector | undefined): UseWaasSignatureForLinkingResult => {
-  const [result, setResult] = useState<UseWaasSignatureForLinkingResult>({
-    message: undefined,
-    signature: undefined,
-    address: undefined,
-    chainId: CHAIN_ID_FOR_SIGNATURE,
-    loading: false,
-    error: null
-  })
+export const useWaasGetLinkedWalletsSignature = (
+  connection:
+    | {
+        accounts: readonly [Address, ...Address[]]
+        chainId: number
+        connector: Connector
+      }
+    | undefined
+): UseWaasSignatureForLinkingResult => {
+  const sequenceWaas: SequenceWaaS | undefined = (connection as any)?.connector?.sequenceWaas
+  const address = connection?.accounts[0]
 
-  const sequenceWaas: SequenceWaaS | undefined = (connector as any)?.sequenceWaas
+  // Try to get cached signature during initial state setup
+  const initialState = (): UseWaasSignatureForLinkingResult => {
+    if (address) {
+      const cached = localStorage.getItem(getSignatureKey(address))
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached)
+          const timestamp = parsed.timestamp || 0
+          const age = Date.now() - timestamp
+          const MAX_AGE = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
 
-  const [address, setAddress] = useState<string | undefined>(undefined)
-
-  // Fetch address
-  useEffect(() => {
-    if (!connector && !sequenceWaas) {
-      setAddress(undefined)
-      return
-    }
-
-    const fetchAddress = async () => {
-      try {
-        const newAddress = await sequenceWaas?.getAddress()
-        setAddress(newAddress)
-      } catch (error) {
-        console.error('Failed to fetch WaaS address:', error)
-        setAddress(undefined)
+          if (age < MAX_AGE) {
+            return {
+              message: parsed.message,
+              signature: parsed.signature,
+              address: parsed.address,
+              chainId: CHAIN_ID_FOR_SIGNATURE,
+              loading: false,
+              error: null
+            }
+          }
+          localStorage.removeItem(getSignatureKey(address))
+        } catch (e) {
+          localStorage.removeItem(getSignatureKey(address))
+        }
       }
     }
 
-    fetchAddress()
-  }, [connector])
+    return {
+      message: undefined,
+      signature: undefined,
+      address: address,
+      chainId: CHAIN_ID_FOR_SIGNATURE,
+      loading: false,
+      error: null
+    }
+  }
+
+  const [result, setResult] = useState<UseWaasSignatureForLinkingResult>(initialState)
+
+  if (!sequenceWaas) {
+    return result
+  }
 
   // Clear other cached signatures when account changes
   useEffect(() => {
@@ -64,7 +87,7 @@ export const useWaasGetLinkedWalletsSignature = (connector: Connector | undefine
 
   // Check localStorage and generate signature if needed
   useEffect(() => {
-    if (!connector || !address) {
+    if (!address) {
       return
     }
 

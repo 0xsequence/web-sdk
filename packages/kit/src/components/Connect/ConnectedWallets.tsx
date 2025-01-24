@@ -23,8 +23,6 @@ export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: C
     const isAtBottom = target.scrollHeight - target.scrollTop <= MAX_HEIGHT
     const isAtTop = target.scrollTop === 0
 
-    console.log('isScrollable', isScrollable)
-
     const bottomFadeElement = target.parentElement?.querySelector('.scroll-fade') as HTMLElement
     const topFadeElement = target.parentElement?.querySelector('.scroll-fade-top') as HTMLElement
 
@@ -116,17 +114,17 @@ export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: C
           style={{
             maxHeight: `${MAX_HEIGHT}px`,
             scrollbarWidth: 'none',
-            borderRadius: '8px'
+            borderRadius: '8px',
+            position: 'relative'
           }}
         >
-          <AnimatePresence mode="sync">
+          <AnimatePresence mode="popLayout" initial={false}>
             {allWallets.map((wallet, index) => (
               <motion.div
                 key={wallet.address}
                 custom={index}
                 initial="hidden"
                 animate="visible"
-                exit="exit"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: (i: number) => ({
@@ -136,18 +134,11 @@ export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: C
                       type: 'spring',
                       stiffness: 400,
                       damping: 30,
-                      delay: i * 0.05
+                      delay: i * 0.1
                     }
-                  }),
-                  exit: {
-                    opacity: 0,
-                    y: -20,
-                    transition: {
-                      duration: 0.15,
-                      ease: 'easeInOut'
-                    }
-                  }
+                  })
                 }}
+                style={{ willChange: 'transform, opacity', transformOrigin: 'center' }}
               >
                 <WalletListItem {...wallet} />
               </motion.div>

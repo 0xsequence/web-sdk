@@ -9,15 +9,10 @@ import {
   Spinner,
   Image,
   IconButton,
-  ModalPrimitive,
-  truncateAddress,
-  CloseIcon,
-  LinkIcon,
-  Tooltip
+  ModalPrimitive
 } from '@0xsequence/design-system'
 import { useQueryClient } from '@tanstack/react-query'
-import React, { useState, useEffect, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
@@ -65,7 +60,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { status, connectors, connect } = useConnect()
   const connections = useConnections()
   const { signMessageAsync } = useSignMessage()
-  const { wallets, linkedWallets, setActiveWallet, disconnectWallet } = useKitWallets()
+  const { wallets, linkedWallets, disconnectWallet } = useKitWallets()
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
@@ -85,7 +80,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
     const tryLinkWallet = async () => {
       console.log('linked wallets', linkedWallets)
       const nonWaasWallets = connections.filter(c => (c.connector as ExtendedConnector)?.type !== 'sequence-waas')
-      console.log('nonWaasWallets', nonWaasWallets)
+
       const nonLinkedWallets = nonWaasWallets.filter(
         c => !linkedWallets?.find(lw => lw.linkedWalletAddress === c.accounts[0].toLowerCase())
       )
@@ -115,8 +110,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
           childSignature
         })
 
-        await queryClient.invalidateQueries({
-          queryKey: ['linkedWallets']
+        await queryClient?.invalidateQueries({
+          queryKey: ['linkedWallets', waasWalletAddress]
         })
       }
 

@@ -25,11 +25,12 @@ export const useKitWallets = () => {
     message: linkedWalletsMessage,
     signature: linkedWalletsSignature,
     address: linkedWalletsWaasAddress,
-    chainId: linkedWalletsSigChainId,
-    loading: linkedWalletsSignatureLoading
-  } = useWaasGetLinkedWalletsSignature(waasConnection?.connector)
+    chainId: linkedWalletsSigChainId
+  } = useWaasGetLinkedWalletsSignature(waasConnection)
 
-  // Only fetch linked wallets for embedded wallets
+  // Only fetch if we have valid data
+  const hasValidData = !!(linkedWalletsWaasAddress && linkedWalletsMessage && linkedWalletsSignature)
+
   const { data: linkedWallets } = useLinkedWallets(
     {
       parentWalletAddress: linkedWalletsWaasAddress || '',
@@ -38,14 +39,11 @@ export const useKitWallets = () => {
       signatureChainId: `${linkedWalletsSigChainId}`
     },
     {
-      enabled:
-        waasConnection !== undefined &&
-        !!address &&
-        !!linkedWalletsMessage &&
-        !!linkedWalletsSignature &&
-        !linkedWalletsSignatureLoading
+      enabled: hasValidData
     }
   )
+
+  console.log('linked wallets', linkedWallets)
 
   const wallets: KitWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
     id: connection.connector.id,

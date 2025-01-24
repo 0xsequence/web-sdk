@@ -11,7 +11,7 @@ import {
 } from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
 import { zeroAddress } from 'viem'
 
 import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
@@ -701,28 +701,69 @@ export const useSwapQuote = (args: GetSwapQuoteArgs, options: UseSwapQuoteOption
   })
 }
 
+interface UseLinkedWalletsOptions {
+  enabled?: boolean
+}
+
+// Create a cache map for linked wallets promises with timestamp
+interface CacheEntry {
+  promise: Promise<LinkedWallet[]>
+  timestamp: number
+}
+
+const apiCache = new Map<string, CacheEntry>()
+
+// Create a stable cache key from args
+const createCacheKey = (args: GetLinkedWalletsArgs): string => `${args.parentWalletAddress}-${args.signatureChainId}`
+
 const getLinkedWallets = async (
   apiClient: SequenceAPIClient,
   args: GetLinkedWalletsArgs,
   headers?: object,
   signal?: AbortSignal
 ): Promise<Array<LinkedWallet>> => {
-  const res = await apiClient.getLinkedWallets(args, headers, signal)
-  return res.linkedWallets
-}
+  console.log(args, args)
 
-interface UseLinkedWalletsOptions {
-  enabled?: boolean
+  const cacheKey = createCacheKey(args)
+  const now = Date.now()
+
+  console.log('cacheKey', cacheKey)
+  console.log('apiCache', apiCache.has(cacheKey))
+
+  // Get cached entry if it exists and is not expired
+  const cached = apiCache.get(cacheKey)
+  if (cached && now - cached.timestamp <= 5 * 60 * 1000) {
+    return cached.promise
+  }
+
+  // Clear expired entries
+  for (const [key, entry] of apiCache.entries()) {
+    if (now - entry.timestamp > 5 * 60 * 1000) {
+      apiCache.delete(key)
+    }
+  }
+
+  const promise = apiClient
+    .getLinkedWallets(args, headers, signal)
+    .then(res => res.linkedWallets)
+    .catch(error => {
+      apiCache.delete(cacheKey)
+      throw error
+    })
+
+  apiCache.set(cacheKey, { promise, timestamp: now })
+  return promise
 }
 
 export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}) => {
   const apiClient = useAPIClient()
+  const queryClient = useQueryClient()
 
   return useQuery({
     queryKey: ['linkedWallets', args],
-    queryFn: () => getLinkedWallets(apiClient, args),
+    queryFn: ({ signal }) => getLinkedWallets(apiClient, args, undefined, signal),
     retry: true,
     staleTime: time.oneMinute * 5,
-    enabled: options.enabled ?? !!args // Use provided enabled option or fallback to checking args
+    enabled: options.enabled ?? !!args
   })
 }
