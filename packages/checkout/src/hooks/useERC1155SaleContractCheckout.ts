@@ -89,6 +89,7 @@ export const useERC1155SaleContractCheckout = ({
       enableMainCurrencyPayment: true,
       enableSwapPayments: checkoutOptions?.options?.swap?.includes(TransactionSwapProvider.zerox) || false,
       creditCardProviders: checkoutOptions?.options.nftCheckout || [],
+      onRampProvider: checkoutOptions?.options.onRamp?.[0],
       ...restArgs
     })
   }

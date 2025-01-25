@@ -469,7 +469,8 @@ export const Connected = () => {
 
   const onClickAddFunds = () => {
     triggerAddFunds({
-      walletAddress: address || ''
+      walletAddress: address || '',
+      provider: 'sardine'
     })
   }
 
