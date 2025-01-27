@@ -1,4 +1,4 @@
-import { Box, SearchIcon, Skeleton, Spinner, TabsContent, TabsHeader, TabsRoot, Text, TextInput } from '@0xsequence/design-system'
+import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
@@ -39,8 +39,14 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const [displayedSearchCoinBalances, setDisplayedSearchCoinBalances] = useState<IndexedData[]>([])
   const [displayedSearchCollectionBalances, setDisplayedSearchCollectionBalances] = useState<IndexedData[]>([])
 
-  const [initCoinBalancesFlag, setInitCoinBalancesFlag] = useState(false)
-  const [initCollectionBalancesFlag, setInitCollectionBalancesFlag] = useState(false)
+  const [initCoinsFlag, setInitCoinsFlag] = useState(false)
+  const [initCollectionsFlag, setInitCollectionsFlag] = useState(false)
+
+  const [hasMoreCoins, sethasMoreCoins] = useState(false)
+  const [hasMoreCollections, sethasMoreCollections] = useState(false)
+
+  const [hasMoreSearchCoins, sethasMoreSearchCoins] = useState(false)
+  const [hasMoreSearchCollections, sethasMoreSearchCollections] = useState(false)
 
   const { address: accountAddress } = useAccount()
 
@@ -116,11 +122,20 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   }))
 
   useEffect(() => {
-    if (!initCoinBalancesFlag && indexedCoinBalances.length > 0) {
+    if (!initCoinsFlag && indexedCoinBalances.length > 0) {
       setDisplayedCoinBalances(indexedCoinBalances.slice(0, pageSize))
-      setInitCoinBalancesFlag(true)
+      sethasMoreCoins(indexedCoinBalances.length > pageSize)
+      setInitCoinsFlag(true)
     }
-  }, [indexedCoinBalances])
+  }, [initCoinsFlag])
+
+  useEffect(() => {
+    if (!initCollectionsFlag && indexedCollectionBalances.length > 0) {
+      setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, pageSize))
+      sethasMoreCollections(indexedCollectionBalances.length > pageSize)
+      setInitCollectionsFlag(true)
+    }
+  }, [initCollectionsFlag])
 
   useEffect(() => {
     if (search !== '') {
@@ -130,15 +145,9 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
           .map(result => result.item)
           .slice(0, pageSize)
       )
+      sethasMoreSearchCoins(fuzzySearchCoinBalances.search(search).length > pageSize)
     }
   }, [search])
-
-  useEffect(() => {
-    if (!initCollectionBalancesFlag && indexedCollectionBalances.length > 0) {
-      setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, pageSize))
-      setInitCollectionBalancesFlag(true)
-    }
-  }, [indexedCollectionBalances])
 
   useEffect(() => {
     if (search !== '') {
@@ -148,11 +157,13 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
           .map(result => result.item)
           .slice(0, pageSize)
       )
+      sethasMoreSearchCollections(fuzzySearchCollections.search(search).length > pageSize)
     }
   }, [search])
 
   const fetchMoreCoinBalances = () => {
     if (displayedCoinBalances.length >= indexedCoinBalances.length) {
+      sethasMoreCoins(false)
       return
     }
     setDisplayedCoinBalances(indexedCoinBalances.slice(0, displayedCoinBalances.length + pageSize))
@@ -160,6 +171,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const fetchMoreCollectionBalances = () => {
     if (displayedCollectionBalances.length >= indexedCollectionBalances.length) {
+      sethasMoreCollections(false)
       return
     }
     setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, displayedCollectionBalances.length + pageSize))
@@ -167,6 +179,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const fetchMoreSearchCoinBalances = () => {
     if (displayedSearchCoinBalances.length >= fuzzySearchCoinBalances.search(search).length) {
+      sethasMoreSearchCoins(false)
       return
     }
     setDisplayedSearchCoinBalances(
@@ -179,6 +192,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const fetchMoreSearchCollectionBalances = () => {
     if (displayedSearchCollectionBalances.length >= fuzzySearchCollections.search(search).length) {
+      sethasMoreSearchCollections(false)
       return
     }
     setDisplayedSearchCollectionBalances(
@@ -231,6 +245,8 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
               displayedCollectionBalances={search ? displayedSearchCollectionBalances : displayedCollectionBalances}
               fetchMoreCollectionBalances={fetchMoreCollectionBalances}
               fetchMoreSearchCollectionBalances={fetchMoreSearchCollectionBalances}
+              hasMoreCollections={hasMoreCollections}
+              hasMoreSearchCollections={hasMoreSearchCollections}
               isSearching={search !== ''}
               isPending={isPending}
               collectionBalances={collectionBalances}
@@ -242,6 +258,8 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
               displayedCoinBalances={search ? displayedSearchCoinBalances : displayedCoinBalances}
               fetchMoreCoinBalances={fetchMoreCoinBalances}
               fetchMoreSearchCoinBalances={fetchMoreSearchCoinBalances}
+              hasMoreCoins={hasMoreCoins}
+              hasMoreSearchCoins={hasMoreSearchCoins}
               isSearching={search !== ''}
               isPending={isPending}
               coinBalances={coinBalances}

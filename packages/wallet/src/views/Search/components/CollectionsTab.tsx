@@ -9,6 +9,8 @@ interface CollectionsTabProps {
   displayedCollectionBalances: IndexedData[]
   fetchMoreCollectionBalances: () => void
   fetchMoreSearchCollectionBalances: () => void
+  hasMoreCollections: boolean
+  hasMoreSearchCollections: boolean
   isSearching: boolean
   isPending: boolean
   collectionBalances: TokenBalance[]
@@ -18,6 +20,8 @@ const CollectionsTab: React.FC<CollectionsTabProps> = ({
   displayedCollectionBalances,
   fetchMoreCollectionBalances,
   fetchMoreSearchCollectionBalances,
+  hasMoreCollections,
+  hasMoreSearchCollections,
   isSearching,
   isPending,
   collectionBalances
@@ -31,19 +35,21 @@ const CollectionsTab: React.FC<CollectionsTabProps> = ({
 
     const observer = new IntersectionObserver(entries => {
       const endOfPage = entries[0]
-      if (endOfPage.isIntersecting) {
+      if (!endOfPage.isIntersecting) return
+      if (isSearching && hasMoreSearchCollections) {
         setIsLoading(true)
         setTimeout(() => {
-          if (isSearching) {
-            fetchMoreSearchCollectionBalances()
-          } else {
-            fetchMoreCollectionBalances()
-          }
+          fetchMoreSearchCollectionBalances()
+          setIsLoading(false)
+        }, 500)
+      } else if (!isSearching && hasMoreCollections) {
+        setIsLoading(true)
+        setTimeout(() => {
+          fetchMoreCollectionBalances()
           setIsLoading(false)
         }, 500)
       }
     })
-
     observer.observe(endOfPageRefCollections.current)
 
     return () => {

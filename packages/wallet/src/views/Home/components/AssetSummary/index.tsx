@@ -4,7 +4,6 @@ import { useWalletSettings } from '@0xsequence/kit'
 import { useAccount } from 'wagmi'
 
 import { useBalancesAssetsSummary, useNavigation, useSettings } from '../../../../hooks'
-import { sortBalancesByType } from '../../../../utils'
 
 import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
@@ -18,7 +17,6 @@ export const AssetSummary = () => {
   const { hideUnlistedTokens, hideCollectibles, selectedNetworks } = useSettings()
 
   const pageSize = 10
-  const [initTokensFlag, setInitTokensFlag] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [displayedTokens, setDisplayedTokens] = useState<TokenBalance[]>([])
   const [hasMoreTokens, setHasMoreTokens] = useState(false)
@@ -63,12 +61,12 @@ export const AssetSummary = () => {
   })
 
   useEffect(() => {
-    if (!initTokensFlag && balances.length > 0) {
+    if (!isPendingBalances && balances.length > 0) {
       setDisplayedTokens(balances.slice(0, pageSize))
       setHasMoreTokens(balances.length > pageSize)
-      setInitTokensFlag(true)
     }
-  }, [balances])
+    // only runs once after balances are fetched
+  }, [balances, isPendingBalances])
 
   if (isPendingBalances) {
     return <SkeletonTiles />

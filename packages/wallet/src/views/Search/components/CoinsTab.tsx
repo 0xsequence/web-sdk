@@ -9,6 +9,8 @@ interface CoinsTabProps {
   displayedCoinBalances: IndexedData[]
   fetchMoreCoinBalances: () => void
   fetchMoreSearchCoinBalances: () => void
+  hasMoreCoins: boolean
+  hasMoreSearchCoins: boolean
   isSearching: boolean
   isPending: boolean
   coinBalances: TokenBalance[]
@@ -18,6 +20,8 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
   displayedCoinBalances,
   fetchMoreCoinBalances,
   fetchMoreSearchCoinBalances,
+  hasMoreCoins,
+  hasMoreSearchCoins,
   isSearching,
   isPending,
   coinBalances
@@ -31,14 +35,17 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
 
     const observer = new IntersectionObserver(entries => {
       const endOfPage = entries[0]
-      if (endOfPage.isIntersecting) {
+      if (!endOfPage.isIntersecting) return
+      if (isSearching && hasMoreSearchCoins) {
         setIsLoading(true)
         setTimeout(() => {
-          if (isSearching) {
-            fetchMoreSearchCoinBalances()
-          } else {
-            fetchMoreCoinBalances()
-          }
+          fetchMoreSearchCoinBalances()
+          setIsLoading(false)
+        }, 500)
+      } else if (!isSearching && hasMoreCoins) {
+        setIsLoading(true)
+        setTimeout(() => {
+          fetchMoreCoinBalances()
           setIsLoading(false)
         }, 500)
       }
