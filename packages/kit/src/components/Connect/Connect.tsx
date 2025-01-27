@@ -303,7 +303,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                           onChange={onChangeEmail}
                           value={email}
                           name="email"
-                          placeholder="Enter email"
+                          placeholder="Email address"
                           controls={
                             <>
                               {emailAuthInProgress ? (

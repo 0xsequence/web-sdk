@@ -38,7 +38,6 @@ export const ConnectButton = (props: ConnectButtonProps) => {
         <Card
           gap="1"
           clickable
-          borderRadius="xs"
           justifyContent="center"
           alignItems="center"
           onClick={() => onConnect(connector)}
@@ -58,7 +57,6 @@ export const ConnectButton = (props: ConnectButtonProps) => {
     <Tooltip message={label || walletProps.name}>
       <Card
         clickable
-        borderRadius="xs"
         justifyContent="center"
         alignItems="center"
         onClick={() => onConnect(connector)}
@@ -82,7 +80,6 @@ export const ShowAllWalletsButton = ({ onClick }: ShowAllWalletsButtonProps) => 
     <Tooltip message="Show more">
       <Card
         clickable
-        borderRadius="xs"
         justifyContent="center"
         alignItems="center"
         onClick={onClick}
@@ -118,7 +115,6 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
       return (
         <Box
           gap="1"
-          borderRadius="xs"
           justifyContent="center"
           alignItems="center"
           background="backgroundSecondary"
@@ -141,7 +137,6 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
     return (
       <Box
         background="backgroundSecondary"
-        borderRadius="xs"
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -164,7 +159,6 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
       <Card
         clickable
         background="transparent"
-        borderRadius="xs"
         padding="0"
         width="full"
         position="relative"
@@ -176,7 +170,6 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
           flexDirection="row"
           height="full"
           overflow="hidden"
-          borderRadius="sm"
           alignItems="center"
           justifyContent="center"
           style={{
