@@ -1,3 +1,5 @@
+'use client'
+
 import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
 import {
   ContractType,
