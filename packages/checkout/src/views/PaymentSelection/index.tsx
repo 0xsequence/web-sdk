@@ -12,20 +12,19 @@ import {
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, Hex, zeroAddress } from 'viem'
+import { encodeFunctionData, Hex, zeroAddress } from 'viem'
+import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
+
+import { HEADER_HEIGHT } from '../../constants'
+import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
+import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
+import { NavigationHeader } from '../../shared/components/NavigationHeader'
 
 import { Footer } from './Footer'
 import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
-
-import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
-
-import { HEADER_HEIGHT } from '../../constants'
-import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 
 export const PaymentSelection = () => {
   return (
@@ -89,11 +88,11 @@ export const PaymentSelectionContent = () => {
     address: currencyAddress as Hex,
     args: [userAddress, targetContractAddress],
     query: {
-      enabled: !!userAddress
+      enabled: !!userAddress && !isNativeToken
     }
   })
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
+  const { data: _currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
@@ -105,12 +104,12 @@ export const PaymentSelectionContent = () => {
     omitMetadata: true
   })
 
-  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+  const { data: _currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
 
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
+  const { data: swapPrices = [], isLoading: _swapPricesIsLoading } = useSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -137,15 +136,14 @@ export const PaymentSelectionContent = () => {
     }
   )
 
-  const isLoading = allowanceIsLoading || currencyBalanceIsLoading || isLoadingCurrencyInfo
+  const isLoading = (allowanceIsLoading && !isNativeToken) || currencyBalanceIsLoading || isLoadingCurrencyInfo
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
-  const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
-
-  const balance: bigint = BigInt(balanceInfo?.balance || '0')
-  let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
-  balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
+  // const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
+  // const balance: bigint = BigInt(balanceInfo?.balance || '0')
+  // let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
+  // balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
 
   useEffect(() => {
     clearCachedBalances()

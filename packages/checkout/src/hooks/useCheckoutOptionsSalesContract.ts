@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
 import { CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
+import { useQuery } from '@tanstack/react-query'
+
 import { useMarketplaceClient } from './useMarketplaceClient'
 
 export interface UseGenerateBuyTransactionOptions {

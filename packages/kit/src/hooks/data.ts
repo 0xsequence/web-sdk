@@ -1,23 +1,25 @@
 import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs } from '@0xsequence/api'
-import { ContractType, Page, SequenceIndexer, TokenBalance } from '@0xsequence/indexer'
-import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
-import { findSupportedNetwork } from '@0xsequence/network'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { zeroAddress } from 'viem'
-
-import { compareAddress } from '../utils/helpers'
-import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
-
-import { useAPIClient } from './useAPIClient'
-import { useIndexerClient, useIndexerClients } from './useIndexerClient'
-import { useMetadataClient } from './useMetadataClient'
-
 import {
+  ContractType,
+  Page,
+  SequenceIndexer,
+  TokenBalance,
   ContractVerificationStatus,
   GetTokenBalancesSummaryArgs,
   GetTokenBalancesDetailsArgs,
   GetTokenBalancesByContractArgs
 } from '@0xsequence/indexer'
+import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
+import { findSupportedNetwork } from '@0xsequence/network'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { zeroAddress } from 'viem'
+
+import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
+import { compareAddress } from '../utils/helpers'
+
+import { useAPIClient } from './useAPIClient'
+import { useIndexerClient, useIndexerClients } from './useIndexerClient'
+import { useMetadataClient } from './useMetadataClient'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -545,7 +547,7 @@ const getSwapPrices = async (
         const isNativeToken = compareAddress(currencyAddress, zeroAddress)
         if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
           const getNativeTokenInfo = () =>
-            new Promise<ContractInfo>((resolve, reject) => {
+            new Promise<ContractInfo>(resolve => {
               resolve({
                 ...network?.nativeToken,
                 logoURI: network?.logoURI || '',

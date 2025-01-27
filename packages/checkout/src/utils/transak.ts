@@ -1,3 +1,5 @@
+import { DEBUG } from '@0xsequence/kit'
+
 import { AddFundsSettings } from '../contexts'
 
 export const TRANSAK_API_KEY = '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
@@ -15,8 +17,8 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
     [index: string]: string | undefined
   }
 
-  const url = new URL(process.env.DEBUG ? TransakUrlSandbox : TransakUrlProd)
-  const apiKey = process.env.DEBUG ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY
+  const url = new URL(DEBUG ? TransakUrlSandbox : TransakUrlProd)
+  const apiKey = DEBUG ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY
 
   const options: Options = {
     apiKey: apiKey,

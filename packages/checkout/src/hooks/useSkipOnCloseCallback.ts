@@ -1,4 +1,4 @@
-import { useEffect, useRef, MutableRefObject } from 'react'
+import { useEffect, useRef } from 'react'
 
 interface UseSkipOnCloseCallbackReturn {
   skipOnCloseCallback: () => void

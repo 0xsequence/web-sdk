@@ -1,14 +1,13 @@
-import { CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
+import { CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { TransactionSwapProvider, TransactionNFTCheckoutProvider } from '@0xsequence/marketplace'
+import { Abi, Hex } from 'viem'
+import { useReadContract, useReadContracts } from 'wagmi'
 
-import { useERC1155SaleContractPaymentModal } from './useSelectPaymentModal'
-import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi'
 import { SelectPaymentSettings } from '../contexts/SelectPaymentModal'
 
-import { Abi, Hex, padBytes } from 'viem'
-import { useReadContract, useReadContracts } from 'wagmi'
+import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
+import { useERC1155SaleContractPaymentModal } from './useSelectPaymentModal'
 
 type BasePaymentModalSettings = Pick<
   SelectPaymentSettings,

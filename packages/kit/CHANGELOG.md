@@ -1,5 +1,17 @@
 # @0xsequence/kit
 
+## 4.5.8
+
+### Patch Changes
+
+- Fixing process.env inclusion
+
+## 4.5.7
+
+### Patch Changes
+
+- QR code improvement for NFT checkout
+
 ## 4.5.6
 
 ### Patch Changes

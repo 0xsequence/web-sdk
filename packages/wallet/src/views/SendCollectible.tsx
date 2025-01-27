@@ -68,7 +68,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
   const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
   const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalanceDetails({
     filter: {

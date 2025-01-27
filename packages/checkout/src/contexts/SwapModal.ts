@@ -1,8 +1,8 @@
 'use client'
 
-import { createGenericContext } from './genericContext'
-
 import { Hex } from 'viem'
+
+import { createGenericContext } from './genericContext'
 
 interface Transaction {
   to: Hex

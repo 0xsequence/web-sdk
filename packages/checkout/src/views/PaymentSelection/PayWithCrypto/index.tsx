@@ -92,8 +92,8 @@ export const PayWithCrypto = ({
   const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
 
   const balance: bigint = BigInt(balanceInfo?.balance || '0')
-  let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
-  balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
+  // let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
+  // balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
 
   const isNotEnoughFunds: boolean = BigInt(price) > balance
 
