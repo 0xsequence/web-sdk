@@ -22,7 +22,7 @@ export const kitConfig: KitConfig = {
   signIn: {
     projectName: 'Kit Demo',
     useMock: isDebugMode
-  }
+  },
   displayedAssets: [
     // Native token
     {
