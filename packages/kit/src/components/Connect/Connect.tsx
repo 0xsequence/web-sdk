@@ -11,7 +11,6 @@ import {
   IconButton,
   ModalPrimitive
 } from '@0xsequence/design-system'
-import { useQueryClient } from '@tanstack/react-query'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
@@ -33,7 +32,6 @@ import { Banner } from './Banner'
 import { ConnectedWallets } from './ConnectedWallets'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
-import { WalletListItem } from './WalletListItem'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -48,8 +46,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { signIn = {} } = config
   const storage = useStorage()
 
-  const queryClient = useQueryClient()
-
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
 
@@ -60,7 +56,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { status, connectors, connect } = useConnect()
   const connections = useConnections()
   const { signMessageAsync } = useSignMessage()
-  const { wallets, linkedWallets, disconnectWallet } = useKitWallets()
+  const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useKitWallets()
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
@@ -109,9 +105,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
           childSignature
         })
 
-        await queryClient.invalidateQueries({
-          queryKey: ['linkedWallets', waasWalletAddress]
-        })
+        await refetchLinkedWallets()
       }
 
       setLastConnectedWallet(undefined)
@@ -335,7 +329,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                 ) : (
                   <>
                     {socialAuthConnectors.length > 0 && !hasConnectedSocialWallet && (
-                      <Box marginTop="2" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
+                      <Box marginTop="6" gap="2" flexDirection="row" justifyContent="center" alignItems="center" flexWrap="wrap">
                         {socialAuthConnectors.map(connector => {
                           return (
                             <Box key={connector.uid} aspectRatio="1/1" alignItems="center" justifyContent="center">

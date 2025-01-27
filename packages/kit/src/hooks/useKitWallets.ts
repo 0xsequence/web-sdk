@@ -31,7 +31,11 @@ export const useKitWallets = () => {
   // Only fetch if we have valid data
   const hasValidData = !!(linkedWalletsWaasAddress && linkedWalletsMessage && linkedWalletsSignature)
 
-  const { data: linkedWallets } = useLinkedWallets(
+  const {
+    data: linkedWallets,
+    refetch: refetchLinkedWallets,
+    clearCache: clearLinkedWalletsCache
+  } = useLinkedWallets(
     {
       parentWalletAddress: linkedWalletsWaasAddress || '',
       parentWalletMessage: linkedWalletsMessage || '',
@@ -66,6 +70,11 @@ export const useKitWallets = () => {
     const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
     if (!connection) return
 
+    // invalidate linked wallets if we're disconnecting waas wallet
+    if (connection.connector.id.includes('waas')) {
+      clearLinkedWalletsCache()
+    }
+
     try {
       await disconnectAsync({ connector: connection.connector })
     } catch (error) {
@@ -77,6 +86,7 @@ export const useKitWallets = () => {
     wallets,
     linkedWallets,
     setActiveWallet,
-    disconnectWallet
+    disconnectWallet,
+    refetchLinkedWallets
   }
 }
