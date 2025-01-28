@@ -77,7 +77,8 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
       style={{
         position: 'relative',
         pointerEvents: 'auto',
-        width: '370px',
+        width: 'calc(100vw - 30px)',
+        maxWidth: '370px',
         backdropFilter: 'blur(12.5px)',
         top: '16px',
         left: '15px',
