@@ -22,11 +22,11 @@ View the [demo](https://0xsequence.github.io/kit)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
+npm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @react-oauth/google react-apple-signin-auth
 # or
-pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
+pnpm install @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @react-oauth/google react-apple-signin-auth
 # or
-yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
+yarn add @0xsequence/kit wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query @react-oauth/google react-apple-signin-auth
 ```
 
 ### Setting up the Library
