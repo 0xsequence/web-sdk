@@ -1,6 +1,6 @@
 import { sequence } from '0xsequence'
-import { SequenceWaaS } from '@0xsequence/waas'
 import { SequenceIndexer, TransactionStatus, TransactionReceipt } from '@0xsequence/indexer'
+import { SequenceWaaS } from '@0xsequence/waas'
 import { PublicClient, WalletClient, Hex } from 'viem'
 import { Connector } from 'wagmi'
 
@@ -159,30 +159,29 @@ export const waitForTransactionReceipt = async ({
   confirmations
 }: WaitForTransactionReceiptInput): Promise<TransactionReceipt> => {
   const receiptPromise = new Promise<TransactionReceipt>(async (resolve, reject) => {
-    await indexerClient.subscribeReceipts({
-      filter: {
-        txnHash
+    await indexerClient.subscribeReceipts(
+      {
+        filter: {
+          txnHash
+        }
       },
-    }, {
-      onMessage: ({
-        receipt
-      }) => {
-        resolve(receipt)
-      },
-      onError: () => {
-        reject('Transaction receipt not found')
+      {
+        onMessage: ({ receipt }) => {
+          resolve(receipt)
+        },
+        onError: () => {
+          reject('Transaction receipt not found')
+        }
       }
-    })
+    )
   })
 
-  const receipt =  await receiptPromise
+  const receipt = await receiptPromise
 
   if (confirmations) {
     const blockConfirmationPromise = new Promise<void>((resolve, reject) => {
       const unwatch = publicClient.watchBlocks({
-        onBlock: ({
-          number: currentBlockNumber
-        }) => {
+        onBlock: ({ number: currentBlockNumber }) => {
           const confirmedBlocknumber = receipt.blockNumber + confirmations
           if (currentBlockNumber >= confirmedBlocknumber) {
             unwatch()

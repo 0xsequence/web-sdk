@@ -64,6 +64,9 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite": "^5.2.11",
-    "wagmi": "^2.13.3"
+    "wagmi": "^2.13.3",
+    "@0xsequence/metadata": ">= 2.2.4",
+    "@0xsequence/network": ">= 2.2.4",
+    "@0xsequence/indexer": ">= 2.2.4"
   }
 }
