@@ -14,9 +14,11 @@ import {
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
+  compareAddress,
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
   ExtendedConnector,
+  truncateAtMiddle,
   useExchangeRate,
   useCoinPrices,
   useBalancesSummary,
@@ -32,7 +34,7 @@ import { useNavigationContext } from '../contexts/Navigation'
 import { useSettings, useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
+import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
 
 interface SendCoinProps {
   chainId: number

@@ -1,5 +1,6 @@
 import { commons } from '@0xsequence/core'
 import { Box, Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { truncateAtMiddle } from '@0xsequence/kit'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
@@ -238,14 +239,4 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
       )}
     </Card>
   )
-}
-
-const truncateAtMiddle = (text: string, truncateAt: number) => {
-  let finalText = text
-
-  if (text.length >= truncateAt) {
-    finalText = text.slice(0, truncateAt / 2) + '...' + text.slice(text.length - truncateAt / 2, text.length)
-  }
-
-  return finalText
 }

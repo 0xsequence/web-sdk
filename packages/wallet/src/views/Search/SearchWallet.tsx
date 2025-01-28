@@ -4,7 +4,8 @@ import {
   useExchangeRate,
   useCoinPrices,
   useBalancesSummary,
-  ContractVerificationStatus
+  ContractVerificationStatus,
+  compareAddress
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
@@ -12,7 +13,7 @@ import { useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
-import { compareAddress, computeBalanceFiat } from '../../utils'
+import { computeBalanceFiat } from '../../utils'
 
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'

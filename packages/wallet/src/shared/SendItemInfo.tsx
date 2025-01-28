@@ -1,10 +1,10 @@
 import { Box, NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 
 import { useSettings } from '../hooks'
 import { CollectibleTileImage } from '../shared/CollectibleTileImage'
-import { formatDisplay } from '../utils'
 
 interface SendItemInfoProps {
   name: string

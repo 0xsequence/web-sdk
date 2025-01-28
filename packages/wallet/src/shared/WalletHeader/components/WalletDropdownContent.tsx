@@ -11,13 +11,12 @@ import {
   TransactionIcon,
   vars
 } from '@0xsequence/design-system'
-import { useTheme } from '@0xsequence/kit'
+import { formatAddress, useTheme } from '@0xsequence/kit'
 import React, { forwardRef } from 'react'
 import { useDisconnect, useAccount } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
 import { useOpenWalletModal } from '../../../hooks/useOpenWalletModal'
-import { formatAddress } from '../../../utils'
 import { CopyButton } from '../../CopyButton'
 
 interface WalletDropdownContentProps {

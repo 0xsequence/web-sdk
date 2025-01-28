@@ -174,7 +174,12 @@ export const Swap = () => {
         </Box>
       )
     } else {
-      const formattedPrice = formatDisplay(formatUnits(BigInt(currencyAmount), mainCurrencyDecimals || 0))
+      const formattedPrice = formatUnits(BigInt(currencyAmount), mainCurrencyDecimals || 0)
+      const displayPrice = formatDisplay(formattedPrice, {
+        disableScientificNotation: true,
+        disableCompactNotation: true,
+        significantDigits: 6
+      })
 
       return (
         <Box width="full" gap="3" flexDirection="column">
@@ -187,7 +192,7 @@ export const Swap = () => {
                 key={currencyAddress}
                 chainId={chainId}
                 currencyName={mainCurrencyName || mainCurrencySymbol || ''}
-                price={formattedPrice}
+                price={displayPrice}
                 iconUrl={mainCurrencyLogo}
                 symbol={mainCurrencySymbol || ''}
                 isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
@@ -201,8 +206,12 @@ export const Swap = () => {
             {swapPrices.map(swapPrice => {
               const sellCurrencyAddress = swapPrice.info?.address || ''
 
-              const formattedPrice = formatDisplay(formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 0))
-
+              const formattedPrice = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 0)
+              const displayPrice = formatDisplay(formattedPrice, {
+                disableScientificNotation: true,
+                disableCompactNotation: true,
+                significantDigits: 6
+              })
               return (
                 <CryptoOption
                   key={sellCurrencyAddress}
@@ -211,7 +220,7 @@ export const Swap = () => {
                   symbol={swapPrice.info?.symbol || ''}
                   isSelected={compareAddress(selectedCurrency || '', sellCurrencyAddress)}
                   iconUrl={swapPrice.info?.logoURI}
-                  price={formattedPrice}
+                  price={displayPrice}
                   onClick={() => {
                     setIsError(false)
                     setSelectedCurrency(sellCurrencyAddress)

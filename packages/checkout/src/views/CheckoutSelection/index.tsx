@@ -11,13 +11,19 @@ import {
   Skeleton,
   TokenImage
 } from '@0xsequence/design-system'
-import { ContractVerificationStatus, getNativeTokenInfoByChainId, useBalancesSummary, useContractInfo } from '@0xsequence/kit'
+import {
+  ContractVerificationStatus,
+  getNativeTokenInfoByChainId,
+  useBalancesSummary,
+  useContractInfo,
+  compareAddress,
+  formatDisplay
+} from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
-import { compareAddress, formatDisplay } from '../../utils'
 
 import { OrderSummaryItem } from './component/OrderSummaryItem'
 

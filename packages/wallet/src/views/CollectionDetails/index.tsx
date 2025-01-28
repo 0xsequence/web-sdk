@@ -1,12 +1,11 @@
 import { Box, Image, Text, TokenImage, vars } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import { useCollectionBalanceDetails, ContractVerificationStatus } from '@0xsequence/kit'
+import { formatDisplay, useCollectionBalanceDetails, ContractVerificationStatus } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 
 import { useNavigation } from '../../hooks'
 import { NetworkBadge } from '../../shared/NetworkBadge'
-import { formatDisplay } from '../../utils'
 
 import { CollectionDetailsSkeleton } from './Skeleton'
 
