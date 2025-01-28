@@ -438,7 +438,7 @@ export const PaymentSelectionContent = () => {
         {onRampProvider && (
           <>
             <Divider width="full" marginY="3" />
-            <FundWithFiat walletAddress={userAddress || ''} provider={onRampProvider} />
+            <FundWithFiat walletAddress={userAddress || ''} provider={onRampProvider} chainId={chainId} />
           </>
         )}
         {enableTransferFunds && (

@@ -30,7 +30,7 @@ export const AddFundsContent = () => {
 export const AddFundsContentSardine = () => {
   const { addFundsSettings } = useAddFundsModal()
 
-  const network = addFundsSettings?.networks?.[0]
+  const network = addFundsSettings?.networks?.split(',')?.[0]
   const apiClient = useAPIClient()
 
   const {
@@ -51,12 +51,6 @@ export const AddFundsContentSardine = () => {
   // Processing: Waiting for payment/deposit confirmation
   // Processed: Payment/deposit successfully processed
   // Complete: Order executed and delivered to the user
-
-  const readMessage = (data: any) => {
-    if (data.source === 'iframe') {
-      console.log('Event is', data)
-    }
-  }
 
   useEffect(() => {
     window.addEventListener('message', messageReceived)
@@ -185,7 +179,7 @@ export const AddFundsContentTransak = () => {
         paddingTop: HEADER_HEIGHT
       }}
     >
-      <Box id={IframeId} as="iframe" width="full" height="full" borderWidth="none" src={link} />
+      <Box id={IframeId} as="iframe" width="full" height="full" borderWidth="none" src={link} allow="camera;microphone;payment" />
     </Box>
   )
 }
