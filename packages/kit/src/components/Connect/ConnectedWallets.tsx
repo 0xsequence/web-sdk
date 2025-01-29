@@ -98,7 +98,7 @@ export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: C
   return (
     <Box marginTop="4" flexDirection="column">
       <Text variant="small" color="text50" marginBottom="1">
-        Connected wallets
+        Your wallets
       </Text>
       <Box position="relative">
         <Box

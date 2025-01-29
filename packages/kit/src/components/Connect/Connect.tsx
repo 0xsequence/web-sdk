@@ -68,6 +68,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const { linkWallet } = useWaasLinkWallet(waasConnection?.connector)
 
   const [lastConnectedWallet, setLastConnectedWallet] = useState<`0x${string}` | undefined>(undefined)
+  const [isSigningLinkMessage, setIsSigningLinkMessage] = useState(false)
 
   useEffect(() => {
     if (!lastConnectedWallet) {
@@ -91,23 +92,30 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
         const childMessage = `Link to parent wallet with address ${waasWalletAddress}`
 
-        const childSignature = await signMessageAsync({ account: lastConnectedWallet, message: childMessage })
+        setIsSigningLinkMessage(true)
+        let childSignature
+        try {
+          childSignature = await signMessageAsync({ account: lastConnectedWallet, message: childMessage })
 
-        if (!childSignature) {
-          return
+          if (!childSignature) {
+            return
+          }
+
+          await linkWallet({
+            signatureChainId: CHAIN_ID_FOR_SIGNATURE,
+            connectorName: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+            childWalletAddress: lastConnectedWallet,
+            childMessage,
+            childSignature
+          })
+
+          await refetchLinkedWallets()
+        } catch (e) {
+          console.log(e)
         }
-
-        await linkWallet({
-          signatureChainId: CHAIN_ID_FOR_SIGNATURE,
-          connectorName: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
-          childWalletAddress: lastConnectedWallet,
-          childMessage,
-          childSignature
-        })
-
-        await refetchLinkedWallets()
       }
 
+      setIsSigningLinkMessage(false)
       setLastConnectedWallet(undefined)
       onClose()
     }
@@ -268,6 +276,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   return (
     <Box padding="4">
       <Box
+        flexDirection="column"
         justifyContent="center"
         color="text100"
         alignItems="center"
@@ -279,8 +288,15 @@ export const Connect = (props: ConnectWalletContentProps) => {
         <TitleWrapper isPreview={isPreview}>
           <Text variant="normal">{isLoading ? `Connecting...` : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
         </TitleWrapper>
-      </Box>
 
+        {isSigningLinkMessage && (
+          <Box marginTop="4">
+            <Text variant="small" color="text50">
+              Confirm the signature request to link your account
+            </Text>
+          </Box>
+        )}
+      </Box>
       {isLoading ? (
         <Box justifyContent="center" alignItems="center" paddingTop="4">
           <Spinner />

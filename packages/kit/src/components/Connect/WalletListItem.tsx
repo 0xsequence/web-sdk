@@ -39,7 +39,7 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
               {name}
             </Text>
             {isLinked && (
-              <Tooltip message="Linked">
+              <Tooltip message="Linked to embedded wallet">
                 <Box position="relative">
                   <LinkIcon size="xs" color="text50" />
                 </Box>
