@@ -96,8 +96,8 @@ import Content from './components/Content'
 
 const config = createConfig('waas', {
   projectAccessKey: '<your-project-access-key>',
-  chainIds: [1, 137]
-  defaultChainId: 1
+  chainIds: [1, 137],
+  defaultChainId: 1,
   appName: 'Demo Dapp',
   waasConfigKey: '<your-waas-config-key>',
 
@@ -269,7 +269,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
     signIn: {
       logoUrl: 'https://logo-dark-mode.svg',
       projectName: 'my app',
-    };
+    },
     // limits the digital assets displayed on the assets summary screen
     displayedAssets: [
       {
