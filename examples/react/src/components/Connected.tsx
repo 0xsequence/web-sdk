@@ -11,11 +11,11 @@ import {
   useKitWallets
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
+import { TransactionOnRampProvider } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
-import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'

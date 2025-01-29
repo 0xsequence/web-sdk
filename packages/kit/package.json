@@ -47,6 +47,7 @@
     "@0xsequence/provider": "^2.2.13",
     "@0xsequence/utils": "^2.2.13",
     "@0xsequence/waas": "^2.2.13",
+    "@0xsequence/marketplace": ">= 2.2.4",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/design-system": "^1.9.0",
     "framer-motion": "^8.5.2",

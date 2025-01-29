@@ -209,7 +209,7 @@ export const fetchSardineOnRampLink = async ({
   fundingAmount,
   network
 } : SardineLinkOnRampArgs) => {
-  const response = await apiClient.getSardineClientToken()
+  const response = await apiClient.sardineGetClientToken()
 
   interface SardineOptions {
     client_token: string
