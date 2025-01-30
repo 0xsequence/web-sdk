@@ -32,6 +32,7 @@ import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
 
 const MAX_ITEM_PER_ROW = 4
+export const SEQUENCE_UNIVERSAL_CONNECTOR_NAME = 'Sequence'
 
 interface ConnectWalletContentProps extends KitConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
@@ -61,7 +62,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
-  const hasConnectedSocialWallet = connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social')
+  const hasConnectedSequenceUniversal = connections.some(c => c.connector.name === SEQUENCE_UNIVERSAL_CONNECTOR_NAME)
+  const hasConnectedSocialOrSequenceUniversal =
+    connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social') || hasConnectedSequenceUniversal
 
   const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
 
@@ -178,7 +181,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const socialAuthConnectors = (connectors as ExtendedConnector[])
     .filter(c => c._wallet?.type === 'social')
     .filter(c => !c._wallet.id.includes('email'))
-  const walletConnectors = [...baseWalletConnectors, ...injectedConnectors]
+  const walletConnectors = [...baseWalletConnectors, ...injectedConnectors].filter(c =>
+    hasConnectedSequenceUniversal ? c.name !== SEQUENCE_UNIVERSAL_CONNECTOR_NAME : true
+  )
   const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet.id.includes('email'))
 
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = ev => {
@@ -336,7 +341,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                 <Divider color="backgroundRaised" width="full" />
                 <Box justifyContent="center">
                   <Text variant="small" color="text50">
-                    {!hasConnectedSocialWallet ? 'Connect with a social account' : 'Connect another wallet'}
+                    {!hasConnectedSocialOrSequenceUniversal ? 'Connect with a social account' : 'Connect another wallet'}
                   </Text>
                 </Box>
               </>
@@ -346,7 +351,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
             <EmailWaasVerify error={emailAuthError} isLoading={emailAuthLoading} onConfirm={sendChallengeAnswer} />
           ) : (
             <>
-              {!hasConnectedSocialWallet && (
+              {!hasConnectedSocialOrSequenceUniversal && (
                 <>
                   <Banner config={config as KitConfig} />
 
@@ -436,7 +441,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                     flexDirection="row"
                     justifyContent="center"
                     alignItems="center"
-                    marginTop={hasConnectedSocialWallet ? '4' : '6'}
+                    marginTop={hasConnectedSocialOrSequenceUniversal ? '4' : '6'}
                   >
                     {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
                       return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />

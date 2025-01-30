@@ -22,8 +22,10 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
+      onClick={onSelect}
+      style={{ cursor: 'pointer' }}
     >
-      <Box display="flex" flexDirection="row" alignItems="center" gap="2" onClick={onSelect} style={{ cursor: 'pointer' }}>
+      <Box display="flex" flexDirection="row" alignItems="center" gap="2">
         <Box borderColor="text50" background={isActive ? 'text100' : 'transparent'} />
         <Box flexDirection="column" gap="1">
           <Text variant="normal" color="text100">

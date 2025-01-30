@@ -1,5 +1,6 @@
-import { type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
+import { Connector, type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
 
+import { SEQUENCE_UNIVERSAL_CONNECTOR_NAME } from '../components/Connect/Connect'
 import { ExtendedConnector } from '../types'
 
 import { useLinkedWallets } from './data'
@@ -47,9 +48,11 @@ export const useKitWallets = () => {
     }
   )
 
+  console.log('connections', connections)
+
   const wallets: KitWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
     id: connection.connector.id,
-    name: (connection.connector._wallet as any)?.name ?? connection.connector.name,
+    name: getConnectorName(connection.connector),
     address: connection.accounts[0],
     isActive: connection.accounts[0] === address,
     isEmbedded: connection.connector.id.includes('waas')
@@ -89,4 +92,15 @@ export const useKitWallets = () => {
     disconnectWallet,
     refetchLinkedWallets
   }
+}
+
+const getConnectorName = (connector: Connector) => {
+  const connectorName = connector.name
+  const connectorWalletName = (connector._wallet as any)?.name
+
+  if (connectorName === SEQUENCE_UNIVERSAL_CONNECTOR_NAME) {
+    return 'Sequence Universal'
+  }
+
+  return connectorWalletName ?? connectorName
 }
