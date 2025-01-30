@@ -12,7 +12,14 @@ import {
   TokenImage
 } from '@0xsequence/design-system'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
-import { getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useCollectiblePrices } from '@0xsequence/kit'
+import {
+  compareAddress,
+  formatDisplay,
+  getNativeTokenInfoByChainId,
+  useExchangeRate,
+  useCoinPrices,
+  useCollectiblePrices
+} from '@0xsequence/kit'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import React from 'react'
@@ -21,7 +28,6 @@ import { useConfig } from 'wagmi'
 import { useSettings } from '../../hooks'
 import { CopyButton } from '../../shared/CopyButton'
 import { NetworkBadge } from '../../shared/NetworkBadge'
-import { compareAddress, formatDisplay } from '../../utils'
 
 interface TransactionDetailProps {
   transaction: Transaction

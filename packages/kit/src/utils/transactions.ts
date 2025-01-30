@@ -1,5 +1,6 @@
 import { sequence } from '0xsequence'
 import { SequenceWaaS } from '@0xsequence/waas'
+import { SequenceIndexer, TransactionStatus, TransactionReceipt } from '@0xsequence/indexer'
 import { PublicClient, WalletClient, Hex } from 'viem'
 import { Connector } from 'wagmi'
 
@@ -19,6 +20,7 @@ interface SendTransactionsInput {
   walletClient: WalletClient
   connector: Connector
   transactions: Transaction[]
+  indexerClient: SequenceIndexer
   transactionConfirmations?: number
   waitConfirmationForLastTransaction?: boolean
 }
@@ -30,6 +32,7 @@ export const sendTransactions = async ({
   walletClient,
   connector,
   transactions,
+  indexerClient,
   transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitConfirmationForLastTransaction = true
 }: SendTransactionsInput): Promise<string> => {
@@ -72,10 +75,16 @@ export const sendTransactions = async ({
     const txnHash = response.data.txHash
 
     if (waitConfirmationForLastTransaction) {
-      await publicClient.waitForTransactionReceipt({
-        hash: txnHash as Hex,
+      const { txnStatus } = await waitForTransactionReceipt({
+        indexerClient,
+        txnHash: txnHash as Hex,
+        publicClient,
         confirmations: transactionConfirmations
       })
+
+      if (txnStatus === TransactionStatus.FAILED) {
+        throw new Error('Transaction failed')
+      }
     }
 
     return txnHash
@@ -87,10 +96,16 @@ export const sendTransactions = async ({
     const response = await signer.sendTransaction(transactions)
 
     if (waitConfirmationForLastTransaction) {
-      await publicClient.waitForTransactionReceipt({
-        hash: response.hash as Hex,
+      const { txnStatus } = await waitForTransactionReceipt({
+        indexerClient,
+        txnHash: response.hash as Hex,
+        publicClient,
         confirmations: transactionConfirmations
       })
+
+      if (txnStatus === TransactionStatus.FAILED) {
+        throw new Error('Transaction failed')
+      }
     }
 
     return response.hash
@@ -110,10 +125,16 @@ export const sendTransactions = async ({
       const isLastTransaction = index === transactions.length - 1
 
       if (!isLastTransaction || (isLastTransaction && waitConfirmationForLastTransaction)) {
-        await publicClient.waitForTransactionReceipt({
-          hash: txnHash as Hex,
+        const { txnStatus } = await waitForTransactionReceipt({
+          indexerClient,
+          txnHash,
+          publicClient,
           confirmations: transactionConfirmations
         })
+
+        if (txnStatus === TransactionStatus.FAILED) {
+          throw new Error('Transaction failed')
+        }
       }
 
       // The transaction hash of the last transaction is the one that should be returned
@@ -122,4 +143,57 @@ export const sendTransactions = async ({
 
     return txHash
   }
+}
+
+interface WaitForTransactionReceiptInput {
+  indexerClient: SequenceIndexer
+  txnHash: Hex
+  publicClient: PublicClient
+  confirmations?: number
+}
+
+export const waitForTransactionReceipt = async ({
+  indexerClient,
+  txnHash,
+  publicClient,
+  confirmations
+}: WaitForTransactionReceiptInput): Promise<TransactionReceipt> => {
+  const receiptPromise = new Promise<TransactionReceipt>(async (resolve, reject) => {
+    await indexerClient.subscribeReceipts({
+      filter: {
+        txnHash
+      },
+    }, {
+      onMessage: ({
+        receipt
+      }) => {
+        resolve(receipt)
+      },
+      onError: () => {
+        reject('Transaction receipt not found')
+      }
+    })
+  })
+
+  const receipt =  await receiptPromise
+
+  if (confirmations) {
+    const blockConfirmationPromise = new Promise<void>((resolve, reject) => {
+      const unwatch = publicClient.watchBlocks({
+        onBlock: ({
+          number: currentBlockNumber
+        }) => {
+          const confirmedBlocknumber = receipt.blockNumber + confirmations
+          if (currentBlockNumber >= confirmedBlocknumber) {
+            unwatch()
+            resolve()
+          }
+        }
+      })
+    })
+
+    await blockConfirmationPromise
+  }
+
+  return receipt
 }

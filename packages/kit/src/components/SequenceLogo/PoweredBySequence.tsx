@@ -5,24 +5,28 @@ import { SequenceLogo } from './SequenceLogo'
 export const PoweredBySequence = () => {
   return (
     <Box
+      className="powered-by-sequence-footer"
+      position="relative"
       onClick={() => {
         if (typeof window !== 'undefined') {
           window.open('https://sequence.xyz')
         }
       }}
-      gap="1"
-      marginTop="4"
+      gap="2"
       flexDirection="row"
       alignItems="center"
       justifyContent="center"
       userSelect="none"
       cursor="pointer"
       opacity={{ hover: '80' }}
+      style={{
+        left: '-28px'
+      }}
     >
-      <Text variant="small" color="text100">
-        Powered by Sequence
+      <Text variant="xsmall" color="text50" fontWeight="bold">
+        Powered by
       </Text>
-      <Box height="5" width="5">
+      <Box height="5" width="5" position="relative" style={{ top: '1px' }}>
         <SequenceLogo />
       </Box>
     </Box>

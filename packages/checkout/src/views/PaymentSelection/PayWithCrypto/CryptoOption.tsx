@@ -55,8 +55,7 @@ export const CryptoOption = ({
             whiteSpace="nowrap"
             ellipsis
             style={{
-              overflow: 'hidden',
-              width: '150px'
+              overflow: 'hidden'
             }}
           >
             {currencyName}
@@ -68,7 +67,7 @@ export const CryptoOption = ({
             ellipsis
             style={{
               overflow: 'hidden',
-              width: '150px'
+              width: '220px'
             }}
           >
             {`${price} ${symbol}`}

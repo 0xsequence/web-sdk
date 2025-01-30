@@ -1,6 +1,7 @@
 import { SequenceAPIClient, TokenPrice } from '@0xsequence/api'
 import { Transaction, TokenBalance, SequenceIndexer } from '@0xsequence/indexer'
 import {
+  compareAddress,
   getTransactionHistory,
   useAPIClient,
   useIndexerClients,
@@ -17,7 +18,7 @@ import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metada
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import { compareAddress, sortBalancesByType, isTruthy } from '../utils'
+import { sortBalancesByType, isTruthy } from '../utils'
 
 export const time = {
   oneSecond: 1 * 1000,

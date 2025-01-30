@@ -43,13 +43,13 @@ export {
 
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'
-export { isEmailValid, compareAddress, formatDisplay, capitalize } from './utils/helpers'
+export { isEmailValid, compareAddress, formatDisplay, capitalize, truncateAtMiddle, formatAddress } from './utils/helpers'
 export { getNativeTokenInfoByChainId } from './utils/tokens'
 export { getModalPositionCss } from './utils/styling'
 export { getNetwork, getNetworkColor, getNetworkBackgroundColor } from './utils/networks'
 export { walletClientToSigner, publicClientToProvider } from './utils/adapters'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth'
-export { sendTransactions } from './utils/transactions'
+export { sendTransactions, waitForTransactionReceipt } from './utils/transactions'
 
 // Contexts
 export { useKitConfig, KitConfigContextProvider } from './contexts/KitConfig'

@@ -7,7 +7,7 @@ import { useConfig } from 'wagmi'
 
 import { useTokenMetadata, useBalancesSummary } from '../../hooks/data'
 import { useAPIClient } from '../../hooks/useAPIClient'
-import { compareAddress, capitalize } from '../../utils/helpers'
+import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helpers'
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
 import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../CollectibleTileImage'
@@ -238,14 +238,4 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
       )}
     </Card>
   )
-}
-
-const truncateAtMiddle = (text: string, truncateAt: number) => {
-  let finalText = text
-
-  if (text.length >= truncateAt) {
-    finalText = text.slice(0, truncateAt / 2) + '...' + text.slice(text.length - truncateAt / 2, text.length)
-  }
-
-  return finalText
 }

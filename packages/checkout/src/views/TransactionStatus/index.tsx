@@ -15,8 +15,11 @@ import {
   useContractInfo,
   useTokenMetadata,
   formatDisplay,
-  TRANSACTION_CONFIRMATIONS_DEFAULT
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  waitForTransactionReceipt,
+  useIndexerClient
 } from '@0xsequence/kit'
+import { SequenceIndexer, TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
@@ -99,12 +102,21 @@ export const TransactionStatus = () => {
     chainId
   })
 
-  const waitForTransaction = async (client: PublicClient, txnHash: string) => {
+  const indexerClient = useIndexerClient(chainId)
+
+  const waitForTransaction = async (publicClient: PublicClient, txnHash: string) => {
     try {
-      await client.waitForTransactionReceipt({
-        hash: txnHash as Hex,
+      const { txnStatus } = await waitForTransactionReceipt({
+        indexerClient,
+        txnHash: txnHash as Hex,
+        publicClient,
         confirmations: blockConfirmations
       })
+
+      if (txnStatus === TransactionStatusSequence.FAILED) {
+        throw new Error('Transaction failed')
+      }
+
       setStatus('success')
       onSuccess && onSuccess(txnHash)
     } catch (e) {
