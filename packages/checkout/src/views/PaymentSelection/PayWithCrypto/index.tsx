@@ -1,4 +1,4 @@
-import { Box, Text, Scroll, Spinner } from '@0xsequence/design-system'
+import { AddIcon, Box, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
 import {
   useBalancesSummary,
   useContractInfo,
@@ -8,7 +8,8 @@ import {
   formatDisplay
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useEffect, Fragment, SetStateAction } from 'react'
+import { motion } from 'framer-motion'
+import { useState, useEffect, Fragment, SetStateAction } from 'react'
 import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
@@ -25,6 +26,8 @@ interface PayWithCryptoProps {
   isLoading: boolean
 }
 
+const MAX_OPTIONS = 3
+
 export const PayWithCrypto = ({
   settings,
   disableButtons,
@@ -32,6 +35,7 @@ export const PayWithCrypto = ({
   setSelectedCurrency,
   isLoading
 }: PayWithCryptoProps) => {
+  const [showMore, setShowMore] = useState(false)
   const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
 
   const { chain, currencyAddress, price } = settings
@@ -133,11 +137,6 @@ export const PayWithCrypto = ({
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
                   isInsufficientFunds={isNotEnoughFunds}
                 />
-                {swapsIsLoading && (
-                  <Box justifyContent="center" alignItems="center" width="full" marginTop="4">
-                    <Spinner />
-                  </Box>
-                )}
               </Fragment>
             )
           } else {
@@ -181,11 +180,30 @@ export const PayWithCrypto = ({
 
   const gutterHeight = 8
   const optionHeight = 72
-  const displayedOptionsAmount = Math.min(coins.length, 3)
+  const displayedOptionsAmount = Math.min(coins.length, MAX_OPTIONS)
   const displayedGuttersAmount = displayedOptionsAmount - 1
-  const viewheight = swapsIsLoading
-    ? '174px'
-    : `${24 + optionHeight * displayedOptionsAmount + gutterHeight * displayedGuttersAmount}px`
+  const collapsedOptionsHeight = `${optionHeight * displayedOptionsAmount + gutterHeight * displayedGuttersAmount}px`
+
+  const ShowMoreButton = () => {
+    return (
+      <Box justifyContent="center" alignItems="center" width="full">
+        <Button
+          rightIcon={() => {
+            if (showMore) {
+              return <SubtractIcon style={{ marginLeft: '-4px' }} size="xs" />
+            }
+            return <AddIcon style={{ marginLeft: '-4px' }} size="xs" />
+          }}
+          variant="ghost"
+          color="white"
+          onClick={() => {
+            setShowMore(!showMore)
+          }}
+          label={showMore ? 'Show less' : 'Show more'}
+        />
+      </Box>
+    )
+  }
 
   return (
     <Box width="full">
@@ -194,23 +212,35 @@ export const PayWithCrypto = ({
           Pay with crypto
         </Text>
       </Box>
-      <Scroll
+      <Box
         paddingY="3"
         style={{
-          height: viewheight,
-          marginBottom: '-12px',
-          scrollbarColor: 'gray black',
-          scrollbarWidth: 'thin'
+          marginBottom: '-12px'
         }}
       >
         {isLoadingOptions ? (
-          <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
+          <Box width="full" paddingY="5" justifyContent="center" alignItems="center">
             <Spinner />
           </Box>
         ) : (
-          <Options />
+          <>
+            <Box
+              as={motion.div}
+              animate={{ height: showMore ? 'auto' : collapsedOptionsHeight }}
+              transition={{ ease: 'easeOut', duration: 0.3 }}
+              overflow="hidden"
+            >
+              <Options />
+            </Box>
+            {swapsIsLoading && (
+              <Box justifyContent="center" alignItems="center" width="full" marginTop="4">
+                <Spinner />
+              </Box>
+            )}
+            {!swapsIsLoading && coins.length > MAX_OPTIONS && <ShowMoreButton />}
+          </>
         )}
-      </Scroll>
+      </Box>
     </Box>
   )
 }
