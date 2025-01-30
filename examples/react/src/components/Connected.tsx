@@ -1,5 +1,4 @@
 import { Box, Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system'
-import { WalletListItem } from './WalletListItem'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -13,22 +12,14 @@ import {
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
-import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
+import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
 import { formatUnits, parseUnits } from 'viem'
-import {
-  useAccount,
-  useChainId,
-  useDisconnect,
-  usePublicClient,
-  useSendTransaction,
-  useWalletClient,
-  useWriteContract
-} from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
@@ -94,8 +85,6 @@ export const Connected = () => {
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
-
-  const { disconnect } = useDisconnect()
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
