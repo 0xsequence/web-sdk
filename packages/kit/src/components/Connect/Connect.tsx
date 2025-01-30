@@ -311,7 +311,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
         }}
       >
         <TitleWrapper isPreview={isPreview}>
-          <Text variant="normal">{isLoading ? `Connecting...` : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
+          <Text>{isLoading ? `Connecting...` : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
         </TitleWrapper>
 
         {isSigningLinkMessage && (
@@ -329,7 +329,18 @@ export const Connect = (props: ConnectWalletContentProps) => {
       ) : (
         <>
           {wallets.length > 0 && !showEmailWaasPinInput && (
-            <ConnectedWallets wallets={wallets} linkedWallets={linkedWallets} disconnectWallet={disconnectWallet} />
+            <>
+              <ConnectedWallets wallets={wallets} linkedWallets={linkedWallets} disconnectWallet={disconnectWallet} />
+
+              <>
+                <Divider color="backgroundRaised" width="full" />
+                <Box justifyContent="center">
+                  <Text variant="small" color="text50">
+                    {!hasConnectedSocialWallet ? 'Connect with a social account' : 'Connect another wallet'}
+                  </Text>
+                </Box>
+              </>
+            </>
           )}
           {showEmailWaasPinInput ? (
             <EmailWaasVerify error={emailAuthError} isLoading={emailAuthLoading} onConfirm={sendChallengeAnswer} />
@@ -420,17 +431,13 @@ export const Connect = (props: ConnectWalletContentProps) => {
               )}
               {walletConnectors.length > 0 && (
                 <>
-                  {hasConnectedSocialWallet && (
-                    <>
-                      <Divider color="backgroundRaised" width="full" />
-                      <Box justifyContent="center">
-                        <Text variant="small" color="text50" marginBottom="3">
-                          Connect another wallet
-                        </Text>
-                      </Box>
-                    </>
-                  )}
-                  <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+                  <Box
+                    gap="2"
+                    flexDirection="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    marginTop={hasConnectedSocialWallet ? '4' : '6'}
+                  >
                     {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
                       return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
                     })}
