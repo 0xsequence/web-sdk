@@ -22,9 +22,17 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
-      onClick={onSelect}
-      style={{ cursor: 'pointer' }}
+      position="relative"
     >
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        right="0"
+        bottom="0"
+        onClick={onSelect}
+        style={{ cursor: 'pointer', zIndex: 1 }}
+      />
       <Box display="flex" flexDirection="row" alignItems="center" gap="2">
         <Box borderColor="text50" background={isActive ? 'text100' : 'transparent'} />
         <Box flexDirection="column" gap="1">
@@ -37,7 +45,7 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
           </Text>
         </Box>
       </Box>
-      <Button variant="text" size="sm" label="Disconnect" onClick={onDisconnect} />
+      <Button variant="text" size="sm" label="Disconnect" onClick={onDisconnect} style={{ position: 'relative', zIndex: 2 }} />
     </Box>
   )
 }

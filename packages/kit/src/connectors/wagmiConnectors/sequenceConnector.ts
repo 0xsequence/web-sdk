@@ -153,8 +153,6 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
           throw 'projectAccessKey not found'
         }
 
-        console.log('initWallet', projectAccessKey)
-
         const provider = sequence.initWallet(projectAccessKey, {
           defaultNetwork,
           transports: {
