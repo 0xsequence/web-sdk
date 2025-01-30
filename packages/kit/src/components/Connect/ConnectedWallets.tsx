@@ -174,14 +174,6 @@ export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: C
           }}
         />
       </Box>
-
-      <Divider color="backgroundRaised" width="full" />
-
-      <Box justifyContent="center">
-        <Text variant="small" color="text50">
-          Connect another wallet
-        </Text>
-      </Box>
     </Box>
   )
 }

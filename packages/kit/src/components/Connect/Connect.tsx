@@ -328,100 +328,116 @@ export const Connect = (props: ConnectWalletContentProps) => {
         </Box>
       ) : (
         <>
+          {wallets.length > 0 && !showEmailWaasPinInput && (
+            <ConnectedWallets wallets={wallets} linkedWallets={linkedWallets} disconnectWallet={disconnectWallet} />
+          )}
           {showEmailWaasPinInput ? (
             <EmailWaasVerify error={emailAuthError} isLoading={emailAuthLoading} onConfirm={sendChallengeAnswer} />
           ) : (
             <>
-              <Banner config={config as KitConfig} />
-
-              <Box marginTop="6" gap="6" flexDirection="column">
+              {!hasConnectedSocialWallet && (
                 <>
-                  {showSocialConnectorSection && (
-                    <Box
-                      gap="2"
-                      flexDirection={descriptiveSocials ? 'column' : 'row'}
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
-                        return (
-                          <Box key={connector.uid} width="full">
-                            {connector._wallet.id === 'google-waas' ? (
-                              <GoogleWaasConnectButton
-                                isDescriptive={descriptiveSocials}
-                                connector={connector}
-                                onConnect={onConnect}
-                              />
-                            ) : connector._wallet.id === 'apple-waas' ? (
-                              <AppleWaasConnectButton
-                                isDescriptive={descriptiveSocials}
-                                connector={connector}
-                                onConnect={onConnect}
-                              />
-                            ) : (
-                              <ConnectButton isDescriptive={descriptiveSocials} connector={connector} onConnect={onConnect} />
-                            )}
-                          </Box>
-                        )
-                      })}
-                      {showMoreSocialOptions && (
-                        <Box width="full">
-                          <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                  <Banner config={config as KitConfig} />
+
+                  <Box marginTop="6" gap="6" flexDirection="column">
+                    <>
+                      {showSocialConnectorSection && (
+                        <Box
+                          gap="2"
+                          flexDirection={descriptiveSocials ? 'column' : 'row'}
+                          justifyContent="center"
+                          alignItems="center"
+                        >
+                          {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
+                            return (
+                              <Box key={connector.uid} width="full">
+                                {connector._wallet.id === 'google-waas' ? (
+                                  <GoogleWaasConnectButton
+                                    isDescriptive={descriptiveSocials}
+                                    connector={connector}
+                                    onConnect={onConnect}
+                                  />
+                                ) : connector._wallet.id === 'apple-waas' ? (
+                                  <AppleWaasConnectButton
+                                    isDescriptive={descriptiveSocials}
+                                    connector={connector}
+                                    onConnect={onConnect}
+                                  />
+                                ) : (
+                                  <ConnectButton isDescriptive={descriptiveSocials} connector={connector} onConnect={onConnect} />
+                                )}
+                              </Box>
+                            )
+                          })}
+                          {showMoreSocialOptions && (
+                            <Box width="full">
+                              <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                            </Box>
+                          )}
                         </Box>
                       )}
-                    </Box>
-                  )}
-                  {showSocialConnectorSection && showEmailInputSection && (
-                    <Box gap="4" flexDirection="row" justifyContent="center" alignItems="center">
-                      <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
-                      <Text lineHeight="4" height="4" variant="normal" fontSize="small" fontWeight="medium" color="text50">
-                        or
-                      </Text>
-                      <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
-                    </Box>
-                  )}
-                  {showEmailInputSection && (
+                      {showSocialConnectorSection && showEmailInputSection && (
+                        <Box gap="4" flexDirection="row" justifyContent="center" alignItems="center">
+                          <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
+                          <Text lineHeight="4" height="4" variant="normal" fontSize="small" fontWeight="medium" color="text50">
+                            or
+                          </Text>
+                          <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
+                        </Box>
+                      )}
+                      {showEmailInputSection && (
+                        <>
+                          <form onSubmit={onConnectInlineEmail}>
+                            <TextInput
+                              autoFocus
+                              onChange={onChangeEmail}
+                              value={email}
+                              name="email"
+                              placeholder="Email address"
+                              controls={
+                                <>
+                                  {emailAuthInProgress ? (
+                                    <Spinner />
+                                  ) : (
+                                    <IconButton
+                                      type="submit"
+                                      variant={!isEmailValid(email) ? 'glass' : 'primary'}
+                                      size="xs"
+                                      icon={ArrowRightIcon}
+                                      disabled={!isEmailValid(email)}
+                                    />
+                                  )}
+                                </>
+                              }
+                              data-1p-ignore
+                            />
+                          </form>
+                        </>
+                      )}
+                    </>
+                  </Box>
+                </>
+              )}
+              {walletConnectors.length > 0 && (
+                <>
+                  {hasConnectedSocialWallet && (
                     <>
-                      <form onSubmit={onConnectInlineEmail}>
-                        <TextInput
-                          autoFocus
-                          onChange={onChangeEmail}
-                          value={email}
-                          name="email"
-                          placeholder="Email address"
-                          controls={
-                            <>
-                              {emailAuthInProgress ? (
-                                <Spinner />
-                              ) : (
-                                <IconButton
-                                  type="submit"
-                                  variant={!isEmailValid(email) ? 'glass' : 'primary'}
-                                  size="xs"
-                                  icon={ArrowRightIcon}
-                                  disabled={!isEmailValid(email)}
-                                />
-                              )}
-                            </>
-                          }
-                          data-1p-ignore
-                        />
-                      </form>
+                      <Divider color="backgroundRaised" width="full" />
+                      <Box justifyContent="center">
+                        <Text variant="small" color="text50" marginBottom="3">
+                          Connect another wallet
+                        </Text>
+                      </Box>
                     </>
                   )}
+                  <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center">
+                    {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
+                      return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+                    })}
+                    {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
+                  </Box>
                 </>
-
-                {walletConnectors.length > 0 && (
-                  <>
-                    <Box gap="2" flexDirection="row" justifyContent="center" alignItems="center">
-                      {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
-                        return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
-                      })}
-                      {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
-                    </Box>
-                  </>
-                )}
-              </Box>
+              )}
               <Box marginTop="6">
                 <PoweredBySequence />
               </Box>

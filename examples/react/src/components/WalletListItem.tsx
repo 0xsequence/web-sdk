@@ -1,6 +1,5 @@
 import { Box, Button, Text } from '@0xsequence/design-system'
-
-import { truncateAtMiddle } from '../utils'
+import { truncateAtMiddle } from '@0xsequence/kit'
 
 interface WalletListItemProps {
   id: string
