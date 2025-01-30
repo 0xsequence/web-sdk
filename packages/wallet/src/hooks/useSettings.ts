@@ -1,4 +1,4 @@
-import { LocalStorageKey } from '@0xsequence/kit'
+import { LocalStorageKey, useWalletSettings } from '@0xsequence/kit'
 import { useState } from 'react'
 import { useConfig } from 'wagmi'
 
@@ -18,13 +18,18 @@ interface Settings {
 type SettingsItems = Pick<Settings, 'hideCollectibles' | 'hideUnlistedTokens' | 'fiatCurrency' | 'selectedNetworks'>
 
 export const useSettings = (): Settings => {
+  const { readOnlyNetworks, displayedAssets } = useWalletSettings()
   const { chains } = useConfig()
+
+  const allChains = [
+    ...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedAssets.map(asset => asset.chainId)])
+  ]
 
   const getSettingsFromStorage = (): SettingsItems => {
     let hideUnlistedTokens = true
     let hideCollectibles = false
     let fiatCurrency = defaultFiatCurrency
-    let selectedNetworks = chains.map(chain => chain.id)
+    let selectedNetworks = allChains
 
     try {
       const settingsStorage = localStorage.getItem(LocalStorageKey.Settings)
@@ -43,7 +48,7 @@ export const useSettings = (): Settings => {
       if (settings?.selectedNetworks !== undefined) {
         let areSelectedNetworksValid = true
         settings.selectedNetworks.forEach((chainId: number) => {
-          if (chains.find(chain => chain.id === chainId) === undefined) {
+          if (allChains.find(chain => chain === chainId) === undefined) {
             areSelectedNetworksValid = false
           }
         })

@@ -74,6 +74,7 @@ export interface KitConfig {
     useMock?: boolean
   }
   displayedAssets?: DisplayedAsset[]
+  readOnlyNetworks?: number[]
   ethAuth?: EthAuthSettings
 }
 

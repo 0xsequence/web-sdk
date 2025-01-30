@@ -3,7 +3,6 @@ import { Hex, encodeFunctionData } from 'viem'
 
 import { orderbookAbi } from '../constants/orderbook-abi'
 
-
 export const delay = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }

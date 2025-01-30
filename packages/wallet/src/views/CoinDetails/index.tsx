@@ -10,7 +10,6 @@ import {
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -118,7 +117,9 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
             <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </Box>
         </Box>
-        <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
+        {chains.map(chain => chain.id).includes(chainId) && (
+          <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
+        )}
         <Box>
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList

@@ -1,14 +1,21 @@
 import { Box, Text, TokenImage } from '@0xsequence/design-system'
-import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 import { SelectButton } from '../../shared/SelectButton'
+import { useWalletSettings } from '@0xsequence/kit'
+
+import { ChainId } from '@0xsequence/network'
 
 export const SettingsNetwork = () => {
+  const { readOnlyNetworks, displayedAssets } = useWalletSettings()
   const { selectedNetworks, setSelectedNetworks } = useSettings()
   const { chains } = useConfig()
+
+  const allChains = [
+    ...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedAssets.map(asset => asset.chainId)])
+  ]
 
   const onClickNetwork = (chainId: number) => {
     if (selectedNetworks.includes(chainId)) {
@@ -28,20 +35,20 @@ export const SettingsNetwork = () => {
           Networks
         </Text>
         <Box flexDirection="column" gap="2" marginTop="4">
-          {chains.map(chain => {
+          {allChains.map(chain => {
             return (
               <SelectButton
-                disabled={selectedNetworks.length === 1 && selectedNetworks.includes(chain.id)}
-                key={chain.id}
-                selected={selectedNetworks.includes(chain.id)}
-                onClick={() => onClickNetwork(chain.id)}
-                value={chain.id}
+                disabled={selectedNetworks.length === 1 && selectedNetworks.includes(chain)}
+                key={chain}
+                selected={selectedNetworks.includes(chain)}
+                onClick={() => onClickNetwork(chain)}
+                value={chain}
                 squareIndicator
               >
                 <Box gap="2" justifyContent="center" alignItems="center">
-                  <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chain.id}.webp`} />
+                  <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chain}.webp`} />
                   <Text color="text100" variant="normal" fontWeight="bold">
-                    {chain.name}
+                    {ChainId[chain]}
                   </Text>
                 </Box>
               </SelectButton>

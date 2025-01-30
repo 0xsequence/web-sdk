@@ -5,7 +5,7 @@ import {
   useCoinPrices,
   useBalancesSummary,
   ContractVerificationStatus,
-  compareAddress
+  compareAddress,
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'

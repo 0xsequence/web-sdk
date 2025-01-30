@@ -49,7 +49,8 @@ export const kitConfig: KitConfig = {
       contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
       chainId: ChainId.POLYGON
     }
-  ]
+  ],
+  readOnlyNetworks: [ChainId.OPTIMISM]
 }
 
 export const config =

@@ -83,15 +83,6 @@ export const AssetSummary = () => {
             tokenId: balance.tokenID || ''
           }
         })
-    } else if (balance.contractType === 'ERC20') {
-      setNavigation &&
-        setNavigation({
-          location: 'coin-details',
-          params: {
-            contractAddress: balance.contractAddress,
-            chainId: balance.chainId
-          }
-        })
     } else {
       setNavigation &&
         setNavigation({
@@ -131,49 +122,6 @@ export const AssetSummary = () => {
             </Box>
           )
         })}
-
-        {/* {nativeTokens.map((balance, index) => {
-        return (
-          <Box
-            key={index}
-            userSelect="none"
-            cursor="pointer"
-            opacity={{ hover: '80' }}
-            aspectRatio="1/1"
-            onClick={() => onClickItem(balance)}
-          >
-            <CoinTile balance={balance} />
-          </Box>
-        )
-      })}
-      {erc20Tokens.map((balance, index) => {
-        return (
-          <Box
-            key={index}
-            userSelect="none"
-            cursor="pointer"
-            opacity={{ hover: '80' }}
-            aspectRatio="1/1"
-            onClick={() => onClickItem(balance)}
-          >
-            <CoinTile balance={balance} />
-          </Box>
-        )
-      })}
-      {collectibles.map((balance, index) => {
-        return (
-          <Box
-            key={index}
-            userSelect="none"
-            cursor="pointer"
-            opacity={{ hover: '80' }}
-            aspectRatio="1/1"
-            onClick={() => onClickItem(balance)}
-          >
-            <CollectibleTile balance={balance} />
-          </Box>
-        )
-      })} */}
       </Box>
       {isLoading && <Spinner justifySelf="center" marginTop="3" />}
       <div ref={endOfPageRef} style={{ height: '1px' }} />

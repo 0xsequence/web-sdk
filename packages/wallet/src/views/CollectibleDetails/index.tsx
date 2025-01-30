@@ -8,7 +8,7 @@ import {
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import { useAccount } from 'wagmi'
+import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
@@ -26,6 +26,8 @@ export interface CollectibleDetailsProps {
 }
 
 export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: CollectibleDetailsProps) => {
+  const { chains } = useConfig()
+  
   const { address: accountAddress } = useAccount()
   const { fiatCurrency } = useSettings()
   const { setNavigation } = useNavigation()
@@ -159,15 +161,17 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
               )}
             </Box>
           </Box>
-          <Button
-            color="text100"
-            marginTop="4"
-            width="full"
-            variant="primary"
-            leftIcon={SendIcon}
-            label="Send"
-            onClick={onClickSend}
-          />
+          {chains.map(chain => chain.id).includes(chainId) && (
+            <Button
+              color="text100"
+              marginTop="4"
+              width="full"
+              variant="primary"
+              leftIcon={SendIcon}
+              label="Send"
+              onClick={onClickSend}
+            />
+          )}
         </Box>
         <Box>
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>

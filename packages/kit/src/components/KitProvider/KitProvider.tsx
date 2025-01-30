@@ -39,6 +39,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
     signIn = {},
     position = 'center',
     displayedAssets: displayedAssetsSetting = [],
+    readOnlyNetworks,
     ethAuth = {} as EthAuthSettings,
     disableAnalytics = false
   } = config
@@ -138,7 +139,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
       >
         <GoogleOAuthProvider clientId={googleClientId}>
           <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
-            <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets }}>
+            <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">
                   <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
