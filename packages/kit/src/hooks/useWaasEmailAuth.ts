@@ -28,7 +28,8 @@ export function useEmailAuth({
       loading: false,
       error: undefined,
       initiateAuth: async (_email: string) => {},
-      sendChallengeAnswer: async (_answer: string) => {}
+      sendChallengeAnswer: async (_answer: string) => {},
+      resetError: () => {}
     }
   }
 
@@ -106,12 +107,17 @@ export function useEmailAuth({
     setError(undefined)
   }
 
+  const resetError = () => {
+    setError(undefined)
+  }
+
   return {
     inProgress: loading || !!instance,
     loading,
     error,
     initiateAuth,
     sendChallengeAnswer,
-    cancel
+    cancel,
+    resetError
   }
 }
