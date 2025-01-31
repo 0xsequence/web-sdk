@@ -88,7 +88,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
       )
 
       if (nonLinkedWallets.map(w => w.accounts[0]).includes(lastConnectedWallet as `0x${string}`)) {
-        // make sure active wallet is the one we are trying to link
         const waasWalletAddress = waasConnection?.accounts[0]
 
         if (!waasWalletAddress) {
