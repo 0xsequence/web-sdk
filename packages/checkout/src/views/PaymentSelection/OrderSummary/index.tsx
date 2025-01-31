@@ -1,5 +1,12 @@
 import { Box, Spinner, NetworkImage, Text } from '@0xsequence/design-system'
-import { NetworkBadge, CollectibleTileImage, useContractInfo, useTokenMetadata, useCoinPrices } from '@0xsequence/kit'
+import {
+  formatDisplay,
+  NetworkBadge,
+  CollectibleTileImage,
+  useContractInfo,
+  useTokenMetadata,
+  useCoinPrices
+} from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 
@@ -39,6 +46,11 @@ export const OrderSummary = () => {
   }
 
   const formattedPrice = formatUnits(BigInt(selectPaymentSettings!.price), dataCurrencyInfo?.decimals || 0)
+  const displayPrice = formatDisplay(formattedPrice, {
+    disableScientificNotation: true,
+    disableCompactNotation: true,
+    significantDigits: 6
+  })
 
   const totalQuantity =
     selectPaymentSettings?.collectibles.reduce((accumulator, collectible) => {
@@ -90,7 +102,7 @@ export const OrderSummary = () => {
       <Box gap="1" flexDirection="column">
         <Box flexDirection="row" gap="2" alignItems="center">
           <NetworkImage chainId={chainId} size="sm" />
-          <Text color="white" variant="large" fontWeight="bold">{`${formattedPrice} ${dataCurrencyInfo?.symbol}`}</Text>
+          <Text color="white" variant="large" fontWeight="bold">{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
         </Box>
         <Box>
           <Text color="text50" variant="normal" fontWeight="normal">

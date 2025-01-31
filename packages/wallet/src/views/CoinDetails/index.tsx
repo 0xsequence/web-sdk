@@ -1,5 +1,7 @@
 import { Box, Button, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
 import {
+  compareAddress,
+  formatDisplay,
   getNativeTokenInfoByChainId,
   useExchangeRate,
   useCoinPrices,
@@ -16,7 +18,7 @@ import { useSettings, useNavigation } from '../../hooks'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
-import { compareAddress, computeBalanceFiat, formatDisplay, flattenPaginatedTransactionHistory } from '../../utils'
+import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CoinDetailsSkeleton } from './Skeleton'
 

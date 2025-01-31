@@ -96,7 +96,7 @@ importers:
   examples/next:
     dependencies:
       '@0xsequence/design-system':
-        specifier: ^1.7.8
+        specifier: ^1.9.0
         version: 1.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/kit':
         specifier: workspace:*
@@ -160,7 +160,7 @@ importers:
   examples/react:
     dependencies:
       '@0xsequence/design-system':
-        specifier: ^1.7.8
+        specifier: ^1.9.0
         version: 1.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/kit':
         specifier: workspace:*
@@ -246,7 +246,7 @@ importers:
         version: 3.0.6(react@18.3.1)
     devDependencies:
       '@0xsequence/design-system':
-        specifier: ^1.7.8
+        specifier: ^1.9.0
         version: 1.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/indexer':
         specifier: '>= 2.2.4'
@@ -297,7 +297,7 @@ importers:
         specifier: '>= 2.2.4'
         version: 2.2.8(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/design-system':
-        specifier: ^1.7.8
+        specifier: ^1.9.0
         version: 1.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/ethauth':
         specifier: ^1.0.0
@@ -323,6 +323,9 @@ importers:
       framer-motion:
         specifier: ^8.5.2
         version: 8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      fuse.js:
+        specifier: ^6.6.2
+        version: 6.6.2
       uuid:
         specifier: ^10.0.0
         version: 10.0.0
@@ -374,7 +377,7 @@ importers:
         specifier: '>= 2.2.4'
         version: 2.2.8
       '@0xsequence/design-system':
-        specifier: ^1.7.8
+        specifier: ^1.9.0
         version: 1.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/indexer':
         specifier: '>= 2.2.4'

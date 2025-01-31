@@ -11,13 +11,12 @@ import {
   TransactionIcon,
   vars
 } from '@0xsequence/design-system'
-import { useTheme } from '@0xsequence/kit'
+import { formatAddress, useTheme } from '@0xsequence/kit'
 import React, { forwardRef } from 'react'
 import { useDisconnect, useAccount } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
 import { useOpenWalletModal } from '../../../hooks/useOpenWalletModal'
-import { formatAddress } from '../../../utils'
 import { CopyButton } from '../../CopyButton'
 
 interface WalletDropdownContentProps {
@@ -77,7 +76,8 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
       style={{
         position: 'relative',
         pointerEvents: 'auto',
-        width: '370px',
+        width: 'calc(100vw - 30px)',
+        maxWidth: '370px',
         backdropFilter: 'blur(12.5px)',
         top: '16px',
         left: '15px',

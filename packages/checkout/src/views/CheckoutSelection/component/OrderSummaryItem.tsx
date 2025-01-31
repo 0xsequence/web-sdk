@@ -1,9 +1,7 @@
 import { Box, Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system'
-import { useContractInfo, useTokenMetadata } from '@0xsequence/kit'
+import { useContractInfo, useTokenMetadata, formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
-
-import { formatDisplay } from '../../../utils'
 
 interface OrderSummaryItem {
   contractAddress: string

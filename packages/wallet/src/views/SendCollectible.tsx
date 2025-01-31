@@ -19,6 +19,7 @@ import {
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
   ExtendedConnector,
+  truncateAtMiddle,
   useCollectibleBalanceDetails,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
@@ -32,7 +33,7 @@ import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
+import { limitDecimals, isEthAddress } from '../utils'
 
 interface SendCollectibleProps {
   chainId: number

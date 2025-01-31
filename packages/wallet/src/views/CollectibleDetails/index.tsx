@@ -1,5 +1,6 @@
 import { Box, Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
 import {
+  formatDisplay,
   useExchangeRate,
   useTransactionHistory,
   useCollectiblePrices,
@@ -14,7 +15,7 @@ import { useSettings, useNavigation } from '../../hooks'
 import { CollectibleTileImage } from '../../shared/CollectibleTileImage'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
-import { computeBalanceFiat, formatDisplay, flattenPaginatedTransactionHistory } from '../../utils'
+import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
 

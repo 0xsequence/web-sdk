@@ -1,5 +1,12 @@
 import { Box, Text, Scroll, Spinner } from '@0xsequence/design-system'
-import { useBalancesSummary, useContractInfo, useSwapPrices, compareAddress, ContractVerificationStatus } from '@0xsequence/kit'
+import {
+  useBalancesSummary,
+  useContractInfo,
+  useSwapPrices,
+  compareAddress,
+  ContractVerificationStatus,
+  formatDisplay
+} from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, Fragment, SetStateAction } from 'react'
 import { formatUnits } from 'viem'
@@ -88,6 +95,11 @@ export const PayWithCrypto = ({
   ]
 
   const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
+  const priceDisplay = formatDisplay(priceFormatted, {
+    disableScientificNotation: true,
+    disableCompactNotation: true,
+    significantDigits: 6
+  })
 
   const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
 
@@ -116,7 +128,7 @@ export const PayWithCrypto = ({
                   onClick={() => {
                     setSelectedCurrency(currencyAddress)
                   }}
-                  price={priceFormatted}
+                  price={priceDisplay}
                   disabled={disableButtons}
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
                   isInsufficientFunds={isNotEnoughFunds}
@@ -139,6 +151,12 @@ export const PayWithCrypto = ({
             const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
             const swapQuoteAddress = swapPrice.info?.address || ''
 
+            const swapQuotePriceDisplay = formatDisplay(swapQuotePriceFormatted, {
+              disableScientificNotation: true,
+              disableCompactNotation: true,
+              significantDigits: 6
+            })
+
             return (
               <CryptoOption
                 key={swapQuoteAddress}
@@ -149,7 +167,7 @@ export const PayWithCrypto = ({
                 onClick={() => {
                   setSelectedCurrency(swapQuoteAddress)
                 }}
-                price={String(Number(swapQuotePriceFormatted).toPrecision(4))}
+                price={swapQuotePriceDisplay}
                 disabled={disableButtons}
                 isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
                 isInsufficientFunds={false}

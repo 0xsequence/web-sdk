@@ -69,7 +69,9 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
                     style: {
                       maxWidth: '400px',
                       height: 'fit-content',
-                      ...getModalPositionCss(position)
+                      ...getModalPositionCss(position),
+                      scrollbarColor: 'gray black',
+                      scrollbarWidth: 'thin'
                     }
                   }}
                   scroll={false}

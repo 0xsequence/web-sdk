@@ -4,7 +4,8 @@ import {
   useExchangeRate,
   useCoinPrices,
   useBalancesSummary,
-  ContractVerificationStatus
+  ContractVerificationStatus,
+  compareAddress
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
@@ -12,7 +13,7 @@ import { useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
-import { compareAddress, computeBalanceFiat } from '../../utils'
+import { computeBalanceFiat } from '../../utils'
 
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
@@ -60,7 +61,7 @@ export const SearchWallet = () => {
           balance: a,
           prices: coinPrices,
           conversionRate,
-          decimals: b.contractInfo?.decimals || 18
+          decimals: a.contractInfo?.decimals || 18
         })
       )
     return isHigherFiat
@@ -145,29 +146,6 @@ export const SearchWallet = () => {
           toLocation={{
             location: 'search-view-all',
             params: {
-              defaultTab: 'collections'
-            }
-          }}
-          label={`Collections (${collectionBalancesAmount})`}
-        />
-        {isPending ? (
-          Array(5)
-            .fill(null)
-            .map((_, i) => <Skeleton key={i} width="full" height="8" />)
-        ) : foundCollectionBalances.length === 0 ? (
-          <Text color="text100">No collections found</Text>
-        ) : (
-          foundCollectionBalances.map((indexedItem, index) => {
-            const balance = collectionBalances[indexedItem.index]
-            return <BalanceItem key={index} balance={balance} />
-          })
-        )}
-      </Box>
-      <Box width="full" flexDirection="column" alignItems="center" justifyContent="center" gap="5">
-        <WalletLink
-          toLocation={{
-            location: 'search-view-all',
-            params: {
               defaultTab: 'coins'
             }
           }}
@@ -182,6 +160,29 @@ export const SearchWallet = () => {
         ) : (
           foundCoinBalances.map((indexItem, index) => {
             const balance = coinBalances[indexItem.index]
+            return <BalanceItem key={index} balance={balance} />
+          })
+        )}
+      </Box>
+      <Box width="full" flexDirection="column" alignItems="center" justifyContent="center" gap="5">
+        <WalletLink
+          toLocation={{
+            location: 'search-view-all',
+            params: {
+              defaultTab: 'collections'
+            }
+          }}
+          label={`Collections (${collectionBalancesAmount})`}
+        />
+        {isPending ? (
+          Array(5)
+            .fill(null)
+            .map((_, i) => <Skeleton key={i} width="full" height="8" />)
+        ) : foundCollectionBalances.length === 0 ? (
+          <Text color="text100">No collections found</Text>
+        ) : (
+          foundCollectionBalances.map((indexedItem, index) => {
+            const balance = collectionBalances[indexedItem.index]
             return <BalanceItem key={index} balance={balance} />
           })
         )}
