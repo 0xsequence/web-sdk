@@ -71,7 +71,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
   const isPending = isPendingCollectibleBalance || isPendingCollectiblePrices || isPendingConversionRate
 
   if (isPending) {
-    return <CollectibleDetailsSkeleton />
+    return <CollectibleDetailsSkeleton isReadOnly={!chains.map(chain => chain.id).includes(chainId)} />
   }
 
   const onClickSend = () => {

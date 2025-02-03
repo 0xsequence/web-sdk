@@ -68,7 +68,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 
   if (isPending) {
-    return <CoinDetailsSkeleton chainId={chainId} />
+    return <CoinDetailsSkeleton chainId={chainId} isReadOnly={!chains.map(chain => chain.id).includes(chainId)} />
   }
 
   const isNativeToken = compareAddress(contractAddress, ethers.ZeroAddress)

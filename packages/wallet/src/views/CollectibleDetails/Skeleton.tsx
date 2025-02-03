@@ -4,7 +4,11 @@ import React from 'react'
 import { HEADER_HEIGHT } from '../../constants'
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 
-export const CollectibleDetailsSkeleton = () => {
+interface CollectibleDetailsSkeletonProps {
+  isReadOnly: boolean
+}
+
+export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSkeletonProps) => {
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box
@@ -35,15 +39,17 @@ export const CollectibleDetailsSkeleton = () => {
               <Skeleton style={{ width: '34px', height: '17px' }} />
             </Box>
           </Box>
-          <Button
-            color="text100"
-            marginTop="4"
-            width="full"
-            variant="primary"
-            leftIcon={SendIcon}
-            label="Send"
-            onClick={() => {}}
-          />
+          {!isReadOnly && (
+            <Button
+              color="text100"
+              marginTop="4"
+              width="full"
+              variant="primary"
+              leftIcon={SendIcon}
+              label="Send"
+              onClick={() => {}}
+            />
+          )}
         </Box>
         <Box>
           <Text variant="normal" color="text50" fontWeight="medium">

@@ -7,9 +7,10 @@ import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/
 
 interface CoinDetailsSkeletonProps {
   chainId: number
+  isReadOnly: boolean
 }
 
-export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
+export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeletonProps) => {
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
@@ -27,17 +28,19 @@ export const CoinDetailsSkeleton = ({ chainId }: CoinDetailsSkeletonProps) => {
             <Skeleton style={{ width: '33px', height: '17px' }} />
           </Box>
         </Box>
-        <Button
-          color="text100"
-          marginTop="4"
-          marginBottom="10"
-          width="full"
-          variant="primary"
-          leftIcon={SendIcon}
-          label="Send"
-          disabled
-          onClick={() => {}}
-        />
+        {!isReadOnly && (
+          <Button
+            color="text100"
+            marginTop="4"
+            marginBottom="10"
+            width="full"
+            variant="primary"
+            leftIcon={SendIcon}
+            label="Send"
+            disabled
+            onClick={() => {}}
+          />
+        )}
         <Box>
           <TransactionHistorySkeleton />
         </Box>
