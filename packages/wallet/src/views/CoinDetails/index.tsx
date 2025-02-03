@@ -1,4 +1,4 @@
-import { Box, Button, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
 import {
   compareAddress,
   formatDisplay,
@@ -100,6 +100,15 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     })
   }
 
+  const onClickSwap = () => {
+    setNavigation({
+      location: 'swap-coin',
+      params: {
+        chainId,
+        contractAddress
+      }
+    })
+  }
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
@@ -120,7 +129,10 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
           </Box>
         </Box>
         {!isReadOnly && (
-          <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
+          <Box gap="2">
+            <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
+            <Button width="full" variant="primary" leftIcon={SwapIcon} color="text100" label="Swap" onClick={onClickSwap} />
+          </Box>
         )}
         <Box>
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>

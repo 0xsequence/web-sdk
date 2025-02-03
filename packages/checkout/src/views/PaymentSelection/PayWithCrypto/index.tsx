@@ -1,5 +1,6 @@
 import { AddIcon, Box, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
 import {
+  CryptoOption,
   useBalancesSummary,
   useContractInfo,
   useSwapPrices,
@@ -15,8 +16,6 @@ import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { useClearCachedBalances } from '../../../hooks'
-
-import { CryptoOption } from './CryptoOption'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings

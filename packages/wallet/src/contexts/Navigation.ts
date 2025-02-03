@@ -58,9 +58,19 @@ export interface SendCoinParams {
   contractAddress: string
 }
 
+export interface SwapCoinParams {
+  chainId: number
+  contractAddress: string
+}
+
 export interface SendCoinNavigation {
   location: 'send-coin'
   params: SendCoinParams
+}
+
+export interface SwapCoinNavigation {
+  location: 'swap-coin'
+  params: SwapCoinParams
 }
 
 export interface SendCollectibleParams {
@@ -96,6 +106,7 @@ export type Navigation =
   | SearchViewAllNavigation
   | SendCoinNavigation
   | SendCollectibleNavigation
+  | SwapCoinNavigation
 
 export type History = Navigation[]
 

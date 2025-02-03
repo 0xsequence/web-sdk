@@ -1,5 +1,6 @@
 import { Box, Button, Spinner, Text } from '@0xsequence/design-system'
 import {
+  CryptoOption,
   compareAddress,
   formatDisplay,
   useContractInfo,
@@ -15,7 +16,6 @@ import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
-import { CryptoOption } from '../PaymentSelection/PayWithCrypto/CryptoOption'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
