@@ -27,10 +27,12 @@ export interface CollectibleDetailsProps {
 
 export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: CollectibleDetailsProps) => {
   const { chains } = useConfig()
-  
+
   const { address: accountAddress } = useAccount()
   const { fiatCurrency } = useSettings()
   const { setNavigation } = useNavigation()
+
+  const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 
   const {
     data: dataTransactionHistory,
@@ -71,7 +73,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
   const isPending = isPendingCollectibleBalance || isPendingCollectiblePrices || isPendingConversionRate
 
   if (isPending) {
-    return <CollectibleDetailsSkeleton isReadOnly={!chains.map(chain => chain.id).includes(chainId)} />
+    return <CollectibleDetailsSkeleton isReadOnly={isReadOnly} />
   }
 
   const onClickSend = () => {
@@ -161,7 +163,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
               )}
             </Box>
           </Box>
-          {chains.map(chain => chain.id).includes(chainId) && (
+          {!isReadOnly && (
             <Button
               color="text100"
               marginTop="4"

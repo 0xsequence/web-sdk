@@ -32,6 +32,8 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const { fiatCurrency, hideUnlistedTokens } = useSettings()
   const { address: accountAddress } = useAccount()
 
+  const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
+
   const {
     data: dataTransactionHistory,
     isPending: isPendingTransactionHistory,
@@ -68,7 +70,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 
   if (isPending) {
-    return <CoinDetailsSkeleton chainId={chainId} isReadOnly={!chains.map(chain => chain.id).includes(chainId)} />
+    return <CoinDetailsSkeleton chainId={chainId} isReadOnly={isReadOnly} />
   }
 
   const isNativeToken = compareAddress(contractAddress, ethers.ZeroAddress)
@@ -117,7 +119,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
             <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </Box>
         </Box>
-        {chains.map(chain => chain.id).includes(chainId) && (
+        {!isReadOnly && (
           <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
         )}
         <Box>

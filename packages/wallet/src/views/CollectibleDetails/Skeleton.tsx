@@ -1,5 +1,4 @@
 import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
-import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
@@ -22,8 +21,8 @@ export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSke
         }}
       >
         <Box gap="3" alignItems="center" justifyContent="center" flexDirection="column">
-          <Skeleton style={{ width: '120px', height: '30px' }} />
-          <Skeleton style={{ width: '140px', height: '40px' }} />
+          <Skeleton style={{ width: '120px', height: '16px' }} />
+          <Skeleton style={{ width: '140px', height: '44px' }} />
         </Box>
         <Box>
           <Skeleton style={{ width: '100%', aspectRatio: '1/1' }} />
