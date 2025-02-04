@@ -17,7 +17,8 @@ import {
   SettingsNetwork,
   SettingsGeneral,
   TransactionDetails,
-  SwapCoin
+  SwapCoin,
+  SwapList
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
@@ -68,6 +69,14 @@ export const getContent = (navigation: Navigation) => {
       return <TransactionDetails transaction={navigation.params.transaction} />
     case 'swap-coin':
       return <SwapCoin contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
+    case 'swap-coin-list':
+      return (
+        <SwapList
+          contractAddress={navigation.params.contractAddress}
+          chainId={navigation.params.chainId}
+          amount={navigation.params.amount}
+        />
+      )
     case 'home':
     default:
       return <Home />
@@ -103,6 +112,7 @@ export const getHeader = (navigation: Navigation) => {
     case 'send-coin':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Send" />
     case 'swap-coin':
+    case 'swap-coin-list':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Swap" />
     case 'home':
     default:
