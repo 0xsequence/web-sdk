@@ -71,10 +71,19 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
 
   // Setup wallet linking
-  const { linkWallet } = useWaasLinkWallet(waasConnection?.connector)
+  const { linkWallet, removeLinkedWallet } = useWaasLinkWallet(waasConnection?.connector)
 
   const [lastConnectedWallet, setLastConnectedWallet] = useState<`0x${string}` | undefined>(undefined)
   const [isSigningLinkMessage, setIsSigningLinkMessage] = useState(false)
+
+  const handleUnlinkWallet = async (address: string) => {
+    try {
+      await removeLinkedWallet(address)
+      refetchLinkedWallets()
+    } catch (e) {
+      console.warn('unlink error:', e)
+    }
+  }
 
   useEffect(() => {
     if (!lastConnectedWallet) {
@@ -335,7 +344,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
         <>
           {wallets.length > 0 && !showEmailWaasPinInput && (
             <>
-              <ConnectedWallets wallets={wallets} linkedWallets={linkedWallets} disconnectWallet={disconnectWallet} />
+              <ConnectedWallets
+                wallets={wallets}
+                linkedWallets={linkedWallets}
+                disconnectWallet={disconnectWallet}
+                unlinkWallet={handleUnlinkWallet}
+              />
 
               <>
                 <Divider color="backgroundRaised" width="full" />

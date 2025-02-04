@@ -1,5 +1,5 @@
 import { LinkedWallet } from '@0xsequence/api'
-import { Box, Text, Divider } from '@0xsequence/design-system'
+import { Box, Text } from '@0xsequence/design-system'
 import { motion, AnimatePresence } from 'framer-motion'
 import React, { useMemo, useEffect, useRef } from 'react'
 
@@ -11,11 +11,17 @@ interface ConnectedWalletsProps {
   wallets: KitWallet[]
   linkedWallets?: LinkedWallet[]
   disconnectWallet: (address: string) => void
+  unlinkWallet: (address: string) => void
 }
 
 const MAX_HEIGHT = 240
 
-export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: ConnectedWalletsProps): JSX.Element | null => {
+export const ConnectedWallets = ({
+  wallets,
+  linkedWallets,
+  disconnectWallet,
+  unlinkWallet
+}: ConnectedWalletsProps): JSX.Element | null => {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const updateScrollFades = (target: HTMLElement) => {
@@ -45,7 +51,10 @@ export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: C
         isActive: false,
         isLinked: true,
         isReadOnly: true,
-        onDisconnect: () => {} // No-op for read-only wallets
+        onDisconnect: () => {}, // No-op for read-only wallets
+        onUnlink: () => {
+          unlinkWallet(lw.linkedWalletAddress)
+        }
       }))
 
     // Transform KitWallet to WalletListItemProps
@@ -56,7 +65,8 @@ export const ConnectedWallets = ({ wallets, linkedWallets, disconnectWallet }: C
       isActive: wallet.isActive,
       isLinked: linkedWallets?.some(lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()) ?? false,
       isReadOnly: false,
-      onDisconnect: () => disconnectWallet(wallet.address)
+      onDisconnect: () => disconnectWallet(wallet.address),
+      onUnlink: () => {} // No-op for connected wallets
     }))
 
     // Sort wallets: embedded first, then by name and address

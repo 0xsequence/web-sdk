@@ -1,5 +1,16 @@
-import { Box, CloseIcon, IconButton, LinkIcon, Text, Tooltip, truncateAddress } from '@0xsequence/design-system'
-import React from 'react'
+import {
+  Box,
+  Button,
+  CheckmarkIcon,
+  CloseIcon,
+  IconButton,
+  LinkIcon,
+  Spinner,
+  Text,
+  Tooltip,
+  truncateAddress
+} from '@0xsequence/design-system'
+import React, { useState } from 'react'
 
 export interface WalletListItemProps {
   name: string
@@ -9,6 +20,7 @@ export interface WalletListItemProps {
   isLinked: boolean
   isReadOnly: boolean
   onDisconnect: () => void
+  onUnlink?: () => void
 }
 
 export const WalletListItem: React.FC<WalletListItemProps> = ({
@@ -18,8 +30,17 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
   isActive,
   isLinked,
   isReadOnly,
-  onDisconnect
+  onDisconnect,
+  onUnlink
 }) => {
+  const [showUnlinkConfirm, setShowUnlinkConfirm] = useState(false)
+  const [isUnlinking, setIsUnlinking] = useState(false)
+
+  const handleUnlink = () => {
+    setIsUnlinking(true)
+    onUnlink?.()
+  }
+
   return (
     <Box
       padding="2"
@@ -57,6 +78,20 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
         </Box>
       </Box>
       {!isReadOnly && <IconButton size="xs" icon={CloseIcon} onClick={onDisconnect} />}
+      {isReadOnly && isLinked && (
+        <Box position="relative" display="flex" alignItems="center" gap="2">
+          {isUnlinking ? (
+            <Spinner />
+          ) : showUnlinkConfirm ? (
+            <Box display="flex" gap="3">
+              <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={handleUnlink} />
+              <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
+            </Box>
+          ) : (
+            <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
+          )}
+        </Box>
+      )}
     </Box>
   )
 }
