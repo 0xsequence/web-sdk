@@ -107,9 +107,6 @@ export const ConnectedWallets = ({
 
   return (
     <Box marginTop="4" flexDirection="column">
-      <Text variant="small" color="text50" marginBottom="1">
-        Your wallets
-      </Text>
       <Box position="relative">
         <Box
           as={motion.div}

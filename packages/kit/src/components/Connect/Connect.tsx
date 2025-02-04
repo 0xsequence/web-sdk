@@ -325,7 +325,13 @@ export const Connect = (props: ConnectWalletContentProps) => {
         }}
       >
         <TitleWrapper isPreview={isPreview}>
-          <Text>{isLoading ? `Connecting...` : `Sign in ${projectName ? `to ${projectName}` : ''}`}</Text>
+          <Text color="text80">
+            {isLoading
+              ? `Connecting...`
+              : hasConnectedSocialOrSequenceUniversal
+                ? 'Wallets'
+                : `Sign in ${projectName ? `to ${projectName}` : ''}`}
+          </Text>
         </TitleWrapper>
 
         {isSigningLinkMessage && (
