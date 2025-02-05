@@ -16,7 +16,7 @@ interface UseWaasSignatureForLinkingResult {
   error: Error | null
 }
 
-const WAAS_SIGNATURE_PREFIX = 'waas-signature-'
+const WAAS_SIGNATURE_PREFIX = '@0xsequence.waas_signature-'
 const getSignatureKey = (address: string) => `${WAAS_SIGNATURE_PREFIX}${address}`
 
 export const useWaasGetLinkedWalletsSignature = (
