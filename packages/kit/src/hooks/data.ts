@@ -710,7 +710,7 @@ interface UseLinkedWalletsOptions {
 
 // Create a stable storage key from args
 const createStorageKey = (args: GetLinkedWalletsArgs): string =>
-  `sequence_linked_wallets_${args.parentWalletAddress}_${args.signatureChainId}`
+  `@0xsequence.linked_wallets-${args.parentWalletAddress}-${args.signatureChainId}`
 
 const getLinkedWallets = async (
   apiClient: SequenceAPIClient,
