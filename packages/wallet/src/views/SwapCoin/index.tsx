@@ -1,35 +1,12 @@
 import { ethers } from 'ethers'
-import { useRef, useState, useEffect, ChangeEvent } from 'react'
-import {
-  Box,
-  Button,
-  ChevronRightIcon,
-  CloseIcon,
-  CopyIcon,
-  GradientAvatar,
-  Spinner,
-  Text,
-  NumericInput,
-  SearchIcon,
-  TextInput,
-  vars,
-  Card
-} from '@0xsequence/design-system'
+import { useRef, useState, ChangeEvent } from 'react'
+import { Box, Button, ChevronRightIcon, Text, NumericInput, vars } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 
-import {
-  compareAddress,
-  getNativeTokenInfoByChainId,
-  useAnalyticsContext,
-  ExtendedConnector,
-  useExchangeRate,
-  useCoinPrices,
-  useBalancesSummary
-} from '@0xsequence/kit'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
+import { compareAddress, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalancesSummary } from '@0xsequence/kit'
+import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useNavigationContext } from '../../contexts/Navigation'
 import { useSettings, useNavigation } from '../../hooks'
 import { SendItemInfo } from '../../shared/SendItemInfo'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
@@ -41,22 +18,12 @@ export interface SwapCoinProps {
 
 export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const { setNavigation } = useNavigation()
-  const { setIsBackButtonEnabled } = useNavigationContext()
-  const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
-  const connectedChainId = useChainId()
-  const { address: accountAddress = '', connector } = useAccount()
-  const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
-  const isCorrectChainId = connectedChainId === chainId
-  const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
-  const { switchChainAsync } = useSwitchChain()
+  const { address: accountAddress = '' } = useAccount()
+
   const amountInputRef = useRef<HTMLInputElement>(null)
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
-  const { sendTransaction } = useSendTransaction()
-  const [isSendTxnPending, setIsSendTxnPending] = useState(false)
-
-  const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
 
   const { data: balances = [], isPending: isPendingBalances } = useBalancesSummary({
     chainIds: [chainId],
@@ -139,7 +106,6 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
       flexDirection="column"
       as="form"
       onSubmit={handleFindQuotesClick}
-      pointerEvents={isSendTxnPending ? 'none' : 'auto'}
       style={{
         marginTop: HEADER_HEIGHT
       }}
@@ -179,24 +145,6 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
         />
       </Box>
 
-      {showSwitchNetwork && (
-        <Box marginTop="3">
-          <Text variant="small" color="negative" marginBottom="2">
-            The wallet is connected to the wrong network. Please switch network before proceeding
-          </Text>
-          <Button
-            marginTop="2"
-            width="full"
-            variant="primary"
-            type="button"
-            label="Switch Network"
-            onClick={async () => await switchChainAsync({ chainId })}
-            disabled={isCorrectChainId}
-            style={{ height: '52px', borderRadius: vars.radii.md }}
-          />
-        </Box>
-      )}
-
       <Box style={{ height: '52px' }} alignItems="center" justifyContent="center">
         <Button
           color="text100"
@@ -204,7 +152,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
           width="full"
           variant="primary"
           type="submit"
-          disabled={!isNonZeroAmount || (!isCorrectChainId && !isConnectorSequenceBased)}
+          disabled={!isNonZeroAmount}
           label="Continue"
           rightIcon={ChevronRightIcon}
           style={{ height: '52px', borderRadius: vars.radii.md }}

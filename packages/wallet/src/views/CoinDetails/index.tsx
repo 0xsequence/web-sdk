@@ -131,7 +131,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
         {!isReadOnly && (
           <Box gap="2">
             <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
-            <Button width="full" variant="primary" leftIcon={SwapIcon} color="text100" label="Swap" onClick={onClickSwap} />
+            <Button width="full" variant="primary" leftIcon={SwapIcon} color="text100" label="Buy" onClick={onClickSwap} />
           </Box>
         )}
         <Box>

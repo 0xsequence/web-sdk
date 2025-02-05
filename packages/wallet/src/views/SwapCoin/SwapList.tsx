@@ -1,20 +1,23 @@
-import { Box, Button, Spinner, Text } from '@0xsequence/design-system'
+import { Box, Button, Spinner, Text, vars } from '@0xsequence/design-system'
 import {
   CryptoOption,
   compareAddress,
   formatDisplay,
-  useContractInfo,
   useSwapPrices,
   useSwapQuote,
   sendTransactions,
-  useIndexerClient
+  useIndexerClient,
+  useAnalyticsContext,
+  ExtendedConnector,
+  useClearCachedBalances
 } from '@0xsequence/kit'
 
 import { useState } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
-import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSwitchChain, useConfig, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
+import { useNavigation } from '../../hooks'
 
 interface SwapListProps {
   chainId: number
@@ -23,12 +26,21 @@ interface SwapListProps {
 }
 
 export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) => {
+  const { clearCachedBalances } = useClearCachedBalances()
+  const { setNavigation } = useNavigation()
   const { address: userAddress, connector } = useAccount()
   const [isTxsPending, setIsTxsPending] = useState(false)
   const [isError, setIsError] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
   const publicClient = usePublicClient({ chainId })
   const { data: walletClient } = useWalletClient({ chainId })
+  const { switchChainAsync } = useSwitchChain()
+
+  const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
+  const { analytics } = useAnalyticsContext()
+  const connectedChainId = useChainId()
+  const isCorrectChainId = connectedChainId === chainId
+  const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
 
   const buyCurrencyAddress = contractAddress
   const sellCurrencyAddress = selectedCurrency || ''
@@ -49,7 +61,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
     {
       userAddress: userAddress ?? '',
-      buyCurrencyAddress: contractAddress,
+      buyCurrencyAddress,
       buyAmount: amount,
       chainId: chainId,
       sellCurrencyAddress,
@@ -121,20 +133,30 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
         chainId,
         indexerClient,
         senderAddress: userAddress,
-        transactions: [...getSwapTransactions()],
-        waitConfirmationForLastTransaction: false
+        transactions: [...getSwapTransactions()]
       })
 
-      // TODO: post swap TXs dump cache
+      analytics?.track({
+        event: 'SEND_TRANSACTION_REQUEST',
+        props: {
+          type: 'crypto',
+          walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+          source: 'sequence-kit/wallet',
+          chainId: String(chainId),
+          origin: window.location.origin,
+          txHash
+        }
+      })
 
-      // closeSwapModal()
-      // openTransactionStatusModal({
-      //   chainId,
-      //   txHash,
-      //   onSuccess: () => {
-      //     onSuccess(txHash)
-      //   }
-      // })
+      clearCachedBalances()
+
+      setNavigation({
+        location: 'coin-details',
+        params: {
+          chainId,
+          contractAddress
+        }
+      })
     } catch (e) {
       setIsTxsPending(false)
       setIsError(true)
@@ -147,7 +169,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const SwapContent = () => {
     if (isLoading) {
       return (
-        <Box marginTop="3" width="full" justifyContent="center" alignItems="center">
+        <Box width="full" justifyContent="center" alignItems="center">
           <Spinner />
         </Box>
       )
@@ -163,6 +185,9 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
       return (
         <Box width="full" gap="3" flexDirection="column">
           <Box width="full" flexDirection="column" gap="2">
+            <Text variant="small" color="text100">
+              Select a token in your wallet to swap to 0.2 USDC.
+            </Text>
             {swapPrices.map(swapPrice => {
               const sellCurrencyAddress = swapPrice.info?.address || ''
 
@@ -197,12 +222,40 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
               </Text>
             </Box>
           )}
+
+          {showSwitchNetwork && (
+            <Box marginTop="3">
+              <Text variant="small" color="negative" marginBottom="2">
+                The wallet is connected to the wrong network. Please switch network before proceeding
+              </Text>
+              <Button
+                marginTop="2"
+                width="full"
+                variant="primary"
+                type="button"
+                label="Switch Network"
+                onClick={async () => await switchChainAsync({ chainId })}
+                disabled={isCorrectChainId}
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
+            </Box>
+          )}
+
           <Button
             width="full"
-            disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending}
+            type="button"
+            disabled={
+              noOptionsFound ||
+              !selectedCurrency ||
+              quoteFetchInProgress ||
+              isTxsPending ||
+              (!isCorrectChainId && !isConnectorSequenceBased) ||
+              showSwitchNetwork
+            }
             variant="primary"
             label={quoteFetchInProgress ? 'Preparing swap...' : 'Proceed'}
             onClick={onClickProceed}
+            style={{ height: '52px', borderRadius: vars.radii.md }}
           />
         </Box>
       )
@@ -215,46 +268,3 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     </Box>
   )
 }
-// // Check fee options before showing confirmation
-// const feeOptionsResult = await checkFeeOptions({
-//   transactions: [transaction],
-//   chainId
-// })
-
-// setFeeOptions(
-//   feeOptionsResult?.feeOptions
-//     ? {
-//         options: feeOptionsResult.feeOptions,
-//         chainId
-//       }
-//     : undefined
-// )
-
-// setShowConfirmation(true)
-
-// setIsCheckingFeeOptions(false)
-
-// {showConfirmation && (
-//   <TransactionConfirmation
-//     name={name}
-//     symbol={symbol}
-//     imageUrl={imageUrl}
-//     amount={amountToSendFormatted}
-//     toAddress={toAddress}
-//     chainId={chainId}
-//     balance={tokenBalance?.balance || '0'}
-//     decimals={decimals}
-//     fiatValue={amountToSendFiat}
-//     feeOptions={feeOptions}
-//     onSelectFeeOption={feeTokenAddress => {
-//       setSelectedFeeTokenAddress(feeTokenAddress)
-//     }}
-//     isLoading={isSendTxnPending}
-//     onConfirm={() => {
-//       executeTransaction()
-//     }}
-//     onCancel={() => {
-//       setShowConfirmation(false)
-//     }}
-//   />
-// )}

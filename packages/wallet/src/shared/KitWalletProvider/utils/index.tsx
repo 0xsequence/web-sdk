@@ -113,7 +113,7 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader secondaryText="Wallet / " primaryText="Send" />
     case 'swap-coin':
     case 'swap-coin-list':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Swap" />
+      return <NavigationHeader secondaryText="Wallet / " primaryText="Buy" />
     case 'home':
     default:
       return <WalletHeader />

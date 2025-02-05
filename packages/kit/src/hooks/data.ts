@@ -13,8 +13,12 @@ import {
 } from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
+<<<<<<< HEAD
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
+=======
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
+>>>>>>> e7139432 (swap info)
 import { zeroAddress } from 'viem'
 
 import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
@@ -28,6 +32,18 @@ export const time = {
   oneSecond: 1 * 1000,
   oneMinute: 60 * 1000,
   oneHour: 60 * 60 * 1000
+}
+
+export const useClearCachedBalances = () => {
+  const queryClient = useQueryClient()
+
+  return {
+    clearCachedBalances: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['balances', 'balancesSummary', 'coinBalance', 'coinBalanceSummary', 'collectibleBalance', 'collectibleBalanceDetails', 'collectionBalance', 'collectionBalanceDetails', 'transactionHistory']
+      })
+    }
+  }
 }
 
 export const getNativeTokenBalance = async (indexerClient: SequenceIndexer, chainId: number, accountAddress: string) => {
