@@ -272,18 +272,25 @@ export const Connected = () => {
             <Text fontWeight="semibold" variant="small" color="text50">
               Connected Wallets
             </Text>
-            {wallets.map(wallet => (
-              <WalletListItem
-                key={wallet.id}
-                id={wallet.id}
-                name={wallet.name}
-                address={wallet.address}
-                isActive={wallet.isActive}
-                isEmbedded={wallet.isEmbedded}
-                onSelect={() => setActiveWallet(wallet.address)}
-                onDisconnect={() => disconnectWallet(wallet.address)}
-              />
-            ))}
+            {[...wallets]
+              .sort((a, b) => {
+                // Sort embedded wallet to the top
+                if (a.isEmbedded && !b.isEmbedded) return -1
+                if (!a.isEmbedded && b.isEmbedded) return 1
+                return 0
+              })
+              .map(wallet => (
+                <WalletListItem
+                  key={wallet.id}
+                  id={wallet.id}
+                  name={wallet.name}
+                  address={wallet.address}
+                  isActive={wallet.isActive}
+                  isEmbedded={wallet.isEmbedded}
+                  onSelect={() => setActiveWallet(wallet.address)}
+                  onDisconnect={() => disconnectWallet(wallet.address)}
+                />
+              ))}
           </Box>
           <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
             <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
