@@ -146,7 +146,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
             }
           })
 
-          await refetchLinkedWallets()
+          refetchLinkedWallets()
         } catch (e) {
           console.log(e)
         }
