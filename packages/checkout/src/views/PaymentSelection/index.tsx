@@ -1,6 +1,8 @@
 import { Box, Button, Divider, Text } from '@0xsequence/design-system'
 import {
   useBalancesSummary,
+  useAnalyticsContext,
+  useBalances,
   useContractInfo,
   useSwapPrices,
   useSwapQuote,
@@ -16,7 +18,7 @@ import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../constants'
+import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
 import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
@@ -43,6 +45,7 @@ export const PaymentSelectionHeader = () => {
 export const PaymentSelectionContent = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const { selectPaymentSettings } = useSelectPaymentModal()
+  const { analytics } = useAnalyticsContext()
 
   const [disableButtons, setDisableButtons] = useState(false)
   const [isError, setIsError] = useState<boolean>(false)
@@ -207,6 +210,23 @@ export const PaymentSelectionContent = () => {
         waitConfirmationForLastTransaction: false
       })
 
+      analytics?.track({
+        event: 'SEND_TRANSACTION_REQUEST',
+        props: {
+          type: 'crypto',
+          source: NFT_CHECKOUT_SOURCE,
+          chainId: String(chainId),
+          listedCurrency: currencyAddress,
+          purchasedCurrency: currencyAddress,
+          origin: window.location.origin,
+          from: userAddress,
+          to: targetContractAddress,
+          item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
+          item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          txHash
+        }
+      })
+
       closeSelectPaymentModal()
 
       skipOnCloseCallback()
@@ -314,6 +334,23 @@ export const PaymentSelectionContent = () => {
         transactions,
         transactionConfirmations,
         waitConfirmationForLastTransaction: false
+      })
+
+      analytics?.track({
+        event: 'SEND_TRANSACTION_REQUEST',
+        props: {
+          type: 'crypto',
+          source: NFT_CHECKOUT_SOURCE,
+          chainId: String(chainId),
+          listedCurrency: swapPrice.price.currencyAddress,
+          purchasedCurrency: currencyAddress,
+          origin: window.location.origin,
+          from: userAddress,
+          to: targetContractAddress,
+          item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
+          item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          txHash
+        }
       })
 
       closeSelectPaymentModal()
@@ -425,8 +462,8 @@ export const PaymentSelectionContent = () => {
                 {/* Replace by icon from design-system once new release is out */}
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M8.82807 5.24497V3.52873C8.82807 2.24258 7.78549 1.19995 6.49934 1.19995C5.21319 1.19995 4.17057 2.24258 4.17057 3.52873L4.17057 5.24497H3.9832C3.32046 5.24497 2.7832 5.78223 2.7832 6.44497V9.49529C2.7832 10.158 3.32046 10.6953 3.9832 10.6953H9.01546C9.6782 10.6953 10.2155 10.158 10.2155 9.49529V6.44497C10.2155 5.78223 9.6782 5.24497 9.01546 5.24497H8.82807ZM6.49934 2.06705C5.69209 2.06705 5.03769 2.72144 5.03766 3.52867L5.03767 5.24497H7.96097V3.52867C7.96094 2.72144 7.30658 2.06705 6.49934 2.06705Z"
                     fill="#6D6D6D"
                   />

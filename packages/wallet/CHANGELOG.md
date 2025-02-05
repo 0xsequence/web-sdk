@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 4.6.0
+
+### Minor Changes
+
+- Connect modal design update, checkout UX improvements, readOnlyNetworks config option for wallet, multiple connection support, new OTP flow
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.0
+
 ## 4.5.9
 
 ### Patch Changes

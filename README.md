@@ -212,7 +212,7 @@ function App() {
   <img src="public/docs/sign-in-modal.png">
 </div>
 
-Wallet selection is done through a modal which can be called programmatically.
+Wallet selection is done through a modal which can be called programmatically. Kit allows multiple connection, so it can be called again to connect more wallets.
 
 ```js
 import { useOpenConnectModal } from '@0xsequence/kit'
@@ -221,13 +221,13 @@ import { useDisconnect, useAccount } from 'wagmi'
 const MyReactComponent = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
 
-  const { isConnected } = useAccount()
+  const { wallets } = useKitWallets()
 
   const onClick = () => {
     setOpenConnectModal(true)
   }
 
-  return <>{!isConnected && <button onClick={onClick}>Sign in</button>}</>
+  return <>{!wallets.length && <button onClick={onClick}>Sign in</button>}</>
 }
 ```
 
@@ -242,6 +242,43 @@ import { useOpenConnectModal } from '@0xsequence/kit'
 // ...
 const { setOpenConnectModal } = useOpenConnectModal()
 setOpenConnectModal(true)
+```
+
+### useKitWallets
+
+Use the `useKitWallets` hook to manage multiple connected wallets in your application and see linked wallets of the connected embedded wallet. This hook is particularly useful when working with a combination of embedded and external wallets.
+
+```js
+import { useKitWallets } from '@0xsequence/kit'
+
+const {
+  wallets, // Array of connected wallets
+  linkedWallets, // Array of linked wallets (for embedded wallets)
+  setActiveWallet, // Function to set a wallet as active
+  disconnectWallet // Function to disconnect a wallet
+} = useKitWallets()
+
+/**
+ * Interface representing a connected wallet
+ */
+interface KitWallet {
+  /** Unique identifier */
+  id: string
+  /** Display name of the wallet */
+  name: string
+  /** Wallet address */
+  address: string
+  /** Whether this is the currently active wallet */
+  isActive: boolean
+  /** Whether this is an embedded wallet */
+  isEmbedded: boolean
+}
+
+// Switch to a different connected wallet
+await setActiveWallet(walletAddress)
+
+// Disconnect a specific wallet
+await disconnectWallet(walletAddress)
 ```
 
 ### useTheme

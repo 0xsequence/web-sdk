@@ -1,1 +1,1 @@
-export { ConnectButton, GoogleWaasConnectButton, AppleWaasConnectButton, EmailConnectButton } from './ConnectButton'
+export { getLogo, ConnectButton, GoogleWaasConnectButton, AppleWaasConnectButton, ShowAllWalletsButton } from './ConnectButton'

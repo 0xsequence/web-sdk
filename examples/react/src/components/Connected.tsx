@@ -5,40 +5,34 @@ import {
   useIndexerClient,
   signEthAuthProof,
   validateEthProof,
-  getModalPositionCss
+  getModalPositionCss,
+  useOpenConnectModal,
+  ContractVerificationStatus,
+  useKitWallets
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
-import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
-import { useOpenWalletModal, useWalletNavigation } from '@0xsequence/kit-wallet'
+import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
+import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
 import { formatUnits, parseUnits } from 'viem'
-import { arbitrumSepolia } from 'viem/chains'
-import {
-  useAccount,
-  useChainId,
-  useConnections,
-  usePublicClient,
-  useSendTransaction,
-  useWalletClient,
-  useWriteContract
-} from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
-import { sponsoredContractAddresses, getErc1155SaleContractConfig } from '../config'
+import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
-
-import { ContractVerificationStatus } from '@0xsequence/kit'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
+  const { setOpenConnectModal } = useOpenConnectModal()
+
   const { address } = useAccount()
   const { openSwapModal } = useSwapModal()
   const { setOpenWalletModal } = useOpenWalletModal()
@@ -54,9 +48,8 @@ export const Connected = () => {
   const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
   const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
-  const connections = useConnections()
-
-  const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
+  const { wallets, setActiveWallet, disconnectWallet } = useKitWallets()
+  const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
 
   const {
     data: txnData,
@@ -481,6 +474,10 @@ export const Connected = () => {
     })
   }
 
+  const onClickConnect = () => {
+    setOpenConnectModal(true)
+  }
+
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
@@ -491,9 +488,7 @@ export const Connected = () => {
     resetSendUnsponsoredTransaction()
     resetSendTransaction()
     setFeeOptionBalances([])
-  }, [chainId])
-
-  const { setNavigation } = useWalletNavigation()
+  }, [chainId, address])
 
   return (
     <>
@@ -502,16 +497,40 @@ export const Connected = () => {
       <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4" style={{ maxWidth: breakpoints.md }}>
           <Box flexDirection="column" gap="2">
-            <Text variant="small" color="text50" fontWeight="medium">
+            <Box marginY="3" flexDirection="column" gap="2">
+              <Text fontWeight="semibold" variant="small" color="text50">
+                Connected Wallets
+              </Text>
+              {[...wallets]
+                .sort((a, b) => {
+                  // Sort embedded wallet to the top
+                  if (a.isEmbedded && !b.isEmbedded) return -1
+                  if (!a.isEmbedded && b.isEmbedded) return 1
+                  return 0
+                })
+                .map(wallet => (
+                  <WalletListItem
+                    key={wallet.id}
+                    id={wallet.id}
+                    name={wallet.name}
+                    address={wallet.address}
+                    isActive={wallet.isActive}
+                    isEmbedded={wallet.isEmbedded}
+                    onSelect={() => setActiveWallet(wallet.address)}
+                    onDisconnect={() => disconnectWallet(wallet.address)}
+                  />
+                ))}
+            </Box>
+
+            <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
+              <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+            </Box>
+
+            <Text variant="small" color="text50" fontWeight="medium" marginTop="6">
               Demos
             </Text>
-            {/* <CardButton
-        title="NFT Checkout"
-        description="NFT Checkout testing"
-        onClick={onClickCheckout}
-      /> */}
             <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
-            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
+            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"
                 description="Send a transaction with your wallet without paying any fees"
@@ -736,7 +755,7 @@ export const Connected = () => {
             </Box>
           )}
 
-          {isWaasConnection && (
+          {isWaasConnectionActive && (
             <Box marginY="3">
               <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
                 <Text fontWeight="semibold" variant="small" color="text50">

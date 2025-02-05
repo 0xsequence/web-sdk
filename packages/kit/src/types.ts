@@ -70,6 +70,7 @@ export interface KitConfig {
   position?: ModalPosition
   signIn?: {
     logoUrl?: string
+    descriptiveSocials?: boolean
     projectName?: string
     useMock?: boolean
   }
