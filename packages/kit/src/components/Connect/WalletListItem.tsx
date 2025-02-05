@@ -77,7 +77,7 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
           </Text>
         </Box>
       </Box>
-      {!isReadOnly && <IconButton size="xs" icon={CloseIcon} onClick={onDisconnect} />}
+      {!isReadOnly && <Button size="xs" variant="glass" label="Disconnect" onClick={onDisconnect} />}
       {isReadOnly && isLinked && (
         <Box position="relative" display="flex" alignItems="center" gap="2">
           {isUnlinking ? (
