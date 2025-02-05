@@ -94,6 +94,8 @@ export { useIndexerClient, useIndexerClients } from './hooks/useIndexerClient'
 export { useStorage, useStorageItem } from './hooks/useStorage'
 export { useChain } from './hooks/useChain'
 export { useKitWallets } from './hooks/useKitWallets'
+export type { KitWallet } from './hooks/useKitWallets'
+export type { LinkedWallet } from '@0xsequence/api'
 export {
   getNativeTokenBalance,
   getCollectionBalance,
