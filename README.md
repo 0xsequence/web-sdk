@@ -55,6 +55,7 @@ interface CreateConfigOptions {
     contractAddress: string
     chainId: number
   }>
+  readOnlyNetworks?: number[]
   ethAuth?: EthAuthSettings
 
   wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
@@ -318,6 +319,8 @@ The settings are described in more detailed in the Sequence Kit documentation.
         chainId: 137
       }
     ],
+    // allows read only access to network assets without setting wagmi config networks
+    readOnlyNetworks: [10]
   }
 
   <KitProvider config={kitConfig}>

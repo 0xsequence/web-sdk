@@ -54,6 +54,7 @@ interface CreateConfigOptions {
     contractAddress: string
     chainId: number
   }>
+  readOnlyNetworks?: number[]
   ethAuth?: EthAuthSettings
 
   wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
