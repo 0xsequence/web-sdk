@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import { Address } from 'viem'
 import { Connector } from 'wagmi'
 
+import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
+
 interface UseWaasSignatureForLinkingResult {
   message: string | undefined
   signature: string | undefined
@@ -14,10 +16,8 @@ interface UseWaasSignatureForLinkingResult {
   error: Error | null
 }
 
-// Chain doesn't matter for linking, we can just hardcode a common one
-const CHAIN_ID_FOR_SIGNATURE = 137
-
-const getSignatureKey = (address: string) => `waas-signature-${address}`
+const WAAS_SIGNATURE_PREFIX = 'waas-signature-'
+const getSignatureKey = (address: string) => `${WAAS_SIGNATURE_PREFIX}${address}`
 
 export const useWaasGetLinkedWalletsSignature = (
   connection:
@@ -81,7 +81,7 @@ export const useWaasGetLinkedWalletsSignature = (
 
     // Clean up signatures from other addresses
     Object.keys(localStorage)
-      .filter(key => key.startsWith(getSignatureKey('')) && key !== getSignatureKey(address))
+      .filter(key => key.startsWith(WAAS_SIGNATURE_PREFIX) && key !== getSignatureKey(address))
       .forEach(key => localStorage.removeItem(key))
 
     // Try to get cached signature for current address
