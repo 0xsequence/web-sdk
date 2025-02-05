@@ -1,5 +1,5 @@
 import { LinkedWallet } from '@0xsequence/api'
-import { Box, Text } from '@0xsequence/design-system'
+import { Box } from '@0xsequence/design-system'
 import { motion, AnimatePresence } from 'framer-motion'
 import React, { useMemo, useEffect, useRef } from 'react'
 

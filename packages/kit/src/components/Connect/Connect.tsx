@@ -17,6 +17,7 @@ import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants'
 import { CHAIN_ID_FOR_SIGNATURE } from '../../constants/walletLinking'
+import { useAnalyticsContext } from '../../contexts/Analytics'
 import { useKitWallets } from '../../hooks/useKitWallets'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
@@ -44,6 +45,8 @@ interface ConnectWalletContentProps extends KitConnectProviderProps {
 
 export const Connect = (props: ConnectWalletContentProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
+
+  const { analytics } = useAnalyticsContext()
 
   const { onClose, emailConflictInfo, config = {} as KitConfig, isPreview = false } = props
   const { signIn = {} } = config
@@ -79,6 +82,17 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const handleUnlinkWallet = async (address: string) => {
     try {
       await removeLinkedWallet(address)
+
+      analytics?.track({
+        event: 'UNLINK_WALLET',
+        props: {
+          parentWalletAddress: wallets.find(w => w.isEmbedded)?.address || '',
+          linkedWalletAddress: address,
+          linkedWalletType: linkedWallets?.find(lw => lw.linkedWalletAddress === address)?.walletType || '',
+          source: 'sequence-kit/core'
+        }
+      })
+
       refetchLinkedWallets()
     } catch (e) {
       console.warn('unlink error:', e)
@@ -120,6 +134,16 @@ export const Connect = (props: ConnectWalletContentProps) => {
             childWalletAddress: lastConnectedWallet,
             childMessage,
             childSignature
+          })
+
+          analytics?.track({
+            event: 'LINK_WALLET',
+            props: {
+              parentWalletAddress: waasWalletAddress,
+              linkedWalletAddress: lastConnectedWallet,
+              linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+              source: 'sequence-kit/core'
+            }
           })
 
           await refetchLinkedWallets()
