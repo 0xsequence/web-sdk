@@ -13,12 +13,8 @@ import {
 } from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
-<<<<<<< HEAD
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { useCallback, useEffect, useRef, useState } from 'react'
-=======
 import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
->>>>>>> e7139432 (swap info)
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { zeroAddress } from 'viem'
 
 import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
