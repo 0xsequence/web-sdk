@@ -9,12 +9,12 @@ import {
   useIndexerClient,
   useAnalyticsContext,
   ExtendedConnector,
-  useClearCachedBalances
+  useClearCachedBalances,
+  useCurrencyInfo
 } from '@0xsequence/kit'
-
 import { useState } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
-import { useAccount, useChainId, usePublicClient, useSwitchChain, useConfig, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
@@ -56,6 +56,8 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     { disabled: false }
   )
 
+  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useCurrencyInfo({ chainId, currencyAddress: contractAddress })
+
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
@@ -74,10 +76,9 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
 
   const indexerClient = useIndexerClient(chainId)
 
-  const isMainCurrencySelected = compareAddress(selectedCurrency || '', contractAddress)
-  const quoteFetchInProgress = isLoadingSwapQuote && !isMainCurrencySelected
+  const quoteFetchInProgress = isLoadingSwapQuote
 
-  const isLoading = swapPricesIsLoading
+  const isLoading = swapPricesIsLoading || isLoadingCurrencyInfo
 
   const onClickProceed = async () => {
     if (!userAddress || !publicClient || !walletClient || !connector) {
@@ -182,11 +183,29 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
         </Box>
       )
     } else {
+      const buyCurrencySymbol = currencyInfo?.symbol || ''
+      const buyCurrencyDecimals = currencyInfo?.decimals || 0
+      const displayedAmount = formatDisplay(formatUnits(BigInt(amount), buyCurrencyDecimals), {
+        disableScientificNotation: true,
+        disableCompactNotation: true,
+        significantDigits: 6
+      })
+
+      const getButtonLabel = () => {
+        if (quoteFetchInProgress) {
+          return 'Preparing swap...'
+        } else if (isTxsPending) {
+          return 'Processing...'
+        } else {
+          return 'Proceed'
+        }
+      }
+
       return (
         <Box width="full" gap="3" flexDirection="column">
           <Box width="full" flexDirection="column" gap="2">
             <Text variant="small" color="text100">
-              Select a token in your wallet to swap to 0.2 USDC.
+              Select a token in your wallet to swap for {displayedAmount} {buyCurrencySymbol}.
             </Text>
             {swapPrices.map(swapPrice => {
               const sellCurrencyAddress = swapPrice.info?.address || ''
@@ -253,7 +272,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
               showSwitchNetwork
             }
             variant="primary"
-            label={quoteFetchInProgress ? 'Preparing swap...' : 'Proceed'}
+            label={getButtonLabel()}
             onClick={onClickProceed}
             style={{ height: '52px', borderRadius: vars.radii.md }}
           />

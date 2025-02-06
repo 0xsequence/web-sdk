@@ -1,9 +1,8 @@
-import { ethers } from 'ethers'
-import { useRef, useState, ChangeEvent } from 'react'
 import { Box, Button, ChevronRightIcon, Text, NumericInput, vars } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-
 import { compareAddress, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalancesSummary } from '@0xsequence/kit'
+import { ethers } from 'ethers'
+import { useRef, useState, ChangeEvent } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'

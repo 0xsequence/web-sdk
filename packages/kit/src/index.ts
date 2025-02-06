@@ -122,7 +122,8 @@ export {
   useTransactionHistory,
   useSwapPrices,
   useSwapQuote,
-  useClearCachedBalances
+  useClearCachedBalances,
+  useCurrencyInfo
 } from './hooks/data'
 
 // Components
