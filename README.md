@@ -126,16 +126,18 @@ function App() {
 
 #### Need more customization?
 
-React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
+React apps must be wrapped by a WagmiProvider and the KitProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
 ```js
+import '@0xsequence/kit/styles.css'
+
 import Content from './components/Content'
 import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/kit'
+import { KitWalletProvider } from '@0xsequence/kit-wallet'
+import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
-
-import '@0xsequence/kit/styles.css'
 
 const projectAccessKey = '<your-project-access-key>'
 
@@ -198,7 +200,13 @@ function App() {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <KitProvider config={kitConfig}>
-          <Content />
+          {/* If you want to use wallet modal to show assets etc. */}
+          <KitWalletProvider>
+            {/* If you want to use checkout functionalities */}
+            <KitCheckoutProvider>
+              <Content />
+            </KitCheckoutProvider>
+          </KitWalletProvider>
         </KitProvider>
       </QueryClientProvider>
     </WagmiProvider>
@@ -300,7 +308,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 ```js
 
-  const kitConfig =  {
+  const kitConfig = {
     defaultTheme: 'light',
     position: 'top-left',
     signIn: {
@@ -318,6 +326,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
         chainId: 137
       }
     ],
+    readOnlyNetworks: [10], // Display assets in wallet (kit/wallet) from Optimism (chain ID 10) in addition to the networks specified in chainIds
   }
 
   <KitProvider config={kitConfig}>
