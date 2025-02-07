@@ -42,7 +42,6 @@ export const CoinTileContent = ({
       <Box>
         <Box flexDirection="row" gap="1" justifyContent="flex-start" alignItems="center">
           <Text
-            fontSize="medium"
             fontWeight="bold"
             whiteSpace="nowrap"
             color="text100"
