@@ -1,7 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { Box, Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system'
+import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system';
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -128,7 +128,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const { isEmailConflictOpen, emailConflictInfo, toggleEmailConflictModal } = useEmailConflict()
 
   return (
-    <KitConfigContextProvider value={config}>
+    (<KitConfigContextProvider value={config}>
       <ThemeContextProvider
         value={{
           theme,
@@ -178,70 +178,64 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             rejectPendingRequest('')
                           }}
                         >
-                          <Box paddingX="4" paddingTop="4" paddingBottom="2">
-                            <Box
-                              flexDirection="column"
-                              justifyContent="center"
-                              color="text100"
-                              alignItems="center"
-                              fontWeight="medium"
+                          <div className="px-4 pt-4 pb-2">
+                            <div
+                              className="flex flex-col justify-center text-text100 items-center font-medium"
                               style={{
                                 marginTop: '4px'
-                              }}
-                            >
+                              }}>
                               <ModalPrimitive.Title asChild>
-                                <Text as="h1" variant="large" marginBottom="5">
-                                  Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
-                                </Text>
+                                <Text className="mb-5" variant="large" asChild><h1>Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
+                                  </h1></Text>
                               </ModalPrimitive.Title>
 
                               {pendingRequestConfirmation.type === 'signMessage' && (
-                                <Box flexDirection="column" width="full">
+                                <div className="flex flex-col w-full">
                                   <Text variant="normal" color="text50" fontWeight="medium">
                                     Message
                                   </Text>
-                                  <Card marginTop="2" paddingY="6">
-                                    <Text variant="normal" marginBottom="4">
+                                  <Card className="mt-2 py-6">
+                                    <Text className="mb-4" variant="normal">
                                       {ethers.toUtf8String(pendingRequestConfirmation.message ?? '')}
                                     </Text>
                                   </Card>
-                                </Box>
+                                </div>
                               )}
 
                               {pendingRequestConfirmation.type === 'signTransaction' && (
-                                <Box flexDirection="column" width="full">
+                                <div className="flex flex-col w-full">
                                   <TxnDetails
                                     address={address ?? ''}
                                     txs={pendingRequestConfirmation.txs ?? []}
                                     chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
                                   />
 
-                                  <Collapsible label="Transaction data" marginTop="4">
-                                    <Card overflowX="scroll" marginY="3">
-                                      <Text variant="code" marginBottom="4">
+                                  <Collapsible className="mt-4" label="Transaction data">
+                                    <Card className="overflow-x-scroll my-3">
+                                      <Text className="mb-4" variant="code">
                                         {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
                                       </Text>
                                     </Card>
                                   </Collapsible>
-                                </Box>
+                                </div>
                               )}
 
                               {pendingRequestConfirmation.chainId && (
-                                <Box width="full" marginTop="3" justifyContent="flex-end" alignItems="center">
-                                  <Box width="1/2" justifyContent="flex-start">
+                                <div className="flex w-full mt-3 justify-end items-center">
+                                  <div className="flex w-1/2 justify-start">
                                     <Text variant="small" color="text50">
                                       Network
                                     </Text>
-                                  </Box>
-                                  <Box width="1/2" justifyContent="flex-end">
+                                  </div>
+                                  <div className="flex w-1/2 justify-end">
                                     <NetworkBadge chainId={pendingRequestConfirmation.chainId} />
-                                  </Box>
-                                </Box>
+                                  </div>
+                                </div>
                               )}
 
-                              <Box flexDirection="row" gap="2" width="full" marginTop="5">
+                              <div className="flex flex-row gap-2 w-full mt-5">
                                 <Button
-                                  width="full"
+                                  className="w-full"
                                   shape="square"
                                   size="lg"
                                   label="Reject"
@@ -250,22 +244,19 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                   }}
                                 />
                                 <Button
-                                  alignItems="center"
-                                  textAlign="center"
-                                  width="full"
+                                  className="flex items-center text-center w-full"
                                   shape="square"
                                   size="lg"
                                   label="Confirm"
                                   variant="primary"
                                   onClick={() => {
                                     confirmPendingRequest(pendingRequestConfirmation?.id)
-                                  }}
-                                />
-                              </Box>
-                            </Box>
+                                  }} />
+                              </div>
+                            </div>
 
                             <PoweredBySequence />
-                          </Box>
+                          </div>
                         </Modal>
                       )}
 
@@ -278,17 +269,17 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             toggleEmailConflictModal(false)
                           }}
                         >
-                          <Box padding="4">
+                          <div className="p-4">
                             <ModalPrimitive.Title asChild>
                               <PageHeading>Email already in use</PageHeading>
                             </ModalPrimitive.Title>
-                            <Box>
-                              <Text variant="normal" color="text80" textAlign="center">
+                            <div>
+                              <Text className="text-center" variant="normal" color="text80">
                                 Another account with this email address <Text color="text100">({emailConflictInfo.email})</Text>{' '}
                                 already exists with account type <Text color="text100">({emailConflictInfo.type})</Text>. Please
                                 sign in again with the correct account.
                               </Text>
-                              <Box marginTop="4" gap="2" alignItems="center" justifyContent="center">
+                              <div className="flex mt-4 gap-2 items-center justify-center">
                                 <Button
                                   label="OK"
                                   onClick={() => {
@@ -296,9 +287,9 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                     toggleEmailConflictModal(false)
                                   }}
                                 />
-                              </Box>
-                            </Box>
-                          </Box>
+                              </div>
+                            </div>
+                          </div>
                         </Modal>
                       )}
                     </AnimatePresence>
@@ -310,6 +301,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
           </ConnectModalContextProvider>
         </GoogleOAuthProvider>
       </ThemeContextProvider>
-    </KitConfigContextProvider>
-  )
+    </KitConfigContextProvider>)
+  );
 }

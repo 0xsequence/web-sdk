@@ -1,4 +1,4 @@
-import { Box, Spinner, NetworkImage, Text } from '@0xsequence/design-system'
+import { Spinner, NetworkImage, Text } from '@0xsequence/design-system';
 import {
   formatDisplay,
   NetworkBadge,
@@ -39,10 +39,10 @@ export const OrderSummary = () => {
 
   if (isLoading) {
     return (
-      <Box marginBottom="2" gap="3" style={{ height: '72px' }}>
+      (<div className="flex mb-2 gap-3" style={{ height: '72px' }}>
         <Spinner />
-      </Box>
-    )
+      </div>)
+    );
   }
 
   const formattedPrice = formatUnits(BigInt(selectPaymentSettings!.price), dataCurrencyInfo?.decimals || 0)
@@ -62,55 +62,54 @@ export const OrderSummary = () => {
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
 
   return (
-    <Box flexDirection="column" gap="5">
-      <Box>
+    (<div className="flex flex-col gap-5">
+      <div>
         <Text
           variant="small"
           fontWeight="bold"
           color="text100"
         >{`${totalQuantity} ${totalQuantity > 1 ? 'items' : 'item'}`}</Text>
-      </Box>
-
-      <Box flexDirection="row" gap="1">
+      </div>
+      <div className="flex flex-row gap-1">
         {selectPaymentSettings!.collectibles.map(collectible => {
           const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
-            <Box gap="3" alignItems="center" key={collectible.tokenId}>
-              <Box
-                borderRadius="md"
+            (<div className="flex gap-3 items-center" key={collectible.tokenId}>
+              <div
+                className="rounded-xl"
                 style={{
                   height: '36px',
                   width: '36px'
                 }}
               >
                 <CollectibleTileImage imageUrl={tokenMetadata?.image} />
-              </Box>
-              <Box flexDirection="column" gap="0.5">
+              </div>
+              <div className="flex flex-col gap-0.5">
                 <Text variant="small" color="text80" fontWeight="medium">
                   {dataCollectionInfo?.name || null}
                 </Text>
                 <Text variant="small" color="text100" fontWeight="bold">
                   {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
                 </Text>
-              </Box>
-            </Box>
-          )
+              </div>
+            </div>)
+          );
         })}
-      </Box>
-      <Box gap="1" flexDirection="column">
-        <Box flexDirection="row" gap="2" alignItems="center">
+      </div>
+      <div className="flex gap-1 flex-col">
+        <div className="flex flex-row gap-2 items-center">
           <NetworkImage chainId={chainId} size="sm" />
           <Text color="white" variant="large" fontWeight="bold">{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
-        </Box>
-        <Box>
+        </div>
+        <div>
           <Text color="text50" variant="normal" fontWeight="normal">
             {`$${priceFiat} estimated total`}
           </Text>
-        </Box>
-      </Box>
+        </div>
+      </div>
       <NetworkBadge chainId={chainId} />
-    </Box>
-  )
+    </div>)
+  );
 }

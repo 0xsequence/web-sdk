@@ -1,4 +1,4 @@
-import { Box, NetworkImage, Text, TokenImage } from '@0xsequence/design-system'
+import { NetworkImage, Text, TokenImage } from '@0xsequence/design-system'
 import React from 'react'
 
 import { useSettings } from '../../../../../hooks'
@@ -27,46 +27,38 @@ export const CoinTileContent = ({
   const priceChangeSymbol = priceChangePercentage > 0 ? '+' : ''
 
   return (
-    <Box
-      background="backgroundSecondary"
-      width="full"
-      height="full"
-      borderRadius="md"
-      padding="4"
-      flexDirection="column"
-      justifyContent="space-between"
-      alignItems="flex-start"
-      gap="1"
-    >
-      <TokenImage src={logoUrl} symbol={symbol} size="lg" />
-      <Box>
-        <Box flexDirection="row" gap="1" justifyContent="flex-start" alignItems="center">
+    <div className="flex bg-background-secondary w-full h-full rounded-xl p-4 flex-col justify-center items-start gap-1">
+      <div className="mb-1">
+        <TokenImage src={logoUrl} symbol={symbol} size="lg" />
+      </div>
+      <div className="mb-3">
+        <div className="flex flex-row gap-1 justify-start items-center">
           <Text
+            className="whitespace-nowrap"
             fontWeight="bold"
-            whiteSpace="nowrap"
             color="text100"
             style={{ maxWidth: '130px', textOverflow: 'ellipsis', overflow: 'hidden' }}
           >
             {tokenName}
           </Text>
           <NetworkImage chainId={chainId} size="xs" />
-        </Box>
+        </div>
         <Text
+          className="whitespace-nowrap"
           color="text50"
-          whiteSpace="nowrap"
           style={{ display: 'block', maxWidth: '150px', textOverflow: 'ellipsis', overflow: 'hidden' }}
         >
           {`${balance} ${symbol}`}
         </Text>
-      </Box>
-      <Box>
-        <Box>
+      </div>
+      <div>
+        <div>
           <Text fontWeight="bold" color="text100">{`${fiatCurrency.sign}${balanceFiat}`}</Text>
-        </Box>
+        </div>
         <Text style={{ color: getPercentageColor(priceChangePercentage) }}>
           {`${priceChangeSymbol}${priceChangePercentage.toFixed(2)}%`}
         </Text>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

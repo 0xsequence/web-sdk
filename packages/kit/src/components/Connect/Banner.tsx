@@ -1,4 +1,4 @@
-import { Box, Image } from '@0xsequence/design-system'
+import { Image } from '@0xsequence/design-system';
 
 import { KitConfig } from '../../types'
 
@@ -10,13 +10,11 @@ export const Banner = ({ config = {} as KitConfig }: BannerProps) => {
   const { signIn = {} } = config
   const { logoUrl } = signIn
 
-  return (
-    <>
-      {logoUrl && (
-        <Box marginTop="5" justifyContent="center" alignItems="center">
-          <Image src={logoUrl} style={{ height: '110px' }} />
-        </Box>
-      )}
-    </>
-  )
+  return (<>
+    {logoUrl && (
+      <div className="flex mt-5 justify-center items-center">
+        <Image src={logoUrl} style={{ height: '110px' }} />
+      </div>
+    )}
+  </>);
 }

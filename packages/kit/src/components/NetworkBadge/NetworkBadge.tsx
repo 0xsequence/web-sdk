@@ -1,4 +1,4 @@
-import { Box, NetworkImage, Text } from '@0xsequence/design-system'
+import { NetworkImage, Text } from '@0xsequence/design-system';
 import React from 'react'
 
 import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '../../utils/networks'
@@ -13,19 +13,11 @@ export const NetworkBadge = ({ chainId }: NetworkBadgeProps) => {
   const chainBGColor = getNetworkBackgroundColor(chainId)
 
   return (
-    <Box
-      height="6"
-      paddingX="2"
-      gap="1"
-      borderRadius="xs"
-      flexDirection="row"
-      justifyContent="center"
-      alignItems="center"
-      width="fit"
+    (<div
+      className="flex h-6 px-2 gap-1 rounded-sm flex-row justify-center items-center w-fit"
       style={{
         background: chainBGColor
-      }}
-    >
+      }}>
       <NetworkImage chainId={chainId} size="xs" />
       <Text
         variant="xsmall"
@@ -38,6 +30,6 @@ export const NetworkBadge = ({ chainId }: NetworkBadgeProps) => {
       >
         {network.title ?? network.name}
       </Text>
-    </Box>
-  )
+    </div>)
+  );
 }

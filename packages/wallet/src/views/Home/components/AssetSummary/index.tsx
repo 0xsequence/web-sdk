@@ -1,4 +1,4 @@
-import { Box, Spinner, vars } from '@0xsequence/design-system'
+import { Spinner } from '@0xsequence/design-system';
 import { TokenBalance } from '@0xsequence/indexer'
 import { useWalletSettings } from '@0xsequence/kit'
 import { useAccount } from 'wagmi'
@@ -96,8 +96,8 @@ export const AssetSummary = () => {
   }
 
   return (
-    <Box>
-      <Box
+    (<div>
+      <div
         style={{
           display: 'grid',
           gridTemplateColumns: `calc(50% - ${vars.space[1]}) calc(50% - ${vars.space[1]})`,
@@ -106,25 +106,21 @@ export const AssetSummary = () => {
       >
         {displayedTokens.map((balance, index) => {
           return (
-            <Box
+            (<div
+              className="select-none cursor-pointer aspect-square"
               key={index}
-              userSelect="none"
-              cursor="pointer"
-              opacity={{ hover: '80' }}
-              aspectRatio="1/1"
-              onClick={() => onClickItem(balance)}
-            >
+              onClick={() => onClickItem(balance)}>
               {balance.contractType === 'ERC1155' || balance.contractType === 'ERC721' ? (
                 <CollectibleTile balance={balance} />
               ) : (
                 <CoinTile balance={balance} />
               )}
-            </Box>
-          )
+            </div>)
+          );
         })}
-      </Box>
-      {isLoading && <Spinner justifySelf="center" marginTop="3" />}
+      </div>
+      {isLoading && <Spinner className="flex justify-self-center mt-3" />}
       <div ref={endOfPageRef} style={{ height: '1px' }} />
-    </Box>
-  )
+    </div>)
+  );
 }

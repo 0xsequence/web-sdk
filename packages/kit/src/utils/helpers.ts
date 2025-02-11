@@ -1,5 +1,5 @@
 export const isEmailValid = (email: string) => {
-  return /^\S+@\S+\.\S{2,}$/.test(email)
+  return /^\S+@\S+\.\S{2,}$/.test(email);
 }
 
 export const compareAddress = (a: string, b: string) => {
