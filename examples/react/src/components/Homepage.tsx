@@ -1,7 +1,7 @@
-import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
+import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
-import { useConnections } from 'wagmi'
+import { clsx } from 'clsx'
 
 import { Connected } from './Connected'
 
@@ -29,23 +29,21 @@ export const Homepage = () => {
   return (
     <main>
       {wallets.length === 0 ? (
-        <Box flexDirection="column" alignItems="center" justifyContent="center" gap="5" height="vh">
-          <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
-            <Image style={{ width: '48px' }} src="images/kit-logo.svg" />
+        <div className="flex flex-col items-center justify-center gap-5 h-screen">
+          <div className="flex flex-row items-center justify-center gap-3">
+            <Image className="w-12" src="images/kit-logo.svg" />
             <Image
-              style={{
-                width: '32px',
-                filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
-              }}
+              className="w-8"
               src="images/kit-logo-text.svg"
+              style={{ filter: theme === 'dark' ? 'invert(0)' : 'invert(1)' }}
             />
-          </Box>
+          </div>
 
-          <Box gap="2" flexDirection="row" alignItems="center">
+          <div className="flex gap-2 flex-row items-center">
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
-          </Box>
+          </div>
 
-          <Box gap="2" flexDirection="column" paddingX="4" marginTop="10" width="full" style={{ maxWidth: breakpoints.md }}>
+          <div className="flex gap-2 flex-col px-4 mt-10 w-full max-w-[480px]">
             <WalletTypeSelect
               type="waas"
               title="Embedded Wallet (WaaS)"
@@ -59,12 +57,11 @@ export const Homepage = () => {
               description="Connect to the universal sequence wallet or EIP6963 Injected wallet providers (web extension wallets)."
               onClick={handleSwitchWalletType}
             />
-          </Box>
-        </Box>
+          </div>
+        </div>
       ) : (
         <Connected />
       )}
-
       <Footer />
     </main>
   )
@@ -84,27 +81,22 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
 
   return (
     <Card
-      width="full"
+      className={clsx('w-full border-2', isSelected && 'border-[rgb(127,59,200)] shadow-[0_0_24px_rgb(127_59_158_/_0.8)]')}
       clickable
       outlined
-      borderWidth="thick"
-      style={{
-        boxShadow: isSelected ? '0 0 24px rgb(127 59 158 / 0.8)' : 'none',
-        borderColor: isSelected ? 'rgb(127 59 200)' : 'var(--seq-colors-border-normal)'
-      }}
       onClick={() => onClick(type)}
     >
-      <Box gap="2">
-        <Box>
-          <Text variant="normal" fontWeight="bold" color={isSelected ? 'text100' : 'text80'}>
+      <div className="flex gap-2">
+        <div>
+          <Text variant="normal" fontWeight="bold" color={isSelected ? 'primary' : 'secondary'}>
             {title}
           </Text>
-          <Text as="div" variant="normal" color="text50" marginTop="2">
-            {description}
+          <Text className="mt-2" variant="normal" color="muted" asChild>
+            <div>{description}</div>
           </Text>
-        </Box>
-        <CheckmarkIcon size="md" style={{ color: 'rgb(127 59 200)' }} visibility={isSelected ? 'visible' : 'hidden'} />
-      </Box>
+        </div>
+        <CheckmarkIcon className={clsx('text-[rgb(127_59_200)]', !isSelected && 'hidden')} size="md" />
+      </div>
     </Card>
   )
 }

@@ -1,8 +1,7 @@
-import { Box, Button, Divider, Text } from '@0xsequence/design-system'
+import { Button, Divider, Text } from '@0xsequence/design-system'
 import {
   useBalancesSummary,
   useAnalyticsContext,
-  useBalances,
   useContractInfo,
   useSwapPrices,
   useSwapQuote,
@@ -396,24 +395,18 @@ export const PaymentSelectionContent = () => {
 
   return (
     <>
-      <Box
-        flexDirection="column"
-        gap="2"
-        alignItems="flex-start"
-        width="full"
-        paddingBottom="0"
-        paddingX="6"
-        height="full"
+      <div
+        className="flex flex-col gap-2 items-start w-full pb-0 px-6 h-full"
         style={{
           paddingTop: HEADER_HEIGHT
         }}
       >
-        <Box flexDirection="column" width="full" gap="2">
+        <div className="flex flex-col w-full gap-2">
           <OrderSummary />
-        </Box>
+        </div>
         {(enableMainCurrencyPayment || enableSwapPayments) && (
           <>
-            <Divider width="full" marginY="3" />
+            <Divider className="w-full my-3" />
             <PayWithCrypto
               settings={selectPaymentSettings}
               disableButtons={disableButtons}
@@ -425,7 +418,7 @@ export const PaymentSelectionContent = () => {
         )}
         {creditCardProviders?.length > 0 && (
           <>
-            <Divider width="full" marginY="3" />
+            <Divider className="w-full my-3" />
             <PayWithCreditCard
               settings={selectPaymentSettings}
               disableButtons={disableButtons}
@@ -435,32 +428,31 @@ export const PaymentSelectionContent = () => {
         )}
         {enableTransferFunds && (
           <>
-            <Divider width="full" marginY="3" />
+            <Divider className="w-full my-3" />
             <TransferFunds />
           </>
         )}
         {(enableMainCurrencyPayment || enableSwapPayments) && (
           <>
             {isError && (
-              <Box width="full" style={{ marginBottom: '-18px' }}>
+              <div className="w-full" style={{ marginBottom: '-18px' }}>
                 <Text color="negative" variant="small">
                   A problem occurred while executing the transaction.
                 </Text>
-              </Box>
+              </div>
             )}
-            <Box width="full">
+            <div className="w-full">
               <Button
+                className="mt-6 w-full"
                 onClick={onClickPurchase}
                 disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
-                marginTop="6"
                 shape="square"
                 variant="primary"
-                width="full"
                 label="Complete Purchase"
               />
-              <Box width="full" justifyContent="center" alignItems="center" gap="0.5" marginY="2">
+              <div className="flex w-full justify-center items-center gap-0.5 my-2">
                 {/* Replace by icon from design-system once new release is out */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+                <svg width="13" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 12" fill="none">
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
@@ -468,15 +460,15 @@ export const PaymentSelectionContent = () => {
                     fill="#6D6D6D"
                   />
                 </svg>
-                <Text variant="xsmall" color="text50" marginTop="0.5">
+                <Text className="mt-0.5" variant="xsmall" color="muted">
                   Secure Checkout
                 </Text>
-              </Box>
-            </Box>
+              </div>
+            </div>
           </>
         )}
-      </Box>
-      <Divider marginY="0" />
+      </div>
+      <Divider className="my-0" />
       <Footer />
     </>
   )

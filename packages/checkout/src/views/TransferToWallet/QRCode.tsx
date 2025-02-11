@@ -1,4 +1,4 @@
-import { Box, Skeleton } from '@0xsequence/design-system'
+import { Skeleton } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
 
 import { CopyButton } from './CopyButton'
@@ -11,15 +11,15 @@ export const QRCode = (props: QRCodeProps) => {
   const { value } = props
 
   return (
-    <Box alignItems="center" flexDirection="column" gap="4">
+    <div className="flex items-center flex-col gap-4">
       {value ? (
-        <Box background="white" padding="4" borderRadius="sm" style={{ width: 232, height: 232 }}>
+        <div className="bg-white p-4 rounded-lg" style={{ width: 232, height: 232 }}>
           <QRCodeCanvas value={value} size={200} bgColor="white" fgColor="black" data-id="qr-code" />
-        </Box>
+        </div>
       ) : (
         <Skeleton style={{ width: 232, height: 232 }} />
       )}
       <CopyButton text={value || ''} disabled={!value} />
-    </Box>
+    </div>
   )
 }

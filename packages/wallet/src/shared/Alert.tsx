@@ -1,4 +1,4 @@
-import { Box, Button, Text } from '@0xsequence/design-system'
+import { Button, cn, Text } from '@0xsequence/design-system'
 import React, { ComponentProps } from 'react'
 
 export type AlertProps = {
@@ -10,44 +10,42 @@ export type AlertProps = {
   children?: React.ReactNode
 }
 
+const variants = {
+  negative: 'bg-negative',
+  warning: 'bg-warning',
+  positive: 'bg-positive'
+}
+
 export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
-    <Box borderRadius="md" background={variant}>
-      <Box
-        background="backgroundOverlay"
-        borderRadius="md"
-        paddingX={{ sm: '4', md: '5' }}
-        paddingY="4"
-        width="full"
-        flexDirection="column"
-        gap="3"
-      >
-        <Box width="full" flexDirection={{ sm: 'column', md: 'row' }} gap="2" justifyContent="space-between">
-          <Box flexDirection="column" gap="1">
-            <Text variant="normal" color="text100" fontWeight="medium">
+    <div className={cn('rounded-xl', variants[variant])}>
+      <div className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
+        <div className="flex w-full gap-2 justify-between">
+          <div className="flex flex-col gap-1">
+            <Text variant="normal" color="primary" fontWeight="medium">
               {title}
             </Text>
 
-            <Text variant="normal" color="text50" fontWeight="medium">
+            <Text variant="normal" color="muted" fontWeight="medium">
               {description}
             </Text>
 
             {secondaryDescription && (
-              <Text variant="normal" color="text80" fontWeight="medium">
+              <Text variant="normal" color="secondary" fontWeight="medium">
                 {secondaryDescription}
               </Text>
             )}
-          </Box>
+          </div>
 
           {buttonProps ? (
-            <Box background={variant} borderRadius="sm" width={'min'} height={'min'}>
-              <Button variant="emphasis" shape="square" flexShrink="0" {...buttonProps} />
-            </Box>
+            <div className="rounded-lg w-min h-min">
+              <Button className="shrink-0" variant="emphasis" shape="square" {...buttonProps} />
+            </div>
           ) : null}
-        </Box>
+        </div>
 
         {children}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

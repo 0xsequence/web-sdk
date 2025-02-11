@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   ChevronRightIcon,
   CopyIcon,
@@ -8,7 +7,6 @@ import {
   Text,
   NumericInput,
   TextInput,
-  vars,
   Spinner,
   Card
 } from '@0xsequence/design-system'
@@ -253,21 +251,16 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   }
 
   return (
-    <Box
-      padding="5"
-      paddingTop="3"
+    <form
+      className="flex p-5 pt-3 gap-2 flex-col"
       style={{
         marginTop: HEADER_HEIGHT
       }}
-      gap="2"
-      flexDirection="column"
-      as="form"
       onSubmit={handleSendClick}
-      pointerEvents={isSendTxnPending ? 'none' : 'auto'}
     >
       {!showConfirmation && (
         <>
-          <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
+          <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <SendItemInfo
               imageUrl={imageUrl}
               decimals={decimals}
@@ -284,47 +277,43 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             />
             <NumericInput
               ref={amountInputRef}
-              style={{ fontSize: vars.fontSizes.xlarge, fontWeight: vars.fontWeights.bold }}
               name="amount"
               value={amount}
               onChange={handleChangeAmount}
               controls={
                 <>
-                  <Text variant="small" color="text50" whiteSpace="nowrap">
+                  <Text className="whitespace-nowrap" variant="small" color="muted">
                     {`~${fiatCurrency.sign}${amountToSendFiat}`}
                   </Text>
-                  <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
-                  <Text variant="xlarge" fontWeight="bold" color="text100">
+                  <Button className="shrink-0" size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" />
+                  <Text variant="xlarge" fontWeight="bold" color="primary">
                     {symbol}
                   </Text>
                 </>
               }
             />
             {insufficientFunds && (
-              <Text as="div" variant="normal" color="negative" marginTop="2">
-                Insufficient Funds
+              <Text className="mt-2" variant="normal" color="negative" asChild>
+                <div>Insufficient Funds</div>
               </Text>
             )}
-          </Box>
-          <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
-            <Text variant="normal" color="text50">
+          </div>
+          <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
+            <Text variant="normal" color="muted">
               To
             </Text>
             {isEthAddress(toAddress) ? (
               <Card
+                className="flex w-full flex-row justify-between items-center"
                 clickable
-                width="full"
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
                 onClick={handleToAddressClear}
                 style={{ height: '52px' }}
               >
-                <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
-                  <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
-                </Box>
-                <CloseIcon size="sm" color="white" />
+                <div className="flex flex-row justify-center items-center gap-2">
+                  <GradientAvatar size="sm" address={toAddress} />
+                  <Text color="primary" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                </div>
+                <CloseIcon className="text-white" size="sm" />
               </Card>
             ) : (
               <TextInput
@@ -335,46 +324,44 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 data-1p-ignore
                 controls={
                   <Button
+                    className="shrink-0"
                     size="xs"
                     shape="square"
                     label="Paste"
                     onClick={handlePaste}
                     data-id="to-address"
-                    flexShrink="0"
                     leftIcon={CopyIcon}
                   />
                 }
               />
             )}
-          </Box>
+          </div>
 
           {showSwitchNetwork && (
-            <Box marginTop="3">
-              <Text variant="small" color="negative" marginBottom="2">
+            <div className="mt-3">
+              <Text className="mb-2" variant="small" color="negative">
                 The wallet is connected to the wrong network. Please switch network before proceeding
               </Text>
               <Button
-                marginTop="2"
-                width="full"
+                className="mt-2 w-full"
                 variant="primary"
+                size="lg"
                 type="button"
                 label="Switch Network"
                 onClick={async () => await switchChainAsync({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
               />
-            </Box>
+            </div>
           )}
 
-          <Box style={{ height: '52px' }} alignItems="center" justifyContent="center">
+          <div className="flex items-center justify-center" style={{ height: '52px' }}>
             {isCheckingFeeOptions ? (
               <Spinner />
             ) : (
               <Button
-                color="text100"
-                marginTop="3"
-                width="full"
+                className="text-primary mt-3 w-full"
                 variant="primary"
+                size="lg"
                 type="submit"
                 disabled={
                   !isNonZeroAmount ||
@@ -384,13 +371,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 }
                 label="Send"
                 rightIcon={ChevronRightIcon}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
               />
             )}
-          </Box>
+          </div>
         </>
       )}
-
       {showConfirmation && (
         <TransactionConfirmation
           name={name}
@@ -415,6 +400,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           }}
         />
       )}
-    </Box>
+    </form>
   )
 }

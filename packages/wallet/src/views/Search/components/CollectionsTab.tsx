@@ -1,9 +1,11 @@
 // kit/packages/wallet/src/views/Search/CollectionsTab.tsx
-import React, { useEffect, useRef, useState } from 'react'
-import { BalanceItem } from './BalanceItem'
-import { Spinner, Skeleton, Text, Box } from '@0xsequence/design-system'
-import { IndexedData } from '../SearchWalletViewAll'
+import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { IndexedData } from '../SearchWalletViewAll'
+
+import { BalanceItem } from './BalanceItem'
 
 interface CollectionsTabProps {
   displayedCollectionBalances: IndexedData[]
@@ -16,7 +18,7 @@ interface CollectionsTabProps {
   collectionBalances: TokenBalance[]
 }
 
-const CollectionsTab: React.FC<CollectionsTabProps> = ({
+export const CollectionsTab: React.FC<CollectionsTabProps> = ({
   displayedCollectionBalances,
   fetchMoreCollectionBalances,
   fetchMoreSearchCollectionBalances,
@@ -58,28 +60,26 @@ const CollectionsTab: React.FC<CollectionsTabProps> = ({
   }, [fetchMoreCollectionBalances, fetchMoreSearchCollectionBalances, isSearching])
 
   return (
-    <Box>
-      <Box flexDirection="column" gap="3">
+    <div>
+      <div className="flex flex-col gap-3">
         {isPending && (
           <>
             {Array(8)
               .fill(null)
               .map((_, i) => (
-                <Skeleton key={i} width="full" height="8" />
+                <Skeleton className="w-full h-8" key={i} />
               ))}
           </>
         )}
-        {!isPending && displayedCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
+        {!isPending && displayedCollectionBalances.length === 0 && <Text color="primary">No Collectibles Found</Text>}
         {!isPending &&
           displayedCollectionBalances.map((indexItem, index) => {
             const balance = collectionBalances[indexItem.index]
             return <BalanceItem key={index} balance={balance} />
           })}
-        {isLoading && <Spinner alignSelf="center" marginTop="3" />}
-      </Box>
+        {isLoading && <Spinner className="flex self-center mt-3" />}
+      </div>
       <div ref={endOfPageRefCollections} style={{ height: '1px' }} />
-    </Box>
+    </div>
   )
 }
-
-export default CollectionsTab

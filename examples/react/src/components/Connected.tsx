@@ -1,4 +1,4 @@
-import { Box, Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system'
+import { Button, Card, Modal, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -14,7 +14,7 @@ import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shar
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
 import React, { type ComponentProps, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
@@ -464,40 +464,41 @@ export const Connected = () => {
   return (
     <>
       <Header />
-
-      <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
-        <Box flexDirection="column" gap="4" style={{ maxWidth: breakpoints.md }}>
-          <Box flexDirection="column" gap="2">
-            <Box marginY="3" flexDirection="column" gap="2">
-              <Text fontWeight="semibold" variant="small" color="text50">
+      <div className="flex px-4 flex-col justify-center items-center" style={{ margin: '140px 0' }}>
+        <div className="flex flex-col gap-4 max-w-[480px]">
+          <div className="flex flex-col gap-2">
+            <div className="flex my-3 flex-col gap-2">
+              <Text fontWeight="semibold" variant="small" color="muted">
                 Connected Wallets
               </Text>
-              {[...wallets]
-                .sort((a, b) => {
-                  // Sort embedded wallet to the top
-                  if (a.isEmbedded && !b.isEmbedded) return -1
-                  if (!a.isEmbedded && b.isEmbedded) return 1
-                  return 0
-                })
-                .map(wallet => (
-                  <WalletListItem
-                    key={wallet.id}
-                    id={wallet.id}
-                    name={wallet.name}
-                    address={wallet.address}
-                    isActive={wallet.isActive}
-                    isEmbedded={wallet.isEmbedded}
-                    onSelect={() => setActiveWallet(wallet.address)}
-                    onDisconnect={() => disconnectWallet(wallet.address)}
-                  />
-                ))}
-            </Box>
+              <Card className="flex flex-col gap-2 p-2">
+                {[...wallets]
+                  .sort((a, b) => {
+                    // Sort embedded wallet to the top
+                    if (a.isEmbedded && !b.isEmbedded) return -1
+                    if (!a.isEmbedded && b.isEmbedded) return 1
+                    return 0
+                  })
+                  .map(wallet => (
+                    <WalletListItem
+                      key={wallet.id}
+                      id={wallet.id}
+                      name={wallet.name}
+                      address={wallet.address}
+                      isActive={wallet.isActive}
+                      isEmbedded={wallet.isEmbedded}
+                      onSelect={() => setActiveWallet(wallet.address)}
+                      onDisconnect={() => disconnectWallet(wallet.address)}
+                    />
+                  ))}
+              </Card>
+            </div>
 
-            <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
+            <div className="flex gap-2 flex-row items-center justify-center">
               <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
-            </Box>
+            </div>
 
-            <Text variant="small" color="text50" fontWeight="medium" marginTop="6">
+            <Text className="mt-6" variant="small" color="muted" fontWeight="medium">
               Demos
             </Text>
             <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
@@ -510,16 +511,14 @@ export const Connected = () => {
               />
             )}
             {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
-              <Text
-                as="a"
-                marginLeft="4"
-                variant="small"
-                underline
-                href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                View on {networkForCurrentChainId.blockExplorer.name}
+              <Text className="ml-4" variant="small" underline color="primary" asChild>
+                <a
+                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View on {networkForCurrentChainId.blockExplorer.name}
+                </a>
               </Text>
             )}
 
@@ -534,16 +533,14 @@ export const Connected = () => {
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash3 &&
               ((txnData3 as any)?.chainId === chainId || txnData3) && (
-                <Text
-                  as="a"
-                  marginLeft="4"
-                  variant="small"
-                  underline
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData3 as any).hash ?? txnData3}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View on {networkForCurrentChainId.blockExplorer.name}
+                <Text className="ml-4" variant="small" underline color="primary" asChild>
+                  <a
+                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData3 as any).hash ?? txnData3}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View on {networkForCurrentChainId.blockExplorer.name}
+                  </a>
                 </Text>
               )}
 
@@ -554,12 +551,12 @@ export const Connected = () => {
               isPending={isSigningMessage}
             />
             {isMessageValid && (
-              <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
+              <Card className="flex text-primary flex-col gap-2" style={{ width: '332px' }}>
                 <Text variant="medium">Signed message:</Text>
                 <Text>{messageToSign}</Text>
                 <Text variant="medium">Signature:</Text>
-                <Text variant="code" as="p" ellipsis>
-                  {messageSig}
+                <Text variant="code" ellipsis asChild>
+                  <p>{messageSig}</p>
                 </Text>
                 <Text variant="medium">
                   isValid: <Text variant="code">{isMessageValid.toString()}</Text>
@@ -573,23 +570,25 @@ export const Connected = () => {
               isPending={isSigningTypedData}
             />
             {typedDataSig && (
-              <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
+              <Card className="flex text-primary flex-col gap-2" style={{ width: '332px' }}>
                 <Text variant="medium">Signed typed data:</Text>
-                <Text variant="code" as="p">
-                  {JSON.stringify(
-                    {
-                      domain,
-                      types,
-                      primaryType: 'Person',
-                      message: value
-                    },
-                    null,
-                    2
-                  )}
+                <Text variant="code" asChild>
+                  <p>
+                    {JSON.stringify(
+                      {
+                        domain,
+                        types,
+                        primaryType: 'Person',
+                        message: value
+                      },
+                      null,
+                      2
+                    )}
+                  </p>
                 </Text>
                 <Text variant="medium">Signature:</Text>
-                <Text variant="code" as="p" ellipsis>
-                  {typedDataSig}
+                <Text variant="code" ellipsis asChild>
+                  <p>{typedDataSig}</p>
                 </Text>
                 <Text variant="medium">
                   isValid: <Text variant="code">{isTypedDataValid?.toString()}</Text>
@@ -608,16 +607,14 @@ export const Connected = () => {
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash2 &&
               ((txnData2 as any)?.chainId === chainId || txnData2) && (
-                <Text
-                  as="a"
-                  marginLeft="4"
-                  variant="small"
-                  underline
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View on {networkForCurrentChainId.blockExplorer.name}
+                <Text className="ml-4" variant="small" underline color="primary" asChild>
+                  <a
+                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View on {networkForCurrentChainId.blockExplorer.name}
+                  </a>
                 </Text>
               )}
 
@@ -643,10 +640,10 @@ export const Connected = () => {
               description="Purchase an NFT through various purchase methods"
               onClick={onClickSelectPayment}
             />
-          </Box>
+          </div>
 
           {pendingFeeOptionConfirmation && (
-            <Box marginY="3">
+            <div className="my-3">
               <Select
                 name="feeOption"
                 labelLocation="top"
@@ -662,21 +659,21 @@ export const Connected = () => {
                 options={[
                   ...pendingFeeOptionConfirmation.options.map(option => ({
                     label: (
-                      <Box alignItems="flex-start" flexDirection="column">
-                        <Box flexDirection="row">
+                      <div className="flex items-start flex-col">
+                        <div className="flex flex-row">
                           <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
                           <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
-                        </Box>
-                        <Box flexDirection="row">
+                        </div>
+                        <div className="flex flex-row">
                           <Text>Wallet balance for {option.token.name}: </Text> <Text>{option.balanceFormatted}</Text>
-                        </Box>
-                      </Box>
+                        </div>
+                      </div>
                     ),
                     value: option.token.name
                   }))
                 ]}
               />
-              <Box marginY="2" alignItems="center" justifyContent="center" flexDirection="column">
+              <div className="flex my-2 items-center justify-center flex-col">
                 <Button
                   onClick={() => {
                     const selected = pendingFeeOptionConfirmation?.options?.find(
@@ -700,7 +697,7 @@ export const Connected = () => {
                   label="Confirm fee option"
                 />
                 {feeOptionAlert && (
-                  <Box marginTop="3" style={{ maxWidth: '332px' }}>
+                  <div className="mt-3" style={{ maxWidth: '332px' }}>
                     <Alert
                       title={feeOptionAlert.title}
                       description={feeOptionAlert.description}
@@ -708,20 +705,19 @@ export const Connected = () => {
                       variant={feeOptionAlert.variant}
                       buttonProps={feeOptionAlert.buttonProps}
                     />
-                  </Box>
+                  </div>
                 )}
-              </Box>
-            </Box>
+              </div>
+            </div>
           )}
 
           {isWaasConnectionActive && (
-            <Box marginY="3">
-              <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Text fontWeight="semibold" variant="small" color="text50">
+            <div className="my-3">
+              <label className="flex flex-row items-center justify-between">
+                <Text fontWeight="semibold" variant="small" color="muted">
                   Confirmations
                 </Text>
-
-                <Box alignItems="center" gap="2">
+                <div className="flex items-center gap-2">
                   <Switch
                     name="confirmations"
                     checked={confirmationEnabled}
@@ -739,13 +735,12 @@ export const Connected = () => {
                       window.location.reload()
                     }}
                   />
-                </Box>
-              </Box>
-            </Box>
+                </div>
+              </label>
+            </div>
           )}
-        </Box>
-      </Box>
-
+        </div>
+      </div>
       <AnimatePresence>
         {isCheckoutInfoModalOpen && (
           <Modal
@@ -757,12 +752,11 @@ export const Connected = () => {
               }
             }}
             scroll={false}
-            backdropColor="backgroundBackdrop"
             onClose={() => setIsCheckoutInfoModalOpen(false)}
           >
-            <Box id="sequence-kit-checkout-info-modal">
-              <Box paddingTop="16" paddingBottom="8" paddingX="6" gap="2" flexDirection="column">
-                <Text variant="medium" color="text50">
+            <div id="sequence-kit-checkout-info-modal">
+              <div className="flex pt-16 pb-8 px-6 gap-2 flex-col">
+                <Text variant="medium" color="muted">
                   Order ID
                 </Text>
                 <TextInput
@@ -773,7 +767,7 @@ export const Connected = () => {
                   placeholder="Order Id"
                   data-1p-ignore
                 />
-                <Text variant="medium" color="text50">
+                <Text variant="medium" color="muted">
                   Token Contract Address
                 </Text>
                 <TextInput
@@ -784,7 +778,7 @@ export const Connected = () => {
                   placeholder="Token Contract Address"
                   data-1p-ignore
                 />
-                <Text variant="medium" color="text50">
+                <Text variant="medium" color="muted">
                   Token ID
                 </Text>
                 <TextInput
@@ -797,14 +791,14 @@ export const Connected = () => {
                 />
 
                 <Button
-                  marginTop="4"
+                  className="mt-4"
                   onClick={() => {
                     onCheckoutInfoConfirm()
                   }}
                   label="Trigger checkout"
                 />
-              </Box>
-            </Box>
+              </div>
+            </div>
           </Modal>
         )}
       </AnimatePresence>
@@ -821,44 +815,42 @@ export type AlertProps = {
   children?: React.ReactNode
 }
 
+const variants = {
+  negative: 'bg-negative',
+  warning: 'bg-warning',
+  positive: 'bg-positive'
+}
+
 export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
-    <Box borderRadius="md" background={variant}>
-      <Box
-        background="backgroundOverlay"
-        borderRadius="md"
-        paddingX={{ sm: '4', md: '5' }}
-        paddingY="4"
-        width="full"
-        flexDirection="column"
-        gap="3"
-      >
-        <Box width="full" flexDirection={{ sm: 'column', md: 'row' }} gap="2" justifyContent="space-between">
-          <Box flexDirection="column" gap="1">
-            <Text variant="normal" color="text100" fontWeight="medium">
+    <div className={cn('rounded-xl', variants[variant])}>
+      <div className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
+        <div className="flex w-full gap-2 justify-between">
+          <div className="flex flex-col gap-1">
+            <Text variant="normal" color="primary" fontWeight="medium">
               {title}
             </Text>
 
-            <Text variant="normal" color="text50" fontWeight="medium">
+            <Text variant="normal" color="muted" fontWeight="medium">
               {description}
             </Text>
 
             {secondaryDescription && (
-              <Text variant="normal" color="text80" fontWeight="medium">
+              <Text variant="normal" color="secondary" fontWeight="medium">
                 {secondaryDescription}
               </Text>
             )}
-          </Box>
+          </div>
 
           {buttonProps ? (
-            <Box background={variant} borderRadius="sm" width={'min'} height={'min'}>
-              <Button variant="emphasis" shape="square" flexShrink="0" {...buttonProps} />
-            </Box>
+            <div className="rounded-lg w-min h-min">
+              <Button className="shrink-0" variant="emphasis" shape="square" {...buttonProps} />
+            </div>
           ) : null}
-        </Box>
+        </div>
 
         {children}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

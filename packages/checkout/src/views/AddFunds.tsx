@@ -1,4 +1,3 @@
-import { Box } from '@0xsequence/design-system'
 import React, { useEffect } from 'react'
 
 import { HEADER_HEIGHT } from '../constants'
@@ -47,18 +46,14 @@ export const AddFundsContent = () => {
   const link = getTransakLink(addFundsSettings)
 
   return (
-    <Box
-      alignItems="center"
-      width="full"
-      paddingX="4"
-      paddingBottom="4"
-      height="full"
+    <div
+      className="flex items-center w-full px-4 pb-4 h-full"
       style={{
         height: '600px',
         paddingTop: HEADER_HEIGHT
       }}
     >
-      <Box id={IframeId} as="iframe" width="full" height="full" borderWidth="none" src={link} />
-    </Box>
+      <iframe className="w-full h-full border-0" id={IframeId} src={link} />
+    </div>
   )
 }

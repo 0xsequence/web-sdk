@@ -13,7 +13,6 @@ export type {
   DisplayedAsset,
   ExtendedConnector,
   EthAuthSettings,
-  Theme,
   ModalPosition,
   KitConfig,
   StorageItem

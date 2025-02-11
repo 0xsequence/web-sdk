@@ -1,12 +1,11 @@
-import { Box, Text, TokenImage } from '@0xsequence/design-system'
+import { Text, TokenImage } from '@0xsequence/design-system'
+import { useWalletSettings } from '@0xsequence/kit'
+import { ChainId } from '@0xsequence/network'
 import { useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 import { SelectButton } from '../../shared/SelectButton'
-import { useWalletSettings } from '@0xsequence/kit'
-
-import { ChainId } from '@0xsequence/network'
 
 export const SettingsNetwork = () => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()
@@ -29,12 +28,12 @@ export const SettingsNetwork = () => {
   }
 
   return (
-    <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box padding="5" paddingTop="3">
-        <Text variant="small" fontWeight="bold" color="text50">
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
+      <div className="p-5 pt-3">
+        <Text variant="small" fontWeight="bold" color="muted">
           Networks
         </Text>
-        <Box flexDirection="column" gap="2" marginTop="4">
+        <div className="flex flex-col gap-2 mt-4">
           {allChains.map(chain => {
             return (
               <SelectButton
@@ -45,17 +44,17 @@ export const SettingsNetwork = () => {
                 value={chain}
                 squareIndicator
               >
-                <Box gap="2" justifyContent="center" alignItems="center">
+                <div className="flex gap-2 justify-center items-center">
                   <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chain}.webp`} />
-                  <Text color="text100" variant="normal" fontWeight="bold">
+                  <Text color="primary" variant="normal" fontWeight="bold">
                     {ChainId[chain]}
                   </Text>
-                </Box>
+                </div>
               </SelectButton>
             )
           })}
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
-import { AddIcon, Box, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
+import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
 import {
   CryptoOption,
   useBalancesSummary,
@@ -9,7 +9,7 @@ import {
   formatDisplay
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
 import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
@@ -118,7 +118,7 @@ export const PayWithCrypto = ({
 
   const Options = () => {
     return (
-      <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
+      <div className="flex flex-col justify-center items-center gap-2 w-full">
         {coins.map(coin => {
           if (compareAddress(coin.currencyAddress, currencyAddress) && enableMainCurrencyPayment) {
             return (
@@ -173,7 +173,7 @@ export const PayWithCrypto = ({
             )
           }
         })}
-      </Box>
+      </div>
     )
   }
 
@@ -185,8 +185,9 @@ export const PayWithCrypto = ({
 
   const ShowMoreButton = () => {
     return (
-      <Box justifyContent="center" alignItems="center" width="full">
+      <div className="flex justify-center items-center w-full">
         <Button
+          className="text-white"
           rightIcon={() => {
             if (showMore) {
               return <SubtractIcon style={{ marginLeft: '-4px' }} size="xs" />
@@ -194,52 +195,50 @@ export const PayWithCrypto = ({
             return <AddIcon style={{ marginLeft: '-4px' }} size="xs" />
           }}
           variant="ghost"
-          color="white"
           onClick={() => {
             setShowMore(!showMore)
           }}
           label={showMore ? 'Show less' : 'Show more'}
         />
-      </Box>
+      </div>
     )
   }
 
   return (
-    <Box width="full">
-      <Box>
+    <div className="w-full">
+      <div>
         <Text variant="small" fontWeight="medium" color="white">
           Pay with crypto
         </Text>
-      </Box>
-      <Box
-        paddingY="3"
+      </div>
+      <div
+        className="py-3"
         style={{
           marginBottom: '-12px'
         }}
       >
         {isLoadingOptions ? (
-          <Box width="full" paddingY="5" justifyContent="center" alignItems="center">
+          <div className="flex w-full py-5 justify-center items-center">
             <Spinner />
-          </Box>
+          </div>
         ) : (
           <>
-            <Box
-              as={motion.div}
+            <motion.div
+              className="overflow-hidden"
               animate={{ height: showMore ? 'auto' : collapsedOptionsHeight }}
               transition={{ ease: 'easeOut', duration: 0.3 }}
-              overflow="hidden"
             >
               <Options />
-            </Box>
+            </motion.div>
             {swapsIsLoading && (
-              <Box justifyContent="center" alignItems="center" width="full" marginTop="4">
+              <div className="flex justify-center items-center w-full mt-4">
                 <Spinner />
-              </Box>
+              </div>
             )}
             {!swapsIsLoading && coins.length > MAX_OPTIONS && <ShowMoreButton />}
           </>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

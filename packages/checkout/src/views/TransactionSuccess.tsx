@@ -1,4 +1,4 @@
-import { Box, CheckmarkIcon, Text } from '@0xsequence/design-system'
+import { CheckmarkIcon, Text } from '@0xsequence/design-system'
 import { ChainId, allNetworks } from '@0xsequence/network'
 import React, { useEffect } from 'react'
 
@@ -21,48 +21,34 @@ export const TransactionSuccess = () => {
   }, [])
 
   return (
-    <Box style={{ height: '650px' }}>
-      <Box
-        flexDirection="column"
-        alignItems="center"
-        position="absolute"
+    <div style={{ height: '650px' }}>
+      <div
+        className="flex flex-col items-center absolute"
         style={{ top: '50%', right: '50%', transform: 'translate(50%, -50%)' }}
       >
         <NotificationSuccessIcon />
         <Text variant="xlarge">Success!</Text>
-        <Text variant="normal" textAlign="center" color="text80">
+        <Text className="text-center" variant="normal" color="secondary">
           Purchase was successful, item was sent to your wallet.
         </Text>
         {navigation.params.transactionHash && (
-          <Text
-            as="a"
-            variant="small"
-            underline
-            marginTop="6"
-            color="text100"
-            href={`${network?.blockExplorer?.rootUrl}/tx/${navigation.params.transactionHash}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            View on {network?.blockExplorer?.name}
+          <Text className="mt-6" variant="small" underline color="primary" asChild>
+            <a
+              href={`${network?.blockExplorer?.rootUrl}/tx/${navigation.params.transactionHash}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on {network?.blockExplorer?.name}
+            </a>
           </Text>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 
 export const NotificationSuccessIcon = () => (
-  <Box
-    color="white"
-    background="positive"
-    alignItems="center"
-    justifyContent="center"
-    width="16"
-    height="16"
-    borderRadius="circle"
-    marginBottom="2"
-  >
+  <div className="flex text-white bg-positive items-center justify-center w-16 h-16 rounded-full mb-2">
     <CheckmarkIcon size="xl" />
-  </Box>
+  </div>
 )

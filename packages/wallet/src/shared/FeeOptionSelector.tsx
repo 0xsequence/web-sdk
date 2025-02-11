@@ -1,4 +1,4 @@
-import { Box, Text, TokenImage } from '@0xsequence/design-system'
+import { cn, Text, TokenImage } from '@0xsequence/design-system'
 import { ZeroAddress, formatUnits, parseUnits } from 'ethers'
 import React from 'react'
 
@@ -56,25 +56,22 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
   })
 
   return (
-    <Box marginTop="3" width="full">
-      <Text variant="normal" color="text100" fontWeight="bold">
+    <div className="mt-3 w-full">
+      <Text variant="normal" color="primary" fontWeight="bold">
         Select a fee option
       </Text>
-      <Box flexDirection="column" marginTop="2" gap="2">
+      <div className="flex flex-col mt-2 gap-2">
         {sortedOptions.map((option, index) => {
           const isSelected = selectedFeeOptionAddress === (option.token.contractAddress ?? ZeroAddress)
           const balance = feeOptionBalances.find(b => b.tokenName === option.token.name)
           const isSufficient = isBalanceSufficient(balance?.balance || '0', option.value, option.token.decimals || 0)
           return (
-            <Box
+            <div
+              className={cn(
+                'px-3 py-2 rounded-xl border-2 border-solid bg-background-raised',
+                isSelected ? 'border-border-focus' : 'border-transparent'
+              )}
               key={index}
-              paddingX="3"
-              paddingY="2"
-              borderRadius="md"
-              borderColor={isSelected ? 'borderFocus' : 'transparent'}
-              borderWidth="thick"
-              borderStyle="solid"
-              background="backgroundRaised"
               onClick={() => {
                 if (isSufficient) {
                   setSelectedFeeOptionAddress(option.token.contractAddress ?? ZeroAddress)
@@ -87,52 +84,50 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
                   })
                 }
               }}
-              cursor={isSufficient ? 'pointer' : 'default'}
-              opacity={isSufficient ? '100' : '50'}
             >
-              <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Box flexDirection="row" alignItems="center" gap="2">
+              <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-row items-center gap-2">
                   <TokenImage src={option.token.logoURL} symbol={option.token.name} />
-                  <Box flexDirection="column">
-                    <Text variant="small" color="text100" fontWeight="bold">
+                  <div className="flex flex-col">
+                    <Text variant="small" color="primary" fontWeight="bold">
                       {option.token.name}
                     </Text>
-                    <Text variant="xsmall" color="text80">
+                    <Text variant="xsmall" color="secondary">
                       Fee:{' '}
                       {parseFloat(formatUnits(BigInt(option.value), option.token.decimals || 0)).toLocaleString(undefined, {
                         maximumFractionDigits: 6
                       })}
                     </Text>
-                  </Box>
-                </Box>
-                <Box flexDirection="column" alignItems="flex-end">
-                  <Text variant="xsmall" color="text80">
+                  </div>
+                </div>
+                <div className="flex flex-col items-end">
+                  <Text variant="xsmall" color="secondary">
                     Balance:
                   </Text>
-                  <Text variant="xsmall" color="text100">
+                  <Text variant="xsmall" color="primary">
                     {parseFloat(formatUnits(BigInt(balance?.balance || '0'), option.token.decimals || 0)).toLocaleString(
                       undefined,
                       { maximumFractionDigits: 6 }
                     )}
                   </Text>
-                </Box>
-              </Box>
-            </Box>
+                </div>
+              </div>
+            </div>
           )
         })}
-      </Box>
-      <Box marginTop="3" alignItems="flex-end" justifyContent="center" flexDirection="column">
+      </div>
+      <div className="flex mt-3 items-end justify-center flex-col">
         {feeOptionAlert && (
-          <Box marginTop="3">
+          <div className="mt-3">
             <Alert
               title={feeOptionAlert.title}
               description={feeOptionAlert.description}
               secondaryDescription={feeOptionAlert.secondaryDescription}
               variant={feeOptionAlert.variant}
             />
-          </Box>
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

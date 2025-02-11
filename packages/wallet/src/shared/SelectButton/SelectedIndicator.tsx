@@ -1,5 +1,5 @@
-import { Box, CheckmarkIcon, vars } from '@0xsequence/design-system'
-import { motion } from 'framer-motion'
+import { CheckmarkIcon, cn } from '@0xsequence/design-system'
+import { motion } from 'motion/react'
 import React from 'react'
 
 interface SelectedIndicatorProps {
@@ -11,39 +11,24 @@ interface SelectedIndicatorProps {
 export const SelectedIndicator = (props: SelectedIndicatorProps) => {
   const { selected, className, squareIndicator = false } = props
   return (
-    <Box
-      borderStyle="solid"
-      borderColor={squareIndicator && selected ? 'transparent' : 'borderNormal'}
-      borderWidth="thin"
-      position="relative"
-      alignItems="center"
-      justifyContent="center"
-      flexShrink="0"
-      className={className}
-      style={{
-        borderRadius: squareIndicator ? '4px' : vars.radii.circle,
-        width: '20px',
-        height: '20px'
-      }}
+    <div
+      className={cn(
+        `w-5 h-5 flex border-solid border-1 relative items-center justify-center shrink-0 border-border-normal`,
+        squareIndicator ? 'rounded-sm' : 'rounded-full',
+        className
+      )}
     >
-      <Box
-        as={motion.div}
-        background={squareIndicator ? 'borderNormal' : 'backgroundInverse'}
-        position="absolute"
-        color="textInverse100"
+      <motion.div
+        className={cn(
+          'flex absolute text-text-inverse100 justify-center items-center bg-border-normal',
+          squareIndicator ? 'rounded-sm w-5 h-5' : 'rounded-full w-[14px] h-[14px]'
+        )}
         initial={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.5 }}
         animate={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.5 }}
         transition={{ ease: 'backOut' }}
-        style={{
-          borderRadius: squareIndicator ? '4px' : vars.radii.circle,
-          width: squareIndicator ? '20px' : '14px',
-          height: squareIndicator ? '20px' : '14px'
-        }}
-        justifyContent="center"
-        alignItems="center"
       >
-        {squareIndicator && <CheckmarkIcon color="white" style={{ width: '14px', height: '14px' }} />}
-      </Box>
-    </Box>
+        {squareIndicator && <CheckmarkIcon className="text-white w-[14px] h-[14px]" />}
+      </motion.div>
+    </div>
   )
 }
