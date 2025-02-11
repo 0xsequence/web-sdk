@@ -14,7 +14,7 @@ export const History = () => {
   })
 
   return (
-    (<div>
+    <div>
       <div className="px-4 pb-5 pt-3">
         <TransactionHistoryList
           transactions={transactionHistory}
@@ -22,6 +22,6 @@ export const History = () => {
           isFetchingNextPage={false}
         />
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

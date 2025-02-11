@@ -1,4 +1,4 @@
-import { Card, Text, TokenImage } from '@0xsequence/design-system';
+import { Card, Text, TokenImage } from '@0xsequence/design-system'
 
 import { SelectedIndicator } from './SelectedIndicator'
 
@@ -32,9 +32,7 @@ export const CryptoOption = ({
   }
 
   return (
-    (<Card
-      className="flex w-full justify-between p-4 cursor-pointer"
-      onClick={onClickCard}>
+    <Card className="flex w-full justify-between p-4 cursor-pointer" onClick={onClickCard}>
       <div className="flex flex-row gap-3">
         <div className="w-fit">
           <TokenImage src={iconUrl} size="lg" symbol={symbol} withNetwork={chainId} disableAnimation />
@@ -77,6 +75,6 @@ export const CryptoOption = ({
         </div>
         <SelectedIndicator selected={isSelected} />
       </div>
-    </Card>)
-  );
+    </Card>
+  )
 }

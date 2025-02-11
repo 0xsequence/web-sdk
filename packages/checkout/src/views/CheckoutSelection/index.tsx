@@ -7,8 +7,8 @@ import {
   Tooltip,
   PaymentsIcon,
   Skeleton,
-  TokenImage,
-} from '@0xsequence/design-system';
+  TokenImage
+} from '@0xsequence/design-system'
 import {
   ContractVerificationStatus,
   getNativeTokenInfoByChainId,
@@ -102,11 +102,12 @@ export const CheckoutSelection = () => {
   }
 
   return (
-    (<div
+    <div
       className="flex px-5 pb-5 flex-col gap-3"
       style={{
         marginTop: HEADER_HEIGHT
-      }}>
+      }}
+    >
       {orderSummaryItems.length > 0 && (
         <>
           <div className="flex flex-row gap-2 items-center">
@@ -172,7 +173,8 @@ export const CheckoutSelection = () => {
             variant="primary"
             label="Pay with credit card"
             rightIcon={ChevronRightIcon}
-            onClick={onClickPayWithCard} />
+            onClick={onClickPayWithCard}
+          />
         )}
         {displayCryptoCheckout && !isInsufficientBalance && !isPending && (
           <Button
@@ -194,7 +196,7 @@ export const CheckoutSelection = () => {
             shape="square"
             variant="glass"
             label={
-              <div className="flex place-items-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <TokenImage src={coinImageUrl} size="sm" />
                 <Text>Insufficient ${coinSymbol}</Text>
               </div>
@@ -215,6 +217,6 @@ export const CheckoutSelection = () => {
           )}
         </div>
       )}
-    </div>)
-  );
+    </div>
+  )
 }

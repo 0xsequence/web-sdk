@@ -8,8 +8,8 @@ import {
   NumericInput,
   TextInput,
   Spinner,
-  Card,
-} from '@0xsequence/design-system';
+  Card
+} from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
   compareAddress,
@@ -256,7 +256,8 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       style={{
         marginTop: HEADER_HEIGHT
       }}
-      onSubmit={handleSendClick}>
+      onSubmit={handleSendClick}
+    >
       {!showConfirmation && (
         <>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
@@ -293,8 +294,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               }
             />
             {insufficientFunds && (
-              <Text className="mt-2" variant="normal" color="negative" asChild><div>Insufficient Funds
-                              </div></Text>
+              <Text className="mt-2" variant="normal" color="negative" asChild>
+                <div>Insufficient Funds</div>
+              </Text>
             )}
           </div>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
@@ -306,9 +308,10 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 className="flex w-full flex-row justify-between items-center"
                 clickable
                 onClick={handleToAddressClear}
-                style={{ height: '52px' }}>
+                style={{ height: '52px' }}
+              >
                 <div className="flex flex-row justify-center items-center gap-2">
-                  <GradientAvatar address={toAddress} style={{ width: '20px' }} />
+                  <GradientAvatar size="sm" address={toAddress} />
                   <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </div>
                 <CloseIcon className="text-white" size="sm" />
@@ -347,7 +350,8 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 label="Switch Network"
                 onClick={async () => await switchChainAsync({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }} />
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
             </div>
           )}
 
@@ -367,7 +371,8 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 }
                 label="Send"
                 rightIcon={ChevronRightIcon}
-                style={{ height: '52px', borderRadius: vars.radii.md }} />
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
             )}
           </div>
         </>
@@ -397,5 +402,5 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
         />
       )}
     </form>
-  );
+  )
 }

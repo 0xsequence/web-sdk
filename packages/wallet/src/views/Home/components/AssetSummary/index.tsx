@@ -1,4 +1,4 @@
-import { Spinner } from '@0xsequence/design-system';
+import { Spinner } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { useWalletSettings } from '@0xsequence/kit'
 import { useAccount } from 'wagmi'
@@ -96,7 +96,7 @@ export const AssetSummary = () => {
   }
 
   return (
-    (<div>
+    <div>
       <div
         style={{
           display: 'grid',
@@ -106,21 +106,18 @@ export const AssetSummary = () => {
       >
         {displayedTokens.map((balance, index) => {
           return (
-            (<div
-              className="select-none cursor-pointer aspect-square"
-              key={index}
-              onClick={() => onClickItem(balance)}>
+            <div className="select-none cursor-pointer aspect-square" key={index} onClick={() => onClickItem(balance)}>
               {balance.contractType === 'ERC1155' || balance.contractType === 'ERC721' ? (
                 <CollectibleTile balance={balance} />
               ) : (
                 <CoinTile balance={balance} />
               )}
-            </div>)
-          );
+            </div>
+          )
         })}
       </div>
       {isLoading && <Spinner className="flex justify-self-center mt-3" />}
       <div ref={endOfPageRef} style={{ height: '1px' }} />
-    </div>)
-  );
+    </div>
+  )
 }

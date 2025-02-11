@@ -1,4 +1,4 @@
-import { Card, Icon, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system';
+import { Card, Icon, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
@@ -34,34 +34,36 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 
   if (isDescriptive) {
     return (
-      (<Tooltip message={label || walletProps.name}>
+      <Tooltip message={label || walletProps.name}>
         <Card
           className="flex gap-1 justify-center items-center w-full"
           clickable
           onClick={() => onConnect(connector)}
-          style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}>
+          style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
+        >
           <Logo width={ICON_SIZE_DESCRIPTIVE} height={ICON_SIZE_DESCRIPTIVE} />
           <Text color="text100" variant="normal" fontWeight="bold">
             Continue with {label || walletProps.name}
           </Text>
         </Card>
-      </Tooltip>)
-    );
+      </Tooltip>
+    )
   }
 
   return (
-    (<Tooltip message={label || walletProps.name}>
+    <Tooltip message={label || walletProps.name}>
       <Card
         className="flex justify-center items-center w-full"
         clickable
         onClick={() => onConnect(connector)}
         style={{
           height: BUTTON_HEIGHT
-        }}>
+        }}
+      >
         <Logo width={ICON_SIZE} height={ICON_SIZE} />
       </Card>
-    </Tooltip>)
-  );
+    </Tooltip>
+  )
 }
 
 interface ShowAllWalletsButtonProps {
@@ -70,18 +72,19 @@ interface ShowAllWalletsButtonProps {
 
 export const ShowAllWalletsButton = ({ onClick }: ShowAllWalletsButtonProps) => {
   return (
-    (<Tooltip message="Show more">
+    <Tooltip message="Show more">
       <Card
         className="flex justify-center items-center w-full"
         clickable
         onClick={onClick}
         style={{
           height: BUTTON_HEIGHT
-        }}>
+        }}
+      >
         <EllipsisIcon className="text-text100" size="xl" />
       </Card>
-    </Tooltip>)
-  );
+    </Tooltip>
+  )
 }
 
 export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
@@ -103,40 +106,40 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const WaasLoginContent = () => {
     if (isDescriptive) {
       return (
-        (<div
-          className="flex gap-1 justify-center items-center bg-background-secondary absolute pointer-events-none w-full h-full top-0 right-0">
+        <div className="flex gap-1 justify-center items-center bg-background-secondary absolute pointer-events-none w-full h-full top-0 right-0">
           <Logo width={ICON_SIZE_DESCRIPTIVE} height={ICON_SIZE_DESCRIPTIVE} />
           <Text color="text100" variant="normal" fontWeight="bold">
             Continue with Google
           </Text>
-        </div>)
-      );
+        </div>
+      )
     }
 
     return (
-      (<div
-        className="flex bg-background-secondary justify-center items-center absolute pointer-events-none w-full h-full top-0 right-0">
+      <div className="flex bg-background-secondary justify-center items-center absolute pointer-events-none w-full h-full top-0 right-0">
         <Logo width={ICON_SIZE} height={ICON_SIZE} />
-      </div>)
-    );
+      </div>
+    )
   }
 
   const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
 
   return (
-    (<Tooltip message="Google" disabled={!enableGoogleTooltip}>
+    <Tooltip message="Google" disabled={!enableGoogleTooltip}>
       <Card
         className="bg-transparent p-0 w-full relative"
         clickable
         style={{
           height: buttonHeight
-        }}>
+        }}
+      >
         <div
           className="flex flex-row h-full overflow-hidden items-center justify-center"
           style={{
             opacity: 0.0000001,
             transform: 'scale(100)'
-          }}>
+          }}
+        >
           <GoogleLogin
             className="w-56"
             type="icon"
@@ -155,8 +158,8 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
 
         <WaasLoginContent />
       </Card>
-    </Tooltip>)
-  );
+    </Tooltip>
+  )
 }
 
 export const AppleWaasConnectButton = (props: ConnectButtonProps) => {

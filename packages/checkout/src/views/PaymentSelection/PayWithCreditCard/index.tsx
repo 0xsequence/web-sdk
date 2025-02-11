@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system';
+import { ArrowRightIcon, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
 import { useContractInfo } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
@@ -100,7 +100,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
 
   const Options = () => {
     return (
-      (<div className="flex flex-col justify-center items-center gap-2 w-full">
+      <div className="flex flex-col justify-center items-center gap-2 w-full">
         {/* Only 1 option will be displayed, even if multiple providers are passed */}
         {creditCardProviders
           .slice(0, 1)
@@ -116,13 +116,14 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
               case 'sardine':
               case 'transak':
                 return (
-                  (<Card
+                  <Card
                     className="flex justify-between items-center p-4 cursor-pointer"
                     key="sardine"
                     onClick={() => {
                       setSelectedPaymentProvider(creditCardProvider)
                     }}
-                    disabled={disableButtons}>
+                    disabled={disableButtons}
+                  >
                     <div className="flex flex-row gap-3 items-center">
                       <PaymentsIcon className="text-white" />
                       <Text color="text100" variant="normal" fontWeight="bold">
@@ -132,18 +133,18 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
                     <div style={{ transform: 'rotate(-45deg)' }}>
                       <ArrowRightIcon className="text-white" />
                     </div>
-                  </Card>)
-                );
+                  </Card>
+                )
               default:
                 return null
             }
           })}
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div className="w-full">
+    <div className="w-full">
       {isLoading ? (
         <div className="flex w-full pt-5 justify-center items-center">
           <Spinner />
@@ -151,6 +152,6 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
       ) : (
         <Options />
       )}
-    </div>)
-  );
+    </div>
+  )
 }

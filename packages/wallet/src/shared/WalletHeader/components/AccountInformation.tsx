@@ -1,4 +1,4 @@
-import { Text, GradientAvatar, ChevronDownIcon } from '@0xsequence/design-system';
+import { Text, GradientAvatar, ChevronDownIcon } from '@0xsequence/design-system'
 import { formatAddress } from '@0xsequence/kit'
 import React, { forwardRef } from 'react'
 import { useAccount } from 'wagmi'
@@ -11,13 +11,14 @@ export const AccountInformation = forwardRef(({ onClickAccount }: AccountInforma
   const { address } = useAccount()
 
   return (
-    (<div className="flex gap-2 items-center">
+    <div className="flex gap-2 items-center">
       <div className="flex w-full flex-col items-center justify-center">
         <div
           className="flex gap-2 items-center justify-center relative select-none cursor-pointer"
           onClick={onClickAccount}
           // @ts-ignore-next-line
-          ref={ref}>
+          ref={ref}
+        >
           <GradientAvatar size="sm" address={address || ''} />
           <Text color="text100" fontWeight="medium" variant="normal">
             {formatAddress(address || '')}
@@ -25,6 +26,6 @@ export const AccountInformation = forwardRef(({ onClickAccount }: AccountInforma
           <ChevronDownIcon className="text-text100" />
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 })

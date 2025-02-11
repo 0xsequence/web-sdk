@@ -1,5 +1,5 @@
 import { TokenPrice } from '@0xsequence/api'
-import { ArrowRightIcon, Text, Image, TransactionIcon, Skeleton, NetworkImage } from '@0xsequence/design-system';
+import { ArrowRightIcon, Text, Image, TransactionIcon, Skeleton, NetworkImage } from '@0xsequence/design-system'
 import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useCoinPrices, useExchangeRate } from '@0xsequence/kit'
 import dayjs from 'dayjs'
@@ -114,7 +114,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
     const { amounts } = transfer
     const date = dayjs(transaction.timestamp).format('MMM DD, YYYY')
     return (
-      (<div className="flex gap-2 w-full flex-col justify-between">
+      <div className="flex gap-2 w-full flex-col justify-between">
         <div className="flex flex-row justify-between">
           <div className="flex text-text50 gap-1 flex-row justify-center items-center">
             {getTransactionIconByType(transfer.transferType)}
@@ -151,7 +151,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
           )?.price?.value
 
           return (
-            (<div className="flex flex-row justify-between" key={index}>
+            <div className="flex flex-row justify-between" key={index}>
               <div className="flex flex-row gap-2 justify-center items-center">
                 {tokenLogoUri && <Image className="w-5" src={tokenLogoUri} alt="token logo" />}
                 {getTransferAmountLabel(formatDisplay(amountValue), symbol, transfer.transferType)}
@@ -162,27 +162,28 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
                   {`${fiatCurrency.sign}${(Number(amountValue) * fiatConversionRate * conversionRate).toFixed(2)}`}
                 </Text>
               )}
-            </div>)
-          );
+            </div>
+          )
         })}
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div
+    <div
       className="flex bg-background-secondary rounded-xl p-4 gap-2 items-center justify-center flex-col select-none cursor-pointer"
-      onClick={() => onClickTransaction()}>
+      onClick={() => onClickTransaction()}
+    >
       {transfers?.map((transfer, position) => {
         return (
-          (<div className="w-full" key={`${transaction.txnHash}-${position}`}>
+          <div className="w-full" key={`${transaction.txnHash}-${position}`}>
             {getTransfer({
               transfer,
               isFirstItem: position === 0
             })}
-          </div>)
-        );
+          </div>
+        )
       })}
-    </div>)
-  );
+    </div>
+  )
 }

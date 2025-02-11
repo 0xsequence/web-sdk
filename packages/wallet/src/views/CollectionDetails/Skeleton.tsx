@@ -1,4 +1,4 @@
-import { Skeleton } from '@0xsequence/design-system';
+import { Skeleton } from '@0xsequence/design-system'
 import React from 'react'
 
 import { NetworkBadge } from '../../shared/NetworkBadge'
@@ -9,8 +9,7 @@ interface CollectionDetailsSkeletonProps {
 
 export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeletonProps) => {
   return (
-    (<div
-      className="flex px-4 pb-5 pt-3 mt-8 flex-col items-center justify-center gap-10">
+    <div className="flex px-4 pb-5 pt-3 mt-8 flex-col items-center justify-center gap-10">
       <div className="flex flex-col gap-2 justify-center items-center">
         <Skeleton style={{ width: '32px', height: '32px' }} />
         <Skeleton style={{ width: '100px', height: '24px' }} />
@@ -25,7 +24,8 @@ export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeleton
             display: 'grid',
             gridTemplateColumns: `calc(50% - ${vars.space[1]}) calc(50% - ${vars.space[1]})`,
             gap: vars.space[2]
-          }}>
+          }}
+        >
           {Array(8)
             .fill(null)
             .map((_, i) => (
@@ -33,6 +33,6 @@ export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeleton
             ))}
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

@@ -1,4 +1,4 @@
-import { Spinner, Text, TokenImage } from '@0xsequence/design-system';
+import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useContractInfo, useCoinPrices } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
@@ -25,10 +25,10 @@ export const Price = () => {
 
   if (isLoading) {
     return (
-      (<div className="flex my-2 px-6 justify-center items-center w-full h-12">
+      <div className="flex my-2 px-6 justify-center items-center w-full h-12">
         <Spinner />
-      </div>)
-    );
+      </div>
+    )
   }
 
   const tokenLogo = currencyInfo?.logoURI
@@ -41,7 +41,7 @@ export const Price = () => {
   const priceFiatFormatted = `~${Number(priceFiat).toFixed(2)} USD`
 
   return (
-    (<div className="flex px-6 justify-between items-center w-full h-12">
+    <div className="flex px-6 justify-between items-center w-full h-12">
       <div>
         <Text variant="small" color="text50" fontWeight="medium">
           Price
@@ -49,7 +49,7 @@ export const Price = () => {
       </div>
       <div className="flex flex-col justify-between items-end">
         <div className="flex gap-2 items-center">
-          <TokenImage className="w-5" src={tokenLogo} />
+          <TokenImage size="sm" src={tokenLogo} />
           <Text variant="large" fontWeight="bold" color="text100">{`${formattedPrice} ${tokenSymbol}`}</Text>
         </div>
         <div>
@@ -58,6 +58,6 @@ export const Price = () => {
           </Text>
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

@@ -1,4 +1,4 @@
-import { Text, TokenImage } from '@0xsequence/design-system';
+import { Text, TokenImage } from '@0xsequence/design-system'
 import { ZeroAddress, formatUnits, parseUnits } from 'ethers'
 import React from 'react'
 
@@ -56,7 +56,7 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
   })
 
   return (
-    (<div className="mt-3 w-full">
+    <div className="mt-3 w-full">
       <Text variant="normal" color="text100" fontWeight="bold">
         Select a fee option
       </Text>
@@ -66,7 +66,7 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
           const balance = feeOptionBalances.find(b => b.tokenName === option.token.name)
           const isSufficient = isBalanceSufficient(balance?.balance || '0', option.value, option.token.decimals || 0)
           return (
-            (<div
+            <div
               className="px-3 py-2 rounded-xl border-2 border-solid bg-background-raised"
               key={index}
               onClick={() => {
@@ -80,7 +80,8 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
                     variant: 'warning'
                   })
                 }
-              }}>
+              }}
+            >
               <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-row items-center gap-2">
                   <TokenImage src={option.token.logoURL} symbol={option.token.name} />
@@ -108,8 +109,8 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
                   </Text>
                 </div>
               </div>
-            </div>)
-          );
+            </div>
+          )
         })}
       </div>
       <div className="flex mt-3 items-end justify-center flex-col">
@@ -124,6 +125,6 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
           </div>
         )}
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

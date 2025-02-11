@@ -1,9 +1,9 @@
-import { Skeleton } from '@0xsequence/design-system';
+import { Skeleton } from '@0xsequence/design-system'
 import React from 'react'
 
 export const SkeletonTiles = () => {
   return (
-    (<div
+    <div
       style={{
         display: 'grid',
         gridTemplateColumns: `calc(50% - ${vars.space[1]}) calc(50% - ${vars.space[1]})`,
@@ -17,6 +17,6 @@ export const SkeletonTiles = () => {
             <Skeleton className="h-full w-full aspect-square" />
           </div>
         ))}
-    </div>)
-  );
+    </div>
+  )
 }

@@ -7,8 +7,8 @@ import {
   TokenImage,
   CheckmarkIcon,
   CloseIcon,
-  truncateAddress,
-} from '@0xsequence/design-system';
+  truncateAddress
+} from '@0xsequence/design-system'
 import {
   CollectibleTileImage,
   useContractInfo,
@@ -63,12 +63,12 @@ export const TransactionStatusHeader = ({ status, noItemsToDisplay }: Transactio
   const headerText = getHeaderText()
 
   return (
-    (<div className="fixed" style={{ top: '18px' }}>
+    <div className="fixed" style={{ top: '18px' }}>
       <Text className="text-xl" color="white" variant="normal" fontWeight="bold">
         {headerText}
       </Text>
-    </div>)
-  );
+    </div>
+  )
 }
 
 export const TransactionStatus = () => {
@@ -185,42 +185,42 @@ export const TransactionStatus = () => {
     switch (status) {
       case 'success':
         return (
-          (<div className="flex gap-2 justify-center items-center">
+          <div className="flex gap-2 justify-center items-center">
             <div className="w-6 h-6 rounded-full bg-positive">
               <CheckmarkIcon className="text-white relative" style={{ top: '3px', right: '-1px' }} />
             </div>
             <Text variant="normal" color="text50">
               Transaction complete
             </Text>
-          </div>)
-        );
+          </div>
+        )
       case 'error':
         return (
-          (<div className="flex gap-2 justify-center items-center">
+          <div className="flex gap-2 justify-center items-center">
             <div className="w-6 h-6 rounded-full bg-negative">
               <CloseIcon className="text-white relative" style={{ top: '2px', right: '-2px' }} />
             </div>
             <Text variant="normal" color="text50">
               Transaction failed
             </Text>
-          </div>)
-        );
+          </div>
+        )
       case 'pending':
       default:
         return (
-          (<div className="flex gap-2 justify-center items-center">
+          <div className="flex gap-2 justify-center items-center">
             <Spinner />
             <Text variant="normal" color="text50">
               Processing transaction
             </Text>
-          </div>)
-        );
+          </div>
+        )
     }
   }
 
   const ItemsInfo = () => {
     return (
-      (<div className="flex gap-3 flex-col">
+      <div className="flex gap-3 flex-col">
         {items?.map(item => {
           const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
@@ -228,7 +228,7 @@ export const TransactionStatus = () => {
           const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0))
 
           return (
-            (<div className="flex flex-row items-center justify-between" key={item.tokenId}>
+            <div className="flex flex-row items-center justify-between" key={item.tokenId}>
               <div className="flex flex-row gap-2">
                 <div
                   className="rounded-xl"
@@ -252,11 +252,11 @@ export const TransactionStatus = () => {
                 <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" symbol={dataCurrencyInfo?.symbol} disableAnimation />
                 <Text variant="normal" fontWeight="bold" color="white">{`${price} ${dataCurrencyInfo?.symbol}`}</Text>
               </div>
-            </div>)
-          );
+            </div>
+          )
         })}
-      </div>)
-    );
+      </div>
+    )
   }
 
   const TxInfo = () => {
@@ -273,7 +273,7 @@ export const TransactionStatus = () => {
     }
 
     return (
-      (<div className="flex mb-2 flex-row items-center justify-between">
+      <div className="flex mb-2 flex-row items-center justify-between">
         <div className="flex flex-row gap-1 items-center justify-between">
           <ArrowDownIcon className="text-text80" size="xs" style={{ transform: 'rotate(180deg)', marginRight: '-4px' }} />
           <Text color="text80" variant="small" fontWeight="medium">
@@ -286,16 +286,14 @@ export const TransactionStatus = () => {
             <TimeAgo datetime={startTime} />
           </Text>
         </div>
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div className="w-full px-6 pb-6">
+    <div className="w-full px-6 pb-6">
       <TransactionStatusHeader status={status} noItemsToDisplay={noItemsToDisplay} />
-      <div
-        className="flex flex-col gap-6 items-center justify-center h-full"
-        style={{ paddingTop: HEADER_HEIGHT }}>
+      <div className="flex flex-col gap-6 items-center justify-center h-full" style={{ paddingTop: HEADER_HEIGHT }}>
         {isLoading ? (
           <div className="flex w-full justify-center items-center">
             <Spinner size="md" />
@@ -315,17 +313,15 @@ export const TransactionStatus = () => {
             )}
             <div className="flex w-full justify-between items-center">
               <StatusIndicator />
-              <Text
-                className="no-underline cursor-pointer"
-                variant="normal"
-                style={{ color: '#8E7EFF' }}
-                asChild><a href={blockExplorerUrl} target="_blank" rel="noreferrer">
+              <Text className="no-underline cursor-pointer" variant="normal" style={{ color: '#8E7EFF' }} asChild>
+                <a href={blockExplorerUrl} target="_blank" rel="noreferrer">
                   {truncateAddress(txHash, 4, 4)}
-                </a></Text>
+                </a>
+              </Text>
             </div>
           </>
         )}
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

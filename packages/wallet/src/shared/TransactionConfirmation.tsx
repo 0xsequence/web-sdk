@@ -1,4 +1,4 @@
-import { Button, ChevronRightIcon, Text, Card, GradientAvatar, Spinner } from '@0xsequence/design-system';
+import { Button, ChevronRightIcon, Text, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
 import { truncateAtMiddle, useIndexerClient } from '@0xsequence/kit'
 import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
@@ -103,11 +103,9 @@ export const TransactionConfirmation = ({
   const isConfirmDisabled = isFeeSelectionRequired && !selectedFeeOptionAddress
 
   return (
-    (<div
-      className="flex w-full h-full items-center justify-center bg-background-primary">
+    <div className="flex w-full h-full items-center justify-center bg-background-primary">
       <div className="flex gap-2 flex-col bg-background-primary w-full">
-        <div
-          className="flex bg-background-secondary rounded-xl p-4 pb-3 gap-2 flex-col">
+        <div className="flex bg-background-secondary rounded-xl p-4 pb-3 gap-2 flex-col">
           <SendItemInfo
             imageUrl={imageUrl}
             showSquareImage={showSquareImage}
@@ -140,7 +138,7 @@ export const TransactionConfirmation = ({
             </Text>
             <Card className="flex w-full flex-row items-center" style={{ height: '52px' }}>
               <div className="flex flex-row justify-center items-center gap-2">
-                <GradientAvatar address={toAddress} style={{ width: '20px' }} />
+                <GradientAvatar size="sm" address={toAddress} />
                 <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
               </div>
             </Card>
@@ -158,9 +156,7 @@ export const TransactionConfirmation = ({
 
         <div className="flex mt-3 gap-2">
           {isLoading ? (
-            <div
-              className="flex w-full items-center justify-center"
-              style={{ height: '52px' }}>
+            <div className="flex w-full items-center justify-center" style={{ height: '52px' }}>
               <Spinner />
             </div>
           ) : (
@@ -185,6 +181,6 @@ export const TransactionConfirmation = ({
           )}
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

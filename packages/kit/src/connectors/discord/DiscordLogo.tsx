@@ -11,7 +11,7 @@ export const getDiscordLogo = ({ isDarkMode }: GetDiscordLogo) => {
 
   const DiscordLogo: React.FunctionComponent = (props: LogoProps) => {
     return (
-      (<svg viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <svg viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
         <g id="discord-icon-svgrepo-com 1" clipPath="url(#clip0_193_26839)">
           <path
             id="Vector"
@@ -24,8 +24,8 @@ export const getDiscordLogo = ({ isDarkMode }: GetDiscordLogo) => {
             <rect className="w-28 h-28" fill={fillColor} transform="translate(6.625 6)" />
           </clipPath>
         </defs>
-      </svg>)
-    );
+      </svg>
+    )
   }
   return DiscordLogo
 }

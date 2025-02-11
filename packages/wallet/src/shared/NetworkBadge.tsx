@@ -1,4 +1,4 @@
-import { NetworkImage, Text } from '@0xsequence/design-system';
+import { NetworkImage, Text } from '@0xsequence/design-system'
 import { getNetwork, getNetworkColor, getNetworkBackgroundColor } from '@0xsequence/kit'
 import React from 'react'
 
@@ -12,11 +12,12 @@ export const NetworkBadge = ({ chainId }: NetworkBadgeProps) => {
   const chainBGColor = getNetworkBackgroundColor(chainId)
 
   return (
-    (<div
+    <div
       className="flex h-6 px-2 gap-1 rounded-sm flex-row justify-center items-center w-fit"
       style={{
         background: chainBGColor
-      }}>
+      }}
+    >
       <NetworkImage chainId={chainId} size="xs" />
       <Text
         variant="xsmall"
@@ -29,6 +30,6 @@ export const NetworkBadge = ({ chainId }: NetworkBadgeProps) => {
       >
         {network.title ?? network.name}
       </Text>
-    </div>)
-  );
+    </div>
+  )
 }

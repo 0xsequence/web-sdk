@@ -1,4 +1,4 @@
-import { Card, Text, Spinner } from '@0xsequence/design-system';
+import { Card, Text, Spinner } from '@0xsequence/design-system'
 
 interface CardButtonProps {
   title: string
@@ -11,13 +11,13 @@ export const CardButton = (props: CardButtonProps) => {
   const { title, description, onClick, isPending } = props
 
   return (
-    (<Card clickable onClick={onClick}>
+    <Card clickable onClick={onClick}>
       <Text variant="normal" fontWeight="bold" color="text100">
         {title}
       </Text>
-      <Text className="mt-2" variant="normal" color="text50" asChild><div>
-          {description}
-        </div></Text>
+      <Text className="mt-2" variant="normal" color="text50" asChild>
+        <div>{description}</div>
+      </Text>
       {isPending && (
         <div className="flex gap-2 items-center mt-4">
           <Spinner size="sm" />
@@ -26,6 +26,6 @@ export const CardButton = (props: CardButtonProps) => {
           </Text>
         </div>
       )}
-    </Card>)
-  );
+    </Card>
+  )
 }

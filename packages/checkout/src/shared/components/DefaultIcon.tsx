@@ -1,4 +1,4 @@
-import { Text } from '@0xsequence/design-system';
+import { Text } from '@0xsequence/design-system'
 import React from 'react'
 
 interface DefaultIconProps {
@@ -7,15 +7,16 @@ interface DefaultIconProps {
 
 export const DefaultIcon = ({ size = 30 }: DefaultIconProps) => {
   return (
-    (<div
+    <div
       className="flex items-center justify-center rounded-full bg-background-inverse"
       style={{
         width: `${size}px`,
         height: `${size}px`
-      }}>
+      }}
+    >
       <Text className="inline-block" style={{ fontSize: `${size - 4}px` }} variant="large" color="textInverse100">
         ?
       </Text>
-    </div>)
-  );
+    </div>
+  )
 }

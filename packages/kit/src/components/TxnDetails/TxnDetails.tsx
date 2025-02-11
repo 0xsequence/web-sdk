@@ -1,5 +1,5 @@
 import { commons } from '@0xsequence/core'
-import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system';
+import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
@@ -20,7 +20,7 @@ interface TxnDetailsProps {
 
 export const TxnDetailsSkeleton = () => {
   return (
-    (<div className="flex items-center justify-between">
+    <div className="flex items-center justify-between">
       <div className="flex justify-center items-center gap-2">
         <Skeleton className="rounded-full" style={{ width: 30, height: 30 }} />
         <div className="flex flex-col gap-2 items-start">
@@ -32,8 +32,8 @@ export const TxnDetailsSkeleton = () => {
         <Skeleton style={{ width: 100, height: 14 }} />
         <Skeleton style={{ width: 50, height: 12 }} />
       </div>
-    </div>)
-  );
+    </div>
+  )
 }
 
 export const TxnDetails = ({ address, txs, chainId }: TxnDetailsProps) => {
@@ -121,7 +121,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
 
   const showSquareImage = isNFT
   return (
-    (<Card>
+    <Card>
       <div className="mb-2">
         <Text variant="medium" color="text100">
           {capitalize(transferProps.type ?? '')}
@@ -157,16 +157,17 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
           </Text>
           <div
             className="flex mt-2 rounded-xl bg-background-secondary w-full flex-row justify-between items-center p-4"
-            style={{ height: '52px' }}>
+            style={{ height: '52px' }}
+          >
             <div className="flex flex-row justify-center items-center gap-2">
-              <GradientAvatar address={toAddress} style={{ width: '20px' }} />
+              <GradientAvatar size="sm" address={toAddress} />
               <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 12)}`}</Text>
             </div>
           </div>
         </div>
       )}
-    </Card>)
-  );
+    </Card>
+  )
 }
 
 interface AwardItemInfoProps {
@@ -176,7 +177,7 @@ interface AwardItemInfoProps {
 // This is used only for demo purposes
 const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
   return (
-    (<Card>
+    <Card>
       <div className="mb-2">
         <Text variant="medium" color="text100">
           Mint
@@ -208,14 +209,15 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
           </Text>
           <div
             className="flex mt-2 rounded-xl bg-background-secondary w-full flex-row justify-between items-center p-4"
-            style={{ height: '52px' }}>
+            style={{ height: '52px' }}
+          >
             <div className="flex flex-row justify-center items-center gap-2">
-              <GradientAvatar address={awardItemProps.to} style={{ width: '20px' }} />
+              <GradientAvatar size="sm" address={awardItemProps.to} />
               <Text color="text100">{`0x${truncateAtMiddle(awardItemProps.to.substring(2), 12)}`}</Text>
             </div>
           </div>
         </div>
       )}
-    </Card>)
-  );
+    </Card>
+  )
 }

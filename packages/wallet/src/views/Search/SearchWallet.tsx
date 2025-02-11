@@ -1,4 +1,4 @@
-import { SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system';
+import { SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
@@ -120,8 +120,7 @@ export const SearchWallet = () => {
   ).slice(0, 5)
 
   return (
-    (<div
-      className="flex px-4 pb-5 pt-3 flex-col gap-10 items-center justify-center">
+    <div className="flex px-4 pb-5 pt-3 flex-col gap-10 items-center justify-center">
       <div className="w-full">
         <TextInput
           autoFocus
@@ -179,6 +178,6 @@ export const SearchWallet = () => {
           })
         )}
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

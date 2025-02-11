@@ -1,4 +1,4 @@
-import { Button, Divider, Text } from '@0xsequence/design-system';
+import { Button, Divider, Text } from '@0xsequence/design-system'
 import {
   useBalancesSummary,
   useAnalyticsContext,
@@ -394,83 +394,83 @@ export const PaymentSelectionContent = () => {
     }
   }
 
-  return (<>
-    <div
-      className="flex flex-col gap-2 items-start w-full pb-0 px-6 h-full"
-      style={{
-        paddingTop: HEADER_HEIGHT
-      }}>
-      <div className="flex flex-col w-full gap-2">
-        <OrderSummary />
+  return (
+    <>
+      <div
+        className="flex flex-col gap-2 items-start w-full pb-0 px-6 h-full"
+        style={{
+          paddingTop: HEADER_HEIGHT
+        }}
+      >
+        <div className="flex flex-col w-full gap-2">
+          <OrderSummary />
+        </div>
+        {(enableMainCurrencyPayment || enableSwapPayments) && (
+          <>
+            <Divider className="w-full my-3" />
+            <PayWithCrypto
+              settings={selectPaymentSettings}
+              disableButtons={disableButtons}
+              selectedCurrency={selectedCurrency}
+              setSelectedCurrency={setSelectedCurrency}
+              isLoading={isLoading}
+            />
+          </>
+        )}
+        {creditCardProviders?.length > 0 && (
+          <>
+            <Divider className="w-full my-3" />
+            <PayWithCreditCard
+              settings={selectPaymentSettings}
+              disableButtons={disableButtons}
+              skipOnCloseCallback={skipOnCloseCallback}
+            />
+          </>
+        )}
+        {enableTransferFunds && (
+          <>
+            <Divider className="w-full my-3" />
+            <TransferFunds />
+          </>
+        )}
+        {(enableMainCurrencyPayment || enableSwapPayments) && (
+          <>
+            {isError && (
+              <div className="w-full" style={{ marginBottom: '-18px' }}>
+                <Text color="negative" variant="small">
+                  A problem occurred while executing the transaction.
+                </Text>
+              </div>
+            )}
+            <div className="w-full">
+              <Button
+                className="mt-6 w-full"
+                onClick={onClickPurchase}
+                disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
+                shape="square"
+                variant="primary"
+                label="Complete Purchase"
+              />
+              <div className="flex w-full justify-center items-center gap-0.5 my-2">
+                {/* Replace by icon from design-system once new release is out */}
+                <svg className="w-13 h-12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 12" fill="none">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M8.82807 5.24497V3.52873C8.82807 2.24258 7.78549 1.19995 6.49934 1.19995C5.21319 1.19995 4.17057 2.24258 4.17057 3.52873L4.17057 5.24497H3.9832C3.32046 5.24497 2.7832 5.78223 2.7832 6.44497V9.49529C2.7832 10.158 3.32046 10.6953 3.9832 10.6953H9.01546C9.6782 10.6953 10.2155 10.158 10.2155 9.49529V6.44497C10.2155 5.78223 9.6782 5.24497 9.01546 5.24497H8.82807ZM6.49934 2.06705C5.69209 2.06705 5.03769 2.72144 5.03766 3.52867L5.03767 5.24497H7.96097V3.52867C7.96094 2.72144 7.30658 2.06705 6.49934 2.06705Z"
+                    fill="#6D6D6D"
+                  />
+                </svg>
+                <Text className="mt-0.5" variant="xsmall" color="text50">
+                  Secure Checkout
+                </Text>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      {(enableMainCurrencyPayment || enableSwapPayments) && (
-        <>
-          <Divider className="w-full my-3" />
-          <PayWithCrypto
-            settings={selectPaymentSettings}
-            disableButtons={disableButtons}
-            selectedCurrency={selectedCurrency}
-            setSelectedCurrency={setSelectedCurrency}
-            isLoading={isLoading}
-          />
-        </>
-      )}
-      {creditCardProviders?.length > 0 && (
-        <>
-          <Divider className="w-full my-3" />
-          <PayWithCreditCard
-            settings={selectPaymentSettings}
-            disableButtons={disableButtons}
-            skipOnCloseCallback={skipOnCloseCallback}
-          />
-        </>
-      )}
-      {enableTransferFunds && (
-        <>
-          <Divider className="w-full my-3" />
-          <TransferFunds />
-        </>
-      )}
-      {(enableMainCurrencyPayment || enableSwapPayments) && (
-        <>
-          {isError && (
-            <div className="w-full" style={{ marginBottom: '-18px' }}>
-              <Text color="negative" variant="small">
-                A problem occurred while executing the transaction.
-              </Text>
-            </div>
-          )}
-          <div className="w-full">
-            <Button
-              className="mt-6 w-full"
-              onClick={onClickPurchase}
-              disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
-              shape="square"
-              variant="primary"
-              label="Complete Purchase" />
-            <div className="flex w-full justify-center items-center gap-0.5 my-2">
-              {/* Replace by icon from design-system once new release is out */}
-              <svg
-                className="w-13 h-12"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 13 12"
-                fill="none">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M8.82807 5.24497V3.52873C8.82807 2.24258 7.78549 1.19995 6.49934 1.19995C5.21319 1.19995 4.17057 2.24258 4.17057 3.52873L4.17057 5.24497H3.9832C3.32046 5.24497 2.7832 5.78223 2.7832 6.44497V9.49529C2.7832 10.158 3.32046 10.6953 3.9832 10.6953H9.01546C9.6782 10.6953 10.2155 10.158 10.2155 9.49529V6.44497C10.2155 5.78223 9.6782 5.24497 9.01546 5.24497H8.82807ZM6.49934 2.06705C5.69209 2.06705 5.03769 2.72144 5.03766 3.52867L5.03767 5.24497H7.96097V3.52867C7.96094 2.72144 7.30658 2.06705 6.49934 2.06705Z"
-                  fill="#6D6D6D"
-                />
-              </svg>
-              <Text className="mt-0.5" variant="xsmall" color="text50">
-                Secure Checkout
-              </Text>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-    <Divider className="my-0" />
-    <Footer />
-  </>);
+      <Divider className="my-0" />
+      <Footer />
+    </>
+  )
 }

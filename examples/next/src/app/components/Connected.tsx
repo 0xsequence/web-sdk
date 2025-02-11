@@ -1,4 +1,4 @@
-import { Text, Card, Button, Select } from '@0xsequence/design-system';
+import { Text, Card, Button, Select } from '@0xsequence/design-system'
 import {
   signEthAuthProof,
   useIndexerClient,
@@ -261,211 +261,223 @@ export const Connected = () => {
     setIsMessageValid(undefined)
   }, [chainId])
 
-  return (<>
-    <Header />
-    <div
-      className="flex px-4 flex-col justify-center items-center"
-      style={{ margin: '140px 0' }}>
-      <div className="flex flex-col gap-4">
-        <div className="flex my-3 flex-col gap-2">
-          <Text fontWeight="semibold" variant="small" color="text50">
-            Connected Wallets
-          </Text>
-          {[...wallets]
-            .sort((a, b) => {
-              // Sort embedded wallet to the top
-              if (a.isEmbedded && !b.isEmbedded) return -1
-              if (!a.isEmbedded && b.isEmbedded) return 1
-              return 0
-            })
-            .map(wallet => (
-              <WalletListItem
-                key={wallet.id}
-                id={wallet.id}
-                name={wallet.name}
-                address={wallet.address}
-                isActive={wallet.isActive}
-                isEmbedded={wallet.isEmbedded}
-                onSelect={() => setActiveWallet(wallet.address)}
-                onDisconnect={() => disconnectWallet(wallet.address)}
-              />
-            ))}
-        </div>
-        <div className="flex gap-2 flex-row items-center justify-center">
-          <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
-        </div>
+  return (
+    <>
+      <Header />
+      <div className="flex px-4 flex-col justify-center items-center" style={{ margin: '140px 0' }}>
+        <div className="flex flex-col gap-4">
+          <div className="flex my-3 flex-col gap-2">
+            <Text fontWeight="semibold" variant="small" color="text50">
+              Connected Wallets
+            </Text>
+            {[...wallets]
+              .sort((a, b) => {
+                // Sort embedded wallet to the top
+                if (a.isEmbedded && !b.isEmbedded) return -1
+                if (!a.isEmbedded && b.isEmbedded) return 1
+                return 0
+              })
+              .map(wallet => (
+                <WalletListItem
+                  key={wallet.id}
+                  id={wallet.id}
+                  name={wallet.name}
+                  address={wallet.address}
+                  isActive={wallet.isActive}
+                  isEmbedded={wallet.isEmbedded}
+                  onSelect={() => setActiveWallet(wallet.address)}
+                  onDisconnect={() => disconnectWallet(wallet.address)}
+                />
+              ))}
+          </div>
+          <div className="flex gap-2 flex-row items-center justify-center">
+            <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+          </div>
 
-        <div className="flex flex-col gap-2">
-          <Text variant="small" color="text50" fontWeight="medium">
-            Demos
-          </Text>
-          <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
-          {/* <CardButton
+          <div className="flex flex-col gap-2">
+            <Text variant="small" color="text50" fontWeight="medium">
+              Demos
+            </Text>
+            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
+            {/* <CardButton
               title="Checkout"
               description="Checkout screen before placing a purchase on coins or collections"
               onClick={onClickCheckout}
             /> */}
-          {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
-            <CardButton
-              title="Send sponsored transaction"
-              description="Send a transaction with your wallet without paying any fees"
-              isPending={isPendingSendTxn}
-              onClick={runSendTransaction}
-            />
-          )}
-          {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
-            <Text className="ml-4" variant="small" underline asChild><a
-                href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
-                target="_blank"
-                rel="noreferrer">View on {networkForCurrentChainId.blockExplorer.name}
-              </a></Text>
-          )}
-
-          {networkForCurrentChainId.testnet && (
-            <CardButton
-              title="Send unsponsored transaction"
-              description="Send an unsponsored transaction with your wallet"
-              isPending={isPendingSendUnsponsoredTxn}
-              onClick={runSendUnsponsoredTransaction}
-            />
-          )}
-          {networkForCurrentChainId.blockExplorer &&
-            lastTxnDataHash3 &&
-            ((txnData3 as any)?.chainId === chainId || txnData3) && (
-              <Text className="ml-4" variant="small" underline asChild><a
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData3 as any).hash ?? txnData3}`}
-                  target="_blank"
-                  rel="noreferrer">View on {networkForCurrentChainId.blockExplorer.name}
-                </a></Text>
+            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
+              <CardButton
+                title="Send sponsored transaction"
+                description="Send a transaction with your wallet without paying any fees"
+                isPending={isPendingSendTxn}
+                onClick={runSendTransaction}
+              />
             )}
-
-          <CardButton
-            title="Sign message"
-            description="Sign a message with your wallet"
-            onClick={signMessage}
-            isPending={isSigningMessage}
-          />
-
-          {isMessageValid && (
-            <Card className="flex text-text100 flex-col gap-2" style={{ width: '332px' }}>
-              <Text variant="medium">Signed message:</Text>
-              <Text>{messageToSign}</Text>
-              <Text variant="medium">Signature:</Text>
-              <Text variant="code" ellipsis asChild><p>
-                  {messageSig}
-                </p></Text>
-              <Text variant="medium">
-                isValid: <Text variant="code">{isMessageValid.toString()}</Text>
+            {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
+              <Text className="ml-4" variant="small" underline asChild>
+                <a
+                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View on {networkForCurrentChainId.blockExplorer.name}
+                </a>
               </Text>
-            </Card>
-          )}
-
-          <CardButton
-            title="Mint an NFT"
-            description="Test minting an NFT to your wallet"
-            isPending={isPendingMintTxn}
-            onClick={runMintNFT}
-          />
-
-          {networkForCurrentChainId.blockExplorer &&
-            lastTxnDataHash2 &&
-            ((txnData2 as any)?.chainId === chainId || txnData2) && (
-              <Text className="ml-4" variant="small" underline asChild><a
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
-                  target="_blank"
-                  rel="noreferrer">View on {networkForCurrentChainId.blockExplorer.name}
-                </a></Text>
             )}
 
-          {isDebugMode && (
-            <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
-          )}
-        </div>
+            {networkForCurrentChainId.testnet && (
+              <CardButton
+                title="Send unsponsored transaction"
+                description="Send an unsponsored transaction with your wallet"
+                isPending={isPendingSendUnsponsoredTxn}
+                onClick={runSendUnsponsoredTransaction}
+              />
+            )}
+            {networkForCurrentChainId.blockExplorer &&
+              lastTxnDataHash3 &&
+              ((txnData3 as any)?.chainId === chainId || txnData3) && (
+                <Text className="ml-4" variant="small" underline asChild>
+                  <a
+                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData3 as any).hash ?? txnData3}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View on {networkForCurrentChainId.blockExplorer.name}
+                  </a>
+                </Text>
+              )}
 
-        {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
-          <div className="my-3">
-            <Select
-              name="feeOption"
-              labelLocation="top"
-              label="Pick a fee option"
-              onValueChange={val => {
-                const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
-                if (selected) {
-                  setSelectedFeeOptionTokenName(selected.token.name)
-                  setFeeOptionAlert(undefined)
-                }
-              }}
-              value={selectedFeeOptionTokenName}
-              options={[
-                ...pendingFeeOptionConfirmation?.options?.map(option => ({
-                  label: (
-                    <div className="flex items-start flex-col">
-                      <div className="flex flex-row">
-                        <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
-                        <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
-                      </div>
-                      <div className="flex flex-row">
-                        <Text>Wallet balance for {option.token.name}: </Text>{' '}
-                        <Text>
-                          {formatUnits(
-                            BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
-                            option.token.decimals || 0
-                          )}
-                        </Text>
-                      </div>
-                    </div>
-                  ),
-                  value: option.token.name
-                }))
-              ]}
+            <CardButton
+              title="Sign message"
+              description="Sign a message with your wallet"
+              onClick={signMessage}
+              isPending={isSigningMessage}
             />
 
-            <div className="flex my-2 items-center justify-center flex-col">
-              <Button
-                onClick={() => {
-                  const selected = pendingFeeOptionConfirmation?.options?.find(
-                    option => option.token.name === selectedFeeOptionTokenName
-                  )
+            {isMessageValid && (
+              <Card className="flex text-text100 flex-col gap-2" style={{ width: '332px' }}>
+                <Text variant="medium">Signed message:</Text>
+                <Text>{messageToSign}</Text>
+                <Text variant="medium">Signature:</Text>
+                <Text variant="code" ellipsis asChild>
+                  <p>{messageSig}</p>
+                </Text>
+                <Text variant="medium">
+                  isValid: <Text variant="code">{isMessageValid.toString()}</Text>
+                </Text>
+              </Card>
+            )}
 
-                  if (selected?.token.contractAddress !== undefined) {
-                    // check if wallet has enough balance, should be balance > feeOption.value
-                    const balance = parseUnits(
-                      feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
-                      selected.token.decimals || 0
-                    )
-                    const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
-                    if (balance && balance < feeOptionValue) {
-                      setFeeOptionAlert({
-                        title: 'Insufficient balance',
-                        description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
-                        secondaryDescription: 'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
-                        variant: 'warning'
-                      })
-                      return
-                    }
+            <CardButton
+              title="Mint an NFT"
+              description="Test minting an NFT to your wallet"
+              isPending={isPendingMintTxn}
+              onClick={runMintNFT}
+            />
 
-                    confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
+            {networkForCurrentChainId.blockExplorer &&
+              lastTxnDataHash2 &&
+              ((txnData2 as any)?.chainId === chainId || txnData2) && (
+                <Text className="ml-4" variant="small" underline asChild>
+                  <a
+                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View on {networkForCurrentChainId.blockExplorer.name}
+                  </a>
+                </Text>
+              )}
+
+            {isDebugMode && (
+              <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
+            )}
+          </div>
+
+          {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
+            <div className="my-3">
+              <Select
+                name="feeOption"
+                labelLocation="top"
+                label="Pick a fee option"
+                onValueChange={val => {
+                  const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
+                  if (selected) {
+                    setSelectedFeeOptionTokenName(selected.token.name)
+                    setFeeOptionAlert(undefined)
                   }
                 }}
-                label="Confirm fee option"
+                value={selectedFeeOptionTokenName}
+                options={[
+                  ...pendingFeeOptionConfirmation?.options?.map(option => ({
+                    label: (
+                      <div className="flex items-start flex-col">
+                        <div className="flex flex-row">
+                          <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
+                          <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                        </div>
+                        <div className="flex flex-row">
+                          <Text>Wallet balance for {option.token.name}: </Text>{' '}
+                          <Text>
+                            {formatUnits(
+                              BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
+                              option.token.decimals || 0
+                            )}
+                          </Text>
+                        </div>
+                      </div>
+                    ),
+                    value: option.token.name
+                  }))
+                ]}
               />
-              {feeOptionAlert && (
-                <div className="mt-3" style={{ maxWidth: '332px' }}>
-                  <Alert
-                    title={feeOptionAlert.title}
-                    description={feeOptionAlert.description}
-                    secondaryDescription={feeOptionAlert.secondaryDescription}
-                    variant={feeOptionAlert.variant}
-                    buttonProps={feeOptionAlert.buttonProps}
-                  />
-                </div>
-              )}
+
+              <div className="flex my-2 items-center justify-center flex-col">
+                <Button
+                  onClick={() => {
+                    const selected = pendingFeeOptionConfirmation?.options?.find(
+                      option => option.token.name === selectedFeeOptionTokenName
+                    )
+
+                    if (selected?.token.contractAddress !== undefined) {
+                      // check if wallet has enough balance, should be balance > feeOption.value
+                      const balance = parseUnits(
+                        feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
+                        selected.token.decimals || 0
+                      )
+                      const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
+                      if (balance && balance < feeOptionValue) {
+                        setFeeOptionAlert({
+                          title: 'Insufficient balance',
+                          description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
+                          secondaryDescription: 'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
+                          variant: 'warning'
+                        })
+                        return
+                      }
+
+                      confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
+                    }
+                  }}
+                  label="Confirm fee option"
+                />
+                {feeOptionAlert && (
+                  <div className="mt-3" style={{ maxWidth: '332px' }}>
+                    <Alert
+                      title={feeOptionAlert.title}
+                      description={feeOptionAlert.description}
+                      secondaryDescription={feeOptionAlert.secondaryDescription}
+                      variant={feeOptionAlert.variant}
+                      buttonProps={feeOptionAlert.buttonProps}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  </>);
+    </>
+  )
 }
 
 export type AlertProps = {
@@ -479,9 +491,8 @@ export type AlertProps = {
 
 export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
-    (<div className="rounded-xl">
-      <div
-        className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
+    <div className="rounded-xl">
+      <div className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
         <div className="flex w-full gap-2 justify-between">
           <div className="flex flex-col gap-1">
             <Text variant="normal" color="text100" fontWeight="medium">
@@ -508,8 +519,8 @@ export const Alert = ({ title, description, secondaryDescription, variant, butto
 
         {children}
       </div>
-    </div>)
-  );
+    </div>
+  )
 }
 
 export const getCheckoutSettings = (_address?: string) => {

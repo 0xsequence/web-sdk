@@ -1,4 +1,4 @@
-import { Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system';
+import { Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -46,15 +46,13 @@ export const TransferFunds = () => {
   }
 
   return (
-    (<div className="w-full">
+    <div className="w-full">
       <div className="mb-3">
         <Text variant="small" fontWeight="medium" color="white">
           Transfer funds to your connected wallet
         </Text>
       </div>
-      <Card
-        className="flex cursor-pointer w-full justify-between p-4"
-        onClick={onClickQrCode}>
+      <Card className="flex cursor-pointer w-full justify-between p-4" onClick={onClickQrCode}>
         <div className="flex flex-row gap-3">
           <div className="bg-white p-4 rounded-sm" style={{ width: 40, height: 40 }}>
             <QRCodeCanvas
@@ -95,6 +93,6 @@ export const TransferFunds = () => {
           </CopyToClipboard>
         </div>
       </Card>
-    </div>)
-  );
+    </div>
+  )
 }
