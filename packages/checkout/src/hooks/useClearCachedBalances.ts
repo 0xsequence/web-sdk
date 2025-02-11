@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from '@0xsequence/kit'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface UseClearCachedBalances {
@@ -10,7 +11,7 @@ export const useClearCachedBalances = (): UseClearCachedBalances => {
   return {
     clearCachedBalances: () => {
       queryClient.invalidateQueries({
-        queryKey: ['balances']
+        queryKey: [QUERY_KEYS.balances]
       })
     }
   }

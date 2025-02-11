@@ -17,7 +17,7 @@ import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-quer
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { zeroAddress } from 'viem'
 
-import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
+import { NATIVE_TOKEN_ADDRESS_0X, QUERY_KEYS } from '../constants'
 import { compareAddress } from '../utils/helpers'
 
 import { useAPIClient } from './useAPIClient'
@@ -37,15 +37,15 @@ export const useClearCachedBalances = () => {
     clearCachedBalances: () => {
       queryClient.invalidateQueries({
         queryKey: [
-          'balances',
-          'balancesSummary',
-          'coinBalance',
-          'coinBalanceSummary',
-          'collectibleBalance',
-          'collectibleBalanceDetails',
-          'collectionBalance',
-          'collectionBalanceDetails',
-          'transactionHistory'
+          QUERY_KEYS.balances,
+          QUERY_KEYS.balancesSummary,
+          QUERY_KEYS.coinBalance,
+          QUERY_KEYS.coinBalanceSummary,
+          QUERY_KEYS.collectionBalance,
+          QUERY_KEYS.collectibleBalanceDetails,
+          QUERY_KEYS.collectionBalance,
+          QUERY_KEYS.collectionBalanceDetails,
+          QUERY_KEYS.transactionHistory
         ]
       })
     }
@@ -153,7 +153,7 @@ export const useBalances = ({ chainIds, ...args }: UseBalancesArgs) => {
   const indexerClients = useIndexerClients(chainIds)
 
   return useQuery({
-    queryKey: ['balances', chainIds, args],
+    queryKey: [QUERY_KEYS.balances, chainIds, args],
     queryFn: async () => {
       const res = (
         await Promise.all(
@@ -178,7 +178,7 @@ export const useBalancesSummary = ({ chainIds, ...args }: UseBalancesSummaryArgs
   const indexerClients = useIndexerClients(chainIds)
 
   return useQuery({
-    queryKey: ['balancesSummary', chainIds, args],
+    queryKey: [QUERY_KEYS.balancesSummary, chainIds, args],
     queryFn: async () => {
       const res = (
         await Promise.all(
@@ -204,7 +204,7 @@ export const useCoinBalance = (args: UseCoinBalanceArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
   return useQuery({
-    queryKey: ['coinBalance', args],
+    queryKey: [QUERY_KEYS.coinBalance, args],
     queryFn: async () => {
       if (compareAddress(args?.contractAddress || '', zeroAddress)) {
         const res = await getNativeTokenBalance(indexerClient, args.chainId, args.accountAddress)
@@ -228,7 +228,7 @@ export const useCoinBalanceSummary = (args: UseCoinBalanceSummaryArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
   return useQuery({
-    queryKey: ['coinBalanceSummary', args],
+    queryKey: [QUERY_KEYS.coinBalanceSummary, args],
     queryFn: async () => {
       if (compareAddress(args?.filter.contractWhitelist[0] || '', zeroAddress)) {
         const res = await getNativeTokenBalance(indexerClient, args.chainId, args.filter.accountAddresses[0] || '')
@@ -258,7 +258,7 @@ export const useCollectibleBalance = (args: UseCollectibleBalanceArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
   return useQuery({
-    queryKey: ['collectibleBalance', args],
+    queryKey: [QUERY_KEYS.collectibleBalance, args],
     queryFn: async () => {
       const res = await indexerClient.getTokenBalances({
         accountAddress: args.accountAddress,
@@ -287,7 +287,7 @@ export const useCollectibleBalanceDetails = (args: UseCollectibleBalanceDetailsA
   const indexerClient = useIndexerClient(args.chainId)
 
   return useQuery({
-    queryKey: ['collectibleBalanceDetails', args],
+    queryKey: [QUERY_KEYS.collectibleBalanceDetails, args],
     queryFn: async () => {
       const res = await indexerClient.getTokenBalancesDetails(args)
 
@@ -329,7 +329,7 @@ export const useCollectionBalance = (args: UseCollectionBalanceArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
   return useQuery({
-    queryKey: ['collectionBalance', args],
+    queryKey: [QUERY_KEYS.collectionBalanceDetails, args],
     queryFn: () => getCollectionBalance(indexerClient, args),
     retry: true,
     staleTime: time.oneSecond * 30,
@@ -351,7 +351,7 @@ export const useCollectionBalanceDetails = (args: UseCollectionBalanceDetailsArg
   const indexerClient = useIndexerClient(args.chainId)
 
   return useQuery({
-    queryKey: ['collectionBalanceDetails', args],
+    queryKey: [QUERY_KEYS.collectionBalanceDetails, args],
     queryFn: () => getCollectionBalanceDetails(indexerClient, args),
     retry: true,
     staleTime: time.oneSecond * 30,
@@ -364,7 +364,7 @@ export const useExchangeRate = (toCurrency: string) => {
   const apiClient = useAPIClient()
 
   return useQuery({
-    queryKey: ['exchangeRate', toCurrency],
+    queryKey: [QUERY_KEYS.exchangeRate, toCurrency],
     queryFn: async () => {
       if (toCurrency === 'USD') {
         return 1
@@ -393,7 +393,7 @@ export const useCoinPrices = (tokens: Token[], disabled?: boolean) => {
   const apiClient = useAPIClient()
 
   return useQuery({
-    queryKey: ['coinPrices', tokens],
+    queryKey: [QUERY_KEYS.coinPrices, tokens],
     queryFn: () => getCoinPrices(apiClient, tokens),
     retry: true,
     staleTime: time.oneMinute,
@@ -415,7 +415,7 @@ export const useCollectiblePrices = (tokens: Token[]) => {
   const apiClient = useAPIClient()
 
   return useQuery({
-    queryKey: ['useCollectiblePrices', tokens],
+    queryKey: [QUERY_KEYS.collectiblePrices, tokens],
     queryFn: () => getCollectiblePrices(apiClient, tokens),
     retry: true,
     staleTime: time.oneMinute,
@@ -427,7 +427,7 @@ export const useTokenMetadata = (chainId: number, contractAddress: string, token
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: ['tokenMetadata', chainId, contractAddress, tokenIds],
+    queryKey: [QUERY_KEYS.tokenMetadata, chainId, contractAddress, tokenIds],
     queryFn: async () => {
       const res = await metadataClient.getTokenMetadata({
         chainID: String(chainId),
@@ -447,7 +447,7 @@ export const useContractInfo = (chainId: number, contractAddress: string, disabl
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: ['contractInfo', chainId, contractAddress],
+    queryKey: [QUERY_KEYS.contractInfo, chainId, contractAddress],
     queryFn: async () => {
       const isNativeToken = compareAddress(zeroAddress, contractAddress)
 
@@ -509,7 +509,7 @@ export const useTransactionHistory = (args: UseTransactionHistoryArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
   return useInfiniteQuery({
-    queryKey: ['transactionHistory', args],
+    queryKey: [QUERY_KEYS.transactionHistory, args],
     queryFn: ({ pageParam }) => {
       return getTransactionHistory(indexerClient, {
         ...args,
@@ -682,7 +682,7 @@ export const useSwapPrices = (args: UseSwapPricesArgs, options: SwapPricesOption
     !options.disabled
 
   return useQuery({
-    queryKey: ['swapPrices', args],
+    queryKey: [QUERY_KEYS.swapPrices, args],
     queryFn: () => getSwapPrices(apiClient, metadataClient, indexerClient, args),
     retry: true,
     // We must keep a long staletime to avoid the list of quotes being refreshed while the user is doing the transactions
@@ -701,7 +701,7 @@ export const useSwapQuote = (args: GetSwapQuoteArgs, options: UseSwapQuoteOption
   const { disabled = false } = options
 
   return useQuery({
-    queryKey: ['useSwapQuote', args],
+    queryKey: [QUERY_KEYS.swapQuotes, args],
     queryFn: async () => {
       const res = await apiClient.getSwapQuote({
         ...args,
@@ -848,7 +848,7 @@ export const useCurrencyInfo = (args: UseCurrencyInfoArgs) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: ['currencyInfo', args],
+    queryKey: [QUERY_KEYS.currencyInfo, args],
     queryFn: async () => {
       const network = findSupportedNetwork(args.chainId)
 
