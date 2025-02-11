@@ -38,13 +38,13 @@
     "timeago-react": "^3.0.6"
   },
   "peerDependencies": {
-    "0xsequence": "^2.2.13",
-    "@0xsequence/api": "^2.2.13",
-    "@0xsequence/indexer": "^2.2.13",
-    "@0xsequence/metadata": "^2.2.13",
-    "@0xsequence/network": "^2.2.13",
-    "@0xsequence/waas": "^2.2.13",
-    "@0xsequence/design-system": "^1.9.0",
+    "0xsequence": ">= 2.2.4",
+    "@0xsequence/api": ">= 2.2.4",
+    "@0xsequence/indexer": ">= 2.2.4",
+    "@0xsequence/metadata": ">= 2.2.4",
+    "@0xsequence/network": ">= 2.2.4",
+    "@0xsequence/waas": ">= 2.2.4",
+    "@0xsequence/design-system": ">= 2.0.0",
     "@0xsequence/kit": "workspace:*",
     "@tanstack/react-query": "^5.0.0",
     "ethers": "^6.13.0",
@@ -55,7 +55,7 @@
     "wagmi": "^2.14.11"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^1.9.0",
+    "@0xsequence/design-system": "^2.0.0",
     "@0xsequence/kit": "workspace:*",
     "@types/pako": "^2.0.3",
     "@types/react-copy-to-clipboard": "^5.0.7",

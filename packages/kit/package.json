@@ -27,11 +27,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types && pnpm build:copy-styles",
+    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types && pnpm build:css",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
     "build:esm": "tsc --module es2022 --outDir dist/esm/",
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
-    "build:copy-styles": "cp ./node_modules/@0xsequence/design-system/dist/style.css ./dist/styles.css",
+    "build:css": "tailwindcss -i ./src/index.css -o ./dist/styles.css",
     "build:clean": "rimraf -g ./dist",
     "dev": "pnpm build:types && pnpm build:copy-styles && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "test": "echo",
@@ -48,7 +48,7 @@
     "@0xsequence/utils": "^2.2.13",
     "@0xsequence/waas": "^2.2.13",
     "@0xsequence/ethauth": "^1.0.0",
-    "@0xsequence/design-system": "^1.9.0",
+    "@0xsequence/design-system": "^2.0.0",
     "framer-motion": "^8.5.2",
     "fuse.js": "^6.6.2",
     "uuid": "^10.0.0"
