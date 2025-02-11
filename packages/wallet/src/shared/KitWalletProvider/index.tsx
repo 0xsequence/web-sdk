@@ -1,9 +1,9 @@
 'use client'
 
-import { Modal, ThemeProvider, Scroll } from '@0xsequence/design-system';
+import { Modal, ThemeProvider, Scroll } from '@0xsequence/design-system'
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
 import React, { useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -58,7 +58,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
     navigation.location === 'settings-currency'
 
   return (
-    (<WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
+    <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
         <div id="kit-wallet">
           <ThemeProvider root="#kit-wallet" scope="kit" theme={theme}>
@@ -94,6 +94,6 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
         </div>
         {children}
       </NavigationContextProvider>
-    </WalletModalContextProvider>)
-  );
+    </WalletModalContextProvider>
+  )
 }

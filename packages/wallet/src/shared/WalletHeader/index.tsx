@@ -1,6 +1,6 @@
-import { ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system';
+import { ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import React, { useState, useRef, useEffect } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -58,7 +58,8 @@ export const WalletHeader = () => {
           style={{
             height: HEADER_HEIGHT,
             paddingTop: '6px'
-          }}>
+          }}
+        >
           {history.length > 0 ? (
             <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" />
           ) : (
@@ -79,5 +80,5 @@ export const WalletHeader = () => {
         </AnimatePresence>
       </PopoverPrimitive.Root>
     </motion.div>
-  );
+  )
 }

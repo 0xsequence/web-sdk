@@ -1,5 +1,5 @@
 import { LinkedWallet } from '@0xsequence/api'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import React, { useMemo, useEffect, useRef } from 'react'
 
 import { KitWallet } from '../../hooks/useKitWallets'
@@ -105,7 +105,7 @@ export const ConnectedWallets = ({
   if (wallets.length === 0) return null
 
   return (
-    (<div className="flex mt-4 flex-col">
+    <div className="flex mt-4 flex-col">
       <div className="relative">
         <motion.div
           className="flex py-1 gap-2 flex-col overflow-y-auto"
@@ -118,7 +118,8 @@ export const ConnectedWallets = ({
             scrollbarWidth: 'none',
             borderRadius: '8px',
             position: 'relative'
-          }}>
+          }}
+        >
           <AnimatePresence mode="popLayout" initial={false}>
             {allWallets.map((wallet, index) => (
               <motion.div
@@ -154,7 +155,8 @@ export const ConnectedWallets = ({
             pointerEvents: 'none',
             opacity: 0,
             transition: 'opacity 0.2s'
-          }} />
+          }}
+        />
         <div
           className="scroll-fade absolute bottom-0 left-0 right-0"
           style={{
@@ -163,8 +165,9 @@ export const ConnectedWallets = ({
             pointerEvents: 'none',
             opacity: 0,
             transition: 'opacity 0.2s'
-          }} />
+          }}
+        />
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

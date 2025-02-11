@@ -1,12 +1,12 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system';
+import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ethers } from 'ethers'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
 import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 
@@ -128,7 +128,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const { isEmailConflictOpen, emailConflictInfo, toggleEmailConflictModal } = useEmailConflict()
 
   return (
-    (<KitConfigContextProvider value={config}>
+    <KitConfigContextProvider value={config}>
       <ThemeContextProvider
         value={{
           theme,
@@ -183,10 +183,15 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                               className="flex flex-col justify-center text-text100 items-center font-medium"
                               style={{
                                 marginTop: '4px'
-                              }}>
+                              }}
+                            >
                               <ModalPrimitive.Title asChild>
-                                <Text className="mb-5" variant="large" asChild><h1>Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
-                                  </h1></Text>
+                                <Text className="mb-5" variant="large" asChild>
+                                  <h1>
+                                    Confirm{' '}
+                                    {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
+                                  </h1>
+                                </Text>
                               </ModalPrimitive.Title>
 
                               {pendingRequestConfirmation.type === 'signMessage' && (
@@ -251,7 +256,8 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                                   variant="primary"
                                   onClick={() => {
                                     confirmPendingRequest(pendingRequestConfirmation?.id)
-                                  }} />
+                                  }}
+                                />
                               </div>
                             </div>
 
@@ -301,6 +307,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
           </ConnectModalContextProvider>
         </GoogleOAuthProvider>
       </ThemeContextProvider>
-    </KitConfigContextProvider>)
-  );
+    </KitConfigContextProvider>
+  )
 }
