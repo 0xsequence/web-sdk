@@ -1,4 +1,4 @@
-import { Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system';
+import { Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system'
 import { useContractInfo, useTokenMetadata, formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
@@ -26,11 +26,9 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
   const balanceFormatted = ethers.formatUnits(quantityRaw, decimals)
 
   return (
-    (<Card className="flex flex-row items-start justify-between">
+    <Card className="flex flex-row items-start justify-between">
       <div className="flex flex-row items-center justify-center gap-2">
-        <div
-          className="flex aspect-square h-full justify-center items-center"
-          style={{ width: '80px' }}>
+        <div className="flex aspect-square h-full justify-center items-center" style={{ width: '80px' }}>
           <Image className="rounded-xl" src={image} style={{ maxWidth: '80px', height: '80px', objectFit: 'cover' }} />
         </div>
         <div className="flex flex-col items-start justify-center gap-2">
@@ -45,7 +43,8 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
             className="flex flex-col items-start justify-center"
             style={{
               width: '180px'
-            }}>
+            }}
+          >
             <Text variant="normal" color="text100">
               {name}
             </Text>
@@ -56,13 +55,13 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
       <div className="h-full">
         <Text variant="small" color="text50" fontWeight="bold">{`x${formatDisplay(balanceFormatted)}`}</Text>
       </div>
-    </Card>)
-  );
+    </Card>
+  )
 }
 
 export const OrderSummarySkeleton = () => {
   return (
-    (<Card className="flex flex-row items-start justify-between">
+    <Card className="flex flex-row items-start justify-between">
       <div className="flex flex-row items-center justify-center gap-2">
         <Skeleton style={{ width: '80px', height: '80px' }} />
         <div className="flex flex-col items-start justify-center gap-2">
@@ -71,6 +70,6 @@ export const OrderSummarySkeleton = () => {
         </div>
       </div>
       <Skeleton style={{ width: '14px', height: '14px' }} />
-    </Card>)
-  );
+    </Card>
+  )
 }

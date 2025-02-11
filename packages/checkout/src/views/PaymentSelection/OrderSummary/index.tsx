@@ -1,4 +1,4 @@
-import { Spinner, NetworkImage, Text } from '@0xsequence/design-system';
+import { Spinner, NetworkImage, Text } from '@0xsequence/design-system'
 import {
   formatDisplay,
   NetworkBadge,
@@ -39,10 +39,10 @@ export const OrderSummary = () => {
 
   if (isLoading) {
     return (
-      (<div className="flex mb-2 gap-3" style={{ height: '72px' }}>
+      <div className="flex mb-2 gap-3" style={{ height: '72px' }}>
         <Spinner />
-      </div>)
-    );
+      </div>
+    )
   }
 
   const formattedPrice = formatUnits(BigInt(selectPaymentSettings!.price), dataCurrencyInfo?.decimals || 0)
@@ -62,7 +62,7 @@ export const OrderSummary = () => {
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
 
   return (
-    (<div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       <div>
         <Text
           variant="small"
@@ -76,7 +76,7 @@ export const OrderSummary = () => {
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
-            (<div className="flex gap-3 items-center" key={collectible.tokenId}>
+            <div className="flex gap-3 items-center" key={collectible.tokenId}>
               <div
                 className="rounded-xl"
                 style={{
@@ -94,8 +94,8 @@ export const OrderSummary = () => {
                   {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
                 </Text>
               </div>
-            </div>)
-          );
+            </div>
+          )
         })}
       </div>
       <div className="flex gap-1 flex-col">
@@ -110,6 +110,6 @@ export const OrderSummary = () => {
         </div>
       </div>
       <NetworkBadge chainId={chainId} />
-    </div>)
-  );
+    </div>
+  )
 }

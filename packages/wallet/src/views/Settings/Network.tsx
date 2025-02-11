@@ -1,4 +1,4 @@
-import { Text, TokenImage } from '@0xsequence/design-system';
+import { Text, TokenImage } from '@0xsequence/design-system'
 import { useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -29,7 +29,7 @@ export const SettingsNetwork = () => {
   }
 
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
       <div className="p-5 pt-3">
         <Text variant="small" fontWeight="bold" color="text50">
           Networks
@@ -37,7 +37,7 @@ export const SettingsNetwork = () => {
         <div className="flex flex-col gap-2 mt-4">
           {allChains.map(chain => {
             return (
-              (<SelectButton
+              <SelectButton
                 disabled={selectedNetworks.length === 1 && selectedNetworks.includes(chain)}
                 key={chain}
                 selected={selectedNetworks.includes(chain)}
@@ -51,11 +51,11 @@ export const SettingsNetwork = () => {
                     {ChainId[chain]}
                   </Text>
                 </div>
-              </SelectButton>)
-            );
+              </SelectButton>
+            )
           })}
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

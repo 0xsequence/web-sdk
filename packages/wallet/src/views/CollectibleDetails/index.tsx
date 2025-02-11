@@ -1,4 +1,4 @@
-import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system';
+import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
 import {
   formatDisplay,
   useExchangeRate,
@@ -105,12 +105,13 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
     : '0'
 
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
       <div
         className="flex flex-col gap-10 pb-5 px-4 pt-0"
         style={{
           marginTop: '-20px'
-        }}>
+        }}
+      >
         <div className="flex gap-3 items-center justify-center flex-col">
           <div className="flex flex-row gap-2 justify-center items-center">
             {collectionLogo && (
@@ -120,7 +121,8 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
                 alt="collection logo"
                 style={{
                   objectFit: 'cover'
-                }} />
+                }}
+              />
             )}
             <div className="flex gap-1 flex-row justify-center items-center">
               <Text variant="small" fontWeight="bold" color="text100">
@@ -162,7 +164,8 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
               variant="primary"
               leftIcon={SendIcon}
               label="Send"
-              onClick={onClickSend} />
+              onClick={onClickSend}
+            />
           )}
         </div>
         <div>
@@ -175,6 +178,6 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
           </InfiniteScroll>
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

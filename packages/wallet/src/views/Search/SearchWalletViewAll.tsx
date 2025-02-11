@@ -1,11 +1,11 @@
-import { SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system';
+import { SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
   useCoinPrices,
   useBalancesSummary,
   ContractVerificationStatus,
-  compareAddress,
+  compareAddress
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
@@ -212,8 +212,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   })
 
   return (
-    (<div
-      className="flex px-4 pb-5 pt-3 flex-col gap-5 items-center justify-center">
+    <div className="flex px-4 pb-5 pt-3 flex-col gap-5 items-center justify-center">
       <div className="w-full">
         <TextInput
           autoFocus
@@ -267,6 +266,6 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
           </TabsContent>
         </TabsRoot>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

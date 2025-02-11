@@ -1,4 +1,4 @@
-import { NetworkImage, Text, TokenImage } from '@0xsequence/design-system';
+import { NetworkImage, Text, TokenImage } from '@0xsequence/design-system'
 import React from 'react'
 
 import { useSettings } from '../../../../../hooks'
@@ -27,8 +27,7 @@ export const CoinTileContent = ({
   const priceChangeSymbol = priceChangePercentage > 0 ? '+' : ''
 
   return (
-    (<div
-      className="flex bg-background-secondary w-full h-full rounded-xl p-4 flex-col justify-center items-start gap-1">
+    <div className="flex bg-background-secondary w-full h-full rounded-xl p-4 flex-col justify-center items-start gap-1">
       <div className="mb-1">
         <TokenImage src={logoUrl} symbol={symbol} size="xl" />
       </div>
@@ -60,6 +59,6 @@ export const CoinTileContent = ({
           {`${priceChangeSymbol}${priceChangePercentage.toFixed(2)}%`}
         </Text>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

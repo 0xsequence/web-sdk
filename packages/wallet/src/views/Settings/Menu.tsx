@@ -1,4 +1,4 @@
-import { Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon } from '@0xsequence/design-system';
+import { Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon } from '@0xsequence/design-system'
 import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -26,7 +26,7 @@ export const SettingsMenu = () => {
   }
 
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
       <div className="p-5 pt-3">
         <div className="flex flex-col gap-2">
           <Button
@@ -64,6 +64,6 @@ export const SettingsMenu = () => {
           />
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

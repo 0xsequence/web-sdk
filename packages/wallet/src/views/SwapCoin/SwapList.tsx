@@ -1,4 +1,4 @@
-import { Button, Spinner, Text } from '@0xsequence/design-system';
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   CryptoOption,
   compareAddress,
@@ -170,18 +170,18 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const SwapContent = () => {
     if (isLoading) {
       return (
-        (<div className="flex w-full justify-center items-center">
+        <div className="flex w-full justify-center items-center">
           <Spinner />
-        </div>)
-      );
+        </div>
+      )
     } else if (noOptionsFound) {
       return (
-        (<div className="flex w-full justify-center items-center">
+        <div className="flex w-full justify-center items-center">
           <Text variant="normal" color="text100">
             No swap option found!
           </Text>
-        </div>)
-      );
+        </div>
+      )
     } else {
       const buyCurrencySymbol = currencyInfo?.symbol || ''
       const buyCurrencyDecimals = currencyInfo?.decimals || 0
@@ -202,7 +202,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
       }
 
       return (
-        (<div className="flex w-full gap-3 flex-col">
+        <div className="flex w-full gap-3 flex-col">
           <div className="flex w-full flex-col gap-2">
             <Text variant="small" color="text100">
               Select a token in your wallet to swap for {displayedAmount} {buyCurrencySymbol}.
@@ -253,7 +253,8 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
                 label="Switch Network"
                 onClick={async () => await switchChainAsync({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }} />
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
             </div>
           )}
           <Button
@@ -272,14 +273,14 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
             onClick={onClickProceed}
             style={{ height: '52px', borderRadius: vars.radii.md }}
           />
-        </div>)
-      );
+        </div>
+      )
     }
   }
 
   return (
-    (<div className="flex p-5 gap-2 flex-col" style={{ marginTop: HEADER_HEIGHT }}>
+    <div className="flex p-5 gap-2 flex-col" style={{ marginTop: HEADER_HEIGHT }}>
       <SwapContent />
-    </div>)
-  );
+    </div>
+  )
 }

@@ -1,4 +1,4 @@
-import { Spinner, Text } from '@0xsequence/design-system';
+import { Spinner, Text } from '@0xsequence/design-system'
 import { Transaction } from '@0xsequence/indexer'
 import React, { useMemo } from 'react'
 
@@ -86,10 +86,10 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
 
   if (isPending) {
     return (
-      (<div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         <TransactionHistorySkeleton />
-      </div>)
-    );
+      </div>
+    )
   }
 
   interface TimeLabelProps {
@@ -98,12 +98,12 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
 
   const TimeLabel = ({ label }: TimeLabelProps) => {
     return (
-      (<div>
+      <div>
         <Text variant="normal" color="text50" fontWeight="medium">
           {label}
         </Text>
-      </div>)
-    );
+      </div>
+    )
   }
 
   interface TransactionsListProps {
@@ -112,31 +112,31 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
 
   const TransactionsList = ({ transactions }: TransactionsListProps) => {
     return (
-      (<div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         {transactions.map((transaction, index) => {
           return (
-            (<div className="flex flex-col gap-2" key={`${transaction.txnHash}-${index}`}>
+            <div className="flex flex-col gap-2" key={`${transaction.txnHash}-${index}`}>
               <TransactionHistoryItem transaction={transaction} />
-            </div>)
-          );
+            </div>
+          )
         })}
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       {transactionPeriods.map(period => {
         const txs = transactionsByTime[period.id]
         if (txs.length === 0) {
           return null
         }
         return (
-          (<div className="flex flex-col gap-3" key={period.id}>
+          <div className="flex flex-col gap-3" key={period.id}>
             <TimeLabel label={period.label} />
             <TransactionsList transactions={txs} />
-          </div>)
-        );
+          </div>
+        )
       })}
       {transactions.length === 0 && (
         <div className="flex flex-col gap-3">
@@ -149,6 +149,6 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
           <Spinner />
         </div>
       )}
-    </div>)
-  );
+    </div>
+  )
 }

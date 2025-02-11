@@ -1,7 +1,7 @@
 // kit/packages/wallet/src/views/Search/CoinsTab.tsx
 import React, { useEffect, useRef, useState } from 'react'
 import { BalanceItem } from './BalanceItem'
-import { Spinner, Skeleton, Text } from '@0xsequence/design-system';
+import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
 import { IndexedData } from '../SearchWalletViewAll'
 import { TokenBalance } from '@0xsequence/indexer'
 
@@ -59,7 +59,7 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
   }, [fetchMoreCoinBalances, fetchMoreSearchCoinBalances, isSearching])
 
   return (
-    (<div>
+    <div>
       <div className="flex flex-col gap-3">
         {isPending && (
           <>
@@ -79,8 +79,8 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
         {isLoading && <Spinner className="flex self-center mt-3" />}
       </div>
       <div ref={endOfPageRefCoins} style={{ height: '1px' }} />
-    </div>)
-  );
+    </div>
+  )
 }
 
 export default CoinsTab

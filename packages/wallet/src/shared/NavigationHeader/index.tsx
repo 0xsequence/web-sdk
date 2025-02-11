@@ -1,4 +1,4 @@
-import { IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/design-system';
+import { IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigationContext } from '../../contexts/Navigation'
@@ -19,12 +19,13 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
   }
 
   return (
-    (<div
+    <div
       className="flex bg-background-primary z-20 fixed w-full flex-row items-center justify-between px-4"
       style={{
         height: HEADER_HEIGHT,
         paddingTop: '6px'
-      }}>
+      }}
+    >
       {history.length > 0 ? (
         <IconButton
           onClick={onClickBack}
@@ -51,6 +52,6 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
           width: '44px'
         }}
       />
-    </div>)
-  );
+    </div>
+  )
 }

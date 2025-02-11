@@ -9,8 +9,8 @@ import {
   SearchIcon,
   SearchInput,
   Text,
-  useTheme,
-} from '@0xsequence/design-system';
+  useTheme
+} from '@0xsequence/design-system'
 
 import { getLogo } from '../ConnectButton'
 import { ExtendedConnector } from '../../types'
@@ -64,7 +64,7 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
   }
 
   return (
-    (<div className="p-4">
+    <div className="p-4">
       <div className="absolute top-4 left-4">
         <IconButton
           className="bg-button-glass"
@@ -73,8 +73,7 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
           icon={() => <ArrowRightIcon style={{ transform: 'rotate(180deg)' }} />}
         />
       </div>
-      <div
-        className="flex justify-center text-text100 items-center font-medium mt-2 mb-4">
+      <div className="flex justify-center text-text100 items-center font-medium mt-2 mb-4">
         <ModalPrimitive.Title asChild>
           <Text>{title}</Text>
         </ModalPrimitive.Title>
@@ -103,20 +102,21 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
             const Logo = getLogo(theme, walletProps)
 
             return (
-              (<Card
+              <Card
                 className="flex gap-2 items-center justify-start w-full h-12 px-4"
                 clickable
                 key={connectorId}
-                onClick={() => onConnect(connector)}>
+                onClick={() => onConnect(connector)}
+              >
                 <Logo className="w-5 h-5" />
                 <Text variant="normal" fontWeight="bold" color="text100">
                   {walletName}
                 </Text>
-              </Card>)
-            );
+              </Card>
+            )
           })}
         </div>
       </ConditionalScrollbar>
-    </div>)
-  );
+    </div>
+  )
 }

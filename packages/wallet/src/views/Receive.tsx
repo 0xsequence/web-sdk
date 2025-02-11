@@ -1,4 +1,4 @@
-import { Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system';
+import { Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { QRCodeCanvas } from 'qrcode.react'
 import React, { useState, useEffect } from 'react'
@@ -33,19 +33,14 @@ export const Receive = () => {
   }
 
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
       <div className="flex p-5 pt-3 flex-col justify-center items-center gap-4">
-        <div
-          className="flex mt-1 w-fit bg-white rounded-xl items-center justify-center p-4">
+        <div className="flex mt-1 w-fit bg-white rounded-xl items-center justify-center p-4">
           <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
         </div>
         <div>
           <div className="flex flex-row items-center justify-center gap-2">
-            <Text
-              className="text-center leading-[inherit]"
-              variant="medium"
-              color="text100"
-              style={{ fontWeight: '700' }}>
+            <Text className="text-center leading-[inherit]" variant="medium" color="text100" style={{ fontWeight: '700' }}>
               My Wallet
             </Text>
             <Image className="w-5" src={nativeTokenInfo.logoURI} alt="icon" />
@@ -70,9 +65,7 @@ export const Receive = () => {
           </CopyToClipboard>
           <Button onClick={onClickShare} leftIcon={ShareIcon} label="Share" />
         </div>
-        <div
-          className="flex justify-center items-center"
-          style={{ maxWidth: '260px', textAlign: 'center' }}>
+        <div className="flex justify-center items-center" style={{ maxWidth: '260px', textAlign: 'center' }}>
           <Text
             color="text100"
             variant="small"
@@ -85,6 +78,6 @@ export const Receive = () => {
           </Text>
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

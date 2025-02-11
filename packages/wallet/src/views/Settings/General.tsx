@@ -1,4 +1,4 @@
-import { Card, Switch, Text } from '@0xsequence/design-system';
+import { Card, Switch, Text } from '@0xsequence/design-system'
 // import { useTheme } from '@0xsequence/kit'
 import React from 'react'
 
@@ -22,7 +22,7 @@ export const SettingsGeneral = () => {
   }
 
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
       <div className="flex gap-2 p-5 pt-3 flex-col">
         {/* <Card
           flexDirection="row"
@@ -50,6 +50,6 @@ export const SettingsGeneral = () => {
           <Switch checked={hideCollectibles} onCheckedChange={onChangeHideCollectibles} />
         </Card>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

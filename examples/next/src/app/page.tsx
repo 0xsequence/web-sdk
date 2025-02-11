@@ -1,6 +1,6 @@
 'use client'
 
-import { Image, Button } from '@0xsequence/design-system';
+import { Image, Button } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useAccount } from 'wagmi'
@@ -12,7 +12,7 @@ export default function Home() {
   const { setOpenConnectModal } = useOpenConnectModal()
 
   return (
-    (<main>
+    <main>
       {wallets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-5 h-screen">
           <div className="bg-white p-2 rounded-lg">
@@ -39,6 +39,6 @@ export default function Home() {
         <Connected />
       )}
       <Footer />
-    </main>)
-  );
+    </main>
+  )
 }

@@ -1,4 +1,4 @@
-import { Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system';
+import { Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -54,32 +54,23 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
   }
 
   return (
-    (<div
+    <div
       className="flex w-full flex-row justify-between items-center select-none cursor-pointer"
       key={balance.contractAddress}
-      onClick={onClick}>
+      onClick={onClick}
+    >
       <div className="flex gap-3 flex-row items-center justify-center min-w-0">
         <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} />
-        <Text
-          className="overflow-hidden whitespace-nowrap"
-          variant="normal"
-          color="text100"
-          fontWeight="bold"
-          ellipsis>
+        <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="text100" fontWeight="bold" ellipsis>
           {tokenName}
         </Text>
       </div>
       <div className="flex flex-row items-center justify-center gap-1 max-w-1/2">
-        <Text
-          className="text-right whitespace-nowrap"
-          variant="normal"
-          color="text50"
-          fontWeight="bold"
-          ellipsis>
+        <Text className="text-right whitespace-nowrap" variant="normal" color="text50" fontWeight="bold" ellipsis>
           {getQuantity()}
         </Text>
         <ChevronRightIcon className="text-text50" />
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

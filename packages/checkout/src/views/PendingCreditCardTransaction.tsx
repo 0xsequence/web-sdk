@@ -1,4 +1,4 @@
-import { Spinner, Text } from '@0xsequence/design-system';
+import { Spinner, Text } from '@0xsequence/design-system'
 import { useAnalyticsContext, useProjectAccessKey, useContractInfo, useTokenMetadata, DEBUG } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
@@ -189,12 +189,13 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   if (isError || !transakConfig) {
     return (
-      (<div
+      <div
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
-        }}>
+        }}
+      >
         <div>
           {!transakConfig ? (
             <Text color="text100">Error: No Transak configuration found</Text>
@@ -202,27 +203,28 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             <Text color="text100">An error has occurred</Text>
           )}
         </div>
-      </div>)
-    );
+      </div>
+    )
   }
 
   if (isLoading) {
     return (
-      (<div
+      <div
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
-        }}>
+        }}
+      >
         <div>
           <Spinner size="lg" />
         </div>
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div className="flex items-center justify-center" style={{ height: '770px' }}>
+    <div className="flex items-center justify-center" style={{ height: '770px' }}>
       <iframe
         id="transakIframe"
         allow="camera;microphone;payment"
@@ -234,8 +236,8 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
       />
-    </div>)
-  );
+    </div>
+  )
 }
 
 export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
@@ -370,36 +372,38 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
   if (isError) {
     return (
-      (<div
+      <div
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
-        }}>
+        }}
+      >
         <div>
           <Text color="text100">An error has occurred</Text>
         </div>
-      </div>)
-    );
+      </div>
+    )
   }
 
   if (isLoading || !authToken) {
     return (
-      (<div
+      <div
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
-        }}>
+        }}
+      >
         <div>
           <Spinner size="lg" />
         </div>
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div className="flex items-center justify-center" style={{ height: '770px' }}>
+    <div className="flex items-center justify-center" style={{ height: '770px' }}>
       <iframe
         src={url}
         style={{
@@ -409,6 +413,6 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
       />
-    </div>)
-  );
+    </div>
+  )
 }

@@ -1,4 +1,4 @@
-import { Button, Spinner, Text } from '@0xsequence/design-system';
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   CryptoOption,
   compareAddress,
@@ -163,16 +163,16 @@ export const Swap = () => {
   const SwapContent = () => {
     if (isLoading) {
       return (
-        (<div className="flex w-full justify-center items-center">
+        <div className="flex w-full justify-center items-center">
           <Spinner />
-        </div>)
-      );
+        </div>
+      )
     } else if (noOptionsFound) {
       return (
-        (<div className="flex w-full justify-center items-center">
+        <div className="flex w-full justify-center items-center">
           <Text variant="normal">No swap option found!</Text>
-        </div>)
-      );
+        </div>
+      )
     } else {
       const formattedPrice = formatUnits(BigInt(currencyAmount), mainCurrencyDecimals || 0)
       const displayPrice = formatDisplay(formattedPrice, {
@@ -182,7 +182,7 @@ export const Swap = () => {
       })
 
       return (
-        (<div className="flex w-full gap-3 flex-col">
+        <div className="flex w-full gap-3 flex-col">
           <Text variant="normal" color="text100">
             {description}
           </Text>
@@ -243,18 +243,19 @@ export const Swap = () => {
             label={quoteFetchInProgress ? 'Preparing swap...' : 'Proceed'}
             onClick={onClickProceed}
           />
-        </div>)
-      );
+        </div>
+      )
     }
   }
 
   return (
-    (<div
+    <div
       className="flex flex-col gap-2 items-start pb-6 px-6"
       style={{
         paddingTop: HEADER_HEIGHT
-      }}>
+      }}
+    >
       <SwapContent />
-    </div>)
-  );
+    </div>
+  )
 }

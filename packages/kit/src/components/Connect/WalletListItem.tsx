@@ -7,8 +7,8 @@ import {
   Spinner,
   Text,
   Tooltip,
-  truncateAddress,
-} from '@0xsequence/design-system';
+  truncateAddress
+} from '@0xsequence/design-system'
 import React, { useState } from 'react'
 
 export interface WalletListItemProps {
@@ -41,8 +41,7 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
   }
 
   return (
-    (<div
-      className="flex p-2 rounded-xl bg-background-secondary flex-row items-center justify-between">
+    <div className="flex p-2 rounded-xl bg-background-secondary flex-row items-center justify-between">
       <div className="flex flex-row items-center gap-2">
         <div className="border" />
         <div className="flex flex-col gap-1">
@@ -84,6 +83,6 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
           )}
         </div>
       )}
-    </div>)
-  );
+    </div>
+  )
 }

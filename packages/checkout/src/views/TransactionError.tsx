@@ -1,4 +1,4 @@
-import { CloseIcon, Text } from '@0xsequence/design-system';
+import { CloseIcon, Text } from '@0xsequence/design-system'
 import React, { useEffect } from 'react'
 
 import { TransactionErrorNavigation } from '../contexts'
@@ -18,23 +18,23 @@ export const TransactionError = () => {
   }, [])
 
   return (
-    (<div style={{ height: '650px' }}>
+    <div style={{ height: '650px' }}>
       <div
         className="flex flex-col items-center absolute"
-        style={{ top: '50%', right: '50%', transform: 'translate(50%, -50%)' }}>
+        style={{ top: '50%', right: '50%', transform: 'translate(50%, -50%)' }}
+      >
         <NotificationErrorIcon />
         <Text variant="xlarge">Error</Text>
         <Text className="text-center" variant="normal" color="text80">
           An error occurred while processing the transaction.
         </Text>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }
 
 export const NotificationErrorIcon = () => (
-  <div
-    className="flex text-white items-center justify-center w-16 h-16 rounded-full mb-2 bg-negative">
+  <div className="flex text-white items-center justify-center w-16 h-16 rounded-full mb-2 bg-negative">
     <CloseIcon size="xl" />
   </div>
 )

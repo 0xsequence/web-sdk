@@ -10,8 +10,8 @@ import {
   NumericInput,
   TextInput,
   Spinner,
-  Card,
-} from '@0xsequence/design-system';
+  Card
+} from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
   getNativeTokenInfoByChainId,
@@ -301,7 +301,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       style={{
         marginTop: HEADER_HEIGHT
       }}
-      onSubmit={handleSendClick}>
+      onSubmit={handleSendClick}
+    >
       {!showConfirmation && (
         <>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
@@ -334,8 +335,9 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               }
             />
             {insufficientFunds && (
-              <Text className="mt-2" variant="normal" color="negative" asChild><div>Insufficient Balance
-                              </div></Text>
+              <Text className="mt-2" variant="normal" color="negative" asChild>
+                <div>Insufficient Balance</div>
+              </Text>
             )}
           </div>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
@@ -347,9 +349,10 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 className="flex w-full flex-row justify-between items-center"
                 clickable
                 onClick={handleToAddressClear}
-                style={{ height: '52px' }}>
+                style={{ height: '52px' }}
+              >
                 <div className="flex flex-row justify-center items-center gap-2">
-                  <GradientAvatar address={toAddress} style={{ width: '20px' }} />
+                  <GradientAvatar size="sm" address={toAddress} />
                   <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </div>
                 <CloseIcon className="text-white" size="sm" />
@@ -388,7 +391,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 label="Switch Network"
                 onClick={() => switchChain({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }} />
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
             </div>
           )}
 
@@ -408,7 +412,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 }
                 label="Send"
                 rightIcon={ChevronRightIcon}
-                style={{ height: '52px', borderRadius: vars.radii.md }} />
+                style={{ height: '52px', borderRadius: vars.radii.md }}
+              />
             )}
           </div>
         </>
@@ -438,5 +443,5 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         />
       )}
     </form>
-  );
+  )
 }

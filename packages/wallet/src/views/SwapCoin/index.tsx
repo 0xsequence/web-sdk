@@ -1,4 +1,4 @@
-import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system';
+import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalancesSummary } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -104,7 +104,8 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
       onSubmit={handleFindQuotesClick}
       style={{
         marginTop: HEADER_HEIGHT
-      }}>
+      }}
+    >
       <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
         <SendItemInfo
           imageUrl={imageUrl}
@@ -147,8 +148,9 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
           disabled={!isNonZeroAmount}
           label="Continue"
           rightIcon={ChevronRightIcon}
-          style={{ height: '52px', borderRadius: vars.radii.md }} />
+          style={{ height: '52px', borderRadius: vars.radii.md }}
+        />
       </div>
     </form>
-  );
+  )
 }

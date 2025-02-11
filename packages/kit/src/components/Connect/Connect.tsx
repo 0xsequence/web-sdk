@@ -1,15 +1,6 @@
 'use client'
 
-import {
-  ArrowRightIcon,
-  Divider,
-  Text,
-  TextInput,
-  Spinner,
-  Image,
-  IconButton,
-  ModalPrimitive,
-} from '@0xsequence/design-system';
+import { ArrowRightIcon, Divider, Text, TextInput, Spinner, Image, IconButton, ModalPrimitive } from '@0xsequence/design-system'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
@@ -341,12 +332,13 @@ export const Connect = (props: ConnectWalletContentProps) => {
   }
 
   return (
-    (<div className="p-4">
+    <div className="p-4">
       <div
         className="flex flex-col justify-center text-text100 items-center font-medium"
         style={{
           marginTop: '4px'
-        }}>
+        }}
+      >
         <TitleWrapper isPreview={isPreview}>
           <Text color="text80">
             {isLoading
@@ -410,7 +402,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                         <div className="flex gap-2 justify-center items-center">
                           {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                             return (
-                              (<div className="w-full" key={connector.uid}>
+                              <div className="w-full" key={connector.uid}>
                                 {connector._wallet.id === 'google-waas' ? (
                                   <GoogleWaasConnectButton
                                     isDescriptive={descriptiveSocials}
@@ -426,8 +418,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
                                 ) : (
                                   <ConnectButton isDescriptive={descriptiveSocials} connector={connector} onConnect={onConnect} />
                                 )}
-                              </div>)
-                            );
+                              </div>
+                            )
                           })}
                           {showMoreSocialOptions && (
                             <div className="w-full">
@@ -439,11 +431,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                       {showSocialConnectorSection && showEmailInputSection && (
                         <div className="flex gap-4 flex-row justify-center items-center">
                           <Divider className="mx-0 my-0 text-background-secondary grow" />
-                          <Text
-                            className="leading-4 h-4 text-sm"
-                            variant="normal"
-                            fontWeight="medium"
-                            color="text50">
+                          <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="text50">
                             or
                           </Text>
                           <Divider className="mx-0 my-0 text-background-secondary grow" />
@@ -499,8 +487,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
           )}
         </>
       )}
-    </div>)
-  );
+    </div>
+  )
 }
 
 const TitleWrapper = ({ children, isPreview }: { children: React.ReactNode; isPreview: boolean }) => {

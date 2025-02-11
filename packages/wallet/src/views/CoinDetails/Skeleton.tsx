@@ -1,4 +1,4 @@
-import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system';
+import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { NetworkBadge } from '../../shared/NetworkBadge'
@@ -11,10 +11,8 @@ interface CoinDetailsSkeletonProps {
 
 export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeletonProps) => {
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
-      <div
-        className="flex flex-col gap-10 pb-5 px-4 pt-0"
-        style={{ marginTop: '-20px' }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
+      <div className="flex flex-col gap-10 pb-5 px-4 pt-0" style={{ marginTop: '-20px' }}>
         <div className="flex mb-10 gap-2 items-center justify-center flex-col">
           <Skeleton style={{ width: '64px', height: '64px' }} />
           <Skeleton style={{ height: '28px', width: '70px' }} />
@@ -36,12 +34,13 @@ export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeleton
             leftIcon={SendIcon}
             label="Send"
             disabled
-            onClick={() => {}} />
+            onClick={() => {}}
+          />
         )}
         <div>
           <TransactionHistorySkeleton />
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

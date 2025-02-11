@@ -16,7 +16,7 @@ export const getTwitchLogo = ({ isDarkMode }: GetTwitchLogo) => {
 
   const TwitchLogo: React.FunctionComponent = (props: LogoProps) => {
     return (
-      (<svg
+      <svg
         version="1.1"
         id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
@@ -37,8 +37,8 @@ export const getTwitchLogo = ({ isDarkMode }: GetTwitchLogo) => {
             <rect className="w-200 h-600" x="1150" y="550" fill={fillColor} />
           </g>
         </g>
-      </svg>)
-    );
+      </svg>
+    )
   }
   return TwitchLogo
 }

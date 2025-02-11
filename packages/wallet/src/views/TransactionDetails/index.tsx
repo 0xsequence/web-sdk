@@ -8,8 +8,8 @@ import {
   NetworkImage,
   Skeleton,
   Text,
-  TokenImage,
-} from '@0xsequence/design-system';
+  TokenImage
+} from '@0xsequence/design-system'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
 import {
   compareAddress,
@@ -101,69 +101,70 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     const logoURI = isNativeToken ? nativeTokenInfo.logoURI : transfer?.contractInfo?.logoURI
     const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer?.contractInfo?.symbol || ''
 
-    return (<>
-      {transfer.amounts?.map((amount, index) => {
-        const isCollectible = transfer.contractType === 'ERC721' || transfer.contractType === 'ERC1155'
-        const tokenId = transfer.tokenIds?.[index] || '0'
-        const collectibleDecimals = transfer?.tokenMetadata?.[tokenId]?.decimals || 0
-        const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : transfer?.contractInfo?.decimals || 0
-        const decimals = isCollectible ? collectibleDecimals : coinDecimals
-        const formattedBalance = ethers.formatUnits(amount, decimals)
-        const balanceDisplayed = formatDisplay(formattedBalance)
-        const fiatPrice = isCollectible
-          ? collectiblePricesData?.find(
-              collectible =>
-                compareAddress(collectible.token.contractAddress, transfer.contractInfo?.address || '') &&
-                collectible.token.tokenId === transfer.tokenIds?.[index] &&
-                collectible.token.chainId === transaction.chainId
-            )?.price?.value
-          : coinPricesData?.find(
-              coin =>
-                compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.ZeroAddress) &&
-                coin.token.chainId === transaction.chainId
-            )?.price?.value
+    return (
+      <>
+        {transfer.amounts?.map((amount, index) => {
+          const isCollectible = transfer.contractType === 'ERC721' || transfer.contractType === 'ERC1155'
+          const tokenId = transfer.tokenIds?.[index] || '0'
+          const collectibleDecimals = transfer?.tokenMetadata?.[tokenId]?.decimals || 0
+          const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : transfer?.contractInfo?.decimals || 0
+          const decimals = isCollectible ? collectibleDecimals : coinDecimals
+          const formattedBalance = ethers.formatUnits(amount, decimals)
+          const balanceDisplayed = formatDisplay(formattedBalance)
+          const fiatPrice = isCollectible
+            ? collectiblePricesData?.find(
+                collectible =>
+                  compareAddress(collectible.token.contractAddress, transfer.contractInfo?.address || '') &&
+                  collectible.token.tokenId === transfer.tokenIds?.[index] &&
+                  collectible.token.chainId === transaction.chainId
+              )?.price?.value
+            : coinPricesData?.find(
+                coin =>
+                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.ZeroAddress) &&
+                  coin.token.chainId === transaction.chainId
+              )?.price?.value
 
-        const fiatValue = (parseFloat(formattedBalance) * (conversionRate * (fiatPrice || 0))).toFixed(2)
+          const fiatValue = (parseFloat(formattedBalance) * (conversionRate * (fiatPrice || 0))).toFixed(2)
 
-        return (
-          (<div
-            className="flex w-full flex-row gap-2 justify-between items-center"
-            key={index}>
-            <div
-              className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
-              style={{ flexBasis: '100%' }}>
-              <TokenImage src={logoURI} symbol={symbol} size="sm" />
-              <div className="flex gap-0.5 flex-col items-start justify-center">
-                <Text variant="xsmall" fontWeight="bold" color="text100">
-                  {`${balanceDisplayed} ${symbol}`}
-                </Text>
-                {arePricesLoading ? (
-                  <Skeleton style={{ width: '44px', height: '12px' }} />
-                ) : (
-                  <Text variant="xsmall" fontWeight="bold" color="text50">
-                    {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
+          return (
+            <div className="flex w-full flex-row gap-2 justify-between items-center" key={index}>
+              <div
+                className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
+                style={{ flexBasis: '100%' }}
+              >
+                <TokenImage src={logoURI} symbol={symbol} size="sm" />
+                <div className="flex gap-0.5 flex-col items-start justify-center">
+                  <Text variant="xsmall" fontWeight="bold" color="text100">
+                    {`${balanceDisplayed} ${symbol}`}
                   </Text>
-                )}
+                  {arePricesLoading ? (
+                    <Skeleton style={{ width: '44px', height: '12px' }} />
+                  ) : (
+                    <Text variant="xsmall" fontWeight="bold" color="text50">
+                      {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
+                    </Text>
+                  )}
+                </div>
+              </div>
+              <ArrowRightIcon className="text-text50" style={{ width: '16px' }} />
+              <div
+                className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
+                style={{ flexBasis: '100%' }}
+              >
+                <GradientAvatar size="sm" address={recipientAddress} />
+                <Text variant="xsmall" fontWeight="bold" color="text100">
+                  {recipientAddressFormatted}
+                </Text>
               </div>
             </div>
-            <ArrowRightIcon className="text-text50" style={{ width: '16px' }} />
-            <div
-              className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
-              style={{ flexBasis: '100%' }}>
-              <GradientAvatar address={recipientAddress} style={{ width: '20px' }} />
-              <Text variant="xsmall" fontWeight="bold" color="text100">
-                {recipientAddressFormatted}
-              </Text>
-            </div>
-          </div>)
-        );
-      })}
-    </>);
+          )
+        })}
+      </>
+    )
   }
 
   return (
-    (<div
-      className="flex p-5 pt-3 flex-col items-center justify-center gap-10 mt-5">
+    <div className="flex p-5 pt-3 flex-col items-center justify-center gap-10 mt-5">
       <div className="flex mt-6 flex-col justify-center items-center gap-1">
         <Text variant="normal" fontWeight="medium" color="text100">
           Transaction details
@@ -173,8 +174,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
         </Text>
         <NetworkBadge chainId={transaction.chainId} />
       </div>
-      <div
-        className="flex flex-col items-center justify-center gap-4 w-full p-4 bg-background-secondary rounded-xl">
+      <div className="flex flex-col items-center justify-center gap-4 w-full p-4 bg-background-secondary rounded-xl">
         <div className="flex w-full gap-1 flex-row items-center justify-start">
           <Text variant="normal" fontWeight="medium" color="text50">
             Transfer
@@ -182,9 +182,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           <NetworkImage chainId={transaction.chainId} size="xs" />
         </div>
         {transaction.transfers?.map((transfer, index) => (
-          <div
-            className="flex w-full flex-col justify-center items-center gap-4"
-            key={`transfer-${index}`}>
+          <div className="flex w-full flex-col justify-center items-center gap-4" key={`transfer-${index}`}>
             <Transfer transfer={transfer} />
           </div>
         ))}
@@ -193,7 +191,8 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
         className="w-full rounded-xl"
         onClick={onClickBlockExplorer}
         rightIcon={LinkIcon}
-        label={`View on ${nativeTokenInfo.blockExplorerName}`} />
+        label={`View on ${nativeTokenInfo.blockExplorerName}`}
+      />
       <div>
         <div className="flex w-full flex-col gap-2 justify-center items-start">
           <Divider className="w-full m-0" style={{ marginBottom: '-4px' }} />
@@ -215,6 +214,6 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           <CopyButton className="mt-2" buttonVariant="with-label" text={transaction.txnHash} />
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

@@ -1,4 +1,4 @@
-import { IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/design-system';
+import { IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/design-system'
 import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -18,14 +18,15 @@ export const NavigationHeader = ({ secondaryText, primaryText, disableBack = fal
   }
 
   return (
-    (<div
+    <div
       className="flex bg-background-primary z-20 w-full flex-row items-center justify-between"
       style={{
         height: HEADER_HEIGHT,
         paddingTop: '6px',
         backgroundColor: vars.colors.backgroundPrimary,
         position: 'absolute'
-      }}>
+      }}
+    >
       {history.length > 0 && !disableBack ? (
         <IconButton
           onClick={onClickBack}
@@ -39,9 +40,7 @@ export const NavigationHeader = ({ secondaryText, primaryText, disableBack = fal
       ) : (
         <div />
       )}
-      <div
-        className="flex w-full items-center justify-center"
-        style={{ marginLeft: '40px' }}>
+      <div className="flex w-full items-center justify-center" style={{ marginLeft: '40px' }}>
         <Text fontWeight="medium" variant="small" color="text50">
           {secondaryText}
         </Text>
@@ -56,6 +55,6 @@ export const NavigationHeader = ({ secondaryText, primaryText, disableBack = fal
           width: '44px'
         }}
       />
-    </div>)
-  );
+    </div>
+  )
 }

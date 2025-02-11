@@ -46,13 +46,14 @@ export const AddFundsContent = () => {
   const link = getTransakLink(addFundsSettings)
 
   return (
-    (<div
+    <div
       className="flex items-center w-full px-4 pb-4 h-full"
       style={{
         height: '600px',
         paddingTop: HEADER_HEIGHT
-      }}>
+      }}
+    >
       <iframe className="w-full h-full border-0" id={IframeId} src={link} />
-    </div>)
-  );
+    </div>
+  )
 }

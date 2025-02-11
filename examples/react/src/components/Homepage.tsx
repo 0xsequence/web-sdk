@@ -1,4 +1,4 @@
-import { Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system';
+import { Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useConnections } from 'wagmi'
@@ -27,7 +27,7 @@ export const Homepage = () => {
   }
 
   return (
-    (<main>
+    <main>
       {wallets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-5 h-screen">
           <div className="flex flex-row items-center justify-center gap-3">
@@ -45,9 +45,7 @@ export const Homepage = () => {
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
           </div>
 
-          <div
-            className="flex gap-2 flex-col px-4 mt-10 w-full"
-            style={{ maxWidth: breakpoints.md }}>
+          <div className="flex gap-2 flex-col px-4 mt-10 w-full" style={{ maxWidth: breakpoints.md }}>
             <WalletTypeSelect
               type="waas"
               title="Embedded Wallet (WaaS)"
@@ -67,8 +65,8 @@ export const Homepage = () => {
         <Connected />
       )}
       <Footer />
-    </main>)
-  );
+    </main>
+  )
 }
 
 interface WalletTypeSelectProps {
@@ -84,7 +82,7 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
   const isSelected = walletType === type
 
   return (
-    (<Card
+    <Card
       className="w-full border-2"
       clickable
       outlined
@@ -92,18 +90,19 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
         boxShadow: isSelected ? '0 0 24px rgb(127 59 158 / 0.8)' : 'none',
         borderColor: isSelected ? 'rgb(127 59 200)' : 'var(--seq-colors-border-normal)'
       }}
-      onClick={() => onClick(type)}>
+      onClick={() => onClick(type)}
+    >
       <div className="flex gap-2">
         <div>
           <Text variant="normal" fontWeight="bold" color={isSelected ? 'text100' : 'text80'}>
             {title}
           </Text>
-          <Text className="mt-2" variant="normal" color="text50" asChild><div>
-              {description}
-            </div></Text>
+          <Text className="mt-2" variant="normal" color="text50" asChild>
+            <div>{description}</div>
+          </Text>
         </div>
         <CheckmarkIcon size="md" style={{ color: 'rgb(127 59 200)' }} visibility={isSelected ? 'visible' : 'hidden'} />
       </div>
-    </Card>)
-  );
+    </Card>
+  )
 }

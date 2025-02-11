@@ -1,4 +1,4 @@
-import { NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system';
+import { NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
@@ -19,7 +19,7 @@ interface SendItemInfoProps {
 
 export const SendItemInfoSkeleton = () => {
   return (
-    (<div className="flex items-center justify-between">
+    <div className="flex items-center justify-between">
       <div className="flex justify-center items-center gap-2">
         <Skeleton className="rounded-full" style={{ width: 30, height: 30 }} />
         <div className="flex flex-col gap-2 items-start">
@@ -31,8 +31,8 @@ export const SendItemInfoSkeleton = () => {
         <Skeleton style={{ width: 100, height: 14 }} />
         <Skeleton style={{ width: 50, height: 12 }} />
       </div>
-    </div>)
-  );
+    </div>
+  )
 }
 
 export const SendItemInfo = ({
@@ -50,7 +50,7 @@ export const SendItemInfo = ({
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   return (
-    (<div className="flex items-end justify-between">
+    <div className="flex items-end justify-between">
       <div className="flex justify-between items-center gap-2">
         {showSquareImage ? (
           <div style={{ width: '40px' }}>
@@ -75,6 +75,6 @@ export const SendItemInfo = ({
       <div className="flex flex-col items-end justify-end">
         {fiatValue && <Text variant="normal" color="text100">{`${fiatCurrency.sign}${fiatValue}`}</Text>}
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

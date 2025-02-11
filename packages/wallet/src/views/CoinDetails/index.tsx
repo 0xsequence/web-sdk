@@ -1,4 +1,4 @@
-import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system';
+import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
 import {
   compareAddress,
   formatDisplay,
@@ -110,10 +110,8 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     })
   }
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
-      <div
-        className="flex flex-col gap-10 pb-5 px-4 pt-0"
-        style={{ marginTop: '-20px' }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
+      <div className="flex flex-col gap-10 pb-5 px-4 pt-0" style={{ marginTop: '-20px' }}>
         <div className="flex mb-10 gap-2 items-center justify-center flex-col">
           <TokenImage src={logo} size="xl" />
           <Text variant="large" color="text100" fontWeight="bold">
@@ -132,18 +130,8 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
         </div>
         {!isReadOnly && (
           <div className="flex gap-2">
-            <Button
-              className="w-full text-text100"
-              variant="primary"
-              leftIcon={SendIcon}
-              label="Send"
-              onClick={onClickSend} />
-            <Button
-              className="w-full text-text100"
-              variant="primary"
-              leftIcon={SwapIcon}
-              label="Buy"
-              onClick={onClickSwap} />
+            <Button className="w-full text-text100" variant="primary" leftIcon={SendIcon} label="Send" onClick={onClickSend} />
+            <Button className="w-full text-text100" variant="primary" leftIcon={SwapIcon} label="Buy" onClick={onClickSwap} />
           </div>
         )}
         <div>
@@ -156,6 +144,6 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
           </InfiniteScroll>
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

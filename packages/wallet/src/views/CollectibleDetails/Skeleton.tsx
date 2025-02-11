@@ -1,4 +1,4 @@
-import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system';
+import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
@@ -9,12 +9,13 @@ interface CollectibleDetailsSkeletonProps {
 
 export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSkeletonProps) => {
   return (
-    (<div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
       <div
         className="flex flex-col gap-10 pb-5 px-4 pt-0"
         style={{
           marginTop: '-20px'
-        }}>
+        }}
+      >
         <div className="flex gap-3 items-center justify-center flex-col">
           <Skeleton style={{ width: '120px', height: '16px' }} />
           <Skeleton style={{ width: '140px', height: '44px' }} />
@@ -34,12 +35,7 @@ export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSke
             </div>
           </div>
           {!isReadOnly && (
-            <Button
-              className="text-text100 mt-4 w-full"
-              variant="primary"
-              leftIcon={SendIcon}
-              label="Send"
-              onClick={() => {}} />
+            <Button className="text-text100 mt-4 w-full" variant="primary" leftIcon={SendIcon} label="Send" onClick={() => {}} />
           )}
         </div>
         <div>
@@ -49,6 +45,6 @@ export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSke
           <TransactionHistorySkeleton />
         </div>
       </div>
-    </div>)
-  );
+    </div>
+  )
 }

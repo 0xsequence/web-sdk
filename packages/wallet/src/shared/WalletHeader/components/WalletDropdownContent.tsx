@@ -7,8 +7,8 @@ import {
   QrCodeIcon,
   SettingsIcon,
   SignoutIcon,
-  TransactionIcon,
-} from '@0xsequence/design-system';
+  TransactionIcon
+} from '@0xsequence/design-system'
 import { formatAddress, useTheme } from '@0xsequence/kit'
 import React, { forwardRef } from 'react'
 import { useDisconnect, useAccount } from 'wagmi'
@@ -66,7 +66,7 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
   }
 
   return (
-    (<div
+    <div
       className="p-3 z-30 rounded-xl"
       ref={ref}
       style={{
@@ -78,15 +78,21 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
         top: '16px',
         left: '15px',
         background: getDropdownBackgroundColor()
-      }}>
+      }}
+    >
       <div className="flex flex-row justify-between items-start">
-        <div
-          className="flex flex-row justify-center items-center gap-3 ml-2 text-text100">
+        <div className="flex flex-row justify-center items-center gap-3 ml-2 text-text100">
           <GradientAvatar style={{ width: '28px' }} size="md" address={address || ''} />
           <Text variant="large" fontWeight="bold" color="text100">
             {formatAddress(address || '')}
           </Text>
-          <CopyButton className="text-text100" buttonVariant="icon" size="md" text={address || ''} style={{ marginLeft: '-16px' }} />
+          <CopyButton
+            className="text-text100"
+            buttonVariant="icon"
+            size="md"
+            text={address || ''}
+            style={{ marginLeft: '-16px' }}
+          />
         </div>
         <IconButton className="bg-button-glass" onClick={() => setOpenWalletDropdown(false)} size="xs" icon={CloseIcon} />
       </div>
@@ -121,6 +127,6 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
           onClick={onClickSignout}
         />
       </div>
-    </div>)
-  );
+    </div>
+  )
 })

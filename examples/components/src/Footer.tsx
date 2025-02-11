@@ -1,4 +1,4 @@
-import { Button, Image, Text, useTheme } from '@0xsequence/design-system';
+import { Button, Image, Text, useTheme } from '@0xsequence/design-system'
 
 interface BottomPageLink {
   label: string
@@ -68,7 +68,7 @@ export const Footer = () => {
 
   const Links = () => {
     return (
-      (<div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-4">
         {bottomPageLinks.map((link, index) => (
           <Button
             className="flex gap-4"
@@ -78,23 +78,24 @@ export const Footer = () => {
             label={<Text variant="small">{link.label}</Text>}
           />
         ))}
-      </div>)
-    );
+      </div>
+    )
   }
 
   const Socials = () => {
     return (
-      (<div className="flex gap-4 justify-center items-center">
+      <div className="flex gap-4 justify-center items-center">
         {socialLinks.map((socialLink, index) => {
           return (
-            (<div
+            <div
               className="cursor-pointer"
               key={index}
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   window.open(socialLink.url)
                 }
-              }}>
+              }}
+            >
               <Image
                 className="h-3"
                 src={socialLink.icon}
@@ -104,19 +105,20 @@ export const Footer = () => {
                 }}
                 disableAnimation
               />
-            </div>)
-          );
+            </div>
+          )
         })}
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div
+    <div
       className="flex p-5 fixed bottom-0 w-full justify-between bg-background-overlay backdrop-blur-md"
-      style={{ height: '60px', borderTop: '1px solid #222' }}>
+      style={{ height: '60px', borderTop: '1px solid #222' }}
+    >
       <Links />
       <Socials />
-    </div>)
-  );
+    </div>
+  )
 }

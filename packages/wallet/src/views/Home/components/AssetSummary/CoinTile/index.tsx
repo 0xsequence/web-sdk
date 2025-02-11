@@ -39,7 +39,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
 
   const isPending = isPendingCoinPrice || isPendingConversionRate || isPendingContractInfo
   if (isPending) {
-    return <div className="bg-background-secondary w-full h-full rounded-xl" />;
+    return <div className="bg-background-secondary w-full h-full rounded-xl" />
   }
 
   if (isNativeToken) {
