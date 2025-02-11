@@ -41,7 +41,7 @@ export const useClearCachedBalances = () => {
           QUERY_KEYS.balancesSummary,
           QUERY_KEYS.coinBalance,
           QUERY_KEYS.coinBalanceSummary,
-          QUERY_KEYS.collectionBalance,
+          QUERY_KEYS.collectibleBalance,
           QUERY_KEYS.collectibleBalanceDetails,
           QUERY_KEYS.collectionBalance,
           QUERY_KEYS.collectionBalanceDetails,
