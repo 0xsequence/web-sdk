@@ -54,6 +54,7 @@
   "resolutions": {},
   "packageManager": "pnpm@9.0.6",
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.6",
     "@tailwindcss/postcss": "^4.0.6",
     "postcss": "^8",
     "tailwindcss": "^4.0.6"
