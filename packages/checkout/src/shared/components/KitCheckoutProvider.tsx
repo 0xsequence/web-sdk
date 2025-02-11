@@ -1,9 +1,9 @@
 'use client'
 
-import { Modal, ThemeProvider } from '@0xsequence/design-system';
+import { Modal, ThemeProvider } from '@0xsequence/design-system'
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
 
 import {
@@ -202,7 +202,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
   }, [openCheckoutModal, openAddFundsModal, openPaymentSelectionModal])
 
   return (
-    (<SwapModalContextProvider
+    <SwapModalContextProvider
       value={{
         openSwapModal,
         closeSwapModal,
@@ -365,6 +365,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
           </AddFundsContextProvider>
         </SelectPaymentContextProvider>
       </TransactionStatusModalContextProvider>
-    </SwapModalContextProvider>)
-  );
+    </SwapModalContextProvider>
+  )
 }

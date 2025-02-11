@@ -1,4 +1,4 @@
-import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system';
+import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
 import {
   CryptoOption,
   useBalancesSummary,
@@ -9,7 +9,7 @@ import {
   formatDisplay
 } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
 import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
@@ -118,7 +118,7 @@ export const PayWithCrypto = ({
 
   const Options = () => {
     return (
-      (<div className="flex flex-col justify-center items-center gap-2 w-full">
+      <div className="flex flex-col justify-center items-center gap-2 w-full">
         {coins.map(coin => {
           if (compareAddress(coin.currencyAddress, currencyAddress) && enableMainCurrencyPayment) {
             return (
@@ -173,8 +173,8 @@ export const PayWithCrypto = ({
             )
           }
         })}
-      </div>)
-    );
+      </div>
+    )
   }
 
   const gutterHeight = 8
@@ -185,7 +185,7 @@ export const PayWithCrypto = ({
 
   const ShowMoreButton = () => {
     return (
-      (<div className="flex justify-center items-center w-full">
+      <div className="flex justify-center items-center w-full">
         <Button
           className="text-white"
           rightIcon={() => {
@@ -200,12 +200,12 @@ export const PayWithCrypto = ({
           }}
           label={showMore ? 'Show less' : 'Show more'}
         />
-      </div>)
-    );
+      </div>
+    )
   }
 
   return (
-    (<div className="w-full">
+    <div className="w-full">
       <div>
         <Text variant="small" fontWeight="medium" color="white">
           Pay with crypto
@@ -226,7 +226,8 @@ export const PayWithCrypto = ({
             <motion.div
               className="overflow-hidden"
               animate={{ height: showMore ? 'auto' : collapsedOptionsHeight }}
-              transition={{ ease: 'easeOut', duration: 0.3 }}>
+              transition={{ ease: 'easeOut', duration: 0.3 }}
+            >
               <Options />
             </motion.div>
             {swapsIsLoading && (
@@ -238,6 +239,6 @@ export const PayWithCrypto = ({
           </>
         )}
       </div>
-    </div>)
-  );
+    </div>
+  )
 }
