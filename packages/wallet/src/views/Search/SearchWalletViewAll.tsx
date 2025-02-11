@@ -1,11 +1,11 @@
-import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
+import { SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
   useCoinPrices,
   useBalancesSummary,
   ContractVerificationStatus,
-  compareAddress,
+  compareAddress
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
@@ -15,8 +15,8 @@ import { useAccount, useConfig } from 'wagmi'
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
 
-import CoinsTab from './components/CoinsTab'
-import CollectionsTab from './components/CollectionsTab'
+import { CoinsTab } from './components/CoinsTab'
+import { CollectionsTab } from './components/CollectionsTab'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
@@ -212,8 +212,8 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   })
 
   return (
-    <Box paddingX="4" paddingBottom="5" paddingTop="3" flexDirection="column" gap="5" alignItems="center" justifyContent="center">
-      <Box width="full">
+    <div className="flex px-4 pb-5 pt-3 flex-col gap-5 items-center justify-center">
+      <div className="w-full">
         <TextInput
           autoFocus
           name="search wallet"
@@ -223,11 +223,10 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
           placeholder="Search your wallet"
           data-1p-ignore
         />
-      </Box>
-
-      <Box width="full">
+      </div>
+      <div className="w-full">
         <TabsRoot value={selectedTab} onValueChange={value => setSelectedTab(value as 'coins' | 'collections')}>
-          <Box marginBottom="5">
+          <div className="mb-5">
             {!isPending && (
               <TabsHeader
                 value={selectedTab}
@@ -238,7 +237,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
               />
             )}
             {isPending && <Skeleton style={{ width: '360px', height: '48px' }} />}
-          </Box>
+          </div>
 
           <TabsContent value="collections">
             <CollectionsTab
@@ -266,7 +265,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
             />
           </TabsContent>
         </TabsRoot>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

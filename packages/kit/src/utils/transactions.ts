@@ -1,12 +1,13 @@
 import { sequence } from '0xsequence'
-import { SequenceWaaS, FeeOption } from '@0xsequence/waas'
-import { SequenceIndexer, TransactionStatus, TransactionReceipt } from '@0xsequence/indexer'
-import { PublicClient, WalletClient, Hex } from 'viem'
+import { Hex, PublicClient, WalletClient } from 'viem'
 import { Connector } from 'wagmi'
 
 import { TRANSACTION_CONFIRMATIONS_DEFAULT } from '../constants'
 import { ExtendedConnector } from '../types'
 import { compareAddress } from '../utils/helpers'
+
+import { SequenceIndexer, TransactionReceipt, TransactionStatus } from '@0xsequence/indexer'
+import { FeeOption, SequenceWaaS } from '@0xsequence/waas'
 
 class FeeOptionInsufficientFundsError extends Error {
   public readonly feeOptions: FeeOption[]
@@ -103,7 +104,10 @@ export const sendTransactions = async ({
     }
 
     if (!transactionsFeeOption && !isSponsored) {
-      throw new FeeOptionInsufficientFundsError(`Transaction fee option with valid user balance not found: ${resp.data.feeOptions.map(f => f.token.symbol).join(', ')}`, resp.data.feeOptions)
+      throw new FeeOptionInsufficientFundsError(
+        `Transaction fee option with valid user balance not found: ${resp.data.feeOptions.map(f => f.token.symbol).join(', ')}`,
+        resp.data.feeOptions
+      )
     }
 
     const response = await sequenceWaaS.sendTransaction({
@@ -224,7 +228,7 @@ export const waitForTransactionReceipt = async ({
   const receipt = await receiptPromise
 
   if (confirmations) {
-    const blockConfirmationPromise = new Promise<void>((resolve, reject) => {
+    const blockConfirmationPromise = new Promise<void>(resolve => {
       const unwatch = publicClient.watchBlocks({
         onBlock: ({ number: currentBlockNumber }) => {
           const confirmedBlocknumber = receipt.blockNumber + confirmations

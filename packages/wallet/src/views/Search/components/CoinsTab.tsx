@@ -1,9 +1,11 @@
 // kit/packages/wallet/src/views/Search/CoinsTab.tsx
-import React, { useEffect, useRef, useState } from 'react'
-import { BalanceItem } from './BalanceItem'
-import { Spinner, Skeleton, Text, Box } from '@0xsequence/design-system'
-import { IndexedData } from '../SearchWalletViewAll'
+import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { IndexedData } from '../SearchWalletViewAll'
+
+import { BalanceItem } from './BalanceItem'
 
 interface CoinsTabProps {
   displayedCoinBalances: IndexedData[]
@@ -16,7 +18,7 @@ interface CoinsTabProps {
   coinBalances: TokenBalance[]
 }
 
-const CoinsTab: React.FC<CoinsTabProps> = ({
+export const CoinsTab: React.FC<CoinsTabProps> = ({
   displayedCoinBalances,
   fetchMoreCoinBalances,
   fetchMoreSearchCoinBalances,
@@ -59,28 +61,26 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
   }, [fetchMoreCoinBalances, fetchMoreSearchCoinBalances, isSearching])
 
   return (
-    <Box>
-      <Box flexDirection="column" gap="3">
+    <div>
+      <div className="flex flex-col gap-3">
         {isPending && (
           <>
             {Array(8)
               .fill(null)
               .map((_, i) => (
-                <Skeleton key={i} width="full" height="8" />
+                <Skeleton className="w-full h-8" key={i} />
               ))}
           </>
         )}
-        {!isPending && displayedCoinBalances.length === 0 && <Text color="text100">No Coins Found</Text>}
+        {!isPending && displayedCoinBalances.length === 0 && <Text color="primary">No Coins Found</Text>}
         {!isPending &&
           displayedCoinBalances.map((indexItem, index) => {
             const balance = coinBalances[indexItem.index]
             return <BalanceItem key={index} balance={balance} />
           })}
-        {isLoading && <Spinner alignSelf="center" marginTop="3" />}
-      </Box>
+        {isLoading && <Spinner className="flex self-center mt-3" />}
+      </div>
       <div ref={endOfPageRefCoins} style={{ height: '1px' }} />
-    </Box>
+    </div>
   )
 }
-
-export default CoinsTab

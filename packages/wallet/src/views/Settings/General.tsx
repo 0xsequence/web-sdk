@@ -1,4 +1,4 @@
-import { Box, Card, Switch, Text } from '@0xsequence/design-system'
+import { Card, Switch, Text } from '@0xsequence/design-system'
 // import { useTheme } from '@0xsequence/kit'
 import React from 'react'
 
@@ -22,14 +22,14 @@ export const SettingsGeneral = () => {
   }
 
   return (
-    <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box gap="2" padding="5" paddingTop="3" flexDirection="column">
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
+      <div className="flex gap-2 p-5 pt-3 flex-col">
         {/* <Card
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text color="text100" fontWeight="bold">
+          <Text color="primary" fontWeight="bold">
             Dark mode
           </Text>
           <Switch
@@ -37,19 +37,19 @@ export const SettingsGeneral = () => {
             onCheckedChange={onChangeTheme}
           />
         </Card> */}
-        <Card flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Text color="text100" fontWeight="bold">
+        <Card className="flex flex-row justify-between items-center">
+          <Text color="primary" fontWeight="bold">
             Hide unlisted tokens
           </Text>
           <Switch checked={hideUnlistedTokens} onCheckedChange={onChangeHideUnlistedTokens} />
         </Card>
-        <Card flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Text color="text100" fontWeight="bold">
+        <Card className="flex flex-row justify-between items-center">
+          <Text color="primary" fontWeight="bold">
             Hide collectibles
           </Text>
           <Switch checked={hideCollectibles} onCheckedChange={onChangeHideCollectibles} />
         </Card>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

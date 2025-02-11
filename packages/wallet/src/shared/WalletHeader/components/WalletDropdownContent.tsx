@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   IconButton,
   CloseIcon,
@@ -8,8 +7,7 @@ import {
   QrCodeIcon,
   SettingsIcon,
   SignoutIcon,
-  TransactionIcon,
-  vars
+  TransactionIcon
 } from '@0xsequence/design-system'
 import { formatAddress, useTheme } from '@0xsequence/kit'
 import React, { forwardRef } from 'react'
@@ -63,68 +61,36 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
       case 'light':
         return 'rgba(217, 217, 217, 0.85)'
       default:
-        return vars.colors.transparent
+        return 'transparent'
     }
   }
 
   return (
-    <Box
-      padding="3"
+    <div
+      className="relative pointer-events-auto backdrop-blur-md p-3 z-30 top-4 left-4 rounded-xl"
       ref={ref}
-      zIndex="30"
-      borderRadius="md"
       style={{
-        position: 'relative',
-        pointerEvents: 'auto',
         width: 'calc(100vw - 30px)',
         maxWidth: '370px',
-        backdropFilter: 'blur(12.5px)',
-        top: '16px',
-        left: '15px',
         background: getDropdownBackgroundColor()
       }}
     >
-      <Box flexDirection="row" justifyContent="space-between" alignItems="flex-start">
-        <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3" marginLeft="2" color="text100">
-          <GradientAvatar style={{ width: '28px' }} size="md" address={address || ''} />
-          <Text variant="large" fontWeight="bold" color="text100">
+      <div className="flex flex-row justify-between items-start">
+        <div className="flex flex-row justify-center items-center gap-3 ml-2 text-primary">
+          <GradientAvatar size="md" address={address || ''} />
+          <Text variant="large" fontWeight="bold" color="primary">
             {formatAddress(address || '')}
           </Text>
-          <CopyButton buttonVariant="icon" size="md" text={address || ''} color="text100" style={{ marginLeft: '-16px' }} />
-        </Box>
-        <IconButton onClick={() => setOpenWalletDropdown(false)} size="xs" background="buttonGlass" icon={CloseIcon} />
-      </Box>
-      <Box gap="2" marginTop="3" flexDirection="column">
-        <Button
-          variant="glass"
-          style={{ borderRadius: vars.radii.md }}
-          width="full"
-          leftIcon={QrCodeIcon}
-          label="Receive"
-          onClick={onClickReceive}
-        />
-        <Button
-          style={{ borderRadius: vars.radii.md }}
-          width="full"
-          leftIcon={TransactionIcon}
-          label="History"
-          onClick={onClickHistory}
-        />
-        <Button
-          style={{ borderRadius: vars.radii.md }}
-          width="full"
-          leftIcon={SettingsIcon}
-          label="Settings"
-          onClick={onClickSettings}
-        />
-        <Button
-          label="Sign Out"
-          style={{ borderRadius: vars.radii.md }}
-          width="full"
-          leftIcon={SignoutIcon}
-          onClick={onClickSignout}
-        />
-      </Box>
-    </Box>
+          <CopyButton className="ml-[-16px]" buttonVariant="icon" size="md" text={address || ''} />
+        </div>
+        <IconButton className="bg-button-glass" onClick={() => setOpenWalletDropdown(false)} size="xs" icon={CloseIcon} />
+      </div>
+      <div className="flex gap-2 mt-3 flex-col">
+        <Button className="w-full rounded-xl" variant="glass" leftIcon={QrCodeIcon} label="Receive" onClick={onClickReceive} />
+        <Button className="w-full rounded-xl" leftIcon={TransactionIcon} label="History" onClick={onClickHistory} />
+        <Button className="w-full rounded-xl" leftIcon={SettingsIcon} label="Settings" onClick={onClickSettings} />
+        <Button className="w-full rounded-xl" label="Sign Out" leftIcon={SignoutIcon} onClick={onClickSignout} />
+      </div>
+    </div>
   )
 })

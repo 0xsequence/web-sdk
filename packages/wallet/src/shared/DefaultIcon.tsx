@@ -1,4 +1,4 @@
-import { Box, Text } from '@0xsequence/design-system'
+import { Text } from '@0xsequence/design-system'
 import React from 'react'
 
 interface DefaultIconProps {
@@ -7,20 +7,16 @@ interface DefaultIconProps {
 
 export const DefaultIcon = ({ size = 30 }: DefaultIconProps) => {
   return (
-    <Box
-      alignItems="center"
-      justifyContent="center"
-      borderRadius="circle"
-      background="backgroundInverse"
-      flexShrink="0"
+    <div
+      className="flex items-center justify-center rounded-full bg-background-inverse shrink-0"
       style={{
         width: `${size}px`,
         height: `${size}px`
       }}
     >
-      <Text variant="large" color="textInverse100">
+      <Text variant="large" color="inverse">
         ?
       </Text>
-    </Box>
+    </div>
   )
 }

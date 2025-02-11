@@ -1,4 +1,4 @@
-import { Box, Spinner, Text } from '@0xsequence/design-system'
+import { Spinner, Text } from '@0xsequence/design-system'
 import { useAnalyticsContext, useProjectAccessKey, useContractInfo, useTokenMetadata, DEBUG } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
+import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TransactionPendingNavigation } from '../contexts'
 import {
   useNavigation,
@@ -14,7 +15,6 @@ import {
   useTransactionStatusModal,
   useSkipOnCloseCallback
 } from '../hooks'
-import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
 const POLLING_TIME = 10 * 1000
 
@@ -189,48 +189,42 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   if (isError || !transakConfig) {
     return (
-      <Box
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        gap="6"
+      <div
+        className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
         }}
       >
-        <Box>
+        <div>
           {!transakConfig ? (
-            <Text color="text100">Error: No Transak configuration found</Text>
+            <Text color="primary">Error: No Transak configuration found</Text>
           ) : (
-            <Text color="text100">An error has occurred</Text>
+            <Text color="primary">An error has occurred</Text>
           )}
-        </Box>
-      </Box>
+        </div>
+      </div>
     )
   }
 
   if (isLoading) {
     return (
-      <Box
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        gap="6"
+      <div
+        className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
         }}
       >
-        <Box>
+        <div>
           <Spinner size="lg" />
-        </Box>
-      </Box>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Box alignItems="center" justifyContent="center" style={{ height: '770px' }}>
+    <div className="flex items-center justify-center" style={{ height: '770px' }}>
       <iframe
         id="transakIframe"
         allow="camera;microphone;payment"
@@ -242,7 +236,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
       />
-    </Box>
+    </div>
   )
 }
 
@@ -378,44 +372,38 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
   if (isError) {
     return (
-      <Box
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        gap="6"
+      <div
+        className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
         }}
       >
-        <Box>
-          <Text color="text100">An error has occurred</Text>
-        </Box>
-      </Box>
+        <div>
+          <Text color="primary">An error has occurred</Text>
+        </div>
+      </div>
     )
   }
 
   if (isLoading || !authToken) {
     return (
-      <Box
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        gap="6"
+      <div
+        className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
           width: '380px'
         }}
       >
-        <Box>
+        <div>
           <Spinner size="lg" />
-        </Box>
-      </Box>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Box alignItems="center" justifyContent="center" style={{ height: '770px' }}>
+    <div className="flex items-center justify-center" style={{ height: '770px' }}>
       <iframe
         src={url}
         style={{
@@ -425,6 +413,6 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
       />
-    </Box>
+    </div>
   )
 }

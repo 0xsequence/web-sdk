@@ -1,6 +1,5 @@
 import { LinkedWallet } from '@0xsequence/api'
-import { Box } from '@0xsequence/design-system'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import React, { useMemo, useEffect, useRef } from 'react'
 
 import { KitWallet } from '../../hooks/useKitWallets'
@@ -106,15 +105,11 @@ export const ConnectedWallets = ({
   if (wallets.length === 0) return null
 
   return (
-    <Box marginTop="4" flexDirection="column">
-      <Box position="relative">
-        <Box
-          as={motion.div}
+    <div className="flex mt-4 flex-col">
+      <div className="relative">
+        <motion.div
+          className="flex py-1 gap-2 flex-col overflow-y-auto"
           ref={scrollContainerRef}
-          paddingY="1"
-          gap="2"
-          flexDirection="column"
-          overflowY="auto"
           onScroll={(e: React.UIEvent<HTMLDivElement>) => {
             updateScrollFades(e.currentTarget)
           }}
@@ -151,36 +146,28 @@ export const ConnectedWallets = ({
               </motion.div>
             ))}
           </AnimatePresence>
-        </Box>
-        <Box
-          position="absolute"
-          top="0"
-          left="0"
-          right="0"
-          className="scroll-fade-top"
+        </motion.div>
+        <div
+          className="scroll-fade-top absolute top-0 left-0 right-0"
           style={{
             height: '30px',
-            background: 'linear-gradient(to top, rgba(0, 0, 0, 0), var(--seq-colors-background-primary))',
+            background: 'linear-gradient(to top, rgba(0, 0, 0, 0), var(--seq-color-background-primary))',
             pointerEvents: 'none',
             opacity: 0,
             transition: 'opacity 0.2s'
           }}
         />
-        <Box
-          position="absolute"
-          bottom="0"
-          left="0"
-          right="0"
-          className="scroll-fade"
+        <div
+          className="scroll-fade absolute bottom-0 left-0 right-0"
           style={{
             height: '40px',
-            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--seq-colors-background-primary))',
+            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--seq-color-background-primary))',
             pointerEvents: 'none',
             opacity: 0,
             transition: 'opacity 0.2s'
           }}
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

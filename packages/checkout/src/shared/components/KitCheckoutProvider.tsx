@@ -1,9 +1,9 @@
 'use client'
 
-import { Box, Modal, ThemeProvider } from '@0xsequence/design-system'
+import { Modal, ThemeProvider } from '@0xsequence/design-system'
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
 
 import {
@@ -259,13 +259,12 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                               }
                             }}
                             scroll={false}
-                            backdropColor="backgroundBackdrop"
                             onClose={() => setOpenCheckoutModal(false)}
                           >
-                            <Box id="sequence-kit-checkout-content">
+                            <div id="sequence-kit-checkout-content">
                               {getCheckoutHeader()}
                               {getCheckoutContent()}
-                            </Box>
+                            </div>
                           </Modal>
                         )}
                         {openAddFundsModal && (
@@ -278,13 +277,12 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                               }
                             }}
                             scroll={false}
-                            backdropColor="backgroundBackdrop"
                             onClose={closeAddFunds}
                           >
-                            <Box id="sequence-kit-add-funds-content">
+                            <div id="sequence-kit-add-funds-content">
                               {getAddFundsHeader()}
                               {getAddFundsContent()}
-                            </Box>
+                            </div>
                           </Modal>
                         )}
                         {openPaymentSelectionModal && (
@@ -297,12 +295,11 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                                 scrollbarWidth: 'thin'
                               }
                             }}
-                            backdropColor="backgroundBackdrop"
                             onClose={() => setOpenPaymentSelectionModal(false)}
                           >
-                            <Box id="sequence-kit-payment-selection-content">
+                            <div id="sequence-kit-payment-selection-content">
                               <PaymentSelection />
-                            </Box>
+                            </div>
                           </Modal>
                         )}
                         {openTransferFundsModal && (
@@ -313,13 +310,12 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                                 ...getModalPositionCss(position)
                               }
                             }}
-                            backdropColor="backgroundBackdrop"
                             onClose={closeTransferFunds}
                           >
-                            <Box id="sequence-kit-transfer-funds-modal">
+                            <div id="sequence-kit-transfer-funds-modal">
                               <NavigationHeader primaryText="Receive" />
                               <TransferToWallet />
-                            </Box>
+                            </div>
                           </Modal>
                         )}
                         {openTransactionStatusModal && (
@@ -332,9 +328,9 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                             }}
                             onClose={closeTransactionStatusModal}
                           >
-                            <Box id="sequence-kit-transaction-status-modal">
+                            <div id="sequence-kit-transaction-status-modal">
                               <TransactionStatus />
-                            </Box>
+                            </div>
                           </Modal>
                         )}
                         {isOpenSwapModal && (
@@ -346,13 +342,12 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                                 ...getModalPositionCss(position)
                               }
                             }}
-                            backdropColor="backgroundBackdrop"
                             onClose={closeSwapModal}
                           >
-                            <Box id="sequence-kit-swap-modal">
+                            <div id="sequence-kit-swap-modal">
                               <NavigationHeader primaryText={swapModalSettings?.title || 'Swap'} />
                               <Swap />
-                            </Box>
+                            </div>
                           </Modal>
                         )}
                       </AnimatePresence>

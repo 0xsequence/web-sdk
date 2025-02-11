@@ -1,4 +1,3 @@
-import { Box } from '@0xsequence/design-system'
 import React from 'react'
 import { useAccount } from 'wagmi'
 
@@ -15,14 +14,14 @@ export const History = () => {
   })
 
   return (
-    <Box>
-      <Box paddingX="4" paddingBottom="5" paddingTop="3">
+    <div>
+      <div className="px-4 pb-5 pt-3">
         <TransactionHistoryList
           transactions={transactionHistory}
           isPending={isPendingTransactionHistory}
           isFetchingNextPage={false}
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

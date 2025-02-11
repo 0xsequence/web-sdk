@@ -1,6 +1,7 @@
-import { Box, Spinner, vars } from '@0xsequence/design-system'
+import { Spinner } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { useWalletSettings } from '@0xsequence/kit'
+import { useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { useBalancesAssetsSummary, useNavigation, useSettings } from '../../../../hooks'
@@ -8,7 +9,6 @@ import { useBalancesAssetsSummary, useNavigation, useSettings } from '../../../.
 import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
 import { SkeletonTiles } from './SkeletonTiles'
-import { useEffect, useRef, useState } from 'react'
 
 export const AssetSummary = () => {
   const { address } = useAccount()
@@ -96,35 +96,27 @@ export const AssetSummary = () => {
   }
 
   return (
-    <Box>
-      <Box
+    <div>
+      <div
+        className="grid gap-2"
         style={{
-          display: 'grid',
-          gridTemplateColumns: `calc(50% - ${vars.space[1]}) calc(50% - ${vars.space[1]})`,
-          gap: vars.space[2]
+          gridTemplateColumns: `calc(50% - 4px) calc(50% - 4px)`
         }}
       >
         {displayedTokens.map((balance, index) => {
           return (
-            <Box
-              key={index}
-              userSelect="none"
-              cursor="pointer"
-              opacity={{ hover: '80' }}
-              aspectRatio="1/1"
-              onClick={() => onClickItem(balance)}
-            >
+            <div className="select-none cursor-pointer aspect-square" key={index} onClick={() => onClickItem(balance)}>
               {balance.contractType === 'ERC1155' || balance.contractType === 'ERC721' ? (
                 <CollectibleTile balance={balance} />
               ) : (
                 <CoinTile balance={balance} />
               )}
-            </Box>
+            </div>
           )
         })}
-      </Box>
-      {isLoading && <Spinner justifySelf="center" marginTop="3" />}
+      </div>
+      {isLoading && <Spinner className="flex justify-self-center mt-3" />}
       <div ref={endOfPageRef} style={{ height: '1px' }} />
-    </Box>
+    </div>
   )
 }

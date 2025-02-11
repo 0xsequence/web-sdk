@@ -119,7 +119,7 @@ export type Navigation =
   | SendCollectibleNavigation
   | SwapCoinNavigation
   | SwapCoinListNavigation
-  
+
 export type History = Navigation[]
 
 type NavigationContext = {

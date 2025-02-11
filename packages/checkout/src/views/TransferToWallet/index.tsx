@@ -1,4 +1,4 @@
-import { Box, Text } from '@0xsequence/design-system'
+import { Text } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -13,31 +13,24 @@ export const TransferToWallet = () => {
   const address = transferFundsSettings?.walletAddress || userAddress || ''
 
   return (
-    <Box
-      flexDirection="column"
-      gap="2"
-      alignItems="center"
-      justifyContent="center"
-      width="full"
-      paddingX="4"
-      paddingBottom="4"
-      height="full"
+    <div
+      className="flex flex-col gap-2 items-center justify-center w-full px-4 pb-4 h-full"
       style={{ paddingTop: HEADER_HEIGHT }}
     >
-      <Box flexDirection="column" alignItems="center" paddingX="4" paddingBottom="4" minHeight="full">
-        <Box flexDirection="column" placeItems="center" width="full">
-          <Text as="p" variant="normal" color="text50" textAlign="center">
-            Share your wallet address to receive coins
+      <div className="flex flex-col items-center px-4 pb-4 min-h-full">
+        <div className="flex flex-col items-center justify-center w-full">
+          <Text className="text-center" variant="normal" color="muted" asChild>
+            <p>Share your wallet address to receive coins</p>
           </Text>
-          <Box marginY="4">
+          <div className="my-4">
             <QRCode value={address} data-id="receiveQR" />
-          </Box>
+          </div>
 
-          <Text as="div" width="full" variant="normal" color="text50" textAlign="center" data-id="receiveAddress">
-            {address}
+          <Text className="w-full text-center" variant="normal" color="muted" asChild>
+            <div data-id="receiveAddress">{address}</div>
           </Text>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

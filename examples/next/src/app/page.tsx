@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Image, Button } from '@0xsequence/design-system'
+import { Image, Button } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useAccount } from 'wagmi'
@@ -14,11 +14,11 @@ export default function Home() {
   return (
     <main>
       {wallets.length === 0 ? (
-        <Box flexDirection="column" alignItems="center" justifyContent="center" gap="5" height="vh">
-          <Box background="white" padding="2" borderRadius="sm">
-            <Image alt="Next" src="images/next.svg" height="3" disableAnimation />
-          </Box>
-          <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
+        <div className="flex flex-col items-center justify-center gap-5 h-screen">
+          <div className="bg-white p-2 rounded-lg">
+            <Image className="h-3" alt="Next" src="images/next.svg" disableAnimation />
+          </div>
+          <div className="flex flex-row items-center justify-center gap-3">
             <Image alt="Sequence Kit Logo" style={{ width: '48px' }} src="images/kit-logo.svg" disableAnimation />
             <Image
               alt="Sequence Kit Text Logo"
@@ -29,16 +29,15 @@ export default function Home() {
               src="images/kit-logo-text.svg"
               disableAnimation
             />
-          </Box>
+          </div>
 
-          <Box gap="2" flexDirection="row" alignItems="center">
+          <div className="flex gap-2 flex-row items-center">
             <Button onClick={() => setOpenConnectModal(true)} variant="feature" label="Connect" />
-          </Box>
-        </Box>
+          </div>
+        </div>
       ) : (
         <Connected />
       )}
-
       <Footer />
     </main>
   )

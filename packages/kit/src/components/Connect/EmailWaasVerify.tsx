@@ -1,4 +1,4 @@
-import { Box, Button, CheckmarkIcon, PINCodeInput, Spinner, Text } from '@0xsequence/design-system'
+import { Button, CheckmarkIcon, PINCodeInput, Spinner, Text } from '@0xsequence/design-system'
 import { useState, useEffect, useRef } from 'react'
 
 interface EmailWaasVerifyProps {
@@ -56,28 +56,28 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
 
   return (
     <>
-      <Box paddingY="6" gap="4" alignItems="center" justifyContent="center" flexDirection="column">
-        <Text marginTop="5" variant="normal" color="text80">
+      <div className="flex py-6 gap-4 items-center justify-center flex-col">
+        <Text className="mt-5" variant="normal" color="secondary">
           Enter code received in email.
         </Text>
-        <Box ref={inputRef}>
+        <div ref={inputRef}>
           <PINCodeInput value={waasEmailPinCode} digits={6} group={3} onChange={setWaasEmailPinCode} disabled={isLoading} />
-        </Box>
+        </div>
 
-        <Box justifyContent="center" alignItems="center" position="relative" width="full" gap="1">
-          <Text variant="small" color="text80">
+        <div className="flex justify-center items-center relative w-full gap-1">
+          <Text variant="small" color="secondary">
             Didn't receive an email?{' '}
           </Text>
           {showSentEmail && (
-            <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-              <Text variant="small" fontWeight="bold" color="text50">
+            <div className="flex flex-row items-center justify-center gap-2">
+              <Text variant="small" fontWeight="bold" color="muted">
                 Email sent!
               </Text>
-              <CheckmarkIcon color="positive" size="sm" style={{ marginLeft: '-4px' }} />
-            </Box>
+              <CheckmarkIcon className="text-positive" size="sm" style={{ marginLeft: '-4px' }} />
+            </div>
           )}
           {!showSentEmail && (
-            <Box position="relative" flexDirection="row" alignItems="center" justifyContent="center" gap="2">
+            <div className="flex relative flex-row items-center justify-center gap-2">
               <Button
                 variant="text"
                 onClick={onClickResend}
@@ -85,17 +85,17 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
                 label="Resend email"
                 style={{ marginLeft: '-6px' }}
               />
-              {isLoadingSendCode && <Spinner size="sm" position="absolute" style={{ top: '0px', right: '-18px' }} />}
-            </Box>
+              {isLoadingSendCode && <Spinner className="absolute top-0 right-[-18px]" size="sm" />}
+            </div>
           )}
-        </Box>
+        </div>
         {isErrorSendCode && (
-          <Text variant="small" color="negative" textAlign="center">
+          <Text className="text-center" variant="small" color="negative">
             An error occurred while sending the email
           </Text>
         )}
 
-        <Box gap="4" alignItems="center" justifyContent="center" flexDirection="column">
+        <div className="flex gap-4 items-center justify-center flex-col">
           <Button
             variant="primary"
             disabled={!isPinCodeValid || isLoading || isLoadingSendCode}
@@ -107,12 +107,12 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
           {isLoading && <Spinner />}
 
           {error && (
-            <Text variant="small" color="negative" textAlign="center">
+            <Text className="text-center" variant="small" color="negative">
               {error.message}
             </Text>
           )}
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   )
 }

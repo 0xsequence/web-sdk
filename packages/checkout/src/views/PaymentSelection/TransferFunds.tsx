@@ -1,4 +1,4 @@
-import { Box, Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
+import { Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -46,23 +46,15 @@ export const TransferFunds = () => {
   }
 
   return (
-    <Box width="full">
-      <Box marginBottom="3">
+    <div className="w-full">
+      <div className="mb-3">
         <Text variant="small" fontWeight="medium" color="white">
           Transfer funds to your connected wallet
         </Text>
-      </Box>
-
-      <Card
-        opacity={{ hover: '80' }}
-        onClick={onClickQrCode}
-        cursor="pointer"
-        width="full"
-        justifyContent="space-between"
-        padding="4"
-      >
-        <Box flexDirection="row" gap="3">
-          <Box background="white" padding="4" borderRadius="xs" style={{ width: 40, height: 40 }}>
+      </div>
+      <Card className="flex cursor-pointer w-full justify-between p-4" onClick={onClickQrCode}>
+        <div className="flex flex-row gap-3 items-center">
+          <div className="bg-white p-4 rounded-sm" style={{ width: 40, height: 40 }}>
             <QRCodeCanvas
               value={userAddress || ''}
               size={36}
@@ -71,21 +63,21 @@ export const TransferFunds = () => {
               data-id="qr-code"
               style={{ position: 'relative', top: '-14px', left: '-14px' }}
             />
-          </Box>
-          <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
-            <Box>
-              <Text variant="normal" fontWeight="bold" color="text80">
+          </div>
+          <div className="flex flex-col justify-center items-start">
+            <div>
+              <Text variant="normal" fontWeight="bold" color="secondary">
                 Transfer Funds
               </Text>
-            </Box>
-            <Box>
-              <Text color="text50" variant="normal" fontSize="small">
+            </div>
+            <div>
+              <Text className="text-sm" color="muted" variant="normal">
                 {truncateAddress(userAddress || '', 12, 4)}
               </Text>
-            </Box>
-          </Box>
-        </Box>
-        <Box
+            </div>
+          </div>
+        </div>
+        <div
           onClick={e => {
             e.stopPropagation()
             e.preventDefault()
@@ -93,14 +85,14 @@ export const TransferFunds = () => {
         >
           <CopyToClipboard text={userAddress || ''} onCopy={handleCopy}>
             <IconButton
-              color="text50"
+              className="text-muted"
               variant="base"
               size="md"
               icon={isCopied ? () => <CheckmarkIcon size="lg" /> : () => <CopyIcon size="lg" />}
             />
           </CopyToClipboard>
-        </Box>
+        </div>
       </Card>
-    </Box>
+    </div>
   )
 }

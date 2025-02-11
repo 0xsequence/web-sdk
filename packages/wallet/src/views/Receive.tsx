@@ -1,4 +1,4 @@
-import { Box, Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
+import { Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { QRCodeCanvas } from 'qrcode.react'
 import React, { useState, useEffect } from 'react'
@@ -33,30 +33,22 @@ export const Receive = () => {
   }
 
   return (
-    <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box padding="5" paddingTop="3" flexDirection="column" justifyContent="center" alignItems="center" gap="4">
-        <Box
-          marginTop="1"
-          width="fit"
-          background="white"
-          borderRadius="md"
-          alignItems="center"
-          justifyContent="center"
-          padding="4"
-        >
+    <div style={{ paddingTop: HEADER_HEIGHT }}>
+      <div className="flex p-5 pt-3 flex-col justify-center items-center gap-4">
+        <div className="flex mt-1 w-fit bg-white rounded-xl items-center justify-center p-4">
           <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
-        </Box>
-        <Box>
-          <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-            <Text variant="medium" color="text100" textAlign="center" lineHeight="inherit" style={{ fontWeight: '700' }}>
+        </div>
+        <div>
+          <div className="flex flex-row items-center justify-center gap-2">
+            <Text className="text-center leading-[inherit]" variant="medium" color="primary" style={{ fontWeight: '700' }}>
               My Wallet
             </Text>
-            <Image width="5" src={nativeTokenInfo.logoURI} alt="icon" />
-          </Box>
-          <Box marginTop="2" style={{ maxWidth: '180px', textAlign: 'center' }}>
+            <Image className="w-5" src={nativeTokenInfo.logoURI} alt="icon" />
+          </div>
+          <div className="mt-2" style={{ maxWidth: '180px', textAlign: 'center' }}>
             <Text
-              textAlign="center"
-              color="text50"
+              className="text-center"
+              color="muted"
               style={{
                 fontSize: '14px',
                 maxWidth: '180px',
@@ -65,17 +57,17 @@ export const Receive = () => {
             >
               {address}
             </Text>
-          </Box>
-        </Box>
-        <Box gap="3">
+          </div>
+        </div>
+        <div className="flex gap-3">
           <CopyToClipboard text={address || ''}>
             <Button onClick={onClickCopy} leftIcon={CopyIcon} label={isCopied ? 'Copied!' : 'Copy'} />
           </CopyToClipboard>
           <Button onClick={onClickShare} leftIcon={ShareIcon} label="Share" />
-        </Box>
-        <Box justifyContent="center" alignItems="center" style={{ maxWidth: '260px', textAlign: 'center' }}>
+        </div>
+        <div className="flex justify-center items-center" style={{ maxWidth: '260px', textAlign: 'center' }}>
           <Text
-            color="text100"
+            color="primary"
             variant="small"
             style={{
               maxWidth: '260px',
@@ -84,8 +76,8 @@ export const Receive = () => {
           >
             {`This is a ${nativeTokenInfo.name} address. Please only send assets on the ${nativeTokenInfo.name} network.`}
           </Text>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

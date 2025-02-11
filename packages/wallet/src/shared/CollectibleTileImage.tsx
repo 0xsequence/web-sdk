@@ -7,15 +7,7 @@ interface CollectibleTileImageProps {
 
 export const CollectibleTileImage = ({ imageUrl }: CollectibleTileImageProps) => {
   return (
-    <Card
-      padding="0"
-      aspectRatio="1/1"
-      justifyContent="center"
-      alignItems="center"
-      overflow="hidden"
-      borderRadius="sm"
-      background="backgroundSecondary"
-    >
+    <Card className="flex p-0 aspect-square justify-center items-center overflow-hidden rounded-lg bg-background-secondary">
       <Image style={{ height: '100%' }} src={imageUrl} />
     </Card>
   )

@@ -1,12 +1,11 @@
-import { Box } from '@0xsequence/design-system'
 import React from 'react'
 
 import { AssetSummary } from './components/AssetSummary'
 
 export const Home = () => {
   return (
-    <Box paddingX="4" paddingBottom="5" gap="4" flexDirection="column">
+    <div className="flex px-4 pb-5 gap-4 flex-col">
       <AssetSummary />
-    </Box>
+    </div>
   )
 }

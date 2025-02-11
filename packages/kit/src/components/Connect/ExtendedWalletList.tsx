@@ -1,8 +1,5 @@
-import Fuse from 'fuse.js'
-import { useState } from 'react'
 import {
   ArrowRightIcon,
-  Box,
   Card,
   IconButton,
   ModalPrimitive,
@@ -12,9 +9,11 @@ import {
   Text,
   useTheme
 } from '@0xsequence/design-system'
+import Fuse from 'fuse.js'
+import { useState } from 'react'
 
-import { getLogo } from '../ConnectButton'
 import { ExtendedConnector } from '../../types'
+import { getLogo } from '../ConnectButton'
 
 interface ExtendedWalletListProps {
   onConnect: (connector: ExtendedConnector) => void
@@ -65,23 +64,22 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
   }
 
   return (
-    <Box padding="4">
-      <Box position="absolute" top="4" left="4">
+    <div className="p-4">
+      <div className="absolute top-4 left-4">
         <IconButton
+          className="bg-button-glass"
           onClick={onGoBack}
-          background="buttonGlass"
           size="xs"
           icon={() => <ArrowRightIcon style={{ transform: 'rotate(180deg)' }} />}
         />
-      </Box>
-      <Box justifyContent="center" color="text100" alignItems="center" fontWeight="medium" marginTop="2" marginBottom="4">
+      </div>
+      <div className="flex justify-center text-primary items-center font-medium mt-2 mb-4">
         <ModalPrimitive.Title asChild>
           <Text>{title}</Text>
         </ModalPrimitive.Title>
-      </Box>
-
+      </div>
       {searchable && (
-        <Box width="full" marginBottom="4">
+        <div className="w-full mb-4">
           <SearchInput
             autoFocus
             name="search"
@@ -91,10 +89,10 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
             placeholder="Search"
             data-1p-ignore
           />
-        </Box>
+        </div>
       )}
       <ConditionalScrollbar>
-        <Box flexDirection="column" gap="2">
+        <div className="flex flex-col gap-2">
           {displayedConnectors.map(connector => {
             const walletName = connector._wallet.name
             const connectorId = connector._wallet.id
@@ -105,25 +103,20 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
 
             return (
               <Card
-                gap="2"
-                alignItems="center"
-                justifyContent="flex-start"
-                width="full"
-                height="12"
-                paddingX="4"
+                className="flex gap-2 items-center justify-start w-full h-12 px-4"
                 clickable
                 key={connectorId}
                 onClick={() => onConnect(connector)}
               >
-                <Box as={Logo} width="5" height="5" />
-                <Text variant="normal" fontWeight="bold" color="text100">
+                <Logo className="w-5 h-5" />
+                <Text variant="normal" fontWeight="bold" color="primary">
                   {walletName}
                 </Text>
               </Card>
             )
           })}
-        </Box>
+        </div>
       </ConditionalScrollbar>
-    </Box>
+    </div>
   )
 }
