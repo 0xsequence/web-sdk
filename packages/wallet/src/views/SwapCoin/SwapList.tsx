@@ -30,7 +30,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const { setNavigation } = useNavigation()
   const { address: userAddress, connector } = useAccount()
   const [isTxsPending, setIsTxsPending] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const [isErrorTx, setIsErrorTx] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
   const publicClient = usePublicClient({ chainId })
   const { data: walletClient } = useWalletClient({ chainId })
@@ -45,7 +45,11 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const buyCurrencyAddress = contractAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
+  const {
+    data: swapPrices = [],
+    isLoading: swapPricesIsLoading,
+    isError: isErrorSwapPrices
+  } = useSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -60,10 +64,15 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
-  const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
+  const {
+    data: swapQuote,
+    isLoading: isLoadingSwapQuote,
+    isError: isErrorSwapQuote
+  } = useSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
+
       buyAmount: amount,
       chainId: chainId,
       sellCurrencyAddress,
@@ -85,7 +94,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
       return
     }
 
-    setIsError(false)
+    setIsErrorTx(false)
     setIsTxsPending(true)
     try {
       const swapPrice = swapPrices?.find(price => price.info?.address === selectedCurrency)
@@ -160,7 +169,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
       })
     } catch (e) {
       setIsTxsPending(false)
-      setIsError(true)
+      setIsErrorTx(true)
       console.error('Failed to send transactions', e)
     }
   }
@@ -172,6 +181,14 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
       return (
         <Box width="full" justifyContent="center" alignItems="center">
           <Spinner />
+        </Box>
+      )
+    } else if (isErrorSwapPrices) {
+      return (
+        <Box width="full" justifyContent="center" alignItems="center">
+          <Text variant="normal" color="negative">
+            A problem occurred while fetching swap options.
+          </Text>
         </Box>
       )
     } else if (noOptionsFound) {
@@ -226,7 +243,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
                   iconUrl={swapPrice.info?.logoURI}
                   price={displayPrice}
                   onClick={() => {
-                    setIsError(false)
+                    setIsErrorTx(false)
                     setSelectedCurrency(sellCurrencyAddress)
                   }}
                   disabled={isTxsPending}
@@ -234,10 +251,18 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
               )
             })}
           </Box>
-          {isError && (
+          {isErrorTx && (
             <Box width="full">
               <Text color="negative" variant="small">
                 A problem occurred while executing the transaction.
+              </Text>
+            </Box>
+          )}
+
+          {isErrorSwapQuote && (
+            <Box width="full">
+              <Text color="negative" variant="small">
+                A problem occurred while fetching swap quote.
               </Text>
             </Box>
           )}
