@@ -1,4 +1,4 @@
-import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
+import { Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system';
 import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useConnections } from 'wagmi'
@@ -27,10 +27,10 @@ export const Homepage = () => {
   }
 
   return (
-    <main>
+    (<main>
       {wallets.length === 0 ? (
-        <Box flexDirection="column" alignItems="center" justifyContent="center" gap="5" height="vh">
-          <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
+        <div className="flex flex-col items-center justify-center gap-5 h-screen">
+          <div className="flex flex-row items-center justify-center gap-3">
             <Image style={{ width: '48px' }} src="images/kit-logo.svg" />
             <Image
               style={{
@@ -39,13 +39,15 @@ export const Homepage = () => {
               }}
               src="images/kit-logo-text.svg"
             />
-          </Box>
+          </div>
 
-          <Box gap="2" flexDirection="row" alignItems="center">
+          <div className="flex gap-2 flex-row items-center">
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
-          </Box>
+          </div>
 
-          <Box gap="2" flexDirection="column" paddingX="4" marginTop="10" width="full" style={{ maxWidth: breakpoints.md }}>
+          <div
+            className="flex gap-2 flex-col px-4 mt-10 w-full"
+            style={{ maxWidth: breakpoints.md }}>
             <WalletTypeSelect
               type="waas"
               title="Embedded Wallet (WaaS)"
@@ -59,15 +61,14 @@ export const Homepage = () => {
               description="Connect to the universal sequence wallet or EIP6963 Injected wallet providers (web extension wallets)."
               onClick={handleSwitchWalletType}
             />
-          </Box>
-        </Box>
+          </div>
+        </div>
       ) : (
         <Connected />
       )}
-
       <Footer />
-    </main>
-  )
+    </main>)
+  );
 }
 
 interface WalletTypeSelectProps {
@@ -83,28 +84,26 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
   const isSelected = walletType === type
 
   return (
-    <Card
-      width="full"
+    (<Card
+      className="w-full border-2"
       clickable
       outlined
-      borderWidth="thick"
       style={{
         boxShadow: isSelected ? '0 0 24px rgb(127 59 158 / 0.8)' : 'none',
         borderColor: isSelected ? 'rgb(127 59 200)' : 'var(--seq-colors-border-normal)'
       }}
-      onClick={() => onClick(type)}
-    >
-      <Box gap="2">
-        <Box>
+      onClick={() => onClick(type)}>
+      <div className="flex gap-2">
+        <div>
           <Text variant="normal" fontWeight="bold" color={isSelected ? 'text100' : 'text80'}>
             {title}
           </Text>
-          <Text as="div" variant="normal" color="text50" marginTop="2">
-            {description}
-          </Text>
-        </Box>
+          <Text className="mt-2" variant="normal" color="text50" asChild><div>
+              {description}
+            </div></Text>
+        </div>
         <CheckmarkIcon size="md" style={{ color: 'rgb(127 59 200)' }} visibility={isSelected ? 'visible' : 'hidden'} />
-      </Box>
-    </Card>
-  )
+      </div>
+    </Card>)
+  );
 }

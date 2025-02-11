@@ -1,7 +1,6 @@
 import { Token } from '@0xsequence/api'
 import {
   ArrowRightIcon,
-  Box,
   Button,
   Divider,
   GradientAvatar,
@@ -9,8 +8,8 @@ import {
   NetworkImage,
   Skeleton,
   Text,
-  TokenImage
-} from '@0xsequence/design-system'
+  TokenImage,
+} from '@0xsequence/design-system';
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
 import {
   compareAddress,
@@ -102,144 +101,120 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     const logoURI = isNativeToken ? nativeTokenInfo.logoURI : transfer?.contractInfo?.logoURI
     const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer?.contractInfo?.symbol || ''
 
-    return (
-      <>
-        {transfer.amounts?.map((amount, index) => {
-          const isCollectible = transfer.contractType === 'ERC721' || transfer.contractType === 'ERC1155'
-          const tokenId = transfer.tokenIds?.[index] || '0'
-          const collectibleDecimals = transfer?.tokenMetadata?.[tokenId]?.decimals || 0
-          const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : transfer?.contractInfo?.decimals || 0
-          const decimals = isCollectible ? collectibleDecimals : coinDecimals
-          const formattedBalance = ethers.formatUnits(amount, decimals)
-          const balanceDisplayed = formatDisplay(formattedBalance)
-          const fiatPrice = isCollectible
-            ? collectiblePricesData?.find(
-                collectible =>
-                  compareAddress(collectible.token.contractAddress, transfer.contractInfo?.address || '') &&
-                  collectible.token.tokenId === transfer.tokenIds?.[index] &&
-                  collectible.token.chainId === transaction.chainId
-              )?.price?.value
-            : coinPricesData?.find(
-                coin =>
-                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.ZeroAddress) &&
-                  coin.token.chainId === transaction.chainId
-              )?.price?.value
+    return (<>
+      {transfer.amounts?.map((amount, index) => {
+        const isCollectible = transfer.contractType === 'ERC721' || transfer.contractType === 'ERC1155'
+        const tokenId = transfer.tokenIds?.[index] || '0'
+        const collectibleDecimals = transfer?.tokenMetadata?.[tokenId]?.decimals || 0
+        const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : transfer?.contractInfo?.decimals || 0
+        const decimals = isCollectible ? collectibleDecimals : coinDecimals
+        const formattedBalance = ethers.formatUnits(amount, decimals)
+        const balanceDisplayed = formatDisplay(formattedBalance)
+        const fiatPrice = isCollectible
+          ? collectiblePricesData?.find(
+              collectible =>
+                compareAddress(collectible.token.contractAddress, transfer.contractInfo?.address || '') &&
+                collectible.token.tokenId === transfer.tokenIds?.[index] &&
+                collectible.token.chainId === transaction.chainId
+            )?.price?.value
+          : coinPricesData?.find(
+              coin =>
+                compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.ZeroAddress) &&
+                coin.token.chainId === transaction.chainId
+            )?.price?.value
 
-          const fiatValue = (parseFloat(formattedBalance) * (conversionRate * (fiatPrice || 0))).toFixed(2)
+        const fiatValue = (parseFloat(formattedBalance) * (conversionRate * (fiatPrice || 0))).toFixed(2)
 
-          return (
-            <Box key={index} width="full" flexDirection="row" gap="2" justifyContent="space-between" alignItems="center">
-              <Box
-                flexDirection="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                gap="2"
-                height="12"
-                borderRadius="md"
-                background="buttonGlass"
-                padding="2"
-                style={{ flexBasis: '100%' }}
-              >
-                <TokenImage src={logoURI} symbol={symbol} size="sm" />
-                <Box gap="0.5" flexDirection="column" alignItems="flex-start" justifyContent="center">
-                  <Text variant="xsmall" fontWeight="bold" color="text100">
-                    {`${balanceDisplayed} ${symbol}`}
-                  </Text>
-                  {arePricesLoading ? (
-                    <Skeleton style={{ width: '44px', height: '12px' }} />
-                  ) : (
-                    <Text variant="xsmall" fontWeight="bold" color="text50">
-                      {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
-                    </Text>
-                  )}
-                </Box>
-              </Box>
-              <ArrowRightIcon color="text50" style={{ width: '16px' }} />
-              <Box
-                flexDirection="row"
-                justifyContent="flex-start"
-                alignItems="center"
-                gap="2"
-                height="12"
-                borderRadius="md"
-                background="buttonGlass"
-                padding="2"
-                style={{ flexBasis: '100%' }}
-              >
-                <GradientAvatar address={recipientAddress} style={{ width: '20px' }} />
+        return (
+          (<div
+            className="flex w-full flex-row gap-2 justify-between items-center"
+            key={index}>
+            <div
+              className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
+              style={{ flexBasis: '100%' }}>
+              <TokenImage src={logoURI} symbol={symbol} size="sm" />
+              <div className="flex gap-0.5 flex-col items-start justify-center">
                 <Text variant="xsmall" fontWeight="bold" color="text100">
-                  {recipientAddressFormatted}
+                  {`${balanceDisplayed} ${symbol}`}
                 </Text>
-              </Box>
-            </Box>
-          )
-        })}
-      </>
-    )
+                {arePricesLoading ? (
+                  <Skeleton style={{ width: '44px', height: '12px' }} />
+                ) : (
+                  <Text variant="xsmall" fontWeight="bold" color="text50">
+                    {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
+                  </Text>
+                )}
+              </div>
+            </div>
+            <ArrowRightIcon className="text-text50" style={{ width: '16px' }} />
+            <div
+              className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
+              style={{ flexBasis: '100%' }}>
+              <GradientAvatar address={recipientAddress} style={{ width: '20px' }} />
+              <Text variant="xsmall" fontWeight="bold" color="text100">
+                {recipientAddressFormatted}
+              </Text>
+            </div>
+          </div>)
+        );
+      })}
+    </>);
   }
 
   return (
-    <Box padding="5" paddingTop="3" flexDirection="column" alignItems="center" justifyContent="center" gap="10" marginTop="5">
-      <Box marginTop="6" flexDirection="column" justifyContent="center" alignItems="center" gap="1">
+    (<div
+      className="flex p-5 pt-3 flex-col items-center justify-center gap-10 mt-5">
+      <div className="flex mt-6 flex-col justify-center items-center gap-1">
         <Text variant="normal" fontWeight="medium" color="text100">
           Transaction details
         </Text>
-        <Text variant="small" marginBottom="1" fontWeight="medium" color="text50">
+        <Text className="mb-1" variant="small" fontWeight="medium" color="text50">
           {date}
         </Text>
         <NetworkBadge chainId={transaction.chainId} />
-      </Box>
-      <Box
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        gap="4"
-        width="full"
-        padding="4"
-        background="backgroundSecondary"
-        borderRadius="md"
-      >
-        <Box width="full" gap="1" flexDirection="row" alignItems="center" justifyContent="flex-start">
+      </div>
+      <div
+        className="flex flex-col items-center justify-center gap-4 w-full p-4 bg-background-secondary rounded-xl">
+        <div className="flex w-full gap-1 flex-row items-center justify-start">
           <Text variant="normal" fontWeight="medium" color="text50">
             Transfer
           </Text>
           <NetworkImage chainId={transaction.chainId} size="xs" />
-        </Box>
+        </div>
         {transaction.transfers?.map((transfer, index) => (
-          <Box width="full" flexDirection="column" justifyContent="center" alignItems="center" gap="4" key={`transfer-${index}`}>
+          <div
+            className="flex w-full flex-col justify-center items-center gap-4"
+            key={`transfer-${index}`}>
             <Transfer transfer={transfer} />
-          </Box>
+          </div>
         ))}
-      </Box>
-
+      </div>
       <Button
+        className="w-full rounded-xl"
         onClick={onClickBlockExplorer}
-        width="full"
-        borderRadius="md"
         rightIcon={LinkIcon}
-        label={`View on ${nativeTokenInfo.blockExplorerName}`}
-      />
-      <Box>
-        <Box width="full" flexDirection="column" gap="2" justifyContent="center" alignItems="flex-start">
-          <Divider width="full" margin="0" style={{ marginBottom: '-4px' }} />
+        label={`View on ${nativeTokenInfo.blockExplorerName}`} />
+      <div>
+        <div className="flex w-full flex-col gap-2 justify-center items-start">
+          <Divider className="w-full m-0" style={{ marginBottom: '-4px' }} />
           <Text variant="normal" color="text50" fontWeight="medium">
             Status
           </Text>
           <Text variant="normal" fontWeight="medium" color="text100">
             Complete
           </Text>
-        </Box>
-        <Box width="full" flexDirection="column" gap="2" justifyContent="center" alignItems="flex-start">
-          <Divider width="full" margin="0" style={{ marginBottom: '-4px' }} />
+        </div>
+        <div className="flex w-full flex-col gap-2 justify-center items-start">
+          <Divider className="w-full m-0" style={{ marginBottom: '-4px' }} />
           <Text variant="normal" color="text50" fontWeight="medium">
             Transaction Hash
           </Text>
           <Text variant="normal" color="text100" fontWeight="medium" style={{ overflowWrap: 'anywhere' }}>
             {transaction.txnHash}
           </Text>
-          <CopyButton marginTop="2" buttonVariant="with-label" text={transaction.txnHash} />
-        </Box>
-      </Box>
-    </Box>
-  )
+          <CopyButton className="mt-2" buttonVariant="with-label" text={transaction.txnHash} />
+        </div>
+      </div>
+    </div>)
+  );
 }

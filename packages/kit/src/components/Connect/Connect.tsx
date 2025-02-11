@@ -2,15 +2,14 @@
 
 import {
   ArrowRightIcon,
-  Box,
   Divider,
   Text,
   TextInput,
   Spinner,
   Image,
   IconButton,
-  ModalPrimitive
-} from '@0xsequence/design-system'
+  ModalPrimitive,
+} from '@0xsequence/design-system';
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
@@ -342,17 +341,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
   }
 
   return (
-    <Box padding="4">
-      <Box
-        flexDirection="column"
-        justifyContent="center"
-        color="text100"
-        alignItems="center"
-        fontWeight="medium"
+    (<div className="p-4">
+      <div
+        className="flex flex-col justify-center text-text100 items-center font-medium"
         style={{
           marginTop: '4px'
-        }}
-      >
+        }}>
         <TitleWrapper isPreview={isPreview}>
           <Text color="text80">
             {isLoading
@@ -364,17 +358,17 @@ export const Connect = (props: ConnectWalletContentProps) => {
         </TitleWrapper>
 
         {isSigningLinkMessage && (
-          <Box marginTop="4">
+          <div className="mt-4">
             <Text variant="small" color="text50">
               Confirm the signature request to link your account
             </Text>
-          </Box>
+          </div>
         )}
-      </Box>
+      </div>
       {isLoading ? (
-        <Box justifyContent="center" alignItems="center" paddingTop="4">
+        <div className="flex justify-center items-center pt-4">
           <Spinner />
-        </Box>
+        </div>
       ) : (
         <>
           {wallets.length > 0 && !showEmailWaasPinInput && (
@@ -387,12 +381,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
               />
 
               <>
-                <Divider color="backgroundRaised" width="full" />
-                <Box justifyContent="center">
+                <Divider className="text-background-raised w-full" />
+                <div className="flex justify-center">
                   <Text variant="small" color="text50">
                     {!hasConnectedSocialOrSequenceUniversal ? 'Connect with a social account' : 'Connect another wallet'}
                   </Text>
-                </Box>
+                </div>
               </>
             </>
           )}
@@ -410,18 +404,13 @@ export const Connect = (props: ConnectWalletContentProps) => {
                 <>
                   <Banner config={config as KitConfig} />
 
-                  <Box marginTop="6" gap="6" flexDirection="column">
+                  <div className="flex mt-6 gap-6 flex-col">
                     <>
                       {showSocialConnectorSection && (
-                        <Box
-                          gap="2"
-                          flexDirection={descriptiveSocials ? 'column' : 'row'}
-                          justifyContent="center"
-                          alignItems="center"
-                        >
+                        <div className="flex gap-2 justify-center items-center">
                           {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                             return (
-                              <Box key={connector.uid} width="full">
+                              (<div className="w-full" key={connector.uid}>
                                 {connector._wallet.id === 'google-waas' ? (
                                   <GoogleWaasConnectButton
                                     isDescriptive={descriptiveSocials}
@@ -437,24 +426,28 @@ export const Connect = (props: ConnectWalletContentProps) => {
                                 ) : (
                                   <ConnectButton isDescriptive={descriptiveSocials} connector={connector} onConnect={onConnect} />
                                 )}
-                              </Box>
-                            )
+                              </div>)
+                            );
                           })}
                           {showMoreSocialOptions && (
-                            <Box width="full">
+                            <div className="w-full">
                               <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
-                            </Box>
+                            </div>
                           )}
-                        </Box>
+                        </div>
                       )}
                       {showSocialConnectorSection && showEmailInputSection && (
-                        <Box gap="4" flexDirection="row" justifyContent="center" alignItems="center">
-                          <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
-                          <Text lineHeight="4" height="4" variant="normal" fontSize="small" fontWeight="medium" color="text50">
+                        <div className="flex gap-4 flex-row justify-center items-center">
+                          <Divider className="mx-0 my-0 text-background-secondary grow" />
+                          <Text
+                            className="leading-4 h-4 text-sm"
+                            variant="normal"
+                            fontWeight="medium"
+                            color="text50">
                             or
                           </Text>
-                          <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
-                        </Box>
+                          <Divider className="mx-0 my-0 text-background-secondary grow" />
+                        </div>
                       )}
                       {showEmailInputSection && (
                         <>
@@ -486,34 +479,28 @@ export const Connect = (props: ConnectWalletContentProps) => {
                         </>
                       )}
                     </>
-                  </Box>
+                  </div>
                 </>
               )}
               {walletConnectors.length > 0 && (
                 <>
-                  <Box
-                    gap="2"
-                    flexDirection="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    marginTop={hasConnectedSocialOrSequenceUniversal ? '4' : '6'}
-                  >
+                  <div className="flex gap-2 flex-row justify-center items-center">
                     {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
                       return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
                     })}
                     {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
-                  </Box>
+                  </div>
                 </>
               )}
-              <Box marginTop="6">
+              <div className="mt-6">
                 <PoweredBySequence />
-              </Box>
+              </div>
             </>
           )}
         </>
       )}
-    </Box>
-  )
+    </div>)
+  );
 }
 
 const TitleWrapper = ({ children, isPreview }: { children: React.ReactNode; isPreview: boolean }) => {

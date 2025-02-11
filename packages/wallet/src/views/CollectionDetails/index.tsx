@@ -1,4 +1,4 @@
-import { Box, Image, Text, TokenImage, vars } from '@0xsequence/design-system'
+import { Image, Text, TokenImage } from '@0xsequence/design-system';
 import { TokenBalance } from '@0xsequence/indexer'
 import { formatDisplay, useCollectionBalanceDetails, ContractVerificationStatus } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -47,17 +47,9 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
   }
 
   return (
-    <Box
-      paddingX="4"
-      paddingBottom="5"
-      paddingTop="3"
-      marginTop="8"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap="10"
-    >
-      <Box flexDirection="column" gap="2" justifyContent="center" alignItems="center">
+    (<div
+      className="flex px-4 pb-5 pt-3 mt-8 flex-col items-center justify-center gap-10">
+      <div className="flex flex-col gap-2 justify-center items-center">
         <TokenImage src={collectionLogoURI} size="lg" />
         <Text variant="large" fontWeight="bold" color="text100">
           {contractInfo?.name || 'Unknown'}
@@ -66,53 +58,47 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
         <Text variant="normal" fontWeight="medium" color="text50">{`${
           collectionBalanceData?.length || 0
         } Unique Collectibles`}</Text>
-      </Box>
-      <Box width="full">
+      </div>
+      <div className="w-full">
         <Text variant="normal" fontWeight="medium" color="text50">
           {`Owned (${collectionBalanceData?.length || 0})`}
         </Text>
-        <Box
+        <div
+          className="w-full mt-3"
           style={{
             display: 'grid',
             gridTemplateColumns: `calc(50% - ${vars.space[1]}) calc(50% - ${vars.space[1]})`,
             gap: vars.space[2]
-          }}
-          width="full"
-          marginTop="3"
-        >
+          }}>
           {collectionBalanceData?.map((balance, index) => {
             const unformattedBalance = balance.balance
             const decimals = balance?.tokenMetadata?.decimals || 0
             const formattedBalance = formatDisplay(ethers.formatUnits(unformattedBalance, decimals))
 
             return (
-              <Box key={index} onClick={() => onClickItem(balance)} userSelect="none" cursor="pointer" opacity={{ hover: '80' }}>
-                <Box
-                  background="backgroundSecondary"
-                  aspectRatio="1/1"
-                  width="full"
-                  borderRadius="md"
-                  justifyContent="center"
-                  alignItems="center"
-                  marginBottom="2"
-                >
-                  <Image style={{ height: '100%' }} borderRadius="sm" src={balance.tokenMetadata?.image} />
-                </Box>
-                <Box>
+              (<div
+                className="select-none cursor-pointer"
+                key={index}
+                onClick={() => onClickItem(balance)}>
+                <div
+                  className="flex bg-background-secondary aspect-square w-full rounded-xl justify-center items-center mb-2">
+                  <Image className="rounded-lg" style={{ height: '100%' }} src={balance.tokenMetadata?.image} />
+                </div>
+                <div>
                   <Text variant="normal" fontWeight="bold" color="text100">
                     {`${balance.tokenMetadata?.name}`}
                   </Text>
-                </Box>
-                <Box>
-                  <Text variant="normal" marginTop="1" fontWeight="medium" color="text50">
+                </div>
+                <div>
+                  <Text className="mt-1" variant="normal" fontWeight="medium" color="text50">
                     {formattedBalance} Owned
                   </Text>
-                </Box>
-              </Box>
-            )
+                </div>
+              </div>)
+            );
           })}
-        </Box>
-      </Box>
-    </Box>
-  )
+        </div>
+      </div>
+    </div>)
+  );
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system'
+import { Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system';
 import {
   useStorage,
   useWaasFeeOptions,
@@ -489,121 +489,109 @@ export const Connected = () => {
     setFeeOptionBalances([])
   }, [chainId, address])
 
-  return (
-    <>
-      <Header />
-
-      <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
-        <Box flexDirection="column" gap="4" style={{ maxWidth: breakpoints.md }}>
-          <Box flexDirection="column" gap="2">
-            <Box marginY="3" flexDirection="column" gap="2">
-              <Text fontWeight="semibold" variant="small" color="text50">
-                Connected Wallets
-              </Text>
-              {[...wallets]
-                .sort((a, b) => {
-                  // Sort embedded wallet to the top
-                  if (a.isEmbedded && !b.isEmbedded) return -1
-                  if (!a.isEmbedded && b.isEmbedded) return 1
-                  return 0
-                })
-                .map(wallet => (
-                  <WalletListItem
-                    key={wallet.id}
-                    id={wallet.id}
-                    name={wallet.name}
-                    address={wallet.address}
-                    isActive={wallet.isActive}
-                    isEmbedded={wallet.isEmbedded}
-                    onSelect={() => setActiveWallet(wallet.address)}
-                    onDisconnect={() => disconnectWallet(wallet.address)}
-                  />
-                ))}
-            </Box>
-
-            <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
-              <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
-            </Box>
-
-            <Text variant="small" color="text50" fontWeight="medium" marginTop="6">
-              Demos
+  return (<>
+    <Header />
+    <div
+      className="flex px-4 flex-col justify-center items-center"
+      style={{ margin: '140px 0' }}>
+      <div className="flex flex-col gap-4" style={{ maxWidth: breakpoints.md }}>
+        <div className="flex flex-col gap-2">
+          <div className="flex my-3 flex-col gap-2">
+            <Text fontWeight="semibold" variant="small" color="text50">
+              Connected Wallets
             </Text>
-            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
-            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
-              <CardButton
-                title="Send sponsored transaction"
-                description="Send a transaction with your wallet without paying any fees"
-                isPending={isPendingSendTxn}
-                onClick={runSendTransaction}
-              />
-            )}
-            {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
-              <Text
-                as="a"
-                marginLeft="4"
-                variant="small"
-                underline
+            {[...wallets]
+              .sort((a, b) => {
+                // Sort embedded wallet to the top
+                if (a.isEmbedded && !b.isEmbedded) return -1
+                if (!a.isEmbedded && b.isEmbedded) return 1
+                return 0
+              })
+              .map(wallet => (
+                <WalletListItem
+                  key={wallet.id}
+                  id={wallet.id}
+                  name={wallet.name}
+                  address={wallet.address}
+                  isActive={wallet.isActive}
+                  isEmbedded={wallet.isEmbedded}
+                  onSelect={() => setActiveWallet(wallet.address)}
+                  onDisconnect={() => disconnectWallet(wallet.address)}
+                />
+              ))}
+          </div>
+
+          <div className="flex gap-2 flex-row items-center justify-center">
+            <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+          </div>
+
+          <Text className="mt-6" variant="small" color="text50" fontWeight="medium">
+            Demos
+          </Text>
+          <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
+          {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
+            <CardButton
+              title="Send sponsored transaction"
+              description="Send a transaction with your wallet without paying any fees"
+              isPending={isPendingSendTxn}
+              onClick={runSendTransaction}
+            />
+          )}
+          {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
+            <Text className="ml-4" variant="small" underline asChild><a
                 href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
                 target="_blank"
-                rel="noreferrer"
-              >
-                View on {networkForCurrentChainId.blockExplorer.name}
-              </Text>
-            )}
+                rel="noreferrer">View on {networkForCurrentChainId.blockExplorer.name}
+              </a></Text>
+          )}
 
-            {!networkForCurrentChainId.testnet && (
-              <CardButton
-                title="Send unsponsored transaction"
-                description="Send an unsponsored transaction with your wallet"
-                isPending={isPendingSendUnsponsoredTxn}
-                onClick={runSendUnsponsoredTransaction}
-              />
-            )}
-            {networkForCurrentChainId.blockExplorer &&
-              lastTxnDataHash3 &&
-              ((txnData3 as any)?.chainId === chainId || txnData3) && (
-                <Text
-                  as="a"
-                  marginLeft="4"
-                  variant="small"
-                  underline
+          {!networkForCurrentChainId.testnet && (
+            <CardButton
+              title="Send unsponsored transaction"
+              description="Send an unsponsored transaction with your wallet"
+              isPending={isPendingSendUnsponsoredTxn}
+              onClick={runSendUnsponsoredTransaction}
+            />
+          )}
+          {networkForCurrentChainId.blockExplorer &&
+            lastTxnDataHash3 &&
+            ((txnData3 as any)?.chainId === chainId || txnData3) && (
+              <Text className="ml-4" variant="small" underline asChild><a
                   href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData3 as any).hash ?? txnData3}`}
                   target="_blank"
-                  rel="noreferrer"
-                >
-                  View on {networkForCurrentChainId.blockExplorer.name}
-                </Text>
-              )}
-
-            <CardButton
-              title="Sign message"
-              description="Sign a message with your wallet"
-              onClick={signMessage}
-              isPending={isSigningMessage}
-            />
-            {isMessageValid && (
-              <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
-                <Text variant="medium">Signed message:</Text>
-                <Text>{messageToSign}</Text>
-                <Text variant="medium">Signature:</Text>
-                <Text variant="code" as="p" ellipsis>
-                  {messageSig}
-                </Text>
-                <Text variant="medium">
-                  isValid: <Text variant="code">{isMessageValid.toString()}</Text>
-                </Text>
-              </Card>
+                  rel="noreferrer">View on {networkForCurrentChainId.blockExplorer.name}
+                </a></Text>
             )}
-            <CardButton
-              title="Sign typed data"
-              description="Sign typed data with your wallet"
-              onClick={signTypedData}
-              isPending={isSigningTypedData}
-            />
-            {typedDataSig && (
-              <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
-                <Text variant="medium">Signed typed data:</Text>
-                <Text variant="code" as="p">
+
+          <CardButton
+            title="Sign message"
+            description="Sign a message with your wallet"
+            onClick={signMessage}
+            isPending={isSigningMessage}
+          />
+          {isMessageValid && (
+            <Card className="flex text-text100 flex-col gap-2" style={{ width: '332px' }}>
+              <Text variant="medium">Signed message:</Text>
+              <Text>{messageToSign}</Text>
+              <Text variant="medium">Signature:</Text>
+              <Text variant="code" ellipsis asChild><p>
+                  {messageSig}
+                </p></Text>
+              <Text variant="medium">
+                isValid: <Text variant="code">{isMessageValid.toString()}</Text>
+              </Text>
+            </Card>
+          )}
+          <CardButton
+            title="Sign typed data"
+            description="Sign typed data with your wallet"
+            onClick={signTypedData}
+            isPending={isSigningTypedData}
+          />
+          {typedDataSig && (
+            <Card className="flex text-text100 flex-col gap-2" style={{ width: '332px' }}>
+              <Text variant="medium">Signed typed data:</Text>
+              <Text variant="code" asChild><p>
                   {JSON.stringify(
                     {
                       domain,
@@ -614,242 +602,233 @@ export const Connected = () => {
                     null,
                     2
                   )}
-                </Text>
-                <Text variant="medium">Signature:</Text>
-                <Text variant="code" as="p" ellipsis>
+                </p></Text>
+              <Text variant="medium">Signature:</Text>
+              <Text variant="code" ellipsis asChild><p>
                   {typedDataSig}
-                </Text>
-                <Text variant="medium">
-                  isValid: <Text variant="code">{isTypedDataValid?.toString()}</Text>
-                </Text>
-              </Card>
-            )}
-            <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
-            {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA) && (
-              <CardButton
-                title="Mint an NFT"
-                description="Test minting an NFT to your wallet"
-                isPending={isPendingMintTxn}
-                onClick={runMintNFT}
-              />
-            )}
-            {networkForCurrentChainId.blockExplorer &&
-              lastTxnDataHash2 &&
-              ((txnData2 as any)?.chainId === chainId || txnData2) && (
-                <Text
-                  as="a"
-                  marginLeft="4"
-                  variant="small"
-                  underline
+                </p></Text>
+              <Text variant="medium">
+                isValid: <Text variant="code">{isTypedDataValid?.toString()}</Text>
+              </Text>
+            </Card>
+          )}
+          <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
+          {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA) && (
+            <CardButton
+              title="Mint an NFT"
+              description="Test minting an NFT to your wallet"
+              isPending={isPendingMintTxn}
+              onClick={runMintNFT}
+            />
+          )}
+          {networkForCurrentChainId.blockExplorer &&
+            lastTxnDataHash2 &&
+            ((txnData2 as any)?.chainId === chainId || txnData2) && (
+              <Text className="ml-4" variant="small" underline asChild><a
                   href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
                   target="_blank"
-                  rel="noreferrer"
-                >
-                  View on {networkForCurrentChainId.blockExplorer.name}
-                </Text>
-              )}
-
-            {isDebugMode && (
-              <>
-                <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
-
-                <CardButton
-                  title="NFT Checkout"
-                  description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
-                  onClick={onClickCheckout}
-                />
-              </>
+                  rel="noreferrer">View on {networkForCurrentChainId.blockExplorer.name}
+                </a></Text>
             )}
-            <CardButton
-              title="Swap with Sequence Pay"
-              description="Seamlessly swap eligible currencies in your wallet to a target currency"
-              onClick={onClickSwap}
-            />
 
-            <CardButton
-              title="Checkout with Sequence Pay"
-              description="Purchase an NFT through various purchase methods"
-              onClick={onClickSelectPayment}
-            />
-          </Box>
+          {isDebugMode && (
+            <>
+              <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
 
-          {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
-            <Box marginY="3">
-              <Select
-                name="feeOption"
-                labelLocation="top"
-                label="Pick a fee option"
-                onValueChange={val => {
-                  const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
-                  if (selected) {
-                    setSelectedFeeOptionTokenName(selected.token.name)
-                    setFeeOptionAlert(undefined)
+              <CardButton
+                title="NFT Checkout"
+                description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
+                onClick={onClickCheckout}
+              />
+            </>
+          )}
+          <CardButton
+            title="Swap with Sequence Pay"
+            description="Seamlessly swap eligible currencies in your wallet to a target currency"
+            onClick={onClickSwap}
+          />
+
+          <CardButton
+            title="Checkout with Sequence Pay"
+            description="Purchase an NFT through various purchase methods"
+            onClick={onClickSelectPayment}
+          />
+        </div>
+
+        {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
+          <div className="my-3">
+            <Select
+              name="feeOption"
+              labelLocation="top"
+              label="Pick a fee option"
+              onValueChange={val => {
+                const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
+                if (selected) {
+                  setSelectedFeeOptionTokenName(selected.token.name)
+                  setFeeOptionAlert(undefined)
+                }
+              }}
+              value={selectedFeeOptionTokenName}
+              options={[
+                ...pendingFeeOptionConfirmation?.options?.map(option => ({
+                  label: (
+                    <div className="flex items-start flex-col">
+                      <div className="flex flex-row">
+                        <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
+                        <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                      </div>
+                      <div className="flex flex-row">
+                        <Text>Wallet balance for {option.token.name}: </Text>{' '}
+                        <Text>
+                          {formatUnits(
+                            BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
+                            option.token.decimals || 0
+                          )}
+                        </Text>
+                      </div>
+                    </div>
+                  ),
+                  value: option.token.name
+                }))
+              ]}
+            />
+            <div className="flex my-2 items-center justify-center flex-col">
+              <Button
+                onClick={() => {
+                  const selected = pendingFeeOptionConfirmation?.options?.find(
+                    option => option.token.name === selectedFeeOptionTokenName
+                  )
+
+                  if (selected?.token.contractAddress !== undefined) {
+                    // check if wallet has enough balance, should be balance > feeOption.value
+                    const balance = parseUnits(
+                      feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
+                      selected.token.decimals || 0
+                    )
+                    const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
+                    if (balance && balance < feeOptionValue) {
+                      setFeeOptionAlert({
+                        title: 'Insufficient balance',
+                        description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
+                        secondaryDescription: 'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
+                        variant: 'warning'
+                      })
+                      return
+                    }
+
+                    confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
                   }
                 }}
-                value={selectedFeeOptionTokenName}
-                options={[
-                  ...pendingFeeOptionConfirmation?.options?.map(option => ({
-                    label: (
-                      <Box alignItems="flex-start" flexDirection="column">
-                        <Box flexDirection="row">
-                          <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
-                          <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
-                        </Box>
-                        <Box flexDirection="row">
-                          <Text>Wallet balance for {option.token.name}: </Text>{' '}
-                          <Text>
-                            {formatUnits(
-                              BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
-                              option.token.decimals || 0
-                            )}
-                          </Text>
-                        </Box>
-                      </Box>
-                    ),
-                    value: option.token.name
-                  }))
-                ]}
+                label="Confirm fee option"
               />
-              <Box marginY="2" alignItems="center" justifyContent="center" flexDirection="column">
-                <Button
-                  onClick={() => {
-                    const selected = pendingFeeOptionConfirmation?.options?.find(
-                      option => option.token.name === selectedFeeOptionTokenName
-                    )
-
-                    if (selected?.token.contractAddress !== undefined) {
-                      // check if wallet has enough balance, should be balance > feeOption.value
-                      const balance = parseUnits(
-                        feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
-                        selected.token.decimals || 0
-                      )
-                      const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
-                      if (balance && balance < feeOptionValue) {
-                        setFeeOptionAlert({
-                          title: 'Insufficient balance',
-                          description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
-                          secondaryDescription: 'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
-                          variant: 'warning'
-                        })
-                        return
-                      }
-
-                      confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
-                    }
-                  }}
-                  label="Confirm fee option"
-                />
-                {feeOptionAlert && (
-                  <Box marginTop="3" style={{ maxWidth: '332px' }}>
-                    <Alert
-                      title={feeOptionAlert.title}
-                      description={feeOptionAlert.description}
-                      secondaryDescription={feeOptionAlert.secondaryDescription}
-                      variant={feeOptionAlert.variant}
-                      buttonProps={feeOptionAlert.buttonProps}
-                    />
-                  </Box>
-                )}
-              </Box>
-            </Box>
-          )}
-
-          {isWaasConnectionActive && (
-            <Box marginY="3">
-              <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Text fontWeight="semibold" variant="small" color="text50">
-                  Confirmations
-                </Text>
-
-                <Box alignItems="center" gap="2">
-                  <Switch
-                    name="confirmations"
-                    checked={confirmationEnabled}
-                    onCheckedChange={async (checked: boolean) => {
-                      if (checked) {
-                        localStorage.setItem('confirmationEnabled', 'true')
-                        setConfirmationEnabled(true)
-                      } else {
-                        localStorage.removeItem('confirmationEnabled')
-                        setConfirmationEnabled(false)
-                      }
-
-                      await delay(300)
-
-                      window.location.reload()
-                    }}
+              {feeOptionAlert && (
+                <div className="mt-3" style={{ maxWidth: '332px' }}>
+                  <Alert
+                    title={feeOptionAlert.title}
+                    description={feeOptionAlert.description}
+                    secondaryDescription={feeOptionAlert.secondaryDescription}
+                    variant={feeOptionAlert.variant}
+                    buttonProps={feeOptionAlert.buttonProps}
                   />
-                </Box>
-              </Box>
-            </Box>
-          )}
-        </Box>
-      </Box>
-
-      <AnimatePresence>
-        {isCheckoutInfoModalOpen && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            backdropColor="backgroundBackdrop"
-            onClose={() => setIsCheckoutInfoModalOpen(false)}
-          >
-            <Box id="sequence-kit-checkout-info-modal">
-              <Box paddingTop="16" paddingBottom="8" paddingX="6" gap="2" flexDirection="column">
-                <Text variant="medium" color="text50">
-                  Order ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="orderId"
-                  value={checkoutOrderId}
-                  onChange={ev => setCheckoutOrderId(ev.target.value)}
-                  placeholder="Order Id"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="text50">
-                  Token Contract Address
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenContractAddress"
-                  value={checkoutTokenContractAddress}
-                  onChange={ev => setCheckoutTokenContractAddress(ev.target.value)}
-                  placeholder="Token Contract Address"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="text50">
-                  Token ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenId"
-                  value={checkoutTokenId}
-                  onChange={ev => setCheckoutTokenId(ev.target.value)}
-                  placeholder="Token Id"
-                  data-1p-ignore
-                />
-
-                <Button
-                  marginTop="4"
-                  onClick={() => {
-                    onCheckoutInfoConfirm()
-                  }}
-                  label="Trigger checkout"
-                />
-              </Box>
-            </Box>
-          </Modal>
+                </div>
+              )}
+            </div>
+          </div>
         )}
-      </AnimatePresence>
-    </>
-  )
+
+        {isWaasConnectionActive && (
+          <div className="my-3">
+            <label className="flex flex-row items-center justify-between">
+              <Text fontWeight="semibold" variant="small" color="text50">
+                Confirmations
+              </Text>
+              <div className="flex items-center gap-2">
+                <Switch
+                  name="confirmations"
+                  checked={confirmationEnabled}
+                  onCheckedChange={async (checked: boolean) => {
+                    if (checked) {
+                      localStorage.setItem('confirmationEnabled', 'true')
+                      setConfirmationEnabled(true)
+                    } else {
+                      localStorage.removeItem('confirmationEnabled')
+                      setConfirmationEnabled(false)
+                    }
+
+                    await delay(300)
+
+                    window.location.reload()
+                  }}
+                />
+              </div>
+            </label>
+          </div>
+        )}
+      </div>
+    </div>
+    <AnimatePresence>
+      {isCheckoutInfoModalOpen && (
+        <Modal
+          contentProps={{
+            style: {
+              maxWidth: '400px',
+              height: 'auto',
+              ...getModalPositionCss('center')
+            }
+          }}
+          scroll={false}
+          backdropColor="backgroundBackdrop"
+          onClose={() => setIsCheckoutInfoModalOpen(false)}
+        >
+          <div id="sequence-kit-checkout-info-modal">
+            <div className="flex pt-16 pb-8 px-6 gap-2 flex-col">
+              <Text variant="medium" color="text50">
+                Order ID
+              </Text>
+              <TextInput
+                autoFocus
+                name="orderId"
+                value={checkoutOrderId}
+                onChange={ev => setCheckoutOrderId(ev.target.value)}
+                placeholder="Order Id"
+                data-1p-ignore
+              />
+              <Text variant="medium" color="text50">
+                Token Contract Address
+              </Text>
+              <TextInput
+                autoFocus
+                name="tokenContractAddress"
+                value={checkoutTokenContractAddress}
+                onChange={ev => setCheckoutTokenContractAddress(ev.target.value)}
+                placeholder="Token Contract Address"
+                data-1p-ignore
+              />
+              <Text variant="medium" color="text50">
+                Token ID
+              </Text>
+              <TextInput
+                autoFocus
+                name="tokenId"
+                value={checkoutTokenId}
+                onChange={ev => setCheckoutTokenId(ev.target.value)}
+                placeholder="Token Id"
+                data-1p-ignore
+              />
+
+              <Button
+                className="mt-4"
+                onClick={() => {
+                  onCheckoutInfoConfirm()
+                }}
+                label="Trigger checkout"
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
+    </AnimatePresence>
+  </>);
 }
 
 export type AlertProps = {
@@ -863,18 +842,11 @@ export type AlertProps = {
 
 export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
-    <Box borderRadius="md" background={variant}>
-      <Box
-        background="backgroundOverlay"
-        borderRadius="md"
-        paddingX={{ sm: '4', md: '5' }}
-        paddingY="4"
-        width="full"
-        flexDirection="column"
-        gap="3"
-      >
-        <Box width="full" flexDirection={{ sm: 'column', md: 'row' }} gap="2" justifyContent="space-between">
-          <Box flexDirection="column" gap="1">
+    (<div className="rounded-xl">
+      <div
+        className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
+        <div className="flex w-full gap-2 justify-between">
+          <div className="flex flex-col gap-1">
             <Text variant="normal" color="text100" fontWeight="medium">
               {title}
             </Text>
@@ -888,17 +860,17 @@ export const Alert = ({ title, description, secondaryDescription, variant, butto
                 {secondaryDescription}
               </Text>
             )}
-          </Box>
+          </div>
 
           {buttonProps ? (
-            <Box background={variant} borderRadius="sm" width={'min'} height={'min'}>
-              <Button variant="emphasis" shape="square" flexShrink="0" {...buttonProps} />
-            </Box>
+            <div className="rounded-lg w-min h-min">
+              <Button className="shrink-0" variant="emphasis" shape="square" {...buttonProps} />
+            </div>
           ) : null}
-        </Box>
+        </div>
 
         {children}
-      </Box>
-    </Box>
-  )
+      </div>
+    </div>)
+  );
 }

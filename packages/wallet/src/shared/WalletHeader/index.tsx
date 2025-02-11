@@ -1,4 +1,4 @@
-import { Box, ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system'
+import { ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system';
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState, useRef, useEffect } from 'react'
@@ -50,23 +50,15 @@ export const WalletHeader = () => {
   }
 
   return (
-    <Box as={motion.div}>
+    <motion.div>
       <PopoverPrimitive.Root open={openWalletDropdown}>
         <PopoverPrimitive.Anchor />
-        <Box
-          background="backgroundPrimary"
-          zIndex="20"
-          position="fixed"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          width="full"
-          paddingX="4"
+        <div
+          className="flex bg-background-primary z-20 fixed flex-row items-center justify-between w-full px-4"
           style={{
             height: HEADER_HEIGHT,
             paddingTop: '6px'
-          }}
-        >
+          }}>
           {history.length > 0 ? (
             <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" />
           ) : (
@@ -75,8 +67,8 @@ export const WalletHeader = () => {
           <PopoverPrimitive.Trigger asChild>
             <AccountInformation onClickAccount={onClickAccount} />
           </PopoverPrimitive.Trigger>
-          <Box style={{ width: '44px' }} />
-        </Box>
+          <div style={{ width: '44px' }} />
+        </div>
 
         <AnimatePresence>
           {openWalletDropdown && (
@@ -86,6 +78,6 @@ export const WalletHeader = () => {
           )}
         </AnimatePresence>
       </PopoverPrimitive.Root>
-    </Box>
-  )
+    </motion.div>
+  );
 }

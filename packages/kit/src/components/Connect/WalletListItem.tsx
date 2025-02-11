@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   CheckmarkIcon,
   CloseIcon,
@@ -8,8 +7,8 @@ import {
   Spinner,
   Text,
   Tooltip,
-  truncateAddress
-} from '@0xsequence/design-system'
+  truncateAddress,
+} from '@0xsequence/design-system';
 import React, { useState } from 'react'
 
 export interface WalletListItemProps {
@@ -42,28 +41,21 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
   }
 
   return (
-    <Box
-      padding="2"
-      borderRadius="md"
-      background="backgroundSecondary"
-      display="flex"
-      flexDirection="row"
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <Box display="flex" flexDirection="row" alignItems="center" gap="2">
-        <Box borderColor="text50" background={isActive ? 'text100' : 'transparent'} />
-        <Box flexDirection="column" gap="1">
-          <Box display="flex" flexDirection="row" alignItems="center" gap="1">
+    (<div
+      className="flex p-2 rounded-xl bg-background-secondary flex-row items-center justify-between">
+      <div className="flex flex-row items-center gap-2">
+        <div className="border" />
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-row items-center gap-1">
             <Text variant="normal" color="text100">
               {isEmbedded ? 'Embedded - ' : ''}
               {name}
             </Text>
             {isLinked && (
               <Tooltip message="Linked to embedded wallet">
-                <Box position="relative">
-                  <LinkIcon size="xs" color="text50" />
-                </Box>
+                <div className="relative">
+                  <LinkIcon className="text-text50" size="xs" />
+                </div>
               </Tooltip>
             )}
             {isReadOnly && (
@@ -71,27 +63,27 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
                 (read-only)
               </Text>
             )}
-          </Box>
+          </div>
           <Text variant="normal" fontWeight="bold" color="text100">
             {truncateAddress(address, 8, 5)}
           </Text>
-        </Box>
-      </Box>
+        </div>
+      </div>
       {!isReadOnly && <Button size="xs" variant="glass" label="Disconnect" onClick={onDisconnect} />}
       {isReadOnly && isLinked && (
-        <Box position="relative" display="flex" alignItems="center" gap="2">
+        <div className="flex relative items-center gap-2">
           {isUnlinking ? (
             <Spinner />
           ) : showUnlinkConfirm ? (
-            <Box display="flex" gap="3">
+            <div className="flex gap-3">
               <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={handleUnlink} />
               <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
-            </Box>
+            </div>
           ) : (
             <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
           )}
-        </Box>
+        </div>
       )}
-    </Box>
-  )
+    </div>)
+  );
 }

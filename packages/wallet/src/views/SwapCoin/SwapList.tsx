@@ -1,4 +1,4 @@
-import { Box, Button, Spinner, Text, vars } from '@0xsequence/design-system'
+import { Button, Spinner, Text } from '@0xsequence/design-system';
 import {
   CryptoOption,
   compareAddress,
@@ -170,18 +170,18 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const SwapContent = () => {
     if (isLoading) {
       return (
-        <Box width="full" justifyContent="center" alignItems="center">
+        (<div className="flex w-full justify-center items-center">
           <Spinner />
-        </Box>
-      )
+        </div>)
+      );
     } else if (noOptionsFound) {
       return (
-        <Box width="full" justifyContent="center" alignItems="center">
+        (<div className="flex w-full justify-center items-center">
           <Text variant="normal" color="text100">
             No swap option found!
           </Text>
-        </Box>
-      )
+        </div>)
+      );
     } else {
       const buyCurrencySymbol = currencyInfo?.symbol || ''
       const buyCurrencyDecimals = currencyInfo?.decimals || 0
@@ -202,8 +202,8 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
       }
 
       return (
-        <Box width="full" gap="3" flexDirection="column">
-          <Box width="full" flexDirection="column" gap="2">
+        (<div className="flex w-full gap-3 flex-col">
+          <div className="flex w-full flex-col gap-2">
             <Text variant="small" color="text100">
               Select a token in your wallet to swap for {displayedAmount} {buyCurrencySymbol}.
             </Text>
@@ -233,35 +233,31 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
                 />
               )
             })}
-          </Box>
+          </div>
           {isError && (
-            <Box width="full">
+            <div className="w-full">
               <Text color="negative" variant="small">
                 A problem occurred while executing the transaction.
               </Text>
-            </Box>
+            </div>
           )}
-
           {showSwitchNetwork && (
-            <Box marginTop="3">
-              <Text variant="small" color="negative" marginBottom="2">
+            <div className="mt-3">
+              <Text className="mb-2" variant="small" color="negative">
                 The wallet is connected to the wrong network. Please switch network before proceeding
               </Text>
               <Button
-                marginTop="2"
-                width="full"
+                className="mt-2 w-full"
                 variant="primary"
                 type="button"
                 label="Switch Network"
                 onClick={async () => await switchChainAsync({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
-              />
-            </Box>
+                style={{ height: '52px', borderRadius: vars.radii.md }} />
+            </div>
           )}
-
           <Button
-            width="full"
+            className="w-full"
             type="button"
             disabled={
               noOptionsFound ||
@@ -276,14 +272,14 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
             onClick={onClickProceed}
             style={{ height: '52px', borderRadius: vars.radii.md }}
           />
-        </Box>
-      )
+        </div>)
+      );
     }
   }
 
   return (
-    <Box padding="5" gap="2" flexDirection="column" style={{ marginTop: HEADER_HEIGHT }}>
+    (<div className="flex p-5 gap-2 flex-col" style={{ marginTop: HEADER_HEIGHT }}>
       <SwapContent />
-    </Box>
-  )
+    </div>)
+  );
 }

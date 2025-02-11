@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   ChevronRightIcon,
   CopyIcon,
@@ -10,10 +9,9 @@ import {
   Text,
   NumericInput,
   TextInput,
-  vars,
   Spinner,
-  Card
-} from '@0xsequence/design-system'
+  Card,
+} from '@0xsequence/design-system';
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
   getNativeTokenInfoByChainId,
@@ -298,21 +296,15 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const isMaximum = Number(amount) >= Number(maxAmount)
 
   return (
-    <Box
-      padding="5"
-      paddingTop="3"
+    <form
+      className="flex p-5 pt-3 gap-2 flex-col"
       style={{
         marginTop: HEADER_HEIGHT
       }}
-      gap="2"
-      flexDirection="column"
-      as="form"
-      onSubmit={handleSendClick}
-      pointerEvents={isSendTxnPending ? 'none' : 'auto'}
-    >
+      onSubmit={handleSendClick}>
       {!showConfirmation && (
         <>
-          <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
+          <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <SendItemInfo
               imageUrl={imageUrl}
               showSquareImage
@@ -332,40 +324,35 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               controls={
                 <>
                   {showAmountControls && (
-                    <Box gap="2">
+                    <div className="flex gap-2">
                       <Button disabled={isMinimum} size="xs" onClick={handleSubtractOne} leftIcon={SubtractIcon} />
                       <Button disabled={isMaximum} size="xs" onClick={handleAddOne} leftIcon={AddIcon} />
-                      <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
-                    </Box>
+                      <Button className="shrink-0" size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" />
+                    </div>
                   )}
                 </>
               }
             />
             {insufficientFunds && (
-              <Text as="div" variant="normal" color="negative" marginTop="2">
-                Insufficient Balance
-              </Text>
+              <Text className="mt-2" variant="normal" color="negative" asChild><div>Insufficient Balance
+                              </div></Text>
             )}
-          </Box>
-          <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
+          </div>
+          <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <Text variant="normal" color="text50">
               To
             </Text>
             {isEthAddress(toAddress) ? (
               <Card
+                className="flex w-full flex-row justify-between items-center"
                 clickable
-                width="full"
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
                 onClick={handleToAddressClear}
-                style={{ height: '52px' }}
-              >
-                <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
+                style={{ height: '52px' }}>
+                <div className="flex flex-row justify-center items-center gap-2">
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
                   <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
-                </Box>
-                <CloseIcon size="sm" color="white" />
+                </div>
+                <CloseIcon className="text-white" size="sm" />
               </Card>
             ) : (
               <TextInput
@@ -376,45 +363,41 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 data-1p-ignore
                 controls={
                   <Button
+                    className="shrink-0"
                     size="xs"
                     shape="square"
                     label="Paste"
                     onClick={handlePaste}
                     data-id="to-address"
-                    flexShrink="0"
                     leftIcon={CopyIcon}
                   />
                 }
               />
             )}
-          </Box>
+          </div>
 
           {showSwitchNetwork && (
-            <Box marginTop="3">
-              <Text variant="small" color="negative" marginBottom="2">
+            <div className="mt-3">
+              <Text className="mb-2" variant="small" color="negative">
                 The wallet is connected to the wrong network. Please switch network before proceeding
               </Text>
               <Button
-                marginTop="2"
-                width="full"
+                className="mt-2 w-full"
                 variant="primary"
                 type="button"
                 label="Switch Network"
                 onClick={() => switchChain({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
-              />
-            </Box>
+                style={{ height: '52px', borderRadius: vars.radii.md }} />
+            </div>
           )}
 
-          <Box style={{ height: '52px' }} alignItems="center" justifyContent="center">
+          <div className="flex items-center justify-center" style={{ height: '52px' }}>
             {isCheckingFeeOptions ? (
               <Spinner />
             ) : (
               <Button
-                color="text100"
-                marginTop="3"
-                width="full"
+                className="text-text100 mt-3 w-full"
                 variant="primary"
                 type="submit"
                 disabled={
@@ -425,13 +408,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 }
                 label="Send"
                 rightIcon={ChevronRightIcon}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
-              />
+                style={{ height: '52px', borderRadius: vars.radii.md }} />
             )}
-          </Box>
+          </div>
         </>
       )}
-
       {showConfirmation && (
         <TransactionConfirmation
           name={name}
@@ -456,6 +437,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           }}
         />
       )}
-    </Box>
-  )
+    </form>
+  );
 }

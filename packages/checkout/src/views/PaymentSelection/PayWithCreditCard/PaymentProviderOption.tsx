@@ -1,4 +1,4 @@
-import { Box, Card, Text } from '@0xsequence/design-system'
+import { Card, Text } from '@0xsequence/design-system';
 
 interface PaymentProviderOptionProps {
   name: string
@@ -10,34 +10,24 @@ interface PaymentProviderOptionProps {
 
 export const PaymentProviderOption = ({ name, onClick, isSelected, isRecommended, logo }: PaymentProviderOptionProps) => {
   return (
-    <Card
-      borderColor={isSelected ? 'backgroundRaised' : 'transparent'}
-      borderWidth="thick"
-      borderStyle="solid"
-      justifyContent="space-between"
-      padding="4"
-      onClick={onClick}
-      opacity={{
-        hover: '80',
-        base: '100'
-      }}
-      cursor="pointer"
-    >
-      <Box justifyContent="space-between" width="full">
-        <Box justifyContent="space-between" alignItems="center" gap="3">
-          <Box borderRadius="md">{logo}</Box>
+    (<Card
+      className="flex border-2 border-solid justify-between p-4 cursor-pointer"
+      onClick={onClick}>
+      <div className="flex justify-between w-full">
+        <div className="flex justify-between items-center gap-3">
+          <div className="rounded-xl">{logo}</div>
           <Text variant="normal" fontWeight="bold" color="text80">
             {name}
           </Text>
-        </Box>
-        <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3">
+        </div>
+        <div className="flex flex-row justify-center items-center gap-3">
           {isRecommended && (
             <Text color="text50" variant="small">
               Recommended
             </Text>
           )}
-        </Box>
-      </Box>
-    </Card>
-  )
+        </div>
+      </div>
+    </Card>)
+  );
 }

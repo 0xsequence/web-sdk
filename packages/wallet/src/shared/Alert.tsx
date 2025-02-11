@@ -1,4 +1,4 @@
-import { Box, Button, Text } from '@0xsequence/design-system'
+import { Button, Text } from '@0xsequence/design-system';
 import React, { ComponentProps } from 'react'
 
 export type AlertProps = {
@@ -12,18 +12,11 @@ export type AlertProps = {
 
 export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
-    <Box borderRadius="md" background={variant}>
-      <Box
-        background="backgroundOverlay"
-        borderRadius="md"
-        paddingX={{ sm: '4', md: '5' }}
-        paddingY="4"
-        width="full"
-        flexDirection="column"
-        gap="3"
-      >
-        <Box width="full" flexDirection={{ sm: 'column', md: 'row' }} gap="2" justifyContent="space-between">
-          <Box flexDirection="column" gap="1">
+    (<div className="rounded-xl">
+      <div
+        className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
+        <div className="flex w-full gap-2 justify-between">
+          <div className="flex flex-col gap-1">
             <Text variant="normal" color="text100" fontWeight="medium">
               {title}
             </Text>
@@ -37,17 +30,17 @@ export const Alert = ({ title, description, secondaryDescription, variant, butto
                 {secondaryDescription}
               </Text>
             )}
-          </Box>
+          </div>
 
           {buttonProps ? (
-            <Box background={variant} borderRadius="sm" width={'min'} height={'min'}>
-              <Button variant="emphasis" shape="square" flexShrink="0" {...buttonProps} />
-            </Box>
+            <div className="rounded-lg w-min h-min">
+              <Button className="shrink-0" variant="emphasis" shape="square" {...buttonProps} />
+            </div>
           ) : null}
-        </Box>
+        </div>
 
         {children}
-      </Box>
-    </Box>
-  )
+      </div>
+    </div>)
+  );
 }

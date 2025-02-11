@@ -4,7 +4,7 @@ import { LogoProps } from '../../types'
 
 export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" style={{ fill: 'none' }} id="svg1316" version="1.1" viewBox="0 0 396 396" {...props}>
+    (<svg xmlns="http://www.w3.org/2000/svg" style={{ fill: 'none' }} id="svg1316" version="1.1" viewBox="0 0 396 396" {...props}>
       <g transform="translate(0,38)" id="g1256" clipPath="url(#clip0_5_131)">
         <g id="g1254" clipPath="url(#clip1_5_131)">
           <path
@@ -127,12 +127,22 @@ export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
           <stop id="stop1305" stopColor="#9C6DFF" offset="1" />
         </linearGradient>
         <clipPath id="clip0_5_131">
-          <rect style={{ fill: '#ffffff' }} y="0" x="0" id="rect1308" height="317.67001" width="396" />
+          <rect
+            className="h-317.67001 w-396"
+            style={{ fill: '#ffffff' }}
+            y="0"
+            x="0"
+            id="rect1308" />
         </clipPath>
         <clipPath id="clip1_5_131">
-          <rect style={{ fill: '#ffffff' }} y="0" x="0" id="rect1311" height="317.67001" width="396" />
+          <rect
+            className="h-317.67001 w-396"
+            style={{ fill: '#ffffff' }}
+            y="0"
+            x="0"
+            id="rect1311" />
         </clipPath>
       </defs>
-    </svg>
-  )
+    </svg>)
+  );
 }

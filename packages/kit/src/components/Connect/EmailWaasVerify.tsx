@@ -1,4 +1,4 @@
-import { Box, Button, CheckmarkIcon, PINCodeInput, Spinner, Text } from '@0xsequence/design-system'
+import { Button, CheckmarkIcon, PINCodeInput, Spinner, Text } from '@0xsequence/design-system';
 import { useState, useEffect, useRef } from 'react'
 
 interface EmailWaasVerifyProps {
@@ -54,65 +54,63 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
     setIsLoadingSendCode(false)
   }
 
-  return (
-    <>
-      <Box paddingY="6" gap="4" alignItems="center" justifyContent="center" flexDirection="column">
-        <Text marginTop="5" variant="normal" color="text80">
-          Enter code received in email.
-        </Text>
-        <Box ref={inputRef}>
-          <PINCodeInput value={waasEmailPinCode} digits={6} group={3} onChange={setWaasEmailPinCode} disabled={isLoading} />
-        </Box>
+  return (<>
+    <div className="flex py-6 gap-4 items-center justify-center flex-col">
+      <Text className="mt-5" variant="normal" color="text80">
+        Enter code received in email.
+      </Text>
+      <div ref={inputRef}>
+        <PINCodeInput value={waasEmailPinCode} digits={6} group={3} onChange={setWaasEmailPinCode} disabled={isLoading} />
+      </div>
 
-        <Box justifyContent="center" alignItems="center" position="relative" width="full" gap="1">
-          <Text variant="small" color="text80">
-            Didn't receive an email?{' '}
-          </Text>
-          {showSentEmail && (
-            <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-              <Text variant="small" fontWeight="bold" color="text50">
-                Email sent!
-              </Text>
-              <CheckmarkIcon color="positive" size="sm" style={{ marginLeft: '-4px' }} />
-            </Box>
-          )}
-          {!showSentEmail && (
-            <Box position="relative" flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-              <Button
-                variant="text"
-                onClick={onClickResend}
-                disabled={isLoadingSendCode}
-                label="Resend email"
-                style={{ marginLeft: '-6px' }}
-              />
-              {isLoadingSendCode && <Spinner size="sm" position="absolute" style={{ top: '0px', right: '-18px' }} />}
-            </Box>
-          )}
-        </Box>
-        {isErrorSendCode && (
-          <Text variant="small" color="negative" textAlign="center">
-            An error occurred while sending the email
+      <div className="flex justify-center items-center relative w-full gap-1">
+        <Text variant="small" color="text80">
+          Didn't receive an email?{' '}
+        </Text>
+        {showSentEmail && (
+          <div className="flex flex-row items-center justify-center gap-2">
+            <Text variant="small" fontWeight="bold" color="text50">
+              Email sent!
+            </Text>
+            <CheckmarkIcon className="text-positive" size="sm" style={{ marginLeft: '-4px' }} />
+          </div>
+        )}
+        {!showSentEmail && (
+          <div className="flex relative flex-row items-center justify-center gap-2">
+            <Button
+              variant="text"
+              onClick={onClickResend}
+              disabled={isLoadingSendCode}
+              label="Resend email"
+              style={{ marginLeft: '-6px' }}
+            />
+            {isLoadingSendCode && <Spinner className="absolute" size="sm" style={{ top: '0px', right: '-18px' }} />}
+          </div>
+        )}
+      </div>
+      {isErrorSendCode && (
+        <Text className="text-center" variant="small" color="negative">
+          An error occurred while sending the email
+        </Text>
+      )}
+
+      <div className="flex gap-4 items-center justify-center flex-col">
+        <Button
+          variant="primary"
+          disabled={!isPinCodeValid || isLoading || isLoadingSendCode}
+          label="Confirm"
+          onClick={() => onConfirm(waasEmailPinCode.join(''))}
+          data-id="verifyButton"
+        />
+
+        {isLoading && <Spinner />}
+
+        {error && (
+          <Text className="text-center" variant="small" color="negative">
+            {error.message}
           </Text>
         )}
-
-        <Box gap="4" alignItems="center" justifyContent="center" flexDirection="column">
-          <Button
-            variant="primary"
-            disabled={!isPinCodeValid || isLoading || isLoadingSendCode}
-            label="Confirm"
-            onClick={() => onConfirm(waasEmailPinCode.join(''))}
-            data-id="verifyButton"
-          />
-
-          {isLoading && <Spinner />}
-
-          {error && (
-            <Text variant="small" color="negative" textAlign="center">
-              {error.message}
-            </Text>
-          )}
-        </Box>
-      </Box>
-    </>
-  )
+      </div>
+    </div>
+  </>);
 }
