@@ -277,7 +277,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             />
             <NumericInput
               ref={amountInputRef}
-              style={{ fontSize: vars.fontSizes.xlarge, fontWeight: vars.fontWeights.bold }}
               name="amount"
               value={amount}
               onChange={handleChangeAmount}
@@ -346,11 +345,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               <Button
                 className="mt-2 w-full"
                 variant="primary"
+                size="lg"
                 type="button"
                 label="Switch Network"
                 onClick={async () => await switchChainAsync({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
               />
             </div>
           )}
@@ -362,6 +361,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               <Button
                 className="text-text100 mt-3 w-full"
                 variant="primary"
+                size="lg"
                 type="submit"
                 disabled={
                   !isNonZeroAmount ||
@@ -371,7 +371,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 }
                 label="Send"
                 rightIcon={ChevronRightIcon}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
               />
             )}
           </div>

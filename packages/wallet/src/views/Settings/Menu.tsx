@@ -31,36 +31,27 @@ export const SettingsMenu = () => {
         <div className="flex flex-col gap-2">
           <Button
             className="w-full"
+            size="lg"
             onClick={onClickGeneral}
             leftIcon={SettingsIcon}
             rightIcon={ChevronRightIcon}
             label="General"
-            style={{
-              height: '52px',
-              borderRadius: vars.radii.md
-            }}
           />
           <Button
             className="w-full"
+            size="lg"
             onClick={onClickCurrency}
             leftIcon={CurrencyIcon}
             rightIcon={ChevronRightIcon}
             label="Currency"
-            style={{
-              height: '52px',
-              borderRadius: vars.radii.md
-            }}
           />
           <Button
             className="w-full"
+            size="lg"
             onClick={onClickNetworks}
             leftIcon={NetworkIcon}
             rightIcon={ChevronRightIcon}
             label="Networks"
-            style={{
-              height: '52px',
-              borderRadius: vars.radii.md
-            }}
           />
         </div>
       </div>

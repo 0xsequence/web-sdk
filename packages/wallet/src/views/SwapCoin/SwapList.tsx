@@ -275,11 +275,11 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
               <Button
                 className="mt-2 w-full"
                 variant="primary"
+                size="lg"
                 type="button"
                 label="Switch Network"
                 onClick={async () => await switchChainAsync({ chainId })}
                 disabled={isCorrectChainId}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
               />
             </div>
           )}
@@ -295,9 +295,9 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
               showSwitchNetwork
             }
             variant="primary"
+            size="lg"
             label={getButtonLabel()}
             onClick={onClickProceed}
-            style={{ height: '52px', borderRadius: vars.radii.md }}
           />
         </div>
       )

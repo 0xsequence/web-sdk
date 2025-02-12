@@ -14,7 +14,7 @@ export const DefaultIcon = ({ size = 30 }: DefaultIconProps) => {
         height: `${size}px`
       }}
     >
-      <Text variant="large" color="textInverse100">
+      <Text variant="large" color="inverse">
         ?
       </Text>
     </div>

@@ -117,7 +117,6 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
         />
         <NumericInput
           ref={amountInputRef}
-          style={{ fontSize: vars.fontSizes.xlarge, fontWeight: vars.fontWeights.bold }}
           name="amount"
           value={amount}
           onChange={handleChangeAmount}
@@ -137,11 +136,11 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
         <Button
           className="text-text100 mt-3 w-full"
           variant="primary"
+          size="lg"
           type="submit"
           disabled={!isNonZeroAmount}
           label="Continue"
           rightIcon={ChevronRightIcon}
-          style={{ height: '52px', borderRadius: vars.radii.md }}
         />
       </div>
     </form>

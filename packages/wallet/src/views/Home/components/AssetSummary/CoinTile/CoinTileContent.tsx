@@ -43,19 +43,15 @@ export const CoinTileContent = ({
           </Text>
           <NetworkImage chainId={chainId} size="xs" />
         </div>
-        <Text
-          className="whitespace-nowrap"
-          color="text50"
-          style={{ display: 'block', maxWidth: '150px', textOverflow: 'ellipsis', overflow: 'hidden' }}
-        >
+        <Text color="text50" ellipsis nowrap block style={{ maxWidth: '150px' }}>
           {`${balance} ${symbol}`}
         </Text>
       </div>
       <div>
         <div>
-          <Text fontWeight="bold" color="text100">{`${fiatCurrency.sign}${balanceFiat}`}</Text>
+          <Text variant="normal" fontWeight="bold" color="text100">{`${fiatCurrency.sign}${balanceFiat}`}</Text>
         </div>
-        <Text style={{ color: getPercentageColor(priceChangePercentage) }}>
+        <Text variant="normal" color={getPercentageColor(priceChangePercentage)}>
           {`${priceChangeSymbol}${priceChangePercentage.toFixed(2)}%`}
         </Text>
       </div>
