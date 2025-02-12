@@ -1,4 +1,4 @@
-import { Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
+import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useConnections } from 'wagmi'
@@ -31,13 +31,11 @@ export const Homepage = () => {
       {wallets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-5 h-screen">
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image style={{ width: '48px' }} src="images/kit-logo.svg" />
+            <Image className="w-12" src="images/kit-logo.svg" />
             <Image
-              style={{
-                width: '32px',
-                filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
-              }}
+              className="w-8"
               src="images/kit-logo-text.svg"
+              style={{ filter: theme === 'dark' ? 'invert(0)' : 'invert(1)' }}
             />
           </div>
 
@@ -45,7 +43,7 @@ export const Homepage = () => {
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
           </div>
 
-          <div className="flex gap-2 flex-col px-4 mt-10 w-full" style={{ maxWidth: breakpoints.md }}>
+          <div className="flex gap-2 flex-col px-4 mt-10 w-full max-w-[480px]">
             <WalletTypeSelect
               type="waas"
               title="Embedded Wallet (WaaS)"
