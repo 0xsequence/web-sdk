@@ -164,11 +164,7 @@ export const CheckoutSelection = () => {
       <div className="flex flex-col items-center justify-center gap-2">
         {displayCreditCardCheckout && (
           <Button
-            className="w-full rounded-xl"
-            style={{
-              borderRadius: vars.radii.md,
-              height: '56px'
-            }}
+            className="w-full h-14 rounded-xl"
             leftIcon={PaymentsIcon}
             variant="primary"
             label="Pay with credit card"
@@ -178,11 +174,7 @@ export const CheckoutSelection = () => {
         )}
         {displayCryptoCheckout && !isInsufficientBalance && !isPending && (
           <Button
-            className="w-full"
-            style={{
-              borderRadius: vars.radii.md,
-              height: '56px'
-            }}
+            className="w-full h-14 rounded-xl"
             leftIcon={() => <TokenImage src={coinImageUrl} size="sm" />}
             variant="primary"
             label={`Pay with ${coinSymbol}`}
