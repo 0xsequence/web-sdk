@@ -177,7 +177,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     } else if (noOptionsFound) {
       return (
         <div className="flex w-full justify-center items-center">
-          <Text variant="normal" color="text100">
+          <Text variant="normal" color="primary">
             No swap option found!
           </Text>
         </div>
@@ -204,7 +204,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
       return (
         <div className="flex w-full gap-3 flex-col">
           <div className="flex w-full flex-col gap-2">
-            <Text variant="small" color="text100">
+            <Text variant="small" color="primary">
               Select a token in your wallet to swap for {displayedAmount} {buyCurrencySymbol}.
             </Text>
             {swapPrices.map(swapPrice => {

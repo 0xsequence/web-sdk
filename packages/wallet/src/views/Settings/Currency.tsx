@@ -20,10 +20,10 @@ export const SettingsCurrency = () => {
               onClick={() => setFiatCurrency && setFiatCurrency(currency)}
             >
               <div className="flex gap-2 justify-start items-center">
-                <Text color="text100" fontWeight="bold">
+                <Text color="primary" fontWeight="bold">
                   {currency.symbol}
                 </Text>
-                <Text color="text50">{currency.name.message}</Text>
+                <Text color="muted">{currency.name.message}</Text>
               </div>
             </SelectButton>
           )

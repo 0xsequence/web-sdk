@@ -18,14 +18,14 @@ export const WalletLink = ({ toLocation, label }: WalletLinkProps) => {
 
   return (
     <div className="flex w-full flex-row justify-between items-center select-none cursor-pointer" onClick={onClick}>
-      <Text variant="normal" color="text50" fontWeight="medium">
+      <Text variant="normal" color="muted" fontWeight="medium">
         {label}
       </Text>
       <div className="flex flex-row justify-center items-center">
-        <Text variant="normal" color="text50" fontWeight="medium">
+        <Text variant="normal" color="muted" fontWeight="medium">
           View all
         </Text>
-        <ChevronRightIcon className="text-text50" size="sm" />
+        <ChevronRightIcon className="text-muted" size="sm" />
       </div>
     </div>
   )

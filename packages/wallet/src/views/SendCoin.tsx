@@ -282,11 +282,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               onChange={handleChangeAmount}
               controls={
                 <>
-                  <Text className="whitespace-nowrap" variant="small" color="text50">
+                  <Text className="whitespace-nowrap" variant="small" color="muted">
                     {`~${fiatCurrency.sign}${amountToSendFiat}`}
                   </Text>
                   <Button className="shrink-0" size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" />
-                  <Text variant="xlarge" fontWeight="bold" color="text100">
+                  <Text variant="xlarge" fontWeight="bold" color="primary">
                     {symbol}
                   </Text>
                 </>
@@ -299,7 +299,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             )}
           </div>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
-            <Text variant="normal" color="text50">
+            <Text variant="normal" color="muted">
               To
             </Text>
             {isEthAddress(toAddress) ? (
@@ -311,7 +311,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               >
                 <div className="flex flex-row justify-center items-center gap-2">
                   <GradientAvatar size="sm" address={toAddress} />
-                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                  <Text color="primary" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </div>
                 <CloseIcon className="text-white" size="sm" />
               </Card>
@@ -359,7 +359,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               <Spinner />
             ) : (
               <Button
-                className="text-text100 mt-3 w-full"
+                className="text-primary mt-3 w-full"
                 variant="primary"
                 size="lg"
                 type="submit"

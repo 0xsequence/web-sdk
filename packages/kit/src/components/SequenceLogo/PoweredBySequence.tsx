@@ -15,7 +15,7 @@ export const PoweredBySequence = () => {
         left: '-28px'
       }}
     >
-      <Text variant="xsmall" color="text50" fontWeight="bold">
+      <Text variant="xsmall" color="muted" fontWeight="bold">
         Powered by
       </Text>
       <div className="h-5 w-5 relative" style={{ top: '1px' }}>

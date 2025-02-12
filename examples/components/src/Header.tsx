@@ -54,13 +54,13 @@ const AccountMenu = () => {
           <div className="flex flex-col">
             <div className="flex flex-row gap-2 justify-end items-center">
               <GradientAvatar address={String(address)} size="sm" />
-              <Text variant="normal" fontWeight="bold" color="text100">
+              <Text variant="normal" fontWeight="bold" color="primary">
                 {truncateAddress(String(address), 4)}
               </Text>
             </div>
           </div>
 
-          <div className="text-text50">
+          <div className="text-muted">
             <ChevronDownIcon />
           </div>
         </div>
@@ -71,15 +71,15 @@ const AccountMenu = () => {
             <Card className="z-20 bg-background-raised backdrop-blur-md relative p-2" style={{ minWidth: 360 }}>
               <Card>
                 <div className="flex items-center justify-between">
-                  <Text variant="normal" fontWeight="bold" color="text100">
+                  <Text variant="normal" fontWeight="bold" color="primary">
                     Account
                   </Text>
-                  <Text variant="small" color="text50">
+                  <Text variant="small" color="muted">
                     {connector?.name}
                   </Text>
                 </div>
 
-                <Text className="mt-2" variant="normal" color="text80" asChild>
+                <Text className="mt-2" variant="normal" color="secondary" asChild>
                   <div>{address}</div>
                 </Text>
               </Card>
@@ -117,12 +117,12 @@ const NetworkSelect = () => {
         >
           <div className="flex items-center gap-2">
             <NetworkImage chainId={chainId} size="sm" />
-            <Text display={{ sm: 'none', lg: 'block' }} variant="normal" fontWeight="bold" color="text100">
+            <Text display={{ sm: 'none', lg: 'block' }} variant="normal" fontWeight="bold" color="primary">
               {chains.find(chain => chain.id === chainId)?.name || chainId}
             </Text>
           </div>
 
-          <div className="text-text50">
+          <div className="text-muted">
             <ChevronDownIcon />
           </div>
         </div>
@@ -143,7 +143,7 @@ const NetworkSelect = () => {
                   leftIcon={() => <NetworkImage chainId={chain.id} size="sm" />}
                   label={
                     <div className="flex items-center gap-2">
-                      <Text variant="normal" fontWeight="bold" color="text100">
+                      <Text variant="normal" fontWeight="bold" color="primary">
                         {chain.name}
                       </Text>
                     </div>

@@ -61,19 +61,19 @@ export const SendItemInfo = ({
         )}
         <div className="flex flex-col items-start">
           <div className="flex flex-row items-center gap-1">
-            <Text variant="medium" color="text100">
+            <Text variant="medium" color="primary">
               {name}
             </Text>
             <NetworkImage chainId={chainId} size="xs" />
           </div>
-          <Text color="text50" variant="normal">
+          <Text color="muted" variant="normal">
             {' '}
             {`${balanceDisplayed} ${symbol} available`}
           </Text>
         </div>
       </div>
       <div className="flex flex-col items-end justify-end">
-        {fiatValue && <Text variant="normal" color="text100">{`${fiatCurrency.sign}${fiatValue}`}</Text>}
+        {fiatValue && <Text variant="normal" color="primary">{`${fiatCurrency.sign}${fiatValue}`}</Text>}
       </div>
     </div>
   )

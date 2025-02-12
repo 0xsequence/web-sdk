@@ -67,7 +67,7 @@ export const OrderSummary = () => {
         <Text
           variant="small"
           fontWeight="bold"
-          color="text100"
+          color="primary"
         >{`${totalQuantity} ${totalQuantity > 1 ? 'items' : 'item'}`}</Text>
       </div>
       <div className="flex flex-row gap-1">
@@ -87,10 +87,10 @@ export const OrderSummary = () => {
                 <CollectibleTileImage imageUrl={tokenMetadata?.image} />
               </div>
               <div className="flex flex-col gap-0.5">
-                <Text variant="small" color="text80" fontWeight="medium">
+                <Text variant="small" color="secondary" fontWeight="medium">
                   {dataCollectionInfo?.name || null}
                 </Text>
-                <Text variant="small" color="text100" fontWeight="bold">
+                <Text variant="small" color="primary" fontWeight="bold">
                   {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
                 </Text>
               </div>
@@ -104,7 +104,7 @@ export const OrderSummary = () => {
           <Text color="white" variant="large" fontWeight="bold">{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
         </div>
         <div>
-          <Text color="text50" variant="normal" fontWeight="normal">
+          <Text color="muted" variant="normal" fontWeight="normal">
             {`$${priceFiat} estimated total`}
           </Text>
         </div>

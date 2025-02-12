@@ -46,24 +46,24 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
         <div className="border" />
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-1">
-            <Text variant="normal" color="text100">
+            <Text variant="normal" color="primary">
               {isEmbedded ? 'Embedded - ' : ''}
               {name}
             </Text>
             {isLinked && (
               <Tooltip message="Linked to embedded wallet">
                 <div className="relative">
-                  <LinkIcon className="text-text50" size="xs" />
+                  <LinkIcon className="text-muted" size="xs" />
                 </div>
               </Tooltip>
             )}
             {isReadOnly && (
-              <Text variant="small" color="text50">
+              <Text variant="small" color="muted">
                 (read-only)
               </Text>
             )}
           </div>
-          <Text variant="normal" fontWeight="bold" color="text100">
+          <Text variant="normal" fontWeight="bold" color="primary">
             {truncateAddress(address, 8, 5)}
           </Text>
         </div>

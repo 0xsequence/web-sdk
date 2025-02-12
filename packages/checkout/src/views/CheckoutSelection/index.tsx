@@ -111,7 +111,7 @@ export const CheckoutSelection = () => {
       {orderSummaryItems.length > 0 && (
         <>
           <div className="flex flex-row gap-2 items-center">
-            <Text variant="normal" color="text50">
+            <Text variant="normal" color="muted">
               Order summary
             </Text>
             <Tooltip
@@ -125,7 +125,7 @@ export const CheckoutSelection = () => {
               }
             >
               <div className="w-5 h-5">
-                <HelpIcon className="text-text80" />
+                <HelpIcon className="text-secondary" />
               </div>
             </Tooltip>
           </div>
@@ -146,7 +146,7 @@ export const CheckoutSelection = () => {
       )}
       {displayCryptoCheckout && (
         <div className="flex justify-between items-center">
-          <Text variant="normal" color="text50">
+          <Text variant="normal" color="muted">
             Total
           </Text>
           {isPending ? (
@@ -154,7 +154,7 @@ export const CheckoutSelection = () => {
           ) : (
             <div className="flex flex-row gap-1 items-center">
               <TokenImage src={coinImageUrl} size="xs" />
-              <Text variant="normal" color="text100">
+              <Text variant="normal" color="primary">
                 {`${formatDisplay(requestAmount)} ${coinSymbol}`}
               </Text>
             </div>
@@ -203,7 +203,7 @@ export const CheckoutSelection = () => {
           {isPending ? (
             <Skeleton style={{ width: '102px', height: '14px' }} />
           ) : (
-            <Text variant="small" fontWeight="bold" color="text50">
+            <Text variant="small" fontWeight="bold" color="muted">
               Balance: {`${formatDisplay(userBalance)} ${coinSymbol}`}
             </Text>
           )}

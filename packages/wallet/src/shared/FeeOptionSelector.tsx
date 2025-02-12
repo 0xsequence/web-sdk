@@ -57,7 +57,7 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
 
   return (
     <div className="mt-3 w-full">
-      <Text variant="normal" color="text100" fontWeight="bold">
+      <Text variant="normal" color="primary" fontWeight="bold">
         Select a fee option
       </Text>
       <div className="flex flex-col mt-2 gap-2">
@@ -86,10 +86,10 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
                 <div className="flex flex-row items-center gap-2">
                   <TokenImage src={option.token.logoURL} symbol={option.token.name} />
                   <div className="flex flex-col">
-                    <Text variant="small" color="text100" fontWeight="bold">
+                    <Text variant="small" color="primary" fontWeight="bold">
                       {option.token.name}
                     </Text>
-                    <Text variant="xsmall" color="text80">
+                    <Text variant="xsmall" color="secondary">
                       Fee:{' '}
                       {parseFloat(formatUnits(BigInt(option.value), option.token.decimals || 0)).toLocaleString(undefined, {
                         maximumFractionDigits: 6
@@ -98,10 +98,10 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
                   </div>
                 </div>
                 <div className="flex flex-col items-end">
-                  <Text variant="xsmall" color="text80">
+                  <Text variant="xsmall" color="secondary">
                     Balance:
                   </Text>
-                  <Text variant="xsmall" color="text100">
+                  <Text variant="xsmall" color="primary">
                     {parseFloat(formatUnits(BigInt(balance?.balance || '0'), option.token.decimals || 0)).toLocaleString(
                       undefined,
                       { maximumFractionDigits: 6 }

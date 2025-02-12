@@ -31,7 +31,7 @@ export const SettingsNetwork = () => {
   return (
     <div style={{ paddingTop: HEADER_HEIGHT }}>
       <div className="p-5 pt-3">
-        <Text variant="small" fontWeight="bold" color="text50">
+        <Text variant="small" fontWeight="bold" color="muted">
           Networks
         </Text>
         <div className="flex flex-col gap-2 mt-4">
@@ -47,7 +47,7 @@ export const SettingsNetwork = () => {
               >
                 <div className="flex gap-2 justify-center items-center">
                   <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chain}.webp`} />
-                  <Text color="text100" variant="normal" fontWeight="bold">
+                  <Text color="primary" variant="normal" fontWeight="bold">
                     {ChainId[chain]}
                   </Text>
                 </div>

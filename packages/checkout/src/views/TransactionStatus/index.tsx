@@ -189,7 +189,7 @@ export const TransactionStatus = () => {
             <div className="w-6 h-6 rounded-full bg-positive">
               <CheckmarkIcon className="text-white relative" style={{ top: '3px', right: '-1px' }} />
             </div>
-            <Text variant="normal" color="text50">
+            <Text variant="normal" color="muted">
               Transaction complete
             </Text>
           </div>
@@ -200,7 +200,7 @@ export const TransactionStatus = () => {
             <div className="w-6 h-6 rounded-full bg-negative">
               <CloseIcon className="text-white relative" style={{ top: '2px', right: '-2px' }} />
             </div>
-            <Text variant="normal" color="text50">
+            <Text variant="normal" color="muted">
               Transaction failed
             </Text>
           </div>
@@ -210,7 +210,7 @@ export const TransactionStatus = () => {
         return (
           <div className="flex gap-2 justify-center items-center">
             <Spinner />
-            <Text variant="normal" color="text50">
+            <Text variant="normal" color="muted">
               Processing transaction
             </Text>
           </div>
@@ -240,10 +240,10 @@ export const TransactionStatus = () => {
                   <CollectibleTileImage imageUrl={tokenMetadata?.image} />
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <Text variant="small" color="text80" fontWeight="medium">
+                  <Text variant="small" color="secondary" fontWeight="medium">
                     {dataCollectionInfo?.name || null}
                   </Text>
-                  <Text variant="small" color="text100" fontWeight="bold">
+                  <Text variant="small" color="primary" fontWeight="bold">
                     {`${tokenMetadata?.name || 'Collectible'} #${item.tokenId} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
                   </Text>
                 </div>
@@ -275,14 +275,14 @@ export const TransactionStatus = () => {
     return (
       <div className="flex mb-2 flex-row items-center justify-between">
         <div className="flex flex-row gap-1 items-center justify-between">
-          <ArrowDownIcon className="text-text80" size="xs" style={{ transform: 'rotate(180deg)', marginRight: '-4px' }} />
-          <Text color="text80" variant="small" fontWeight="medium">
+          <ArrowDownIcon className="text-secondary" size="xs" style={{ transform: 'rotate(180deg)', marginRight: '-4px' }} />
+          <Text color="secondary" variant="small" fontWeight="medium">
             {getStatusText()}
           </Text>
           <NetworkImage chainId={chainId} size="xs" />
         </div>
         <div>
-          <Text color="text50" variant="small" fontWeight="medium">
+          <Text color="muted" variant="small" fontWeight="medium">
             <TimeAgo datetime={startTime} />
           </Text>
         </div>
@@ -301,7 +301,7 @@ export const TransactionStatus = () => {
         ) : (
           <>
             <div className="flex w-full justify-start">
-              <Text variant="normal" color="text100">
+              <Text variant="normal" color="primary">
                 {getInformationText()}
               </Text>
             </div>

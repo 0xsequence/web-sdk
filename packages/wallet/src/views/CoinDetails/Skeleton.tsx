@@ -19,7 +19,7 @@ export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeleton
           <NetworkBadge chainId={chainId} />
         </div>
         <div>
-          <Text variant="normal" fontWeight="medium" color="text50">
+          <Text variant="normal" fontWeight="medium" color="muted">
             Balance
           </Text>
           <div className="flex flex-row items-end justify-between">
@@ -29,7 +29,7 @@ export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeleton
         </div>
         {!isReadOnly && (
           <Button
-            className="w-full text-text100"
+            className="w-full text-primary"
             variant="primary"
             leftIcon={SendIcon}
             label="Send"

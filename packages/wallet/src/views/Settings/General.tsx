@@ -29,7 +29,7 @@ export const SettingsGeneral = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text color="text100" fontWeight="bold">
+          <Text color="primary" fontWeight="bold">
             Dark mode
           </Text>
           <Switch
@@ -38,13 +38,13 @@ export const SettingsGeneral = () => {
           />
         </Card> */}
         <Card className="flex flex-row justify-between items-center">
-          <Text color="text100" fontWeight="bold">
+          <Text color="primary" fontWeight="bold">
             Hide unlisted tokens
           </Text>
           <Switch checked={hideUnlistedTokens} onCheckedChange={onChangeHideUnlistedTokens} />
         </Card>
         <Card className="flex flex-row justify-between items-center">
-          <Text color="text100" fontWeight="bold">
+          <Text color="primary" fontWeight="bold">
             Hide collectibles
           </Text>
           <Switch checked={hideCollectibles} onCheckedChange={onChangeHideCollectibles} />

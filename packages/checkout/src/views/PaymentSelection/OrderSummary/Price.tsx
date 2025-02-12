@@ -43,17 +43,17 @@ export const Price = () => {
   return (
     <div className="flex px-6 justify-between items-center w-full h-12">
       <div>
-        <Text variant="small" color="text50" fontWeight="medium">
+        <Text variant="small" color="muted" fontWeight="medium">
           Price
         </Text>
       </div>
       <div className="flex flex-col justify-between items-end">
         <div className="flex gap-2 items-center">
           <TokenImage size="sm" src={tokenLogo} />
-          <Text variant="large" fontWeight="bold" color="text100">{`${formattedPrice} ${tokenSymbol}`}</Text>
+          <Text variant="large" fontWeight="bold" color="primary">{`${formattedPrice} ${tokenSymbol}`}</Text>
         </div>
         <div>
-          <Text variant="normal" fontWeight="medium" color="text50">
+          <Text variant="normal" fontWeight="medium" color="muted">
             {priceFiatFormatted}
           </Text>
         </div>

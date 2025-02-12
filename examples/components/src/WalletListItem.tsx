@@ -18,11 +18,11 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
       <div className="flex flex-row items-center gap-2">
         <div className="border" />
         <div className="flex flex-col gap-1">
-          <Text variant="normal" color="text100">
+          <Text variant="normal" color="primary">
             {isEmbedded ? 'Embedded - ' : ''}
             {name}
           </Text>
-          <Text variant="normal" fontWeight="bold" color="text100">
+          <Text variant="normal" fontWeight="bold" color="primary">
             {truncateAtMiddle(address, 10)}
           </Text>
         </div>

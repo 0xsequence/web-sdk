@@ -94,10 +94,10 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
     >
       <div className="flex gap-2">
         <div>
-          <Text variant="normal" fontWeight="bold" color={isSelected ? 'text100' : 'text80'}>
+          <Text variant="normal" fontWeight="bold" color={isSelected ? 'primary' : 'secondary'}>
             {title}
           </Text>
-          <Text className="mt-2" variant="normal" color="text50" asChild>
+          <Text className="mt-2" variant="normal" color="muted" asChild>
             <div>{description}</div>
           </Text>
         </div>

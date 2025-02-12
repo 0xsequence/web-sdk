@@ -20,10 +20,10 @@ export const AccountInformation = forwardRef(({ onClickAccount }: AccountInforma
           ref={ref}
         >
           <GradientAvatar size="sm" address={address || ''} />
-          <Text color="text100" fontWeight="medium" variant="normal">
+          <Text color="primary" fontWeight="medium" variant="normal">
             {formatAddress(address || '')}
           </Text>
-          <ChevronDownIcon className="text-text100" />
+          <ChevronDownIcon className="text-primary" />
         </div>
       </div>
     </div>

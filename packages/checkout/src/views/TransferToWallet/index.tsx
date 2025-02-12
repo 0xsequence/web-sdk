@@ -19,14 +19,14 @@ export const TransferToWallet = () => {
     >
       <div className="flex flex-col items-center px-4 pb-4 min-h-full">
         <div className="flex flex-col items-center justify-center w-full">
-          <Text className="text-center" variant="normal" color="text50" asChild>
+          <Text className="text-center" variant="normal" color="muted" asChild>
             <p>Share your wallet address to receive coins</p>
           </Text>
           <div className="my-4">
             <QRCode value={address} data-id="receiveQR" />
           </div>
 
-          <Text className="w-full text-center" variant="normal" color="text50" asChild>
+          <Text className="w-full text-center" variant="normal" color="muted" asChild>
             <div data-id="receiveAddress">{address}</div>
           </Text>
         </div>

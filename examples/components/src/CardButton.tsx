@@ -12,16 +12,16 @@ export const CardButton = (props: CardButtonProps) => {
 
   return (
     <Card clickable onClick={onClick}>
-      <Text variant="normal" fontWeight="bold" color="text100">
+      <Text variant="normal" fontWeight="bold" color="primary">
         {title}
       </Text>
-      <Text className="mt-2" variant="normal" color="text50" asChild>
+      <Text className="mt-2" variant="normal" color="muted" asChild>
         <div>{description}</div>
       </Text>
       {isPending && (
         <div className="flex gap-2 items-center mt-4">
           <Spinner size="sm" />
-          <Text variant="small" color="text50">
+          <Text variant="small" color="muted">
             Pending...
           </Text>
         </div>
