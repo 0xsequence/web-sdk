@@ -224,7 +224,7 @@ export const waitForTransactionReceipt = async ({
   const receipt = await receiptPromise
 
   if (confirmations) {
-    const blockConfirmationPromise = new Promise<void>((resolve, reject) => {
+    const blockConfirmationPromise = new Promise<void>(resolve => {
       const unwatch = publicClient.watchBlocks({
         onBlock: ({ number: currentBlockNumber }) => {
           const confirmedBlocknumber = receipt.blockNumber + confirmations

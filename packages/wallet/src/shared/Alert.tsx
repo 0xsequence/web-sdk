@@ -1,4 +1,4 @@
-import { Button, Text } from '@0xsequence/design-system'
+import { Button, cn, Text } from '@0xsequence/design-system'
 import React, { ComponentProps } from 'react'
 
 export type AlertProps = {
@@ -10,9 +10,15 @@ export type AlertProps = {
   children?: React.ReactNode
 }
 
+const variants = {
+  negative: 'bg-negative',
+  warning: 'bg-warning',
+  positive: 'bg-positive'
+}
+
 export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
-    <div className="rounded-xl">
+    <div className={cn('rounded-xl', variants[variant])}>
       <div className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
         <div className="flex w-full gap-2 justify-between">
           <div className="flex flex-col gap-1">
