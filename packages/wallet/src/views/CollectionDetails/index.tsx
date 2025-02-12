@@ -23,7 +23,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     }
   })
 

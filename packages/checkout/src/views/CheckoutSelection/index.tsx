@@ -48,8 +48,7 @@ export const CheckoutSelection = () => {
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [],
-      contractBlacklist: []
+      omitNativeBalances: true
     }
   })
 

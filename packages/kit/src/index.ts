@@ -44,7 +44,7 @@ export {
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'
 export { isEmailValid, compareAddress, formatDisplay, capitalize, truncateAtMiddle, formatAddress } from './utils/helpers'
-export { getNativeTokenInfoByChainId } from './utils/tokens'
+export { getNativeTokenInfoByChainId, createNativeTokenBalance } from './utils/tokens'
 export { getModalPositionCss } from './utils/styling'
 export { getNetwork, getNetworkColor, getNetworkBackgroundColor } from './utils/networks'
 export { walletClientToSigner, publicClientToProvider } from './utils/adapters'

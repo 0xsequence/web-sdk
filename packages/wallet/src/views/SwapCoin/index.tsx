@@ -30,7 +30,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     }
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)

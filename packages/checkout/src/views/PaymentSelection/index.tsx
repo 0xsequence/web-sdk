@@ -105,7 +105,7 @@ export const PaymentSelectionContent = () => {
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     },
     // omitMetadata must be true to avoid a bug
     omitMetadata: true

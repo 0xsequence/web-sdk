@@ -100,7 +100,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
       accountAddresses: [address],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     }
   })
 
