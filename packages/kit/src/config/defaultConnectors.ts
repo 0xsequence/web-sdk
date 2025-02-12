@@ -24,7 +24,6 @@ export interface CommonConnectorOptions {
 export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
   waasConfigKey: string
   enableConfirmationModal?: boolean
-  isDev?: boolean
 
   email?: boolean
 
@@ -102,7 +101,7 @@ export const getDefaultConnectors = <T extends WalletType>(walletType: T, option
 }
 
 export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): CreateConnectorFn[] => {
-  const { projectAccessKey, waasConfigKey, appName, enableConfirmationModal, defaultChainId, isDev } = options
+  const { projectAccessKey, waasConfigKey, appName, enableConfirmationModal, defaultChainId } = options
 
   const wallets: Wallet[] = []
 
@@ -112,8 +111,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         projectAccessKey,
         waasConfigKey,
         enableConfirmationModal,
-        network: defaultChainId,
-        isDev
+        network: defaultChainId
       })
     )
   }
@@ -127,8 +125,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         waasConfigKey,
         googleClientId,
         enableConfirmationModal,
-        network: defaultChainId,
-        isDev
+        network: defaultChainId
       })
     )
   }
@@ -144,8 +141,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         appleClientId,
         appleRedirectURI,
         enableConfirmationModal,
-        network: defaultChainId,
-        isDev
+        network: defaultChainId
       })
     )
   }

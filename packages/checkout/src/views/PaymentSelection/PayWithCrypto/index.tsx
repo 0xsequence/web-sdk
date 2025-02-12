@@ -1,14 +1,21 @@
-import { Box, Text, Scroll, Spinner } from '@0xsequence/design-system'
-import { useBalances, useContractInfo, useSwapPrices, compareAddress } from '@0xsequence/kit'
+import { AddIcon, Box, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
+import {
+  CryptoOption,
+  useBalancesSummary,
+  useContractInfo,
+  useSwapPrices,
+  compareAddress,
+  ContractVerificationStatus,
+  formatDisplay
+} from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { motion } from 'framer-motion'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
-import { formatUnits, zeroAddress } from 'viem'
+import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { useClearCachedBalances } from '../../../hooks'
-
-import { CryptoOption } from './CryptoOption'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings
@@ -18,6 +25,8 @@ interface PayWithCryptoProps {
   isLoading: boolean
 }
 
+const MAX_OPTIONS = 3
+
 export const PayWithCrypto = ({
   settings,
   disableButtons,
@@ -25,6 +34,7 @@ export const PayWithCrypto = ({
   setSelectedCurrency,
   isLoading
 }: PayWithCryptoProps) => {
+  const [showMore, setShowMore] = useState(false)
   const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
 
   const { chain, currencyAddress, price } = settings
@@ -33,12 +43,15 @@ export const PayWithCrypto = ({
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalances({
+  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
     chainIds: [chainId],
-    contractAddress: currencyAddress,
-    accountAddress: userAddress || '',
-    // includeMetadata must be false to work around a bug
-    includeMetadata: false
+    filter: {
+      accountAddresses: userAddress ? [userAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [currencyAddress],
+      contractBlacklist: []
+    },
+    omitMetadata: true
   })
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
@@ -85,12 +98,17 @@ export const PayWithCrypto = ({
   ]
 
   const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
+  const priceDisplay = formatDisplay(priceFormatted, {
+    disableScientificNotation: true,
+    disableCompactNotation: true,
+    significantDigits: 6
+  })
 
   const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
 
   const balance: bigint = BigInt(balanceInfo?.balance || '0')
-  let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
-  balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
+  // let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
+  // balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
 
   const isNotEnoughFunds: boolean = BigInt(price) > balance
 
@@ -113,16 +131,11 @@ export const PayWithCrypto = ({
                   onClick={() => {
                     setSelectedCurrency(currencyAddress)
                   }}
-                  price={priceFormatted}
+                  price={priceDisplay}
                   disabled={disableButtons}
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
                   isInsufficientFunds={isNotEnoughFunds}
                 />
-                {swapsIsLoading && (
-                  <Box justifyContent="center" alignItems="center" width="full" marginTop="4">
-                    <Spinner />
-                  </Box>
-                )}
               </Fragment>
             )
           } else {
@@ -136,6 +149,12 @@ export const PayWithCrypto = ({
             const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
             const swapQuoteAddress = swapPrice.info?.address || ''
 
+            const swapQuotePriceDisplay = formatDisplay(swapQuotePriceFormatted, {
+              disableScientificNotation: true,
+              disableCompactNotation: true,
+              significantDigits: 6
+            })
+
             return (
               <CryptoOption
                 key={swapQuoteAddress}
@@ -146,7 +165,7 @@ export const PayWithCrypto = ({
                 onClick={() => {
                   setSelectedCurrency(swapQuoteAddress)
                 }}
-                price={String(Number(swapQuotePriceFormatted).toPrecision(4))}
+                price={swapQuotePriceDisplay}
                 disabled={disableButtons}
                 isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
                 isInsufficientFunds={false}
@@ -160,11 +179,30 @@ export const PayWithCrypto = ({
 
   const gutterHeight = 8
   const optionHeight = 72
-  const displayedOptionsAmount = Math.min(coins.length, 3)
+  const displayedOptionsAmount = Math.min(coins.length, MAX_OPTIONS)
   const displayedGuttersAmount = displayedOptionsAmount - 1
-  const viewheight = swapsIsLoading
-    ? '174px'
-    : `${24 + optionHeight * displayedOptionsAmount + gutterHeight * displayedGuttersAmount}px`
+  const collapsedOptionsHeight = `${optionHeight * displayedOptionsAmount + gutterHeight * displayedGuttersAmount}px`
+
+  const ShowMoreButton = () => {
+    return (
+      <Box justifyContent="center" alignItems="center" width="full">
+        <Button
+          rightIcon={() => {
+            if (showMore) {
+              return <SubtractIcon style={{ marginLeft: '-4px' }} size="xs" />
+            }
+            return <AddIcon style={{ marginLeft: '-4px' }} size="xs" />
+          }}
+          variant="ghost"
+          color="white"
+          onClick={() => {
+            setShowMore(!showMore)
+          }}
+          label={showMore ? 'Show less' : 'Show more'}
+        />
+      </Box>
+    )
+  }
 
   return (
     <Box width="full">
@@ -173,23 +211,35 @@ export const PayWithCrypto = ({
           Pay with crypto
         </Text>
       </Box>
-      <Scroll
+      <Box
         paddingY="3"
         style={{
-          height: viewheight,
-          marginBottom: '-12px',
-          scrollbarColor: 'gray black',
-          scrollbarWidth: 'thin'
+          marginBottom: '-12px'
         }}
       >
         {isLoadingOptions ? (
-          <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
+          <Box width="full" paddingY="5" justifyContent="center" alignItems="center">
             <Spinner />
           </Box>
         ) : (
-          <Options />
+          <>
+            <Box
+              as={motion.div}
+              animate={{ height: showMore ? 'auto' : collapsedOptionsHeight }}
+              transition={{ ease: 'easeOut', duration: 0.3 }}
+              overflow="hidden"
+            >
+              <Options />
+            </Box>
+            {swapsIsLoading && (
+              <Box justifyContent="center" alignItems="center" width="full" marginTop="4">
+                <Spinner />
+              </Box>
+            )}
+            {!swapsIsLoading && coins.length > MAX_OPTIONS && <ShowMoreButton />}
+          </>
         )}
-      </Scroll>
+      </Box>
     </Box>
   )
 }

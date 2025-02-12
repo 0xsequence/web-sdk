@@ -12,19 +12,21 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
+  compareAddress,
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
   ExtendedConnector,
+  truncateAtMiddle,
   useExchangeRate,
   useCoinPrices,
-  useBalances,
+  useBalancesSummary,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React, { useState, ChangeEvent, useRef, useEffect } from 'react'
+import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
@@ -32,7 +34,7 @@ import { useNavigationContext } from '../contexts/Navigation'
 import { useSettings, useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { compareAddress, computeBalanceFiat, limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
+import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
 
 interface SendCoinProps {
   chainId: number
@@ -67,12 +69,16 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
   const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalances({
+  const { data: balances = [], isPending: isPendingBalances } = useBalancesSummary({
     chainIds: [chainId],
-    accountAddress: accountAddress,
-    contractAddress
+    filter: {
+      accountAddresses: [accountAddress],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [contractAddress],
+      contractBlacklist: []
+    }
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)

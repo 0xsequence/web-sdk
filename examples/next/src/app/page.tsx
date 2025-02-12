@@ -1,19 +1,19 @@
 'use client'
 
 import { Box, Image, Button } from '@0xsequence/design-system'
-import { useOpenConnectModal } from '@0xsequence/kit'
+import { useKitWallets, useOpenConnectModal } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useAccount } from 'wagmi'
 
 import { Connected } from './components/Connected'
 
 export default function Home() {
-  const { isConnected } = useAccount()
+  const { wallets } = useKitWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
   return (
     <main>
-      {!isConnected ? (
+      {wallets.length === 0 ? (
         <Box flexDirection="column" alignItems="center" justifyContent="center" gap="5" height="vh">
           <Box background="white" padding="2" borderRadius="sm">
             <Image alt="Next" src="images/next.svg" height="3" disableAnimation />

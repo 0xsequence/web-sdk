@@ -1,4 +1,5 @@
 import { Box, Text } from '@0xsequence/design-system'
+
 import { useSelectPaymentModal } from '../../hooks'
 
 export const Footer = () => {

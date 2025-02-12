@@ -1,10 +1,13 @@
 import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
-import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
 
-export const CollectibleDetailsSkeleton = () => {
+interface CollectibleDetailsSkeletonProps {
+  isReadOnly: boolean
+}
+
+export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSkeletonProps) => {
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box
@@ -18,8 +21,8 @@ export const CollectibleDetailsSkeleton = () => {
         }}
       >
         <Box gap="3" alignItems="center" justifyContent="center" flexDirection="column">
-          <Skeleton style={{ width: '120px', height: '30px' }} />
-          <Skeleton style={{ width: '140px', height: '40px' }} />
+          <Skeleton style={{ width: '120px', height: '16px' }} />
+          <Skeleton style={{ width: '140px', height: '44px' }} />
         </Box>
         <Box>
           <Skeleton style={{ width: '100%', aspectRatio: '1/1' }} />
@@ -35,15 +38,17 @@ export const CollectibleDetailsSkeleton = () => {
               <Skeleton style={{ width: '34px', height: '17px' }} />
             </Box>
           </Box>
-          <Button
-            color="text100"
-            marginTop="4"
-            width="full"
-            variant="primary"
-            leftIcon={SendIcon}
-            label="Send"
-            onClick={() => {}}
-          />
+          {!isReadOnly && (
+            <Button
+              color="text100"
+              marginTop="4"
+              width="full"
+              variant="primary"
+              leftIcon={SendIcon}
+              label="Send"
+              onClick={() => {}}
+            />
+          )}
         </Box>
         <Box>
           <Text variant="normal" color="text50" fontWeight="medium">

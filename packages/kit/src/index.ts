@@ -43,13 +43,13 @@ export {
 
 // Utils
 export { getKitConnectWallets } from './utils/getKitConnectWallets'
-export { isEmailValid, compareAddress, formatDisplay, capitalize } from './utils/helpers'
+export { isEmailValid, compareAddress, formatDisplay, capitalize, truncateAtMiddle, formatAddress } from './utils/helpers'
 export { getNativeTokenInfoByChainId } from './utils/tokens'
 export { getModalPositionCss } from './utils/styling'
 export { getNetwork, getNetworkColor, getNetworkBackgroundColor } from './utils/networks'
 export { walletClientToSigner, publicClientToProvider } from './utils/adapters'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth'
-export { sendTransactions } from './utils/transactions'
+export { sendTransactions, waitForTransactionReceipt } from './utils/transactions'
 
 // Contexts
 export { useKitConfig, KitConfigContextProvider } from './contexts/KitConfig'
@@ -93,26 +93,47 @@ export { useMetadataClient } from './hooks/useMetadataClient'
 export { useIndexerClient, useIndexerClients } from './hooks/useIndexerClient'
 export { useStorage, useStorageItem } from './hooks/useStorage'
 export { useChain } from './hooks/useChain'
+export { useKitWallets } from './hooks/useKitWallets'
+export type { KitWallet } from './hooks/useKitWallets'
+export type { LinkedWallet } from '@0xsequence/api'
 export {
   getNativeTokenBalance,
   getCollectionBalance,
+  getCollectionBalanceDetails,
   getCoinPrices,
   getTransactionHistory,
   useBalances,
+  useBalancesSummary,
   useExchangeRate,
   getTokenBalances,
+  getTokenBalancesSummary,
+  getTokenBalancesDetails,
+  getTokenBalancesByContract,
   useCoinBalance,
+  useCoinBalanceSummary,
   useCoinPrices,
   useCollectionBalance,
+  useCollectionBalanceDetails,
   useCollectibleBalance,
+  useCollectibleBalanceDetails,
   useCollectiblePrices,
   useTokenMetadata,
   useContractInfo,
   useTransactionHistory,
   useSwapPrices,
-  useSwapQuote
+  useSwapQuote,
+  useClearCachedBalances,
+  useCurrencyInfo
 } from './hooks/data'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge'
 export { CollectibleTileImage } from './components/CollectibleTileImage'
+export { CryptoOption } from './components/CryptoOption'
+export { SelectedIndicator } from './components/SelectedIndicator'
+
+// Indexer
+export { ContractVerificationStatus } from '@0xsequence/indexer'
+
+// XXX
+export { DEBUG } from './env'

@@ -56,7 +56,6 @@ interface CreateConfigOptions {
     chainId: number
   }>
   ethAuth?: EthAuthSettings
-  isDev?: boolean
 
   wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
 
@@ -127,16 +126,18 @@ function App() {
 
 #### Need more customization?
 
-React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
+React apps must be wrapped by a WagmiProvider and the KitProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
 ```js
+import '@0xsequence/kit/styles.css'
+
 import Content from './components/Content'
 import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/kit'
+import { KitWalletProvider } from '@0xsequence/kit-wallet'
+import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
-
-import '@0xsequence/kit/styles.css'
 
 const projectAccessKey = '<your-project-access-key>'
 
@@ -199,7 +200,13 @@ function App() {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <KitProvider config={kitConfig}>
-          <Content />
+          {/* If you want to use wallet modal to show assets etc. */}
+          <KitWalletProvider>
+            {/* If you want to use checkout functionalities */}
+            <KitCheckoutProvider>
+              <Content />
+            </KitCheckoutProvider>
+          </KitWalletProvider>
         </KitProvider>
       </QueryClientProvider>
     </WagmiProvider>
@@ -213,7 +220,7 @@ function App() {
   <img src="public/docs/sign-in-modal.png">
 </div>
 
-Wallet selection is done through a modal which can be called programmatically.
+Wallet selection is done through a modal which can be called programmatically. Kit allows multiple connection, so it can be called again to connect more wallets.
 
 ```js
 import { useOpenConnectModal } from '@0xsequence/kit'
@@ -222,13 +229,13 @@ import { useDisconnect, useAccount } from 'wagmi'
 const MyReactComponent = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
 
-  const { isConnected } = useAccount()
+  const { wallets } = useKitWallets()
 
   const onClick = () => {
     setOpenConnectModal(true)
   }
 
-  return <>{!isConnected && <button onClick={onClick}>Sign in</button>}</>
+  return <>{!wallets.length && <button onClick={onClick}>Sign in</button>}</>
 }
 ```
 
@@ -243,6 +250,43 @@ import { useOpenConnectModal } from '@0xsequence/kit'
 // ...
 const { setOpenConnectModal } = useOpenConnectModal()
 setOpenConnectModal(true)
+```
+
+### useKitWallets
+
+Use the `useKitWallets` hook to manage multiple connected wallets in your application and see linked wallets of the connected embedded wallet. This hook is particularly useful when working with a combination of embedded and external wallets.
+
+```js
+import { useKitWallets } from '@0xsequence/kit'
+
+const {
+  wallets, // Array of connected wallets
+  linkedWallets, // Array of linked wallets (for embedded wallets)
+  setActiveWallet, // Function to set a wallet as active
+  disconnectWallet // Function to disconnect a wallet
+} = useKitWallets()
+
+/**
+ * Interface representing a connected wallet
+ */
+interface KitWallet {
+  /** Unique identifier */
+  id: string
+  /** Display name of the wallet */
+  name: string
+  /** Wallet address */
+  address: string
+  /** Whether this is the currently active wallet */
+  isActive: boolean
+  /** Whether this is an embedded wallet */
+  isEmbedded: boolean
+}
+
+// Switch to a different connected wallet
+await setActiveWallet(walletAddress)
+
+// Disconnect a specific wallet
+await disconnectWallet(walletAddress)
 ```
 
 ### useTheme
@@ -264,7 +308,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 ```js
 
-  const kitConfig =  {
+  const kitConfig = {
     defaultTheme: 'light',
     position: 'top-left',
     signIn: {
@@ -282,6 +326,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
         chainId: 137
       }
     ],
+    readOnlyNetworks: [10], // Display assets in wallet (kit/wallet) from Optimism (chain ID 10) in addition to the networks specified in chainIds
   }
 
   <KitProvider config={kitConfig}>
@@ -322,7 +367,7 @@ The React example can be used to test the library locally.
 
 2. `pnpm install`
 3. From the root folder, run `pnpm build` to build the packages OR optionally run `pnpm dev` in a separate terminal to develop in watch mode.
-4. From the root folder, run `pnpm dev:react` or `pnpm dev:next` to run the examples.
+4. From the root folder, run `pnpm dev:react` or `pnpm dev:next` to run the examples. If you want to run the examples in debug mode, run `pnpm debug:react`
 
 ## What to do next?
 

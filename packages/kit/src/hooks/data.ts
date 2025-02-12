@@ -1,17 +1,28 @@
-import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs } from '@0xsequence/api'
-import { ContractType, Page, SequenceIndexer, TokenBalance } from '@0xsequence/indexer'
+'use client'
+
+import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
+import {
+  ContractType,
+  Page,
+  SequenceIndexer,
+  TokenBalance,
+  ContractVerificationStatus,
+  GetTokenBalancesSummaryArgs,
+  GetTokenBalancesDetailsArgs,
+  GetTokenBalancesByContractArgs
+} from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { blobsToProofsErrorType, zeroAddress } from 'viem'
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { zeroAddress } from 'viem'
 
-import { compareAddress } from '../utils/helpers'
 import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
+import { compareAddress } from '../utils/helpers'
 
 import { useAPIClient } from './useAPIClient'
 import { useIndexerClient, useIndexerClients } from './useIndexerClient'
 import { useMetadataClient } from './useMetadataClient'
-import { indexer } from '0xsequence/dist/declarations/src/sequence'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -19,14 +30,36 @@ export const time = {
   oneHour: 60 * 60 * 1000
 }
 
+export const useClearCachedBalances = () => {
+  const queryClient = useQueryClient()
+
+  return {
+    clearCachedBalances: () => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          'balances',
+          'balancesSummary',
+          'coinBalance',
+          'coinBalanceSummary',
+          'collectibleBalance',
+          'collectibleBalanceDetails',
+          'collectionBalance',
+          'collectionBalanceDetails',
+          'transactionHistory'
+        ]
+      })
+    }
+  }
+}
+
 export const getNativeTokenBalance = async (indexerClient: SequenceIndexer, chainId: number, accountAddress: string) => {
-  const res = await indexerClient.getEtherBalance({ accountAddress })
+  const res = await indexerClient.getNativeTokenBalance({ accountAddress })
 
   const tokenBalance: TokenBalance = {
     chainId,
     contractAddress: zeroAddress,
     accountAddress,
-    balance: res?.balance.balanceWei || '0',
+    balance: res?.balance.balance || '0',
     contractType: ContractType.UNKNOWN,
     blockHash: '',
     blockNumber: 0,
@@ -59,6 +92,22 @@ export const getTokenBalances = async (indexerClient: SequenceIndexer, args: Get
   return res?.balances || []
 }
 
+export const getTokenBalancesSummary = async (indexerClient: SequenceIndexer, args: GetTokenBalancesSummaryArgs) => {
+  const res = await indexerClient.getTokenBalancesSummary(args)
+  return res?.balances || []
+}
+
+export const getTokenBalancesDetails = async (indexerClient: SequenceIndexer, args: GetTokenBalancesDetailsArgs) => {
+  const res = await indexerClient.getTokenBalancesDetails(args)
+  return res?.balances || []
+}
+
+export const getTokenBalancesByContract = async (indexerClient: SequenceIndexer, args: GetTokenBalancesByContractArgs) => {
+  const res = await indexerClient.getTokenBalancesByContract(args)
+  return res?.balances || []
+}
+
+/** @deprecated Use useBalancesSummary instead */
 export const getBalances = async (indexerClient: SequenceIndexer, chainId: number, args: GetTokenBalancesArgs) => {
   if (!args.accountAddress) {
     return []
@@ -76,10 +125,29 @@ export const getBalances = async (indexerClient: SequenceIndexer, chainId: numbe
   return balances
 }
 
+export const getBalancesSummary = async (indexerClient: SequenceIndexer, chainId: number, args: GetTokenBalancesSummaryArgs) => {
+  if (!args.filter.accountAddresses[0]) {
+    return []
+  }
+
+  const balances = (
+    await Promise.allSettled([
+      getNativeTokenBalance(indexerClient, chainId, args.filter.accountAddresses[0]),
+      getTokenBalancesSummary(indexerClient, args)
+    ])
+  )
+    .map(res => (res.status === 'fulfilled' ? res.value : []))
+    .flat()
+
+  return balances
+}
+
+/** @deprecated Use useBalancesSummaryArgs instead */
 interface UseBalancesArgs extends GetTokenBalancesArgs {
   chainIds: number[]
 }
 
+/** @deprecated Use useBalancesSummary instead */
 // Gets native and token balances
 export const useBalances = ({ chainIds, ...args }: UseBalancesArgs) => {
   const indexerClients = useIndexerClients(chainIds)
@@ -101,10 +169,37 @@ export const useBalances = ({ chainIds, ...args }: UseBalancesArgs) => {
   })
 }
 
+interface UseBalancesSummaryArgs extends GetTokenBalancesSummaryArgs {
+  chainIds: number[]
+}
+
+// Gets native and token balances
+export const useBalancesSummary = ({ chainIds, ...args }: UseBalancesSummaryArgs) => {
+  const indexerClients = useIndexerClients(chainIds)
+
+  return useQuery({
+    queryKey: ['balancesSummary', chainIds, args],
+    queryFn: async () => {
+      const res = (
+        await Promise.all(
+          Array.from(indexerClients.entries()).map(([chainId, indexerClient]) => getBalancesSummary(indexerClient, chainId, args))
+        )
+      ).flat()
+
+      return res
+    },
+    retry: true,
+    staleTime: time.oneSecond * 30,
+    enabled: chainIds.length > 0 && !!args.filter.accountAddresses[0]
+  })
+}
+
+/** @deprecated Use useCoinBalanceSummary instead */
 interface UseCoinBalanceArgs extends GetTokenBalancesArgs {
   chainId: number
 }
 
+/** @deprecated Use useCoinBalanceSummaryArgs instead */
 export const useCoinBalance = (args: UseCoinBalanceArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
@@ -125,6 +220,31 @@ export const useCoinBalance = (args: UseCoinBalanceArgs) => {
   })
 }
 
+interface UseCoinBalanceSummaryArgs extends GetTokenBalancesSummaryArgs {
+  chainId: number
+}
+
+export const useCoinBalanceSummary = (args: UseCoinBalanceSummaryArgs) => {
+  const indexerClient = useIndexerClient(args.chainId)
+
+  return useQuery({
+    queryKey: ['coinBalanceSummary', args],
+    queryFn: async () => {
+      if (compareAddress(args?.filter.contractWhitelist[0] || '', zeroAddress)) {
+        const res = await getNativeTokenBalance(indexerClient, args.chainId, args.filter.accountAddresses[0] || '')
+        return res
+      } else {
+        const res = await getTokenBalancesSummary(indexerClient, args)
+        return res[0]
+      }
+    },
+    retry: true,
+    staleTime: time.oneSecond * 30,
+    enabled: !!args.chainId && !!args.filter.accountAddresses[0]
+  })
+}
+
+/** @deprecated Use useCollectibleBalanceDetailsArgs instead */
 interface UseCollectibleBalanceArgs {
   accountAddress: string
   chainId: number
@@ -133,6 +253,7 @@ interface UseCollectibleBalanceArgs {
   verifiedOnly?: boolean
 }
 
+/** @deprecated Use useCollectibleBalanceDetails instead */
 export const useCollectibleBalance = (args: UseCollectibleBalanceArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
@@ -157,6 +278,30 @@ export const useCollectibleBalance = (args: UseCollectibleBalanceArgs) => {
   })
 }
 
+interface UseCollectibleBalanceDetailsArgs extends GetTokenBalancesDetailsArgs {
+  chainId: number
+  tokenId: string
+}
+
+export const useCollectibleBalanceDetails = (args: UseCollectibleBalanceDetailsArgs) => {
+  const indexerClient = useIndexerClient(args.chainId)
+
+  return useQuery({
+    queryKey: ['collectibleBalanceDetails', args],
+    queryFn: async () => {
+      const res = await indexerClient.getTokenBalancesDetails(args)
+
+      const balance = res.balances.find(balance => balance.tokenID === args.tokenId)
+
+      return balance
+    },
+    retry: true,
+    staleTime: time.oneSecond * 30,
+    enabled: !!args.chainId && !!args.filter.accountAddresses[0] && !!args.filter.contractWhitelist[0] && !!args.tokenId
+  })
+}
+
+/** @deprecated Use getCollectionBalanceDetails instead */
 export const getCollectionBalance = async (indexerClient: SequenceIndexer, args: UseCollectionBalanceArgs) => {
   const res = await indexerClient.getTokenBalances({
     accountAddress: args.accountAddress,
@@ -170,6 +315,7 @@ export const getCollectionBalance = async (indexerClient: SequenceIndexer, args:
   return res?.balances || []
 }
 
+/** @deprecated Use useCollectionBalanceArgs instead */
 interface UseCollectionBalanceArgs {
   chainId: number
   accountAddress: string
@@ -178,6 +324,7 @@ interface UseCollectionBalanceArgs {
   verifiedOnly?: boolean
 }
 
+/** @deprecated Use useCollectionBalanceDetails instead */
 export const useCollectionBalance = (args: UseCollectionBalanceArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
@@ -187,6 +334,28 @@ export const useCollectionBalance = (args: UseCollectionBalanceArgs) => {
     retry: true,
     staleTime: time.oneSecond * 30,
     enabled: !!args.chainId && !!args.accountAddress && !!args.contractAddress
+  })
+}
+
+export const getCollectionBalanceDetails = async (indexerClient: SequenceIndexer, args: UseCollectionBalanceDetailsArgs) => {
+  const res = await indexerClient.getTokenBalancesDetails(args)
+
+  return res?.balances || []
+}
+
+interface UseCollectionBalanceDetailsArgs extends GetTokenBalancesDetailsArgs {
+  chainId: number
+}
+
+export const useCollectionBalanceDetails = (args: UseCollectionBalanceDetailsArgs) => {
+  const indexerClient = useIndexerClient(args.chainId)
+
+  return useQuery({
+    queryKey: ['collectionBalanceDetails', args],
+    queryFn: () => getCollectionBalanceDetails(indexerClient, args),
+    retry: true,
+    staleTime: time.oneSecond * 30,
+    enabled: !!args.chainId && !!args.filter.accountAddresses[0] && !!args.filter.contractWhitelist[0]
   })
 }
 
@@ -388,7 +557,7 @@ const getSwapPrices = async (
     const { withContractInfo, ...swapPricesArgs } = args
 
     const res = await apiClient.getSwapPrices({
-      ...swapPricesArgs,
+      ...swapPricesArgs
     })
 
     if (res.swapPrices === null) {
@@ -399,36 +568,34 @@ const getSwapPrices = async (
     if (withContractInfo) {
       res?.swapPrices.forEach(price => {
         const { currencyAddress: rawCurrencyAddress } = price
-        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
-          ? zeroAddress
-          : rawCurrencyAddress
+        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X) ? zeroAddress : rawCurrencyAddress
         const isNativeToken = compareAddress(currencyAddress, zeroAddress)
         if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
-          const getNativeTokenInfo = () =>new Promise<ContractInfo>((resolve, reject) => {
-            resolve({
-              ...network?.nativeToken,
-            logoURI: network?.logoURI || '',
-            address: zeroAddress
-            } as ContractInfo)
-          })
+          const getNativeTokenInfo = () =>
+            new Promise<ContractInfo>(resolve => {
+              resolve({
+                ...network?.nativeToken,
+                logoURI: network?.logoURI || '',
+                address: zeroAddress
+              } as ContractInfo)
+            })
 
           currencyInfoMap.set(
             currencyAddress,
-            isNativeToken ? 
-            getNativeTokenInfo().then(data => {
-              return data
-            })
-        :
-            metadataClient
-              .getContractInfo({
-                chainID: String(args.chainId),
-                contractAddress: currencyAddress
-              })
-              .then(data => {
-                return ({
-                  ...data.contractInfo,
+            isNativeToken
+              ? getNativeTokenInfo().then(data => {
+                  return data
                 })
-              })
+              : metadataClient
+                  .getContractInfo({
+                    chainID: String(args.chainId),
+                    contractAddress: currencyAddress
+                  })
+                  .then(data => {
+                    return {
+                      ...data.contractInfo
+                    }
+                  })
           )
         }
       })
@@ -437,34 +604,33 @@ const getSwapPrices = async (
     const currencyBalanceInfoMap = new Map<string, Promise<Balance>>()
     res?.swapPrices.forEach(price => {
       const { currencyAddress: rawCurrencyAddress } = price
-      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
-        ? zeroAddress
-        : rawCurrencyAddress
+      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X) ? zeroAddress : rawCurrencyAddress
       const isNativeToken = compareAddress(currencyAddress, zeroAddress)
+
       if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
         currencyBalanceInfoMap.set(
           currencyAddress,
-          isNativeToken ?
-            indexerClient.getEtherBalance({
-              accountAddress: args.userAddress
-            }).then(res => ({
-              balance: res.balance.balanceWei
-            }))
-          :
-          indexerClient
-            .getTokenBalances({
-              accountAddress: args.userAddress,
-              contractAddress: currencyAddress,
-              includeMetadata: false,
-              metadataOptions: {
-                verifiedOnly: true
-              }
-            })
-            .then(balances => {
-              return ({
-                balance: balances.balances?.[0].balance || '0'
-              })
-            })
+          isNativeToken
+            ? indexerClient
+                .getNativeTokenBalance({
+                  accountAddress: args.userAddress
+                })
+                .then(res => ({
+                  balance: res.balance.balance
+                }))
+            : indexerClient
+                .getTokenBalancesSummary({
+                  filter: {
+                    accountAddresses: [args.userAddress],
+                    contractStatus: ContractVerificationStatus.VERIFIED,
+                    contractWhitelist: [currencyAddress],
+                    contractBlacklist: []
+                  },
+                  omitMetadata: true
+                })
+                .then(res => ({
+                  balance: res.balances?.[0].balance || '0'
+                }))
         )
       }
     })
@@ -472,18 +638,16 @@ const getSwapPrices = async (
     return Promise.all(
       res?.swapPrices.map(async price => {
         const { currencyAddress: rawCurrencyAddress } = price
-        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X)
-          ? zeroAddress
-          : rawCurrencyAddress
+        const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X) ? zeroAddress : rawCurrencyAddress
 
-        return ({
+        return {
           price: {
             ...price,
             currencyAddress
           },
           info: (await currencyInfoMap.get(currencyAddress)) || undefined,
           balance: (await currencyBalanceInfoMap.get(currencyAddress)) || { balance: '0' }
-        })
+        }
       }) || []
     )
   } catch (e) {
@@ -510,7 +674,12 @@ export const useSwapPrices = (args: UseSwapPricesArgs, options: SwapPricesOption
   const indexerClient = useIndexerClient(args.chainId)
 
   const enabled =
-    !!args.chainId && !!args.userAddress && !!args.buyCurrencyAddress && !!args.buyAmount && args.buyAmount !== '0' && !options.disabled
+    !!args.chainId &&
+    !!args.userAddress &&
+    !!args.buyCurrencyAddress &&
+    !!args.buyAmount &&
+    args.buyAmount !== '0' &&
+    !options.disabled
 
   return useQuery({
     queryKey: ['swapPrices', args],
@@ -527,7 +696,7 @@ interface UseSwapQuoteOptions {
   disabled?: boolean
 }
 
-export const useSwapQuote  = (args:GetSwapQuoteArgs,  options: UseSwapQuoteOptions) => {
+export const useSwapQuote = (args: GetSwapQuoteArgs, options: UseSwapQuoteOptions) => {
   const apiClient = useAPIClient()
   const { disabled = false } = options
 
@@ -554,5 +723,156 @@ export const useSwapQuote  = (args:GetSwapQuoteArgs,  options: UseSwapQuoteOptio
     retry: true,
     staleTime: time.oneMinute * 1,
     enabled: !disabled || !args.userAddress || !args.chainId || !args.buyCurrencyAddress
+  })
+}
+
+interface UseLinkedWalletsOptions {
+  enabled?: boolean
+}
+
+// Create a stable storage key from args
+const createStorageKey = (args: GetLinkedWalletsArgs): string =>
+  `@0xsequence.linked_wallets-${args.parentWalletAddress}-${args.signatureChainId}`
+
+const getLinkedWallets = async (
+  apiClient: SequenceAPIClient,
+  args: GetLinkedWalletsArgs,
+  headers?: object,
+  signal?: AbortSignal
+): Promise<Array<LinkedWallet>> => {
+  const storageKey = createStorageKey(args)
+  const now = Date.now()
+
+  // Check localStorage for cached data
+  const stored = localStorage.getItem(storageKey)
+  if (stored) {
+    try {
+      const { data, timestamp } = JSON.parse(stored)
+      // Check if cache is still valid (5 minutes)
+      if (now - timestamp <= 5 * 60 * 1000) {
+        return data
+      }
+    } catch (error) {
+      console.error('Error parsing stored linked wallets:', error)
+    }
+  }
+
+  // If no valid cache, fetch new data
+  const result = await apiClient.getLinkedWallets(args, headers, signal)
+  const linkedWallets = result.linkedWallets
+
+  // Store in localStorage with timestamp
+  localStorage.setItem(
+    storageKey,
+    JSON.stringify({
+      data: linkedWallets,
+      timestamp: now
+    })
+  )
+
+  return linkedWallets
+}
+
+export interface UseLinkedWalletsResult {
+  data: LinkedWallet[] | undefined
+  isLoading: boolean
+  error: Error | null
+  refetch: () => Promise<void>
+  clearCache: () => void
+}
+
+export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}): UseLinkedWalletsResult => {
+  const apiClient = useAPIClient()
+  const [data, setData] = useState<LinkedWallet[] | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
+  const abortControllerRef = useRef<AbortController>()
+
+  const fetchData = useCallback(async () => {
+    if (!options.enabled) return
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      // Cancel any ongoing request
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = new AbortController()
+
+      const linkedWallets = await getLinkedWallets(apiClient, args, undefined, abortControllerRef.current.signal)
+
+      setData(linkedWallets)
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name !== 'AbortError') {
+        setError(error)
+      } else if (error && typeof error === 'object' && 'name' in error && error.name !== 'AbortError') {
+        setError(new Error('Failed to fetch linked wallets'))
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }, [apiClient, args.parentWalletAddress, args.signatureChainId, options.enabled])
+
+  // Fetch on mount and when dependencies change
+  useEffect(() => {
+    fetchData()
+    return () => {
+      abortControllerRef.current?.abort()
+    }
+  }, [fetchData])
+
+  const clearCache = useCallback(() => {
+    localStorage.removeItem(createStorageKey(args))
+  }, [args])
+
+  const refetch = async () => {
+    clearCache()
+    await fetchData()
+  }
+
+  return {
+    data,
+    isLoading,
+    error,
+    refetch,
+    clearCache
+  }
+}
+
+interface UseCurrencyInfoArgs {
+  chainId: number
+  currencyAddress: string
+}
+
+export const useCurrencyInfo = (args: UseCurrencyInfoArgs) => {
+  const metadataClient = useMetadataClient()
+
+  return useQuery({
+    queryKey: ['currencyInfo', args],
+    queryFn: async () => {
+      const network = findSupportedNetwork(args.chainId)
+
+      const isNativeToken = compareAddress(args.currencyAddress, zeroAddress)
+
+      if (isNativeToken) {
+        return {
+          ...network?.nativeToken,
+          logoURI: network?.logoURI || '',
+          address: zeroAddress
+        } as ContractInfo
+      }
+
+      const res = await metadataClient.getContractInfo({
+        chainID: String(args.chainId),
+        contractAddress: args.currencyAddress
+      })
+
+      return {
+        ...res.contractInfo
+      }
+    },
+    retry: true,
+    staleTime: time.oneMinute * 10,
+    enabled: !!args.chainId && !!args.currencyAddress
   })
 }

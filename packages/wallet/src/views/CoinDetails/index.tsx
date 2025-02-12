@@ -1,13 +1,15 @@
-import { Box, Button, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
 import {
+  compareAddress,
+  formatDisplay,
   getNativeTokenInfoByChainId,
   useExchangeRate,
   useCoinPrices,
   useTransactionHistory,
-  useCoinBalance
+  useCoinBalanceSummary,
+  ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -15,7 +17,7 @@ import { useSettings, useNavigation } from '../../hooks'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
-import { compareAddress, computeBalanceFiat, formatDisplay, flattenPaginatedTransactionHistory } from '../../utils'
+import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CoinDetailsSkeleton } from './Skeleton'
 
@@ -29,6 +31,8 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const { setNavigation } = useNavigation()
   const { fiatCurrency, hideUnlistedTokens } = useSettings()
   const { address: accountAddress } = useAccount()
+
+  const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 
   const {
     data: dataTransactionHistory,
@@ -44,11 +48,14 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useCoinBalance({
-    accountAddress: accountAddress || '',
-    contractAddress,
-    chainId,
-    verifiedOnly: hideUnlistedTokens
+  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useCoinBalanceSummary({
+    filter: {
+      accountAddresses: [accountAddress || ''],
+      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractWhitelist: [contractAddress],
+      contractBlacklist: []
+    },
+    chainId
   })
 
   const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useCoinPrices([
@@ -63,7 +70,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 
   if (isPending) {
-    return <CoinDetailsSkeleton chainId={chainId} />
+    return <CoinDetailsSkeleton chainId={chainId} isReadOnly={isReadOnly} />
   }
 
   const isNativeToken = compareAddress(contractAddress, ethers.ZeroAddress)
@@ -93,6 +100,15 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     })
   }
 
+  const onClickSwap = () => {
+    setNavigation({
+      location: 'swap-coin',
+      params: {
+        chainId,
+        contractAddress
+      }
+    })
+  }
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
       <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
@@ -112,7 +128,12 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
             <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </Box>
         </Box>
-        <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
+        {!isReadOnly && (
+          <Box gap="2">
+            <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
+            <Button width="full" variant="primary" leftIcon={SwapIcon} color="text100" label="Buy" onClick={onClickSwap} />
+          </Box>
+        )}
         <Box>
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList

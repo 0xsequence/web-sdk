@@ -1,7 +1,8 @@
 import { Hex } from 'viem'
 
-import { createGenericContext } from './genericContext'
 import type { TransakConfig } from '../contexts/CheckoutModal'
+
+import { createGenericContext } from './genericContext'
 
 export type CreditCardProviders = 'sardine' | 'transak'
 
@@ -10,7 +11,7 @@ export interface Collectible {
   quantity: string
   decimals?: number
   price?: string
- }
+}
 
 export interface SelectPaymentSettings {
   collectibles: Collectible[]
@@ -22,7 +23,6 @@ export interface SelectPaymentSettings {
   collectionAddress: string | Hex
   recipientAddress: string | Hex
   approvedSpenderAddress?: string
-  isDev?: boolean
   transactionConfirmations?: number
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void

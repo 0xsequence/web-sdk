@@ -5,28 +5,23 @@ import {
   useIndexerClient,
   signEthAuthProof,
   validateEthProof,
-  getModalPositionCss
+  getModalPositionCss,
+  useOpenConnectModal,
+  ContractVerificationStatus,
+  useKitWallets
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
-import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
+import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
 import { formatUnits, parseUnits } from 'viem'
-import {
-  useAccount,
-  useChainId,
-  useConnections,
-  usePublicClient,
-  useSendTransaction,
-  useWalletClient,
-  useWriteContract
-} from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
-import { sponsoredContractAddresses, getErc1155SaleContractConfig } from '../config'
+import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
@@ -36,6 +31,8 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
+  const { setOpenConnectModal } = useOpenConnectModal()
+
   const { address } = useAccount()
   const { openSwapModal } = useSwapModal()
   const { setOpenWalletModal } = useOpenWalletModal()
@@ -51,9 +48,8 @@ export const Connected = () => {
   const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
   const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
-  const connections = useConnections()
-
-  const isWaasConnection = connections.find(c => c.connector.id.includes('waas')) !== undefined
+  const { wallets, setActiveWallet, disconnectWallet } = useKitWallets()
+  const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
 
   const {
     data: txnData,
@@ -74,6 +70,9 @@ export const Connected = () => {
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
+  const [isSigningTypedData, setIsSigningTypedData] = React.useState(false)
+  const [typedDataSig, setTypedDataSig] = React.useState<string | undefined>()
+  const [isTypedDataValid, setIsTypedDataValid] = React.useState<boolean | undefined>()
 
   const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
@@ -132,10 +131,15 @@ export const Connected = () => {
   const checkTokenBalancesForFeeOptions = async () => {
     if (pendingFeeOptionConfirmation && walletClient) {
       const [account] = await walletClient.getAddresses()
-      const nativeTokenBalance = await indexerClient.getEtherBalance({ accountAddress: account })
+      const nativeTokenBalance = await indexerClient.getNativeTokenBalance({ accountAddress: account })
 
-      const tokenBalances = await indexerClient.getTokenBalances({
-        accountAddress: account
+      const tokenBalances = await indexerClient.getTokenBalancesSummary({
+        filter: {
+          accountAddresses: [account],
+          contractStatus: ContractVerificationStatus.ALL,
+          contractWhitelist: [],
+          contractBlacklist: []
+        }
       })
 
       const balances = pendingFeeOptionConfirmation.options.map(option => {
@@ -143,7 +147,7 @@ export const Connected = () => {
           return {
             tokenName: option.token.name,
             decimals: option.token.decimals || 0,
-            balance: nativeTokenBalance.balance.balanceWei
+            balance: nativeTokenBalance.balance.balance
           }
         } else {
           return {
@@ -191,6 +195,69 @@ export const Connected = () => {
       setLastTxnDataHash3((txnData3 as any).hash ?? txnData3)
     }
   }, [txnData, txnData2, txnData3])
+
+  const domain = {
+    name: 'Sequence Example',
+    version: '1',
+    chainId: chainId,
+    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  } as const
+
+  const types = {
+    Person: [
+      { name: 'name', type: 'string' },
+      { name: 'wallet', type: 'address' }
+    ]
+  } as const
+
+  const value = {
+    name: 'John Doe',
+    wallet: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  } as const
+
+  const signTypedData = async () => {
+    if (!walletClient || !address || !publicClient) {
+      return
+    }
+
+    setIsSigningTypedData(true)
+
+    try {
+      const sig = await walletClient.signTypedData({
+        account: address,
+        domain,
+        types,
+        primaryType: 'Person',
+        message: value
+      })
+
+      console.log('signature:', sig)
+
+      const [account] = await walletClient.getAddresses()
+
+      const isValid = await publicClient.verifyTypedData({
+        address: account,
+        domain,
+        types,
+        primaryType: 'Person',
+        message: value,
+        signature: sig
+      })
+
+      console.log('isValid?', isValid)
+
+      setTypedDataSig(sig)
+      setIsTypedDataValid(isValid)
+      setIsSigningTypedData(false)
+    } catch (e) {
+      setIsSigningTypedData(false)
+      if (e instanceof Error) {
+        console.error(e.cause)
+      } else {
+        console.error(e)
+      }
+    }
+  }
 
   const signMessage = async () => {
     if (!walletClient || !publicClient) {
@@ -358,7 +425,6 @@ export const Connected = () => {
         contractId,
         apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
       },
-      isDev: false,
       copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash: string) => {
         console.log('success!', txnHash)
@@ -391,7 +457,6 @@ export const Connected = () => {
         nftId: checkoutTokenId,
         nftAddress: checkoutTokenContractAddress,
         nftQuantity,
-        isDev: true,
         approvedSpenderAddress: orderbookAddress,
         calldata: getOrderbookCalldata({
           orderId: checkoutOrderId,
@@ -409,16 +474,21 @@ export const Connected = () => {
     })
   }
 
+  const onClickConnect = () => {
+    setOpenConnectModal(true)
+  }
+
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
     setLastTxnDataHash3(undefined)
     setIsMessageValid(undefined)
+    setTypedDataSig(undefined)
     resetWriteContract()
     resetSendUnsponsoredTransaction()
     resetSendTransaction()
     setFeeOptionBalances([])
-  }, [chainId])
+  }, [chainId, address])
 
   return (
     <>
@@ -427,21 +497,40 @@ export const Connected = () => {
       <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4" style={{ maxWidth: breakpoints.md }}>
           <Box flexDirection="column" gap="2">
-            <Text variant="small" color="text50" fontWeight="medium">
+            <Box marginY="3" flexDirection="column" gap="2">
+              <Text fontWeight="semibold" variant="small" color="text50">
+                Connected Wallets
+              </Text>
+              {[...wallets]
+                .sort((a, b) => {
+                  // Sort embedded wallet to the top
+                  if (a.isEmbedded && !b.isEmbedded) return -1
+                  if (!a.isEmbedded && b.isEmbedded) return 1
+                  return 0
+                })
+                .map(wallet => (
+                  <WalletListItem
+                    key={wallet.id}
+                    id={wallet.id}
+                    name={wallet.name}
+                    address={wallet.address}
+                    isActive={wallet.isActive}
+                    isEmbedded={wallet.isEmbedded}
+                    onSelect={() => setActiveWallet(wallet.address)}
+                    onDisconnect={() => disconnectWallet(wallet.address)}
+                  />
+                ))}
+            </Box>
+
+            <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
+              <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+            </Box>
+
+            <Text variant="small" color="text50" fontWeight="medium" marginTop="6">
               Demos
             </Text>
-            {/* <CardButton
-        title="NFT Checkout"
-        description="NFT Checkout testing"
-        onClick={onClickCheckout}
-      /> */}
-            <CardButton
-              title="Inventory"
-              description="Connect a Sequence wallet to view, swap, send, and receive collections"
-              onClick={() => setOpenWalletModal(true)}
-            />
-
-            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
+            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
+            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"
                 description="Send a transaction with your wallet without paying any fees"
@@ -503,6 +592,36 @@ export const Connected = () => {
                 </Text>
                 <Text variant="medium">
                   isValid: <Text variant="code">{isMessageValid.toString()}</Text>
+                </Text>
+              </Card>
+            )}
+            <CardButton
+              title="Sign typed data"
+              description="Sign typed data with your wallet"
+              onClick={signTypedData}
+              isPending={isSigningTypedData}
+            />
+            {typedDataSig && (
+              <Card style={{ width: '332px' }} color={'text100'} flexDirection={'column'} gap={'2'}>
+                <Text variant="medium">Signed typed data:</Text>
+                <Text variant="code" as="p">
+                  {JSON.stringify(
+                    {
+                      domain,
+                      types,
+                      primaryType: 'Person',
+                      message: value
+                    },
+                    null,
+                    2
+                  )}
+                </Text>
+                <Text variant="medium">Signature:</Text>
+                <Text variant="code" as="p" ellipsis>
+                  {typedDataSig}
+                </Text>
+                <Text variant="medium">
+                  isValid: <Text variant="code">{isTypedDataValid?.toString()}</Text>
                 </Text>
               </Card>
             )}
@@ -636,7 +755,7 @@ export const Connected = () => {
             </Box>
           )}
 
-          {isWaasConnection && (
+          {isWaasConnectionActive && (
             <Box marginY="3">
               <Box as="label" flexDirection="row" alignItems="center" justifyContent="space-between">
                 <Text fontWeight="semibold" variant="small" color="text50">

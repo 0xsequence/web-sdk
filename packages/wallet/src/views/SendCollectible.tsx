@@ -14,17 +14,18 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
   ExtendedConnector,
-  useCollectibleBalance,
+  truncateAtMiddle,
+  useCollectibleBalanceDetails,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React, { useRef, useState, ChangeEvent, useEffect } from 'react'
+import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
@@ -32,7 +33,7 @@ import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { limitDecimals, isEthAddress, truncateAtMiddle } from '../utils'
+import { limitDecimals, isEthAddress } from '../utils'
 
 interface SendCollectibleProps {
   chainId: number
@@ -68,14 +69,17 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
   const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, rejectFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalance({
-    accountAddress,
+  const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalanceDetails({
+    filter: {
+      accountAddresses: [accountAddress],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [contractAddress],
+      contractBlacklist: []
+    },
     chainId,
-    contractAddress,
-    tokenId,
-    verifiedOnly: false
+    tokenId
   })
   const { contractType } = tokenBalance as TokenBalance
 

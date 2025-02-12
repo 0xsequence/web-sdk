@@ -1,12 +1,11 @@
 import { Box, Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
-import { compareAddress, formatDisplay } from '../../../utils'
 
 interface BalanceItemProps {
   balance: TokenBalance
@@ -23,7 +22,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
 
   const getQuantity = () => {
     if (balance.contractType === 'ERC721' || balance.contractType === 'ERC1155') {
-      return balance.balance
+      return balance.uniqueCollectibles
     }
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
     const bal = ethers.formatUnits(balance.balance, decimals || 0)
@@ -72,8 +71,8 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
           {tokenName}
         </Text>
       </Box>
-      <Box flexDirection="row" alignItems="center" justifyContent="center" gap="1">
-        <Text variant="normal" color="text50" fontWeight="bold" textAlign="right" whiteSpace="nowrap">
+      <Box flexDirection="row" alignItems="center" justifyContent="center" gap="1" maxWidth="1/2">
+        <Text variant="normal" color="text50" fontWeight="bold" textAlign="right" whiteSpace="nowrap" ellipsis>
           {getQuantity()}
         </Text>
         <ChevronRightIcon color="text50" />

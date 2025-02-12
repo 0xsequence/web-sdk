@@ -13,7 +13,14 @@ enum ValueType {
   MIXED
 }
 
-export const formatDisplay = (_val: number | string): string => {
+interface FormatDisplayOptions {
+  disableScientificNotation?: boolean
+  disableCompactNotation?: boolean
+  significantDigits?: number
+  maximumFractionDigits?: number
+}
+
+export const formatDisplay = (_val: number | string, options?: FormatDisplayOptions): string => {
   if (isNaN(Number(_val))) {
     console.error(`display format error ${_val} is not a number`)
     return 'NaN'
@@ -28,9 +35,17 @@ export const formatDisplay = (_val: number | string): string => {
   let valMode: ValueType
 
   if (val > 100000000) {
-    valMode = ValueType.VERY_LARGE
+    if (options?.disableCompactNotation) {
+      valMode = ValueType.MIXED
+    } else {
+      valMode = ValueType.VERY_LARGE
+    }
   } else if (val < 0.0000000001) {
-    valMode = ValueType.VERY_TINY
+    if (options?.disableScientificNotation) {
+      valMode = ValueType.FRACTION
+    } else {
+      valMode = ValueType.VERY_TINY
+    }
   } else if (val < 1) {
     valMode = ValueType.FRACTION
   } else {
@@ -40,29 +55,35 @@ export const formatDisplay = (_val: number | string): string => {
   let notation: Intl.NumberFormatOptions['notation'] = undefined
   let config: Pick<Intl.NumberFormatOptions, 'maximumFractionDigits' | 'maximumSignificantDigits'>
 
+  const maximumSignificantDigits = options?.significantDigits ?? 4
+
   switch (valMode) {
     case ValueType.VERY_LARGE:
       notation = 'compact'
       config = {
-        maximumFractionDigits: 4
+        maximumSignificantDigits,
+        maximumFractionDigits: options?.maximumFractionDigits
       }
       break
     case ValueType.VERY_TINY:
       notation = 'scientific'
       config = {
-        maximumFractionDigits: 4
+        maximumSignificantDigits,
+        maximumFractionDigits: options?.maximumFractionDigits
       }
       break
     case ValueType.FRACTION:
       notation = 'standard'
       config = {
-        maximumSignificantDigits: 4
+        maximumSignificantDigits,
+        maximumFractionDigits: options?.maximumFractionDigits
       }
       break
     default:
       notation = 'standard'
       config = {
-        maximumFractionDigits: 2
+        maximumSignificantDigits,
+        maximumFractionDigits: options?.maximumFractionDigits
       }
   }
 
@@ -74,4 +95,18 @@ export const formatDisplay = (_val: number | string): string => {
 
 export const capitalize = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1)
+}
+
+export const truncateAtMiddle = (text: string, truncateAt: number) => {
+  let finalText = text
+
+  if (text.length >= truncateAt) {
+    finalText = text.slice(0, truncateAt / 2) + '...' + text.slice(text.length - truncateAt / 2, text.length)
+  }
+
+  return finalText
+}
+
+export const formatAddress = (text: string) => {
+  return `0x${truncateAtMiddle(text?.substring(2) || '', 8)}`
 }

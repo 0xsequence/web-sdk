@@ -23,7 +23,6 @@ export const kitConfig: KitConfig = {
     projectName: 'Kit Demo',
     useMock: isDebugMode
   },
-  isDev: isDebugMode,
   displayedAssets: [
     // Native token
     {
@@ -50,7 +49,8 @@ export const kitConfig: KitConfig = {
       contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
       chainId: ChainId.POLYGON
     }
-  ]
+  ],
+  readOnlyNetworks: [ChainId.OPTIMISM]
 }
 
 export const config =
@@ -89,6 +89,7 @@ export const config =
         appName: 'Kit Demo',
         chainIds: [
           ChainId.ARBITRUM_NOVA,
+          ChainId.ARBITRUM,
           ChainId.ARBITRUM_SEPOLIA,
           ChainId.POLYGON,
           ChainId.IMMUTABLE_ZKEVM,
@@ -110,10 +111,13 @@ export const getErc1155SaleContractConfig = (walletAddress: string) => ({
   // contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
   // collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
   wallet: walletAddress,
-  items: [{
-    tokenId: '1',
-    quantity: '1'
-  }],
-  onSuccess: () => { console.log('success') },
-  isDev: isDebugMode
+  items: [
+    {
+      tokenId: '1',
+      quantity: '1'
+    }
+  ],
+  onSuccess: () => {
+    console.log('success')
+  }
 })

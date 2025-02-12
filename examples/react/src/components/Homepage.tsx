@@ -1,7 +1,7 @@
 import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
-import { useOpenConnectModal, WalletType } from '@0xsequence/kit'
+import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
-import { useAccount } from 'wagmi'
+import { useConnections } from 'wagmi'
 
 import { Connected } from './Connected'
 
@@ -11,7 +11,8 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 
 export const Homepage = () => {
   const { theme } = useTheme()
-  const { isConnected } = useAccount()
+
+  const { wallets } = useKitWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
   const handleSwitchWalletType = (type: WalletType) => {
@@ -27,7 +28,7 @@ export const Homepage = () => {
 
   return (
     <main>
-      {!isConnected ? (
+      {wallets.length === 0 ? (
         <Box flexDirection="column" alignItems="center" justifyContent="center" gap="5" height="vh">
           <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
             <Image style={{ width: '48px' }} src="images/kit-logo.svg" />

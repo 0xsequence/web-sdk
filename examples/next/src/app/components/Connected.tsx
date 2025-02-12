@@ -1,7 +1,16 @@
 import { Box, Text, Card, Button, Select } from '@0xsequence/design-system'
-import { signEthAuthProof, useIndexerClient, useStorage, useWaasFeeOptions, validateEthProof } from '@0xsequence/kit'
+import {
+  signEthAuthProof,
+  useIndexerClient,
+  useKitWallets,
+  useStorage,
+  useWaasFeeOptions,
+  validateEthProof,
+  ContractVerificationStatus,
+  useOpenConnectModal
+} from '@0xsequence/kit'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
-import { CardButton, Header } from '@0xsequence/kit-example-shared-components'
+import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
 import { ethers } from 'ethers'
@@ -16,11 +25,17 @@ import { abi } from '@/constants/nft-abi'
 
 export const Connected = () => {
   const { address } = useAccount()
+  const { setOpenConnectModal } = useOpenConnectModal()
   const { setOpenWalletModal } = useOpenWalletModal()
-  // const { setOpenConnectModal } = useOpenConnectModal()
-  // const { triggerCheckout } = useCheckoutModal()
+
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
+
+  const { wallets, setActiveWallet, disconnectWallet } = useKitWallets()
+
+  const onClickConnect = () => {
+    setOpenConnectModal(true)
+  }
 
   const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error: sendTransactionError } = useSendTransaction()
   const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
@@ -85,22 +100,23 @@ export const Connected = () => {
   const checkTokenBalancesForFeeOptions = async () => {
     if (pendingFeeOptionConfirmation) {
       const [account] = await walletClient!.getAddresses()
-      const nativeTokenBalance = await indexerClient.getEtherBalance({ accountAddress: account })
+      const nativeTokenBalance = await indexerClient.getNativeTokenBalance({ accountAddress: account })
 
-      const tokenBalances = await indexerClient.getTokenBalances({
-        accountAddress: account
+      const tokenBalances = await indexerClient.getTokenBalancesSummary({
+        filter: {
+          accountAddresses: [account],
+          contractStatus: ContractVerificationStatus.ALL,
+          contractWhitelist: [],
+          contractBlacklist: []
+        }
       })
-
-      console.log('feeOptions', pendingFeeOptionConfirmation.options)
-      console.log('nativeTokenBalance', nativeTokenBalance)
-      console.log('tokenBalances', tokenBalances)
 
       const balances = pendingFeeOptionConfirmation.options.map(option => {
         if (option.token.contractAddress === null) {
           return {
             tokenName: option.token.name,
             decimals: option.token.decimals || 0,
-            balance: nativeTokenBalance.balance.balanceWei
+            balance: nativeTokenBalance.balance.balance
           }
         } else {
           return {
@@ -239,14 +255,6 @@ export const Connected = () => {
     })
   }
 
-  // const onClickConnect = () => {
-  //   setOpenConnectModal(true)
-  // }
-
-  // const onClickCheckout = () => {
-  //   triggerCheckout(getCheckoutSettings(address))
-  // }
-
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
@@ -260,15 +268,39 @@ export const Connected = () => {
 
       <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4">
+          <Box marginY="3" flexDirection="column" gap="2">
+            <Text fontWeight="semibold" variant="small" color="text50">
+              Connected Wallets
+            </Text>
+            {[...wallets]
+              .sort((a, b) => {
+                // Sort embedded wallet to the top
+                if (a.isEmbedded && !b.isEmbedded) return -1
+                if (!a.isEmbedded && b.isEmbedded) return 1
+                return 0
+              })
+              .map(wallet => (
+                <WalletListItem
+                  key={wallet.id}
+                  id={wallet.id}
+                  name={wallet.name}
+                  address={wallet.address}
+                  isActive={wallet.isActive}
+                  isEmbedded={wallet.isEmbedded}
+                  onSelect={() => setActiveWallet(wallet.address)}
+                  onDisconnect={() => disconnectWallet(wallet.address)}
+                />
+              ))}
+          </Box>
+          <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
+            <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+          </Box>
+
           <Box flexDirection="column" gap="2">
             <Text variant="small" color="text50" fontWeight="medium">
               Demos
             </Text>
-            <CardButton
-              title="Inventory"
-              description="Connect a Sequence wallet to view, swap, send, and receive collections"
-              onClick={() => setOpenWalletModal(true)}
-            />
+            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
             {/* <CardButton
                 title="Checkout"
                 description="Checkout screen before placing a purchase on coins or collections"

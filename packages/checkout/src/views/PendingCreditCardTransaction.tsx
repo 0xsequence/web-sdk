@@ -1,5 +1,5 @@
 import { Box, Spinner, Text } from '@0xsequence/design-system'
-import { useProjectAccessKey, useContractInfo, useTokenMetadata } from '@0xsequence/kit'
+import { useAnalyticsContext, useProjectAccessKey, useContractInfo, useTokenMetadata, DEBUG } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect } from 'react'
@@ -14,6 +14,7 @@ import {
   useTransactionStatusModal,
   useSkipOnCloseCallback
 } from '../hooks'
+import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
 const POLLING_TIME = 10 * 1000
 
@@ -41,6 +42,7 @@ export const PendingCreditCardTransaction = () => {
 }
 
 export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+  const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
   const { settings, closeCheckout } = useCheckoutModal()
@@ -68,7 +70,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
 
-  const baseUrl = creditCardCheckout.isDev ? 'https://global-stg.transak.com' : 'https://global.transak.com'
+  const baseUrl = DEBUG ? 'https://global-stg.transak.com' : 'https://global.transak.com'
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -127,6 +129,25 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         const txHash = message?.data?.data?.transactionHash || ''
 
         skipOnCloseCallback()
+
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            type: 'credit_card',
+            provider: 'transak',
+            source: NFT_CHECKOUT_SOURCE,
+            chainId: String(creditCardCheckout.chainId),
+            listedCurrency: creditCardCheckout.currencyAddress,
+            purchasedCurrency: creditCardCheckout.currencyAddress,
+            origin: window.location.origin,
+            from: creditCardCheckout.recipientAddress,
+            to: creditCardCheckout.contractAddress,
+            item_ids: JSON.stringify([creditCardCheckout.nftId]),
+            item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
+            txHash
+          }
+        })
+
         closeCheckout()
         openTransactionStatusModal({
           chainId: creditCardCheckout.chainId,
@@ -226,9 +247,10 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 }
 
 export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+  const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
-  const { settings, closeCheckout } = useCheckoutModal()
+  const { closeCheckout } = useCheckoutModal()
 
   const {
     params: { creditCardCheckout }
@@ -243,14 +265,11 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   )
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
-  const isDev = settings?.creditCardCheckout?.isDev || false
-
   const disableSardineClientTokenFetch = isLoadingTokenMetadata
 
   const { data, isLoading, isError } = useSardineClientToken(
     {
       order: creditCardCheckout,
-      isDev,
       projectAccessKey: projectAccessKey,
       tokenMetadata: tokenMetadata
     },
@@ -259,7 +278,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
   const authToken = data?.token
 
-  const url = isDev
+  const url = DEBUG
     ? `https://sardine-checkout-sandbox.sequence.info?api_url=https://sardine-api-sandbox.sequence.info&client_token=${authToken}&show_features=true`
     : `https://sardine-checkout.sequence.info?api_url=https://sardine-api.sequence.info&client_token=${authToken}&show_features=true`
 
@@ -272,9 +291,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
       const { orderId } = data
 
       console.log('Polling for transaction status')
-      const isDev = creditCardCheckout?.isDev || false
-
-      const pollResponse = await fetchSardineOrderStatus(orderId, isDev, projectAccessKey)
+      const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey)
       const status = pollResponse.resp.status
       const transactionHash = pollResponse.resp?.transactionHash
 
@@ -285,6 +302,25 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
       }
       if (status === 'Complete') {
         skipOnCloseCallback()
+
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            type: 'credit_card',
+            provider: 'sardine',
+            source: NFT_CHECKOUT_SOURCE,
+            chainId: String(creditCardCheckout.chainId),
+            listedCurrency: creditCardCheckout.currencyAddress,
+            purchasedCurrency: creditCardCheckout.currencyAddress,
+            origin: window.location.origin,
+            from: creditCardCheckout.recipientAddress,
+            to: creditCardCheckout.contractAddress,
+            item_ids: JSON.stringify([creditCardCheckout.nftId]),
+            item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
+            txHash: transactionHash
+          }
+        })
+
         closeCheckout()
         openTransactionStatusModal({
           chainId: creditCardCheckout.chainId,

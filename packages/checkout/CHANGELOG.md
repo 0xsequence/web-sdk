@@ -1,5 +1,61 @@
 # @0xsequence/kit-connectors
 
+## 4.6.0
+
+### Minor Changes
+
+- Connect modal design update, checkout UX improvements, readOnlyNetworks config option for wallet, multiple connection support, new OTP flow
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.0
+
+## 4.5.9
+
+### Patch Changes
+
+- improvements to nft checkout
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.9
+
+## 4.5.8
+
+### Patch Changes
+
+- Fixing process.env inclusion
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.8
+
+## 4.5.7
+
+### Patch Changes
+
+- QR code improvement for NFT checkout
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.7
+
+## 4.5.6
+
+### Patch Changes
+
+- Options objects passed to wallet modal to set a default nav
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.6
+
+## 4.5.5
+
+### Patch Changes
+
+- Embedded wallet signTypedData fix
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.5.5
+
 ## 4.5.4
 
 ### Patch Changes

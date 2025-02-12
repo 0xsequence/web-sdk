@@ -11,6 +11,9 @@ export interface AddFundsSettings {
   cryptoCurrencyList?: string
   networks?: string
   onClose?: () => void
+  onOrderCreated?: (data: any) => void
+  onOrderSuccessful?: (data: any) => void
+  onOrderFailed?: (data: any) => void
 }
 
 type AddFundsModalContext = {
