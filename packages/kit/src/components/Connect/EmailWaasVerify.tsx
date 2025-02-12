@@ -85,7 +85,7 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
                 label="Resend email"
                 style={{ marginLeft: '-6px' }}
               />
-              {isLoadingSendCode && <Spinner className="absolute" size="sm" style={{ top: '0px', right: '-18px' }} />}
+              {isLoadingSendCode && <Spinner className="absolute top-0 right-[-18px]" size="sm" />}
             </div>
           )}
         </div>

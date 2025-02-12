@@ -1,4 +1,4 @@
-import { Card, Icon, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
+import { Card, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
@@ -9,8 +9,8 @@ import { ExtendedConnector, WalletProperties } from '../../types'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
-const ICON_SIZE = '8'
-const ICON_SIZE_DESCRIPTIVE = '6'
+const iconSizeClasses = 'w-8 h-8'
+const iconDescriptiveSizeClasses = 'w-6 h-6'
 
 export const getLogo = (theme: any, walletProps: WalletProperties) =>
   theme === 'dark'
@@ -41,7 +41,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
           onClick={() => onConnect(connector)}
           style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
         >
-          <Logo width={ICON_SIZE_DESCRIPTIVE} height={ICON_SIZE_DESCRIPTIVE} />
+          <Logo className={iconDescriptiveSizeClasses} />
           <Text color="text100" variant="normal" fontWeight="bold">
             Continue with {label || walletProps.name}
           </Text>
@@ -60,7 +60,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
           height: BUTTON_HEIGHT
         }}
       >
-        <Logo width={ICON_SIZE} height={ICON_SIZE} />
+        <Logo className={iconSizeClasses} />
       </Card>
     </Tooltip>
   )
@@ -107,7 +107,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
     if (isDescriptive) {
       return (
         <div className="flex gap-1 justify-center items-center bg-background-secondary absolute pointer-events-none w-full h-full top-0 right-0">
-          <Logo width={ICON_SIZE_DESCRIPTIVE} height={ICON_SIZE_DESCRIPTIVE} />
+          <Logo className={iconDescriptiveSizeClasses} />
           <Text color="text100" variant="normal" fontWeight="bold">
             Continue with Google
           </Text>
@@ -117,7 +117,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
 
     return (
       <div className="flex bg-background-secondary justify-center items-center absolute pointer-events-none w-full h-full top-0 right-0">
-        <Logo width={ICON_SIZE} height={ICON_SIZE} />
+        <Logo className={iconSizeClasses} />
       </div>
     )
   }
@@ -141,7 +141,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
           }}
         >
           <GoogleLogin
-            className="w-56"
+            width="56"
             type="icon"
             size="large"
             onSuccess={credentialResponse => {
