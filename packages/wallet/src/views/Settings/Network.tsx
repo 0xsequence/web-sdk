@@ -1,12 +1,11 @@
 import { Text, TokenImage } from '@0xsequence/design-system'
+import { useWalletSettings } from '@0xsequence/kit'
+import { ChainId } from '@0xsequence/network'
 import { useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 import { SelectButton } from '../../shared/SelectButton'
-import { useWalletSettings } from '@0xsequence/kit'
-
-import { ChainId } from '@0xsequence/network'
 
 export const SettingsNetwork = () => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()

@@ -15,8 +15,8 @@ import { useAccount, useConfig } from 'wagmi'
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
 
-import CoinsTab from './components/CoinsTab'
-import CollectionsTab from './components/CollectionsTab'
+import { CoinsTab } from './components/CoinsTab'
+import { CollectionsTab } from './components/CollectionsTab'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'

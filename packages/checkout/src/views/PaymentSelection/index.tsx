@@ -2,7 +2,6 @@ import { Button, Divider, Text } from '@0xsequence/design-system'
 import {
   useBalancesSummary,
   useAnalyticsContext,
-  useBalances,
   useContractInfo,
   useSwapPrices,
   useSwapQuote,

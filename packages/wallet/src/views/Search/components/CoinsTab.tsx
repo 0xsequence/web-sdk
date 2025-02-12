@@ -1,9 +1,11 @@
 // kit/packages/wallet/src/views/Search/CoinsTab.tsx
-import React, { useEffect, useRef, useState } from 'react'
-import { BalanceItem } from './BalanceItem'
 import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
-import { IndexedData } from '../SearchWalletViewAll'
 import { TokenBalance } from '@0xsequence/indexer'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { IndexedData } from '../SearchWalletViewAll'
+
+import { BalanceItem } from './BalanceItem'
 
 interface CoinsTabProps {
   displayedCoinBalances: IndexedData[]
@@ -16,7 +18,7 @@ interface CoinsTabProps {
   coinBalances: TokenBalance[]
 }
 
-const CoinsTab: React.FC<CoinsTabProps> = ({
+export const CoinsTab: React.FC<CoinsTabProps> = ({
   displayedCoinBalances,
   fetchMoreCoinBalances,
   fetchMoreSearchCoinBalances,
@@ -82,5 +84,3 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
     </div>
   )
 }
-
-export default CoinsTab

@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
+import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TransactionPendingNavigation } from '../contexts'
 import {
   useNavigation,
@@ -14,7 +15,6 @@ import {
   useTransactionStatusModal,
   useSkipOnCloseCallback
 } from '../hooks'
-import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
 const POLLING_TIME = 10 * 1000
 

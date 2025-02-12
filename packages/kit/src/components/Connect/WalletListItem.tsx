@@ -2,6 +2,7 @@ import {
   Button,
   CheckmarkIcon,
   CloseIcon,
+  cn,
   IconButton,
   LinkIcon,
   Spinner,
@@ -43,7 +44,7 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
   return (
     <div className="flex p-2 rounded-xl bg-background-secondary flex-row items-center justify-between">
       <div className="flex flex-row items-center gap-2">
-        <div className="border" />
+        <div className={cn('border border-border-normal', isActive && 'bg-primary')} />
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-1">
             <Text variant="normal" color="primary">

@@ -1,4 +1,4 @@
-import { Text, TokenImage } from '@0xsequence/design-system'
+import { cn, Text, TokenImage } from '@0xsequence/design-system'
 import { ZeroAddress, formatUnits, parseUnits } from 'ethers'
 import React from 'react'
 
@@ -67,7 +67,10 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
           const isSufficient = isBalanceSufficient(balance?.balance || '0', option.value, option.token.decimals || 0)
           return (
             <div
-              className="px-3 py-2 rounded-xl border-2 border-solid bg-background-raised"
+              className={cn(
+                'px-3 py-2 rounded-xl border-2 border-solid bg-background-raised',
+                isSelected ? 'border-border-focus' : 'border-transparent'
+              )}
               key={index}
               onClick={() => {
                 if (isSufficient) {
