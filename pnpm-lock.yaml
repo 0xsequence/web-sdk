@@ -230,28 +230,28 @@ importers:
   packages/checkout:
     dependencies:
       0xsequence:
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/api':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/indexer':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/marketplace':
         specifier: ^2.1.3
         version: 2.2.7
       '@0xsequence/metadata':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/network':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@tanstack/react-query':
-        specifier: '>= 5.0.0'
+        specifier: ^5.0.0
         version: 5.64.2(react@18.3.1)
       pako:
         specifier: ^2.1.0
@@ -266,7 +266,7 @@ importers:
         specifier: ^3.0.6
         version: 3.0.6(react@18.3.1)
       viem:
-        specifier: '>= 2.0.0'
+        specifier: ^2.0.0
         version: 2.22.10(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)
     devDependencies:
       '@0xsequence/design-system':
@@ -303,13 +303,13 @@ importers:
   packages/kit:
     dependencies:
       '@0xsequence/api':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/auth':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/core':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/design-system':
         specifier: ^1.9.0
@@ -318,22 +318,22 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/indexer':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/metadata':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/network':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/provider':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/utils':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@react-oauth/google':
         specifier: ^0.11.1
@@ -379,22 +379,22 @@ importers:
   packages/wallet:
     dependencies:
       '@0xsequence/api':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/indexer':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/metadata':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7
       '@0xsequence/network':
-        specifier: '>= 2.2.4'
+        specifier: ^2.2.4
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@radix-ui/react-popover':
         specifier: ^1.0.7
         version: 1.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: '>= 5.0.0'
+        specifier: ^5.0.0
         version: 5.64.2(react@18.3.1)
       dayjs:
         specifier: ^1.11.11
@@ -409,7 +409,7 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(react@18.3.1)
       viem:
-        specifier: '>= 2.0.0'
+        specifier: ^2.0.0
         version: 2.22.10(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)
     devDependencies:
       '@0xsequence/design-system':
@@ -1711,8 +1711,8 @@ packages:
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
 
-  '@react-oauth/google@0.12.1':
-    resolution: {integrity: sha512-qagsy22t+7UdkYAiT5ZhfM4StXi9PPNvw0zuwNmabrWyMKddczMtBIOARflbaIj+wHiQjnMAsZmzsUYuXeyoSg==}
+  '@react-oauth/google@0.11.1':
+    resolution: {integrity: sha512-tywZisXbsdaRBVbEu0VX6dRbOSL2I6DgY97woq5NMOOOz+xtDsm418vqq+Vx10KMtra3kdHMRMf0hXLWrk2RMg==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -6868,7 +6868,7 @@ snapshots:
 
   '@radix-ui/rect@1.1.0': {}
 
-  '@react-oauth/google@0.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@react-oauth/google@0.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9961,8 +9961,8 @@ snapshots:
   ox@0.6.5(typescript@5.4.5):
     dependencies:
       '@adraffy/ens-normalize': 1.11.0
-      '@noble/curves': 1.7.0
-      '@noble/hashes': 1.6.1
+      '@noble/curves': 1.8.1
+      '@noble/hashes': 1.7.1
       '@scure/bip32': 1.6.0
       '@scure/bip39': 1.5.0
       abitype: 1.0.7(typescript@5.4.5)
@@ -9975,8 +9975,8 @@ snapshots:
   ox@0.6.5(typescript@5.7.3):
     dependencies:
       '@adraffy/ens-normalize': 1.11.0
-      '@noble/curves': 1.7.0
-      '@noble/hashes': 1.6.1
+      '@noble/curves': 1.8.1
+      '@noble/hashes': 1.7.1
       '@scure/bip32': 1.6.0
       '@scure/bip39': 1.5.0
       abitype: 1.0.7(typescript@5.7.3)
