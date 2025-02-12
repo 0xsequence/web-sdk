@@ -116,16 +116,16 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
     return (
       <div className="flex gap-2 w-full flex-col justify-between">
         <div className="flex flex-row justify-between">
-          <div className="flex text-text50 gap-1 flex-row justify-center items-center">
+          <div className="flex text-muted gap-1 flex-row justify-center items-center">
             {getTransactionIconByType(transfer.transferType)}
-            <Text variant="normal" fontWeight="medium" color="text100">
+            <Text variant="normal" fontWeight="medium" color="primary">
               {getTansactionLabelByType(transfer.transferType)}
             </Text>
             <NetworkImage chainId={transaction.chainId} size="xs" />
           </div>
           {isFirstItem && (
             <div>
-              <Text variant="normal" fontWeight="medium" color="text50">
+              <Text variant="normal" fontWeight="medium" color="muted">
                 {date}
               </Text>
             </div>
@@ -158,7 +158,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
               </div>
               {isPending && <Skeleton style={{ width: '35px', height: '20px' }} />}
               {fiatConversionRate && (
-                <Text variant="normal" fontWeight="medium" color="text50">
+                <Text variant="normal" fontWeight="medium" color="muted">
                   {`${fiatCurrency.sign}${(Number(amountValue) * fiatConversionRate * conversionRate).toFixed(2)}`}
                 </Text>
               )}

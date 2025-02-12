@@ -99,7 +99,7 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
   const TimeLabel = ({ label }: TimeLabelProps) => {
     return (
       <div>
-        <Text variant="normal" color="text50" fontWeight="medium">
+        <Text variant="normal" color="muted" fontWeight="medium">
           {label}
         </Text>
       </div>
@@ -141,7 +141,7 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
       {transactions.length === 0 && (
         <div className="flex flex-col gap-3">
           <TimeLabel label={'History'} />
-          <Text color="text100">No Recent Transaction History Found</Text>
+          <Text color="primary">No Recent Transaction History Found</Text>
         </div>
       )}
       {isFetchingNextPage && (

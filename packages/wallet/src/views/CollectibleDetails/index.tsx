@@ -125,17 +125,17 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
               />
             )}
             <div className="flex gap-1 flex-row justify-center items-center">
-              <Text variant="small" fontWeight="bold" color="text100">
+              <Text variant="small" fontWeight="bold" color="primary">
                 {collectionName}
               </Text>
               <NetworkImage chainId={chainId} size="xs" />
             </div>
           </div>
           <div className="flex flex-col justify-center items-center">
-            <Text variant="large" color="text100" fontWeight="bold">
+            <Text variant="large" color="primary" fontWeight="bold">
               {dataCollectibleBalance?.tokenMetadata?.name || 'Unknown Collectible'}
             </Text>
-            <Text variant="small" color="text50" fontWeight="medium">
+            <Text variant="small" color="muted" fontWeight="medium">
               {`#${tokenId}`}
             </Text>
           </div>
@@ -146,21 +146,21 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
         <div>
           {/* balance */}
           <div>
-            <Text variant="normal" fontWeight="medium" color="text50">
+            <Text variant="normal" fontWeight="medium" color="muted">
               Balance
             </Text>
             <div className="flex flex-row items-end justify-between">
-              <Text variant="xlarge" fontWeight="bold" color="text100">
+              <Text variant="xlarge" fontWeight="bold" color="primary">
                 {formattedBalance}
               </Text>
               {dataCollectiblePrices && dataCollectiblePrices[0].price?.value && (
-                <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
+                <Text variant="normal" fontWeight="medium" color="muted">{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
               )}
             </div>
           </div>
           {!isReadOnly && (
             <Button
-              className="text-text100 mt-4 w-full"
+              className="text-primary mt-4 w-full"
               variant="primary"
               leftIcon={SendIcon}
               label="Send"

@@ -117,15 +117,15 @@ export const TransactionConfirmation = ({
           />
 
           <div className="flex mt-2 gap-1 flex-col">
-            <Text variant="small" color="text50">
+            <Text variant="small" color="muted">
               Amount
             </Text>
             <div className="flex flex-row items-center gap-2">
-              <Text variant="normal" color="text100">
+              <Text variant="normal" color="primary">
                 {amount} {symbol}
               </Text>
               {fiatValue && (
-                <Text variant="small" color="text50">
+                <Text variant="small" color="muted">
                   ~${fiatValue}
                 </Text>
               )}
@@ -133,13 +133,13 @@ export const TransactionConfirmation = ({
           </div>
 
           <div className="flex mt-2 gap-1 flex-col">
-            <Text variant="small" color="text50">
+            <Text variant="small" color="muted">
               To
             </Text>
             <Card className="flex w-full flex-row items-center" style={{ height: '52px' }}>
               <div className="flex flex-row justify-center items-center gap-2">
                 <GradientAvatar size="sm" address={toAddress} />
-                <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                <Text color="primary" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
               </div>
             </Card>
           </div>

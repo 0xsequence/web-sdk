@@ -42,17 +42,17 @@ export const CoinRow = ({ imageUrl, name, decimals, balance, symbol, fiatValue, 
       <div className="flex justify-center items-center gap-2">
         <TokenImage src={imageUrl} symbol={symbol} size="lg" />
         <div className="flex flex-col items-start">
-          <Text variant="medium" color="text100">
+          <Text variant="medium" color="primary">
             {name}
           </Text>
-          <Text color="text50" variant="normal">
+          <Text color="muted" variant="normal">
             {' '}
             {`${balanceDisplayed} ${symbol}`}
           </Text>
         </div>
       </div>
       <div className="flex flex-col items-end">
-        <Text variant="normal" color="text100">{`$${fiatValue}`}</Text>
+        <Text variant="normal" color="primary">{`$${fiatValue}`}</Text>
         <Text variant="small" color={getPercentageColor(priceChangePercentage)}>
           {priceChangePercentage.toFixed(2)}%
         </Text>

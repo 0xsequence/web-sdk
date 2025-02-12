@@ -28,11 +28,11 @@ export const TransactionSuccess = () => {
       >
         <NotificationSuccessIcon />
         <Text variant="xlarge">Success!</Text>
-        <Text className="text-center" variant="normal" color="text80">
+        <Text className="text-center" variant="normal" color="secondary">
           Purchase was successful, item was sent to your wallet.
         </Text>
         {navigation.params.transactionHash && (
-          <Text className="mt-6" variant="small" underline color="text100" asChild>
+          <Text className="mt-6" variant="small" underline color="primary" asChild>
             <a
               href={`${network?.blockExplorer?.rootUrl}/tx/${navigation.params.transactionHash}`}
               target="_blank"

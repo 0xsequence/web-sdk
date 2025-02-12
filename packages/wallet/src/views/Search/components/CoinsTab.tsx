@@ -70,7 +70,7 @@ const CoinsTab: React.FC<CoinsTabProps> = ({
               ))}
           </>
         )}
-        {!isPending && displayedCoinBalances.length === 0 && <Text color="text100">No Coins Found</Text>}
+        {!isPending && displayedCoinBalances.length === 0 && <Text color="primary">No Coins Found</Text>}
         {!isPending &&
           displayedCoinBalances.map((indexItem, index) => {
             const balance = coinBalances[indexItem.index]

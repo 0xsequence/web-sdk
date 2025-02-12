@@ -180,7 +180,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                         >
                           <div className="px-4 pt-4 pb-2">
                             <div
-                              className="flex flex-col justify-center text-text100 items-center font-medium"
+                              className="flex flex-col justify-center text-primary items-center font-medium"
                               style={{
                                 marginTop: '4px'
                               }}
@@ -196,7 +196,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
 
                               {pendingRequestConfirmation.type === 'signMessage' && (
                                 <div className="flex flex-col w-full">
-                                  <Text variant="normal" color="text50" fontWeight="medium">
+                                  <Text variant="normal" color="muted" fontWeight="medium">
                                     Message
                                   </Text>
                                   <Card className="mt-2 py-6">
@@ -228,7 +228,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                               {pendingRequestConfirmation.chainId && (
                                 <div className="flex w-full mt-3 justify-end items-center">
                                   <div className="flex w-1/2 justify-start">
-                                    <Text variant="small" color="text50">
+                                    <Text variant="small" color="muted">
                                       Network
                                     </Text>
                                   </div>
@@ -280,9 +280,9 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                               <PageHeading>Email already in use</PageHeading>
                             </ModalPrimitive.Title>
                             <div>
-                              <Text className="text-center" variant="normal" color="text80">
-                                Another account with this email address <Text color="text100">({emailConflictInfo.email})</Text>{' '}
-                                already exists with account type <Text color="text100">({emailConflictInfo.type})</Text>. Please
+                              <Text className="text-center" variant="normal" color="secondary">
+                                Another account with this email address <Text color="primary">({emailConflictInfo.email})</Text>{' '}
+                                already exists with account type <Text color="primary">({emailConflictInfo.type})</Text>. Please
                                 sign in again with the correct account.
                               </Text>
                               <div className="flex mt-4 gap-2 items-center justify-center">

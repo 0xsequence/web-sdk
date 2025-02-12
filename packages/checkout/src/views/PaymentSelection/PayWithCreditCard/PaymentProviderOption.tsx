@@ -14,13 +14,13 @@ export const PaymentProviderOption = ({ name, onClick, isSelected, isRecommended
       <div className="flex justify-between w-full">
         <div className="flex justify-between items-center gap-3">
           <div className="rounded-xl">{logo}</div>
-          <Text variant="normal" fontWeight="bold" color="text80">
+          <Text variant="normal" fontWeight="bold" color="secondary">
             {name}
           </Text>
         </div>
         <div className="flex flex-row justify-center items-center gap-3">
           {isRecommended && (
-            <Text color="text50" variant="small">
+            <Text color="muted" variant="small">
               Recommended
             </Text>
           )}

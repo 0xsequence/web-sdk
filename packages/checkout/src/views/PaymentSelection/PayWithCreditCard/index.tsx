@@ -126,7 +126,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
                   >
                     <div className="flex flex-row gap-3 items-center">
                       <PaymentsIcon className="text-white" />
-                      <Text color="text100" variant="normal" fontWeight="bold">
+                      <Text color="primary" variant="normal" fontWeight="bold">
                         Pay with credit or debit card
                       </Text>
                     </div>

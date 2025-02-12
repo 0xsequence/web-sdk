@@ -204,7 +204,7 @@ export const Swap = () => {
 
       return (
         <div className="flex w-full gap-3 flex-col">
-          <Text variant="normal" color="text100">
+          <Text variant="normal" color="primary">
             {description}
           </Text>
           <div className="flex w-full flex-col gap-2">

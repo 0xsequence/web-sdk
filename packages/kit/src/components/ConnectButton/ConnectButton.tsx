@@ -42,7 +42,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
           style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
         >
           <Logo className={iconDescriptiveSizeClasses} />
-          <Text color="text100" variant="normal" fontWeight="bold">
+          <Text color="primary" variant="normal" fontWeight="bold">
             Continue with {label || walletProps.name}
           </Text>
         </Card>
@@ -81,7 +81,7 @@ export const ShowAllWalletsButton = ({ onClick }: ShowAllWalletsButtonProps) => 
           height: BUTTON_HEIGHT
         }}
       >
-        <EllipsisIcon className="text-text100" size="xl" />
+        <EllipsisIcon className="text-primary" size="xl" />
       </Card>
     </Tooltip>
   )
@@ -108,7 +108,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
       return (
         <div className="flex gap-1 justify-center items-center bg-background-secondary absolute pointer-events-none w-full h-full top-0 right-0">
           <Logo className={iconDescriptiveSizeClasses} />
-          <Text color="text100" variant="normal" fontWeight="bold">
+          <Text color="primary" variant="normal" fontWeight="bold">
             Continue with Google
           </Text>
         </div>

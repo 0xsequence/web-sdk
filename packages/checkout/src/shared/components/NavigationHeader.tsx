@@ -38,11 +38,11 @@ export const NavigationHeader = ({ secondaryText, primaryText, disableBack = fal
         <div />
       )}
       <div className="flex w-full items-center justify-center" style={{ marginLeft: '40px' }}>
-        <Text fontWeight="medium" variant="small" color="text50">
+        <Text fontWeight="medium" variant="small" color="muted">
           {secondaryText}
         </Text>
         <ModalPrimitive.Title asChild>
-          <Text fontWeight="medium" variant="small" color="text100">
+          <Text fontWeight="medium" variant="small" color="primary">
             {primaryText}
           </Text>
         </ModalPrimitive.Title>

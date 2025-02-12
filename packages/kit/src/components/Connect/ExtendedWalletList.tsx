@@ -73,7 +73,7 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
           icon={() => <ArrowRightIcon style={{ transform: 'rotate(180deg)' }} />}
         />
       </div>
-      <div className="flex justify-center text-text100 items-center font-medium mt-2 mb-4">
+      <div className="flex justify-center text-primary items-center font-medium mt-2 mb-4">
         <ModalPrimitive.Title asChild>
           <Text>{title}</Text>
         </ModalPrimitive.Title>
@@ -109,7 +109,7 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
                 onClick={() => onConnect(connector)}
               >
                 <Logo className="w-5 h-5" />
-                <Text variant="normal" fontWeight="bold" color="text100">
+                <Text variant="normal" fontWeight="bold" color="primary">
                   {walletName}
                 </Text>
               </Card>

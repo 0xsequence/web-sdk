@@ -346,13 +346,13 @@ export const Connect = (props: ConnectWalletContentProps) => {
   return (
     <div className="p-4">
       <div
-        className="flex flex-col justify-center text-text100 items-center font-medium"
+        className="flex flex-col justify-center text-primary items-center font-medium"
         style={{
           marginTop: '4px'
         }}
       >
         <TitleWrapper isPreview={isPreview}>
-          <Text color="text80">
+          <Text color="secondary">
             {isLoading
               ? `Connecting...`
               : hasConnectedSocialOrSequenceUniversal
@@ -363,7 +363,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
         {isSigningLinkMessage && (
           <div className="mt-4">
-            <Text variant="small" color="text50">
+            <Text variant="small" color="muted">
               Confirm the signature request to link your account
             </Text>
           </div>
@@ -387,7 +387,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
               <>
                 <Divider className="text-background-raised w-full" />
                 <div className="flex justify-center">
-                  <Text variant="small" color="text50">
+                  <Text variant="small" color="muted">
                     {!hasConnectedSocialOrSequenceUniversal ? 'Connect with a social account' : 'Connect another wallet'}
                   </Text>
                 </div>
@@ -443,7 +443,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                       {showSocialConnectorSection && showEmailInputSection && (
                         <div className="flex gap-4 flex-row justify-center items-center">
                           <Divider className="mx-0 my-0 text-background-secondary grow" />
-                          <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="text50">
+                          <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">
                             or
                           </Text>
                           <Divider className="mx-0 my-0 text-background-secondary grow" />

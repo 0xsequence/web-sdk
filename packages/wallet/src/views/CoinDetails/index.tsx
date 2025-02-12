@@ -114,24 +114,24 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
       <div className="flex flex-col gap-10 pb-5 px-4 pt-0" style={{ marginTop: '-20px' }}>
         <div className="flex mb-10 gap-2 items-center justify-center flex-col">
           <TokenImage src={logo} size="xl" />
-          <Text variant="large" color="text100" fontWeight="bold">
+          <Text variant="large" color="primary" fontWeight="bold">
             {name}
           </Text>
           <NetworkBadge chainId={chainId} />
         </div>
         <div>
-          <Text variant="normal" fontWeight="medium" color="text50">
+          <Text variant="normal" fontWeight="medium" color="muted">
             Balance
           </Text>
           <div className="flex flex-row items-end justify-between">
-            <Text variant="xlarge" fontWeight="bold" color="text100">{`${balanceDisplayed} ${symbol}`}</Text>
-            <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
+            <Text variant="xlarge" fontWeight="bold" color="primary">{`${balanceDisplayed} ${symbol}`}</Text>
+            <Text variant="normal" fontWeight="medium" color="muted">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </div>
         </div>
         {!isReadOnly && (
           <div className="flex gap-2">
-            <Button className="w-full text-text100" variant="primary" leftIcon={SendIcon} label="Send" onClick={onClickSend} />
-            <Button className="w-full text-text100" variant="primary" leftIcon={SwapIcon} label="Buy" onClick={onClickSwap} />
+            <Button className="w-full text-primary" variant="primary" leftIcon={SendIcon} label="Send" onClick={onClickSend} />
+            <Button className="w-full text-primary" variant="primary" leftIcon={SwapIcon} label="Buy" onClick={onClickSwap} />
           </div>
         )}
         <div>

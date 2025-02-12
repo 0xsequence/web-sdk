@@ -66,12 +66,12 @@ export const TransferFunds = () => {
           </div>
           <div className="flex flex-col justify-center items-start">
             <div>
-              <Text variant="normal" fontWeight="bold" color="text80">
+              <Text variant="normal" fontWeight="bold" color="secondary">
                 Transfer Funds
               </Text>
             </div>
             <div>
-              <Text className="text-sm" color="text50" variant="normal">
+              <Text className="text-sm" color="muted" variant="normal">
                 {truncateAddress(userAddress || '', 12, 4)}
               </Text>
             </div>
@@ -85,7 +85,7 @@ export const TransferFunds = () => {
         >
           <CopyToClipboard text={userAddress || ''} onCopy={handleCopy}>
             <IconButton
-              className="text-text50"
+              className="text-muted"
               variant="base"
               size="md"
               icon={isCopied ? () => <CheckmarkIcon size="lg" /> : () => <CopyIcon size="lg" />}

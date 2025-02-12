@@ -198,9 +198,9 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
       >
         <div>
           {!transakConfig ? (
-            <Text color="text100">Error: No Transak configuration found</Text>
+            <Text color="primary">Error: No Transak configuration found</Text>
           ) : (
-            <Text color="text100">An error has occurred</Text>
+            <Text color="primary">An error has occurred</Text>
           )}
         </div>
       </div>
@@ -380,7 +380,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         }}
       >
         <div>
-          <Text color="text100">An error has occurred</Text>
+          <Text color="primary">An error has occurred</Text>
         </div>
       </div>
     )

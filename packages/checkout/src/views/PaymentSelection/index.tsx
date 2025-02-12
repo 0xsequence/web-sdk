@@ -461,7 +461,7 @@ export const PaymentSelectionContent = () => {
                     fill="#6D6D6D"
                   />
                 </svg>
-                <Text className="mt-0.5" variant="xsmall" color="text50">
+                <Text className="mt-0.5" variant="xsmall" color="muted">
                   Secure Checkout
                 </Text>
               </div>

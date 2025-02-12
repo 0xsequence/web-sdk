@@ -25,7 +25,7 @@ export const TransactionError = () => {
       >
         <NotificationErrorIcon />
         <Text variant="xlarge">Error</Text>
-        <Text className="text-center" variant="normal" color="text80">
+        <Text className="text-center" variant="normal" color="secondary">
           An error occurred while processing the transaction.
         </Text>
       </div>

@@ -147,7 +147,7 @@ export const SearchWallet = () => {
             .fill(null)
             .map((_, i) => <Skeleton className="w-full h-8" key={i} />)
         ) : foundCoinBalances.length === 0 ? (
-          <Text color="text100">No coins found</Text>
+          <Text color="primary">No coins found</Text>
         ) : (
           foundCoinBalances.map((indexItem, index) => {
             const balance = coinBalances[indexItem.index]
@@ -170,7 +170,7 @@ export const SearchWallet = () => {
             .fill(null)
             .map((_, i) => <Skeleton className="w-full h-8" key={i} />)
         ) : foundCollectionBalances.length === 0 ? (
-          <Text color="text100">No collections found</Text>
+          <Text color="primary">No collections found</Text>
         ) : (
           foundCollectionBalances.map((indexedItem, index) => {
             const balance = collectionBalances[indexedItem.index]

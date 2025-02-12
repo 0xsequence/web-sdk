@@ -515,7 +515,7 @@ export const Connected = () => {
         <div className="flex flex-col gap-4" style={{ maxWidth: breakpoints.md }}>
           <div className="flex flex-col gap-2">
             <div className="flex my-3 flex-col gap-2">
-              <Text fontWeight="semibold" variant="small" color="text50">
+              <Text fontWeight="semibold" variant="small" color="muted">
                 Connected Wallets
               </Text>
               {[...wallets]
@@ -543,7 +543,7 @@ export const Connected = () => {
               <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
             </div>
 
-            <Text className="mt-6" variant="small" color="text50" fontWeight="medium">
+            <Text className="mt-6" variant="small" color="muted" fontWeight="medium">
               Demos
             </Text>
             <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
@@ -596,7 +596,7 @@ export const Connected = () => {
               isPending={isSigningMessage}
             />
             {isMessageValid && (
-              <Card className="flex text-text100 flex-col gap-2" style={{ width: '332px' }}>
+              <Card className="flex text-primary flex-col gap-2" style={{ width: '332px' }}>
                 <Text variant="medium">Signed message:</Text>
                 <Text>{messageToSign}</Text>
                 <Text variant="medium">Signature:</Text>
@@ -615,7 +615,7 @@ export const Connected = () => {
               isPending={isSigningTypedData}
             />
             {typedDataSig && (
-              <Card className="flex text-text100 flex-col gap-2" style={{ width: '332px' }}>
+              <Card className="flex text-primary flex-col gap-2" style={{ width: '332px' }}>
                 <Text variant="medium">Signed typed data:</Text>
                 <Text variant="code" asChild>
                   <p>
@@ -771,7 +771,7 @@ export const Connected = () => {
           {isWaasConnectionActive && (
             <div className="my-3">
               <label className="flex flex-row items-center justify-between">
-                <Text fontWeight="semibold" variant="small" color="text50">
+                <Text fontWeight="semibold" variant="small" color="muted">
                   Confirmations
                 </Text>
                 <div className="flex items-center gap-2">
@@ -814,7 +814,7 @@ export const Connected = () => {
           >
             <div id="sequence-kit-checkout-info-modal">
               <div className="flex pt-16 pb-8 px-6 gap-2 flex-col">
-                <Text variant="medium" color="text50">
+                <Text variant="medium" color="muted">
                   Order ID
                 </Text>
                 <TextInput
@@ -825,7 +825,7 @@ export const Connected = () => {
                   placeholder="Order Id"
                   data-1p-ignore
                 />
-                <Text variant="medium" color="text50">
+                <Text variant="medium" color="muted">
                   Token Contract Address
                 </Text>
                 <TextInput
@@ -836,7 +836,7 @@ export const Connected = () => {
                   placeholder="Token Contract Address"
                   data-1p-ignore
                 />
-                <Text variant="medium" color="text50">
+                <Text variant="medium" color="muted">
                   Token ID
                 </Text>
                 <TextInput
@@ -879,16 +879,16 @@ export const Alert = ({ title, description, secondaryDescription, variant, butto
       <div className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
         <div className="flex w-full gap-2 justify-between">
           <div className="flex flex-col gap-1">
-            <Text variant="normal" color="text100" fontWeight="medium">
+            <Text variant="normal" color="primary" fontWeight="medium">
               {title}
             </Text>
 
-            <Text variant="normal" color="text50" fontWeight="medium">
+            <Text variant="normal" color="muted" fontWeight="medium">
               {description}
             </Text>
 
             {secondaryDescription && (
-              <Text variant="normal" color="text80" fontWeight="medium">
+              <Text variant="normal" color="secondary" fontWeight="medium">
                 {secondaryDescription}
               </Text>
             )}

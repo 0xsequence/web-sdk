@@ -38,11 +38,11 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
         <div />
       )}
       <div>
-        <Text fontWeight="medium" variant="small" color="text50">
+        <Text fontWeight="medium" variant="small" color="muted">
           {secondaryText}
         </Text>
         <ModalPrimitive.Title asChild>
-          <Text fontWeight="medium" variant="small" color="text100">
+          <Text fontWeight="medium" variant="small" color="primary">
             {primaryText}
           </Text>
         </ModalPrimitive.Title>

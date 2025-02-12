@@ -40,7 +40,7 @@ export const Receive = () => {
         </div>
         <div>
           <div className="flex flex-row items-center justify-center gap-2">
-            <Text className="text-center leading-[inherit]" variant="medium" color="text100" style={{ fontWeight: '700' }}>
+            <Text className="text-center leading-[inherit]" variant="medium" color="primary" style={{ fontWeight: '700' }}>
               My Wallet
             </Text>
             <Image className="w-5" src={nativeTokenInfo.logoURI} alt="icon" />
@@ -48,7 +48,7 @@ export const Receive = () => {
           <div className="mt-2" style={{ maxWidth: '180px', textAlign: 'center' }}>
             <Text
               className="text-center"
-              color="text50"
+              color="muted"
               style={{
                 fontSize: '14px',
                 maxWidth: '180px',
@@ -67,7 +67,7 @@ export const Receive = () => {
         </div>
         <div className="flex justify-center items-center" style={{ maxWidth: '260px', textAlign: 'center' }}>
           <Text
-            color="text100"
+            color="primary"
             variant="small"
             style={{
               maxWidth: '260px',

@@ -26,7 +26,7 @@ export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSke
         <div>
           {/* balance */}
           <div>
-            <Text variant="normal" fontWeight="medium" color="text50">
+            <Text variant="normal" fontWeight="medium" color="muted">
               Balance
             </Text>
             <div className="flex flex-row items-end justify-between">
@@ -35,11 +35,11 @@ export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSke
             </div>
           </div>
           {!isReadOnly && (
-            <Button className="text-text100 mt-4 w-full" variant="primary" leftIcon={SendIcon} label="Send" onClick={() => {}} />
+            <Button className="text-primary mt-4 w-full" variant="primary" leftIcon={SendIcon} label="Send" onClick={() => {}} />
           )}
         </div>
         <div>
-          <Text variant="normal" color="text50" fontWeight="medium">
+          <Text variant="normal" color="muted" fontWeight="medium">
             This week
           </Text>
           <TransactionHistorySkeleton />

@@ -42,7 +42,7 @@ export const CryptoOption = ({
             className="whitespace-nowrap"
             variant="normal"
             fontWeight="bold"
-            color="text100"
+            color="primary"
             ellipsis
             style={{
               overflow: 'hidden',
@@ -54,7 +54,7 @@ export const CryptoOption = ({
           <Text
             className="whitespace-nowrap"
             variant="normal"
-            color="text50"
+            color="muted"
             ellipsis
             style={{
               overflow: 'hidden',

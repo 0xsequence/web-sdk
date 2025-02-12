@@ -61,15 +61,15 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
     >
       <div className="flex gap-3 flex-row items-center justify-center min-w-0">
         <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} />
-        <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="text100" fontWeight="bold" ellipsis>
+        <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="primary" fontWeight="bold" ellipsis>
           {tokenName}
         </Text>
       </div>
       <div className="flex flex-row items-center justify-center gap-1 max-w-1/2">
-        <Text className="text-right whitespace-nowrap" variant="normal" color="text50" fontWeight="bold" ellipsis>
+        <Text className="text-right whitespace-nowrap" variant="normal" color="muted" fontWeight="bold" ellipsis>
           {getQuantity()}
         </Text>
-        <ChevronRightIcon className="text-text50" />
+        <ChevronRightIcon className="text-muted" />
       </div>
     </div>
   )

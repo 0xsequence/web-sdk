@@ -57,7 +57,7 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
   return (
     <>
       <div className="flex py-6 gap-4 items-center justify-center flex-col">
-        <Text className="mt-5" variant="normal" color="text80">
+        <Text className="mt-5" variant="normal" color="secondary">
           Enter code received in email.
         </Text>
         <div ref={inputRef}>
@@ -65,12 +65,12 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
         </div>
 
         <div className="flex justify-center items-center relative w-full gap-1">
-          <Text variant="small" color="text80">
+          <Text variant="small" color="secondary">
             Didn't receive an email?{' '}
           </Text>
           {showSentEmail && (
             <div className="flex flex-row items-center justify-center gap-2">
-              <Text variant="small" fontWeight="bold" color="text50">
+              <Text variant="small" fontWeight="bold" color="muted">
                 Email sent!
               </Text>
               <CheckmarkIcon className="text-positive" size="sm" style={{ marginLeft: '-4px' }} />

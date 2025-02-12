@@ -122,7 +122,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
           onChange={handleChangeAmount}
           controls={
             <>
-              <Text className="whitespace-nowrap" variant="small" color="text50">
+              <Text className="whitespace-nowrap" variant="small" color="muted">
                 {`~${fiatCurrency.sign}${amountToSendFiat}`}
               </Text>
               <Text variant="xlarge" fontWeight="bold" color="text100">
@@ -134,7 +134,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
       </div>
       <div className="flex items-center justify-center" style={{ height: '52px' }}>
         <Button
-          className="text-text100 mt-3 w-full"
+          className="text-primary mt-3 w-full"
           variant="primary"
           size="lg"
           type="submit"

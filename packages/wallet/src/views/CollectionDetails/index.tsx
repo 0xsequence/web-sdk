@@ -50,16 +50,16 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
     <div className="flex px-4 pb-5 pt-3 mt-8 flex-col items-center justify-center gap-10">
       <div className="flex flex-col gap-2 justify-center items-center">
         <TokenImage src={collectionLogoURI} size="lg" />
-        <Text variant="large" fontWeight="bold" color="text100">
+        <Text variant="large" fontWeight="bold" color="primary">
           {contractInfo?.name || 'Unknown'}
         </Text>
         <NetworkBadge chainId={chainId} />
-        <Text variant="normal" fontWeight="medium" color="text50">{`${
+        <Text variant="normal" fontWeight="medium" color="muted">{`${
           collectionBalanceData?.length || 0
         } Unique Collectibles`}</Text>
       </div>
       <div className="w-full">
-        <Text variant="normal" fontWeight="medium" color="text50">
+        <Text variant="normal" fontWeight="medium" color="muted">
           {`Owned (${collectionBalanceData?.length || 0})`}
         </Text>
         <div
@@ -79,12 +79,12 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
                   <Image className="rounded-lg" style={{ height: '100%' }} src={balance.tokenMetadata?.image} />
                 </div>
                 <div>
-                  <Text variant="normal" fontWeight="bold" color="text100">
+                  <Text variant="normal" fontWeight="bold" color="primary">
                     {`${balance.tokenMetadata?.name}`}
                   </Text>
                 </div>
                 <div>
-                  <Text className="mt-1" variant="normal" fontWeight="medium" color="text50">
+                  <Text className="mt-1" variant="normal" fontWeight="medium" color="muted">
                     {formattedBalance} Owned
                   </Text>
                 </div>

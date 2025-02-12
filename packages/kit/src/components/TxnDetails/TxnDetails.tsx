@@ -123,7 +123,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   return (
     <Card>
       <div className="mb-2">
-        <Text variant="medium" color="text100">
+        <Text variant="medium" color="primary">
           {capitalize(transferProps.type ?? '')}
         </Text>
       </div>
@@ -138,12 +138,12 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
           )}
           <div className="flex flex-col items-start">
             <div className="flex flex-row items-center gap-1">
-              <Text variant="medium" color="text100">
+              <Text variant="medium" color="primary">
                 {name}
               </Text>
             </div>
 
-            <Text color="text50" variant="normal">
+            <Text color="muted" variant="normal">
               {' '}
               {`${ethers.formatUnits(amountSending, is1155 ? tokenMetadata?.[0]?.decimals : isNFT ? 0 : decimals)} ${symbol} `}
             </Text>
@@ -152,7 +152,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
       </div>
       {toAddress !== undefined && (
         <div>
-          <Text variant="normal" color="text50">
+          <Text variant="normal" color="muted">
             To
           </Text>
           <div
@@ -161,7 +161,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
           >
             <div className="flex flex-row justify-center items-center gap-2">
               <GradientAvatar size="sm" address={toAddress} />
-              <Text color="text100">{`0x${truncateAtMiddle(toAddress.substring(2), 12)}`}</Text>
+              <Text color="primary">{`0x${truncateAtMiddle(toAddress.substring(2), 12)}`}</Text>
             </div>
           </div>
         </div>
@@ -179,7 +179,7 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
   return (
     <Card>
       <div className="mb-2">
-        <Text variant="medium" color="text100">
+        <Text variant="medium" color="primary">
           Mint
         </Text>
       </div>
@@ -191,12 +191,12 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
 
           <div className="flex flex-col items-start">
             <div className="flex flex-row items-center gap-1">
-              <Text variant="medium" color="text100">
+              <Text variant="medium" color="primary">
                 Waas Demo NFT
               </Text>
             </div>
 
-            <Text color="text50" variant="normal">
+            <Text color="muted" variant="normal">
               {awardItemProps.amount}
             </Text>
           </div>
@@ -204,7 +204,7 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
       </div>
       {awardItemProps.to !== undefined && (
         <div>
-          <Text variant="normal" color="text50">
+          <Text variant="normal" color="muted">
             To
           </Text>
           <div
@@ -213,7 +213,7 @@ const AwardItemInfo = ({ awardItemProps }: AwardItemInfoProps) => {
           >
             <div className="flex flex-row justify-center items-center gap-2">
               <GradientAvatar size="sm" address={awardItemProps.to} />
-              <Text color="text100">{`0x${truncateAtMiddle(awardItemProps.to.substring(2), 12)}`}</Text>
+              <Text color="primary">{`0x${truncateAtMiddle(awardItemProps.to.substring(2), 12)}`}</Text>
             </div>
           </div>
         </div>

@@ -16,16 +16,16 @@ export const Alert = ({ title, description, secondaryDescription, variant, butto
       <div className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
         <div className="flex w-full gap-2 justify-between">
           <div className="flex flex-col gap-1">
-            <Text variant="normal" color="text100" fontWeight="medium">
+            <Text variant="normal" color="primary" fontWeight="medium">
               {title}
             </Text>
 
-            <Text variant="normal" color="text50" fontWeight="medium">
+            <Text variant="normal" color="muted" fontWeight="medium">
               {description}
             </Text>
 
             {secondaryDescription && (
-              <Text variant="normal" color="text80" fontWeight="medium">
+              <Text variant="normal" color="secondary" fontWeight="medium">
                 {secondaryDescription}
               </Text>
             )}
