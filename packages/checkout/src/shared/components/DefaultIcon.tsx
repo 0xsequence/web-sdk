@@ -14,7 +14,7 @@ export const DefaultIcon = ({ size = 30 }: DefaultIconProps) => {
         height: `${size}px`
       }}
     >
-      <Text className="inline-block" style={{ fontSize: `${size - 4}px` }} variant="large" color="textInverse100">
+      <Text className="inline-block" style={{ fontSize: `${size - 4}px` }} variant="large" color="inverse">
         ?
       </Text>
     </div>

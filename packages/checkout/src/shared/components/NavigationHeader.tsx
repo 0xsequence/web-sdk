@@ -19,12 +19,9 @@ export const NavigationHeader = ({ secondaryText, primaryText, disableBack = fal
 
   return (
     <div
-      className="flex bg-background-primary z-20 w-full flex-row items-center justify-between"
+      className="absolute flex bg-background-primary z-20 w-full flex-row items-center justify-between pt-1.5"
       style={{
-        height: HEADER_HEIGHT,
-        paddingTop: '6px',
-        backgroundColor: vars.colors.backgroundPrimary,
-        position: 'absolute'
+        height: HEADER_HEIGHT
       }}
     >
       {history.length > 0 && !disableBack ? (
