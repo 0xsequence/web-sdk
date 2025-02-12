@@ -98,10 +98,9 @@ export const AssetSummary = () => {
   return (
     <div>
       <div
+        className="grid gap-2"
         style={{
-          display: 'grid',
-          gridTemplateColumns: `calc(50% - ${vars.space[1]}) calc(50% - ${vars.space[1]})`,
-          gap: vars.space[2]
+          gridTemplateColumns: `calc(50% - 4px) calc(50% - 4px)`
         }}
       >
         {displayedTokens.map((balance, index) => {

@@ -53,7 +53,7 @@ export const CoinRow = ({ imageUrl, name, decimals, balance, symbol, fiatValue, 
       </div>
       <div className="flex flex-col items-end">
         <Text variant="normal" color="text100">{`$${fiatValue}`}</Text>
-        <Text variant="small" style={{ color: getPercentageColor(priceChangePercentage) }}>
+        <Text variant="small" color={getPercentageColor(priceChangePercentage)}>
           {priceChangePercentage.toFixed(2)}%
         </Text>
       </div>

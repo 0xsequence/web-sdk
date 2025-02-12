@@ -1,4 +1,4 @@
-import { CheckmarkIcon } from '@0xsequence/design-system'
+import { CheckmarkIcon, cn } from '@0xsequence/design-system'
 import { motion } from 'motion/react'
 import React from 'react'
 
@@ -12,25 +12,22 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
   const { selected, className, squareIndicator = false } = props
   return (
     <div
-      className={`${className} flex border-solid border-1 relative items-center justify-center shrink-0`}
-      style={{
-        borderRadius: squareIndicator ? '4px' : vars.radii.circle,
-        width: '20px',
-        height: '20px'
-      }}
+      className={cn(
+        'w-5 h-5 flex border-solid border-1 relative items-center justify-center shrink-0',
+        squareIndicator ? 'rounded-sm' : 'rounded-full',
+        className
+      )}
     >
       <motion.div
-        className="flex absolute text-text-inverse100 justify-center items-center"
+        className={cn(
+          'flex absolute text-text-inverse100 justify-center items-center',
+          squareIndicator ? 'rounded-sm w-5 h-5' : 'rounded-full w-[14px] h-[14px]'
+        )}
         initial={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.5 }}
         animate={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.5 }}
         transition={{ ease: 'backOut' }}
-        style={{
-          borderRadius: squareIndicator ? '4px' : vars.radii.circle,
-          width: squareIndicator ? '20px' : '14px',
-          height: squareIndicator ? '20px' : '14px'
-        }}
       >
-        {squareIndicator && <CheckmarkIcon className="text-white" style={{ width: '14px', height: '14px' }} />}
+        {squareIndicator && <CheckmarkIcon className="text-white w-[14px] h-[14px]" />}
       </motion.div>
     </div>
   )

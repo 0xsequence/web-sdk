@@ -61,71 +61,35 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
       case 'light':
         return 'rgba(217, 217, 217, 0.85)'
       default:
-        return vars.colors.transparent
+        return 'transparent'
     }
   }
 
   return (
     <div
-      className="p-3 z-30 rounded-xl"
+      className="relative pointer-events-auto backdrop-blur-md p-3 z-30 top-4 left-4 rounded-xl"
       ref={ref}
       style={{
-        position: 'relative',
-        pointerEvents: 'auto',
         width: 'calc(100vw - 30px)',
         maxWidth: '370px',
-        backdropFilter: 'blur(12.5px)',
-        top: '16px',
-        left: '15px',
         background: getDropdownBackgroundColor()
       }}
     >
       <div className="flex flex-row justify-between items-start">
         <div className="flex flex-row justify-center items-center gap-3 ml-2 text-text100">
-          <GradientAvatar style={{ width: '28px' }} size="md" address={address || ''} />
+          <GradientAvatar size="md" address={address || ''} />
           <Text variant="large" fontWeight="bold" color="text100">
             {formatAddress(address || '')}
           </Text>
-          <CopyButton
-            className="text-text100"
-            buttonVariant="icon"
-            size="md"
-            text={address || ''}
-            style={{ marginLeft: '-16px' }}
-          />
+          <CopyButton className="ml-[-16px]" buttonVariant="icon" size="md" text={address || ''} />
         </div>
         <IconButton className="bg-button-glass" onClick={() => setOpenWalletDropdown(false)} size="xs" icon={CloseIcon} />
       </div>
       <div className="flex gap-2 mt-3 flex-col">
-        <Button
-          className="w-full"
-          variant="glass"
-          style={{ borderRadius: vars.radii.md }}
-          leftIcon={QrCodeIcon}
-          label="Receive"
-          onClick={onClickReceive}
-        />
-        <Button
-          className="w-full"
-          style={{ borderRadius: vars.radii.md }}
-          leftIcon={TransactionIcon}
-          label="History"
-          onClick={onClickHistory}
-        />
-        <Button
-          className="w-full"
-          style={{ borderRadius: vars.radii.md }}
-          leftIcon={SettingsIcon}
-          label="Settings"
-          onClick={onClickSettings}
-        />
-        <Button
-          className="w-full"
-          label="Sign Out"
-          style={{ borderRadius: vars.radii.md }}
-          leftIcon={SignoutIcon}
-          onClick={onClickSignout}
-        />
+        <Button className="w-full" variant="glass" leftIcon={QrCodeIcon} label="Receive" onClick={onClickReceive} />
+        <Button className="w-full" leftIcon={TransactionIcon} label="History" onClick={onClickHistory} />
+        <Button className="w-full" leftIcon={SettingsIcon} label="Settings" onClick={onClickSettings} />
+        <Button className="w-full" label="Sign Out" leftIcon={SignoutIcon} onClick={onClickSignout} />
       </div>
     </div>
   )

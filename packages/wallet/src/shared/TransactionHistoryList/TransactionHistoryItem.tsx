@@ -95,14 +95,14 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
       sign = '+'
     }
 
-    let textColor = 'text50'
+    let textColor: 'muted' | 'negative' | 'positive' = 'muted'
     if (transferType === TxnTransferType.SEND) {
-      textColor = vars.colors.negative
+      textColor = 'negative'
     } else if (transferType === TxnTransferType.RECEIVE) {
-      textColor = vars.colors.positive
+      textColor = 'positive'
     }
 
-    return <Text variant="normal" fontWeight="bold" style={{ color: textColor }}>{`${sign}${amount} ${symbol}`}</Text>
+    return <Text variant="normal" fontWeight="bold" color={textColor}>{`${sign}${amount} ${symbol}`}</Text>
   }
 
   interface GetTransfer {

@@ -164,19 +164,13 @@ export const TransactionConfirmation = ({
               <Button
                 className="w-full"
                 variant="primary"
+                size="lg"
                 onClick={onConfirm}
                 label="Confirm"
                 rightIcon={ChevronRightIcon}
                 disabled={isConfirmDisabled}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
               />
-              <Button
-                className="w-full"
-                variant="glass"
-                onClick={onCancel}
-                label="Cancel"
-                style={{ height: '52px', borderRadius: vars.radii.md }}
-              />
+              <Button className="w-full" variant="glass" size="lg" onClick={onCancel} label="Cancel" />
             </>
           )}
         </div>

@@ -19,11 +19,9 @@ export const CollectionDetailsSkeleton = ({ chainId }: CollectionDetailsSkeleton
       <div className="w-full">
         <Skeleton style={{ width: '168px', height: '20px' }} />
         <div
-          className="w-full mt-3"
+          className="w-full mt-3 grid gap-2"
           style={{
-            display: 'grid',
-            gridTemplateColumns: `calc(50% - ${vars.space[1]}) calc(50% - ${vars.space[1]})`,
-            gap: vars.space[2]
+            gridTemplateColumns: `calc(50% - 4px) calc(50% - 4px)`
           }}
         >
           {Array(8)
