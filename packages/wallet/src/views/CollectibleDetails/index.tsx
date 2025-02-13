@@ -54,7 +54,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     },
     chainId,
     tokenId

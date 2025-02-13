@@ -76,7 +76,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     },
     chainId,
     tokenId

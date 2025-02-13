@@ -2,10 +2,8 @@
 
 import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
 import {
-  ContractType,
   Page,
   SequenceIndexer,
-  TokenBalance,
   ContractVerificationStatus,
   GetTokenBalancesSummaryArgs,
   GetTokenBalancesDetailsArgs,
@@ -23,6 +21,8 @@ import { compareAddress } from '../utils/helpers'
 import { useAPIClient } from './useAPIClient'
 import { useIndexerClient, useIndexerClients } from './useIndexerClient'
 import { useMetadataClient } from './useMetadataClient'
+
+import { createNativeTokenBalance } from '../utils/tokens'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -55,20 +55,7 @@ export const useClearCachedBalances = () => {
 export const getNativeTokenBalance = async (indexerClient: SequenceIndexer, chainId: number, accountAddress: string) => {
   const res = await indexerClient.getNativeTokenBalance({ accountAddress })
 
-  const tokenBalance: TokenBalance = {
-    chainId,
-    contractAddress: zeroAddress,
-    accountAddress,
-    balance: res?.balance.balance || '0',
-    contractType: ContractType.UNKNOWN,
-    blockHash: '',
-    blockNumber: 0,
-    tokenID: '',
-    uniqueCollectibles: '',
-    isSummary: false
-  }
-
-  return tokenBalance
+  return createNativeTokenBalance(chainId, accountAddress, res?.balance.balance || '0')
 }
 
 interface GetTokenBalancesArgs {
@@ -230,7 +217,7 @@ export const useCoinBalanceSummary = (args: UseCoinBalanceSummaryArgs) => {
   return useQuery({
     queryKey: ['coinBalanceSummary', args],
     queryFn: async () => {
-      if (compareAddress(args?.filter.contractWhitelist[0] || '', zeroAddress)) {
+      if (compareAddress(args?.filter.contractWhitelist?.[0] || '', zeroAddress)) {
         const res = await getNativeTokenBalance(indexerClient, args.chainId, args.filter.accountAddresses[0] || '')
         return res
       } else {
@@ -297,7 +284,7 @@ export const useCollectibleBalanceDetails = (args: UseCollectibleBalanceDetailsA
     },
     retry: true,
     staleTime: time.oneSecond * 30,
-    enabled: !!args.chainId && !!args.filter.accountAddresses[0] && !!args.filter.contractWhitelist[0] && !!args.tokenId
+    enabled: !!args.chainId && !!args.filter.accountAddresses[0] && !!args.tokenId
   })
 }
 
@@ -355,7 +342,7 @@ export const useCollectionBalanceDetails = (args: UseCollectionBalanceDetailsArg
     queryFn: () => getCollectionBalanceDetails(indexerClient, args),
     retry: true,
     staleTime: time.oneSecond * 30,
-    enabled: !!args.chainId && !!args.filter.accountAddresses[0] && !!args.filter.contractWhitelist[0]
+    enabled: !!args.chainId && !!args.filter.accountAddresses[0]
   })
 }
 
@@ -624,7 +611,7 @@ const getSwapPrices = async (
                     accountAddresses: [args.userAddress],
                     contractStatus: ContractVerificationStatus.VERIFIED,
                     contractWhitelist: [currencyAddress],
-                    contractBlacklist: []
+                    omitNativeBalances: true
                   },
                   omitMetadata: true
                 })

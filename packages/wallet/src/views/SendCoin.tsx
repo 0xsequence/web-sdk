@@ -77,7 +77,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     }
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)

@@ -98,7 +98,7 @@ export const getBalancesAssetsSummary = async (
                     accountAddresses: [accountAddress],
                     contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
                     contractWhitelist: [asset.contractAddress],
-                    contractBlacklist: []
+                    omitNativeBalances: true
                   }
                 })
               })
@@ -117,8 +117,7 @@ export const getBalancesAssetsSummary = async (
               filter: {
                 accountAddresses: [accountAddress],
                 contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-                contractWhitelist: [],
-                contractBlacklist: []
+                omitNativeBalances: true
               }
             })
           )
@@ -157,7 +156,7 @@ export const getBalancesAssetsSummary = async (
           accountAddresses: [accountAddress],
           contractStatus: ContractVerificationStatus.ALL,
           contractWhitelist: [collectionBalance.contractAddress],
-          contractBlacklist: []
+          omitNativeBalances: true
         },
         chainId: collectionBalance.chainId,
         omitMetadata: false

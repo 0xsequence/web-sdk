@@ -49,7 +49,7 @@ export const PayWithCrypto = ({
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     },
     omitMetadata: true
   })

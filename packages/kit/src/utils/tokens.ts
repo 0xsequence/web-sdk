@@ -2,6 +2,8 @@ import { nativeTokenImageUrl } from '@0xsequence/design-system'
 import { Chain } from 'wagmi/chains'
 
 import { chains } from '../chains'
+import { zeroAddress } from 'viem'
+import { ContractType, TokenBalance } from '@0xsequence/indexer'
 
 export interface NativeTokenInfo {
   chainId: number
@@ -35,5 +37,20 @@ export const getNativeTokenInfoByChainId = (chainId: number, wagmiChains: readon
     symbol: '???',
     decimals: 18,
     logoURI: ''
+  }
+}
+
+export const createNativeTokenBalance = (chainId: number, accountAddress: string, balance: string = '0'): TokenBalance => {
+  return {
+    chainId,
+    contractAddress: zeroAddress,
+    accountAddress,
+    contractType: ContractType.UNKNOWN,
+    balance,
+    blockHash: '',
+    blockNumber: 0,
+    tokenID: '',
+    isSummary: false,
+    uniqueCollectibles: ''
   }
 }

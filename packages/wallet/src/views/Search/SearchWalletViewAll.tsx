@@ -56,8 +56,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      contractWhitelist: [],
-      contractBlacklist: []
+      omitNativeBalances: true
     }
   })
 

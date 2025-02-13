@@ -5,7 +5,7 @@ import {
   useCoinPrices,
   useBalancesSummary,
   ContractVerificationStatus,
-  compareAddress,
+  compareAddress
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
@@ -29,8 +29,7 @@ export const SearchWallet = () => {
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      contractWhitelist: [],
-      contractBlacklist: []
+      omitNativeBalances: true
     }
   })
 

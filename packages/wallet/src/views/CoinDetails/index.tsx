@@ -53,7 +53,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
       accountAddresses: [accountAddress || ''],
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      contractBlacklist: []
+      omitNativeBalances: true
     },
     chainId
   })

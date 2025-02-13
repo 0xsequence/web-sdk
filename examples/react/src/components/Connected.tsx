@@ -137,8 +137,7 @@ export const Connected = () => {
         filter: {
           accountAddresses: [account],
           contractStatus: ContractVerificationStatus.ALL,
-          contractWhitelist: [],
-          contractBlacklist: []
+          omitNativeBalances: true
         }
       })
 
