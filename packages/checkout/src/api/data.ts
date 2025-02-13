@@ -208,7 +208,7 @@ export const fetchSardineOnRampLink = async ({
   currencyCode,
   fundingAmount,
   network
-} : SardineLinkOnRampArgs) => {
+}: SardineLinkOnRampArgs) => {
   const response = await apiClient.sardineGetClientToken()
 
   interface SardineOptions {
@@ -227,7 +227,7 @@ export const fetchSardineOnRampLink = async ({
     network
   }
 
-  const sardineUrl = !DEBUG ? 'https://crypto.sandbox.sardine.ai/' : 'https://crypto.sardine.ai/'
+  const sardineUrl = DEBUG ? 'https://crypto.sandbox.sardine.ai/' : 'https://crypto.sardine.ai/'
 
   const url = new URL(sardineUrl)
   Object.keys(options).forEach(k => {

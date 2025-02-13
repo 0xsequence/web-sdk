@@ -60,24 +60,22 @@ export const AddFundsContentSardine = () => {
   }, [])
 
   function messageReceived(message: MessageEvent<any>) {
-    console.log('Message received', message)
     const element = document.getElementById(IframeId) as HTMLIFrameElement | undefined
     const iframe = element?.contentWindow
     if (message.source === iframe) {
       const data = message.data
-      console.log('Event is', data)
-      // const eventType = data.eventType as string
-      // switch (eventType) {
-      //   case EventTypeOrderCreated:
-      //     addFundsSettings?.onOrderCreated?.(data)
-      //     break
-      //   case EventTypeOrderSuccessful:
-      //     addFundsSettings?.onOrderSuccessful?.(data)
-      //     break
-      //   case EventTypeOrderFailed:
-      //     addFundsSettings?.onOrderFailed?.(data)
-      //     break
-      // }
+      const status = data.status as string
+      switch (status) {
+        case 'draft':
+          addFundsSettings?.onOrderCreated?.(data)
+          break
+        case 'expired':
+        case 'decline':
+          addFundsSettings?.onOrderFailed?.(data)
+          break
+        case 'processed':
+          addFundsSettings?.onOrderSuccessful?.(data)
+      }
     }
   }
 
