@@ -75,7 +75,6 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
                     }
                   }}
                   scroll={false}
-                  backdropColor="backgroundBackdrop"
                   onClose={() => setOpenWalletModal(false)}
                 >
                   <div id="sequence-kit-wallet-content">

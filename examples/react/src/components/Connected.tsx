@@ -790,7 +790,6 @@ export const Connected = () => {
               }
             }}
             scroll={false}
-            backdropColor="backgroundBackdrop"
             onClose={() => setIsCheckoutInfoModalOpen(false)}
           >
             <div id="sequence-kit-checkout-info-modal">

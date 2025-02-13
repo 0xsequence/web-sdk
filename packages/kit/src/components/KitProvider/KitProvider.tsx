@@ -147,7 +147,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                       {openConnectModal && (
                         <Modal
                           scroll={false}
-                          backdropColor="backgroundBackdrop"
                           size="sm"
                           contentProps={{
                             style: {
@@ -165,7 +164,6 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                       {pendingRequestConfirmation && (
                         <Modal
                           scroll={false}
-                          backdropColor="backgroundBackdrop"
                           size="sm"
                           contentProps={{
                             style: {
