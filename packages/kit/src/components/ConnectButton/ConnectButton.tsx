@@ -54,7 +54,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
   }
 
   return (
-    <Tooltip message={label || walletProps.name}>
+    <Tooltip message={label || walletProps.name} side="bottom">
       <Card
         clickable
         justifyContent="center"
@@ -155,7 +155,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
 
   return (
-    <Tooltip message="Google" disabled={!enableGoogleTooltip}>
+    <Tooltip message="Google" disabled={!enableGoogleTooltip} side="bottom">
       <Card
         clickable
         background="transparent"

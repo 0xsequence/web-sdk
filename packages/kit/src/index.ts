@@ -72,6 +72,7 @@ export { mock } from './connectors/mock'
 export { sequence, type SequenceOptions } from './connectors/sequence'
 export { twitch, type TwitchOptions } from './connectors/twitch'
 export { walletConnect } from './connectors/walletConnect'
+export { ecosystemWallet, type EcosystemWalletOptions } from './connectors/ecosystem'
 export {
   sequenceWallet,
   sequenceWaasWallet,

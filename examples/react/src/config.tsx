@@ -1,4 +1,5 @@
 import { KitConfig, createConfig, WalletType } from '@0xsequence/kit'
+import { type FC, createElement } from 'react'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
@@ -79,6 +80,31 @@ export const config =
         apple: {
           clientId: 'com.horizon.sequence.waas',
           redirectURI: window.location.origin + window.location.pathname
+        },
+        ecosystem: {
+          walletUrl: 'https://wallet.edenonline.xyz',
+          name: 'Eden Online',
+          projectAccessKey,
+          logoLight: (() => {
+            const LogoLight: FC<{ className?: string; style?: React.CSSProperties }> = props =>
+              createElement('img', {
+                src: 'https://ubi-static-website-hosting-prod.akamaized.net/whp-prod-bdf/prod/_next/static/media/eden-online-logo.6790e9f7.svg',
+                alt: 'Logo Light',
+                ...props
+              })
+            return LogoLight
+          })(),
+          logoDark: (() => {
+            const LogoDark: FC<{ className?: string; style?: React.CSSProperties }> = props =>
+              createElement('img', {
+                src: 'https://ubi-static-website-hosting-prod.akamaized.net/whp-prod-bdf/prod/_next/static/media/eden-online-logo.6790e9f7.svg',
+                alt: 'Logo Dark',
+                ...props
+              })
+            return LogoDark
+          })(),
+          defaultNetwork: ChainId.ARBITRUM_NOVA,
+          isDev: isDebugMode
         },
         walletConnect: {
           projectId: walletConnectProjectId
