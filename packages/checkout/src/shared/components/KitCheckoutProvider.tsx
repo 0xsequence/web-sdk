@@ -259,7 +259,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                               }
                             }}
                             scroll={false}
-                            backdropColor="backgroundBackdrop"
                             onClose={() => setOpenCheckoutModal(false)}
                           >
                             <div id="sequence-kit-checkout-content">
@@ -278,7 +277,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                               }
                             }}
                             scroll={false}
-                            backdropColor="backgroundBackdrop"
                             onClose={closeAddFunds}
                           >
                             <div id="sequence-kit-add-funds-content">
@@ -297,7 +295,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                                 scrollbarWidth: 'thin'
                               }
                             }}
-                            backdropColor="backgroundBackdrop"
                             onClose={() => setOpenPaymentSelectionModal(false)}
                           >
                             <div id="sequence-kit-payment-selection-content">
@@ -313,7 +310,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                                 ...getModalPositionCss(position)
                               }
                             }}
-                            backdropColor="backgroundBackdrop"
                             onClose={closeTransferFunds}
                           >
                             <div id="sequence-kit-transfer-funds-modal">
@@ -346,7 +342,6 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                                 ...getModalPositionCss(position)
                               }
                             }}
-                            backdropColor="backgroundBackdrop"
                             onClose={closeSwapModal}
                           >
                             <div id="sequence-kit-swap-modal">
