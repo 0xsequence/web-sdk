@@ -1,7 +1,6 @@
 import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
-import { useConnections } from 'wagmi'
 
 import { Connected } from './Connected'
 
