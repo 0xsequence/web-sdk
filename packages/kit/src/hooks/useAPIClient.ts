@@ -6,7 +6,7 @@ import { DEBUG } from '../env'
 import { useProjectAccessKey } from './useProjectAccessKey'
 
 export const useAPIClient = () => {
-  const projectAccessKey = 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' //useProjectAccessKey()
+  const projectAccessKey = useProjectAccessKey()
 
   const clientUrl = DEBUG ? 'https://dev-api.sequence.app' : 'https://api.sequence.app'
 
