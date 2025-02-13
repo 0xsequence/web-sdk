@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.6.1
+
+### Patch Changes
+
+- Swap flow in inventory, stricter peer dependencies
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.1
+
 ## 4.6.0
 
 ### Minor Changes
