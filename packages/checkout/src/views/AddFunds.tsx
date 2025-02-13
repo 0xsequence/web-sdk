@@ -45,13 +45,6 @@ export const AddFundsContentSardine = () => {
     network
   })
 
-  // Draft: User created an order
-  // Expired: User did not confirm the purchase
-  // Declined: Purchase attempt was declined
-  // Processing: Waiting for payment/deposit confirmation
-  // Processed: Payment/deposit successfully processed
-  // Complete: Order executed and delivered to the user
-
   useEffect(() => {
     window.addEventListener('message', messageReceived)
     return () => {
