@@ -24,6 +24,7 @@ import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModa
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 
 import { Footer } from './Footer'
+import { FundWithFiat } from './FundWithFiat'
 import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
@@ -66,6 +67,7 @@ export const PaymentSelectionContent = () => {
     enableSwapPayments = true,
     creditCardProviders = [],
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onRampProvider,
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {}
@@ -431,6 +433,12 @@ export const PaymentSelectionContent = () => {
               disableButtons={disableButtons}
               skipOnCloseCallback={skipOnCloseCallback}
             />
+          </>
+        )}
+        {onRampProvider && (
+          <>
+            <Divider width="full" marginY="3" />
+            <FundWithFiat walletAddress={userAddress || ''} provider={onRampProvider} />
           </>
         )}
         {enableTransferFunds && (

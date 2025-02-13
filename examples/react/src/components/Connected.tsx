@@ -15,6 +15,7 @@ import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
+import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
@@ -420,6 +421,7 @@ export const Connected = () => {
       currencyAddress,
       collectionAddress,
       creditCardProviders: ['sardine', 'transak'],
+      onRampProvider: TransactionOnRampProvider.transak,
       transakConfig: {
         contractId,
         apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
@@ -470,7 +472,7 @@ export const Connected = () => {
   const onClickAddFunds = () => {
     triggerAddFunds({
       walletAddress: address || '',
-      provider: 'sardine'
+      provider: TransactionOnRampProvider.transak
     })
   }
 
