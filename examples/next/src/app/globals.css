@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: var(--seq-colors-background-primary);
+  background-color: var(--seq-color-background-primary);
   margin: 0;
   padding: 0;
 }

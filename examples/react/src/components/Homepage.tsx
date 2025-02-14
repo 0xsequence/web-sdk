@@ -1,6 +1,7 @@
 import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
+import { clsx } from 'clsx'
 
 import { Connected } from './Connected'
 
@@ -80,13 +81,9 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
 
   return (
     <Card
-      className="w-full border-2"
+      className={clsx('w-full border-2', isSelected && 'border-[rgb(127,59,200)] shadow-[0_0_24px_rgb(127_59_158_/_0.8)]')}
       clickable
       outlined
-      style={{
-        boxShadow: isSelected ? '0 0 24px rgb(127 59 158 / 0.8)' : 'none',
-        borderColor: isSelected ? 'rgb(127 59 200)' : 'var(--seq-colors-border-normal)'
-      }}
       onClick={() => onClick(type)}
     >
       <div className="flex gap-2">
@@ -98,7 +95,7 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
             <div>{description}</div>
           </Text>
         </div>
-        <CheckmarkIcon size="md" style={{ color: 'rgb(127 59 200)' }} visibility={isSelected ? 'visible' : 'hidden'} />
+        <CheckmarkIcon className={clsx('text-[rgb(127_59_200)]', !isSelected && 'hidden')} size="md" />
       </div>
     </Card>
   )

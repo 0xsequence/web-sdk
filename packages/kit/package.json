@@ -33,7 +33,7 @@
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
     "build:css": "tailwindcss -i ./src/index.css -o ./dist/styles.css",
     "build:clean": "rimraf -g ./dist",
-    "dev": "pnpm build:types && pnpm build:copy-styles && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "dev": "pnpm build:types && pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
