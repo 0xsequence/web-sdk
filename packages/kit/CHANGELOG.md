@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.6.2
+
+### Patch Changes
+
+- Update wagmi to ^2.14.11
+
 ## 4.6.1
 
 ### Patch Changes
