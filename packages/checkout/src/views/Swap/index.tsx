@@ -8,7 +8,7 @@ import {
 } from '@0xsequence/kit'
 import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
@@ -58,6 +58,15 @@ export const Swap = () => {
       withContractInfo: true
     }
   )
+
+  useEffect(() => {
+    if (!disableMainCurrency) {
+      setSelectedCurrency(currencyAddress)
+    } else if (!swapPricesIsLoading) {
+      const firstOptionAddress = swapPrices?.[0]?.info?.address
+      setSelectedCurrency(firstOptionAddress)
+    }
+  }, [swapPricesIsLoading])
 
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
   const network = findSupportedNetwork(chainId)

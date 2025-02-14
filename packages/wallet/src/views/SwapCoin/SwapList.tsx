@@ -9,13 +9,12 @@ import {
   ExtendedConnector
 } from '@0xsequence/kit'
 import { useGetSwapPrices, useGetSwapQuote, useClearCachedBalances, useGetContractInfo } from '@0xsequence/kit-hooks'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
-
 
 interface SwapListProps {
   chainId: number
@@ -59,6 +58,12 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     chainID: String(chainId),
     contractAddress: contractAddress
   })
+
+  useEffect(() => {
+    if (!swapPricesIsLoading && swapPrices.length > 0) {
+      setSelectedCurrency(swapPrices[0].info?.address)
+    }
+  }, [swapPricesIsLoading])
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
