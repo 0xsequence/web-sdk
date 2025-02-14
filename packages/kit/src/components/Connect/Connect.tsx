@@ -24,6 +24,8 @@ import { ConnectedWallets } from './ConnectedWallets'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
 
+import { clsx } from 'clsx'
+
 const MAX_ITEM_PER_ROW = 4
 export const SEQUENCE_UNIVERSAL_CONNECTOR_NAME = 'Sequence'
 
@@ -472,7 +474,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
               )}
               {walletConnectors.length > 0 && (
                 <>
-                  <div className="flex gap-2 flex-row justify-center items-center">
+                  <div
+                    className={clsx(
+                      'flex gap-2 flex-row justify-center items-center',
+                      hasConnectedSequenceUniversal ? 'mt-4' : 'mt-6'
+                    )}
+                  >
                     {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
                       return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
                     })}
