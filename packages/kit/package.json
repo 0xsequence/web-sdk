@@ -62,7 +62,7 @@
     "react-apple-signin-auth": "^1.1.0",
     "react-dom": ">= 17 < 19",
     "viem": "^2.0.0",
-    "wagmi": "^2.13.3"
+    "wagmi": "^2.14.11"
   },
   "devDependencies": {
     "0xsequence": "^2.2.13",
@@ -70,6 +70,6 @@
     "@types/uuid": "^9.0.8",
     "ethers": "6.13.0",
     "viem": "^2.12.0",
-    "wagmi": "^2.13.3"
+    "wagmi": "^2.14.11"
   }
 }

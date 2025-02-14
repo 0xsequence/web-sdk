@@ -52,7 +52,7 @@
     "react": ">= 17 < 19",
     "react-dom": ">= 17 < 19",
     "viem": "^2.0.0",
-    "wagmi": "^2.13.3"
+    "wagmi": "^2.14.11"
   },
   "devDependencies": {
     "@0xsequence/design-system": "^1.9.0",
@@ -64,6 +64,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite": "^5.2.11",
-    "wagmi": "^2.13.3"
+    "wagmi": "^2.14.11"
   }
 }
