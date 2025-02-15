@@ -5,15 +5,13 @@
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/wallet",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js",
-      "default": "./dist/esm/index.js"
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
     }
   },
   "files": [
@@ -21,10 +19,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
-    "build:esm": "tsc --module es2022 --outDir dist/esm/",
-    "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "build:clean": "rimraf -g ./dist",
     "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "test": "echo",
