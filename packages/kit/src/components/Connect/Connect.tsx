@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowRightIcon, Divider, Text, TextInput, Spinner, Image, IconButton, ModalPrimitive } from '@0xsequence/design-system'
+import { clsx } from 'clsx'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
@@ -23,8 +24,6 @@ import { Banner } from './Banner'
 import { ConnectedWallets } from './ConnectedWallets'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
-
-import { clsx } from 'clsx'
 
 const MAX_ITEM_PER_ROW = 4
 export const SEQUENCE_UNIVERSAL_CONNECTOR_NAME = 'Sequence'

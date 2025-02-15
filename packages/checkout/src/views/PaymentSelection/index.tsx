@@ -452,7 +452,7 @@ export const PaymentSelectionContent = () => {
               />
               <div className="flex w-full justify-center items-center gap-0.5 my-2">
                 {/* Replace by icon from design-system once new release is out */}
-                <svg className="w-13 h-12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 12" fill="none">
+                <svg width="13" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 12" fill="none">
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
