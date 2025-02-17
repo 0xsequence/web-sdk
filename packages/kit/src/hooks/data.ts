@@ -23,6 +23,7 @@ import { useIndexerClient, useIndexerClients } from './useIndexerClient'
 import { useMetadataClient } from './useMetadataClient'
 
 import { createNativeTokenBalance } from '../utils/tokens'
+import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 
 export const time = {
   oneSecond: 1 * 1000,

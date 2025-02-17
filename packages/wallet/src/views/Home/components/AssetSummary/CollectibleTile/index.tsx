@@ -1,6 +1,5 @@
 import { TokenBalance } from '@0xsequence/indexer'
-import { useTokenMetadata } from '@0xsequence/kit'
-
+import { useGetTokenMetadata } from '@0xsequence/react-hooks'
 import { CollectibleTileImage } from '../../../../../shared/CollectibleTileImage'
 
 interface CollectibleTileProps {
@@ -8,9 +7,13 @@ interface CollectibleTileProps {
 }
 
 export const CollectibleTile = ({ balance }: CollectibleTileProps) => {
-  const { data: tokenMetadata } = useTokenMetadata(balance.chainId, balance.contractAddress, [balance.tokenID || ''])
+  const { data: tokenMetadata } = useGetTokenMetadata({
+    chainID: String(balance.chainId),
+    contractAddress: balance.contractAddress,
+    tokenIDs: [balance.tokenID || '']
+  })
 
-  const imageUrl = tokenMetadata?.[0]?.image
+  const imageUrl = tokenMetadata?.tokenMetadata?.[0]?.image
 
   return <CollectibleTileImage imageUrl={imageUrl} />
 }

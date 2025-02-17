@@ -3,7 +3,6 @@ import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
   useCoinPrices,
-  useBalancesSummary,
   ContractVerificationStatus,
   compareAddress
 } from '@0xsequence/kit'
@@ -17,6 +16,7 @@ import { computeBalanceFiat } from '../../utils'
 
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
+import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
 
 export const SearchWallet = () => {
   const { chains } = useConfig()
@@ -24,12 +24,12 @@ export const SearchWallet = () => {
   const [search, setSearch] = useState('')
   const { address: accountAddress } = useAccount()
 
-  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalancesSummary({
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      omitNativeBalances: true
+      omitNativeBalances: false
     }
   })
 

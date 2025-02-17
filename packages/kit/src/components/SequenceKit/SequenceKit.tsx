@@ -4,6 +4,8 @@ import { State, WagmiProvider } from 'wagmi'
 import { SequenceKitConfig } from '../../config/createConfig'
 import { KitProvider } from '../KitProvider'
 
+import { ReactHooksConfigProvider } from '@0xsequence/react-hooks'
+
 const defaultQueryClient = new QueryClient()
 
 interface SequenceKitProps {
@@ -20,7 +22,19 @@ export const SequenceKit = (props: SequenceKitProps) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient || defaultQueryClient}>
-        <KitProvider config={kitConfig}>{children}</KitProvider>
+        <ReactHooksConfigProvider
+          value={{
+            projectAccessKey: kitConfig.projectAccessKey,
+            env: {
+              indexerGatewayUrl: 'https://indexer.sequence.app',
+              metadataUrl: 'https://metadata.sequence.app',
+              indexerUrl: 'https://indexer.sequence.app',
+              imageProxyUrl: 'https://imgproxy.sequence.xyz/'
+            }
+          }}
+        >
+          <KitProvider config={kitConfig}>{children}</KitProvider>
+        </ReactHooksConfigProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )

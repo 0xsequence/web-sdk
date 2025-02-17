@@ -3,9 +3,8 @@ import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
   useCoinPrices,
-  useBalancesSummary,
   ContractVerificationStatus,
-  compareAddress,
+  compareAddress
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
@@ -17,6 +16,7 @@ import { computeBalanceFiat } from '../../utils'
 
 import CoinsTab from './components/CoinsTab'
 import CollectionsTab from './components/CollectionsTab'
+import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
@@ -51,12 +51,12 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
   const { address: accountAddress } = useAccount()
 
-  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalancesSummary({
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      omitNativeBalances: true
+      omitNativeBalances: false
     }
   })
 

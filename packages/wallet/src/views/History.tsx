@@ -1,18 +1,23 @@
 import { Box } from '@0xsequence/design-system'
-import React from 'react'
 import { useAccount } from 'wagmi'
 
-import { useSettings, useTransactionHistorySummary } from '../hooks'
+import { useSettings } from '../hooks'
 import { TransactionHistoryList } from '../shared/TransactionHistoryList'
+
+import { useGetTransactionHistorySummary } from '@0xsequence/react-hooks'
 
 export const History = () => {
   const { selectedNetworks } = useSettings()
   const { address: accountAddress } = useAccount()
 
-  const { data: transactionHistory = [], isPending: isPendingTransactionHistory } = useTransactionHistorySummary({
-    accountAddress: accountAddress || '',
-    chainIds: selectedNetworks
-  })
+  const { data: transactionHistory = [], isPending: isPendingTransactionHistory } = useGetTransactionHistorySummary(
+    {
+      filter: {
+        accountAddress: accountAddress || ''
+      }
+    },
+    selectedNetworks
+  )
 
   return (
     <Box>

@@ -53,6 +53,7 @@
     "viem": "^2.0.0"
   },
   "devDependencies": {
+    "@0xsequence/react-hooks": "^1.0.0",
     "@0xsequence/design-system": "^1.9.0",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",

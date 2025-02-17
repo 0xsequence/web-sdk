@@ -1,6 +1,6 @@
 import { Box, Button, ChevronRightIcon, Text, NumericInput, vars } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalancesSummary } from '@0xsequence/kit'
+import { compareAddress, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent } from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -9,6 +9,7 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
 import { SendItemInfo } from '../../shared/SendItemInfo'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
+import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
 
 export interface SwapCoinProps {
   contractAddress: string
@@ -24,15 +25,16 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalancesSummary({
+  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     }
   })
+
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
   const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices([

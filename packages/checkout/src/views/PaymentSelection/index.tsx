@@ -1,9 +1,6 @@
 import { Box, Button, Divider, Text } from '@0xsequence/design-system'
 import {
-  useBalancesSummary,
   useAnalyticsContext,
-  useBalances,
-  useContractInfo,
   useSwapPrices,
   useSwapQuote,
   compareAddress,
@@ -28,6 +25,7 @@ import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/react-hooks'
 
 export const PaymentSelection = () => {
   return (
@@ -99,19 +97,22 @@ export const PaymentSelectionContent = () => {
     }
   })
 
-  const { data: _currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
+  const { data: _currencyBalanceData, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     },
     // omitMetadata must be true to avoid a bug
     omitMetadata: true
   })
 
-  const { data: _currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+  const { data: _currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: currencyAddress
+  })
 
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''

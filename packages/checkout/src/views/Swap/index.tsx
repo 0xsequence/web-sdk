@@ -3,7 +3,6 @@ import {
   CryptoOption,
   compareAddress,
   formatDisplay,
-  useContractInfo,
   useSwapPrices,
   useSwapQuote,
   sendTransactions,
@@ -16,6 +15,8 @@ import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
+
+import { useGetContractInfo } from '@0xsequence/react-hooks'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
@@ -40,7 +41,10 @@ export const Swap = () => {
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: currencyAddress
+  })
 
   const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
     {
