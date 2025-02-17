@@ -51,7 +51,7 @@ interface CreateConfigOptions {
     useMock?: boolean
   }
   /**
-   * @deprecated Use `displayedChainIds` and `displayedContracts` instead.
+   * @deprecated 'displayedAssets' is deprecated. Use `displayedChainIds` and `displayedContracts` instead.
    * if deprecated `displayedAssets` are provided as well as `displayedChainIds` and `displayedContracts`,
    * `displayedChainIds` and `displayedContracts` will take precedence and 'displayedAssets' will be ignored
    */

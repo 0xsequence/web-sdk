@@ -247,6 +247,9 @@ importers:
       '@0xsequence/network':
         specifier: ^2.2.13
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/react-hooks':
+        specifier: ^1.0.0
+        version: 1.0.0(@0xsequence/api@2.2.13)(@0xsequence/indexer@2.2.13)(@0xsequence/metadata@2.2.13)(@0xsequence/network@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@tanstack/react-query@5.64.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/waas':
         specifier: ^2.2.13
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -360,6 +363,9 @@ importers:
       0xsequence:
         specifier: ^2.2.13
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/react-hooks':
+        specifier: ^1.0.0
+        version: 1.0.0(@0xsequence/api@2.2.13)(@0xsequence/indexer@2.2.13)(@0xsequence/metadata@2.2.13)(@0xsequence/network@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@tanstack/react-query@5.64.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.64.2(react@18.3.1)
@@ -418,6 +424,9 @@ importers:
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
+      '@0xsequence/react-hooks':
+        specifier: ^1.0.0
+        version: 1.0.0(@0xsequence/api@2.2.13)(@0xsequence/indexer@2.2.13)(@0xsequence/metadata@2.2.13)(@0xsequence/network@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@tanstack/react-query@5.64.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-copy-to-clipboard':
         specifier: ^5.0.7
         version: 5.0.7
@@ -521,6 +530,17 @@ packages:
     resolution: {integrity: sha512-p5DlA2eHWhgfyCK7JQL3k7qT+aNiNxFkiAMbO2Q/eRnBnmrKcN0dK9HjuK1lWvWH3eZniEgK/M9Kec6nfixbcw==}
     peerDependencies:
       ethers: '>=6'
+
+  '@0xsequence/react-hooks@1.0.0':
+    resolution: {integrity: sha512-fIFXUF+ynR9x5a2RZVxm6qSzPtXhXKplN3I63AHnFfaiejml+W4/V8Hbq5skAdlwqREZ8NWGI1Q2s1090XRKsA==}
+    peerDependencies:
+      '@0xsequence/api': '>=2.2.13'
+      '@0xsequence/indexer': '>=2.2.13'
+      '@0xsequence/metadata': '>=2.2.13'
+      '@0xsequence/network': '>=2.2.13'
+      '@tanstack/react-query': '>= 5'
+      react: ^18.3.1
+      react-dom: ^18.3.1
 
   '@0xsequence/relayer@2.2.13':
     resolution: {integrity: sha512-fnt4AJ1u9CPwx7JJwpZ7UbJ3eN2LOG0Wuwe4FS9OSfxCOhbokELRSWegToEyH6ew6FRPvsuRMN/im3Bu3Og0QQ==}
@@ -5264,6 +5284,16 @@ snapshots:
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       eventemitter2: 6.4.9
       webextension-polyfill: 0.10.0
+
+  '@0xsequence/react-hooks@1.0.0(@0xsequence/api@2.2.13)(@0xsequence/indexer@2.2.13)(@0xsequence/metadata@2.2.13)(@0xsequence/network@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@tanstack/react-query@5.64.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@0xsequence/api': 2.2.13
+      '@0xsequence/indexer': 2.2.13
+      '@0xsequence/metadata': 2.2.13
+      '@0xsequence/network': 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@tanstack/react-query': 5.64.2(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@0xsequence/relayer@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
