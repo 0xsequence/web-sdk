@@ -18,7 +18,7 @@ interface Settings {
 type SettingsItems = Pick<Settings, 'hideCollectibles' | 'hideUnlistedTokens' | 'fiatCurrency' | 'selectedNetworks'>
 
 export const useSettings = (): Settings => {
-  const { readOnlyNetworks, displayedAssets } = useWalletSettings()
+  const { displayedAssets, readOnlyNetworks } = useWalletSettings()
   const { chains } = useConfig()
 
   const allChains = [

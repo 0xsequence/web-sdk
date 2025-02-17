@@ -1,10 +1,10 @@
-import { allNetworks, EIP1193Provider } from '@0xsequence/network'
+import { EIP1193Provider, allNetworks } from '@0xsequence/network'
 import {
-  SequenceWaaS,
-  SequenceConfig,
   ExtendedSequenceConfig,
-  Transaction,
   FeeOption,
+  SequenceConfig,
+  SequenceWaaS,
+  Transaction,
   WebrpcEndpointError
 } from '@0xsequence/waas'
 import { ethers } from 'ethers'
@@ -150,7 +150,10 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       const provider = await this.getProvider()
 
       try {
-        await provider.sequenceWaas.dropSession({ sessionId: await provider.sequenceWaas.getSessionId(), strict: false })
+        await provider.sequenceWaas.dropSession({
+          sessionId: await provider.sequenceWaas.getSessionId(),
+          strict: false
+        })
       } catch (e) {
         console.log(e)
       }
@@ -287,7 +290,10 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
       let feeOptionsResponse
 
       try {
-        feeOptionsResponse = await this.checkTransactionFeeOptions({ transactions: [txns] as Transaction[], chainId })
+        feeOptionsResponse = await this.checkTransactionFeeOptions({
+          transactions: [txns] as Transaction[],
+          chainId
+        })
       } catch (error: unknown) {
         if (isSessionInvalidOrNotFoundError(error)) {
           await this.emit('error', error)
@@ -399,7 +405,10 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
       let sig
 
       try {
-        sig = await this.sequenceWaas.signMessage({ message: params?.[0], network: Number(this.currentNetwork.chainId) })
+        sig = await this.sequenceWaas.signMessage({
+          message: params?.[0],
+          network: Number(this.currentNetwork.chainId)
+        })
       } catch (error) {
         if (isSessionInvalidOrNotFoundError(error)) {
           await this.emit('error', error)

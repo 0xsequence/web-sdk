@@ -1,6 +1,5 @@
-import { Card, Switch, Text } from '@0xsequence/design-system'
 // import { useTheme } from '@0xsequence/kit'
-import React from 'react'
+import { Card, Switch, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'

@@ -1,17 +1,9 @@
 import { Button, Spinner, Text } from '@0xsequence/design-system'
-import {
-  CryptoOption,
-  compareAddress,
-  formatDisplay,
-  useContractInfo,
-  useSwapPrices,
-  useSwapQuote,
-  sendTransactions,
-  useIndexerClient
-} from '@0xsequence/kit'
+import { CryptoOption, compareAddress, formatDisplay, sendTransactions, useIndexerClient } from '@0xsequence/kit'
+import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
-import { zeroAddress, formatUnits, Hex } from 'viem'
+import { Hex, formatUnits, zeroAddress } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -44,13 +36,13 @@ export const Swap = () => {
     data: currencyInfoData,
     isLoading: isLoadingCurrencyInfo,
     isError: isErrorCurrencyInfo
-  } = useContractInfo(chainId, currencyAddress)
+  } = useGetContractInfo({ chainID: String(chainId), contractAddress: currencyAddress })
 
   const {
     data: swapPrices = [],
     isLoading: swapPricesIsLoading,
     isError: isErrorPrices
-  } = useSwapPrices(
+  } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -75,7 +67,7 @@ export const Swap = () => {
     data: swapQuote,
     isLoading: isLoadingSwapQuote,
     isError: isErrorSwapQuote
-  } = useSwapQuote(
+  } = useGetSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress: currencyAddress,

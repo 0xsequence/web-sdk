@@ -1,12 +1,12 @@
 import { ArrowRightIcon, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
-import { useContractInfo } from '@0xsequence/kit'
+import { useGetContractInfo } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
-import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
+import { useCheckoutModal, useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings
@@ -39,7 +39,10 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
   const { triggerCheckout } = useCheckoutModal()
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
-  const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useContractInfo(chainId, currencyAddress)
+  const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: currencyAddress
+  })
   const [selectedPaymentProvider, setSelectedPaymentProvider] = useState<PaymentProviderOptions>()
   const isLoading = isLoadingContractInfo
 

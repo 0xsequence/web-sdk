@@ -1,4 +1,6 @@
-export const SequenceLogo = () => {
+import React from 'react'
+
+export const SequenceLogo: React.FunctionComponent = () => {
   return (
     <svg width="80" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 14" fill="none">
       <g clipPath="url(#clip0_11299_570)">

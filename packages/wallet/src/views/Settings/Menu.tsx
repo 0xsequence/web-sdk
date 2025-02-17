@@ -1,5 +1,4 @@
-import { Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon } from '@0xsequence/design-system'
-import React from 'react'
+import { Button, ChevronRightIcon, CurrencyIcon, NetworkIcon, SettingsIcon } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'

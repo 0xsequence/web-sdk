@@ -31,6 +31,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@0xsequence/kit-hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.0.7",
     "dayjs": "^1.11.11",
     "fuse.js": "^6.6.2",
@@ -44,6 +45,7 @@
     "@0xsequence/indexer": ">= 2.2.13",
     "@0xsequence/metadata": ">= 2.2.13",
     "@0xsequence/network": ">= 2.2.13",
+    "@0xsequence/kit-hooks": "workspace:*",
     "@tanstack/react-query": ">= 5.0.0",
     "ethers": ">= 6.13.0",
     "motion": ">= 12",

@@ -1,13 +1,13 @@
 'use client'
 
-import { SequenceAPIClient, Token, SwapPrice, GetSwapQuoteArgs, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
+import { GetLinkedWalletsArgs, GetSwapQuoteArgs, LinkedWallet, SequenceAPIClient, SwapPrice, Token } from '@0xsequence/api'
 import {
-  Page,
-  SequenceIndexer,
   ContractVerificationStatus,
-  GetTokenBalancesSummaryArgs,
+  GetTokenBalancesByContractArgs,
   GetTokenBalancesDetailsArgs,
-  GetTokenBalancesByContractArgs
+  GetTokenBalancesSummaryArgs,
+  Page,
+  SequenceIndexer
 } from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
@@ -23,12 +23,126 @@ import { useAPIClient } from './useAPIClient'
 import { useIndexerClient, useIndexerClients } from './useIndexerClient'
 import { useMetadataClient } from './useMetadataClient'
 
+interface UseLinkedWalletsOptions {
+  enabled?: boolean
+}
+
+// Create a stable storage key from args
+const createStorageKey = (args: GetLinkedWalletsArgs): string =>
+  `@0xsequence.linked_wallets-${args.parentWalletAddress}-${args.signatureChainId}`
+
+const getLinkedWallets = async (
+  apiClient: SequenceAPIClient,
+  args: GetLinkedWalletsArgs,
+  headers?: object,
+  signal?: AbortSignal
+): Promise<Array<LinkedWallet>> => {
+  const storageKey = createStorageKey(args)
+  const now = Date.now()
+
+  // Check localStorage for cached data
+  const stored = localStorage.getItem(storageKey)
+  if (stored) {
+    try {
+      const { data, timestamp } = JSON.parse(stored)
+      // Check if cache is still valid (5 minutes)
+      if (now - timestamp <= 5 * 60 * 1000) {
+        return data
+      }
+    } catch (error) {
+      console.error('Error parsing stored linked wallets:', error)
+    }
+  }
+
+  // If no valid cache, fetch new data
+  const result = await apiClient.getLinkedWallets(args, headers, signal)
+  const linkedWallets = result.linkedWallets
+
+  // Store in localStorage with timestamp
+  localStorage.setItem(
+    storageKey,
+    JSON.stringify({
+      data: linkedWallets,
+      timestamp: now
+    })
+  )
+
+  return linkedWallets
+}
+
+export interface UseLinkedWalletsResult {
+  data: LinkedWallet[] | undefined
+  isLoading: boolean
+  error: Error | null
+  refetch: () => Promise<void>
+  clearCache: () => void
+}
+
+export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}): UseLinkedWalletsResult => {
+  const apiClient = useAPIClient()
+  const [data, setData] = useState<LinkedWallet[] | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
+  const abortControllerRef = useRef<AbortController>()
+
+  const fetchData = useCallback(async () => {
+    if (!options.enabled) return
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      // Cancel any ongoing request
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = new AbortController()
+
+      const linkedWallets = await getLinkedWallets(apiClient, args, undefined, abortControllerRef.current.signal)
+
+      setData(linkedWallets)
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name !== 'AbortError') {
+        setError(error)
+      } else if (error && typeof error === 'object' && 'name' in error && error.name !== 'AbortError') {
+        setError(new Error('Failed to fetch linked wallets'))
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }, [apiClient, args.parentWalletAddress, args.signatureChainId, options.enabled])
+
+  // Fetch on mount and when dependencies change
+  useEffect(() => {
+    fetchData()
+    return () => {
+      abortControllerRef.current?.abort()
+    }
+  }, [fetchData])
+
+  const clearCache = useCallback(() => {
+    localStorage.removeItem(createStorageKey(args))
+  }, [args])
+
+  const refetch = async () => {
+    clearCache()
+    await fetchData()
+  }
+
+  return {
+    data,
+    isLoading,
+    error,
+    refetch,
+    clearCache
+  }
+}
+
 export const time = {
   oneSecond: 1 * 1000,
   oneMinute: 60 * 1000,
   oneHour: 60 * 60 * 1000
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useClearCachedBalances = () => {
   const queryClient = useQueryClient()
 
@@ -78,16 +192,19 @@ export const getTokenBalances = async (indexerClient: SequenceIndexer, args: Get
   return res?.balances || []
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getTokenBalancesSummary = async (indexerClient: SequenceIndexer, args: GetTokenBalancesSummaryArgs) => {
   const res = await indexerClient.getTokenBalancesSummary(args)
   return res?.balances || []
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getTokenBalancesDetails = async (indexerClient: SequenceIndexer, args: GetTokenBalancesDetailsArgs) => {
   const res = await indexerClient.getTokenBalancesDetails(args)
   return res?.balances || []
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getTokenBalancesByContract = async (indexerClient: SequenceIndexer, args: GetTokenBalancesByContractArgs) => {
   const res = await indexerClient.getTokenBalancesByContract(args)
   return res?.balances || []
@@ -111,6 +228,7 @@ export const getBalances = async (indexerClient: SequenceIndexer, chainId: numbe
   return balances
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getBalancesSummary = async (indexerClient: SequenceIndexer, chainId: number, args: GetTokenBalancesSummaryArgs) => {
   if (!args.filter.accountAddresses[0]) {
     return []
@@ -159,6 +277,7 @@ interface UseBalancesSummaryArgs extends GetTokenBalancesSummaryArgs {
   chainIds: number[]
 }
 
+/** @deprecated Use kit-hooks instead */
 // Gets native and token balances
 export const useBalancesSummary = ({ chainIds, ...args }: UseBalancesSummaryArgs) => {
   const indexerClients = useIndexerClients(chainIds)
@@ -210,6 +329,7 @@ interface UseCoinBalanceSummaryArgs extends GetTokenBalancesSummaryArgs {
   chainId: number
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useCoinBalanceSummary = (args: UseCoinBalanceSummaryArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
@@ -269,6 +389,7 @@ interface UseCollectibleBalanceDetailsArgs extends GetTokenBalancesDetailsArgs {
   tokenId: string
 }
 
+/** @deprecated Use useGetTokenBalanceDetails in kit-hooks instead, then filter for tokenId */
 export const useCollectibleBalanceDetails = (args: UseCollectibleBalanceDetailsArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
@@ -333,6 +454,7 @@ interface UseCollectionBalanceDetailsArgs extends GetTokenBalancesDetailsArgs {
   chainId: number
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useCollectionBalanceDetails = (args: UseCollectionBalanceDetailsArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
@@ -346,6 +468,7 @@ export const useCollectionBalanceDetails = (args: UseCollectionBalanceDetailsArg
 }
 
 // From USD to another currency
+/** @deprecated Use kit-hooks instead */
 export const useExchangeRate = (toCurrency: string) => {
   const apiClient = useAPIClient()
 
@@ -365,6 +488,7 @@ export const useExchangeRate = (toCurrency: string) => {
   })
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
   if (tokens.length === 0) {
     return []
@@ -375,6 +499,7 @@ export const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[
   return res?.tokenPrices || []
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useCoinPrices = (tokens: Token[], disabled?: boolean) => {
   const apiClient = useAPIClient()
 
@@ -397,6 +522,7 @@ export const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens:
   return res?.tokenPrices || []
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useCollectiblePrices = (tokens: Token[]) => {
   const apiClient = useAPIClient()
 
@@ -409,6 +535,7 @@ export const useCollectiblePrices = (tokens: Token[]) => {
   })
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useTokenMetadata = (chainId: number, contractAddress: string, tokenIds: string[], disabled?: boolean) => {
   const metadataClient = useMetadataClient()
 
@@ -429,6 +556,7 @@ export const useTokenMetadata = (chainId: number, contractAddress: string, token
   })
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useContractInfo = (chainId: number, contractAddress: string, disabled?: boolean) => {
   const metadataClient = useMetadataClient()
 
@@ -491,6 +619,7 @@ interface UseTransactionHistoryArgs {
   disabled?: boolean
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useTransactionHistory = (args: UseTransactionHistoryArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
@@ -654,6 +783,7 @@ interface SwapPricesOptions {
   disabled?: boolean
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useSwapPrices = (args: UseSwapPricesArgs, options: SwapPricesOptions) => {
   const apiClient = useAPIClient()
   const metadataClient = useMetadataClient()
@@ -682,6 +812,7 @@ interface UseSwapQuoteOptions {
   disabled?: boolean
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useSwapQuote = (args: GetSwapQuoteArgs, options: UseSwapQuoteOptions) => {
   const apiClient = useAPIClient()
   const { disabled = false } = options
@@ -712,124 +843,12 @@ export const useSwapQuote = (args: GetSwapQuoteArgs, options: UseSwapQuoteOption
   })
 }
 
-interface UseLinkedWalletsOptions {
-  enabled?: boolean
-}
-
-// Create a stable storage key from args
-const createStorageKey = (args: GetLinkedWalletsArgs): string =>
-  `@0xsequence.linked_wallets-${args.parentWalletAddress}-${args.signatureChainId}`
-
-const getLinkedWallets = async (
-  apiClient: SequenceAPIClient,
-  args: GetLinkedWalletsArgs,
-  headers?: object,
-  signal?: AbortSignal
-): Promise<Array<LinkedWallet>> => {
-  const storageKey = createStorageKey(args)
-  const now = Date.now()
-
-  // Check localStorage for cached data
-  const stored = localStorage.getItem(storageKey)
-  if (stored) {
-    try {
-      const { data, timestamp } = JSON.parse(stored)
-      // Check if cache is still valid (5 minutes)
-      if (now - timestamp <= 5 * 60 * 1000) {
-        return data
-      }
-    } catch (error) {
-      console.error('Error parsing stored linked wallets:', error)
-    }
-  }
-
-  // If no valid cache, fetch new data
-  const result = await apiClient.getLinkedWallets(args, headers, signal)
-  const linkedWallets = result.linkedWallets
-
-  // Store in localStorage with timestamp
-  localStorage.setItem(
-    storageKey,
-    JSON.stringify({
-      data: linkedWallets,
-      timestamp: now
-    })
-  )
-
-  return linkedWallets
-}
-
-export interface UseLinkedWalletsResult {
-  data: LinkedWallet[] | undefined
-  isLoading: boolean
-  error: Error | null
-  refetch: () => Promise<void>
-  clearCache: () => void
-}
-
-export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}): UseLinkedWalletsResult => {
-  const apiClient = useAPIClient()
-  const [data, setData] = useState<LinkedWallet[] | undefined>(undefined)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const abortControllerRef = useRef<AbortController>()
-
-  const fetchData = useCallback(async () => {
-    if (!options.enabled) return
-
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      // Cancel any ongoing request
-      abortControllerRef.current?.abort()
-      abortControllerRef.current = new AbortController()
-
-      const linkedWallets = await getLinkedWallets(apiClient, args, undefined, abortControllerRef.current.signal)
-
-      setData(linkedWallets)
-    } catch (error: unknown) {
-      if (error instanceof Error && error.name !== 'AbortError') {
-        setError(error)
-      } else if (error && typeof error === 'object' && 'name' in error && error.name !== 'AbortError') {
-        setError(new Error('Failed to fetch linked wallets'))
-      }
-    } finally {
-      setIsLoading(false)
-    }
-  }, [apiClient, args.parentWalletAddress, args.signatureChainId, options.enabled])
-
-  // Fetch on mount and when dependencies change
-  useEffect(() => {
-    fetchData()
-    return () => {
-      abortControllerRef.current?.abort()
-    }
-  }, [fetchData])
-
-  const clearCache = useCallback(() => {
-    localStorage.removeItem(createStorageKey(args))
-  }, [args])
-
-  const refetch = async () => {
-    clearCache()
-    await fetchData()
-  }
-
-  return {
-    data,
-    isLoading,
-    error,
-    refetch,
-    clearCache
-  }
-}
-
 interface UseCurrencyInfoArgs {
   chainId: number
   currencyAddress: string
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useCurrencyInfo = (args: UseCurrencyInfoArgs) => {
   const metadataClient = useMetadataClient()
 

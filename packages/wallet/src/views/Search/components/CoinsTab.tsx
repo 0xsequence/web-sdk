@@ -1,5 +1,5 @@
 // kit/packages/wallet/src/views/Search/CoinsTab.tsx
-import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
+import { Skeleton, Spinner, Text } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import React, { useEffect, useRef, useState } from 'react'
 

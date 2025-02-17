@@ -316,7 +316,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
       projectName: 'my app',
     };
     // limits the digital assets displayed on the assets summary screen
-    displayedAssets: [
+   displayedAssets: [
       {
         contractAddress: ethers.ZeroAddress,
         chainId: 137,

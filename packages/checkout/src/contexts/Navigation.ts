@@ -1,4 +1,5 @@
 'use client'
+
 import { CreditCardCheckout } from '../contexts'
 
 import { createGenericContext } from './genericContext'

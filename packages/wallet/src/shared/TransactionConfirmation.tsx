@@ -1,7 +1,7 @@
-import { Button, ChevronRightIcon, Text, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
+import { Button, Card, ChevronRightIcon, GradientAvatar, Spinner, Text } from '@0xsequence/design-system'
 import { truncateAtMiddle, useIndexerClient } from '@0xsequence/kit'
 import { useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { FeeOption, FeeOptionSelector } from './FeeOptionSelector'

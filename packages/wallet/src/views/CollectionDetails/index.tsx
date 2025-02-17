@@ -1,6 +1,7 @@
 import { Image, Text, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import { formatDisplay, useCollectionBalanceDetails, ContractVerificationStatus } from '@0xsequence/kit'
+import { ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 
@@ -17,8 +18,8 @@ interface CollectionDetailsProps {
 export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetailsProps) => {
   const { setNavigation } = useNavigation()
   const { address: accountAddress } = useAccount()
-  const { data: collectionBalanceData, isPending: isPendingCollectionBalance } = useCollectionBalanceDetails({
-    chainId,
+  const { data: collectionBalanceData, isPending: isPendingCollectionBalance } = useGetTokenBalancesDetails({
+    chainIds: [chainId],
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,

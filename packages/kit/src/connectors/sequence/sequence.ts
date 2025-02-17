@@ -1,5 +1,5 @@
 import { Wallet } from '../../types'
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
+import { BaseSequenceConnectorOptions, sequenceWallet } from '../wagmiConnectors'
 
 import { SequenceLogo } from './SequenceLogo'
 

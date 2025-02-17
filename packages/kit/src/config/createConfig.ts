@@ -1,4 +1,4 @@
-import { createConfig as createWagmiConfig, type CreateConfigParameters, type Config } from 'wagmi'
+import { type Config, type CreateConfigParameters, createConfig as createWagmiConfig } from 'wagmi'
 
 import { KitConfig, WalletType } from '../types'
 

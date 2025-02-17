@@ -1,37 +1,37 @@
 import {
-  Button,
-  ChevronRightIcon,
-  CopyIcon,
-  CloseIcon,
-  GradientAvatar,
   AddIcon,
+  Button,
+  Card,
+  ChevronRightIcon,
+  CloseIcon,
+  CopyIcon,
+  GradientAvatar,
+  NumericInput,
+  Spinner,
   SubtractIcon,
   Text,
-  NumericInput,
   TextInput,
-  Spinner,
-  Card
 } from '@0xsequence/design-system'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
-  getNativeTokenInfoByChainId,
-  useAnalyticsContext,
   ExtendedConnector,
+  getNativeTokenInfoByChainId,
   truncateAtMiddle,
-  useCollectibleBalanceDetails,
+  useAnalyticsContext,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
-import { useRef, useState, ChangeEvent, useEffect } from 'react'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
 
-import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
+import { ERC_721_ABI, ERC_1155_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { limitDecimals, isEthAddress } from '../utils'
+import { isEthAddress, limitDecimals } from '../utils'
 
 interface SendCollectibleProps {
   chainId: number
@@ -69,17 +69,22 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalanceDetails({
+  const { data: dataTokens, isPending: isPendingBalances } = useGetTokenBalancesDetails({
     filter: {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     },
-    chainId,
-    tokenId
+    chainIds: [chainId]
   })
-  const { contractType } = tokenBalance as TokenBalance
+
+  const tokenBalance = dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
+
+  let contractType: ContractType | undefined
+  if (tokenBalance) {
+    contractType = tokenBalance.contractType
+  }
 
   useEffect(() => {
     if (tokenBalance) {

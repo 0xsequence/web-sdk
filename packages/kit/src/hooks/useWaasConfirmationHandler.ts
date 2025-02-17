@@ -1,5 +1,5 @@
 import { commons } from '@0xsequence/core'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Deferred } from '../utils/deferred'
 
@@ -49,7 +49,12 @@ export function useWaasConfirmationHandler(
           chainId: number
         ): Promise<{ id: string; confirmed: boolean }> {
           const pending = new Deferred<{ id: string; confirmed: boolean }>()
-          setPendingRequestConfirmation({ id, type: 'signTransaction', txs: Array.isArray(txs) ? txs : [txs], chainId })
+          setPendingRequestConfirmation({
+            id,
+            type: 'signTransaction',
+            txs: Array.isArray(txs) ? txs : [txs],
+            chainId
+          })
           _pendingConfirmation = pending
           return pending.promise
         },

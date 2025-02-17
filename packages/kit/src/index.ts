@@ -18,7 +18,7 @@ export type {
   KitConfig,
   StorageItem
 } from './types'
-export type { SwapPricesWithCurrencyInfo } from './hooks/data'
+// export type { SwapPricesWithCurrencyInfo } from './hooks/data'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig'

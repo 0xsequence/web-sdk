@@ -1,17 +1,17 @@
 import {
   Button,
-  IconButton,
   CloseIcon,
   GradientAvatar,
-  Text,
+  IconButton,
   QrCodeIcon,
   SettingsIcon,
   SignoutIcon,
-  TransactionIcon
+  Text,
+  TransactionIcon,
 } from '@0xsequence/design-system'
 import { formatAddress, useTheme } from '@0xsequence/kit'
 import React, { forwardRef } from 'react'
-import { useDisconnect, useAccount } from 'wagmi'
+import { useAccount, useDisconnect } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
 import { useOpenWalletModal } from '../../../hooks/useOpenWalletModal'

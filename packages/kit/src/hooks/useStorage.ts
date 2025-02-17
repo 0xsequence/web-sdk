@@ -1,5 +1,5 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
-import { useConfig, Storage } from 'wagmi'
+import { Storage, useConfig } from 'wagmi'
 
 import { StorageItem } from '../types'
 

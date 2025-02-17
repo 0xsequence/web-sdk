@@ -4,12 +4,12 @@ import { Inter } from 'next/font/google'
 import { headers } from 'next/headers'
 import { cookieToInitialState } from 'wagmi'
 
-import './globals.css'
-import '@0xsequence/kit/styles.css'
-
 import { config } from '../config'
 
 import { Providers } from './Providers'
+import './globals.css'
+
+import '@0xsequence/kit/styles.css'
 
 const inter = Inter({ subsets: ['latin'] })
 

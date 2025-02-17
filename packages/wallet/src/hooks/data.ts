@@ -1,25 +1,25 @@
 import { SequenceAPIClient, TokenPrice } from '@0xsequence/api'
-import { Transaction, TokenBalance, SequenceIndexer } from '@0xsequence/indexer'
+import { SequenceIndexer, TokenBalance, Transaction } from '@0xsequence/indexer'
 import {
+  ContractVerificationStatus,
+  DisplayedAsset,
+  QUERY_KEYS,
   compareAddress,
+  getCoinPrices,
+  getCollectionBalanceDetails,
+  getNativeTokenBalance,
+  getTokenBalancesDetails,
+  getTokenBalancesSummary,
   getTransactionHistory,
   useAPIClient,
   useIndexerClients,
-  DisplayedAsset,
-  getNativeTokenBalance,
-  getCoinPrices,
-  getCollectionBalanceDetails,
-  useMetadataClient,
-  getTokenBalancesSummary,
-  getTokenBalancesDetails,
-  ContractVerificationStatus,
-  QUERY_KEYS
+  useMetadataClient
 } from '@0xsequence/kit'
 import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import { sortBalancesByType, isTruthy } from '../utils'
+import { isTruthy, sortBalancesByType } from '../utils'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -27,6 +27,7 @@ export const time = {
   oneHour: 60 * 60 * 1000
 }
 
+/** @deprecated Use kit-hooks instead */
 export interface GetBalancesAssetsArgs {
   accountAddress: string
   chainIds: number[]
@@ -35,6 +36,7 @@ export interface GetBalancesAssetsArgs {
   hideCollectibles?: boolean
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getBalancesAssetsSummary = async (
   apiClient: SequenceAPIClient,
   metadataClient: SequenceMetadata,
@@ -252,6 +254,7 @@ export const getBalancesAssetsSummary = async (
   }
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useBalancesAssetsSummary = (args: GetBalancesAssetsArgs) => {
   const apiClient = useAPIClient()
   const metadataClient = useMetadataClient()
@@ -298,6 +301,7 @@ const getTransactionHistorySummary = async (
   return orderedTransactions
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useTransactionHistorySummary = (args: GetTransactionHistorySummaryArgs) => {
   const indexerClients = useIndexerClients(args.chainIds)
 

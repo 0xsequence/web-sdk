@@ -1,16 +1,9 @@
-import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
-import {
-  CryptoOption,
-  useBalancesSummary,
-  useContractInfo,
-  useSwapPrices,
-  compareAddress,
-  ContractVerificationStatus,
-  formatDisplay
-} from '@0xsequence/kit'
+import { AddIcon, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
+import { ContractVerificationStatus, CryptoOption, compareAddress, formatDisplay } from '@0xsequence/kit'
+import { useGetContractInfo, useGetSwapPrices, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
-import { useState, useEffect, Fragment, SetStateAction } from 'react'
+import { Fragment, SetStateAction, useEffect, useState } from 'react'
 import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
@@ -43,22 +36,25 @@ export const PayWithCrypto = ({
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
+  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     },
     omitMetadata: true
   })
 
-  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: currencyAddress
+  })
 
   const buyCurrencyAddress = settings?.currencyAddress
 
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
+  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,

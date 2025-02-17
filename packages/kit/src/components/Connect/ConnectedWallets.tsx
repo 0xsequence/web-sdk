@@ -1,6 +1,6 @@
 import { LinkedWallet } from '@0xsequence/api'
 import { motion, AnimatePresence } from 'motion/react'
-import React, { useMemo, useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 
 import { KitWallet } from '../../hooks/useKitWallets'
 

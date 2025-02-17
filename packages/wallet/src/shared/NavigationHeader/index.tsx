@@ -1,4 +1,4 @@
-import { IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/design-system'
+import { ChevronLeftIcon, IconButton, ModalPrimitive, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigationContext } from '../../contexts/Navigation'

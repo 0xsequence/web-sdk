@@ -1,10 +1,11 @@
 import { Spinner } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { useWalletSettings } from '@0xsequence/kit'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 
-import { useBalancesAssetsSummary, useNavigation, useSettings } from '../../../../hooks'
+import { useNavigation, useSettings } from '../../../../hooks'
 
 import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
@@ -52,18 +53,26 @@ export const AssetSummary = () => {
     }
   }, [hasMoreTokens, fetchMoreTokens])
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalancesAssetsSummary({
-    accountAddress: address || '',
-    chainIds: selectedNetworks,
-    displayAssets: displayedAssets,
-    hideCollectibles,
-    verifiedOnly: hideUnlistedTokens
-  })
+  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesDetails(
+    {
+      filter: {
+        accountAddresses: [address || ''],
+        contractWhitelist: displayedAssets.map(asset => asset.contractAddress),
+        contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+        omitNativeBalances: false
+      },
+      chainIds: selectedNetworks
+    },
+    { hideCollectibles }
+  )
 
   useEffect(() => {
     if (!isPendingBalances && balances.length > 0) {
-      setDisplayedTokens(balances.slice(0, pageSize))
-      setHasMoreTokens(balances.length > pageSize)
+      const filteredBalances = balances.filter(balance =>
+        displayedAssets.some(asset => asset.contractAddress === balance.contractAddress && asset.chainId === balance.chainId)
+      )
+      setDisplayedTokens(filteredBalances.slice(0, pageSize))
+      setHasMoreTokens(filteredBalances.length > pageSize)
     }
     // only runs once after balances are fetched
   }, [balances, isPendingBalances])

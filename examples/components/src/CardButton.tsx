@@ -1,4 +1,4 @@
-import { Card, Text, Spinner } from '@0xsequence/design-system'
+import { Card, Spinner, Text } from '@0xsequence/design-system'
 
 interface CardButtonProps {
   title: string

@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { AnimatePresence, motion } from 'motion/react'
-import React, { useState, useRef, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useOpenWalletModal } from '../../hooks'

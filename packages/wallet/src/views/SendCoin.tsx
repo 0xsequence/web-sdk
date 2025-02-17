@@ -1,38 +1,36 @@
 import {
   Button,
+  Card,
   ChevronRightIcon,
-  CopyIcon,
   CloseIcon,
+  CopyIcon,
   GradientAvatar,
-  Text,
   NumericInput,
-  TextInput,
   Spinner,
-  Card
+  Text,
+  TextInput,
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
+  ExtendedConnector,
   compareAddress,
   getNativeTokenInfoByChainId,
-  useAnalyticsContext,
-  ExtendedConnector,
   truncateAtMiddle,
-  useExchangeRate,
-  useCoinPrices,
-  useBalancesSummary,
+  useAnalyticsContext,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
-import { useState, ChangeEvent, useRef, useEffect } from 'react'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
 
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigationContext } from '../contexts/Navigation'
-import { useSettings, useNavigation } from '../hooks'
+import { useNavigation, useSettings } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
+import { computeBalanceFiat, isEthAddress, limitDecimals } from '../utils'
 
 interface SendCoinProps {
   chainId: number
@@ -69,25 +67,25 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalancesSummary({
+  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     }
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices([
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
 

@@ -8,7 +8,7 @@ import { useSettings } from '../../hooks'
 import { SelectButton } from '../../shared/SelectButton'
 
 export const SettingsNetwork = () => {
-  const { readOnlyNetworks, displayedAssets } = useWalletSettings()
+  const { displayedAssets, readOnlyNetworks } = useWalletSettings()
   const { selectedNetworks, setSelectedNetworks } = useSettings()
   const { chains } = useConfig()
 

@@ -1,13 +1,13 @@
 import {
-  Image,
-  Text,
-  GradientAvatar,
-  truncateAddress,
-  NetworkImage,
-  Card,
   Button,
+  Card,
   ChevronDownIcon,
-  SignoutIcon
+  GradientAvatar,
+  Image,
+  NetworkImage,
+  SignoutIcon,
+  Text,
+  truncateAddress
 } from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useState } from 'react'

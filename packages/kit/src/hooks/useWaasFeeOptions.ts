@@ -2,7 +2,7 @@
 
 import { FeeOption } from '@0xsequence/waas'
 import { ethers } from 'ethers'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Connector, useConnections } from 'wagmi'
 
 import { Deferred } from '../utils/deferred'

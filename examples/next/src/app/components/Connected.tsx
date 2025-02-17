@@ -1,13 +1,13 @@
-import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
+import { Button, Card, cn, Select, Text } from '@0xsequence/design-system'
 import {
+  ContractVerificationStatus,
   signEthAuthProof,
   useIndexerClient,
   useKitWallets,
+  useOpenConnectModal,
   useStorage,
   useWaasFeeOptions,
-  validateEthProof,
-  ContractVerificationStatus,
-  useOpenConnectModal
+  validateEthProof
 } from '@0xsequence/kit'
 import { CheckoutSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'

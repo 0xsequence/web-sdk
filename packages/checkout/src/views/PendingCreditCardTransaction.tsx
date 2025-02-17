@@ -1,5 +1,6 @@
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useAnalyticsContext, useProjectAccessKey, useContractInfo, useTokenMetadata, DEBUG } from '@0xsequence/kit'
+import { DEBUG, useAnalyticsContext, useProjectAccessKey } from '@0xsequence/kit'
+import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect } from 'react'
@@ -9,13 +10,14 @@ import { fetchSardineOrderStatus } from '../api'
 import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TransactionPendingNavigation } from '../contexts'
 import {
-  useNavigation,
   useCheckoutModal,
+  useNavigation,
   useSardineClientToken,
-  useTransactionStatusModal,
-  useSkipOnCloseCallback
+  useSkipOnCloseCallback,
+  useTransactionStatusModal
 } from '../hooks'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
+
 const POLLING_TIME = 10 * 1000
 
 interface PendingCreditTransactionProps {
@@ -57,12 +59,19 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     data: tokensMetadata,
     isLoading: isLoadingTokenMetadata,
     isError: isErrorTokenMetadata
-  } = useTokenMetadata(creditCardCheckout.chainId, creditCardCheckout.nftAddress, [creditCardCheckout.nftId])
+  } = useGetTokenMetadata({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress,
+    tokenIDs: [creditCardCheckout.nftId]
+  })
   const {
     data: collectionInfo,
     isLoading: isLoadingCollectionInfo,
     isError: isErrorCollectionInfo
-  } = useContractInfo(creditCardCheckout.chainId, creditCardCheckout.nftAddress)
+  } = useGetContractInfo({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress
+  })
 
   const network = findSupportedNetwork(creditCardCheckout.chainId)
 
@@ -252,11 +261,11 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   const { setNavigation } = nav
   const projectAccessKey = useProjectAccessKey()
 
-  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useTokenMetadata(
-    creditCardCheckout.chainId,
-    creditCardCheckout.nftAddress,
-    [creditCardCheckout.nftId]
-  )
+  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useGetTokenMetadata({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress,
+    tokenIDs: [creditCardCheckout.nftId]
+  })
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const disableSardineClientTokenFetch = isLoadingTokenMetadata

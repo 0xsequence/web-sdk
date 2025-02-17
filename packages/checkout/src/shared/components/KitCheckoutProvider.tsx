@@ -4,36 +4,36 @@ import { Modal, ThemeProvider } from '@0xsequence/design-system'
 import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'motion/react'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
+  AddFundsContextProvider,
+  AddFundsSettings,
+  CheckoutModalContextProvider,
+  CheckoutSettings,
   History,
   Navigation,
   NavigationContextProvider,
-  CheckoutModalContextProvider,
-  CheckoutSettings,
-  AddFundsContextProvider,
-  AddFundsSettings,
   SelectPaymentContextProvider,
   SelectPaymentSettings,
-  TransferFundsContextProvider,
-  TransferFundsSettings,
-  TransactionStatusSettings,
-  TransactionStatusModalContextProvider,
+  SwapModalContextProvider,
   SwapModalSettings,
-  SwapModalContextProvider
+  TransactionStatusModalContextProvider,
+  TransactionStatusSettings,
+  TransferFundsContextProvider,
+  TransferFundsSettings
 } from '../../contexts'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import {
-  PendingCreditCardTransaction,
-  TransactionError,
-  TransactionSuccess,
-  CheckoutSelection,
   AddFundsContent,
+  CheckoutSelection,
   PaymentSelection,
-  TransferToWallet,
+  PendingCreditCardTransaction,
+  Swap,
+  TransactionError,
   TransactionStatus,
-  Swap
+  TransactionSuccess,
+  TransferToWallet
 } from '../../views'
 
 export type KitCheckoutProvider = {

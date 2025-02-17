@@ -1,19 +1,16 @@
 import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import {
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId,
-  useExchangeRate,
-  useCoinPrices,
-  useTransactionHistory,
-  useCoinBalanceSummary,
-  ContractVerificationStatus
-} from '@0xsequence/kit'
+  useGetCoinPrices,
+  useGetExchangeRate,
+  useGetSingleTokenBalanceSummary,
+  useGetTransactionHistory
+} from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useSettings, useNavigation } from '../../hooks'
+import { useNavigation, useSettings } from '../../hooks'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
@@ -29,7 +26,7 @@ export interface CoinDetailsProps {
 export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
-  const { fiatCurrency, hideUnlistedTokens } = useSettings()
+  const { fiatCurrency } = useSettings()
   const { address: accountAddress } = useAccount()
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
@@ -40,7 +37,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useTransactionHistory({
+  } = useGetTransactionHistory({
     chainId,
     accountAddress: accountAddress || '',
     contractAddress
@@ -48,24 +45,20 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useCoinBalanceSummary({
-    filter: {
-      accountAddresses: [accountAddress || ''],
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      contractWhitelist: [contractAddress],
-      omitNativeBalances: true
-    },
-    chainId
+  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useGetSingleTokenBalanceSummary({
+    chainId,
+    accountAddress: accountAddress || '',
+    contractAddress
   })
 
-  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useCoinPrices([
+  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 

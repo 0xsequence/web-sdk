@@ -1,5 +1,4 @@
-import { IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/design-system'
-import React from 'react'
+import { ChevronLeftIcon, IconButton, ModalPrimitive, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks/useNavigation'

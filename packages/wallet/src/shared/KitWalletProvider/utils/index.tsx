@@ -5,20 +5,20 @@ import {
   CoinDetails,
   CollectibleDetails,
   CollectionDetails,
+  History,
   Home,
   Receive,
-  SendCoin,
-  SendCollectible,
-  History,
   SearchWallet,
   SearchWalletViewAll,
-  SettingsMenu,
+  SendCoin,
+  SendCollectible,
   SettingsCurrency,
-  SettingsNetwork,
   SettingsGeneral,
-  TransactionDetails,
+  SettingsMenu,
+  SettingsNetwork,
   SwapCoin,
-  SwapList
+  SwapList,
+  TransactionDetails
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'

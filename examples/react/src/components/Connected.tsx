@@ -1,20 +1,20 @@
 import { Button, Card, Modal, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
 import {
+  ContractVerificationStatus,
+  getModalPositionCss,
+  signEthAuthProof,
+  useIndexerClient,
+  useKitWallets,
+  useOpenConnectModal,
   useStorage,
   useWaasFeeOptions,
-  useIndexerClient,
-  signEthAuthProof,
-  validateEthProof,
-  getModalPositionCss,
-  useOpenConnectModal,
-  ContractVerificationStatus,
-  useKitWallets
+  validateEthProof
 } from '@0xsequence/kit'
-import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
+import { useAddFundsModal, useCheckoutModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
-import { allNetworks, ChainId } from '@0xsequence/network'
+import { ChainId, allNetworks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
 import React, { ComponentProps, useEffect } from 'react'
@@ -23,8 +23,8 @@ import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletC
 
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
-import { abi } from '../constants/nft-abi'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
+import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode

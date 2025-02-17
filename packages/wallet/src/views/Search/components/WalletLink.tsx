@@ -1,5 +1,4 @@
-import { Text, ChevronRightIcon } from '@0xsequence/design-system'
-import React from 'react'
+import { ChevronRightIcon, Text } from '@0xsequence/design-system'
 
 import { Navigation } from '../../../contexts'
 import { useNavigation } from '../../../hooks'
