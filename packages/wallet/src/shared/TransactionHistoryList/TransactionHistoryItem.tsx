@@ -1,7 +1,8 @@
 import { TokenPrice } from '@0xsequence/api'
 import { ArrowRightIcon, Text, Image, TransactionIcon, Skeleton, NetworkImage } from '@0xsequence/design-system'
 import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useCoinPrices, useExchangeRate } from '@0xsequence/kit'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import React from 'react'
@@ -36,14 +37,14 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
     }
   })
 
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices(
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
     tokenContractAddresses.map(contractAddress => ({
       contractAddress,
       chainId: transaction.chainId
     }))
   )
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingCoinPrices || isPendingConversionRate
 

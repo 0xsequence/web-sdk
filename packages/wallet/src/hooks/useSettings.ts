@@ -18,12 +18,10 @@ interface Settings {
 type SettingsItems = Pick<Settings, 'hideCollectibles' | 'hideUnlistedTokens' | 'fiatCurrency' | 'selectedNetworks'>
 
 export const useSettings = (): Settings => {
-  const { readOnlyNetworks, displayedAssets } = useWalletSettings()
+  const { readOnlyNetworks, displayedChainIds } = useWalletSettings()
   const { chains } = useConfig()
 
-  const allChains = [
-    ...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedAssets.map(asset => asset.chainId)])
-  ]
+  const allChains = [...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedChainIds])]
 
   const getSettingsFromStorage = (): SettingsItems => {
     let hideUnlistedTokens = true

@@ -1,12 +1,5 @@
 import { SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
-import {
-  getNativeTokenInfoByChainId,
-  useExchangeRate,
-  useCoinPrices,
-  useBalancesSummary,
-  ContractVerificationStatus,
-  compareAddress
-} from '@0xsequence/kit'
+import { getNativeTokenInfoByChainId, ContractVerificationStatus, compareAddress } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useState } from 'react'
@@ -17,6 +10,7 @@ import { computeBalanceFiat } from '../../utils'
 
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 export const SearchWallet = () => {
   const { chains } = useConfig()
@@ -24,26 +18,26 @@ export const SearchWallet = () => {
   const [search, setSearch] = useState('')
   const { address: accountAddress } = useAccount()
 
-  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useBalancesSummary({
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      omitNativeBalances: true
+      omitNativeBalances: false
     }
   })
 
   const coinBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
 
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices(
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
     const isHigherFiat =

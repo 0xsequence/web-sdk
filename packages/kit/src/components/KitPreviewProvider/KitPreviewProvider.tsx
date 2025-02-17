@@ -30,9 +30,20 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
     signIn = {},
     position = 'center',
     displayedAssets: displayedAssetsSetting = [],
+    displayedChainIds: displayedChainIdsSetting = [],
+    displayedContracts: displayedContractsSetting = [],
     ethAuth = {} as EthAuthSettings,
     disableAnalytics = false
   } = config
+
+  if (displayedAssetsSetting.length > 0) {
+    console.warn('displayedAssets is deprecated. Use displayedChainIds and displayedContracts instead.')
+  }
+
+  const finalDisplayedChainIds =
+    displayedChainIdsSetting.length > 0 ? displayedChainIdsSetting : displayedAssetsSetting.map(asset => asset.chainId)
+  const finalDisplayedContracts =
+    displayedContractsSetting.length > 0 ? displayedContractsSetting : displayedAssetsSetting.map(asset => asset.contractAddress)
 
   const defaultAppName = signIn.projectName || 'app'
 
@@ -41,7 +52,6 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
-  const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
   const wagmiConfig = useConfig()
@@ -101,10 +111,6 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
     })
   }, [theme, ethAuth])
 
-  useEffect(() => {
-    setDisplayedAssets(displayedAssets)
-  }, [displayedAssetsSetting])
-
   const { emailConflictInfo } = useEmailConflict()
 
   return (
@@ -119,7 +125,9 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
       >
         <GoogleOAuthProvider clientId={googleClientId}>
           <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
-            <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets }}>
+            <WalletConfigContextProvider
+              value={{ displayedChainIds: finalDisplayedChainIds, displayedContracts: finalDisplayedContracts }}
+            >
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">
                   <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>

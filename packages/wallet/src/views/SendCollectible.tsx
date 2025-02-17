@@ -12,13 +12,12 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import {
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
   ExtendedConnector,
   truncateAtMiddle,
-  useCollectibleBalanceDetails,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
@@ -31,6 +30,7 @@ import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { limitDecimals, isEthAddress } from '../utils'
 
 interface SendCollectibleProps {
@@ -69,17 +69,22 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useCollectibleBalanceDetails({
+  const { data: dataTokens, isPending: isPendingBalances } = useGetTokenBalancesDetails({
     filter: {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     },
-    chainId,
-    tokenId
+    chainIds: [chainId]
   })
-  const { contractType } = tokenBalance as TokenBalance
+
+  const tokenBalance = dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
+
+  let contractType: ContractType | undefined
+  if (tokenBalance) {
+    contractType = tokenBalance.contractType
+  }
 
   useEffect(() => {
     if (tokenBalance) {
