@@ -31,6 +31,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@0xsequence/kit-hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.0.7",
     "dayjs": "^1.11.11",
     "fuse.js": "^6.6.2",
@@ -39,6 +40,7 @@
   },
   "peerDependencies": {
     "@0xsequence/kit": "workspace:*",
+    "@0xsequence/kit-hooks": "workspace:*",
     "@0xsequence/design-system": ">= 2.0.4",
     "@0xsequence/api": ">= 2.2.13",
     "@0xsequence/indexer": ">= 2.2.13",

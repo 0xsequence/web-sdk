@@ -3,9 +3,6 @@ import {
   CryptoOption,
   compareAddress,
   formatDisplay,
-  useContractInfo,
-  useSwapPrices,
-  useSwapQuote,
   sendTransactions,
   useIndexerClient
 } from '@0xsequence/kit'
@@ -16,6 +13,8 @@ import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
+
+import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
@@ -44,21 +43,20 @@ export const Swap = () => {
     data: currencyInfoData,
     isLoading: isLoadingCurrencyInfo,
     isError: isErrorCurrencyInfo
-  } = useContractInfo(chainId, currencyAddress)
+  } = useGetContractInfo({ chainID: String(chainId), contractAddress: currencyAddress })
 
   const {
     data: swapPrices = [],
     isLoading: swapPricesIsLoading,
     isError: isErrorPrices
-  } = useSwapPrices(
+  } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
       chainId: chainId,
       buyAmount: currencyAmount,
       withContractInfo: true
-    },
-    { disabled: false }
+    }
   )
 
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
@@ -75,7 +73,7 @@ export const Swap = () => {
     data: swapQuote,
     isLoading: isLoadingSwapQuote,
     isError: isErrorSwapQuote
-  } = useSwapQuote(
+  } = useGetSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress: currencyAddress,

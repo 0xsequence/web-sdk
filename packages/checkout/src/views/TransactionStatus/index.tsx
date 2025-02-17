@@ -12,8 +12,6 @@ import {
 import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import {
   CollectibleTileImage,
-  useContractInfo,
-  useTokenMetadata,
   formatDisplay,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt,
@@ -27,6 +25,8 @@ import { usePublicClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransactionStatusModal } from '../../hooks'
+
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 
@@ -90,11 +90,15 @@ export const TransactionStatus = () => {
   const [startTime] = useState(new Date())
   const [status, setStatus] = useState<TxStatus>('pending')
   const noItemsToDisplay = !items || !collectionAddress
-  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useTokenMetadata(
-    chainId,
-    collectionAddress || '',
-    items?.map(i => i.tokenId) || [],
-    noItemsToDisplay
+  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useGetTokenMetadata(
+    {
+      chainID: String(chainId),
+      contractAddress: collectionAddress || '',
+      tokenIDs: items?.map(i => i.tokenId) || []
+    },
+    {
+      disabled: noItemsToDisplay
+    }
   )
 
   const publicClient = usePublicClient({
@@ -137,15 +141,23 @@ export const TransactionStatus = () => {
     }
   }, [])
 
-  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(
-    chainId,
-    collectionAddress || '',
-    noItemsToDisplay
+  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useGetContractInfo(
+    {
+      chainID: String(chainId),
+      contractAddress: collectionAddress || ''
+    },
+    {
+      disabled: noItemsToDisplay
+    }
   )
-  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(
-    chainId,
-    currencyAddress || '',
-    noItemsToDisplay
+  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo(
+    {
+      chainID: String(chainId),
+      contractAddress: currencyAddress || ''
+    },
+    {
+      disabled: noItemsToDisplay
+    }
   )
 
   const isLoading = isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo

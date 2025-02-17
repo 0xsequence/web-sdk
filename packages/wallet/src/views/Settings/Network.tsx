@@ -8,13 +8,11 @@ import { useSettings } from '../../hooks'
 import { SelectButton } from '../../shared/SelectButton'
 
 export const SettingsNetwork = () => {
-  const { readOnlyNetworks, displayedAssets } = useWalletSettings()
+  const { readOnlyNetworks, displayedChainIds } = useWalletSettings()
   const { selectedNetworks, setSelectedNetworks } = useSettings()
   const { chains } = useConfig()
 
-  const allChains = [
-    ...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedAssets.map(asset => asset.chainId)])
-  ]
+  const allChains = [...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedChainIds])]
 
   const onClickNetwork = (chainId: number) => {
     if (selectedNetworks.includes(chainId)) {
