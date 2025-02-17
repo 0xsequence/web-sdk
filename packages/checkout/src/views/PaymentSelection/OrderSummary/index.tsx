@@ -1,13 +1,7 @@
 import { Box, Spinner, NetworkImage, Text } from '@0xsequence/design-system'
-import {
-  formatDisplay,
-  NetworkBadge,
-  CollectibleTileImage,
-  useContractInfo,
-  useTokenMetadata,
-  useCoinPrices
-} from '@0xsequence/kit'
+import { formatDisplay, NetworkBadge, CollectibleTileImage, useCoinPrices } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'
@@ -19,15 +13,19 @@ export const OrderSummary = () => {
   const chainId = network?.chainId || 137
   const collectionAddress = selectPaymentSettings!.collectionAddress
   const tokenIds = selectPaymentSettings?.collectibles.map(c => c.tokenId) || []
-  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useTokenMetadata(chainId, collectionAddress, tokenIds)
-  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(
-    chainId,
-    selectPaymentSettings!.collectionAddress
-  )
-  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(
-    chainId,
-    selectPaymentSettings!.currencyAddress
-  )
+  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useGetTokenMetadata({
+    chainID: String(chainId),
+    contractAddress: collectionAddress,
+    tokenIDs: tokenIds
+  })
+  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: selectPaymentSettings!.collectionAddress
+  })
+  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: selectPaymentSettings!.currencyAddress
+  })
   const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useCoinPrices([
     {
       chainId,
@@ -74,7 +72,7 @@ export const OrderSummary = () => {
       <Box flexDirection="row" gap="1">
         {selectPaymentSettings!.collectibles.map(collectible => {
           const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
-          const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
+          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
             <Box gap="3" alignItems="center" key={collectible.tokenId}>

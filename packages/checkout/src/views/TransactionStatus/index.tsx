@@ -12,14 +12,12 @@ import {
 } from '@0xsequence/design-system'
 import {
   CollectibleTileImage,
-  useContractInfo,
-  useTokenMetadata,
   formatDisplay,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt,
-  useIndexerClient
+  useIndexerClient,
 } from '@0xsequence/kit'
-import { SequenceIndexer, TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
+import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
@@ -28,6 +26,8 @@ import { usePublicClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransactionStatusModal } from '../../hooks'
+
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 
@@ -91,11 +91,15 @@ export const TransactionStatus = () => {
   const [startTime] = useState(new Date())
   const [status, setStatus] = useState<TxStatus>('pending')
   const noItemsToDisplay = !items || !collectionAddress
-  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useTokenMetadata(
-    chainId,
-    collectionAddress || '',
-    items?.map(i => i.tokenId) || [],
-    noItemsToDisplay
+  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useGetTokenMetadata(
+    {
+      chainID: String(chainId),
+      contractAddress: collectionAddress || '',
+      tokenIDs: items?.map(i => i.tokenId) || []
+    },
+    {
+      disabled: noItemsToDisplay
+    }
   )
 
   const publicClient = usePublicClient({
@@ -138,15 +142,23 @@ export const TransactionStatus = () => {
     }
   }, [])
 
-  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useContractInfo(
-    chainId,
-    collectionAddress || '',
-    noItemsToDisplay
+  const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useGetContractInfo(
+    {
+      chainID: String(chainId),
+      contractAddress: collectionAddress || ''
+    },
+    {
+      disabled: noItemsToDisplay
+    }
   )
-  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useContractInfo(
-    chainId,
-    currencyAddress || '',
-    noItemsToDisplay
+  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo(
+    {
+      chainID: String(chainId),
+      contractAddress: currencyAddress || ''
+    },
+    {
+      disabled: noItemsToDisplay
+    }
   )
 
   const isLoading = isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo
@@ -164,7 +176,7 @@ export const TransactionStatus = () => {
       }
     } else {
       const tokenNames =
-        tokenMetadatas
+        tokenMetadatas?.tokenMetadata
           ?.map(metadata => {
             return `${metadata.name} #${metadata.tokenId}`
           })
@@ -224,7 +236,7 @@ export const TransactionStatus = () => {
       <Box gap="3" flexDirection="column">
         {items?.map(item => {
           const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
-          const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
+          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
 
           const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0))
 

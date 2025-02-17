@@ -6,7 +6,6 @@ import {
   useExchangeRate,
   useCoinPrices,
   useTransactionHistory,
-  useCoinBalanceSummary,
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -20,6 +19,7 @@ import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CoinDetailsSkeleton } from './Skeleton'
+import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
 
 export interface CoinDetailsProps {
   contractAddress: string
@@ -48,15 +48,22 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useCoinBalanceSummary({
+  const { data: tokenBalance, isPending: isPendingCoinBalance } = useGetTokenBalancesSummary({
+    chainIds: [chainId],
     filter: {
       accountAddresses: [accountAddress || ''],
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      omitNativeBalances: true
-    },
-    chainId
+      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      omitNativeBalances: false
+    }
   })
+
+  const dataCoinBalance =
+    tokenBalance && tokenBalance.length > 0
+      ? compareAddress(contractAddress, ethers.ZeroAddress)
+        ? tokenBalance?.[0]
+        : tokenBalance?.[1]
+      : undefined
 
   const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useCoinPrices([
     {

@@ -23,33 +23,8 @@ export const kitConfig: KitConfig = {
     projectName: 'Kit Demo',
     useMock: isDebugMode
   },
-  displayedAssets: [
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Skyweaver assets
-    {
-      contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-      chainId: ChainId.POLYGON
-    }
-  ],
+  displayedChainIds: [ChainId.ARBITRUM_NOVA, ChainId.ARBITRUM_SEPOLIA, ChainId.POLYGON],
+  displayedContracts: [zeroAddress, '0x0d402c63cae0200f0723b3e6fa0914627a48462e', '0x631998e91476da5b870d741192fc5cbc55f5a52e'],
   readOnlyNetworks: [ChainId.OPTIMISM]
 }
 

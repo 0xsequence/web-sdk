@@ -21,7 +21,6 @@ import {
   truncateAtMiddle,
   useExchangeRate,
   useCoinPrices,
-  useBalancesSummary,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
@@ -35,6 +34,7 @@ import { useSettings, useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
 import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
+import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
 
 interface SendCoinProps {
   chainId: number
@@ -71,13 +71,13 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalancesSummary({
+  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     }
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)

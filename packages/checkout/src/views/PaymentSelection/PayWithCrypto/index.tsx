@@ -1,13 +1,5 @@
 import { AddIcon, Box, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
-import {
-  CryptoOption,
-  useBalancesSummary,
-  useContractInfo,
-  useSwapPrices,
-  compareAddress,
-  ContractVerificationStatus,
-  formatDisplay
-} from '@0xsequence/kit'
+import { CryptoOption, useSwapPrices, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'framer-motion'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
@@ -16,6 +8,7 @@ import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { useClearCachedBalances } from '../../../hooks'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/react-hooks'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings
@@ -43,18 +36,21 @@ export const PayWithCrypto = ({
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useBalancesSummary({
+  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      omitNativeBalances: true
+      omitNativeBalances: false
     },
     omitMetadata: true
   })
 
-  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useContractInfo(chainId, currencyAddress)
+  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: currencyAddress
+  })
 
   const buyCurrencyAddress = settings?.currencyAddress
 

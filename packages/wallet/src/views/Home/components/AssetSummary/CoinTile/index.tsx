@@ -1,22 +1,14 @@
 import { Box } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import {
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId,
-  useContractInfo,
-  useExchangeRate,
-  useCoinPrices
-} from '@0xsequence/kit'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../../../../hooks'
 import { computeBalanceFiat, getPercentagePriceChange } from '../../../../../utils'
 
 import { CoinTileContent } from './CoinTileContent'
-
+import { useGetContractInfo } from '@0xsequence/react-hooks'
 interface CoinTileProps {
   balance: TokenBalance
 }
@@ -36,7 +28,10 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
 
   const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
 
-  const { data: contractInfo, isPending: isPendingContractInfo } = useContractInfo(balance.chainId, balance.contractAddress)
+  const { data: contractInfo, isPending: isPendingContractInfo } = useGetContractInfo({
+    chainID: String(balance.chainId),
+    contractAddress: balance.contractAddress
+  })
 
   const isPending = isPendingCoinPrice || isPendingConversionRate || isPendingContractInfo
   if (isPending) {

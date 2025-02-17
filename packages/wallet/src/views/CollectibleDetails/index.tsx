@@ -4,7 +4,6 @@ import {
   useExchangeRate,
   useTransactionHistory,
   useCollectiblePrices,
-  useCollectibleBalanceDetails,
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -18,6 +17,7 @@ import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
+import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 
 export interface CollectibleDetailsProps {
   contractAddress: string
@@ -49,16 +49,18 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCollectibleBalance, isPending: isPendingCollectibleBalance } = useCollectibleBalanceDetails({
+  const { data: dataTokens, isPending: isPendingCollectibleBalance } = useGetTokenBalancesDetails({
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
       omitNativeBalances: true
     },
-    chainId,
-    tokenId
+    chainIds: [chainId]
   })
+
+  const dataCollectibleBalance =
+    dataTokens && dataTokens.length > 0 ? dataTokens.find(token => token.tokenID === tokenId) : undefined
 
   const { data: dataCollectiblePrices, isPending: isPendingCollectiblePrices } = useCollectiblePrices([
     {

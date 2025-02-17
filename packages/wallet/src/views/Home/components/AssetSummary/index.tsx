@@ -1,19 +1,21 @@
 import { Box, Spinner, vars } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { useWalletSettings } from '@0xsequence/kit'
 import { useAccount } from 'wagmi'
 
-import { useBalancesAssetsSummary, useNavigation, useSettings } from '../../../../hooks'
+import { useNavigation, useSettings } from '../../../../hooks'
 
 import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
 import { SkeletonTiles } from './SkeletonTiles'
 import { useEffect, useRef, useState } from 'react'
 
+import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
+
 export const AssetSummary = () => {
   const { address } = useAccount()
   const { setNavigation } = useNavigation()
-  const { displayedAssets } = useWalletSettings()
+  const { displayedContracts } = useWalletSettings()
   const { hideUnlistedTokens, hideCollectibles, selectedNetworks } = useSettings()
 
   const pageSize = 10
@@ -52,13 +54,18 @@ export const AssetSummary = () => {
     }
   }, [hasMoreTokens, fetchMoreTokens])
 
-  const { data: balances = [], isPending: isPendingBalances } = useBalancesAssetsSummary({
-    accountAddress: address || '',
-    chainIds: selectedNetworks,
-    displayAssets: displayedAssets,
-    hideCollectibles,
-    verifiedOnly: hideUnlistedTokens
-  })
+  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesDetails(
+    {
+      filter: {
+        accountAddresses: [address || ''],
+        contractWhitelist: displayedContracts,
+        contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+        omitNativeBalances: false
+      },
+      chainIds: selectedNetworks
+    },
+    { hideCollectibles }
+  )
 
   useEffect(() => {
     if (!isPendingBalances && balances.length > 0) {

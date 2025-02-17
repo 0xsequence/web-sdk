@@ -38,6 +38,7 @@
     "timeago-react": "^3.0.6"
   },
   "peerDependencies": {
+    "@0xsequence/react-hooks": "^1.0.0",
     "0xsequence": "^2.2.13",
     "@0xsequence/api": "^2.2.13",
     "@0xsequence/indexer": "^2.2.13",
