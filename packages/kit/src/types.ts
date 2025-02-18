@@ -1,8 +1,13 @@
 import { ETHAuthProof } from '@0xsequence/auth'
+import { tokens } from '@0xsequence/design-system'
 import { FunctionComponent } from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from './constants'
+
+const { colors } = tokens
+
+type ColorTokens = (typeof colors)['dark']
 
 export interface LogoProps {
   className?: string
@@ -50,7 +55,7 @@ export interface EthAuthSettings {
   nonce?: number
 }
 
-export type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark' | Partial<ColorTokens>
 
 export type ModalPosition =
   | 'center'
