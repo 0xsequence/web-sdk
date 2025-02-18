@@ -113,10 +113,7 @@ export const Footer = () => {
   }
 
   return (
-    <div
-      className="flex p-5 fixed bottom-0 w-full justify-between bg-background-overlay backdrop-blur-md"
-      style={{ height: '60px', borderTop: '1px solid #222' }}
-    >
+    <div className="h-[60px] flex p-5 fixed bottom-0 w-full justify-between bg-background-overlay backdrop-blur-md border-t-1 border-t-[#222]">
       <Links />
       <Socials />
     </div>
