@@ -6,6 +6,7 @@ import { Connector } from 'wagmi'
 
 import { TRANSACTION_CONFIRMATIONS_DEFAULT } from '../constants'
 import { ExtendedConnector } from '../types'
+import { compareAddress } from '../utils/helpers'
 
 interface Transaction {
   to: Hex
@@ -58,8 +59,40 @@ export const sendTransactions = async ({
       network: chainId
     })
 
-    const transactionsFeeOption = resp.data.feeOptions[0]
+    let transactionsFeeOption = null
     const transactionsFeeQuote = resp.data.feeQuote
+
+    const balances = await indexerClient.getTokenBalancesDetails({
+      filter: {
+        accountAddresses: [senderAddress],
+        omitNativeBalances: false
+      }
+    })
+
+    for (const feeOption of resp.data.feeOptions) {
+      const isNativeToken = feeOption.token.contractAddress == null
+
+      if (isNativeToken) {
+        const nativeTokenBalance = balances.nativeBalances?.[0].balance || '0'
+        if (BigInt(nativeTokenBalance) >= BigInt(feeOption.value)) {
+          transactionsFeeOption = feeOption
+          break
+        }
+      } else {
+        const erc20TokenBalance = balances.balances.find(b =>
+          compareAddress(b.contractAddress, feeOption.token.contractAddress || '')
+        )
+        const erc20TokenBalanceValue = erc20TokenBalance?.balance || '0'
+        if (BigInt(erc20TokenBalanceValue) >= BigInt(feeOption.value)) {
+          transactionsFeeOption = feeOption
+          break
+        }
+      }
+    }
+
+    if (!transactionsFeeOption) {
+      throw new Error('Transaction fee option with valid user balance not found')
+    }
 
     const response = await sequenceWaaS.sendTransaction({
       transactions,
