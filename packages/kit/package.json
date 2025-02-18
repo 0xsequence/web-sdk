@@ -41,7 +41,7 @@
     "@0xsequence/api": ">= 2.2.4",
     "@0xsequence/auth": ">= 2.2.4",
     "@0xsequence/core": ">= 2.2.4",
-    "@0xsequence/design-system": "^2.0.1",
+    "@0xsequence/design-system": "^2.0.2",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/indexer": ">= 2.2.4",
     "@0xsequence/metadata": ">= 2.2.4",
