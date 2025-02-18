@@ -123,6 +123,9 @@ importers:
       '@0xsequence/waas':
         specifier: '>= 2.2.4'
         version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@tailwindcss/postcss':
+        specifier: ^4.0.6
+        version: 4.0.6
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.64.2(react@18.3.1)
@@ -135,6 +138,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      tailwindcss:
+        specifier: ^4.0.6
+        version: 4.0.6
       viem:
         specifier: ^2.12.0
         version: 2.22.10(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)
@@ -158,7 +164,7 @@ importers:
         specifier: 14.2.3
         version: 14.2.3(eslint@8.57.1)(typescript@5.7.3)
       postcss:
-        specifier: ^8
+        specifier: ^8.5.1
         version: 8.5.1
       typescript:
         specifier: ^5
