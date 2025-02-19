@@ -5,6 +5,7 @@ import { ecosystemWallet as baseEcosystemWallet, BaseEcosystemConnectorOptions }
 export type EcosystemWalletOptions = BaseEcosystemConnectorOptions &
   Pick<WalletProperties, 'logoDark' | 'logoLight'> & {
     name?: string
+    iconWidth?: string
   }
 
 export const ecosystemWallet = (options: EcosystemWalletOptions): Wallet => ({
@@ -13,5 +14,6 @@ export const ecosystemWallet = (options: EcosystemWalletOptions): Wallet => ({
   logoLight: options.logoLight,
   name: options.name || 'Ecosystem Wallet',
   type: 'social',
+  iconWidth: options.iconWidth,
   createConnector: () => baseEcosystemWallet(options)
 })

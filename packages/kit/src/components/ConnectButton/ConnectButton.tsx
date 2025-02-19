@@ -44,7 +44,11 @@ export const ConnectButton = (props: ConnectButtonProps) => {
           width="full"
           style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
         >
-          <Box as={Logo} width={ICON_SIZE_DESCRIPTIVE} height={ICON_SIZE_DESCRIPTIVE} />
+          <Box
+            as={Logo}
+            {...(walletProps.iconWidth ? { style: { width: walletProps.iconWidth } } : { width: ICON_SIZE_DESCRIPTIVE })}
+            height={ICON_SIZE_DESCRIPTIVE}
+          />
           <Text color="text100" variant="normal" fontWeight="bold">
             Continue with {label || walletProps.name}
           </Text>
@@ -65,7 +69,11 @@ export const ConnectButton = (props: ConnectButtonProps) => {
           height: BUTTON_HEIGHT
         }}
       >
-        <Box as={Logo} width={ICON_SIZE} height={ICON_SIZE} />
+        <Box
+          as={Logo}
+          {...(walletProps.iconWidth ? { style: { width: walletProps.iconWidth } } : { width: ICON_SIZE })}
+          height={ICON_SIZE}
+        />
       </Card>
     </Tooltip>
   )
