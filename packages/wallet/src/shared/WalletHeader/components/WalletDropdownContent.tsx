@@ -86,10 +86,10 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
         <IconButton className="bg-button-glass" onClick={() => setOpenWalletDropdown(false)} size="xs" icon={CloseIcon} />
       </div>
       <div className="flex gap-2 mt-3 flex-col">
-        <Button className="w-full" variant="glass" leftIcon={QrCodeIcon} label="Receive" onClick={onClickReceive} />
-        <Button className="w-full" leftIcon={TransactionIcon} label="History" onClick={onClickHistory} />
-        <Button className="w-full" leftIcon={SettingsIcon} label="Settings" onClick={onClickSettings} />
-        <Button className="w-full" label="Sign Out" leftIcon={SignoutIcon} onClick={onClickSignout} />
+        <Button className="w-full rounded-xl" variant="glass" leftIcon={QrCodeIcon} label="Receive" onClick={onClickReceive} />
+        <Button className="w-full rounded-xl" leftIcon={TransactionIcon} label="History" onClick={onClickHistory} />
+        <Button className="w-full rounded-xl" leftIcon={SettingsIcon} label="Settings" onClick={onClickSettings} />
+        <Button className="w-full rounded-xl" label="Sign Out" leftIcon={SignoutIcon} onClick={onClickSignout} />
       </div>
     </div>
   )
