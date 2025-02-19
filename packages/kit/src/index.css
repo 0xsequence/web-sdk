@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import '@0xsequence/design-system/preset';
 
-.gap-10 {
-  gap: 40px;
-}
+@source '../../wallet/src';
+@source '../../checkout/src';
