@@ -194,8 +194,8 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
         label={`View on ${nativeTokenInfo.blockExplorerName}`}
       />
       <div>
+        <Divider className="w-full my-2" />
         <div className="flex w-full flex-col gap-2 justify-center items-start">
-          <Divider className="w-full m-0" style={{ marginBottom: '-4px' }} />
           <Text variant="normal" color="muted" fontWeight="medium">
             Status
           </Text>
@@ -203,8 +203,9 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
             Complete
           </Text>
         </div>
+
+        <Divider className="w-full my-2" />
         <div className="flex w-full flex-col gap-2 justify-center items-start">
-          <Divider className="w-full m-0" style={{ marginBottom: '-4px' }} />
           <Text variant="normal" color="muted" fontWeight="medium">
             Transaction Hash
           </Text>
