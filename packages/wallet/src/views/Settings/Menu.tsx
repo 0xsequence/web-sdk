@@ -30,7 +30,7 @@ export const SettingsMenu = () => {
       <div className="p-5 pt-3">
         <div className="flex flex-col gap-2">
           <Button
-            className="w-full"
+            className="w-full rounded-xl"
             size="lg"
             onClick={onClickGeneral}
             leftIcon={SettingsIcon}
@@ -38,7 +38,7 @@ export const SettingsMenu = () => {
             label="General"
           />
           <Button
-            className="w-full"
+            className="w-full rounded-xl"
             size="lg"
             onClick={onClickCurrency}
             leftIcon={CurrencyIcon}
@@ -46,7 +46,7 @@ export const SettingsMenu = () => {
             label="Currency"
           />
           <Button
-            className="w-full"
+            className="w-full rounded-xl"
             size="lg"
             onClick={onClickNetworks}
             leftIcon={NetworkIcon}
