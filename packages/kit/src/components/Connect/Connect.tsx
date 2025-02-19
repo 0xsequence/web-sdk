@@ -350,16 +350,16 @@ export const Connect = (props: ConnectWalletContentProps) => {
         alignItems="center"
         fontWeight="medium"
         style={{
-          marginTop: '4px'
+          marginTop: '2px'
         }}
       >
         <TitleWrapper isPreview={isPreview}>
-          <Text color="text80">
+          <Text color="text80" variant="medium">
             {isLoading
               ? `Connecting...`
               : hasConnectedSocialOrSequenceUniversal
                 ? 'Wallets'
-                : `Sign in ${projectName ? `to ${projectName}` : ''}`}
+                : `Connect ${projectName ? `to ${projectName}` : ''}`}
           </Text>
         </TitleWrapper>
 

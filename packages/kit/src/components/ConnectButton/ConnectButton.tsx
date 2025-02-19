@@ -34,9 +34,9 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 
   if (isDescriptive) {
     return (
-      <Tooltip message={label || walletProps.name}>
+      <Tooltip message={label || walletProps.name} side="bottom">
         <Card
-          gap="1"
+          gap="2"
           clickable
           justifyContent="center"
           alignItems="center"
