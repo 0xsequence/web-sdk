@@ -15,7 +15,7 @@ import {
   formatDisplay,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt,
-  useIndexerClient,
+  useIndexerClient
 } from '@0xsequence/kit'
 import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
