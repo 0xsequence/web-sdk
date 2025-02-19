@@ -13,14 +13,14 @@ export const SelectedIndicator = (props: SelectedIndicatorProps) => {
   return (
     <div
       className={cn(
-        'w-5 h-5 flex border-solid border-1 relative items-center justify-center shrink-0',
+        `w-5 h-5 flex border-solid border-1 relative items-center justify-center shrink-0 ${selected ? '' : 'border-border-normal'}`,
         squareIndicator ? 'rounded-sm' : 'rounded-full',
         className
       )}
     >
       <motion.div
         className={cn(
-          'flex absolute text-text-inverse100 justify-center items-center',
+          'flex absolute text-text-inverse100 justify-center items-center bg-border-normal',
           squareIndicator ? 'rounded-sm w-5 h-5' : 'rounded-full w-[14px] h-[14px]'
         )}
         initial={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.5 }}
