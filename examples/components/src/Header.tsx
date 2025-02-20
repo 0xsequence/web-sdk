@@ -16,7 +16,7 @@ import { useAccount, useChainId, useChains, useDisconnect, useSwitchChain } from
 export const Header = () => {
   return (
     <div
-      className="flex fixed top-0 w-full p-4 justify-between bg-background-overlay backdrop-blur-md z-1"
+      className="flex fixed top-0 w-full p-4 justify-between bg-background-overlay backdrop-blur-md z-3"
       style={{ borderBottom: '1px solid #222' }}
     >
       <div className="flex flex-row items-center justify-center gap-3">
