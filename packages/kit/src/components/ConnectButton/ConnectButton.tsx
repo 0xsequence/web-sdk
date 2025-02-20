@@ -1,11 +1,12 @@
-import { Card, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
+import { Card, EllipsisIcon, Text, TooltipPrimitive, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { LocalStorageKey } from '../../constants'
 import { useStorage, useStorageItem } from '../../hooks/useStorage'
 import { ExtendedConnector, WalletProperties } from '../../types'
+import { Tooltip } from '../Tooltip'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
@@ -30,10 +31,39 @@ export const ConnectButton = (props: ConnectButtonProps) => {
   const walletProps = connector._wallet
   const isDescriptive = props.isDescriptive || false
 
+  const containerRef = useRef<HTMLDivElement>(null)
   const Logo = getLogo(theme, walletProps)
 
   if (isDescriptive) {
     return (
+      // <TooltipPrimitive.Provider>
+      //   <TooltipPrimitive.Root delayDuration={0}>
+      //     <TooltipPrimitive.Trigger asChild>
+      //       <div ref={containerRef}>
+      //         <Card
+      //           className="flex gap-1 justify-center items-center w-full"
+      //           clickable
+      //           onClick={() => onConnect(connector)}
+      //           style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
+      //         >
+      //           <Logo className={iconDescriptiveSizeClasses} />
+      //           <Text color="primary" variant="normal" fontWeight="bold">
+      //             Continue with {label || walletProps.name}
+      //           </Text>
+      //         </Card>
+      //       </div>
+      //     </TooltipPrimitive.Trigger>
+      //     <TooltipPrimitive.Portal container={containerRef.current}>
+      //       <TooltipPrimitive.Content className="backdrop-blur-xs bg-background-raised rounded-lg px-4 pb-3 pt-2 shadow-[0_0_10px_0_rgba(0,0,0,0.5)] fill-background-raised">
+      //         <Text variant="small" fontWeight="medium" color="secondary">
+      //           {label || walletProps.name}
+      //         </Text>
+      //         <TooltipPrimitive.Arrow offset={12} width={10} height={5} />
+      //       </TooltipPrimitive.Content>
+      //     </TooltipPrimitive.Portal>
+      //   </TooltipPrimitive.Root>
+      // </TooltipPrimitive.Provider>
+
       <Tooltip message={label || walletProps.name}>
         <Card
           className="flex gap-1 justify-center items-center w-full"
