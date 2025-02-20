@@ -36,34 +36,6 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 
   if (isDescriptive) {
     return (
-      // <TooltipPrimitive.Provider>
-      //   <TooltipPrimitive.Root delayDuration={0}>
-      //     <TooltipPrimitive.Trigger asChild>
-      //       <div ref={containerRef}>
-      //         <Card
-      //           className="flex gap-1 justify-center items-center w-full"
-      //           clickable
-      //           onClick={() => onConnect(connector)}
-      //           style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
-      //         >
-      //           <Logo className={iconDescriptiveSizeClasses} />
-      //           <Text color="primary" variant="normal" fontWeight="bold">
-      //             Continue with {label || walletProps.name}
-      //           </Text>
-      //         </Card>
-      //       </div>
-      //     </TooltipPrimitive.Trigger>
-      //     <TooltipPrimitive.Portal container={containerRef.current}>
-      //       <TooltipPrimitive.Content className="backdrop-blur-xs bg-background-raised rounded-lg px-4 pb-3 pt-2 shadow-[0_0_10px_0_rgba(0,0,0,0.5)] fill-background-raised">
-      //         <Text variant="small" fontWeight="medium" color="secondary">
-      //           {label || walletProps.name}
-      //         </Text>
-      //         <TooltipPrimitive.Arrow offset={12} width={10} height={5} />
-      //       </TooltipPrimitive.Content>
-      //     </TooltipPrimitive.Portal>
-      //   </TooltipPrimitive.Root>
-      // </TooltipPrimitive.Provider>
-
       <Tooltip message={label || walletProps.name}>
         <Card
           className="flex gap-1 justify-center items-center w-full"
