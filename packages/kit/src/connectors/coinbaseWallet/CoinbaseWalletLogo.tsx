@@ -5,7 +5,7 @@ import { LogoProps } from '../../types'
 export const CoinbaseWalletLogo: React.FunctionComponent<LogoProps> = props => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none" {...props}>
-      <rect className="w-100% h-100%" fill="#0052FF" rx="100" />
+      <rect width="100%" height="100%" fill="#0052FF" rx="100" />
       <path
         fill="#fff"
         fillRule="evenodd"

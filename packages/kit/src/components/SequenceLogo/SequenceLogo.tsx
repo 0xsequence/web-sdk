@@ -15,7 +15,7 @@ export const SequenceLogo = () => {
       </g>
       <defs>
         <clipPath id="clip0_11299_570">
-          <rect className="w-79.3333 h-14" fill="white" transform="translate(0.333252)" />
+          <rect width="79.3333" height="14" fill="white" transform="translate(0.333252)" />
         </clipPath>
       </defs>
     </svg>
