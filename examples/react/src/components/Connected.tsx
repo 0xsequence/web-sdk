@@ -558,7 +558,7 @@ export const Connected = () => {
               />
             )}
             {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
-              <Text className="ml-4" variant="small" underline asChild>
+              <Text className="ml-4" variant="small" underline color="primary" asChild>
                 <a
                   href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
                   target="_blank"
@@ -580,7 +580,7 @@ export const Connected = () => {
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash3 &&
               ((txnData3 as any)?.chainId === chainId || txnData3) && (
-                <Text className="ml-4" variant="small" underline asChild>
+                <Text className="ml-4" variant="small" underline color="primary" asChild>
                   <a
                     href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData3 as any).hash ?? txnData3}`}
                     target="_blank"
@@ -654,7 +654,7 @@ export const Connected = () => {
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash2 &&
               ((txnData2 as any)?.chainId === chainId || txnData2) && (
-                <Text className="ml-4" variant="small" underline asChild>
+                <Text className="ml-4" variant="small" underline color="primary" asChild>
                   <a
                     href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
                     target="_blank"
