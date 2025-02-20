@@ -53,7 +53,7 @@ export const TransferFunds = () => {
         </Text>
       </div>
       <Card className="flex cursor-pointer w-full justify-between p-4" onClick={onClickQrCode}>
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-row gap-3 items-center">
           <div className="bg-white p-4 rounded-sm" style={{ width: 40, height: 40 }}>
             <QRCodeCanvas
               value={userAddress || ''}
