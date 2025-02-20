@@ -170,7 +170,9 @@ export const Swap = () => {
     } else if (noOptionsFound) {
       return (
         <div className="flex w-full justify-center items-center">
-          <Text variant="normal">No swap option found!</Text>
+          <Text variant="normal" color="primary">
+            No swap option found!
+          </Text>
         </div>
       )
     } else {

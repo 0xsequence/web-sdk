@@ -15,7 +15,7 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
   return (
     <div className="flex p-2 rounded-xl flex-row items-center justify-between relative" key={id}>
       <div className="absolute top-0 left-0 right-0 bottom-0" onClick={onSelect} style={{ cursor: 'pointer', zIndex: 1 }} />
-      <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-row items-center">
         <div className="border" />
         <div className="flex flex-col gap-1">
           <Text variant="normal" color="primary">

@@ -270,25 +270,28 @@ export const Connected = () => {
             <Text fontWeight="semibold" variant="small" color="muted">
               Connected Wallets
             </Text>
-            {[...wallets]
-              .sort((a, b) => {
-                // Sort embedded wallet to the top
-                if (a.isEmbedded && !b.isEmbedded) return -1
-                if (!a.isEmbedded && b.isEmbedded) return 1
-                return 0
-              })
-              .map(wallet => (
-                <WalletListItem
-                  key={wallet.id}
-                  id={wallet.id}
-                  name={wallet.name}
-                  address={wallet.address}
-                  isActive={wallet.isActive}
-                  isEmbedded={wallet.isEmbedded}
-                  onSelect={() => setActiveWallet(wallet.address)}
-                  onDisconnect={() => disconnectWallet(wallet.address)}
-                />
-              ))}
+
+            <Card className="flex flex-col gap-2 p-2">
+              {[...wallets]
+                .sort((a, b) => {
+                  // Sort embedded wallet to the top
+                  if (a.isEmbedded && !b.isEmbedded) return -1
+                  if (!a.isEmbedded && b.isEmbedded) return 1
+                  return 0
+                })
+                .map(wallet => (
+                  <WalletListItem
+                    key={wallet.id}
+                    id={wallet.id}
+                    name={wallet.name}
+                    address={wallet.address}
+                    isActive={wallet.isActive}
+                    isEmbedded={wallet.isEmbedded}
+                    onSelect={() => setActiveWallet(wallet.address)}
+                    onDisconnect={() => disconnectWallet(wallet.address)}
+                  />
+                ))}
+            </Card>
           </div>
           <div className="flex gap-2 flex-row items-center justify-center">
             <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
