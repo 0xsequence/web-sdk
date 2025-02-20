@@ -249,6 +249,10 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const onConnectInlineEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    if (!isEmailValid(email)) {
+      return
+    }
+
     if (signIn.useMock && mockConnector) {
       handleConnect(mockConnector)
       return
@@ -331,6 +335,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
       />
     )
   }
+
+  const disabledEmailButton = !isEmailValid(email)
 
   return (
     <div className="p-4">
@@ -457,7 +463,10 @@ export const Connect = (props: ConnectWalletContentProps) => {
                                       variant={!isEmailValid(email) ? 'glass' : 'primary'}
                                       size="xs"
                                       icon={ArrowRightIcon}
-                                      disabled={!isEmailValid(email)}
+                                      style={{
+                                        pointerEvents: disabledEmailButton ? 'none' : 'auto',
+                                        opacity: disabledEmailButton ? 0.5 : 1
+                                      }}
                                     />
                                   )}
                                 </>
