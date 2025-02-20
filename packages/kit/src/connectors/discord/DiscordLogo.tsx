@@ -21,7 +21,7 @@ export const getDiscordLogo = ({ isDarkMode }: GetDiscordLogo) => {
         </g>
         <defs>
           <clipPath id="clip0_193_26839">
-            <rect className="w-28 h-28" fill={fillColor} transform="translate(6.625 6)" />
+            <rect width="28" height="28" fill={fillColor} transform="translate(6.625 6)" />
           </clipPath>
         </defs>
       </svg>
