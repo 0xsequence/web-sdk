@@ -7,10 +7,11 @@ import {
   LinkIcon,
   Spinner,
   Text,
-  Tooltip,
   truncateAddress
 } from '@0xsequence/design-system'
 import React, { useState } from 'react'
+
+import { Tooltip } from '../Tooltip'
 
 export interface WalletListItemProps {
   name: string
