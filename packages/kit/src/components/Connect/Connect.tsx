@@ -217,7 +217,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
   const walletConnectors = [...baseWalletConnectors, ...injectedConnectors].filter(c =>
     hasConnectedSequenceUniversal ? c.name !== SEQUENCE_UNIVERSAL_CONNECTOR_NAME : true
   )
-  const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet.id.includes('email'))
+  const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet?.id.includes('email'))
 
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = ev => {
     setEmail(ev.target.value)
