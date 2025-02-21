@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "@0xsequence/kit": "workspace:*",
-    "@0xsequence/design-system": ">= 2.0.2",
+    "@0xsequence/design-system": ">= 2.0.3",
     "@0xsequence/api": ">= 2.2.13",
     "@0xsequence/indexer": ">= 2.2.13",
     "@0xsequence/metadata": ">= 2.2.13",
@@ -51,7 +51,7 @@
     "viem": ">= 2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^2.0.2",
+    "@0xsequence/design-system": "^2.0.3",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",
