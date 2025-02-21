@@ -5,9 +5,7 @@ import { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from './constants'
 
-const { colors } = tokens
-
-type ColorTokens = (typeof colors)['dark']
+type ColorTokens = (typeof tokens.colors)['dark']
 
 export interface LogoProps {
   className?: string
