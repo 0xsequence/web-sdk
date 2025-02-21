@@ -17,12 +17,11 @@ import { zeroAddress } from 'viem'
 
 import { NATIVE_TOKEN_ADDRESS_0X } from '../constants'
 import { compareAddress } from '../utils/helpers'
+import { createNativeTokenBalance } from '../utils/tokens'
 
 import { useAPIClient } from './useAPIClient'
 import { useIndexerClient, useIndexerClients } from './useIndexerClient'
 import { useMetadataClient } from './useMetadataClient'
-
-import { createNativeTokenBalance } from '../utils/tokens'
 
 export const time = {
   oneSecond: 1 * 1000,

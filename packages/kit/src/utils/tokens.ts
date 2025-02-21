@@ -1,9 +1,9 @@
 import { nativeTokenImageUrl } from '@0xsequence/design-system'
+import { ContractType, TokenBalance } from '@0xsequence/indexer'
+import { zeroAddress } from 'viem'
 import { Chain } from 'wagmi/chains'
 
 import { chains } from '../chains'
-import { zeroAddress } from 'viem'
-import { ContractType, TokenBalance } from '@0xsequence/indexer'
 
 export interface NativeTokenInfo {
   chainId: number
