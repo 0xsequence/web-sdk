@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "^2.0.3",
+    "@0xsequence/design-system": "^2.0.4",
     "@0xsequence/kit": "workspace:*",
     "@0xsequence/kit-checkout": "workspace:*",
     "@0xsequence/kit-example-shared-components": "workspace:*",
