@@ -1,4 +1,4 @@
-export const styles = `
+export const styles = String.raw`
 /*! tailwindcss v4.0.7 | MIT License | https://tailwindcss.com */
 @layer theme, base, components, utilities;
 @layer theme {
