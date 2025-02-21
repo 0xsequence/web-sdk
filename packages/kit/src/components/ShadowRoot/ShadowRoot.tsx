@@ -4,32 +4,6 @@ import { createPortal } from 'react-dom'
 
 import { styles } from './styles'
 
-function retargetEvents(shadowRoot: ShadowRoot) {
-  // List of events you need to retarget. Adjust as necessary.
-  const events = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchmove', 'touchend']
-
-  events.forEach(eventName => {
-    shadowRoot.addEventListener(eventName, event => {
-      if (event instanceof MouseEvent) {
-        console.log('Got a mouse event', event.type)
-        const newEvent = new MouseEvent(event.type, {
-          bubbles: event.bubbles,
-          cancelable: event.cancelable,
-          clientX: event.clientX,
-          clientY: event.clientY,
-          screenX: event.screenX,
-          screenY: event.screenY
-        })
-
-        shadowRoot.host.dispatchEvent(newEvent)
-      }
-
-      // const newEvent = new Event(event.type, event)
-      // shadowRoot.host.dispatchEvent(newEvent)
-    })
-  })
-}
-
 interface ShadowRootProps {
   children: ReactNode
 }
