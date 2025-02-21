@@ -14,15 +14,10 @@
     "@0xsequence/kit": "workspace:*",
     "@0xsequence/kit-checkout": "workspace:*",
     "@0xsequence/kit-example-shared-components": "workspace:*",
-<<<<<<< HEAD
+    "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/waas": ">= 2.2.13",
-=======
-    "@0xsequence/kit-wallet": "workspace:*",
-    "@0xsequence/network": ">= 2.2.4",
-    "@0xsequence/waas": ">= 2.2.4",
     "@tailwindcss/postcss": "^4.0.6",
->>>>>>> 1b261434 (Adding tailwind config to next example)
     "@tanstack/react-query": "^5.37.1",
     "next": "14.2.3",
     "react": "^18.3.1",
