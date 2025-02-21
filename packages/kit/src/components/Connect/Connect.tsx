@@ -468,13 +468,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                                   {emailAuthInProgress ? (
                                     <Spinner />
                                   ) : (
-                                    <IconButton
-                                      type="submit"
-                                      variant={!isEmailValid(email) ? 'glass' : 'primary'}
-                                      size="xs"
-                                      icon={ArrowRightIcon}
-                                      disabled={!isEmailValid(email)}
-                                    />
+                                    <IconButton type="submit" size="xs" icon={ArrowRightIcon} disabled={!isEmailValid(email)} />
                                   )}
                                 </>
                               }
