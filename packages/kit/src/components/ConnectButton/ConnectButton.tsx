@@ -1,12 +1,11 @@
-import { Card, EllipsisIcon, Text, TooltipPrimitive, useTheme } from '@0xsequence/design-system'
+import { Card, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { LocalStorageKey } from '../../constants'
 import { useStorage, useStorageItem } from '../../hooks/useStorage'
 import { ExtendedConnector, WalletProperties } from '../../types'
-import { Tooltip } from '../Tooltip'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
@@ -31,7 +30,6 @@ export const ConnectButton = (props: ConnectButtonProps) => {
   const walletProps = connector._wallet
   const isDescriptive = props.isDescriptive || false
 
-  const containerRef = useRef<HTMLDivElement>(null)
   const Logo = getLogo(theme, walletProps)
 
   if (isDescriptive) {

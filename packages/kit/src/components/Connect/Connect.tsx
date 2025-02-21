@@ -348,8 +348,6 @@ export const Connect = (props: ConnectWalletContentProps) => {
     )
   }
 
-  const disabledEmailButton = !isEmailValid(email)
-
   return (
     <div className="p-4">
       <div
@@ -475,10 +473,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
                                       variant={!isEmailValid(email) ? 'glass' : 'primary'}
                                       size="xs"
                                       icon={ArrowRightIcon}
-                                      style={{
-                                        pointerEvents: disabledEmailButton ? 'none' : 'auto',
-                                        opacity: disabledEmailButton ? 0.5 : 1
-                                      }}
+                                      disabled={!isEmailValid(email)}
                                     />
                                   )}
                                 </>
