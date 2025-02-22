@@ -68,9 +68,11 @@
   "devDependencies": {
     "0xsequence": "^2.2.13",
     "@tanstack/react-query": "^5.37.1",
+    "@types/node": "^20.12.12",
     "@types/uuid": "^9.0.8",
     "ethers": "6.13.0",
     "viem": "^2.12.0",
+    "vite": "^5.2.11",
     "wagmi": "^2.14.11"
   }
 }
