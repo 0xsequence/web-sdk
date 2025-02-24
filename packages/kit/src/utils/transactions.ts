@@ -9,7 +9,8 @@ import { ExtendedConnector } from '../types'
 import { compareAddress } from '../utils/helpers'
 
 class FeeOptionInsufficientFundsError extends Error {
-  feeOptions: FeeOption[] = []
+  public readonly feeOptions: FeeOption[]
+
   constructor(message: string, feeOptions: FeeOption[]) {
     super(message)
     this.name = 'FeeOptionInsufficientFundsError'
