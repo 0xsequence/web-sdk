@@ -1,5 +1,5 @@
 import { sequence } from '0xsequence'
-import { SequenceWaaS } from '@0xsequence/waas'
+import { SequenceWaaS, FeeOption } from '@0xsequence/waas'
 import { SequenceIndexer, TransactionStatus, TransactionReceipt } from '@0xsequence/indexer'
 import { PublicClient, WalletClient, Hex } from 'viem'
 import { Connector } from 'wagmi'
@@ -7,6 +7,15 @@ import { Connector } from 'wagmi'
 import { TRANSACTION_CONFIRMATIONS_DEFAULT } from '../constants'
 import { ExtendedConnector } from '../types'
 import { compareAddress } from '../utils/helpers'
+
+class FeeOptionInsufficientFundsError extends Error {
+  feeOptions: FeeOption[] = []
+  constructor(message: string, feeOptions: FeeOption[]) {
+    super(message)
+    this.name = 'FeeOptionInsufficientFundsError'
+    this.feeOptions = feeOptions
+  }
+}
 
 interface Transaction {
   to: Hex
@@ -91,7 +100,7 @@ export const sendTransactions = async ({
     }
 
     if (!transactionsFeeOption) {
-      throw new Error('Transaction fee option with valid user balance not found')
+      throw new FeeOptionInsufficientFundsError('Transaction fee option with valid user balance not found', resp.data.feeOptions)
     }
 
     const response = await sequenceWaaS.sendTransaction({
