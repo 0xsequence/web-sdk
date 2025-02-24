@@ -25,7 +25,7 @@ import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export const PaymentSelection = () => {
   return (

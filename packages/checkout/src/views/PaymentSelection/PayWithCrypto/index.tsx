@@ -8,7 +8,7 @@ import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { useClearCachedBalances } from '../../../hooks'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings

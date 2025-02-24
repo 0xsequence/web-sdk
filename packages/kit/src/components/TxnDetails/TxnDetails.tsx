@@ -10,7 +10,7 @@ import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helper
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
 import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../CollectibleTileImage'
-import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 
 interface TxnDetailsProps {
   address: string

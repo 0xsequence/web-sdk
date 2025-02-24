@@ -32,7 +32,7 @@ import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { limitDecimals, isEthAddress } from '../utils'
 
 interface SendCollectibleProps {

@@ -16,7 +16,7 @@ import { computeBalanceFiat } from '../../utils'
 
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
-import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 export const SearchWallet = () => {
   const { chains } = useConfig()

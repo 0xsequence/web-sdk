@@ -16,7 +16,7 @@ import { computeBalanceFiat } from '../../utils'
 
 import CoinsTab from './components/CoinsTab'
 import CollectionsTab from './components/CollectionsTab'
-import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
