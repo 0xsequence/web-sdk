@@ -101,7 +101,7 @@ export const sendTransactions = async ({
     }
 
     if (!transactionsFeeOption) {
-      throw new FeeOptionInsufficientFundsError('Transaction fee option with valid user balance not found', resp.data.feeOptions)
+      throw new FeeOptionInsufficientFundsError(`Transaction fee option with valid user balance not found: ${resp.data.feeOptions.map(f => f.token.symbol).join(', ')}`, resp.data.feeOptions)
     }
 
     const response = await sequenceWaaS.sendTransaction({
