@@ -10,7 +10,7 @@ import { CollectibleTile } from './CollectibleTile'
 import { SkeletonTiles } from './SkeletonTiles'
 import { useEffect, useRef, useState } from 'react'
 
-import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 
 export const AssetSummary = () => {
   const { address } = useAccount()

@@ -19,7 +19,7 @@ import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CoinDetailsSkeleton } from './Skeleton'
-import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 export interface CoinDetailsProps {
   contractAddress: string

@@ -16,7 +16,7 @@ import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
 
-import { useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()

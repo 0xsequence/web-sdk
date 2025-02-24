@@ -27,7 +27,7 @@ import { usePublicClient } from 'wagmi'
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransactionStatusModal } from '../../hooks'
 
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 

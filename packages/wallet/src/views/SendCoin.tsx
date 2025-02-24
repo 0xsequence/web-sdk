@@ -34,7 +34,7 @@ import { useSettings, useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
 import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
-import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 interface SendCoinProps {
   chainId: number

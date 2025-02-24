@@ -9,7 +9,7 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
 import { SendItemInfo } from '../../shared/SendItemInfo'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
-import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 export interface SwapCoinProps {
   contractAddress: string

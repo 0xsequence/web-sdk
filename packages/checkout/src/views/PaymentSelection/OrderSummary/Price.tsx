@@ -4,7 +4,7 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'
-import { useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export const Price = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()

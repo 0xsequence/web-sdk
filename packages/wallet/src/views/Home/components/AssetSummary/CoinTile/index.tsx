@@ -8,7 +8,7 @@ import { useSettings } from '../../../../../hooks'
 import { computeBalanceFiat, getPercentagePriceChange } from '../../../../../utils'
 
 import { CoinTileContent } from './CoinTileContent'
-import { useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetContractInfo } from '@0xsequence/kit-hooks'
 interface CoinTileProps {
   balance: TokenBalance
 }

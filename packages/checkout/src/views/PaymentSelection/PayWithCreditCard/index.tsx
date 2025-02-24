@@ -7,7 +7,7 @@ import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
 import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
 
-import { useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetContractInfo } from '@0xsequence/kit-hooks'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings

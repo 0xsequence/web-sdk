@@ -17,7 +17,7 @@ import {
 import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
 
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 const POLLING_TIME = 10 * 1000
 
 interface PendingCreditTransactionProps {

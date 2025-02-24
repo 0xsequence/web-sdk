@@ -8,7 +8,7 @@ import { useNavigation } from '../../hooks'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 
 import { CollectionDetailsSkeleton } from './Skeleton'
-import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 
 interface CollectionDetailsProps {
   chainId: number

@@ -17,7 +17,7 @@ import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
-import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 
 export interface CollectibleDetailsProps {
   contractAddress: string

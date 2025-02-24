@@ -19,7 +19,7 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
 
 import { OrderSummaryItem } from './component/OrderSummaryItem'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export const CheckoutSelection = () => {
   const { chains } = useConfig()
