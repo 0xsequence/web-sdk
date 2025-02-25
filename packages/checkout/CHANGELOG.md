@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.6.3
+
+### Patch Changes
+
+- Swap flow for tokens, various fixes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.3
+
 ## 4.6.2
 
 ### Patch Changes

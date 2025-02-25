@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.6.3
+
+### Patch Changes
+
+- Swap flow for tokens, various fixes
+
 ## 4.6.2
 
 ### Patch Changes
