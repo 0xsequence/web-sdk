@@ -45,7 +45,7 @@ export const Swap = () => {
     data: currencyInfoData,
     isLoading: isLoadingCurrencyInfo,
     isError: isErrorCurrencyInfo
-  } = useContractInfo(chainId, currencyAddress)
+  } = useGetContractInfo({ chainID: String(chainId), contractAddress: currencyAddress })
 
   const {
     data: swapPrices = [],
