@@ -1,10 +1,11 @@
 'use client'
 
+import { DisplayedAsset } from '../types'
 import { createGenericContext } from './genericContext'
 
 type WalletConfigContext = {
-  displayedChainIds: number[]
-  displayedContracts: string[]
+  setDisplayedAssets: React.Dispatch<React.SetStateAction<DisplayedAsset[]>>
+  displayedAssets: DisplayedAsset[]
   readOnlyNetworks?: number[]
 }
 
