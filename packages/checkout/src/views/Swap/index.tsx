@@ -41,10 +41,18 @@ export const Swap = () => {
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
+<<<<<<< HEAD
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo, isError: isErrorCurrencyInfo } = useGetContractInfo({
     chainID: String(chainId),
     contractAddress: currencyAddress
   })
+=======
+  const {
+    data: currencyInfoData,
+    isLoading: isLoadingCurrencyInfo,
+    isError: isErrorCurrencyInfo
+  } = useGetContractInfo({ chainID: String(chainId), contractAddress: currencyAddress })
+>>>>>>> 023b484f (fixed merge error)
 
   const {
     data: swapPrices = [],
