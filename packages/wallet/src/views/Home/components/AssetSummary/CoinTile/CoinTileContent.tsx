@@ -34,14 +34,12 @@ export const CoinTileContent = ({
       borderRadius="md"
       padding="4"
       flexDirection="column"
-      justifyContent="center"
+      justifyContent="space-between"
       alignItems="flex-start"
       gap="1"
     >
-      <Box marginBottom="1">
-        <TokenImage src={logoUrl} symbol={symbol} size="xl" />
-      </Box>
-      <Box marginBottom="3">
+      <TokenImage src={logoUrl} symbol={symbol} size="lg" />
+      <Box>
         <Box flexDirection="row" gap="1" justifyContent="flex-start" alignItems="center">
           <Text
             fontWeight="bold"

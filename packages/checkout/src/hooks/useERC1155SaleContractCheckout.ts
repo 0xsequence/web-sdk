@@ -1,34 +1,62 @@
 import { CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { Abi, Hex } from 'viem'
+import { ethers } from 'ethers'
+import { Abi, Hex, encodeFunctionData, toHex } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi'
 import { SelectPaymentSettings } from '../contexts/SelectPaymentModal'
 
 import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
-import { useERC1155SaleContractPaymentModal } from './useSelectPaymentModal'
-
-type BasePaymentModalSettings = Pick<
-  SelectPaymentSettings,
-  | 'onSuccess'
-  | 'onError'
-  | 'copyrightText'
-  | 'transactionConfirmations'
-  | 'enableTransferFunds'
-  | 'creditCardProviders'
-  | 'enableMainCurrencyPayment'
-  | 'enableSwapPayments'
->
-
-interface UseERC1155SaleContractCheckoutArgs extends CheckoutOptionsSalesContractArgs {
-  chain: number | string
-}
+import { useSelectPaymentModal } from './useSelectPaymentModal'
 
 interface UseERC1155SaleContractCheckoutReturn {
   openCheckoutModal: () => void
+  closeCheckoutModal: () => void
+  selectPaymentSettings?: SelectPaymentSettings
   isLoading: boolean
   isError: boolean
+}
+
+type SaleContractSettings = Omit<
+  SelectPaymentSettings,
+  'txData' | 'collectibles' | 'price' | 'currencyAddress' | 'recipientAddress' | 'targetContractAddress'
+>
+
+export const getERC1155SaleContractConfig = ({
+  chain,
+  price,
+  currencyAddress = ethers.ZeroAddress,
+  recipientAddress,
+  collectibles,
+  collectionAddress,
+  ...restProps
+}: Omit<SelectPaymentSettings, 'txData'>): SelectPaymentSettings => {
+  const purchaseTransactionData = encodeFunctionData({
+    abi: ERC_1155_SALE_CONTRACT,
+    functionName: 'mint',
+    // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
+    args: [
+      recipientAddress,
+      collectibles.map(c => BigInt(c.tokenId)),
+      collectibles.map(c => BigInt(c.quantity)),
+      toHex(0),
+      currencyAddress,
+      price,
+      [toHex(0, { size: 32 })]
+    ]
+  })
+
+  return {
+    chain,
+    price,
+    currencyAddress,
+    recipientAddress,
+    collectibles,
+    collectionAddress,
+    txData: purchaseTransactionData,
+    ...restProps
+  }
 }
 
 export const useERC1155SaleContractCheckout = ({
@@ -38,8 +66,8 @@ export const useERC1155SaleContractCheckout = ({
   collectionAddress,
   items,
   ...restArgs
-}: UseERC1155SaleContractCheckoutArgs & BasePaymentModalSettings): UseERC1155SaleContractCheckoutReturn => {
-  const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
+}: CheckoutOptionsSalesContractArgs & SaleContractSettings): UseERC1155SaleContractCheckoutReturn => {
+  const { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
   const {
     data: checkoutOptions,
     isLoading: isLoadingCheckoutOptions,
@@ -68,33 +96,36 @@ export const useERC1155SaleContractCheckout = ({
       return
     }
 
-    openERC1155SaleContractPaymentModal({
-      collectibles: items.map(item => ({
-        tokenId: item.tokenId,
-        quantity: item.quantity
-      })),
-      chain: chainId,
-      price: items
-        .reduce((acc, item) => {
-          const price = BigInt(saleConfigData?.saleConfigs.find(sale => sale.tokenId === item.tokenId)?.price || 0)
-          console.log('price...', price)
+    openSelectPaymentModal(
+      getERC1155SaleContractConfig({
+        collectibles: items.map(item => ({
+          tokenId: item.tokenId,
+          quantity: item.quantity
+        })),
+        chain: chainId,
+        price: items
+          .reduce((acc, item) => {
+            const price = BigInt(saleConfigData?.saleConfigs.find(sale => sale.tokenId === item.tokenId)?.price || 0)
 
-          return acc + BigInt(item.quantity) * price
-        }, BigInt(0))
-        .toString(),
-      currencyAddress: saleConfigData?.currencyAddress || '',
-      recipientAddress: wallet,
-      collectionAddress,
-      targetContractAddress: contractAddress,
-      enableMainCurrencyPayment: true,
-      enableSwapPayments: checkoutOptions?.options?.swap?.includes(TransactionSwapProvider.zerox) || false,
-      creditCardProviders: checkoutOptions?.options.nftCheckout || [],
-      ...restArgs
-    })
+            return acc + BigInt(item.quantity) * price
+          }, BigInt(0))
+          .toString(),
+        currencyAddress: saleConfigData?.currencyAddress || '',
+        recipientAddress: wallet,
+        collectionAddress,
+        targetContractAddress: contractAddress,
+        enableMainCurrencyPayment: true,
+        enableSwapPayments: checkoutOptions?.options?.swap?.includes(TransactionSwapProvider.zerox) || false,
+        creditCardProviders: checkoutOptions?.options.nftCheckout || [],
+        ...restArgs
+      })
+    )
   }
 
   return {
     openCheckoutModal,
+    closeCheckoutModal: closeSelectPaymentModal,
+    selectPaymentSettings,
     isLoading,
     isError: error
   }
@@ -221,3 +252,8 @@ export const useSaleContractConfig = ({
     isError: isErrorERC1155
   }
 }
+
+/**
+ * @deprecated use useERC1155SaleContractPaymentModal instead
+ */
+export const useERC1155SaleContractPaymentModal = useERC1155SaleContractCheckout

@@ -15,6 +15,7 @@ interface SendItemInfoProps {
   fiatValue?: string
   chainId: number
   showSquareImage?: boolean
+  balanceSuffix?: string
 }
 
 export const SendItemInfoSkeleton = () => {
@@ -43,7 +44,8 @@ export const SendItemInfo = ({
   symbol,
   fiatValue,
   chainId,
-  showSquareImage
+  showSquareImage,
+  balanceSuffix = 'available'
 }: SendItemInfoProps) => {
   const { fiatCurrency } = useSettings()
   const formattedBalance = ethers.formatUnits(balance, decimals)
@@ -68,7 +70,7 @@ export const SendItemInfo = ({
           </Box>
           <Text color="text50" variant="normal">
             {' '}
-            {`${balanceDisplayed} ${symbol} available`}
+            {`${balanceDisplayed} ${symbol} ${balanceSuffix}`}
           </Text>
         </Box>
       </Box>

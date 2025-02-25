@@ -12,7 +12,8 @@ import {
   useMetadataClient,
   getTokenBalancesSummary,
   getTokenBalancesDetails,
-  ContractVerificationStatus
+  ContractVerificationStatus,
+  QUERY_KEYS
 } from '@0xsequence/kit'
 import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
@@ -257,7 +258,7 @@ export const useBalancesAssetsSummary = (args: GetBalancesAssetsArgs) => {
   const indexerClients = useIndexerClients(args.chainIds)
 
   return useQuery({
-    queryKey: ['balancesAssetsSummary', args],
+    queryKey: [QUERY_KEYS.balancesAssetsSummary, args],
     queryFn: () => getBalancesAssetsSummary(apiClient, metadataClient, indexerClients, args),
     retry: true,
     refetchInterval: time.oneSecond * 30,
@@ -301,7 +302,7 @@ export const useTransactionHistorySummary = (args: GetTransactionHistorySummaryA
   const indexerClients = useIndexerClients(args.chainIds)
 
   return useQuery({
-    queryKey: ['transactionHistorySummary', args],
+    queryKey: [QUERY_KEYS.transactionHistorySummary, args],
     queryFn: () => getTransactionHistorySummary(indexerClients, args),
     retry: true,
     staleTime: time.oneSecond,

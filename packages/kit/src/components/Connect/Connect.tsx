@@ -11,6 +11,7 @@ import {
   IconButton,
   ModalPrimitive
 } from '@0xsequence/design-system'
+import { genUserId } from '@databeat/tracker'
 import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
@@ -83,15 +84,21 @@ export const Connect = (props: ConnectWalletContentProps) => {
     try {
       await removeLinkedWallet(address)
 
-      analytics?.track({
-        event: 'UNLINK_WALLET',
-        props: {
-          parentWalletAddress: wallets.find(w => w.isEmbedded)?.address || '',
-          linkedWalletAddress: address,
-          linkedWalletType: linkedWallets?.find(lw => lw.linkedWalletAddress === address)?.walletType || '',
-          source: 'sequence-kit/core'
-        }
-      })
+      const parentWallet = wallets.find(w => w.isEmbedded)?.address
+
+      try {
+        analytics?.track({
+          event: 'UNLINK_WALLET',
+          props: {
+            parentWalletAddress: parentWallet ? getUserIdForEvent(parentWallet) : '',
+            linkedWalletAddress: getUserIdForEvent(address),
+            linkedWalletType: linkedWallets?.find(lw => lw.linkedWalletAddress === address)?.walletType || '',
+            source: 'sequence-kit/core'
+          }
+        })
+      } catch (e) {
+        console.warn('unlink analytics error:', e)
+      }
 
       refetchLinkedWallets()
     } catch (e) {
@@ -117,6 +124,7 @@ export const Connect = (props: ConnectWalletContentProps) => {
           return
         }
 
+        const childWalletAddress = lastConnectedWallet
         const childMessage = `Link to parent wallet with address ${waasWalletAddress}`
 
         setIsSigningLinkMessage(true)
@@ -131,20 +139,24 @@ export const Connect = (props: ConnectWalletContentProps) => {
           await linkWallet({
             signatureChainId: CHAIN_ID_FOR_SIGNATURE,
             connectorName: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
-            childWalletAddress: lastConnectedWallet,
+            childWalletAddress,
             childMessage,
             childSignature
           })
 
-          analytics?.track({
-            event: 'LINK_WALLET',
-            props: {
-              parentWalletAddress: waasWalletAddress,
-              linkedWalletAddress: lastConnectedWallet,
-              linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
-              source: 'sequence-kit/core'
-            }
-          })
+          try {
+            analytics?.track({
+              event: 'LINK_WALLET',
+              props: {
+                parentWalletAddress: getUserIdForEvent(waasWalletAddress),
+                linkedWalletAddress: getUserIdForEvent(childWalletAddress),
+                linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+                source: 'sequence-kit/core'
+              }
+            })
+          } catch (e) {
+            console.warn('link analytics error:', e)
+          }
 
           refetchLinkedWallets()
         } catch (e) {
@@ -522,4 +534,8 @@ const TitleWrapper = ({ children, isPreview }: { children: React.ReactNode; isPr
   }
 
   return <ModalPrimitive.Title asChild>{children}</ModalPrimitive.Title>
+}
+
+const getUserIdForEvent = (address: string) => {
+  return genUserId(address.toLowerCase(), false, { privacy: { userIdHash: true } }).userId
 }

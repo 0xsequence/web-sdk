@@ -41,12 +41,17 @@ export const Swap = () => {
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
-    chainID: String(chainId),
-    contractAddress: currencyAddress
-  })
+  const {
+    data: currencyInfoData,
+    isLoading: isLoadingCurrencyInfo,
+    isError: isErrorCurrencyInfo
+  } = useContractInfo(chainId, currencyAddress)
 
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
+  const {
+    data: swapPrices = [],
+    isLoading: swapPricesIsLoading,
+    isError: isErrorPrices
+  } = useSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -67,7 +72,11 @@ export const Swap = () => {
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
-  const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
+  const {
+    data: swapQuote,
+    isLoading: isLoadingSwapQuote,
+    isError: isErrorSwapQuote
+  } = useSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress: currencyAddress,
@@ -162,6 +171,7 @@ export const Swap = () => {
     }
   }
 
+  const isErrorFetchingPrices = isErrorPrices || isErrorCurrencyInfo
   const noOptionsFound = disableMainCurrency && swapPrices.length === 0
 
   const SwapContent = () => {
@@ -169,6 +179,14 @@ export const Swap = () => {
       return (
         <Box width="full" justifyContent="center" alignItems="center">
           <Spinner />
+        </Box>
+      )
+    } else if (isErrorFetchingPrices) {
+      return (
+        <Box width="full" justifyContent="center" alignItems="center">
+          <Text variant="normal" color="negative">
+            An error occurred while fetching the swap options.
+          </Text>
         </Box>
       )
     } else if (noOptionsFound) {
@@ -241,8 +259,15 @@ export const Swap = () => {
               </Text>
             </Box>
           )}
+          {isErrorSwapQuote && (
+            <Box width="full">
+              <Text color="negative" variant="small">
+                A problem occurred while fetching the swap quote.
+              </Text>
+            </Box>
+          )}
           <Button
-            disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending}
+            disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending || isErrorSwapQuote}
             variant="primary"
             label={quoteFetchInProgress ? 'Preparing swap...' : 'Proceed'}
             onClick={onClickProceed}

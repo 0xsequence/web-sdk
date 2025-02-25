@@ -10,7 +10,7 @@ import {
   ContractVerificationStatus,
   useKitWallets
 } from '@0xsequence/kit'
-import { useCheckoutModal, useAddFundsModal, useERC1155SaleContractPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
+import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
 import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
@@ -18,12 +18,13 @@ import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
 import React, { ComponentProps, useEffect } from 'react'
-import { formatUnits, parseUnits } from 'viem'
+import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
+import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode
@@ -38,7 +39,7 @@ export const Connected = () => {
   const { setOpenWalletModal } = useOpenWalletModal()
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
-  const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
+  const { openSelectPaymentModal } = useSelectPaymentModal()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -406,13 +407,30 @@ export const Connected = () => {
 
     const chainId = 137
 
-    openERC1155SaleContractPaymentModal({
-      collectibles: [
-        {
-          tokenId: '1',
-          quantity: '1'
-        }
-      ],
+    const collectibles = [
+      {
+        tokenId: '1',
+        quantity: '1'
+      }
+    ]
+
+    const purchaseTransactionData = encodeFunctionData({
+      abi: ERC_1155_SALE_CONTRACT,
+      functionName: 'mint',
+      // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
+      args: [
+        address,
+        collectibles.map(c => BigInt(c.tokenId)),
+        collectibles.map(c => BigInt(c.quantity)),
+        toHex(0),
+        currencyAddress,
+        price,
+        [toHex(0, { size: 32 })]
+      ]
+    })
+
+    openSelectPaymentModal({
+      collectibles,
       chain: chainId,
       price,
       targetContractAddress: salesContractAddress,
@@ -433,7 +451,8 @@ export const Connected = () => {
       },
       onClose: () => {
         console.log('modal closed!')
-      }
+      },
+      txData: purchaseTransactionData
     })
   }
 
