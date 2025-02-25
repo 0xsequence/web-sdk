@@ -55,13 +55,6 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
     setAmount(formattedValue)
   }
 
-  const handleMax = () => {
-    amountInputRef.current?.focus()
-    const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
-
-    setAmount(maxAmount)
-  }
-
   const handleFindQuotesClick = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
     setNavigation({
@@ -123,6 +116,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
             decimals
           })}
           chainId={chainId}
+          balanceSuffix="owned"
         />
         <NumericInput
           ref={amountInputRef}
@@ -135,7 +129,6 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
               <Text variant="small" color="text50" whiteSpace="nowrap">
                 {`~${fiatCurrency.sign}${amountToSendFiat}`}
               </Text>
-              <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
               <Text variant="xlarge" fontWeight="bold" color="text100">
                 {symbol}
               </Text>
