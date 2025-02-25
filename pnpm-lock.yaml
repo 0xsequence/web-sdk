@@ -335,6 +335,9 @@ importers:
       '@0xsequence/waas':
         specifier: ^2.2.13
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@databeat/tracker':
+        specifier: ^0.9.3
+        version: 0.9.3
       '@react-oauth/google':
         specifier: ^0.11.1
         version: 0.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
