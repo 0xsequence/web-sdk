@@ -1,4 +1,4 @@
-import { Button, Spinner, Text, vars } from '@0xsequence/design-system'
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   CryptoOption,
   compareAddress,
@@ -186,7 +186,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     } else if (isErrorSwapPrices) {
       return (
         <div className="flex w-full justify-center items-center">
-          <Text variant="normal" color="negative">
+          <Text variant="normal" color="primary">
             A problem occurred while fetching swap options.
           </Text>
         </div>
@@ -269,7 +269,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
 
           {showSwitchNetwork && (
             <div className="mt-3">
-              <Text className="mb-2" variant="small" color="negative">
+              <Text className="mb-2" variant="small" color="primary">
                 The wallet is connected to the wrong network. Please switch network before proceeding
               </Text>
               <Button
