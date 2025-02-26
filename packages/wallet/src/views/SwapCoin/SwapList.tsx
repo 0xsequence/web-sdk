@@ -15,7 +15,7 @@ import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClien
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
 
-import { useGetSwapPrices, useGetSwapQuote, useGetCurrencyInfo, useClearCachedBalances } from '@0xsequence/kit-hooks'
+import { useGetSwapPrices, useGetSwapQuote, useClearCachedBalances, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 interface SwapListProps {
   chainId: number
@@ -58,7 +58,10 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     { disabled: false }
   )
 
-  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetCurrencyInfo({ chainId, currencyAddress: contractAddress })
+  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: contractAddress
+  })
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
