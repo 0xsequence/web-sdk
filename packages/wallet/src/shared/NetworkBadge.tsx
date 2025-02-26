@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { Box, NetworkImage, Text } from '@0xsequence/design-system'
 import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '@0xsequence/kit'
+import React from 'react'
 
 interface NetworkBadgeProps {
   chainId: number

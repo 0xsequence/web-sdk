@@ -1,11 +1,11 @@
+import { LinkedWallet } from '@0xsequence/api'
+import { Box } from '@0xsequence/design-system'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useMemo, useRef } from 'react'
 
 import { KitWallet } from '../../hooks/useKitWallets'
-import { WalletListItem, WalletListItemProps } from './WalletListItem'
 
-import { LinkedWallet } from '@0xsequence/api'
-import { Box } from '@0xsequence/design-system'
+import { WalletListItem, WalletListItemProps } from './WalletListItem'
 
 interface ConnectedWalletsProps {
   wallets: KitWallet[]

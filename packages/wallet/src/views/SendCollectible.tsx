@@ -1,14 +1,3 @@
-import { ethers } from 'ethers'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
-
-import { ERC_721_ABI, ERC_1155_ABI, HEADER_HEIGHT } from '../constants'
-import { useNavigationContext } from '../contexts/Navigation'
-import { useNavigation } from '../hooks'
-import { SendItemInfo } from '../shared/SendItemInfo'
-import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { isEthAddress, limitDecimals } from '../utils'
-
 import {
   AddIcon,
   Box,
@@ -35,6 +24,16 @@ import {
   useWaasFeeOptions
 } from '@0xsequence/kit'
 import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
+import { ethers } from 'ethers'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
+
+import { ERC_721_ABI, ERC_1155_ABI, HEADER_HEIGHT } from '../constants'
+import { useNavigationContext } from '../contexts/Navigation'
+import { useNavigation } from '../hooks'
+import { SendItemInfo } from '../shared/SendItemInfo'
+import { TransactionConfirmation } from '../shared/TransactionConfirmation'
+import { isEthAddress, limitDecimals } from '../utils'
 
 interface SendCollectibleProps {
   chainId: number

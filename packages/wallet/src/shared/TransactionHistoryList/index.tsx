@@ -1,10 +1,9 @@
+import { Box, Spinner, Text } from '@0xsequence/design-system'
+import { Transaction } from '@0xsequence/indexer'
 import React, { useMemo } from 'react'
 
 import { TransactionHistoryItem } from './TransactionHistoryItem'
 import { TransactionHistorySkeleton } from './TransactionHistorySkeleton'
-
-import { Box, Spinner, Text } from '@0xsequence/design-system'
-import { Transaction } from '@0xsequence/indexer'
 
 interface TransactionHistoryListProps {
   transactions: Transaction[]

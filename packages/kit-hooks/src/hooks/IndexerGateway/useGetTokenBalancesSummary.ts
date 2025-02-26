@@ -1,11 +1,11 @@
+import { ContractType, IndexerGateway, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
 import { BalanceHookOptions } from '../../types'
 import { createNativeTokenBalance, sortBalancesByType } from '../../utils/helpers'
-import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
-import { ContractType, IndexerGateway, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
+import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
 const getTokenBalancesSummary = async (
   getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs,

@@ -1,17 +1,3 @@
-import { useEffect, useState } from 'react'
-import { Hex, encodeFunctionData, zeroAddress } from 'viem'
-import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
-
-import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
-import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { useClearCachedBalances, useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks'
-import { NavigationHeader } from '../../shared/components/NavigationHeader'
-import { Footer } from './Footer'
-import { OrderSummary } from './OrderSummary'
-import { PayWithCreditCard } from './PayWithCreditCard'
-import { PayWithCrypto } from './PayWithCrypto/index'
-import { TransferFunds } from './TransferFunds'
-
 import { Box, Button, Divider, Text } from '@0xsequence/design-system'
 import {
   ContractVerificationStatus,
@@ -29,6 +15,20 @@ import {
   useGetTokenBalancesSummary
 } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { useEffect, useState } from 'react'
+import { Hex, encodeFunctionData, zeroAddress } from 'viem'
+import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
+
+import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
+import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
+import { useClearCachedBalances, useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks'
+import { NavigationHeader } from '../../shared/components/NavigationHeader'
+
+import { Footer } from './Footer'
+import { OrderSummary } from './OrderSummary'
+import { PayWithCreditCard } from './PayWithCreditCard'
+import { PayWithCrypto } from './PayWithCrypto/index'
+import { TransferFunds } from './TransferFunds'
 
 export const PaymentSelection = () => {
   return (

@@ -1,8 +1,7 @@
+import { BoxProps, Card } from '@0xsequence/design-system'
 import React, { ReactNode } from 'react'
 
 import { SelectedIndicator } from './SelectedIndicator'
-
-import { BoxProps, Card } from '@0xsequence/design-system'
 
 export interface SelectButtonProps extends BoxProps {
   children?: ReactNode

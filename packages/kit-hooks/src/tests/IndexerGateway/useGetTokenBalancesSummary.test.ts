@@ -1,3 +1,4 @@
+import { IndexerGateway } from '@0xsequence/indexer'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
@@ -6,8 +7,6 @@ import { ACCOUNT_ADDRESS } from '../../constants'
 import { useGetTokenBalancesSummary } from '../../hooks/IndexerGateway/useGetTokenBalancesSummary'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
-
-import { IndexerGateway } from '@0xsequence/indexer'
 
 const getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs = {
   filter: {

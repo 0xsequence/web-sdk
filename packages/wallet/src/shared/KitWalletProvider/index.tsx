@@ -1,15 +1,15 @@
 'use client'
 
+import { Box, Modal, Scroll, ThemeProvider } from '@0xsequence/design-system'
+import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import React, { useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
-import { getContent, getHeader } from './utils'
 
-import { Box, Modal, Scroll, ThemeProvider } from '@0xsequence/design-system'
-import { getModalPositionCss, useTheme } from '@0xsequence/kit'
+import { getContent, getHeader } from './utils'
 
 export type KitWalletProviderProps = {
   children: React.ReactNode

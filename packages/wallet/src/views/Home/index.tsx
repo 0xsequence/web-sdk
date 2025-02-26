@@ -1,8 +1,7 @@
+import { Box } from '@0xsequence/design-system'
 import React from 'react'
 
 import { AssetSummary } from './components/AssetSummary'
-
-import { Box } from '@0xsequence/design-system'
 
 export const Home = () => {
   return (

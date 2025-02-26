@@ -1,10 +1,3 @@
-import { ethers } from 'ethers'
-import { useAccount, useConfig } from 'wagmi'
-
-import { HEADER_HEIGHT } from '../../constants'
-import { useCheckoutModal, useNavigation } from '../../hooks'
-import { OrderSummaryItem } from './component/OrderSummaryItem'
-
 import {
   Box,
   Button,
@@ -20,6 +13,13 @@ import {
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus, compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { ethers } from 'ethers'
+import { useAccount, useConfig } from 'wagmi'
+
+import { HEADER_HEIGHT } from '../../constants'
+import { useCheckoutModal, useNavigation } from '../../hooks'
+
+import { OrderSummaryItem } from './component/OrderSummaryItem'
 
 export const CheckoutSelection = () => {
   const { chains } = useConfig()

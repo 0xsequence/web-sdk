@@ -1,5 +1,16 @@
 'use client'
 
+import {
+  ArrowRightIcon,
+  Box,
+  Divider,
+  IconButton,
+  Image,
+  ModalPrimitive,
+  Spinner,
+  Text,
+  TextInput
+} from '@0xsequence/design-system'
 import { genUserId } from '@databeat/tracker'
 import React, { useEffect, useState } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
@@ -18,22 +29,11 @@ import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
 import { KitConnectProviderProps } from '../KitProvider/KitProvider'
 import { PoweredBySequence } from '../SequenceLogo'
+
 import { Banner } from './Banner'
 import { ConnectedWallets } from './ConnectedWallets'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
-
-import {
-  ArrowRightIcon,
-  Box,
-  Divider,
-  IconButton,
-  Image,
-  ModalPrimitive,
-  Spinner,
-  Text,
-  TextInput
-} from '@0xsequence/design-system'
 
 const MAX_ITEM_PER_ROW = 4
 export const SEQUENCE_UNIVERSAL_CONNECTOR_NAME = 'Sequence'

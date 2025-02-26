@@ -1,3 +1,6 @@
+import { Box, SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
+import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useState } from 'react'
@@ -5,12 +8,9 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
+
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
-
-import { Box, SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
-import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 export const SearchWallet = () => {
   const { chains } = useConfig()

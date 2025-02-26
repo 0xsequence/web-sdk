@@ -1,10 +1,9 @@
-import React from 'react'
-
 import { vars } from '@0xsequence/design-system'
+import React from 'react'
 
 const fillColor = vars.colors.text50
 
-export const SequenceLogo: React.FunctionComponent = ({ ...props }) => {
+export const SequenceLogo: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <svg xmlns="http://www.w3.org/2000/svg" width="80" height="14" viewBox="0 0 80 14" fill="none">

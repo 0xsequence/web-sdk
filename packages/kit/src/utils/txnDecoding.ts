@@ -1,8 +1,7 @@
-import { ethers } from 'ethers'
-
 import { ContractCall, SequenceAPIClient } from '@0xsequence/api'
 import { commons } from '@0xsequence/core'
 import { ContractType, TxnTransferType } from '@0xsequence/indexer'
+import { ethers } from 'ethers'
 
 interface TransactionEncodedWithCall extends commons.transaction.TransactionEncoded {
   call?: ContractCall

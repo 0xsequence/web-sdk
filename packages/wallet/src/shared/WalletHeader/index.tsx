@@ -1,13 +1,13 @@
+import { Box, ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useOpenWalletModal } from '../../hooks'
+
 import { AccountInformation } from './components/AccountInformation'
 import { WalletDropdownContent } from './components/WalletDropdownContent'
-
-import { Box, ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system'
 
 export const WalletHeader = () => {
   const { openWalletModalState } = useOpenWalletModal()

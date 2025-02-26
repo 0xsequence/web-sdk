@@ -2,6 +2,7 @@ import { CreateConnectorFn } from 'wagmi'
 import { MetaMaskParameters, metaMask as metaMaskConnector } from 'wagmi/connectors'
 
 import { Wallet } from '../../types'
+
 import { MetaMaskLogo } from './MetaMaskLogo'
 
 export const metaMask = (params: MetaMaskParameters): Wallet => ({

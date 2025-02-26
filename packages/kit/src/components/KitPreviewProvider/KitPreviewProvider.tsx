@@ -2,6 +2,7 @@
 
 import { sequence } from '0xsequence'
 import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
+import { ThemeProvider } from '@0xsequence/design-system'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { useEffect, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -16,8 +17,6 @@ import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import { DisplayedAsset, EthAuthSettings, ExtendedConnector, KitConfig, ModalPosition, Theme } from '../../types'
 import { Connect } from '../Connect/Connect'
-
-import { ThemeProvider } from '@0xsequence/design-system'
 
 export type KitConnectProviderProps = {
   children: React.ReactNode

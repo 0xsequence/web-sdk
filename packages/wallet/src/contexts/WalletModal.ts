@@ -1,7 +1,7 @@
 'use client'
 
-import { Navigation } from './Navigation'
 import { createGenericContext } from './genericContext'
+import { Navigation } from './Navigation'
 
 export interface WalletOptions {
   defaultNavigation?: Navigation

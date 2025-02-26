@@ -1,14 +1,14 @@
+import { CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { Abi, Hex, encodeFunctionData, toHex } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi'
 import { SelectPaymentSettings } from '../contexts/SelectPaymentModal'
+
 import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
 import { useSelectPaymentModal } from './useSelectPaymentModal'
-
-import { CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
-import { findSupportedNetwork } from '@0xsequence/network'
 
 interface UseERC1155SaleContractCheckoutReturn {
   openCheckoutModal: () => void

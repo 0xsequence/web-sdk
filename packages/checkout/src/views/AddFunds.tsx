@@ -1,10 +1,9 @@
+import { Box } from '@0xsequence/design-system'
 import React, { useEffect } from 'react'
 
 import { HEADER_HEIGHT } from '../constants'
 import { useAddFundsModal } from '../hooks'
 import { getTransakLink } from '../utils/transak'
-
-import { Box } from '@0xsequence/design-system'
 
 const IframeId = 'sequenceOnRamp'
 const EventTypeOrderCreated = 'TRANSAK_ORDER_CREATED'

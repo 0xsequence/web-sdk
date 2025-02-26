@@ -1,11 +1,10 @@
-import { formatUnits } from 'viem'
-
-import { useSelectPaymentModal } from '../../../hooks'
-
 import { Box, NetworkImage, Spinner, Text } from '@0xsequence/design-system'
 import { CollectibleTileImage, NetworkBadge, formatDisplay } from '@0xsequence/kit'
 import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { formatUnits } from 'viem'
+
+import { useSelectPaymentModal } from '../../../hooks'
 
 export const OrderSummary = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()

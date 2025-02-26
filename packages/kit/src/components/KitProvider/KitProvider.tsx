@@ -1,6 +1,9 @@
 'use client'
 
 import { sequence } from '0xsequence'
+import { Box, Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system'
+import { ChainId } from '@0xsequence/network'
+import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
@@ -23,10 +26,6 @@ import { NetworkBadge } from '../NetworkBadge'
 import { PageHeading } from '../PageHeading'
 import { PoweredBySequence } from '../SequenceLogo'
 import { TxnDetails } from '../TxnDetails'
-
-import { Box, Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system'
-import { ChainId } from '@0xsequence/network'
-import { SequenceClient } from '@0xsequence/provider'
 
 export type KitConnectProviderProps = {
   children: React.ReactNode

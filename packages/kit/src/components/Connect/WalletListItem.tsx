@@ -1,5 +1,3 @@
-import React, { useState } from 'react'
-
 import {
   Box,
   Button,
@@ -12,6 +10,7 @@ import {
   Tooltip,
   truncateAddress
 } from '@0xsequence/design-system'
+import React, { useState } from 'react'
 
 export interface WalletListItemProps {
   name: string

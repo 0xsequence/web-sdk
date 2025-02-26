@@ -1,6 +1,6 @@
-import { KitConfig } from '../../types'
-
 import { Box, Image } from '@0xsequence/design-system'
+
+import { KitConfig } from '../../types'
 
 interface BannerProps {
   config: KitConfig

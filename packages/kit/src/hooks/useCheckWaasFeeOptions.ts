@@ -1,8 +1,7 @@
 'use client'
 
-import { useConnections } from 'wagmi'
-
 import { FeeOption, Transaction } from '@0xsequence/waas'
+import { useConnections } from 'wagmi'
 
 export function useCheckWaasFeeOptions(): (params: { transactions: Transaction[]; chainId: number }) => Promise<{
   feeQuote: string | undefined

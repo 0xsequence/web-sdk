@@ -1,15 +1,14 @@
+import { TokenPrice } from '@0xsequence/api'
+import { ArrowRightIcon, Box, Image, NetworkImage, Skeleton, Text, TransactionIcon, vars } from '@0xsequence/design-system'
+import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { useNavigation, useSettings } from '../../hooks'
-
-import { TokenPrice } from '@0xsequence/api'
-import { ArrowRightIcon, Box, Image, NetworkImage, Skeleton, Text, TransactionIcon, vars } from '@0xsequence/design-system'
-import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface TransactionHistoryItemProps {
   transaction: Transaction

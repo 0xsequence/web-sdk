@@ -1,10 +1,3 @@
-import { useState } from 'react'
-import { Hex, formatUnits, zeroAddress } from 'viem'
-import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
-
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation } from '../../hooks'
-
 import { Box, Button, Spinner, Text, vars } from '@0xsequence/design-system'
 import {
   CryptoOption,
@@ -16,6 +9,12 @@ import {
   useIndexerClient
 } from '@0xsequence/kit'
 import { useClearCachedBalances, useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
+import { useState } from 'react'
+import { Hex, formatUnits, zeroAddress } from 'viem'
+import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+
+import { HEADER_HEIGHT } from '../../constants'
+import { useNavigation } from '../../hooks'
 
 interface SwapListProps {
   chainId: number
@@ -58,12 +57,10 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     { disabled: false }
   )
 
-  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo(
-    {
-      chainID: String(chainId),
-      contractAddress: contractAddress
-    },
-  )
+  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: contractAddress
+  })
 
   console.log('currencyInfo', currencyInfo)
 

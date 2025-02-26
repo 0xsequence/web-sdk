@@ -1,5 +1,7 @@
 'use client'
 
+import { Box, Modal, ThemeProvider } from '@0xsequence/design-system'
+import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
@@ -33,9 +35,6 @@ import {
   TransactionSuccess,
   TransferToWallet
 } from '../../views'
-
-import { Box, Modal, ThemeProvider } from '@0xsequence/design-system'
-import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 
 export type KitCheckoutProvider = {
   children: React.ReactNode

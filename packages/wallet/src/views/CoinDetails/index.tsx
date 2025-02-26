@@ -1,3 +1,11 @@
+import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import {
+  useGetCoinPrices,
+  useGetExchangeRate,
+  useGetSingleTokenBalanceSummary,
+  useGetTransactionHistory
+} from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
@@ -7,17 +15,8 @@ import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
-import { CoinDetailsSkeleton } from './Skeleton'
 
-import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
-import { ContractVerificationStatus, compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import {
-  useGetCoinPrices,
-  useGetExchangeRate,
-  useGetSingleTokenBalanceSummary,
-  useGetTokenBalancesSummary,
-  useGetTransactionHistory
-} from '@0xsequence/kit-hooks'
+import { CoinDetailsSkeleton } from './Skeleton'
 
 export interface CoinDetailsProps {
   contractAddress: string
@@ -27,7 +26,7 @@ export interface CoinDetailsProps {
 export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
-  const { fiatCurrency, hideUnlistedTokens } = useSettings()
+  const { fiatCurrency } = useSettings()
   const { address: accountAddress } = useAccount()
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)

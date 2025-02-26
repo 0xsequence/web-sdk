@@ -1,13 +1,12 @@
+import { ArrowRightIcon, Box, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
+import { useGetContractInfo } from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
 import { useCheckoutModal, useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
-
-import { ArrowRightIcon, Box, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
-import { useGetContractInfo } from '@0xsequence/kit-hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings

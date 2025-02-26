@@ -1,3 +1,7 @@
+import { Box, Spinner, Text } from '@0xsequence/design-system'
+import { DEBUG, useAnalyticsContext, useProjectAccessKey } from '@0xsequence/kit'
+import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect } from 'react'
 import { formatUnits } from 'viem'
@@ -13,11 +17,6 @@ import {
   useTransactionStatusModal
 } from '../hooks'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
-
-import { Box, Spinner, Text } from '@0xsequence/design-system'
-import { DEBUG, useAnalyticsContext, useProjectAccessKey } from '@0xsequence/kit'
-import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
 
 const POLLING_TIME = 10 * 1000
 

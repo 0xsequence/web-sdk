@@ -1,5 +1,6 @@
 import { Wallet } from '../../types'
 import { BaseSequenceConnectorOptions, sequenceWallet } from '../wagmiConnectors'
+
 import { getTwitchLogo } from './TwitchLogo'
 
 export interface TwitchOptions extends BaseSequenceConnectorOptions {}

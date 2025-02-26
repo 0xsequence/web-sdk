@@ -1,3 +1,4 @@
+import { GetContractInfoArgs } from '@0xsequence/metadata'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
@@ -5,8 +6,6 @@ import { describe, expect, it } from 'vitest'
 import { useGetMultipleContractsInfo } from '../../hooks/Metadata/useGetMultipleContractsInfo'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
-
-import { GetContractInfoArgs } from '@0xsequence/metadata'
 
 const getMultipleContractsInfoArgs: GetContractInfoArgs[] = [
   {

@@ -1,11 +1,3 @@
-import { useEffect, useState } from 'react'
-import TimeAgo from 'timeago-react'
-import { Hex, PublicClient, formatUnits } from 'viem'
-import { usePublicClient } from 'wagmi'
-
-import { HEADER_HEIGHT } from '../../constants'
-import { useTransactionStatusModal } from '../../hooks'
-
 import {
   ArrowDownIcon,
   Box,
@@ -28,6 +20,13 @@ import {
 } from '@0xsequence/kit'
 import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { useEffect, useState } from 'react'
+import TimeAgo from 'timeago-react'
+import { Hex, PublicClient, formatUnits } from 'viem'
+import { usePublicClient } from 'wagmi'
+
+import { HEADER_HEIGHT } from '../../constants'
+import { useTransactionStatusModal } from '../../hooks'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 

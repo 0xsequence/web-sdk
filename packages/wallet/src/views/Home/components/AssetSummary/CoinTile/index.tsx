@@ -1,14 +1,14 @@
+import { Box } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetContractInfo, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../../../../hooks'
 import { computeBalanceFiat, getPercentagePriceChange } from '../../../../../utils'
-import { CoinTileContent } from './CoinTileContent'
 
-import { Box } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import { useGetCoinPrices, useGetContractInfo, useGetExchangeRate } from '@0xsequence/kit-hooks'
+import { CoinTileContent } from './CoinTileContent'
 
 interface CoinTileProps {
   balance: TokenBalance

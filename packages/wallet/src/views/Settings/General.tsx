@@ -1,10 +1,9 @@
 // import { useTheme } from '@0xsequence/kit'
+import { Box, Card, Switch, Text } from '@0xsequence/design-system'
 import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
-
-import { Box, Card, Switch, Text } from '@0xsequence/design-system'
 
 export const SettingsGeneral = () => {
   // const { theme, setTheme } = useTheme()

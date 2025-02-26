@@ -1,9 +1,8 @@
+import { LocalStorageKey, useWalletSettings } from '@0xsequence/kit'
 import { useState } from 'react'
 import { useConfig } from 'wagmi'
 
 import { FiatCurrency, defaultFiatCurrency } from '../constants'
-
-import { LocalStorageKey, useWalletSettings } from '@0xsequence/kit'
 
 interface Settings {
   hideCollectibles: boolean

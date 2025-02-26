@@ -1,8 +1,7 @@
+import { SequenceAPIClient } from '@0xsequence/api'
 import { useMemo } from 'react'
 
 import { useConfig } from '../useConfig'
-
-import { SequenceAPIClient } from '@0xsequence/api'
 
 export const useAPIClient = () => {
   const { projectAccessKey, env } = useConfig()

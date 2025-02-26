@@ -2,6 +2,7 @@ import { createConnector } from 'wagmi'
 import { WalletConnectParameters, walletConnect as walletConnectbase } from 'wagmi/connectors'
 
 import { Wallet } from '../../types'
+
 import { WalletConnectLogo } from './WalletConnectLogo'
 
 interface WalletConnectOptions extends WalletConnectParameters {

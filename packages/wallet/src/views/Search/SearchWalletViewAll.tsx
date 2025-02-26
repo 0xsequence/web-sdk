@@ -1,3 +1,6 @@
+import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
+import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useEffect, useState } from 'react'
@@ -5,12 +8,9 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
-import CoinsTab from './components/CoinsTab'
-import CollectionsTab from './components/CollectionsTab'
 
-import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
-import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { CoinsTab } from './components/CoinsTab'
+import { CollectionsTab } from './components/CollectionsTab'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'

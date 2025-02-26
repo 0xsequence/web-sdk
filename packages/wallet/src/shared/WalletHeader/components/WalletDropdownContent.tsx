@@ -1,10 +1,3 @@
-import React, { forwardRef } from 'react'
-import { useAccount, useDisconnect } from 'wagmi'
-
-import { useNavigation } from '../../../hooks'
-import { useOpenWalletModal } from '../../../hooks/useOpenWalletModal'
-import { CopyButton } from '../../CopyButton'
-
 import {
   Box,
   Button,
@@ -19,6 +12,12 @@ import {
   vars
 } from '@0xsequence/design-system'
 import { formatAddress, useTheme } from '@0xsequence/kit'
+import React, { forwardRef } from 'react'
+import { useAccount, useDisconnect } from 'wagmi'
+
+import { useNavigation } from '../../../hooks'
+import { useOpenWalletModal } from '../../../hooks/useOpenWalletModal'
+import { CopyButton } from '../../CopyButton'
 
 interface WalletDropdownContentProps {
   setOpenWalletDropdown: React.Dispatch<React.SetStateAction<boolean>>

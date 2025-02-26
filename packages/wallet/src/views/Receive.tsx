@@ -1,12 +1,11 @@
+import { Box, Button, CopyIcon, Image, ShareIcon, Text } from '@0xsequence/design-system'
+import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { QRCodeCanvas } from 'qrcode.react'
 import React, { useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../constants'
-
-import { Box, Button, CopyIcon, Image, ShareIcon, Text } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
 export const Receive = () => {
   const { address, chain } = useAccount()

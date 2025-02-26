@@ -1,6 +1,6 @@
-import { SequenceLogo } from './SequenceLogo'
-
 import { Box, Text } from '@0xsequence/design-system'
+
+import { SequenceLogo } from './SequenceLogo'
 
 export const PoweredBySequence = () => {
   return (

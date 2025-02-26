@@ -1,5 +1,6 @@
 import { Wallet } from '../../types'
 import { BaseSequenceConnectorOptions, sequenceWallet } from '../wagmiConnectors'
+
 import { getAppleLogo, getAppleMonochromeLogo } from './AppleLogo'
 
 export type AppleOptions = BaseSequenceConnectorOptions

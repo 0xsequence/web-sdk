@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { useConfig } from '../hooks/useConfig'
+
 import { createWrapper } from './createWrapper'
 
 describe('useConfig', async () => {

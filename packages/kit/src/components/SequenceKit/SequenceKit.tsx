@@ -1,11 +1,10 @@
+import { ReactHooksConfigProvider } from '@0xsequence/kit-hooks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { State, WagmiProvider } from 'wagmi'
 
 import { SequenceKitConfig } from '../../config/createConfig'
 import { DEBUG } from '../../env'
 import { KitProvider } from '../KitProvider'
-
-import { ReactHooksConfigProvider } from '@0xsequence/kit-hooks'
 
 const defaultQueryClient = new QueryClient()
 

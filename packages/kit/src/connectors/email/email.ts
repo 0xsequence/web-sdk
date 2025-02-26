@@ -1,5 +1,6 @@
 import { Wallet } from '../../types'
 import { BaseSequenceConnectorOptions, sequenceWallet } from '../wagmiConnectors'
+
 import { getEmailLogo } from './EmailLogo'
 
 export interface EmailOptions extends BaseSequenceConnectorOptions {}

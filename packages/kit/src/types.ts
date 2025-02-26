@@ -1,10 +1,9 @@
+import { ETHAuthProof } from '@0xsequence/auth'
+import { tokens } from '@0xsequence/design-system'
 import { FunctionComponent } from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from './constants'
-
-import { ETHAuthProof } from '@0xsequence/auth'
-import { tokens } from '@0xsequence/design-system'
 
 const { colors } = tokens
 

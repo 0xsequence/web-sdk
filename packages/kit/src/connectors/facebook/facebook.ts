@@ -1,5 +1,6 @@
 import { Wallet } from '../../types'
 import { BaseSequenceConnectorOptions, sequenceWallet } from '../wagmiConnectors'
+
 import { FacebookLogo, getFacebookMonochromeLogo } from './FacebookLogo'
 
 export interface FacebookOptions extends BaseSequenceConnectorOptions {}

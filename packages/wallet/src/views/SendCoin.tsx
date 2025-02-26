@@ -1,14 +1,3 @@
-import { ethers } from 'ethers'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
-
-import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
-import { useNavigationContext } from '../contexts/Navigation'
-import { useNavigation, useSettings } from '../hooks'
-import { SendItemInfo } from '../shared/SendItemInfo'
-import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { computeBalanceFiat, isEthAddress, limitDecimals } from '../utils'
-
 import {
   Box,
   Button,
@@ -34,6 +23,16 @@ import {
   useWaasFeeOptions
 } from '@0xsequence/kit'
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { ethers } from 'ethers'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
+
+import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
+import { useNavigationContext } from '../contexts/Navigation'
+import { useNavigation, useSettings } from '../hooks'
+import { SendItemInfo } from '../shared/SendItemInfo'
+import { TransactionConfirmation } from '../shared/TransactionConfirmation'
+import { computeBalanceFiat, isEthAddress, limitDecimals } from '../utils'
 
 interface SendCoinProps {
   chainId: number

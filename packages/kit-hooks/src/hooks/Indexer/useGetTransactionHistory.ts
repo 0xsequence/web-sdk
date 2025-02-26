@@ -1,10 +1,10 @@
+import { Page, SequenceIndexer } from '@0xsequence/indexer'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
 import { HooksOptions } from '../../types'
-import { useIndexerClient } from './useIndexerClient'
 
-import { Page, SequenceIndexer } from '@0xsequence/indexer'
+import { useIndexerClient } from './useIndexerClient'
 
 interface GetTransactionHistoryArgs {
   accountAddress: string

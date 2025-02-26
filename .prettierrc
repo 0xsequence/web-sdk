@@ -5,18 +5,5 @@
   "singleQuote": true,
   "trailingComma": "none",
   "arrowParens": "avoid",
-  "printWidth": 130,
-  "importOrder": [
-    "^~/utils/(.*)$",
-    "^~/contexts/(.*)$",
-    "^~/constants/(.*)$",
-    "^~/hooks/(.*)$",
-    "^~/tests/(.*)$",
-    "^~/(.*)$",
-    "^[./]",
-    "^@0xsequence/(.*)$"
-  ],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
-  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+  "printWidth": 130
 }

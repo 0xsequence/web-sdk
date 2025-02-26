@@ -1,5 +1,6 @@
 import { Wallet } from '../../types'
 import { BaseSequenceConnectorOptions, sequenceWallet } from '../wagmiConnectors'
+
 import { getDiscordLogo } from './DiscordLogo'
 
 export interface DiscordOptions extends BaseSequenceConnectorOptions {}

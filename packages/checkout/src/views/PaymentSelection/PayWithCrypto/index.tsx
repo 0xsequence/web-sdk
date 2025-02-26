@@ -1,3 +1,7 @@
+import { AddIcon, Box, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
+import { ContractVerificationStatus, CryptoOption, compareAddress, formatDisplay } from '@0xsequence/kit'
+import { useGetContractInfo, useGetSwapPrices, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'framer-motion'
 import { Fragment, SetStateAction, useEffect, useState } from 'react'
 import { formatUnits } from 'viem'
@@ -5,11 +9,6 @@ import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { useClearCachedBalances } from '../../../hooks'
-
-import { AddIcon, Box, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
-import { ContractVerificationStatus, CryptoOption, compareAddress, formatDisplay } from '@0xsequence/kit'
-import { useGetContractInfo, useGetSwapPrices, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings

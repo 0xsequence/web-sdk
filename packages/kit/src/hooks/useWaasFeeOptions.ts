@@ -1,12 +1,11 @@
 'use client'
 
+import { FeeOption } from '@0xsequence/waas'
 import { ethers } from 'ethers'
 import { useEffect, useRef, useState } from 'react'
 import { Connector, useConnections } from 'wagmi'
 
 import { Deferred } from '../utils/deferred'
-
-import { FeeOption } from '@0xsequence/waas'
 
 export type WaasFeeOptionConfirmation = {
   id: string

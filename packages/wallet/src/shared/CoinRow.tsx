@@ -1,10 +1,9 @@
+import { Box, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 
 import { getPercentageColor } from '../utils'
-
-import { Box, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-import { formatDisplay } from '@0xsequence/kit'
 
 interface CoinRowProps {
   name: string

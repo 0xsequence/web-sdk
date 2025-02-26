@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-
 import { Box, Button, CheckmarkIcon, PINCodeInput, Spinner, Text } from '@0xsequence/design-system'
+import { useEffect, useRef, useState } from 'react'
 
 interface EmailWaasVerifyProps {
   isLoading: boolean

@@ -1,3 +1,7 @@
+import { SequenceAPIClient, SwapPrice } from '@0xsequence/api'
+import { SequenceIndexerGateway } from '@0xsequence/indexer'
+import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { useQuery } from '@tanstack/react-query'
 
 import { NATIVE_TOKEN_ADDRESS_0X_SWAP, QUERY_KEYS, ZERO_ADDRESS, time } from '../../constants'
@@ -6,11 +10,6 @@ import { compareAddress } from '../../utils/helpers'
 import { useAPIClient } from '../API/useAPIClient'
 import { useIndexerGatewayClient } from '../IndexerGateway/useIndexerGatewayClient'
 import { useMetadataClient } from '../Metadata/useMetadataClient'
-
-import { SequenceAPIClient, SwapPrice } from '@0xsequence/api'
-import { IndexerGateway, SequenceIndexerGateway } from '@0xsequence/indexer'
-import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
-import { findSupportedNetwork } from '@0xsequence/network'
 
 interface Balance {
   balance: string

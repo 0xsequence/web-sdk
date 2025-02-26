@@ -1,10 +1,10 @@
+import { SequenceIndexer } from '@0xsequence/indexer'
+import { ChainId, networks } from '@0xsequence/network'
 import { useMemo } from 'react'
 
 import { DEBUG } from '../env'
-import { useProjectAccessKey } from './useProjectAccessKey'
 
-import { SequenceIndexer } from '@0xsequence/indexer'
-import { ChainId, networks } from '@0xsequence/network'
+import { useProjectAccessKey } from './useProjectAccessKey'
 
 export const useIndexerClient = (chainId: ChainId) => {
   const projectAccessKey = useProjectAccessKey()

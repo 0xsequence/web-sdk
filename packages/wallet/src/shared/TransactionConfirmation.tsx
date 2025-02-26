@@ -1,12 +1,11 @@
+import { Box, Button, Card, ChevronRightIcon, GradientAvatar, Spinner, Text, vars } from '@0xsequence/design-system'
+import { truncateAtMiddle, useIndexerClient } from '@0xsequence/kit'
 import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { FeeOption, FeeOptionSelector } from './FeeOptionSelector'
 import { SendItemInfo } from './SendItemInfo'
-
-import { Box, Button, Card, ChevronRightIcon, GradientAvatar, Spinner, Text, vars } from '@0xsequence/design-system'
-import { truncateAtMiddle, useIndexerClient } from '@0xsequence/kit'
 
 interface TransactionConfirmationProps {
   // Display data

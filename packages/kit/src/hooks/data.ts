@@ -1,16 +1,5 @@
 'use client'
 
-import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { zeroAddress } from 'viem'
-
-import { NATIVE_TOKEN_ADDRESS_0X, QUERY_KEYS } from '../constants'
-import { compareAddress } from '../utils/helpers'
-import { createNativeTokenBalance } from '../utils/tokens'
-import { useAPIClient } from './useAPIClient'
-import { useIndexerClient, useIndexerClients } from './useIndexerClient'
-import { useMetadataClient } from './useMetadataClient'
-
 import { GetLinkedWalletsArgs, GetSwapQuoteArgs, LinkedWallet, SequenceAPIClient, SwapPrice, Token } from '@0xsequence/api'
 import {
   ContractVerificationStatus,
@@ -22,6 +11,17 @@ import {
 } from '@0xsequence/indexer'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { zeroAddress } from 'viem'
+
+import { NATIVE_TOKEN_ADDRESS_0X, QUERY_KEYS } from '../constants'
+import { compareAddress } from '../utils/helpers'
+import { createNativeTokenBalance } from '../utils/tokens'
+
+import { useAPIClient } from './useAPIClient'
+import { useIndexerClient, useIndexerClients } from './useIndexerClient'
+import { useMetadataClient } from './useMetadataClient'
 
 interface UseLinkedWalletsOptions {
   enabled?: boolean

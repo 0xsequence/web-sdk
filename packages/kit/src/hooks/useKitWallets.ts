@@ -2,6 +2,7 @@ import { Connector, type UseConnectionsReturnType, useAccount, useConnect, useCo
 
 import { SEQUENCE_UNIVERSAL_CONNECTOR_NAME } from '../components/Connect/Connect'
 import { ExtendedConnector } from '../types'
+
 import { useLinkedWallets } from './data'
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
 

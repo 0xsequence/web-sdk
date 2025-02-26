@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { ZERO_ADDRESS } from '../../constants'
-import { QUERY_KEYS, time } from '../../constants'
+import { ZERO_ADDRESS, QUERY_KEYS, time } from '../../constants'
 import { BalanceHookOptions } from '../../types'
 import { compareAddress, createNativeTokenBalance } from '../../utils/helpers'
+
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
 export interface GetSingleTokenBalanceSummaryArgs {

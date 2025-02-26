@@ -1,13 +1,12 @@
 import { sequence } from '0xsequence'
+import { ETHAuthProof } from '@0xsequence/auth'
+import { ChainIdLike } from '@0xsequence/network'
+import { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
 import { UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
 import { EthAuthSettings } from '../../types'
-
-import { ETHAuthProof } from '@0xsequence/auth'
-import { ChainIdLike } from '@0xsequence/network'
-import { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
 
 export interface BaseSequenceConnectorOptions {
   walletAppURL?: string

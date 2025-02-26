@@ -1,9 +1,8 @@
+import { Box, Text, TokenImage } from '@0xsequence/design-system'
 import { ZeroAddress, formatUnits, parseUnits } from 'ethers'
 import React from 'react'
 
 import { Alert, AlertProps } from './Alert'
-
-import { Box, Text, TokenImage } from '@0xsequence/design-system'
 
 export interface FeeOption {
   token: FeeToken

@@ -1,11 +1,10 @@
+import { GetSwapQuoteArgs } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { NATIVE_TOKEN_ADDRESS_0X_SWAP, QUERY_KEYS, ZERO_ADDRESS, time } from '../../constants'
 import { HooksOptions } from '../../types'
 import { compareAddress } from '../../utils/helpers'
 import { useAPIClient } from '../API/useAPIClient'
-
-import { GetSwapQuoteArgs } from '@0xsequence/api'
 
 /**
  * @description Gets the swap quote for a given currency pair

@@ -1,10 +1,9 @@
-import { InfiniteData } from '@tanstack/react-query'
-import { ethers } from 'ethers'
-
 import { TokenPrice } from '@0xsequence/api'
 import { vars } from '@0xsequence/design-system'
 import { GetTransactionHistoryReturn, TokenBalance, Transaction } from '@0xsequence/indexer'
 import { compareAddress } from '@0xsequence/kit'
+import { InfiniteData } from '@tanstack/react-query'
+import { ethers } from 'ethers'
 
 export const getPercentageColor = (value: number) => {
   if (value > 0) {

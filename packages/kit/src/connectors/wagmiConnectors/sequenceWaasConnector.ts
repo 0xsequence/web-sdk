@@ -1,3 +1,12 @@
+import { EIP1193Provider, allNetworks } from '@0xsequence/network'
+import {
+  ExtendedSequenceConfig,
+  FeeOption,
+  SequenceConfig,
+  SequenceWaaS,
+  Transaction,
+  WebrpcEndpointError
+} from '@0xsequence/waas'
 import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -12,16 +21,6 @@ import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
 import { DEBUG } from '../../env'
-
-import { EIP1193Provider, allNetworks } from '@0xsequence/network'
-import {
-  ExtendedSequenceConfig,
-  FeeOption,
-  SequenceConfig,
-  SequenceWaaS,
-  Transaction,
-  WebrpcEndpointError
-} from '@0xsequence/waas'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string

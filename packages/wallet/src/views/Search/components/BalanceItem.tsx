@@ -1,12 +1,11 @@
+import { Box, ChevronRightIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
-
-import { Box, ChevronRightIcon, Text, TokenImage } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
 interface BalanceItemProps {
   balance: TokenBalance

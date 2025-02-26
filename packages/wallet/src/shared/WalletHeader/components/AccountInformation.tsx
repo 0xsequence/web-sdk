@@ -1,8 +1,7 @@
-import React, { forwardRef } from 'react'
-import { useAccount } from 'wagmi'
-
 import { Box, ChevronDownIcon, GradientAvatar, Text } from '@0xsequence/design-system'
 import { formatAddress } from '@0xsequence/kit'
+import React, { forwardRef } from 'react'
+import { useAccount } from 'wagmi'
 
 interface AccountInformationProps {
   onClickAccount: () => void

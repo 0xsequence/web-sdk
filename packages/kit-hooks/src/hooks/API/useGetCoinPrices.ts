@@ -1,10 +1,10 @@
+import { SequenceAPIClient, Token } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
 import { HooksOptions } from '../../types'
-import { useAPIClient } from './useAPIClient'
 
-import { SequenceAPIClient, Token } from '@0xsequence/api'
+import { useAPIClient } from './useAPIClient'
 
 const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
   if (tokens.length === 0) {

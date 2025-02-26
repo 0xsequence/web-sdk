@@ -1,11 +1,10 @@
+import { SequenceIndexer, Transaction } from '@0xsequence/indexer'
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS } from '../../constants'
-import { time } from '../../constants'
+import { QUERY_KEYS, time } from '../../constants'
 import { HooksOptions } from '../../types'
-import { useIndexerClients } from './/useIndexerClient'
 
-import { SequenceIndexer, Transaction } from '@0xsequence/indexer'
+import { useIndexerClients } from './/useIndexerClient'
 
 export interface GetTransactionHistorySummaryArgs {
   accountAddress: string

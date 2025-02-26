@@ -1,3 +1,11 @@
+import { Box, Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
+import { ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
+import {
+  useGetCollectiblePrices,
+  useGetExchangeRate,
+  useGetTokenBalancesDetails,
+  useGetTransactionHistory
+} from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
@@ -7,16 +15,8 @@ import { CollectibleTileImage } from '../../shared/CollectibleTileImage'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
-import { CollectibleDetailsSkeleton } from './Skeleton'
 
-import { Box, Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
-import { ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
-import {
-  useGetCollectiblePrices,
-  useGetExchangeRate,
-  useGetTokenBalancesDetails,
-  useGetTransactionHistory
-} from '@0xsequence/kit-hooks'
+import { CollectibleDetailsSkeleton } from './Skeleton'
 
 export interface CollectibleDetailsProps {
   contractAddress: string

@@ -1,3 +1,4 @@
+import { Token } from '@0xsequence/api'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
@@ -6,8 +7,6 @@ import { ZERO_ADDRESS } from '../../constants'
 import { useGetCoinPrices } from '../../hooks/API/useGetCoinPrices'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
-
-import { Token } from '@0xsequence/api'
 
 const getCoinPricesArgs: Token[] = [
   {
