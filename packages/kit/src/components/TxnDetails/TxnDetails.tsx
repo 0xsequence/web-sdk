@@ -116,12 +116,12 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const imageUrl = isNativeCoin
     ? nativeTokenInfo.logoURI
     : isNFT
-      ? tokenMetadata?.tokenMetadata?.[0]?.image
+      ? tokenMetadata?.[0]?.image
       : tokenBalance?.contractInfo?.logoURI
   const name = isNativeCoin
     ? nativeTokenInfo.name
     : isNFT
-      ? tokenMetadata?.tokenMetadata?.[0]?.name
+      ? tokenMetadata?.[0]?.name
       : tokenBalance?.contractInfo?.name || ''
   const symbol = isNativeCoin ? nativeTokenInfo.symbol : isNFT ? '' : tokenBalance?.contractInfo?.symbol || ''
 
@@ -153,7 +153,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
             </Box>
 
             <Text color="text50" variant="normal">
-              {`${ethers.formatUnits(amountSending, is1155 ? tokenMetadata?.tokenMetadata?.[0]?.decimals : isNFT ? 0 : decimals)} ${symbol} `}
+              {`${ethers.formatUnits(amountSending, is1155 ? tokenMetadata?.[0]?.decimals : isNFT ? 0 : decimals)} ${symbol} `}
             </Text>
           </Box>
         </Box>

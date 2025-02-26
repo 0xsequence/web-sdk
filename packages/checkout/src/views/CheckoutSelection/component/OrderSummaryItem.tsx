@@ -26,7 +26,7 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
     return <OrderSummarySkeleton />
   }
 
-  const { name = 'unknown', image, decimals = 0 } = tokenMetadata?.tokenMetadata?.[0] ?? {}
+  const { name = 'unknown', image, decimals = 0 } = tokenMetadata?.[0] ?? {}
 
   const { logoURI: collectionLogoURI, name: collectionName = 'Unknown Collection' } = contractInfo || {}
 

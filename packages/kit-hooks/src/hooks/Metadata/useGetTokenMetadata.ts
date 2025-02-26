@@ -8,11 +8,7 @@ import { useConfig } from '../useConfig'
 
 import { useMetadataClient } from './useMetadataClient'
 
-const getTokenMetadata = async (
-  metadataClient: SequenceMetadata,
-  args: GetTokenMetadataArgs,
-  imageProxyUrl: string
-): Promise<GetTokenMetadataReturn> => {
+const getTokenMetadata = async (metadataClient: SequenceMetadata, args: GetTokenMetadataArgs, imageProxyUrl: string) => {
   const { chainID, contractAddress, tokenIDs } = args
 
   // metadata api has a "50 tokenID request limit per contract" rate limit
@@ -35,7 +31,8 @@ const getTokenMetadata = async (
       d.image = `${imageProxyUrl}${d.image}`
     }
   })
-  return { tokenMetadata: data }
+
+  return data
 }
 
 /**

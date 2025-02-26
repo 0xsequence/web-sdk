@@ -72,7 +72,7 @@ export const OrderSummary = () => {
       <Box flexDirection="row" gap="1">
         {selectPaymentSettings!.collectibles.map(collectible => {
           const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
-          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
+          const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
             <Box gap="3" alignItems="center" key={collectible.tokenId}>

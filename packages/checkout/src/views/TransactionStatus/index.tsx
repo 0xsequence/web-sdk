@@ -175,7 +175,7 @@ export const TransactionStatus = () => {
       }
     } else {
       const tokenNames =
-        tokenMetadatas?.tokenMetadata
+        tokenMetadatas
           ?.map(metadata => {
             return `${metadata.name} #${metadata.tokenId}`
           })
@@ -235,7 +235,7 @@ export const TransactionStatus = () => {
       <Box gap="3" flexDirection="column">
         {items?.map(item => {
           const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
-          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
+          const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
 
           const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0))
 

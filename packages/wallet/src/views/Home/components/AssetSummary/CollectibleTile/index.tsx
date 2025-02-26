@@ -14,7 +14,7 @@ export const CollectibleTile = ({ balance }: CollectibleTileProps) => {
     tokenIDs: [balance.tokenID || '']
   })
 
-  const imageUrl = tokenMetadata?.tokenMetadata?.[0]?.image
+  const imageUrl = tokenMetadata?.[0]?.image
 
   return <CollectibleTileImage imageUrl={imageUrl} />
 }

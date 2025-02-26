@@ -75,7 +75,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const network = findSupportedNetwork(creditCardCheckout.chainId)
 
-  const tokenMetadata = tokensMetadata ? tokensMetadata.tokenMetadata[0] : undefined
+  const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
 
@@ -272,7 +272,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
     contractAddress: creditCardCheckout.nftAddress,
     tokenIDs: [creditCardCheckout.nftId]
   })
-  const tokenMetadata = tokensMetadata ? tokensMetadata.tokenMetadata[0] : undefined
+  const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const disableSardineClientTokenFetch = isLoadingTokenMetadata
 
