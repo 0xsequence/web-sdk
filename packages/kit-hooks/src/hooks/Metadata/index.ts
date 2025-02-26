@@ -1,5 +1,4 @@
 export * from './useGetContractInfo'
 export * from './useGetMultipleContractsInfo'
 export * from './useGetTokenMetadata'
-export * from './useGetCollectionsMetadata'
 export * from './useGetCurrencyInfo'
