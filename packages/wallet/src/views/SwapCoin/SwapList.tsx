@@ -62,8 +62,6 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     contractAddress: contractAddress
   })
 
-  console.log('currencyInfo', currencyInfo)
-
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
   const {

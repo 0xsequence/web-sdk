@@ -389,7 +389,7 @@ interface UseCollectibleBalanceDetailsArgs extends GetTokenBalancesDetailsArgs {
   tokenId: string
 }
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use useGetTokenBalanceDetails in kit-hooks instead, then filter for tokenId */
 export const useCollectibleBalanceDetails = (args: UseCollectibleBalanceDetailsArgs) => {
   const indexerClient = useIndexerClient(args.chainId)
 
