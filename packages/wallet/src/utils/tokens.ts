@@ -33,12 +33,7 @@ interface ComputeBalanceFiat {
   conversionRate: number
 }
 
-export const computeBalanceFiat = ({
-  balance,
-  prices,
-  decimals,
-  conversionRate
-}: ComputeBalanceFiat): string => {
+export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }: ComputeBalanceFiat): string => {
   let totalUsd = 0
 
   const priceForToken = prices.find(p => compareAddress(p.token.contractAddress, balance.contractAddress))

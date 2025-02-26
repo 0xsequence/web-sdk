@@ -13,5 +13,4 @@ type TransferFundsModalContext = {
   transferFundsSettings?: TransferFundsSettings
 }
 
-export const [useTransferFundsModalContext, TransferFundsContextProvider] =
-  createGenericContext<TransferFundsModalContext>()
+export const [useTransferFundsModalContext, TransferFundsContextProvider] = createGenericContext<TransferFundsModalContext>()

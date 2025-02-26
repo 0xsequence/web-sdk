@@ -41,12 +41,9 @@ describe('useGetCollectionsMetadata', () => {
       })
     )
 
-    const { result } = renderHook(
-      () => useGetCollectionsMetadata(getCollectionsMetadataArgs, { retry: false }),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetCollectionsMetadata(getCollectionsMetadataArgs, { retry: false }), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
   })

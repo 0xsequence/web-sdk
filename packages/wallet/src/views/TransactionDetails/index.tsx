@@ -67,12 +67,9 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
 
   const { data: coinPricesData, isPending: isPendingCoinPrices } = useGetCoinPrices(coins)
 
-  const { data: collectiblePricesData, isPending: isPendingCollectiblePrices } =
-    useGetCollectiblePrices(collectibles)
+  const { data: collectiblePricesData, isPending: isPendingCollectiblePrices } = useGetCollectiblePrices(collectibles)
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
-    fiatCurrency.symbol
-  )
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const arePricesLoading =
     (coins.length > 0 && isPendingCoinPrices) ||
@@ -95,9 +92,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
   const Transfer = ({ transfer }: TransferProps) => {
     const recipientAddress = transfer.to
     const recipientAddressFormatted =
-      recipientAddress.substring(0, 10) +
-      '...' +
-      recipientAddress.substring(transfer.to.length - 4, transfer.to.length)
+      recipientAddress.substring(0, 10) + '...' + recipientAddress.substring(transfer.to.length - 4, transfer.to.length)
     const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', ethers.ZeroAddress)
     const logoURI = isNativeToken ? nativeTokenInfo.logoURI : transfer?.contractInfo?.logoURI
     const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer?.contractInfo?.symbol || ''
@@ -108,9 +103,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           const isCollectible = transfer.contractType === 'ERC721' || transfer.contractType === 'ERC1155'
           const tokenId = transfer.tokenIds?.[index] || '0'
           const collectibleDecimals = transfer?.tokenMetadata?.[tokenId]?.decimals || 0
-          const coinDecimals = isNativeToken
-            ? nativeTokenInfo.decimals
-            : transfer?.contractInfo?.decimals || 0
+          const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : transfer?.contractInfo?.decimals || 0
           const decimals = isCollectible ? collectibleDecimals : coinDecimals
           const formattedBalance = ethers.formatUnits(amount, decimals)
           const balanceDisplayed = formatDisplay(formattedBalance)
@@ -123,23 +116,14 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
               )?.price?.value
             : coinPricesData?.find(
                 coin =>
-                  compareAddress(
-                    coin.token.contractAddress,
-                    transfer.contractInfo?.address || ethers.ZeroAddress
-                  ) && coin.token.chainId === transaction.chainId
+                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.ZeroAddress) &&
+                  coin.token.chainId === transaction.chainId
               )?.price?.value
 
           const fiatValue = (parseFloat(formattedBalance) * (conversionRate * (fiatPrice || 0))).toFixed(2)
 
           return (
-            <Box
-              key={index}
-              width="full"
-              flexDirection="row"
-              gap="2"
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Box key={index} width="full" flexDirection="row" gap="2" justifyContent="space-between" alignItems="center">
               <Box
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -190,15 +174,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
   }
 
   return (
-    <Box
-      padding="5"
-      paddingTop="3"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap="10"
-      marginTop="5"
-    >
+    <Box padding="5" paddingTop="3" flexDirection="column" alignItems="center" justifyContent="center" gap="10" marginTop="5">
       <Box marginTop="6" flexDirection="column" justifyContent="center" alignItems="center" gap="1">
         <Text variant="normal" fontWeight="medium" color="text100">
           Transaction details
@@ -225,14 +201,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           <NetworkImage chainId={transaction.chainId} size="xs" />
         </Box>
         {transaction.transfers?.map((transfer, index) => (
-          <Box
-            width="full"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            gap="4"
-            key={`transfer-${index}`}
-          >
+          <Box width="full" flexDirection="column" justifyContent="center" alignItems="center" gap="4" key={`transfer-${index}`}>
             <Transfer transfer={transfer} />
           </Box>
         ))}

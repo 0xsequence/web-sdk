@@ -10,11 +10,10 @@ export const History = () => {
   const { selectedNetworks } = useSettings()
   const { address: accountAddress } = useAccount()
 
-  const { data: transactionHistory = [], isPending: isPendingTransactionHistory } =
-    useGetTransactionHistorySummary({
-      accountAddress: accountAddress || '',
-      chainIds: selectedNetworks
-    })
+  const { data: transactionHistory = [], isPending: isPendingTransactionHistory } = useGetTransactionHistorySummary({
+    accountAddress: accountAddress || '',
+    chainIds: selectedNetworks
+  })
 
   return (
     <Box>

@@ -20,10 +20,7 @@ export const getCollectionsMetadata = async (
   }
 }
 
-export const useGetCollectionsMetadata = (
-  useGetCollectionsMetadataArgs: GetContractInfoArgs[],
-  options?: HooksOptions
-) => {
+export const useGetCollectionsMetadata = (useGetCollectionsMetadataArgs: GetContractInfoArgs[], options?: HooksOptions) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({

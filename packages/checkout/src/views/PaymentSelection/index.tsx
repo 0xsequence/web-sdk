@@ -4,12 +4,7 @@ import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'w
 
 import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import {
-  useClearCachedBalances,
-  useSelectPaymentModal,
-  useSkipOnCloseCallback,
-  useTransactionStatusModal
-} from '../../hooks'
+import { useClearCachedBalances, useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import { Footer } from './Footer'
 import { OrderSummary } from './OrderSummary'
@@ -152,8 +147,7 @@ export const PaymentSelectionContent = () => {
     }
   )
 
-  const isLoading =
-    (allowanceIsLoading && !isNativeToken) || currencyBalanceIsLoading || isLoadingCurrencyInfo
+  const isLoading = (allowanceIsLoading && !isNativeToken) || currencyBalanceIsLoading || isLoadingCurrencyInfo
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
@@ -461,12 +455,7 @@ export const PaymentSelectionContent = () => {
             <Box width="full">
               <Button
                 onClick={onClickPurchase}
-                disabled={
-                  isLoading ||
-                  disableButtons ||
-                  !selectedCurrency ||
-                  (!disableSwapQuote && isLoadingSwapQuote)
-                }
+                disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
                 marginTop="6"
                 shape="square"
                 variant="primary"
@@ -475,13 +464,7 @@ export const PaymentSelectionContent = () => {
               />
               <Box width="full" justifyContent="center" alignItems="center" gap="0.5" marginY="2">
                 {/* Replace by icon from design-system once new release is out */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="13"
-                  height="12"
-                  viewBox="0 0 13 12"
-                  fill="none"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"

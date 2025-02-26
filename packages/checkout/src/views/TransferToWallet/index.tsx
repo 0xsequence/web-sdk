@@ -33,14 +33,7 @@ export const TransferToWallet = () => {
             <QRCode value={address} data-id="receiveQR" />
           </Box>
 
-          <Text
-            as="div"
-            width="full"
-            variant="normal"
-            color="text50"
-            textAlign="center"
-            data-id="receiveAddress"
-          >
+          <Text as="div" width="full" variant="normal" color="text50" textAlign="center" data-id="receiveAddress">
             {address}
           </Text>
         </Box>

@@ -39,12 +39,9 @@ describe('useGetTokenBalancesByContract', () => {
       })
     )
 
-    const { result } = renderHook(
-      () => useGetTokenBalancesByContract(getTokenBalancesByContractArgs, { retry: false }),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetTokenBalancesByContract(getTokenBalancesByContractArgs, { retry: false }), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
   })

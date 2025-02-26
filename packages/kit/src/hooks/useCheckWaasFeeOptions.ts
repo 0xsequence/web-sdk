@@ -4,10 +4,7 @@ import { useConnections } from 'wagmi'
 
 import { FeeOption, Transaction } from '@0xsequence/waas'
 
-export function useCheckWaasFeeOptions(): (params: {
-  transactions: Transaction[]
-  chainId: number
-}) => Promise<{
+export function useCheckWaasFeeOptions(): (params: { transactions: Transaction[]; chainId: number }) => Promise<{
   feeQuote: string | undefined
   feeOptions: FeeOption[] | undefined
   isSponsored: boolean

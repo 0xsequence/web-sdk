@@ -3,10 +3,7 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../../constants'
-import {
-  UseGetTransactionHistoryArgs,
-  useGetTransactionHistory
-} from '../../hooks/Indexer/useGetTransactionHistory'
+import { UseGetTransactionHistoryArgs, useGetTransactionHistory } from '../../hooks/Indexer/useGetTransactionHistory'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 
@@ -38,12 +35,9 @@ describe('useGetTransactionHistory', () => {
       })
     )
 
-    const { result } = renderHook(
-      () => useGetTransactionHistory(getTransactionHistoryArgs, { retry: false }),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetTransactionHistory(getTransactionHistoryArgs, { retry: false }), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
   })

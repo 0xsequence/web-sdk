@@ -3,14 +3,7 @@ import { abi } from '@/constants/nft-abi'
 import { ethers } from 'ethers'
 import { ComponentProps, useEffect, useState } from 'react'
 import { formatUnits, parseUnits } from 'viem'
-import {
-  useAccount,
-  useChainId,
-  usePublicClient,
-  useSendTransaction,
-  useWalletClient,
-  useWriteContract
-} from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode, sponsoredContractAddresses } from '../../config'
 
@@ -44,12 +37,7 @@ export const Connected = () => {
     setOpenConnectModal(true)
   }
 
-  const {
-    data: txnData,
-    sendTransaction,
-    isPending: isPendingSendTxn,
-    error: sendTransactionError
-  } = useSendTransaction()
+  const { data: txnData, sendTransaction, isPending: isPendingSendTxn, error: sendTransactionError } = useSendTransaction()
   const { data: txnData2, isPending: isPendingMintTxn, writeContract } = useWriteContract()
   const {
     data: txnData3,
@@ -99,9 +87,7 @@ export const Connected = () => {
 
   const indexerClient = useIndexerClient(chainId)
 
-  const [feeOptionBalances, setFeeOptionBalances] = useState<
-    { tokenName: string; decimals: number; balance: string }[]
-  >([])
+  const [feeOptionBalances, setFeeOptionBalances] = useState<{ tokenName: string; decimals: number; balance: string }[]>([])
 
   const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps | undefined>(undefined)
 
@@ -136,9 +122,8 @@ export const Connected = () => {
             tokenName: option.token.name,
             decimals: option.token.decimals || 0,
             balance:
-              tokenBalances.balances.find(
-                b => b.contractAddress.toLowerCase() === option.token.contractAddress!.toLowerCase()
-              )?.balance || '0'
+              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress!.toLowerCase())
+                ?.balance || '0'
           }
         }
       })
@@ -280,13 +265,7 @@ export const Connected = () => {
     <>
       <Header />
 
-      <Box
-        paddingX="4"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        style={{ margin: '140px 0' }}
-      >
+      <Box paddingX="4" flexDirection="column" justifyContent="center" alignItems="center" style={{ margin: '140px 0' }}>
         <Box flexDirection="column" gap="4">
           <Box marginY="3" flexDirection="column" gap="2">
             <Text fontWeight="semibold" variant="small" color="text50">
@@ -313,24 +292,14 @@ export const Connected = () => {
               ))}
           </Box>
           <Box gap="2" flexDirection="row" alignItems="center" justifyContent="center">
-            <Button
-              shape="square"
-              onClick={onClickConnect}
-              variant="feature"
-              size="sm"
-              label="Connect another wallet"
-            />
+            <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
           </Box>
 
           <Box flexDirection="column" gap="2">
             <Text variant="small" color="text50" fontWeight="medium">
               Demos
             </Text>
-            <CardButton
-              title="Inventory"
-              description="View all tokens in your wallet"
-              onClick={() => setOpenWalletModal(true)}
-            />
+            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
             {/* <CardButton
                 title="Checkout"
                 description="Checkout screen before placing a purchase on coins or collections"
@@ -344,21 +313,19 @@ export const Connected = () => {
                 onClick={runSendTransaction}
               />
             )}
-            {networkForCurrentChainId.blockExplorer &&
-              lastTxnDataHash &&
-              ((txnData as any)?.chainId === chainId || txnData) && (
-                <Text
-                  as="a"
-                  marginLeft="4"
-                  variant="small"
-                  underline
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View on {networkForCurrentChainId.blockExplorer.name}
-                </Text>
-              )}
+            {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
+              <Text
+                as="a"
+                marginLeft="4"
+                variant="small"
+                underline
+                href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on {networkForCurrentChainId.blockExplorer.name}
+              </Text>
+            )}
 
             {networkForCurrentChainId.testnet && (
               <CardButton
@@ -429,11 +396,7 @@ export const Connected = () => {
               )}
 
             {isDebugMode && (
-              <CardButton
-                title="Generate EthAuth proof"
-                description="Generate EthAuth proof"
-                onClick={generateEthAuthProof}
-              />
+              <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
             )}
           </Box>
 
@@ -444,9 +407,7 @@ export const Connected = () => {
                 labelLocation="top"
                 label="Pick a fee option"
                 onValueChange={val => {
-                  const selected = pendingFeeOptionConfirmation?.options?.find(
-                    option => option.token.name === val
-                  )
+                  const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
                   if (selected) {
                     setSelectedFeeOptionTokenName(selected.token.name)
                     setFeeOptionAlert(undefined)
@@ -459,17 +420,13 @@ export const Connected = () => {
                       <Box alignItems="flex-start" flexDirection="column">
                         <Box flexDirection="row">
                           <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
-                          <Text variant="xsmall">
-                            {formatUnits(BigInt(option.value), option.token.decimals || 0)}
-                          </Text>
+                          <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
                         </Box>
                         <Box flexDirection="row">
                           <Text>Wallet balance for {option.token.name}: </Text>{' '}
                           <Text>
                             {formatUnits(
-                              BigInt(
-                                feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'
-                              ),
+                              BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
                               option.token.decimals || 0
                             )}
                           </Text>
@@ -499,17 +456,13 @@ export const Connected = () => {
                         setFeeOptionAlert({
                           title: 'Insufficient balance',
                           description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
-                          secondaryDescription:
-                            'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
+                          secondaryDescription: 'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
                           variant: 'warning'
                         })
                         return
                       }
 
-                      confirmPendingFeeOption(
-                        pendingFeeOptionConfirmation?.id,
-                        selected.token.contractAddress
-                      )
+                      confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
                     }
                   }}
                   label="Confirm fee option"
@@ -543,14 +496,7 @@ export type AlertProps = {
   children?: React.ReactNode
 }
 
-export const Alert = ({
-  title,
-  description,
-  secondaryDescription,
-  variant,
-  buttonProps,
-  children
-}: AlertProps) => {
+export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
     <Box borderRadius="md" background={variant}>
       <Box

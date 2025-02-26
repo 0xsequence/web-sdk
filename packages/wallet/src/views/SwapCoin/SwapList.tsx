@@ -15,12 +15,7 @@ import {
   useAnalyticsContext,
   useIndexerClient
 } from '@0xsequence/kit'
-import {
-  useClearCachedBalances,
-  useGetCurrencyInfo,
-  useGetSwapPrices,
-  useGetSwapQuote
-} from '@0xsequence/kit-hooks'
+import { useClearCachedBalances, useGetCurrencyInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 
 interface SwapListProps {
   chainId: number

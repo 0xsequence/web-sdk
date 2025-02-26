@@ -18,11 +18,7 @@ export const splitEvery = (n: number, list: any[]) => {
   return result
 }
 
-export const createNativeTokenBalance = (
-  chainId: number,
-  accountAddress: string,
-  balance: string = '0'
-): TokenBalance => {
+export const createNativeTokenBalance = (chainId: number, accountAddress: string, balance: string = '0'): TokenBalance => {
   return {
     chainId,
     contractAddress: ZERO_ADDRESS,

@@ -10,9 +10,7 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 
 // append ?debug to url to enable debug mode
 const isDebugMode = searchParams.has('debug')
-const projectAccessKey = isDebugMode
-  ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE'
-  : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {

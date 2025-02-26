@@ -5,7 +5,7 @@
   "singleQuote": true,
   "trailingComma": "none",
   "arrowParens": "avoid",
-  "printWidth": 110,
+  "printWidth": 130,
   "importOrder": [
     "^~/utils/(.*)$",
     "^~/contexts/(.*)$",

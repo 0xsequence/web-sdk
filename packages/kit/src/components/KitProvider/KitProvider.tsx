@@ -16,14 +16,7 @@ import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
 import { useStorage } from '../../hooks/useStorage'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
-import {
-  DisplayedAsset,
-  EthAuthSettings,
-  ExtendedConnector,
-  KitConfig,
-  ModalPosition,
-  Theme
-} from '../../types'
+import { DisplayedAsset, EthAuthSettings, ExtendedConnector, KitConfig, ModalPosition, Theme } from '../../types'
 import { getModalPositionCss } from '../../utils/styling'
 import { Connect } from '../Connect/Connect'
 import { NetworkBadge } from '../NetworkBadge'
@@ -31,16 +24,7 @@ import { PageHeading } from '../PageHeading'
 import { PoweredBySequence } from '../SequenceLogo'
 import { TxnDetails } from '../TxnDetails'
 
-import {
-  Box,
-  Button,
-  Card,
-  Collapsible,
-  Modal,
-  ModalPrimitive,
-  Text,
-  ThemeProvider
-} from '@0xsequence/design-system'
+import { Box, Button, Card, Collapsible, Modal, ModalPrimitive, Text, ThemeProvider } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient } from '@0xsequence/provider'
 
@@ -74,12 +58,9 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const wagmiConfig = useConfig()
   const storage = useStorage()
   const connections = useConnections()
-  const waasConnector: Connector | undefined = connections.find(c =>
-    c.connector.id.includes('waas')
-  )?.connector
+  const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
 
-  const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] =
-    useWaasConfirmationHandler(waasConnector)
+  const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
 
   const googleWaasConnector = wagmiConfig.connectors.find(
     c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
@@ -158,9 +139,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
         }}
       >
         <GoogleOAuthProvider clientId={googleClientId}>
-          <ConnectModalContextProvider
-            value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}
-          >
+          <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
             <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">
@@ -180,11 +159,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                           }}
                           onClose={() => setOpenConnectModal(false)}
                         >
-                          <Connect
-                            onClose={() => setOpenConnectModal(false)}
-                            emailConflictInfo={emailConflictInfo}
-                            {...props}
-                          />
+                          <Connect onClose={() => setOpenConnectModal(false)} emailConflictInfo={emailConflictInfo} {...props} />
                         </Modal>
                       )}
 
@@ -217,10 +192,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             >
                               <ModalPrimitive.Title asChild>
                                 <Text as="h1" variant="large" marginBottom="5">
-                                  Confirm{' '}
-                                  {pendingRequestConfirmation.type === 'signMessage'
-                                    ? 'signing message'
-                                    : 'transaction'}
+                                  Confirm {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
                                 </Text>
                               </ModalPrimitive.Title>
 
@@ -313,9 +285,8 @@ export const KitProvider = (props: KitConnectProviderProps) => {
                             </ModalPrimitive.Title>
                             <Box>
                               <Text variant="normal" color="text80" textAlign="center">
-                                Another account with this email address{' '}
-                                <Text color="text100">({emailConflictInfo.email})</Text> already exists with
-                                account type <Text color="text100">({emailConflictInfo.type})</Text>. Please
+                                Another account with this email address <Text color="text100">({emailConflictInfo.email})</Text>{' '}
+                                already exists with account type <Text color="text100">({emailConflictInfo.type})</Text>. Please
                                 sign in again with the correct account.
                               </Text>
                               <Box marginTop="4" gap="2" alignItems="center" justifyContent="center">

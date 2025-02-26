@@ -17,11 +17,7 @@ interface PayWithCreditCardProps {
 
 type PaymentProviderOptions = 'sardine' | 'transak'
 
-export const PayWithCreditCard = ({
-  settings,
-  disableButtons,
-  skipOnCloseCallback
-}: PayWithCreditCardProps) => {
+export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallback }: PayWithCreditCardProps) => {
   const {
     chain,
     currencyAddress,

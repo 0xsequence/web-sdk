@@ -31,9 +31,7 @@ export interface SequenceWaasConnectConfig {
   loginType: 'email' | 'google' | 'apple'
 }
 
-export type BaseSequenceWaasConnectorOptions = SequenceConfig &
-  SequenceWaasConnectConfig &
-  Partial<ExtendedSequenceConfig>
+export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
 
 sequenceWaasWallet.type = 'sequence-waas' as const
 
@@ -251,9 +249,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
     super(sequenceWaas.config.network)
 
     const initialChain = sequenceWaas.config.network
-    const initialChainName = allNetworks.find(
-      n => n.chainId === initialChain || n.name === initialChain
-    )?.name
+    const initialChainName = allNetworks.find(n => n.chainId === initialChain || n.name === initialChain)?.name
     const initialJsonRpcProvider = new ethers.JsonRpcProvider(
       `${nodesUrl}/${initialChainName}/${sequenceWaas.config.projectAccessKey}`
     )
@@ -344,11 +340,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
 
       if (this.requestConfirmationHandler && this.showConfirmation) {
         const id = uuidv4()
-        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(
-          id,
-          txns,
-          chainId
-        )
+        const confirmation = await this.requestConfirmationHandler.confirmSignTransactionRequest(id, txns, chainId)
 
         if (!confirmation.confirmed) {
           throw new UserRejectedRequestError(new Error('User rejected send transaction request'))
@@ -515,11 +507,7 @@ export interface WaasRequestConfirmationHandler {
     txs: ethers.Transaction[],
     chainId: number
   ): Promise<{ id: string; confirmed: boolean }>
-  confirmSignMessageRequest(
-    id: string,
-    message: string,
-    chainId: number
-  ): Promise<{ id: string; confirmed: boolean }>
+  confirmSignMessageRequest(id: string, message: string, chainId: number): Promise<{ id: string; confirmed: boolean }>
 }
 
 export interface WaasFeeOptionConfirmationHandler {
@@ -551,8 +539,7 @@ export function randomName() {
 
 function normalizeChainId(chainId: string | number | bigint | { chainId: string }) {
   if (typeof chainId === 'object') return normalizeChainId(chainId.chainId)
-  if (typeof chainId === 'string')
-    return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
+  if (typeof chainId === 'string') return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
   if (typeof chainId === 'bigint') return Number(chainId)
   return chainId
 }

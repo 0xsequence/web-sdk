@@ -88,9 +88,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
-    fiatCurrency.symbol
-  )
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
 
@@ -294,14 +292,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                   <Text variant="small" color="text50" whiteSpace="nowrap">
                     {`~${fiatCurrency.sign}${amountToSendFiat}`}
                   </Text>
-                  <Button
-                    size="xs"
-                    shape="square"
-                    label="Max"
-                    onClick={handleMax}
-                    data-id="maxCoin"
-                    flexShrink="0"
-                  />
+                  <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
                   <Text variant="xlarge" fontWeight="bold" color="text100">
                     {symbol}
                   </Text>
@@ -330,10 +321,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               >
                 <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                  <Text
-                    color="text100"
-                    variant="normal"
-                  >{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </Box>
                 <CloseIcon size="sm" color="white" />
               </Card>

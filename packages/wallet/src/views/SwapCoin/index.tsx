@@ -45,9 +45,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
-    fiatCurrency.symbol
-  )
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
 

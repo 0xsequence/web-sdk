@@ -20,14 +20,9 @@ export function useWaasFeeOptions(): [
   (id: string) => void
 ] {
   const connections = useConnections()
-  const waasConnector: Connector | undefined = connections.find(c =>
-    c.connector.id.includes('waas')
-  )?.connector
-  const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<
-    WaasFeeOptionConfirmation | undefined
-  >()
-  const pendingConfirmationRef =
-    useRef<Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>>()
+  const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
+  const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>()
+  const pendingConfirmationRef = useRef<Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>>()
 
   function confirmPendingFeeOption(id: string, feeTokenAddress: string | null) {
     if (pendingConfirmationRef.current) {

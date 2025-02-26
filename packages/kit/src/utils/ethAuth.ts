@@ -67,12 +67,7 @@ export const validateEthProof = async (
   const decodedProof = await ethAuth.decodeProof(proof.proofString, true)
   const provider = publicClientToProvider(publicClient)
 
-  const isValid = await isValidTypedDataSignature(
-    walletAddress,
-    proof.typedData,
-    decodedProof.signature,
-    provider
-  )
+  const isValid = await isValidTypedDataSignature(walletAddress, proof.typedData, decodedProof.signature, provider)
 
   return isValid
 }

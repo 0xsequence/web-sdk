@@ -71,9 +71,7 @@ const CollectionsTab: React.FC<CollectionsTabProps> = ({
               ))}
           </>
         )}
-        {!isPending && displayedCollectionBalances.length === 0 && (
-          <Text color="text100">No Collectibles Found</Text>
-        )}
+        {!isPending && displayedCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
         {!isPending &&
           displayedCollectionBalances.map((indexItem, index) => {
             const balance = collectionBalances[indexItem.index]

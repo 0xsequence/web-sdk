@@ -87,13 +87,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
             const formattedBalance = formatDisplay(ethers.formatUnits(unformattedBalance, decimals))
 
             return (
-              <Box
-                key={index}
-                onClick={() => onClickItem(balance)}
-                userSelect="none"
-                cursor="pointer"
-                opacity={{ hover: '80' }}
-              >
+              <Box key={index} onClick={() => onClickItem(balance)} userSelect="none" cursor="pointer" opacity={{ hover: '80' }}>
                 <Box
                   background="backgroundSecondary"
                   aspectRatio="1/1"

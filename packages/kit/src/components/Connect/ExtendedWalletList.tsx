@@ -25,13 +25,7 @@ interface ExtendedWalletListProps {
   searchable: boolean
 }
 
-export const ExtendedWalletList = ({
-  onConnect,
-  connectors,
-  title,
-  onGoBack,
-  searchable
-}: ExtendedWalletListProps) => {
+export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, searchable }: ExtendedWalletListProps) => {
   const { theme } = useTheme()
   const [search, setSearch] = useState('')
 
@@ -81,14 +75,7 @@ export const ExtendedWalletList = ({
           icon={() => <ArrowRightIcon style={{ transform: 'rotate(180deg)' }} />}
         />
       </Box>
-      <Box
-        justifyContent="center"
-        color="text100"
-        alignItems="center"
-        fontWeight="medium"
-        marginTop="2"
-        marginBottom="4"
-      >
+      <Box justifyContent="center" color="text100" alignItems="center" fontWeight="medium" marginTop="2" marginBottom="4">
         <ModalPrimitive.Title asChild>
           <Text>{title}</Text>
         </ModalPrimitive.Title>

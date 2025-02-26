@@ -14,11 +14,7 @@ export const SettingsNetwork = () => {
   const { chains } = useConfig()
 
   const allChains = [
-    ...new Set([
-      ...chains.map(chain => chain.id),
-      ...(readOnlyNetworks || []),
-      ...displayedAssets.map(asset => asset.chainId)
-    ])
+    ...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedAssets.map(asset => asset.chainId)])
   ]
 
   const onClickNetwork = (chainId: number) => {

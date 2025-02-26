@@ -36,13 +36,7 @@ const getSwapPrices = async (
   indexerGatewayClient: SequenceIndexerGateway,
   args: UseGetSwapPricesArgs
 ): Promise<SwapPricesWithCurrencyInfo[]> => {
-  if (
-    !args.chainId ||
-    !args.userAddress ||
-    !args.buyCurrencyAddress ||
-    !args.buyAmount ||
-    args.buyAmount === '0'
-  ) {
+  if (!args.chainId || !args.userAddress || !args.buyCurrencyAddress || !args.buyAmount || args.buyAmount === '0') {
     return []
   }
 
@@ -60,9 +54,7 @@ const getSwapPrices = async (
   if (withContractInfo) {
     res?.swapPrices.forEach(price => {
       const { currencyAddress: rawCurrencyAddress } = price
-      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP)
-        ? ZERO_ADDRESS
-        : rawCurrencyAddress
+      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
       const isNativeToken = compareAddress(currencyAddress, ZERO_ADDRESS)
       if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
         const getNativeTokenInfo = () =>
@@ -98,9 +90,7 @@ const getSwapPrices = async (
   const currencyBalanceInfoMap = new Map<string, Promise<Balance>>()
   res?.swapPrices.forEach(price => {
     const { currencyAddress: rawCurrencyAddress } = price
-    const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP)
-      ? ZERO_ADDRESS
-      : rawCurrencyAddress
+    const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
     const isNativeToken = compareAddress(currencyAddress, ZERO_ADDRESS)
 
     if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
@@ -135,9 +125,7 @@ const getSwapPrices = async (
   return Promise.all(
     res?.swapPrices.map(async price => {
       const { currencyAddress: rawCurrencyAddress } = price
-      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP)
-        ? ZERO_ADDRESS
-        : rawCurrencyAddress
+      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
 
       return {
         price: {

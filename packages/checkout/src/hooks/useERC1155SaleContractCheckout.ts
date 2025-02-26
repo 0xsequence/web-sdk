@@ -105,9 +105,7 @@ export const useERC1155SaleContractCheckout = ({
         chain: chainId,
         price: items
           .reduce((acc, item) => {
-            const price = BigInt(
-              saleConfigData?.saleConfigs.find(sale => sale.tokenId === item.tokenId)?.price || 0
-            )
+            const price = BigInt(saleConfigData?.saleConfigs.find(sale => sale.tokenId === item.tokenId)?.price || 0)
 
             return acc + BigInt(item.quantity) * price
           }, BigInt(0))
@@ -210,10 +208,8 @@ export const useSaleContractConfig = ({
     contracts: tokenSaleContracts
   })
 
-  const isLoadingERC1155 =
-    isLoadingPaymentTokenERC1155 || isLoadingGlobalSaleDetailsERC1155 || isLoadingTokenSaleDetailsERC1155
-  const isErrorERC1155 =
-    isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155
+  const isLoadingERC1155 = isLoadingPaymentTokenERC1155 || isLoadingGlobalSaleDetailsERC1155 || isLoadingTokenSaleDetailsERC1155
+  const isErrorERC1155 = isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155
 
   if (isLoadingERC1155 || isErrorERC1155) {
     return {

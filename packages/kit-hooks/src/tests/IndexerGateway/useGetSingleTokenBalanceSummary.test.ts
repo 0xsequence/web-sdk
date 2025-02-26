@@ -38,12 +38,9 @@ describe('useGetSingleTokenBalanceSummary', () => {
       })
     )
 
-    const { result } = renderHook(
-      () => useGetSingleTokenBalanceSummary(getTokenBalancesSummaryArgs, { retry: false }),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetSingleTokenBalanceSummary(getTokenBalancesSummaryArgs, { retry: false }), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
   })

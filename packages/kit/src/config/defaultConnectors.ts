@@ -92,10 +92,7 @@ export type DefaultConnectorOptions<T extends WalletType> = T extends 'waas'
   ? DefaultWaasConnectorOptions
   : DefaultUniversalConnectorOptions
 
-export const getDefaultConnectors = <T extends WalletType>(
-  walletType: T,
-  options: DefaultConnectorOptions<T>
-) => {
+export const getDefaultConnectors = <T extends WalletType>(walletType: T, options: DefaultConnectorOptions<T>) => {
   if (walletType === 'waas') {
     return getDefaultWaasConnectors(options as DefaultWaasConnectorOptions)
   } else if (walletType === 'universal') {
@@ -172,8 +169,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
   }
 
   if (options.walletConnect || options.walletConnectProjectId) {
-    const projectId =
-      (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
+    const projectId = (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
 
     wallets.push(
       walletConnect({
@@ -186,9 +182,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
   return getKitConnectWallets(projectAccessKey, wallets)
 }
 
-export const getDefaultUniversalConnectors = (
-  options: DefaultUniversalConnectorOptions
-): CreateConnectorFn[] => {
+export const getDefaultUniversalConnectors = (options: DefaultUniversalConnectorOptions): CreateConnectorFn[] => {
   const { projectAccessKey, appName, defaultChainId } = options
 
   const wallets: Wallet[] = []
@@ -282,8 +276,7 @@ export const getDefaultUniversalConnectors = (
   }
 
   if (options.walletConnect || options.walletConnectProjectId) {
-    const projectId =
-      (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
+    const projectId = (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
 
     wallets.push(
       walletConnect({

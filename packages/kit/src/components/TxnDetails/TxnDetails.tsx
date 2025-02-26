@@ -92,8 +92,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const toAddress: string | undefined = transferProps.to
   const isNativeCoin = contractAddress ? compareAddress(contractAddress, ethers.ZeroAddress) : true
   const is1155 = transferProps.contractType === ContractType.ERC1155
-  const isNFT =
-    transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
+  const isNFT = transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
   const { data: balances = [] } = useGetTokenBalancesSummary({
@@ -112,9 +111,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
     tokenIDs: transferProps.tokenIds ?? []
   })
 
-  const tokenBalance = contractAddress
-    ? balances.find(b => compareAddress(b.contractAddress, contractAddress))
-    : undefined
+  const tokenBalance = contractAddress ? balances.find(b => compareAddress(b.contractAddress, contractAddress)) : undefined
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
 
   const imageUrl = isNativeCoin

@@ -4,7 +4,7 @@ import { useSelectPaymentModal } from '../../../hooks'
 
 import { Box, NetworkImage, Spinner, Text } from '@0xsequence/design-system'
 import { CollectibleTileImage, NetworkBadge, formatDisplay } from '@0xsequence/kit'
-import { useGetContractInfo, useGetTokenMetadata, useGetCoinPrices } from '@0xsequence/kit-hooks'
+import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 
 export const OrderSummary = () => {
@@ -34,8 +34,7 @@ export const OrderSummary = () => {
     }
   ])
 
-  const isLoading =
-    isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo || isLoadingCoinPrices
+  const isLoading = isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo || isLoadingCoinPrices
 
   if (isLoading) {
     return (
@@ -73,12 +72,8 @@ export const OrderSummary = () => {
 
       <Box flexDirection="row" gap="1">
         {selectPaymentSettings!.collectibles.map(collectible => {
-          const collectibleQuantity = Number(
-            formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0))
-          )
-          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(
-            tokenMetadata => tokenMetadata.tokenId === collectible.tokenId
-          )
+          const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
+          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
             <Box gap="3" alignItems="center" key={collectible.tokenId}>
@@ -106,11 +101,7 @@ export const OrderSummary = () => {
       <Box gap="1" flexDirection="column">
         <Box flexDirection="row" gap="2" alignItems="center">
           <NetworkImage chainId={chainId} size="sm" />
-          <Text
-            color="white"
-            variant="large"
-            fontWeight="bold"
-          >{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
+          <Text color="white" variant="large" fontWeight="bold">{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
         </Box>
         <Box>
           <Text color="text50" variant="normal" fontWeight="normal">

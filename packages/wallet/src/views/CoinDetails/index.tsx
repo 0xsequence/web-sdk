@@ -10,12 +10,7 @@ import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../ut
 import { CoinDetailsSkeleton } from './Skeleton'
 
 import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
-import {
-  ContractVerificationStatus,
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId
-} from '@0xsequence/kit'
+import { ContractVerificationStatus, compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import {
   useGetCoinPrices,
   useGetExchangeRate,
@@ -64,9 +59,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
-    fiatCurrency.symbol
-  )
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 
@@ -75,18 +68,10 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   }
 
   const isNativeToken = compareAddress(contractAddress, ethers.ZeroAddress)
-  const logo = isNativeToken
-    ? getNativeTokenInfoByChainId(chainId, chains).logoURI
-    : dataCoinBalance?.contractInfo?.logoURI
-  const symbol = isNativeToken
-    ? getNativeTokenInfoByChainId(chainId, chains).symbol
-    : dataCoinBalance?.contractInfo?.symbol
-  const name = isNativeToken
-    ? getNativeTokenInfoByChainId(chainId, chains).name
-    : dataCoinBalance?.contractInfo?.name
-  const decimals = isNativeToken
-    ? getNativeTokenInfoByChainId(chainId, chains).decimals
-    : dataCoinBalance?.contractInfo?.decimals
+  const logo = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).logoURI : dataCoinBalance?.contractInfo?.logoURI
+  const symbol = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).symbol : dataCoinBalance?.contractInfo?.symbol
+  const name = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).name : dataCoinBalance?.contractInfo?.name
+  const decimals = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).decimals : dataCoinBalance?.contractInfo?.decimals
   const formattedBalance = ethers.formatUnits(dataCoinBalance?.balance || '0', decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
@@ -120,14 +105,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   }
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box
-        flexDirection="column"
-        gap="10"
-        paddingBottom="5"
-        paddingX="4"
-        paddingTop="0"
-        style={{ marginTop: '-20px' }}
-      >
+      <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
         <Box marginBottom="10" gap="2" alignItems="center" justifyContent="center" flexDirection="column">
           <TokenImage src={logo} size="xl" />
           <Text variant="large" color="text100" fontWeight="bold">
@@ -141,31 +119,13 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
           </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
             <Text variant="xlarge" fontWeight="bold" color="text100">{`${balanceDisplayed} ${symbol}`}</Text>
-            <Text
-              variant="normal"
-              fontWeight="medium"
-              color="text50"
-            >{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
+            <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </Box>
         </Box>
         {!isReadOnly && (
           <Box gap="2">
-            <Button
-              width="full"
-              variant="primary"
-              leftIcon={SendIcon}
-              color="text100"
-              label="Send"
-              onClick={onClickSend}
-            />
-            <Button
-              width="full"
-              variant="primary"
-              leftIcon={SwapIcon}
-              color="text100"
-              label="Buy"
-              onClick={onClickSwap}
-            />
+            <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
+            <Button width="full" variant="primary" leftIcon={SwapIcon} color="text100" label="Buy" onClick={onClickSwap} />
           </Box>
         )}
         <Box>

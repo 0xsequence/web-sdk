@@ -36,18 +36,8 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
   return (
     <Card flexDirection="row" alignItems="flex-start" justifyContent="space-between">
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-        <Box
-          aspectRatio="1/1"
-          height="full"
-          justifyContent="center"
-          alignItems="center"
-          style={{ width: '80px' }}
-        >
-          <Image
-            src={image}
-            borderRadius="md"
-            style={{ maxWidth: '80px', height: '80px', objectFit: 'cover' }}
-          />
+        <Box aspectRatio="1/1" height="full" justifyContent="center" alignItems="center" style={{ width: '80px' }}>
+          <Image src={image} borderRadius="md" style={{ maxWidth: '80px', height: '80px', objectFit: 'cover' }} />
         </Box>
         <Box flexDirection="column" alignItems="flex-start" justifyContent="center" gap="2">
           <Box gap="1" alignItems="center">

@@ -12,11 +12,7 @@ interface TransactionHistoryListProps {
   isFetchingNextPage: boolean
 }
 
-export const TransactionHistoryList = ({
-  transactions,
-  isPending,
-  isFetchingNextPage
-}: TransactionHistoryListProps) => {
+export const TransactionHistoryList = ({ transactions, isPending, isFetchingNextPage }: TransactionHistoryListProps) => {
   type TransactionPeriodId = 'today' | 'yesterday' | 'week' | 'month' | 'year' | 'years'
 
   interface TransactionPeriods {

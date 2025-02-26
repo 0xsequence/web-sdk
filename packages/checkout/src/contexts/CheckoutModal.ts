@@ -60,5 +60,4 @@ type CheckoutModalContext = {
   theme: Theme
 }
 
-export const [useCheckoutModalContext, CheckoutModalContextProvider] =
-  createGenericContext<CheckoutModalContext>()
+export const [useCheckoutModalContext, CheckoutModalContextProvider] = createGenericContext<CheckoutModalContext>()

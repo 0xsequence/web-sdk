@@ -7,11 +7,7 @@ import { CoinTileContent } from './CoinTileContent'
 
 import { Box } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import {
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId,
-} from '@0xsequence/kit'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { useGetCoinPrices, useGetContractInfo, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface CoinTileProps {
@@ -31,9 +27,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
-    fiatCurrency.symbol
-  )
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const { data: contractInfo, isPending: isPendingContractInfo } = useGetContractInfo({
     chainID: String(balance.chainId),

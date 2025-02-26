@@ -11,11 +11,7 @@ interface NavigationHeaderProps {
   disableBack?: boolean
 }
 
-export const NavigationHeader = ({
-  secondaryText,
-  primaryText,
-  disableBack = false
-}: NavigationHeaderProps) => {
+export const NavigationHeader = ({ secondaryText, primaryText, disableBack = false }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
 
   const onClickBack = () => {

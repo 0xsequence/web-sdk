@@ -17,9 +17,7 @@ export type WaasRequestConfirmation = {
 export function useWaasConfirmationHandler(
   waasConnector?: any
 ): [WaasRequestConfirmation | undefined, (id: string) => void, (id: string) => void] {
-  const [pendingRequestConfirmation, setPendingRequestConfirmation] = useState<
-    WaasRequestConfirmation | undefined
-  >()
+  const [pendingRequestConfirmation, setPendingRequestConfirmation] = useState<WaasRequestConfirmation | undefined>()
 
   function confirmPendingRequest(id: string) {
     _pendingConfirmation?.resolve({ id, confirmed: true })
@@ -61,11 +59,7 @@ export function useWaasConfirmationHandler(
           _pendingConfirmation = pending
           return pending.promise
         },
-        confirmSignMessageRequest(
-          id: string,
-          message: string,
-          chainId: number
-        ): Promise<{ id: string; confirmed: boolean }> {
+        confirmSignMessageRequest(id: string, message: string, chainId: number): Promise<{ id: string; confirmed: boolean }> {
           const pending = new Deferred<{ id: string; confirmed: boolean }>()
           setPendingRequestConfirmation({ id, type: 'signMessage', message, chainId })
           _pendingConfirmation = pending

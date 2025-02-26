@@ -11,14 +11,7 @@ export type AlertProps = {
   children?: React.ReactNode
 }
 
-export const Alert = ({
-  title,
-  description,
-  secondaryDescription,
-  variant,
-  buttonProps,
-  children
-}: AlertProps) => {
+export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
   return (
     <Box borderRadius="md" background={variant}>
       <Box

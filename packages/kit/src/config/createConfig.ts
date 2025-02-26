@@ -16,10 +16,7 @@ export interface SequenceKitConfig {
   kitConfig: KitConfig
 }
 
-export const createConfig = <T extends WalletType>(
-  walletType: T,
-  options: CreateConfigOptions<T>
-): SequenceKitConfig => {
+export const createConfig = <T extends WalletType>(walletType: T, options: CreateConfigOptions<T>): SequenceKitConfig => {
   const { projectAccessKey, chainIds, wagmiConfig, ...rest } = options
 
   const chains = wagmiConfig?.chains || getDefaultChains(chainIds)

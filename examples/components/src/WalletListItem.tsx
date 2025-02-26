@@ -11,15 +11,7 @@ interface WalletListItemProps {
   onDisconnect: () => void
 }
 
-export const WalletListItem = ({
-  id,
-  name,
-  address,
-  isActive,
-  isEmbedded,
-  onSelect,
-  onDisconnect
-}: WalletListItemProps) => {
+export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSelect, onDisconnect }: WalletListItemProps) => {
   return (
     <Box
       key={id}
@@ -53,13 +45,7 @@ export const WalletListItem = ({
           </Text>
         </Box>
       </Box>
-      <Button
-        variant="text"
-        size="sm"
-        label="Disconnect"
-        onClick={onDisconnect}
-        style={{ position: 'relative', zIndex: 2 }}
-      />
+      <Button variant="text" size="sm" label="Disconnect" onClick={onDisconnect} style={{ position: 'relative', zIndex: 2 }} />
     </Box>
   )
 }

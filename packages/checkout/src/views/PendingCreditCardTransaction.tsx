@@ -44,9 +44,7 @@ export const PendingCreditCardTransaction = () => {
   }
 }
 
-export const PendingCreditCardTransactionTransak = ({
-  skipOnCloseCallback
-}: PendingCreditTransactionProps) => {
+export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -100,9 +98,7 @@ export const PendingCreditCardTransactionTransak = ({
 
   const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
 
-  const price = Number(
-    formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals))
-  )
+  const price = Number(formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals)))
 
   const transakNftDataJson = JSON.stringify([
     {
@@ -138,10 +134,7 @@ export const PendingCreditCardTransactionTransak = ({
     const readMessage = (message: any) => {
       if (message.source !== transakIframe) return
 
-      if (
-        message?.data?.event_id === 'TRANSAK_ORDER_SUCCESSFUL' &&
-        message?.data?.data?.status === 'COMPLETED'
-      ) {
+      if (message?.data?.event_id === 'TRANSAK_ORDER_SUCCESSFUL' && message?.data?.data?.status === 'COMPLETED') {
         console.log('Order Data: ', message?.data?.data)
         const txHash = message?.data?.data?.transactionHash || ''
 
@@ -175,10 +168,7 @@ export const PendingCreditCardTransactionTransak = ({
             {
               tokenId: creditCardCheckout.nftId,
               quantity: creditCardCheckout.nftQuantity,
-              decimals:
-                creditCardCheckout.nftDecimals === undefined
-                  ? undefined
-                  : Number(creditCardCheckout.nftDecimals),
+              decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
               price: creditCardCheckout.currencyQuantity
             }
           ],
@@ -266,9 +256,7 @@ export const PendingCreditCardTransactionTransak = ({
   )
 }
 
-export const PendingCreditCardTransactionSardine = ({
-  skipOnCloseCallback
-}: PendingCreditTransactionProps) => {
+export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -353,10 +341,7 @@ export const PendingCreditCardTransactionSardine = ({
             {
               tokenId: creditCardCheckout.nftId,
               quantity: creditCardCheckout.nftQuantity,
-              decimals:
-                creditCardCheckout.nftDecimals === undefined
-                  ? undefined
-                  : Number(creditCardCheckout.nftDecimals),
+              decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
               price: creditCardCheckout.currencyQuantity
             }
           ],

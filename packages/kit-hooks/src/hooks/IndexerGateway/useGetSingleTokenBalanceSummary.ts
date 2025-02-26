@@ -12,10 +12,7 @@ export interface GetSingleTokenBalanceSummaryArgs {
   contractAddress: string
 }
 
-export const useGetSingleTokenBalanceSummary = (
-  args: GetSingleTokenBalanceSummaryArgs,
-  options?: BalanceHookOptions
-) => {
+export const useGetSingleTokenBalanceSummary = (args: GetSingleTokenBalanceSummaryArgs, options?: BalanceHookOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({
@@ -31,11 +28,7 @@ export const useGetSingleTokenBalanceSummary = (
       })
 
       if (compareAddress(args.contractAddress, ZERO_ADDRESS)) {
-        return createNativeTokenBalance(
-          args.chainId,
-          args.accountAddress,
-          balance.nativeBalances[0].results[0].balance
-        )
+        return createNativeTokenBalance(args.chainId, args.accountAddress, balance.nativeBalances[0].results[0].balance)
       } else {
         return balance.balances[0].results[0]
       }

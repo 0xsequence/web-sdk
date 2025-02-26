@@ -52,12 +52,8 @@ export const getBalancesAssetsSummary = async (
 
   try {
     if (customDisplayAssets) {
-      const nativeTokens = displayAssets.filter(asset =>
-        compareAddress(asset.contractAddress, ethers.ZeroAddress)
-      )
-      const otherAssets = displayAssets.filter(
-        asset => !compareAddress(asset.contractAddress, ethers.ZeroAddress)
-      )
+      const nativeTokens = displayAssets.filter(asset => compareAddress(asset.contractAddress, ethers.ZeroAddress))
+      const otherAssets = displayAssets.filter(asset => !compareAddress(asset.contractAddress, ethers.ZeroAddress))
 
       interface AssetsByChainId {
         [chainId: number]: DisplayedAsset[]
@@ -85,9 +81,7 @@ export const getBalancesAssetsSummary = async (
             const indexerClient = indexerClients.get(Number(chainId))
 
             if (!indexerClient) {
-              console.error(
-                `Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`
-              )
+              console.error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
               return null
             }
 
@@ -99,18 +93,14 @@ export const getBalancesAssetsSummary = async (
                 const indexerClient = indexerClients.get(Number(chainId))
 
                 if (!indexerClient) {
-                  console.error(
-                    `Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`
-                  )
+                  console.error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
                   return []
                 }
 
                 return getTokenBalancesDetails(indexerClient, {
                   filter: {
                     accountAddresses: [accountAddress],
-                    contractStatus: verifiedOnly
-                      ? ContractVerificationStatus.VERIFIED
-                      : ContractVerificationStatus.ALL,
+                    contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
                     contractWhitelist: [asset.contractAddress],
                     omitNativeBalances: true
                   }
@@ -125,16 +115,12 @@ export const getBalancesAssetsSummary = async (
     } else {
       tokenBalances = (
         await Promise.all([
-          ...indexerClientsArr.map(([chainId, indexerClient]) =>
-            getNativeTokenBalance(indexerClient, chainId, accountAddress)
-          ),
+          ...indexerClientsArr.map(([chainId, indexerClient]) => getNativeTokenBalance(indexerClient, chainId, accountAddress)),
           ...indexerClientsArr.map(([_chainId, indexerClient]) =>
             getTokenBalancesSummary(indexerClient, {
               filter: {
                 accountAddresses: [accountAddress],
-                contractStatus: verifiedOnly
-                  ? ContractVerificationStatus.VERIFIED
-                  : ContractVerificationStatus.ALL,
+                contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
                 omitNativeBalances: true
               }
             })
@@ -166,9 +152,7 @@ export const getBalancesAssetsSummary = async (
       const indexerClient = indexerClients.get(collectionBalance.chainId)
 
       if (!indexerClient) {
-        throw new Error(
-          `Indexer client not found for chainId: ${collectionBalance.chainId}, did you forget to add this Chain?`
-        )
+        throw new Error(`Indexer client not found for chainId: ${collectionBalance.chainId}, did you forget to add this Chain?`)
       }
 
       const balance = await getCollectionBalanceDetails(indexerClient, {

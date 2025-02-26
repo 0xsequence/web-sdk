@@ -246,9 +246,7 @@ export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
                   transferFundsSettings
                 }}
               >
-                <NavigationContextProvider
-                  value={{ history, setHistory, defaultLocation: getDefaultLocation() }}
-                >
+                <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>
                   <div id="kit-checkout">
                     <ThemeProvider root="#kit-checkout" scope="kit" theme={theme}>
                       <AnimatePresence>

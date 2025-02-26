@@ -5,15 +5,7 @@ import { useAccount } from 'wagmi'
 
 import { useSelectPaymentModal, useTransferFundsModal } from '../../hooks'
 
-import {
-  Box,
-  Card,
-  CheckmarkIcon,
-  CopyIcon,
-  IconButton,
-  Text,
-  truncateAddress
-} from '@0xsequence/design-system'
+import { Box, Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
 
 export const TransferFunds = () => {
   const { openTransferFundsModal } = useTransferFundsModal()

@@ -10,11 +10,13 @@ import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../ut
 import { CollectibleDetailsSkeleton } from './Skeleton'
 
 import { Box, Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
+import { ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
 import {
-  ContractVerificationStatus,
-  formatDisplay,
-} from '@0xsequence/kit'
-import { useGetTokenBalancesDetails, useGetCollectiblePrices, useGetExchangeRate, useGetTransactionHistory } from '@0xsequence/kit-hooks'
+  useGetCollectiblePrices,
+  useGetExchangeRate,
+  useGetTokenBalancesDetails,
+  useGetTransactionHistory
+} from '@0xsequence/kit-hooks'
 
 export interface CollectibleDetailsProps {
   contractAddress: string
@@ -67,9 +69,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
-    fiatCurrency.symbol
-  )
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingCollectibleBalance || isPendingCollectiblePrices || isPendingConversionRate
 
@@ -160,11 +160,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
                 {formattedBalance}
               </Text>
               {dataCollectiblePrices && dataCollectiblePrices[0].price?.value && (
-                <Text
-                  variant="normal"
-                  fontWeight="medium"
-                  color="text50"
-                >{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
+                <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
               )}
             </Box>
           </Box>

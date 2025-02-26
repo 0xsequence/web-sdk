@@ -14,14 +14,7 @@ import { ThemeContextProvider } from '../../contexts/Theme'
 import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
-import {
-  DisplayedAsset,
-  EthAuthSettings,
-  ExtendedConnector,
-  KitConfig,
-  ModalPosition,
-  Theme
-} from '../../types'
+import { DisplayedAsset, EthAuthSettings, ExtendedConnector, KitConfig, ModalPosition, Theme } from '../../types'
 import { Connect } from '../Connect/Connect'
 
 import { ThemeProvider } from '@0xsequence/design-system'
@@ -127,9 +120,7 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
         }}
       >
         <GoogleOAuthProvider clientId={googleClientId}>
-          <ConnectModalContextProvider
-            value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}
-          >
+          <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
             <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">

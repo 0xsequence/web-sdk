@@ -18,12 +18,7 @@ import {
   Tooltip,
   vars
 } from '@0xsequence/design-system'
-import {
-  ContractVerificationStatus,
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId
-} from '@0xsequence/kit'
+import { ContractVerificationStatus, compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 export const CheckoutSelection = () => {
@@ -53,10 +48,7 @@ export const CheckoutSelection = () => {
 
   const isPending = (isPendingContractInfo || isPendingBalances) && cryptoCheckoutSettings
 
-  const isNativeToken = compareAddress(
-    cryptoCheckoutSettings?.coinQuantity?.contractAddress || '',
-    ethers.ZeroAddress
-  )
+  const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.ZeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(cryptoCheckoutSettings?.chainId || 1, chains)
 
   const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : contractInfoData?.decimals || 0

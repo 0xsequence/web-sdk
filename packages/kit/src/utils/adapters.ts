@@ -22,9 +22,7 @@ export const publicClientToProvider = (publicClient: Client<Transport, Chain>) =
   }
   if (transport.type === 'fallback')
     return new ethers.FallbackProvider(
-      (transport.transports as ReturnType<HttpTransport>[]).map(
-        ({ value }) => new ethers.JsonRpcProvider(value?.url, network)
-      )
+      (transport.transports as ReturnType<HttpTransport>[]).map(({ value }) => new ethers.JsonRpcProvider(value?.url, network))
     )
   return new ethers.JsonRpcProvider(transport.url, network)
 }

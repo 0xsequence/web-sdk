@@ -1,8 +1,5 @@
 import { Wallet } from '../../types'
-import {
-  BaseSequenceWaasConnectorOptions,
-  sequenceWaasWallet
-} from '../wagmiConnectors/sequenceWaasConnector'
+import { BaseSequenceWaasConnectorOptions, sequenceWaasWallet } from '../wagmiConnectors/sequenceWaasConnector'
 import { GoogleLogo, getMonochromeGoogleLogo } from './GoogleLogo'
 
 export type GoogleWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType'>

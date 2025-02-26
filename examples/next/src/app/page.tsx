@@ -20,12 +20,7 @@ export default function Home() {
             <Image alt="Next" src="images/next.svg" height="3" disableAnimation />
           </Box>
           <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
-            <Image
-              alt="Sequence Kit Logo"
-              style={{ width: '48px' }}
-              src="images/kit-logo.svg"
-              disableAnimation
-            />
+            <Image alt="Sequence Kit Logo" style={{ width: '48px' }} src="images/kit-logo.svg" disableAnimation />
             <Image
               alt="Sequence Kit Text Logo"
               style={{

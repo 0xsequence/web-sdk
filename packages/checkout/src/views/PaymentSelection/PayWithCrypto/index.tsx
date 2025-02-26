@@ -7,13 +7,8 @@ import { SelectPaymentSettings } from '../../../contexts'
 import { useClearCachedBalances } from '../../../hooks'
 
 import { AddIcon, Box, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
-import {
-  ContractVerificationStatus,
-  CryptoOption,
-  compareAddress,
-  formatDisplay,
-} from '@0xsequence/kit'
-import { useGetContractInfo, useGetTokenBalancesSummary, useGetSwapPrices } from '@0xsequence/kit-hooks'
+import { ContractVerificationStatus, CryptoOption, compareAddress, formatDisplay } from '@0xsequence/kit'
+import { useGetContractInfo, useGetSwapPrices, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 
 interface PayWithCryptoProps {
@@ -106,9 +101,7 @@ export const PayWithCrypto = ({
     significantDigits: 6
   })
 
-  const balanceInfo = currencyBalanceData?.find(balanceData =>
-    compareAddress(currencyAddress, balanceData.contractAddress)
-  )
+  const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
 
   const balance: bigint = BigInt(balanceInfo?.balance || '0')
   // let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
@@ -143,22 +136,14 @@ export const PayWithCrypto = ({
               </Fragment>
             )
           } else {
-            const swapPrice = swapPrices?.find(price =>
-              compareAddress(price.info?.address || '', coin.currencyAddress)
-            )
+            const swapPrice = swapPrices?.find(price => compareAddress(price.info?.address || '', coin.currencyAddress))
             const currencyInfoNotFound =
-              !swapPrice ||
-              !swapPrice.info ||
-              swapPrice?.info?.decimals === undefined ||
-              !swapPrice.balance?.balance
+              !swapPrice || !swapPrice.info || swapPrice?.info?.decimals === undefined || !swapPrice.balance?.balance
 
             if (currencyInfoNotFound || !enableSwapPayments) {
               return null
             }
-            const swapQuotePriceFormatted = formatUnits(
-              BigInt(swapPrice.price.price),
-              swapPrice.info?.decimals || 18
-            )
+            const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
             const swapQuoteAddress = swapPrice.info?.address || ''
 
             const swapQuotePriceDisplay = formatDisplay(swapQuotePriceFormatted, {

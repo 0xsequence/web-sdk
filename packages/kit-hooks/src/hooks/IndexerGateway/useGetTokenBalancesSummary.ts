@@ -18,19 +18,14 @@ const getTokenBalancesSummary = async (
     if (hideCollectibles) {
       for (const chainBalance of res.balances) {
         chainBalance.results = chainBalance.results.filter(
-          result =>
-            result.contractType !== ContractType.ERC721 && result.contractType !== ContractType.ERC1155
+          result => result.contractType !== ContractType.ERC721 && result.contractType !== ContractType.ERC1155
         )
       }
     }
 
     const nativeTokens: TokenBalance[] = res.nativeBalances.flatMap(nativeChainBalance =>
       nativeChainBalance.results.map(nativeTokenBalance =>
-        createNativeTokenBalance(
-          nativeChainBalance.chainId,
-          nativeTokenBalance.accountAddress,
-          nativeTokenBalance.balance
-        )
+        createNativeTokenBalance(nativeChainBalance.chainId, nativeTokenBalance.accountAddress, nativeTokenBalance.balance)
       )
     )
 
@@ -53,11 +48,7 @@ export const useGetTokenBalancesSummary = (
   return useQuery({
     queryKey: [QUERY_KEYS.useGetTokenBalancesSummary, getTokenBalancesSummaryArgs, options],
     queryFn: async () => {
-      return await getTokenBalancesSummary(
-        getTokenBalancesSummaryArgs,
-        indexerGatewayClient,
-        options?.hideCollectibles ?? false
-      )
+      return await getTokenBalancesSummary(getTokenBalancesSummaryArgs, indexerGatewayClient, options?.hideCollectibles ?? false)
     },
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,

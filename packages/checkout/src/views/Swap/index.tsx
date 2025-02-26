@@ -6,13 +6,7 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
 
 import { Box, Button, Spinner, Text } from '@0xsequence/design-system'
-import {
-  CryptoOption,
-  compareAddress,
-  formatDisplay,
-  sendTransactions,
-  useIndexerClient
-} from '@0xsequence/kit'
+import { CryptoOption, compareAddress, formatDisplay, sendTransactions, useIndexerClient } from '@0xsequence/kit'
 import { useGetContractInfo } from '@0xsequence/kit-hooks'
 import { useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
@@ -266,9 +260,7 @@ export const Swap = () => {
             </Box>
           )}
           <Button
-            disabled={
-              noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending || isErrorSwapQuote
-            }
+            disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending || isErrorSwapQuote}
             variant="primary"
             label={quoteFetchInProgress ? 'Preparing swap...' : 'Proceed'}
             onClick={onClickProceed}

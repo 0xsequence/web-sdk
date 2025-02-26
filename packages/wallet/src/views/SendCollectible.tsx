@@ -82,8 +82,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     chainIds: [chainId]
   })
 
-  const tokenBalance =
-    dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
+  const tokenBalance = dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
 
   let contractType: ContractType | undefined
   if (tokenBalance) {
@@ -340,21 +339,9 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 <>
                   {showAmountControls && (
                     <Box gap="2">
-                      <Button
-                        disabled={isMinimum}
-                        size="xs"
-                        onClick={handleSubtractOne}
-                        leftIcon={SubtractIcon}
-                      />
+                      <Button disabled={isMinimum} size="xs" onClick={handleSubtractOne} leftIcon={SubtractIcon} />
                       <Button disabled={isMaximum} size="xs" onClick={handleAddOne} leftIcon={AddIcon} />
-                      <Button
-                        size="xs"
-                        shape="square"
-                        label="Max"
-                        onClick={handleMax}
-                        data-id="maxCoin"
-                        flexShrink="0"
-                      />
+                      <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
                     </Box>
                   )}
                 </>
@@ -382,10 +369,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               >
                 <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                  <Text
-                    color="text100"
-                    variant="normal"
-                  >{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </Box>
                 <CloseIcon size="sm" color="white" />
               </Card>

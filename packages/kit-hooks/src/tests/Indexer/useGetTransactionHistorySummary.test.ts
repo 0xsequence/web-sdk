@@ -37,12 +37,9 @@ describe('useGetTransactionHistorySummary', () => {
       })
     )
 
-    const { result } = renderHook(
-      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, { retry: false }),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, { retry: false }), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
   })

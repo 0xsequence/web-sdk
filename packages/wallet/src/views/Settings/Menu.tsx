@@ -3,15 +3,7 @@ import React from 'react'
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
 
-import {
-  Box,
-  Button,
-  ChevronRightIcon,
-  CurrencyIcon,
-  NetworkIcon,
-  SettingsIcon,
-  vars
-} from '@0xsequence/design-system'
+import { Box, Button, ChevronRightIcon, CurrencyIcon, NetworkIcon, SettingsIcon, vars } from '@0xsequence/design-system'
 
 export const SettingsMenu = () => {
   const { setNavigation } = useNavigation()

@@ -62,13 +62,7 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
           Enter code received in email.
         </Text>
         <Box ref={inputRef}>
-          <PINCodeInput
-            value={waasEmailPinCode}
-            digits={6}
-            group={3}
-            onChange={setWaasEmailPinCode}
-            disabled={isLoading}
-          />
+          <PINCodeInput value={waasEmailPinCode} digits={6} group={3} onChange={setWaasEmailPinCode} disabled={isLoading} />
         </Box>
 
         <Box justifyContent="center" alignItems="center" position="relative" width="full" gap="1">
@@ -92,9 +86,7 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
                 label="Resend email"
                 style={{ marginLeft: '-6px' }}
               />
-              {isLoadingSendCode && (
-                <Spinner size="sm" position="absolute" style={{ top: '0px', right: '-18px' }} />
-              )}
+              {isLoadingSendCode && <Spinner size="sm" position="absolute" style={{ top: '0px', right: '-18px' }} />}
             </Box>
           )}
         </Box>
