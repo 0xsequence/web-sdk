@@ -38,6 +38,9 @@ const getTokenMetadata = async (
   return { tokenMetadata: data }
 }
 
+/**
+ * @description Gets the token metadata for a given chainId and contractAddress (optional tokenIds for a more granular search)
+ */
 export const useGetTokenMetadata = (getTokenMetadataArgs: GetTokenMetadataArgs, options?: HooksOptions) => {
   const { env } = useConfig()
   const metadataClient = useMetadataClient()

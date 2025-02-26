@@ -39,6 +39,9 @@ const getTokenBalancesDetails = async (
   }
 }
 
+/**
+ * @description Gets token balances, with individual token details
+ */
 export const useGetTokenBalancesDetails = (
   getTokenBalancesDetailsArgs: IndexerGateway.GetTokenBalancesDetailsArgs,
   options?: BalanceHookOptions

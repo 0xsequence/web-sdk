@@ -6,14 +6,14 @@ import { useIndexerClient } from './useIndexerClient'
 
 import { Page, SequenceIndexer } from '@0xsequence/indexer'
 
-export interface GetTransactionHistoryArgs {
+interface GetTransactionHistoryArgs {
   accountAddress: string
   contractAddress?: string
   tokenId?: string
   page?: Page
 }
 
-export const getTransactionHistory = async (
+const getTransactionHistory = async (
   indexerClient: SequenceIndexer,
   { contractAddress, accountAddress, tokenId, page }: GetTransactionHistoryArgs
 ) => {
@@ -34,6 +34,9 @@ export interface UseGetTransactionHistoryArgs extends GetTransactionHistoryArgs 
   chainId: number
 }
 
+/**
+ * @description Gets the paginated transaction history for a given chainId and accountAddress (optional contractAddress and tokenId for a more granular search)
+ */
 export const useGetTransactionHistory = (args: UseGetTransactionHistoryArgs, options?: HooksOptions) => {
   const indexerClient = useIndexerClient(args.chainId)
 

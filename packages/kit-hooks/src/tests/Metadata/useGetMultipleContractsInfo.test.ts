@@ -2,13 +2,13 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { useGetCollectionsMetadata } from '../../hooks/Metadata/useGetCollectionsMetadata'
+import { useGetMultipleContractsInfo } from '../../hooks/Metadata/useGetMultipleContractsInfo'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 
 import { GetContractInfoArgs } from '@0xsequence/metadata'
 
-const getCollectionsMetadataArgs: GetContractInfoArgs[] = [
+const getMultipleContractsInfoArgs: GetContractInfoArgs[] = [
   {
     chainID: '1',
     contractAddress: '0x0000000000000000000000000000000000000000'
@@ -19,9 +19,9 @@ const getCollectionsMetadataArgs: GetContractInfoArgs[] = [
   }
 ]
 
-describe('useGetCollectionsMetadata', () => {
+describe('useGetMultipleContractsInfo', () => {
   it('should return data with name Ether', async () => {
-    const { result } = renderHook(() => useGetCollectionsMetadata(getCollectionsMetadataArgs), {
+    const { result } = renderHook(() => useGetMultipleContractsInfo(getMultipleContractsInfoArgs), {
       wrapper: createWrapper()
     })
 
@@ -41,7 +41,7 @@ describe('useGetCollectionsMetadata', () => {
       })
     )
 
-    const { result } = renderHook(() => useGetCollectionsMetadata(getCollectionsMetadataArgs, { retry: false }), {
+    const { result } = renderHook(() => useGetMultipleContractsInfo(getMultipleContractsInfoArgs, { retry: false }), {
       wrapper: createWrapper()
     })
 

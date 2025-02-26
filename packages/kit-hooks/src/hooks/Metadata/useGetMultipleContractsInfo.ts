@@ -7,7 +7,7 @@ import { useMetadataClient } from './useMetadataClient'
 import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { GetContractInfoArgs } from '@0xsequence/metadata'
 
-export const getCollectionsMetadata = async (
+const getMultipleContractsInfo = async (
   metadataClient: SequenceMetadata,
   arg: GetContractInfoArgs[]
 ): Promise<ContractInfo[]> => {
@@ -20,12 +20,15 @@ export const getCollectionsMetadata = async (
   }
 }
 
-export const useGetCollectionsMetadata = (useGetCollectionsMetadataArgs: GetContractInfoArgs[], options?: HooksOptions) => {
+/**
+ * @description Gets a list of contract info for a list of chainId and contractAddress pairs
+ */
+export const useGetMultipleContractsInfo = (useGetMultipleContractsInfoArgs: GetContractInfoArgs[], options?: HooksOptions) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetCollectionsMetadata, useGetCollectionsMetadataArgs, options],
-    queryFn: async () => await getCollectionsMetadata(metadataClient, useGetCollectionsMetadataArgs),
+    queryKey: [QUERY_KEYS.useGetMultipleContractInfo, useGetMultipleContractsInfoArgs, options],
+    queryFn: async () => await getMultipleContractsInfo(metadataClient, useGetMultipleContractsInfoArgs),
     retry: options?.retry ?? true,
     staleTime: time.oneHour,
     enabled: !options?.disabled

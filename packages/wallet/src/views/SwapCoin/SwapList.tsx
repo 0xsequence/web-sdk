@@ -15,7 +15,7 @@ import {
   useAnalyticsContext,
   useIndexerClient
 } from '@0xsequence/kit'
-import { useClearCachedBalances, useGetCurrencyInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
+import { useClearCachedBalances, useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 
 interface SwapListProps {
   chainId: number
@@ -58,10 +58,14 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     { disabled: false }
   )
 
-  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetCurrencyInfo({
-    chainId,
-    currencyAddress: contractAddress
-  })
+  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo(
+    {
+      chainID: String(chainId),
+      contractAddress: contractAddress
+    },
+  )
+
+  console.log('currencyInfo', currencyInfo)
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 

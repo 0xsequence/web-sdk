@@ -39,6 +39,9 @@ const getTokenBalancesSummary = async (
   }
 }
 
+/**
+ * @description Gets the token balances, with summarized contract info but not individual token details for non-native contracts
+ */
 export const useGetTokenBalancesSummary = (
   getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs,
   options?: BalanceHookOptions

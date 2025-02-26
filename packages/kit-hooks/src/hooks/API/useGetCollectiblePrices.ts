@@ -6,7 +6,7 @@ import { useAPIClient } from './useAPIClient'
 
 import { SequenceAPIClient, Token } from '@0xsequence/api'
 
-export const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
+const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
   if (tokens.length === 0) {
     return []
   }
@@ -16,6 +16,9 @@ export const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens:
   return res?.tokenPrices || []
 }
 
+/**
+ * @description Gets the prices of a list of collectibles
+ */
 export const useGetCollectiblePrices = (tokens: Token[], options?: HooksOptions) => {
   const apiClient = useAPIClient()
 

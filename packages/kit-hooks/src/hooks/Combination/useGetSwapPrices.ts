@@ -22,7 +22,7 @@ export type SwapPricesWithCurrencyInfo = {
   balance: Balance
 }
 
-interface UseGetSwapPricesArgs {
+export interface UseGetSwapPricesArgs {
   userAddress: string
   buyCurrencyAddress: string
   buyAmount: string
@@ -94,31 +94,28 @@ const getSwapPrices = async (
     const isNativeToken = compareAddress(currencyAddress, ZERO_ADDRESS)
 
     if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
-      currencyBalanceInfoMap.set(
-        currencyAddress,
-        isNativeToken
-          ? indexerGatewayClient
-              .getNativeTokenBalance({
-                accountAddress: args.userAddress,
-                chainIds: [args.chainId]
-              })
-              .then(res => ({
-                balance: res.balances[0].result.balance
-              }))
-          : indexerGatewayClient
-              .getTokenBalancesSummary({
-                chainIds: [args.chainId],
-                filter: {
-                  accountAddresses: [args.userAddress],
-                  contractStatus: IndexerGateway.ContractVerificationStatus.VERIFIED,
-                  contractWhitelist: [currencyAddress],
-                  omitNativeBalances: true
-                }
-              })
-              .then(res => ({
-                balance: res.balances?.[0].results[0].balance || '0'
-              }))
-      )
+      const tokenBalance = indexerGatewayClient
+        .getTokenBalancesSummary({
+          chainIds: [args.chainId],
+          filter: {
+            accountAddresses: [args.userAddress],
+            contractWhitelist: [currencyAddress],
+            omitNativeBalances: false
+          }
+        })
+        .then(res => {
+          if (isNativeToken) {
+            return {
+              balance: res.nativeBalances[0].results[0].balance
+            }
+          } else {
+            return {
+              balance: res.balances[0].results[0].balance
+            }
+          }
+        })
+
+      currencyBalanceInfoMap.set(currencyAddress, tokenBalance)
     }
   })
 
@@ -139,6 +136,9 @@ const getSwapPrices = async (
   )
 }
 
+/**
+ * @description Gets the Swap Prices for a given currency
+ */
 export const useGetSwapPrices = (args: UseGetSwapPricesArgs, options?: HooksOptions) => {
   const apiClient = useAPIClient()
   const metadataClient = useMetadataClient()

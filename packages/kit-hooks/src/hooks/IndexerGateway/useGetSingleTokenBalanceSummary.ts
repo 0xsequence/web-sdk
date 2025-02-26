@@ -12,6 +12,9 @@ export interface GetSingleTokenBalanceSummaryArgs {
   contractAddress: string
 }
 
+/**
+ * @description Gets the single token balance summary for a given chainId and contractAddress
+ */
 export const useGetSingleTokenBalanceSummary = (args: GetSingleTokenBalanceSummaryArgs, options?: BalanceHookOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 

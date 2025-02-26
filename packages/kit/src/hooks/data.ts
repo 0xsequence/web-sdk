@@ -488,6 +488,7 @@ export const useExchangeRate = (toCurrency: string) => {
   })
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
   if (tokens.length === 0) {
     return []

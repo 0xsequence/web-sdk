@@ -21,6 +21,9 @@ const getNativeTokenBalance = async (
   return balances
 }
 
+/**
+ * @description Gets the native token balance for a list of given networks or chainIds
+ */
 export const useGetNativeTokenBalance = (
   getNativeTokenBalanceArgs: IndexerGateway.GetNativeTokenBalanceArgs,
   options?: HooksOptions

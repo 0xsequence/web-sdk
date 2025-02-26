@@ -1,14 +1,20 @@
-import { useQuery } from '@tanstack/react-query'
+import { UseQueryResult, useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, ZERO_ADDRESS, time } from '../../constants'
 import { HooksOptions } from '../../types'
 import { compareAddress } from '../../utils/helpers'
 import { useMetadataClient } from './useMetadataClient'
 
-import { GetContractInfoArgs } from '@0xsequence/metadata'
+import { ContractInfo, GetContractInfoArgs } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 
-export const useGetContractInfo = (getContractInfoArgs: GetContractInfoArgs, options?: HooksOptions) => {
+/**
+ * @description Gets the contract info for a given chainId and contractAddress
+ */
+export const useGetContractInfo = (
+  getContractInfoArgs: GetContractInfoArgs,
+  options?: HooksOptions
+): UseQueryResult<ContractInfo> => {
   const metadataClient = useMetadataClient()
 
   return useQuery({

@@ -15,6 +15,9 @@ const getTokenBalancesByContract = async (
   return res.balances.flatMap(balance => balance.results)
 }
 
+/**
+ * @description Gets the token balances for a given list of contractAddresses
+ */
 export const useGetTokenBalancesByContract = (
   getTokenBalancesByContractArgs: IndexerGateway.GetTokenBalancesByContractArgs,
   options?: BalanceHookOptions

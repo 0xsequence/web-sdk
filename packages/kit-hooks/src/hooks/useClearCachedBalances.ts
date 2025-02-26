@@ -17,7 +17,7 @@ export const useClearCachedBalances = () => {
           QUERY_KEYS.useGetTransactionHistory,
           QUERY_KEYS.useGetTransactionHistorySummary,
           QUERY_KEYS.useGetContractInfo,
-          QUERY_KEYS.useGetCollectionsMetadata,
+          QUERY_KEYS.useGetMultipleContractInfo,
           QUERY_KEYS.useGetSingleTokenBalanceSummary,
           QUERY_KEYS.useGetCoinPrices,
           QUERY_KEYS.useGetCollectiblePrices,

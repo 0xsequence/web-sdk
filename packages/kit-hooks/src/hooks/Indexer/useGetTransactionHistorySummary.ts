@@ -37,6 +37,9 @@ const getTransactionHistorySummary = async (
   return orderedTransactions
 }
 
+/**
+ * @description Gets the exhaustive transaction history for a given accountAddress and list of chainIds
+ */
 export const useGetTransactionHistorySummary = (
   getTransactionHistorySummaryArgs: GetTransactionHistorySummaryArgs,
   options?: HooksOptions

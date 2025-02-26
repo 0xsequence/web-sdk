@@ -7,7 +7,7 @@ export const QUERY_KEYS = {
   useGetTransactionHistory: 'useGetTransactionHistory',
   useGetTransactionHistorySummary: 'useGetTransactionHistorySummary',
   useGetContractInfo: 'useGetContractInfo',
-  useGetCollectionsMetadata: 'useGetCollectionsMetadata',
+  useGetMultipleContractInfo: 'useGetMultipleContractInfo',
   useGetSingleTokenBalanceSummary: 'useGetSingleTokenBalanceSummary',
   useGetExchangeRate: 'useGetExchangeRate',
   useGetCoinPrices: 'useGetCoinPrices',

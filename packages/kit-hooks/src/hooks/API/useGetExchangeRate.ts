@@ -4,7 +4,9 @@ import { QUERY_KEYS, time } from '../../constants'
 import { HooksOptions } from '../../types'
 import { useAPIClient } from './useAPIClient'
 
-// From USD to another currency
+/**
+ * @description Gets the exchange rate from USD to another currency
+ */
 export const useGetExchangeRate = (toCurrency: string, options?: HooksOptions) => {
   const apiClient = useAPIClient()
 

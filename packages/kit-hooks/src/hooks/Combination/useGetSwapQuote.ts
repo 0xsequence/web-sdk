@@ -7,6 +7,9 @@ import { useAPIClient } from '../API/useAPIClient'
 
 import { GetSwapQuoteArgs } from '@0xsequence/api'
 
+/**
+ * @description Gets the swap quote for a given currency pair
+ */
 export const useGetSwapQuote = (getSwapQuoteArgs: GetSwapQuoteArgs, options?: HooksOptions) => {
   const apiClient = useAPIClient()
 
