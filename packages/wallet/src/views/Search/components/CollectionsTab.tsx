@@ -1,8 +1,10 @@
 // kit/packages/wallet/src/views/Search/CollectionsTab.tsx
 import React, { useEffect, useRef, useState } from 'react'
-import { BalanceItem } from './BalanceItem'
-import { Spinner, Skeleton, Text, Box } from '@0xsequence/design-system'
+
 import { IndexedData } from '../SearchWalletViewAll'
+import { BalanceItem } from './BalanceItem'
+
+import { Box, Skeleton, Spinner, Text } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 
 interface CollectionsTabProps {
@@ -69,7 +71,9 @@ const CollectionsTab: React.FC<CollectionsTabProps> = ({
               ))}
           </>
         )}
-        {!isPending && displayedCollectionBalances.length === 0 && <Text color="text100">No Collectibles Found</Text>}
+        {!isPending && displayedCollectionBalances.length === 0 && (
+          <Text color="text100">No Collectibles Found</Text>
+        )}
         {!isPending &&
           displayedCollectionBalances.map((indexItem, index) => {
             const balance = collectionBalances[indexItem.index]

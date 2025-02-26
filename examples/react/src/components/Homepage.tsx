@@ -1,9 +1,19 @@
-import { Box, Button, Card, Text, Image, useTheme, CheckmarkIcon, breakpoints } from '@0xsequence/design-system'
-import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/kit'
-import { Footer } from '@0xsequence/kit-example-shared-components'
 import { useConnections } from 'wagmi'
 
 import { Connected } from './Connected'
+
+import {
+  Box,
+  Button,
+  Card,
+  CheckmarkIcon,
+  Image,
+  Text,
+  breakpoints,
+  useTheme
+} from '@0xsequence/design-system'
+import { WalletType, useKitWallets, useOpenConnectModal } from '@0xsequence/kit'
+import { Footer } from '@0xsequence/kit-example-shared-components'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -45,7 +55,14 @@ export const Homepage = () => {
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
           </Box>
 
-          <Box gap="2" flexDirection="column" paddingX="4" marginTop="10" width="full" style={{ maxWidth: breakpoints.md }}>
+          <Box
+            gap="2"
+            flexDirection="column"
+            paddingX="4"
+            marginTop="10"
+            width="full"
+            style={{ maxWidth: breakpoints.md }}
+          >
             <WalletTypeSelect
               type="waas"
               title="Embedded Wallet (WaaS)"
@@ -103,7 +120,11 @@ const WalletTypeSelect = (props: WalletTypeSelectProps) => {
             {description}
           </Text>
         </Box>
-        <CheckmarkIcon size="md" style={{ color: 'rgb(127 59 200)' }} visibility={isSelected ? 'visible' : 'hidden'} />
+        <CheckmarkIcon
+          size="md"
+          style={{ color: 'rgb(127 59 200)' }}
+          visibility={isSelected ? 'visible' : 'hidden'}
+        />
       </Box>
     </Card>
   )

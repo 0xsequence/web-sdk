@@ -1,9 +1,10 @@
-import { Box, CheckmarkIcon, Text } from '@0xsequence/design-system'
-import { ChainId, allNetworks } from '@0xsequence/network'
 import React, { useEffect } from 'react'
 
 import { TransactionSuccessNavigation } from '../contexts'
 import { useCheckoutModal, useNavigation } from '../hooks'
+
+import { Box, CheckmarkIcon, Text } from '@0xsequence/design-system'
+import { ChainId, allNetworks } from '@0xsequence/network'
 
 export const TransactionSuccess = () => {
   const { settings } = useCheckoutModal()

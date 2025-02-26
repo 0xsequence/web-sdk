@@ -1,15 +1,16 @@
-import { Box, Button, ChevronRightIcon, Text, NumericInput, vars } from '@0xsequence/design-system'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import { useRef, useState, ChangeEvent } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useSettings, useNavigation } from '../../hooks'
+import { useNavigation, useSettings } from '../../hooks'
 import { SendItemInfo } from '../../shared/SendItemInfo'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+
+import { Box, Button, ChevronRightIcon, NumericInput, Text, vars } from '@0xsequence/design-system'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 export interface SwapCoinProps {
   contractAddress: string
@@ -37,14 +38,16 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices([
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
+    fiatCurrency.symbol
+  )
 
   const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
 

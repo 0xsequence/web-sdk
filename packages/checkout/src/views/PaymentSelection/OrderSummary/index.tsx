@@ -1,10 +1,11 @@
-import { Box, Spinner, NetworkImage, Text } from '@0xsequence/design-system'
-import { formatDisplay, NetworkBadge, CollectibleTileImage, useCoinPrices } from '@0xsequence/kit'
-import { findSupportedNetwork } from '@0xsequence/network'
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'
+
+import { Box, NetworkImage, Spinner, Text } from '@0xsequence/design-system'
+import { CollectibleTileImage, NetworkBadge, formatDisplay } from '@0xsequence/kit'
+import { useGetContractInfo, useGetTokenMetadata, useGetCoinPrices } from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 
 export const OrderSummary = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
@@ -26,14 +27,15 @@ export const OrderSummary = () => {
     chainID: String(chainId),
     contractAddress: selectPaymentSettings!.currencyAddress
   })
-  const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useCoinPrices([
+  const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress: selectPaymentSettings!.currencyAddress
     }
   ])
 
-  const isLoading = isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo || isLoadingCoinPrices
+  const isLoading =
+    isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo || isLoadingCoinPrices
 
   if (isLoading) {
     return (
@@ -71,8 +73,12 @@ export const OrderSummary = () => {
 
       <Box flexDirection="row" gap="1">
         {selectPaymentSettings!.collectibles.map(collectible => {
-          const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
-          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
+          const collectibleQuantity = Number(
+            formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0))
+          )
+          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(
+            tokenMetadata => tokenMetadata.tokenId === collectible.tokenId
+          )
 
           return (
             <Box gap="3" alignItems="center" key={collectible.tokenId}>
@@ -100,7 +106,11 @@ export const OrderSummary = () => {
       <Box gap="1" flexDirection="column">
         <Box flexDirection="row" gap="2" alignItems="center">
           <NetworkImage chainId={chainId} size="sm" />
-          <Text color="white" variant="large" fontWeight="bold">{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
+          <Text
+            color="white"
+            variant="large"
+            fontWeight="bold"
+          >{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
         </Box>
         <Box>
           <Text color="text50" variant="normal" fontWeight="normal">

@@ -1,13 +1,13 @@
-import { ArrowRightIcon, Box, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
-import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
-import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
+import { useCheckoutModal, useClearCachedBalances, useSelectPaymentModal } from '../../../hooks'
 
+import { ArrowRightIcon, Box, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
 import { useGetContractInfo } from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings
@@ -17,7 +17,11 @@ interface PayWithCreditCardProps {
 
 type PaymentProviderOptions = 'sardine' | 'transak'
 
-export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallback }: PayWithCreditCardProps) => {
+export const PayWithCreditCard = ({
+  settings,
+  disableButtons,
+  skipOnCloseCallback
+}: PayWithCreditCardProps) => {
   const {
     chain,
     currencyAddress,

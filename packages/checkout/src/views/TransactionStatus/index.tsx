@@ -1,33 +1,33 @@
-import {
-  ArrowDownIcon,
-  Box,
-  Card,
-  NetworkImage,
-  Spinner,
-  Text,
-  TokenImage,
-  CheckmarkIcon,
-  CloseIcon,
-  truncateAddress
-} from '@0xsequence/design-system'
-import {
-  CollectibleTileImage,
-  formatDisplay,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  waitForTransactionReceipt,
-  useIndexerClient
-} from '@0xsequence/kit'
-import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
-import { findSupportedNetwork } from '@0xsequence/network'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import TimeAgo from 'timeago-react'
-import { formatUnits, Hex, PublicClient } from 'viem'
+import { Hex, PublicClient, formatUnits } from 'viem'
 import { usePublicClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransactionStatusModal } from '../../hooks'
 
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
+import {
+  ArrowDownIcon,
+  Box,
+  Card,
+  CheckmarkIcon,
+  CloseIcon,
+  NetworkImage,
+  Spinner,
+  Text,
+  TokenImage,
+  truncateAddress
+} from '@0xsequence/design-system'
+import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
+import {
+  CollectibleTileImage,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  formatDisplay,
+  useIndexerClient,
+  waitForTransactionReceipt
+} from '@0xsequence/kit'
+import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 
@@ -236,7 +236,9 @@ export const TransactionStatus = () => {
       <Box gap="3" flexDirection="column">
         {items?.map(item => {
           const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
-          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
+          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(
+            tokenMetadata => tokenMetadata.tokenId === item.tokenId
+          )
 
           const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0))
 
@@ -262,8 +264,17 @@ export const TransactionStatus = () => {
                 </Box>
               </Box>
               <Box flexDirection="row" gap="1" alignItems="center" justifyContent="center">
-                <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" symbol={dataCurrencyInfo?.symbol} disableAnimation />
-                <Text variant="normal" fontWeight="bold" color="white">{`${price} ${dataCurrencyInfo?.symbol}`}</Text>
+                <TokenImage
+                  src={dataCurrencyInfo?.logoURI}
+                  size="xs"
+                  symbol={dataCurrencyInfo?.symbol}
+                  disableAnimation
+                />
+                <Text
+                  variant="normal"
+                  fontWeight="bold"
+                  color="white"
+                >{`${price} ${dataCurrencyInfo?.symbol}`}</Text>
               </Box>
             </Box>
           )
@@ -288,7 +299,11 @@ export const TransactionStatus = () => {
     return (
       <Box marginBottom="2" flexDirection="row" alignItems="center" justifyContent="space-between">
         <Box flexDirection="row" gap="1" alignItems="center" justifyContent="space-between">
-          <ArrowDownIcon color="text80" size="xs" style={{ transform: 'rotate(180deg)', marginRight: '-4px' }} />
+          <ArrowDownIcon
+            color="text80"
+            size="xs"
+            style={{ transform: 'rotate(180deg)', marginRight: '-4px' }}
+          />
           <Text color="text80" variant="small" fontWeight="medium">
             {getStatusText()}
           </Text>

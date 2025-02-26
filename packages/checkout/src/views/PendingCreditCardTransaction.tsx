@@ -1,23 +1,24 @@
-import { Box, Spinner, Text } from '@0xsequence/design-system'
-import { useAnalyticsContext, useProjectAccessKey, DEBUG } from '@0xsequence/kit'
-import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect } from 'react'
 import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
+import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TransactionPendingNavigation } from '../contexts'
 import {
-  useNavigation,
   useCheckoutModal,
+  useNavigation,
   useSardineClientToken,
-  useTransactionStatusModal,
-  useSkipOnCloseCallback
+  useSkipOnCloseCallback,
+  useTransactionStatusModal
 } from '../hooks'
-import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
 
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
+import { Box, Spinner, Text } from '@0xsequence/design-system'
+import { DEBUG, useAnalyticsContext, useProjectAccessKey } from '@0xsequence/kit'
+import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
+
 const POLLING_TIME = 10 * 1000
 
 interface PendingCreditTransactionProps {
@@ -43,7 +44,9 @@ export const PendingCreditCardTransaction = () => {
   }
 }
 
-export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+export const PendingCreditCardTransactionTransak = ({
+  skipOnCloseCallback
+}: PendingCreditTransactionProps) => {
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -97,7 +100,9 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
 
-  const price = Number(formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals)))
+  const price = Number(
+    formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals))
+  )
 
   const transakNftDataJson = JSON.stringify([
     {
@@ -133,7 +138,10 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     const readMessage = (message: any) => {
       if (message.source !== transakIframe) return
 
-      if (message?.data?.event_id === 'TRANSAK_ORDER_SUCCESSFUL' && message?.data?.data?.status === 'COMPLETED') {
+      if (
+        message?.data?.event_id === 'TRANSAK_ORDER_SUCCESSFUL' &&
+        message?.data?.data?.status === 'COMPLETED'
+      ) {
         console.log('Order Data: ', message?.data?.data)
         const txHash = message?.data?.data?.transactionHash || ''
 
@@ -167,7 +175,10 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             {
               tokenId: creditCardCheckout.nftId,
               quantity: creditCardCheckout.nftQuantity,
-              decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
+              decimals:
+                creditCardCheckout.nftDecimals === undefined
+                  ? undefined
+                  : Number(creditCardCheckout.nftDecimals),
               price: creditCardCheckout.currencyQuantity
             }
           ],
@@ -255,7 +266,9 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   )
 }
 
-export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+export const PendingCreditCardTransactionSardine = ({
+  skipOnCloseCallback
+}: PendingCreditTransactionProps) => {
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -340,7 +353,10 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
             {
               tokenId: creditCardCheckout.nftId,
               quantity: creditCardCheckout.nftQuantity,
-              decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
+              decimals:
+                creditCardCheckout.nftDecimals === undefined
+                  ? undefined
+                  : Number(creditCardCheckout.nftDecimals),
               price: creditCardCheckout.currencyQuantity
             }
           ],

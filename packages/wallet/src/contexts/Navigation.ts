@@ -1,8 +1,8 @@
 'use client'
 
-import { Transaction } from '@0xsequence/indexer'
-
 import { createGenericContext } from './genericContext'
+
+import { Transaction } from '@0xsequence/indexer'
 
 export interface CollectionDetailsParams {
   contractAddress: string

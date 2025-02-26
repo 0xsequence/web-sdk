@@ -1,14 +1,19 @@
-import { Box } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../../../../hooks'
 import { computeBalanceFiat, getPercentagePriceChange } from '../../../../../utils'
-
 import { CoinTileContent } from './CoinTileContent'
-import { useGetContractInfo } from '@0xsequence/kit-hooks'
+
+import { Box } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
+import {
+  compareAddress,
+  formatDisplay,
+  getNativeTokenInfoByChainId,
+} from '@0xsequence/kit'
+import { useGetCoinPrices, useGetContractInfo, useGetExchangeRate } from '@0xsequence/kit-hooks'
+
 interface CoinTileProps {
   balance: TokenBalance
 }
@@ -19,14 +24,16 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
   const isNativeToken = compareAddress(balance.contractAddress, ethers.ZeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
-  const { data: dataCoinPrices = [], isPending: isPendingCoinPrice } = useCoinPrices([
+  const { data: dataCoinPrices = [], isPending: isPendingCoinPrice } = useGetCoinPrices([
     {
       chainId: balance.chainId,
       contractAddress: balance.contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
+    fiatCurrency.symbol
+  )
 
   const { data: contractInfo, isPending: isPendingContractInfo } = useGetContractInfo({
     chainID: String(balance.chainId),

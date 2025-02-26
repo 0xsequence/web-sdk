@@ -4,7 +4,14 @@ import { LogoProps } from '../../types'
 
 export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" style={{ fill: 'none' }} id="svg1316" version="1.1" viewBox="0 0 396 396" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ fill: 'none' }}
+      id="svg1316"
+      version="1.1"
+      viewBox="0 0 396 396"
+      {...props}
+    >
       <g transform="translate(0,38)" id="g1256" clipPath="url(#clip0_5_131)">
         <g id="g1254" clipPath="url(#clip1_5_131)">
           <path
@@ -65,11 +72,25 @@ export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
         </g>
       </g>
       <defs id="defs1314">
-        <linearGradient gradientUnits="userSpaceOnUse" y2="318" x2="198" y1="4.0585401e-05" x1="198" id="paint0_linear_5_131">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="318"
+          x2="198"
+          y1="4.0585401e-05"
+          x1="198"
+          id="paint0_linear_5_131"
+        >
           <stop id="stop1258" stopColor="#1D273D" />
           <stop id="stop1260" stopColor="#0D0F13" offset="1" />
         </linearGradient>
-        <linearGradient gradientUnits="userSpaceOnUse" y2="63" x2="92.5" y1="99" x1="65.5" id="paint1_linear_5_131">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="63"
+          x2="92.5"
+          y1="99"
+          x1="65.5"
+          id="paint1_linear_5_131"
+        >
           <stop id="stop1263" stopColor="#4462FE" />
           <stop id="stop1265" stopColor="#7D69FA" offset="1" />
         </linearGradient>
@@ -95,11 +116,25 @@ export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
           <stop id="stop1273" stopColor="#2447FF" />
           <stop id="stop1275" stopColor="#6980FA" offset="1" />
         </linearGradient>
-        <linearGradient gradientUnits="userSpaceOnUse" y2="223.5" x2="91.5" y1="251.5" x1="65" id="paint4_linear_5_131">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="223.5"
+          x2="91.5"
+          y1="251.5"
+          x1="65"
+          id="paint4_linear_5_131"
+        >
           <stop id="stop1278" stopColor="#BC3EE6" />
           <stop id="stop1280" stopColor="#D972F1" offset="1" />
         </linearGradient>
-        <linearGradient gradientUnits="userSpaceOnUse" y2="146" x2="329.5" y1="172" x1="305" id="paint5_linear_5_131">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="146"
+          x2="329.5"
+          y1="172"
+          x1="305"
+          id="paint5_linear_5_131"
+        >
           <stop id="stop1283" stopColor="#29BDFF" />
           <stop id="stop1285" stopColor="#96E7FB" offset="1" />
         </linearGradient>
@@ -114,15 +149,36 @@ export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
           <stop id="stop1288" stopColor="#23BBFF" />
           <stop id="stop1290" stopColor="#85E7FF" offset="1" />
         </linearGradient>
-        <linearGradient gradientUnits="userSpaceOnUse" y2="60" x2="317.5" y1="99" x1="154.5" id="paint7_linear_5_131">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="60"
+          x2="317.5"
+          y1="99"
+          x1="154.5"
+          id="paint7_linear_5_131"
+        >
           <stop id="stop1293" stopColor="#23BBFF" />
           <stop id="stop1295" stopColor="#85E7FF" offset="1" />
         </linearGradient>
-        <linearGradient gradientUnits="userSpaceOnUse" y2="218" x2="312.5" y1="258" x1="156" id="paint8_linear_5_131">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="218"
+          x2="312.5"
+          y1="258"
+          x1="156"
+          id="paint8_linear_5_131"
+        >
           <stop id="stop1298" stopColor="#2447FF" />
           <stop id="stop1300" stopColor="#6980FA" offset="1" />
         </linearGradient>
-        <linearGradient gradientUnits="userSpaceOnUse" y2="139" x2="235.5" y1="179" x1="86.000099" id="paint9_linear_5_131">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          y2="139"
+          x2="235.5"
+          y1="179"
+          x1="86.000099"
+          id="paint9_linear_5_131"
+        >
           <stop id="stop1303" stopColor="#6634FF" />
           <stop id="stop1305" stopColor="#9C6DFF" offset="1" />
         </linearGradient>

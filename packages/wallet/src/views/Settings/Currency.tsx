@@ -1,9 +1,10 @@
-import { Box, Text } from '@0xsequence/design-system'
 import React from 'react'
 
 import { supportedFiatCurrencies } from '../../constants'
 import { useSettings } from '../../hooks'
 import { SelectButton } from '../../shared/SelectButton'
+
+import { Box, Text } from '@0xsequence/design-system'
 
 export const SettingsCurrency = () => {
   const { fiatCurrency, setFiatCurrency } = useSettings()

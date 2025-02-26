@@ -1,5 +1,9 @@
 import Fuse from 'fuse.js'
 import { useState } from 'react'
+
+import { ExtendedConnector } from '../../types'
+import { getLogo } from '../ConnectButton'
+
 import {
   ArrowRightIcon,
   Box,
@@ -13,9 +17,6 @@ import {
   useTheme
 } from '@0xsequence/design-system'
 
-import { getLogo } from '../ConnectButton'
-import { ExtendedConnector } from '../../types'
-
 interface ExtendedWalletListProps {
   onConnect: (connector: ExtendedConnector) => void
   title: string
@@ -24,7 +25,13 @@ interface ExtendedWalletListProps {
   searchable: boolean
 }
 
-export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, searchable }: ExtendedWalletListProps) => {
+export const ExtendedWalletList = ({
+  onConnect,
+  connectors,
+  title,
+  onGoBack,
+  searchable
+}: ExtendedWalletListProps) => {
   const { theme } = useTheme()
   const [search, setSearch] = useState('')
 
@@ -74,7 +81,14 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
           icon={() => <ArrowRightIcon style={{ transform: 'rotate(180deg)' }} />}
         />
       </Box>
-      <Box justifyContent="center" color="text100" alignItems="center" fontWeight="medium" marginTop="2" marginBottom="4">
+      <Box
+        justifyContent="center"
+        color="text100"
+        alignItems="center"
+        fontWeight="medium"
+        marginTop="2"
+        marginBottom="4"
+      >
         <ModalPrimitive.Title asChild>
           <Text>{title}</Text>
         </ModalPrimitive.Title>

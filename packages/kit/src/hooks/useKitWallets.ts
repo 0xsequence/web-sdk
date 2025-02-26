@@ -1,8 +1,14 @@
-import { Connector, type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
+import {
+  Connector,
+  type UseConnectionsReturnType,
+  useAccount,
+  useConnect,
+  useConnections,
+  useDisconnect
+} from 'wagmi'
 
 import { SEQUENCE_UNIVERSAL_CONNECTOR_NAME } from '../components/Connect/Connect'
 import { ExtendedConnector } from '../types'
-
 import { useLinkedWallets } from './data'
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
 
@@ -57,7 +63,9 @@ export const useKitWallets = () => {
   }))
 
   const setActiveWallet = async (walletAddress: string) => {
-    const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
+    const connection = connections.find(
+      (c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress
+    )
     if (!connection) return
 
     try {
@@ -68,7 +76,9 @@ export const useKitWallets = () => {
   }
 
   const disconnectWallet = async (walletAddress: string) => {
-    const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
+    const connection = connections.find(
+      (c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress
+    )
     if (!connection) return
 
     // invalidate linked wallets if we're disconnecting waas wallet

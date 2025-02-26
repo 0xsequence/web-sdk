@@ -1,11 +1,12 @@
 'use client'
 
-import { SequenceWaaS } from '@0xsequence/waas'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 import { Connector } from 'wagmi'
 
 import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
+
+import { SequenceWaaS } from '@0xsequence/waas'
 
 interface UseWaasSignatureForLinkingResult {
   message: string | undefined

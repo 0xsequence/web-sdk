@@ -1,6 +1,7 @@
-import { Button, CopyIcon, CheckmarkIcon, IconButton, vars } from '@0xsequence/design-system'
-import React, { useEffect, useState, ComponentProps } from 'react'
+import React, { ComponentProps, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+
+import { Button, CheckmarkIcon, CopyIcon, IconButton, vars } from '@0xsequence/design-system'
 
 type ButtonProps = ComponentProps<typeof Button>
 

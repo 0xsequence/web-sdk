@@ -1,25 +1,30 @@
+import { ethers } from 'ethers'
+import { useAccount, useConfig } from 'wagmi'
+
+import { HEADER_HEIGHT } from '../../constants'
+import { useCheckoutModal, useNavigation } from '../../hooks'
+import { OrderSummaryItem } from './component/OrderSummaryItem'
+
 import {
   Box,
   Button,
   ChevronRightIcon,
   Divider,
   HelpIcon,
-  Text,
-  Tooltip,
   PaymentsIcon,
-  vars,
   Skeleton,
-  TokenImage
+  Text,
+  TokenImage,
+  Tooltip,
+  vars
 } from '@0xsequence/design-system'
-import { ContractVerificationStatus, getNativeTokenInfoByChainId, compareAddress, formatDisplay } from '@0xsequence/kit'
-import { ethers } from 'ethers'
-import { useAccount, useConfig } from 'wagmi'
-
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation, useCheckoutModal } from '../../hooks'
-
-import { OrderSummaryItem } from './component/OrderSummaryItem'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
+import {
+  ContractVerificationStatus,
+  compareAddress,
+  formatDisplay,
+  getNativeTokenInfoByChainId
+} from '@0xsequence/kit'
+import { useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 export const CheckoutSelection = () => {
   const { chains } = useConfig()
@@ -48,7 +53,10 @@ export const CheckoutSelection = () => {
 
   const isPending = (isPendingContractInfo || isPendingBalances) && cryptoCheckoutSettings
 
-  const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.ZeroAddress)
+  const isNativeToken = compareAddress(
+    cryptoCheckoutSettings?.coinQuantity?.contractAddress || '',
+    ethers.ZeroAddress
+  )
   const nativeTokenInfo = getNativeTokenInfoByChainId(cryptoCheckoutSettings?.chainId || 1, chains)
 
   const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : contractInfoData?.decimals || 0

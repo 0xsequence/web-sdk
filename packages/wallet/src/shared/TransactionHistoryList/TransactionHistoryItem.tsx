@@ -1,13 +1,24 @@
-import { TokenPrice } from '@0xsequence/api'
-import { ArrowRightIcon, Box, Text, Image, TransactionIcon, vars, Skeleton, NetworkImage } from '@0xsequence/design-system'
-import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useCoinPrices, useExchangeRate } from '@0xsequence/kit'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useConfig } from 'wagmi'
 
-import { useSettings, useNavigation } from '../../hooks'
+import { useNavigation, useSettings } from '../../hooks'
+
+import { TokenPrice } from '@0xsequence/api'
+import {
+  ArrowRightIcon,
+  Box,
+  Image,
+  NetworkImage,
+  Skeleton,
+  Text,
+  TransactionIcon,
+  vars
+} from '@0xsequence/design-system'
+import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface TransactionHistoryItemProps {
   transaction: Transaction
@@ -36,14 +47,16 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
     }
   })
 
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices(
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
     tokenContractAddresses.map(contractAddress => ({
       contractAddress,
       chainId: transaction.chainId
     }))
   )
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
+    fiatCurrency.symbol
+  )
 
   const isPending = isPendingCoinPrices || isPendingConversionRate
 
@@ -102,7 +115,13 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
       textColor = vars.colors.positive
     }
 
-    return <Text variant="normal" fontWeight="bold" style={{ color: textColor }}>{`${sign}${amount} ${symbol}`}</Text>
+    return (
+      <Text
+        variant="normal"
+        fontWeight="bold"
+        style={{ color: textColor }}
+      >{`${sign}${amount} ${symbol}`}</Text>
+    )
   }
 
   interface GetTransfer {
@@ -134,7 +153,8 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
         {amounts.map((amount, index) => {
           const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
           const isNativeToken = compareAddress(transfer.contractAddress, ethers.ZeroAddress)
-          const isCollectible = transfer.contractInfo?.type === 'ERC721' || transfer.contractInfo?.type === 'ERC1155'
+          const isCollectible =
+            transfer.contractInfo?.type === 'ERC721' || transfer.contractInfo?.type === 'ERC1155'
           let decimals
           const tokenId = transfer.tokenIds?.[index]
           if (isCollectible && tokenId) {

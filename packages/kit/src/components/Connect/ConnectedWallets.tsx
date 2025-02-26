@@ -1,11 +1,11 @@
-import { LinkedWallet } from '@0xsequence/api'
-import { Box } from '@0xsequence/design-system'
-import { motion, AnimatePresence } from 'framer-motion'
-import React, { useMemo, useEffect, useRef } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import React, { useEffect, useMemo, useRef } from 'react'
 
 import { KitWallet } from '../../hooks/useKitWallets'
-
 import { WalletListItem, WalletListItemProps } from './WalletListItem'
+
+import { LinkedWallet } from '@0xsequence/api'
+import { Box } from '@0xsequence/design-system'
 
 interface ConnectedWalletsProps {
   wallets: KitWallet[]
@@ -63,7 +63,9 @@ export const ConnectedWallets = ({
       address: wallet.address,
       isEmbedded: wallet.isEmbedded,
       isActive: wallet.isActive,
-      isLinked: linkedWallets?.some(lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()) ?? false,
+      isLinked:
+        linkedWallets?.some(lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()) ??
+        false,
       isReadOnly: false,
       onDisconnect: () => disconnectWallet(wallet.address),
       onUnlink: () => {} // No-op for connected wallets
@@ -74,14 +76,16 @@ export const ConnectedWallets = ({
       if (a.isEmbedded && !b.isEmbedded) return -1
       if (!a.isEmbedded && b.isEmbedded) return 1
       return (
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) || a.address.toLowerCase().localeCompare(b.address.toLowerCase())
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) ||
+        a.address.toLowerCase().localeCompare(b.address.toLowerCase())
       )
     })
 
     // Sort read-only linked wallets by name and address
     const sortedReadOnlyWallets = [...readOnlyLinkedWallets].sort(
       (a, b) =>
-        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) || a.address.toLowerCase().localeCompare(b.address.toLowerCase())
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase()) ||
+        a.address.toLowerCase().localeCompare(b.address.toLowerCase())
     )
 
     // Combine all wallets

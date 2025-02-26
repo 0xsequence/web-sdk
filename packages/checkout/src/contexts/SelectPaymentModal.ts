@@ -1,7 +1,6 @@
 import { Hex } from 'viem'
 
 import type { TransakConfig } from '../contexts/CheckoutModal'
-
 import { createGenericContext } from './genericContext'
 
 export type CreditCardProviders = 'sardine' | 'transak'
@@ -41,4 +40,5 @@ type SelectPaymentModalContext = {
   selectPaymentSettings?: SelectPaymentSettings
 }
 
-export const [useSelectPaymentContext, SelectPaymentContextProvider] = createGenericContext<SelectPaymentModalContext>()
+export const [useSelectPaymentContext, SelectPaymentContextProvider] =
+  createGenericContext<SelectPaymentModalContext>()

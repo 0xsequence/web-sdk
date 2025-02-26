@@ -1,7 +1,8 @@
+import { ethers } from 'ethers'
+
 import { ContractCall, SequenceAPIClient } from '@0xsequence/api'
 import { commons } from '@0xsequence/core'
 import { ContractType, TxnTransferType } from '@0xsequence/indexer'
-import { ethers } from 'ethers'
 
 interface TransactionEncodedWithCall extends commons.transaction.TransactionEncoded {
   call?: ContractCall
@@ -83,7 +84,12 @@ const transformArgs = (args: ContractCallArg[]): any => {
   )
 }
 
-const createTxnData = (to: string, call: ContractCall, value: ethers.BigNumberish, data: ethers.BytesLike): TxnData => {
+const createTxnData = (
+  to: string,
+  call: ContractCall,
+  value: ethers.BigNumberish,
+  data: ethers.BytesLike
+): TxnData => {
   const args = transformArgs(call.args)
   const byteSignature = ethers.dataSlice(data, 0, 4)
 
@@ -224,12 +230,18 @@ interface AwardItemArgs {
 }
 
 type TransferTxnData = CreateTypedTxnData<ByteSignature.TRANSFER, TransferArgs>
-type SafeBatchTransferFromTxnData = CreateTypedTxnData<ByteSignature.ERC1155_SAFE_BATCH_TRANSFER_FROM, SafeBatchTransferFromArgs>
+type SafeBatchTransferFromTxnData = CreateTypedTxnData<
+  ByteSignature.ERC1155_SAFE_BATCH_TRANSFER_FROM,
+  SafeBatchTransferFromArgs
+>
 type ERC721SafeTransferFromTxnData = CreateTypedTxnData<
   ByteSignature.ERC721_SAFE_TRANSFER_FROM | ByteSignature.ERC721_SAFE_TRANSFER_FROM_WITH_DATA,
   ERC721SafeTransferFromArgs
 >
-type ERC1155SafeTransferFromTxnData = CreateTypedTxnData<ByteSignature.ERC1155_SAFE_TRANSFER_FROM, ERC1155SafeTransferFromArgs>
+type ERC1155SafeTransferFromTxnData = CreateTypedTxnData<
+  ByteSignature.ERC1155_SAFE_TRANSFER_FROM,
+  ERC1155SafeTransferFromArgs
+>
 
 type AwardItemTxnData = CreateTypedTxnData<ByteSignature.AWARD_ITEM, AwardItemArgs>
 
@@ -240,7 +252,10 @@ type DecodedTxnData =
   | ERC1155SafeTransferFromTxnData
   | AwardItemTxnData
 
-const decodeTxnData = async (apiClient: SequenceAPIClient, txns: commons.transaction.TransactionEncoded[]): Promise<TxnData> => {
+const decodeTxnData = async (
+  apiClient: SequenceAPIClient,
+  txns: commons.transaction.TransactionEncoded[]
+): Promise<TxnData> => {
   const mainModule = new ethers.Interface(mainModuleAbi)
   const callData = mainModule.encodeFunctionData('selfExecute', [txns])
 

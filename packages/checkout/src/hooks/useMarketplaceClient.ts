@@ -1,7 +1,8 @@
+import { useMemo } from 'react'
+
 import { DEBUG, useProjectAccessKey } from '@0xsequence/kit'
 import { MarketplaceIndexer } from '@0xsequence/marketplace'
 import { networks, stringTemplate } from '@0xsequence/network'
-import { useMemo } from 'react'
 
 export interface UseMarketplaceClientArgs {
   chain: ChainNameOrId

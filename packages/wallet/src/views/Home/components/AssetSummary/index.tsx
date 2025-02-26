@@ -1,15 +1,14 @@
-import { Box, Spinner, vars } from '@0xsequence/design-system'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import { useWalletSettings } from '@0xsequence/kit'
+import { useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { useNavigation, useSettings } from '../../../../hooks'
-
 import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
 import { SkeletonTiles } from './SkeletonTiles'
-import { useEffect, useRef, useState } from 'react'
 
+import { Box, Spinner, vars } from '@0xsequence/design-system'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { useWalletSettings } from '@0xsequence/kit'
 import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 
 export const AssetSummary = () => {
@@ -59,7 +58,9 @@ export const AssetSummary = () => {
       filter: {
         accountAddresses: [address || ''],
         contractWhitelist: displayedAssets.map(asset => asset.contractAddress),
-        contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+        contractStatus: hideUnlistedTokens
+          ? ContractVerificationStatus.VERIFIED
+          : ContractVerificationStatus.ALL,
         omitNativeBalances: false
       },
       chainIds: selectedNetworks
@@ -70,7 +71,9 @@ export const AssetSummary = () => {
   useEffect(() => {
     if (!isPendingBalances && balances.length > 0) {
       const filteredBalances = balances.filter(balance =>
-        displayedAssets.some(asset => asset.contractAddress === balance.contractAddress && asset.chainId === balance.chainId)
+        displayedAssets.some(
+          asset => asset.contractAddress === balance.contractAddress && asset.chainId === balance.chainId
+        )
       )
       setDisplayedTokens(filteredBalances.slice(0, pageSize))
       setHasMoreTokens(filteredBalances.length > pageSize)

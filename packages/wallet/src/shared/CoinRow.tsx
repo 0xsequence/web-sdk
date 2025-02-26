@@ -1,9 +1,10 @@
-import { Box, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-import { formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 
 import { getPercentageColor } from '../utils'
+
+import { Box, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { formatDisplay } from '@0xsequence/kit'
 
 interface CoinRowProps {
   name: string
@@ -41,7 +42,15 @@ export const CoinRowSkeleton = () => {
   )
 }
 
-export const CoinRow = ({ imageUrl, name, decimals, balance, symbol, fiatValue, priceChangePercentage }: CoinRowProps) => {
+export const CoinRow = ({
+  imageUrl,
+  name,
+  decimals,
+  balance,
+  symbol,
+  fiatValue,
+  priceChangePercentage
+}: CoinRowProps) => {
   const formattedBalance = ethers.formatUnits(balance, decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 

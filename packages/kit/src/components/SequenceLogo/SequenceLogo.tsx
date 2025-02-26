@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { vars } from '@0xsequence/design-system'
 
 const fillColor = vars.colors.text50

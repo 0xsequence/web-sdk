@@ -1,15 +1,21 @@
 'use client'
 
-import { Box, Modal, ThemeProvider, Scroll } from '@0xsequence/design-system'
-import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'framer-motion'
 import React, { useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
+import {
+  History,
+  Navigation,
+  NavigationContextProvider,
+  WalletModalContextProvider,
+  WalletOptions
+} from '../../contexts'
+import { getContent, getHeader } from './utils'
 
-import { getHeader, getContent } from './utils'
+import { Box, Modal, Scroll, ThemeProvider } from '@0xsequence/design-system'
+import { getModalPositionCss, useTheme } from '@0xsequence/kit'
 
 export type KitWalletProviderProps = {
   children: React.ReactNode
@@ -82,7 +88,9 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
                     {getHeader(navigation)}
 
                     {displayScrollbar ? (
-                      <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 80vh)' }}>{getContent(navigation)}</Scroll>
+                      <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 80vh)' }}>
+                        {getContent(navigation)}
+                      </Scroll>
                     ) : (
                       getContent(navigation)
                     )}

@@ -1,9 +1,10 @@
-import { Box, Spinner, Text } from '@0xsequence/design-system'
-import { Transaction } from '@0xsequence/indexer'
 import React, { useMemo } from 'react'
 
 import { TransactionHistoryItem } from './TransactionHistoryItem'
 import { TransactionHistorySkeleton } from './TransactionHistorySkeleton'
+
+import { Box, Spinner, Text } from '@0xsequence/design-system'
+import { Transaction } from '@0xsequence/indexer'
 
 interface TransactionHistoryListProps {
   transactions: Transaction[]
@@ -11,7 +12,11 @@ interface TransactionHistoryListProps {
   isFetchingNextPage: boolean
 }
 
-export const TransactionHistoryList = ({ transactions, isPending, isFetchingNextPage }: TransactionHistoryListProps) => {
+export const TransactionHistoryList = ({
+  transactions,
+  isPending,
+  isFetchingNextPage
+}: TransactionHistoryListProps) => {
   type TransactionPeriodId = 'today' | 'yesterday' | 'week' | 'month' | 'year' | 'years'
 
   interface TransactionPeriods {

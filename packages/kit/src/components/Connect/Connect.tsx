@@ -1,18 +1,7 @@
 'use client'
 
-import {
-  ArrowRightIcon,
-  Box,
-  Divider,
-  Text,
-  TextInput,
-  Spinner,
-  Image,
-  IconButton,
-  ModalPrimitive
-} from '@0xsequence/design-system'
 import { genUserId } from '@databeat/tracker'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
@@ -26,14 +15,30 @@ import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet'
 import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
-import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
+import {
+  AppleWaasConnectButton,
+  ConnectButton,
+  GoogleWaasConnectButton,
+  ShowAllWalletsButton
+} from '../ConnectButton'
 import { KitConnectProviderProps } from '../KitProvider/KitProvider'
 import { PoweredBySequence } from '../SequenceLogo'
-
 import { Banner } from './Banner'
 import { ConnectedWallets } from './ConnectedWallets'
 import { EmailWaasVerify } from './EmailWaasVerify'
 import { ExtendedWalletList } from './ExtendedWalletList'
+
+import {
+  ArrowRightIcon,
+  Box,
+  Divider,
+  IconButton,
+  Image,
+  ModalPrimitive,
+  Spinner,
+  Text,
+  TextInput
+} from '@0xsequence/design-system'
 
 const MAX_ITEM_PER_ROW = 4
 export const SEQUENCE_UNIVERSAL_CONNECTOR_NAME = 'Sequence'
@@ -68,9 +73,12 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
-  const hasConnectedSequenceUniversal = connections.some(c => c.connector.name === SEQUENCE_UNIVERSAL_CONNECTOR_NAME)
+  const hasConnectedSequenceUniversal = connections.some(
+    c => c.connector.name === SEQUENCE_UNIVERSAL_CONNECTOR_NAME
+  )
   const hasConnectedSocialOrSequenceUniversal =
-    connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social') || hasConnectedSequenceUniversal
+    connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social') ||
+    hasConnectedSequenceUniversal
 
   const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
 
@@ -111,7 +119,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
       return
     }
     const tryLinkWallet = async () => {
-      const nonWaasWallets = connections.filter(c => (c.connector as ExtendedConnector)?.type !== 'sequence-waas')
+      const nonWaasWallets = connections.filter(
+        c => (c.connector as ExtendedConnector)?.type !== 'sequence-waas'
+      )
 
       const nonLinkedWallets = nonWaasWallets.filter(
         c => !linkedWallets?.find(lw => lw.linkedWalletAddress === c.accounts[0].toLowerCase())
@@ -138,7 +148,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
           await linkWallet({
             signatureChainId: CHAIN_ID_FOR_SIGNATURE,
-            connectorName: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+            connectorName:
+              connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
             childWalletAddress,
             childMessage,
             childSignature
@@ -150,7 +161,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
               props: {
                 parentWalletAddress: getUserIdForEvent(waasWalletAddress),
                 linkedWalletAddress: getUserIdForEvent(childWalletAddress),
-                linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+                linkedWalletType:
+                  connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
                 source: 'sequence-kit/core'
               }
             })
@@ -198,10 +210,14 @@ export const Connect = (props: ConnectWalletContentProps) => {
     // Remove the injected connectors when another connector is already in the base connectors
     .filter(connector => {
       if (connector.id === 'com.coinbase.wallet') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet')
+        return !connectors.find(
+          connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet'
+        )
       }
       if (connector.id === 'io.metamask') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask-wallet')
+        return !connectors.find(
+          connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask-wallet'
+        )
       }
 
       return true
@@ -334,7 +350,8 @@ export const Connect = (props: ConnectWalletContentProps) => {
 
   const showMoreSocialOptions = socialAuthConnectors.length > MAX_ITEM_PER_ROW
   const showMoreWalletOptions = walletConnectors.length > MAX_ITEM_PER_ROW
-  const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
+  const socialConnectorsPerRow =
+    showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
   if (showExtendedList) {
@@ -402,7 +419,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
                 <Divider color="backgroundRaised" width="full" />
                 <Box justifyContent="center">
                   <Text variant="small" color="text50">
-                    {!hasConnectedSocialOrSequenceUniversal ? 'Connect with a social account' : 'Connect another wallet'}
+                    {!hasConnectedSocialOrSequenceUniversal
+                      ? 'Connect with a social account'
+                      : 'Connect another wallet'}
                   </Text>
                 </Box>
               </>
@@ -447,7 +466,11 @@ export const Connect = (props: ConnectWalletContentProps) => {
                                     onConnect={onConnect}
                                   />
                                 ) : (
-                                  <ConnectButton isDescriptive={descriptiveSocials} connector={connector} onConnect={onConnect} />
+                                  <ConnectButton
+                                    isDescriptive={descriptiveSocials}
+                                    connector={connector}
+                                    onConnect={onConnect}
+                                  />
                                 )}
                               </Box>
                             )
@@ -462,7 +485,14 @@ export const Connect = (props: ConnectWalletContentProps) => {
                       {showSocialConnectorSection && showEmailInputSection && (
                         <Box gap="4" flexDirection="row" justifyContent="center" alignItems="center">
                           <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
-                          <Text lineHeight="4" height="4" variant="normal" fontSize="small" fontWeight="medium" color="text50">
+                          <Text
+                            lineHeight="4"
+                            height="4"
+                            variant="normal"
+                            fontSize="small"
+                            fontWeight="medium"
+                            color="text50"
+                          >
                             or
                           </Text>
                           <Divider marginX="0" marginY="0" color="backgroundSecondary" flexGrow="1" />
@@ -513,7 +543,9 @@ export const Connect = (props: ConnectWalletContentProps) => {
                     {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
                       return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
                     })}
-                    {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
+                    {showMoreWalletOptions && (
+                      <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />
+                    )}
                   </Box>
                 </>
               )}

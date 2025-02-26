@@ -8,7 +8,13 @@ interface PaymentProviderOptionProps {
   logo: JSX.Element
 }
 
-export const PaymentProviderOption = ({ name, onClick, isSelected, isRecommended, logo }: PaymentProviderOptionProps) => {
+export const PaymentProviderOption = ({
+  name,
+  onClick,
+  isSelected,
+  isRecommended,
+  logo
+}: PaymentProviderOptionProps) => {
   return (
     <Card
       borderColor={isSelected ? 'backgroundRaised' : 'transparent'}

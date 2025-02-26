@@ -1,7 +1,8 @@
-import { Box, Skeleton } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
 
 import { CopyButton } from './CopyButton'
+
+import { Box, Skeleton } from '@0xsequence/design-system'
 
 interface QRCodeProps {
   value: string | undefined

@@ -1,40 +1,39 @@
-import {
-  Box,
-  Button,
-  ChevronRightIcon,
-  CopyIcon,
-  CloseIcon,
-  GradientAvatar,
-  Text,
-  NumericInput,
-  TextInput,
-  vars,
-  Spinner,
-  Card
-} from '@0xsequence/design-system'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import {
-  compareAddress,
-  getNativeTokenInfoByChainId,
-  useAnalyticsContext,
-  ExtendedConnector,
-  truncateAtMiddle,
-  useExchangeRate,
-  useCoinPrices,
-  useCheckWaasFeeOptions,
-  useWaasFeeOptions
-} from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import { useState, ChangeEvent, useRef, useEffect } from 'react'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
 
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigationContext } from '../contexts/Navigation'
-import { useSettings, useNavigation } from '../hooks'
+import { useNavigation, useSettings } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { computeBalanceFiat, isEthAddress, limitDecimals } from '../utils'
+
+import {
+  Box,
+  Button,
+  Card,
+  ChevronRightIcon,
+  CloseIcon,
+  CopyIcon,
+  GradientAvatar,
+  NumericInput,
+  Spinner,
+  Text,
+  TextInput,
+  vars
+} from '@0xsequence/design-system'
+import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import {
+  ExtendedConnector,
+  compareAddress,
+  getNativeTokenInfoByChainId,
+  truncateAtMiddle,
+  useAnalyticsContext,
+  useCheckWaasFeeOptions,
+  useWaasFeeOptions
+} from '@0xsequence/kit'
+import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
 
 interface SendCoinProps {
   chainId: number
@@ -82,14 +81,16 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices([
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
+    fiatCurrency.symbol
+  )
 
   const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
 
@@ -293,7 +294,14 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                   <Text variant="small" color="text50" whiteSpace="nowrap">
                     {`~${fiatCurrency.sign}${amountToSendFiat}`}
                   </Text>
-                  <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
+                  <Button
+                    size="xs"
+                    shape="square"
+                    label="Max"
+                    onClick={handleMax}
+                    data-id="maxCoin"
+                    flexShrink="0"
+                  />
                   <Text variant="xlarge" fontWeight="bold" color="text100">
                     {symbol}
                   </Text>
@@ -322,7 +330,10 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               >
                 <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                  <Text
+                    color="text100"
+                    variant="normal"
+                  >{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </Box>
                 <CloseIcon size="sm" color="white" />
               </Card>

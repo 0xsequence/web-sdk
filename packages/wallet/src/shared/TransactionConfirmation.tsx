@@ -1,11 +1,21 @@
-import { Box, Button, ChevronRightIcon, Text, vars, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
-import { truncateAtMiddle, useIndexerClient } from '@0xsequence/kit'
 import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { FeeOption, FeeOptionSelector } from './FeeOptionSelector'
 import { SendItemInfo } from './SendItemInfo'
+
+import {
+  Box,
+  Button,
+  Card,
+  ChevronRightIcon,
+  GradientAvatar,
+  Spinner,
+  Text,
+  vars
+} from '@0xsequence/design-system'
+import { truncateAtMiddle, useIndexerClient } from '@0xsequence/kit'
 
 interface TransactionConfirmationProps {
   // Display data
@@ -60,8 +70,9 @@ const useFeeOptionBalances = (feeOptions: TransactionConfirmationProps['feeOptio
             tokenName: option.token.name,
             decimals: option.token.decimals || 0,
             balance:
-              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
-                ?.balance || '0'
+              tokenBalances.balances.find(
+                b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase()
+              )?.balance || '0'
           }
         }
       })
@@ -103,9 +114,23 @@ export const TransactionConfirmation = ({
   const isConfirmDisabled = isFeeSelectionRequired && !selectedFeeOptionAddress
 
   return (
-    <Box width="full" height="full" display="flex" alignItems="center" justifyContent="center" background="backgroundPrimary">
+    <Box
+      width="full"
+      height="full"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      background="backgroundPrimary"
+    >
       <Box gap="2" flexDirection="column" background="backgroundPrimary" width="full">
-        <Box background="backgroundSecondary" borderRadius="md" padding="4" paddingBottom="3" gap="2" flexDirection="column">
+        <Box
+          background="backgroundSecondary"
+          borderRadius="md"
+          padding="4"
+          paddingBottom="3"
+          gap="2"
+          flexDirection="column"
+        >
           <SendItemInfo
             imageUrl={imageUrl}
             showSquareImage={showSquareImage}
@@ -139,7 +164,10 @@ export const TransactionConfirmation = ({
             <Card width="full" flexDirection="row" alignItems="center" style={{ height: '52px' }}>
               <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                 <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                <Text
+                  color="text100"
+                  variant="normal"
+                >{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
               </Box>
             </Card>
           </Box>

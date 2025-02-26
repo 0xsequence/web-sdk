@@ -1,18 +1,19 @@
-import {
-  Box,
-  Image,
-  Text,
-  GradientAvatar,
-  truncateAddress,
-  NetworkImage,
-  Card,
-  Button,
-  ChevronDownIcon,
-  SignoutIcon
-} from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useState } from 'react'
 import { useAccount, useChainId, useChains, useDisconnect, useSwitchChain } from 'wagmi'
+
+import {
+  Box,
+  Button,
+  Card,
+  ChevronDownIcon,
+  GradientAvatar,
+  Image,
+  NetworkImage,
+  SignoutIcon,
+  Text,
+  truncateAddress
+} from '@0xsequence/design-system'
 
 export const Header = () => {
   return (

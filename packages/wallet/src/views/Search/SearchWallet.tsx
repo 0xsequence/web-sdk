@@ -1,11 +1,3 @@
-import { Box, SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
-import {
-  getNativeTokenInfoByChainId,
-  useExchangeRate,
-  useCoinPrices,
-  ContractVerificationStatus,
-  compareAddress
-} from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useState } from 'react'
@@ -13,10 +5,16 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
-
 import { BalanceItem } from './components/BalanceItem'
 import { WalletLink } from './components/WalletLink'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+
+import { Box, SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
+import {
+  ContractVerificationStatus,
+  compareAddress,
+  getNativeTokenInfoByChainId,
+} from '@0xsequence/kit'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 export const SearchWallet = () => {
   const { chains } = useConfig()
@@ -28,22 +26,28 @@ export const SearchWallet = () => {
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractStatus: hideUnlistedTokens
+        ? ContractVerificationStatus.VERIFIED
+        : ContractVerificationStatus.ALL,
       omitNativeBalances: false
     }
   })
 
   const coinBalancesUnordered =
-    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
+    tokenBalancesData?.filter(
+      b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)
+    ) || []
 
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices(
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
+    fiatCurrency.symbol
+  )
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
     const isHigherFiat =
@@ -116,7 +120,9 @@ export const SearchWallet = () => {
     search === '' ? indexedCoinBalances : fuzzySearchCoinBalances.search(search).map(result => result.item)
   ).slice(0, 5)
   const foundCollectionBalances = (
-    search === '' ? indexedCollectionBalances : fuzzySearchCollections.search(search).map(result => result.item)
+    search === ''
+      ? indexedCollectionBalances
+      : fuzzySearchCollections.search(search).map(result => result.item)
   ).slice(0, 5)
 
   return (

@@ -1,25 +1,28 @@
-import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
-import {
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId,
-  useExchangeRate,
-  useCoinPrices,
-  useTransactionHistory,
-  ContractVerificationStatus
-} from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useSettings, useNavigation } from '../../hooks'
+import { useNavigation, useSettings } from '../../hooks'
 import { InfiniteScroll } from '../../shared/InfiniteScroll'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
-
 import { CoinDetailsSkeleton } from './Skeleton'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+
+import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
+import {
+  ContractVerificationStatus,
+  compareAddress,
+  formatDisplay,
+  getNativeTokenInfoByChainId
+} from '@0xsequence/kit'
+import {
+  useGetCoinPrices,
+  useGetExchangeRate,
+  useGetSingleTokenBalanceSummary,
+  useGetTokenBalancesSummary,
+  useGetTransactionHistory
+} from '@0xsequence/kit-hooks'
 
 export interface CoinDetailsProps {
   contractAddress: string
@@ -40,7 +43,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useTransactionHistory({
+  } = useGetTransactionHistory({
     chainId,
     accountAddress: accountAddress || '',
     contractAddress
@@ -48,31 +51,22 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: tokenBalance, isPending: isPendingCoinBalance } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
-    filter: {
-      accountAddresses: [accountAddress || ''],
-      contractWhitelist: [contractAddress],
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      omitNativeBalances: false
-    }
+  const { data: dataCoinBalance, isPending: isPendingCoinBalance } = useGetSingleTokenBalanceSummary({
+    chainId,
+    accountAddress: accountAddress || '',
+    contractAddress
   })
 
-  const dataCoinBalance =
-    tokenBalance && tokenBalance.length > 0
-      ? compareAddress(contractAddress, ethers.ZeroAddress)
-        ? tokenBalance?.[0]
-        : tokenBalance?.[1]
-      : undefined
-
-  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useCoinPrices([
+  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
+    fiatCurrency.symbol
+  )
 
   const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 
@@ -81,10 +75,18 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   }
 
   const isNativeToken = compareAddress(contractAddress, ethers.ZeroAddress)
-  const logo = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).logoURI : dataCoinBalance?.contractInfo?.logoURI
-  const symbol = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).symbol : dataCoinBalance?.contractInfo?.symbol
-  const name = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).name : dataCoinBalance?.contractInfo?.name
-  const decimals = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).decimals : dataCoinBalance?.contractInfo?.decimals
+  const logo = isNativeToken
+    ? getNativeTokenInfoByChainId(chainId, chains).logoURI
+    : dataCoinBalance?.contractInfo?.logoURI
+  const symbol = isNativeToken
+    ? getNativeTokenInfoByChainId(chainId, chains).symbol
+    : dataCoinBalance?.contractInfo?.symbol
+  const name = isNativeToken
+    ? getNativeTokenInfoByChainId(chainId, chains).name
+    : dataCoinBalance?.contractInfo?.name
+  const decimals = isNativeToken
+    ? getNativeTokenInfoByChainId(chainId, chains).decimals
+    : dataCoinBalance?.contractInfo?.decimals
   const formattedBalance = ethers.formatUnits(dataCoinBalance?.balance || '0', decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
@@ -118,7 +120,14 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
   }
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
+      <Box
+        flexDirection="column"
+        gap="10"
+        paddingBottom="5"
+        paddingX="4"
+        paddingTop="0"
+        style={{ marginTop: '-20px' }}
+      >
         <Box marginBottom="10" gap="2" alignItems="center" justifyContent="center" flexDirection="column">
           <TokenImage src={logo} size="xl" />
           <Text variant="large" color="text100" fontWeight="bold">
@@ -132,13 +141,31 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
           </Text>
           <Box flexDirection="row" alignItems="flex-end" justifyContent="space-between">
             <Text variant="xlarge" fontWeight="bold" color="text100">{`${balanceDisplayed} ${symbol}`}</Text>
-            <Text variant="normal" fontWeight="medium" color="text50">{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
+            <Text
+              variant="normal"
+              fontWeight="medium"
+              color="text50"
+            >{`${fiatCurrency.sign}${coinBalanceFiat}`}</Text>
           </Box>
         </Box>
         {!isReadOnly && (
           <Box gap="2">
-            <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" onClick={onClickSend} />
-            <Button width="full" variant="primary" leftIcon={SwapIcon} color="text100" label="Buy" onClick={onClickSwap} />
+            <Button
+              width="full"
+              variant="primary"
+              leftIcon={SendIcon}
+              color="text100"
+              label="Send"
+              onClick={onClickSend}
+            />
+            <Button
+              width="full"
+              variant="primary"
+              leftIcon={SwapIcon}
+              color="text100"
+              label="Buy"
+              onClick={onClickSwap}
+            />
           </Box>
         )}
         <Box>

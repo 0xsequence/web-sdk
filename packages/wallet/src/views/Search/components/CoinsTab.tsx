@@ -1,8 +1,10 @@
 // kit/packages/wallet/src/views/Search/CoinsTab.tsx
 import React, { useEffect, useRef, useState } from 'react'
-import { BalanceItem } from './BalanceItem'
-import { Spinner, Skeleton, Text, Box } from '@0xsequence/design-system'
+
 import { IndexedData } from '../SearchWalletViewAll'
+import { BalanceItem } from './BalanceItem'
+
+import { Box, Skeleton, Spinner, Text } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 
 interface CoinsTabProps {

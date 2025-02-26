@@ -1,13 +1,13 @@
-import { Box, Image, Text, TokenImage, vars } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
-import { formatDisplay, ContractVerificationStatus } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 
 import { useNavigation } from '../../hooks'
 import { NetworkBadge } from '../../shared/NetworkBadge'
-
 import { CollectionDetailsSkeleton } from './Skeleton'
+
+import { Box, Image, Text, TokenImage, vars } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
 import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 
 interface CollectionDetailsProps {
@@ -87,7 +87,13 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
             const formattedBalance = formatDisplay(ethers.formatUnits(unformattedBalance, decimals))
 
             return (
-              <Box key={index} onClick={() => onClickItem(balance)} userSelect="none" cursor="pointer" opacity={{ hover: '80' }}>
+              <Box
+                key={index}
+                onClick={() => onClickItem(balance)}
+                userSelect="none"
+                cursor="pointer"
+                opacity={{ hover: '80' }}
+              >
                 <Box
                   background="backgroundSecondary"
                   aspectRatio="1/1"

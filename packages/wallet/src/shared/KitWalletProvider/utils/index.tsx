@@ -5,20 +5,20 @@ import {
   CoinDetails,
   CollectibleDetails,
   CollectionDetails,
+  History,
   Home,
   Receive,
-  SendCoin,
-  SendCollectible,
-  History,
   SearchWallet,
   SearchWalletViewAll,
-  SettingsMenu,
+  SendCoin,
+  SendCollectible,
   SettingsCurrency,
-  SettingsNetwork,
   SettingsGeneral,
-  TransactionDetails,
+  SettingsMenu,
+  SettingsNetwork,
   SwapCoin,
-  SwapList
+  SwapList,
+  TransactionDetails
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
@@ -28,7 +28,9 @@ export const getContent = (navigation: Navigation) => {
 
   switch (location) {
     case 'send-coin':
-      return <SendCoin chainId={navigation.params.chainId} contractAddress={navigation.params.contractAddress} />
+      return (
+        <SendCoin chainId={navigation.params.chainId} contractAddress={navigation.params.contractAddress} />
+      )
     case 'send-collectible':
       return (
         <SendCollectible
@@ -54,7 +56,12 @@ export const getContent = (navigation: Navigation) => {
     case 'settings-networks':
       return <SettingsNetwork />
     case 'coin-details':
-      return <CoinDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
+      return (
+        <CoinDetails
+          contractAddress={navigation.params.contractAddress}
+          chainId={navigation.params.chainId}
+        />
+      )
     case 'collectible-details':
       return (
         <CollectibleDetails
@@ -64,11 +71,18 @@ export const getContent = (navigation: Navigation) => {
         />
       )
     case 'collection-details':
-      return <CollectionDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
+      return (
+        <CollectionDetails
+          contractAddress={navigation.params.contractAddress}
+          chainId={navigation.params.chainId}
+        />
+      )
     case 'transaction-details':
       return <TransactionDetails transaction={navigation.params.transaction} />
     case 'swap-coin':
-      return <SwapCoin contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
+      return (
+        <SwapCoin contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
+      )
     case 'swap-coin-list':
       return (
         <SwapList

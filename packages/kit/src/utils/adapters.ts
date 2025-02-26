@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { type HttpTransport, Account, Chain, Client, Transport } from 'viem'
+import { Account, Chain, Client, type HttpTransport, Transport } from 'viem'
 
 export const walletClientToSigner = async (walletClient: Client<Transport, Chain, Account>) => {
   const { account, chain, transport } = walletClient
@@ -22,7 +22,9 @@ export const publicClientToProvider = (publicClient: Client<Transport, Chain>) =
   }
   if (transport.type === 'fallback')
     return new ethers.FallbackProvider(
-      (transport.transports as ReturnType<HttpTransport>[]).map(({ value }) => new ethers.JsonRpcProvider(value?.url, network))
+      (transport.transports as ReturnType<HttpTransport>[]).map(
+        ({ value }) => new ethers.JsonRpcProvider(value?.url, network)
+      )
     )
   return new ethers.JsonRpcProvider(transport.url, network)
 }

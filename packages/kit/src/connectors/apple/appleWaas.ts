@@ -1,6 +1,8 @@
 import { Wallet } from '../../types'
-import { sequenceWaasWallet, BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
-
+import {
+  BaseSequenceWaasConnectorOptions,
+  sequenceWaasWallet
+} from '../wagmiConnectors/sequenceWaasConnector'
 import { getAppleLogo, getAppleMonochromeLogo } from './AppleLogo'
 
 export type AppleWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType'>

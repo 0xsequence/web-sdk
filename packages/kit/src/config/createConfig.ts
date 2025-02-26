@@ -1,7 +1,6 @@
-import { createConfig as createWagmiConfig, type CreateConfigParameters, type Config } from 'wagmi'
+import { type Config, type CreateConfigParameters, createConfig as createWagmiConfig } from 'wagmi'
 
 import { KitConfig, WalletType } from '../types'
-
 import { getDefaultChains } from './defaultChains'
 import { DefaultConnectorOptions, getDefaultConnectors } from './defaultConnectors'
 import { getDefaultTransports } from './defaultTransports'
@@ -17,7 +16,10 @@ export interface SequenceKitConfig {
   kitConfig: KitConfig
 }
 
-export const createConfig = <T extends WalletType>(walletType: T, options: CreateConfigOptions<T>): SequenceKitConfig => {
+export const createConfig = <T extends WalletType>(
+  walletType: T,
+  options: CreateConfigOptions<T>
+): SequenceKitConfig => {
   const { projectAccessKey, chainIds, wagmiConfig, ...rest } = options
 
   const chains = wagmiConfig?.chains || getDefaultChains(chainIds)

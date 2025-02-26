@@ -1,31 +1,39 @@
-import { Box, Button, Divider, Text } from '@0xsequence/design-system'
-import {
-  useAnalyticsContext,
-  useSwapPrices,
-  useSwapQuote,
-  compareAddress,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  sendTransactions,
-  SwapPricesWithCurrencyInfo,
-  ContractVerificationStatus,
-  useIndexerClient
-} from '@0xsequence/kit'
-import { findSupportedNetwork } from '@0xsequence/network'
-import { useState, useEffect } from 'react'
-import { encodeFunctionData, Hex, zeroAddress } from 'viem'
-import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
+import { useEffect, useState } from 'react'
+import { Hex, encodeFunctionData, zeroAddress } from 'viem'
+import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
+import {
+  useClearCachedBalances,
+  useSelectPaymentModal,
+  useSkipOnCloseCallback,
+  useTransactionStatusModal
+} from '../../hooks'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
-
 import { Footer } from './Footer'
 import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
+
+import { Box, Button, Divider, Text } from '@0xsequence/design-system'
+import {
+  ContractVerificationStatus,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  compareAddress,
+  sendTransactions,
+  useAnalyticsContext,
+  useIndexerClient
+} from '@0xsequence/kit'
+import {
+  SwapPricesWithCurrencyInfo,
+  useGetContractInfo,
+  useGetSwapPrices,
+  useGetSwapQuote,
+  useGetTokenBalancesSummary
+} from '@0xsequence/kit-hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 
 export const PaymentSelection = () => {
   return (
@@ -117,7 +125,7 @@ export const PaymentSelectionContent = () => {
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-  const { data: swapPrices = [], isLoading: _swapPricesIsLoading } = useSwapPrices(
+  const { data: swapPrices = [], isLoading: _swapPricesIsLoading } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -130,7 +138,7 @@ export const PaymentSelectionContent = () => {
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
-  const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
+  const { data: swapQuote, isLoading: isLoadingSwapQuote } = useGetSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress: currencyAddress,
@@ -144,7 +152,8 @@ export const PaymentSelectionContent = () => {
     }
   )
 
-  const isLoading = (allowanceIsLoading && !isNativeToken) || currencyBalanceIsLoading || isLoadingCurrencyInfo
+  const isLoading =
+    (allowanceIsLoading && !isNativeToken) || currencyBalanceIsLoading || isLoadingCurrencyInfo
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
@@ -452,7 +461,12 @@ export const PaymentSelectionContent = () => {
             <Box width="full">
               <Button
                 onClick={onClickPurchase}
-                disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
+                disabled={
+                  isLoading ||
+                  disableButtons ||
+                  !selectedCurrency ||
+                  (!disableSwapQuote && isLoadingSwapQuote)
+                }
                 marginTop="6"
                 shape="square"
                 variant="primary"
@@ -461,7 +475,13 @@ export const PaymentSelectionContent = () => {
               />
               <Box width="full" justifyContent="center" alignItems="center" gap="0.5" marginY="2">
                 {/* Replace by icon from design-system once new release is out */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="13"
+                  height="12"
+                  viewBox="0 0 13 12"
+                  fill="none"
+                >
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"

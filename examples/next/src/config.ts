@@ -1,7 +1,8 @@
-import { KitConfig, createConfig } from '@0xsequence/kit'
-import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'
+
+import { KitConfig, createConfig } from '@0xsequence/kit'
+import { ChainId } from '@0xsequence/network'
 
 export const isDebugMode = false
 

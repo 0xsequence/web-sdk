@@ -1,6 +1,6 @@
-import { Box, Card, Text, TokenImage } from '@0xsequence/design-system'
-
 import { SelectedIndicator } from './SelectedIndicator'
+
+import { Box, Card, Text, TokenImage } from '@0xsequence/design-system'
 
 interface CryptoOptionProps {
   currencyName: string

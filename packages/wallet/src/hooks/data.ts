@@ -1,25 +1,26 @@
-import { SequenceAPIClient, TokenPrice } from '@0xsequence/api'
-import { Transaction, TokenBalance, SequenceIndexer } from '@0xsequence/indexer'
-import {
-  compareAddress,
-  getTransactionHistory,
-  useAPIClient,
-  useIndexerClients,
-  DisplayedAsset,
-  getNativeTokenBalance,
-  getCoinPrices,
-  getCollectionBalanceDetails,
-  useMetadataClient,
-  getTokenBalancesSummary,
-  getTokenBalancesDetails,
-  ContractVerificationStatus,
-  QUERY_KEYS
-} from '@0xsequence/kit'
-import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import { sortBalancesByType, isTruthy } from '../utils'
+import { isTruthy, sortBalancesByType } from '../utils'
+
+import { SequenceAPIClient, TokenPrice } from '@0xsequence/api'
+import { SequenceIndexer, TokenBalance, Transaction } from '@0xsequence/indexer'
+import {
+  ContractVerificationStatus,
+  DisplayedAsset,
+  QUERY_KEYS,
+  compareAddress,
+  getCoinPrices,
+  getCollectionBalanceDetails,
+  getNativeTokenBalance,
+  getTokenBalancesDetails,
+  getTokenBalancesSummary,
+  getTransactionHistory,
+  useAPIClient,
+  useIndexerClients,
+  useMetadataClient
+} from '@0xsequence/kit'
+import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 
 export const time = {
   oneSecond: 1 * 1000,
@@ -27,6 +28,7 @@ export const time = {
   oneHour: 60 * 60 * 1000
 }
 
+/** @deprecated Use kit-hooks instead */
 export interface GetBalancesAssetsArgs {
   accountAddress: string
   chainIds: number[]
@@ -35,6 +37,7 @@ export interface GetBalancesAssetsArgs {
   hideCollectibles?: boolean
 }
 
+/** @deprecated Use kit-hooks instead */
 export const getBalancesAssetsSummary = async (
   apiClient: SequenceAPIClient,
   metadataClient: SequenceMetadata,
@@ -49,8 +52,12 @@ export const getBalancesAssetsSummary = async (
 
   try {
     if (customDisplayAssets) {
-      const nativeTokens = displayAssets.filter(asset => compareAddress(asset.contractAddress, ethers.ZeroAddress))
-      const otherAssets = displayAssets.filter(asset => !compareAddress(asset.contractAddress, ethers.ZeroAddress))
+      const nativeTokens = displayAssets.filter(asset =>
+        compareAddress(asset.contractAddress, ethers.ZeroAddress)
+      )
+      const otherAssets = displayAssets.filter(
+        asset => !compareAddress(asset.contractAddress, ethers.ZeroAddress)
+      )
 
       interface AssetsByChainId {
         [chainId: number]: DisplayedAsset[]
@@ -78,7 +85,9 @@ export const getBalancesAssetsSummary = async (
             const indexerClient = indexerClients.get(Number(chainId))
 
             if (!indexerClient) {
-              console.error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
+              console.error(
+                `Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`
+              )
               return null
             }
 
@@ -90,14 +99,18 @@ export const getBalancesAssetsSummary = async (
                 const indexerClient = indexerClients.get(Number(chainId))
 
                 if (!indexerClient) {
-                  console.error(`Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`)
+                  console.error(
+                    `Indexer client not found for chainId: ${chainId}, did you forget to add this Chain?`
+                  )
                   return []
                 }
 
                 return getTokenBalancesDetails(indexerClient, {
                   filter: {
                     accountAddresses: [accountAddress],
-                    contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+                    contractStatus: verifiedOnly
+                      ? ContractVerificationStatus.VERIFIED
+                      : ContractVerificationStatus.ALL,
                     contractWhitelist: [asset.contractAddress],
                     omitNativeBalances: true
                   }
@@ -112,12 +125,16 @@ export const getBalancesAssetsSummary = async (
     } else {
       tokenBalances = (
         await Promise.all([
-          ...indexerClientsArr.map(([chainId, indexerClient]) => getNativeTokenBalance(indexerClient, chainId, accountAddress)),
+          ...indexerClientsArr.map(([chainId, indexerClient]) =>
+            getNativeTokenBalance(indexerClient, chainId, accountAddress)
+          ),
           ...indexerClientsArr.map(([_chainId, indexerClient]) =>
             getTokenBalancesSummary(indexerClient, {
               filter: {
                 accountAddresses: [accountAddress],
-                contractStatus: verifiedOnly ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+                contractStatus: verifiedOnly
+                  ? ContractVerificationStatus.VERIFIED
+                  : ContractVerificationStatus.ALL,
                 omitNativeBalances: true
               }
             })
@@ -149,7 +166,9 @@ export const getBalancesAssetsSummary = async (
       const indexerClient = indexerClients.get(collectionBalance.chainId)
 
       if (!indexerClient) {
-        throw new Error(`Indexer client not found for chainId: ${collectionBalance.chainId}, did you forget to add this Chain?`)
+        throw new Error(
+          `Indexer client not found for chainId: ${collectionBalance.chainId}, did you forget to add this Chain?`
+        )
       }
 
       const balance = await getCollectionBalanceDetails(indexerClient, {
@@ -252,6 +271,7 @@ export const getBalancesAssetsSummary = async (
   }
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useBalancesAssetsSummary = (args: GetBalancesAssetsArgs) => {
   const apiClient = useAPIClient()
   const metadataClient = useMetadataClient()
@@ -298,6 +318,7 @@ const getTransactionHistorySummary = async (
   return orderedTransactions
 }
 
+/** @deprecated Use kit-hooks instead */
 export const useTransactionHistorySummary = (args: GetTransactionHistorySummaryArgs) => {
   const indexerClients = useIndexerClients(args.chainIds)
 

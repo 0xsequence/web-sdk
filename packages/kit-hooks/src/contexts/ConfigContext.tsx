@@ -7,6 +7,7 @@ export interface ReactHooksConfig {
   env: {
     indexerGatewayUrl: string
     metadataUrl: string
+    apiUrl: string
     indexerUrl: string
     imageProxyUrl: string
   }

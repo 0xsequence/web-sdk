@@ -1,11 +1,12 @@
-import { Box, Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
+
+import { Box, ChevronRightIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
 interface BalanceItemProps {
   balance: TokenBalance
@@ -67,12 +68,26 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
     >
       <Box gap="3" flexDirection="row" alignItems="center" justifyContent="center" minWidth="0">
         <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} />
-        <Text variant="normal" color="text100" fontWeight="bold" overflow="hidden" whiteSpace="nowrap" ellipsis>
+        <Text
+          variant="normal"
+          color="text100"
+          fontWeight="bold"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          ellipsis
+        >
           {tokenName}
         </Text>
       </Box>
       <Box flexDirection="row" alignItems="center" justifyContent="center" gap="1" maxWidth="1/2">
-        <Text variant="normal" color="text50" fontWeight="bold" textAlign="right" whiteSpace="nowrap" ellipsis>
+        <Text
+          variant="normal"
+          color="text50"
+          fontWeight="bold"
+          textAlign="right"
+          whiteSpace="nowrap"
+          ellipsis
+        >
           {getQuantity()}
         </Text>
         <ChevronRightIcon color="text50" />

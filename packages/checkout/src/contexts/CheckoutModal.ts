@@ -1,8 +1,8 @@
 'use client'
 
-import { Theme } from '@0xsequence/kit'
-
 import { createGenericContext } from './genericContext'
+
+import { Theme } from '@0xsequence/kit'
 
 interface CoinQuantity {
   contractAddress: string
@@ -60,4 +60,5 @@ type CheckoutModalContext = {
   theme: Theme
 }
 
-export const [useCheckoutModalContext, CheckoutModalContextProvider] = createGenericContext<CheckoutModalContext>()
+export const [useCheckoutModalContext, CheckoutModalContextProvider] =
+  createGenericContext<CheckoutModalContext>()

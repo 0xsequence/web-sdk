@@ -1,6 +1,7 @@
+import { ethers } from 'ethers'
+
 import { DEBUG } from '@0xsequence/kit'
 import { ChainId, networks } from '@0xsequence/network'
-import { ethers } from 'ethers'
 
 export interface CheckSardineWhitelistStatusArgs {
   chainId: number

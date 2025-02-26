@@ -1,22 +1,28 @@
-import { Box, SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
-import {
-  getNativeTokenInfoByChainId,
-  useExchangeRate,
-  useCoinPrices,
-  ContractVerificationStatus,
-  compareAddress
-} from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
-
 import CoinsTab from './components/CoinsTab'
 import CollectionsTab from './components/CollectionsTab'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+
+import {
+  Box,
+  SearchIcon,
+  Skeleton,
+  TabsContent,
+  TabsHeader,
+  TabsRoot,
+  TextInput
+} from '@0xsequence/design-system'
+import {
+  ContractVerificationStatus,
+  compareAddress,
+  getNativeTokenInfoByChainId,
+} from '@0xsequence/kit'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
@@ -38,7 +44,9 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const [displayedCollectionBalances, setDisplayedCollectionBalances] = useState<IndexedData[]>([])
 
   const [displayedSearchCoinBalances, setDisplayedSearchCoinBalances] = useState<IndexedData[]>([])
-  const [displayedSearchCollectionBalances, setDisplayedSearchCollectionBalances] = useState<IndexedData[]>([])
+  const [displayedSearchCollectionBalances, setDisplayedSearchCollectionBalances] = useState<IndexedData[]>(
+    []
+  )
 
   const [initCoinsFlag, setInitCoinsFlag] = useState(false)
   const [initCollectionsFlag, setInitCollectionsFlag] = useState(false)
@@ -55,22 +63,28 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractStatus: hideUnlistedTokens
+        ? ContractVerificationStatus.VERIFIED
+        : ContractVerificationStatus.ALL,
       omitNativeBalances: false
     }
   })
 
   const coinBalancesUnordered =
-    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
+    tokenBalancesData?.filter(
+      b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)
+    ) || []
 
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices(
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(
+    fiatCurrency.symbol
+  )
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
     const fiatA = computeBalanceFiat({
@@ -174,7 +188,9 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
       sethasMoreCollections(false)
       return
     }
-    setDisplayedCollectionBalances(indexedCollectionBalances.slice(0, displayedCollectionBalances.length + pageSize))
+    setDisplayedCollectionBalances(
+      indexedCollectionBalances.slice(0, displayedCollectionBalances.length + pageSize)
+    )
   }
 
   const fetchMoreSearchCoinBalances = () => {
@@ -212,7 +228,15 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   })
 
   return (
-    <Box paddingX="4" paddingBottom="5" paddingTop="3" flexDirection="column" gap="5" alignItems="center" justifyContent="center">
+    <Box
+      paddingX="4"
+      paddingBottom="5"
+      paddingTop="3"
+      flexDirection="column"
+      gap="5"
+      alignItems="center"
+      justifyContent="center"
+    >
       <Box width="full">
         <TextInput
           autoFocus
@@ -226,7 +250,10 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
       </Box>
 
       <Box width="full">
-        <TabsRoot value={selectedTab} onValueChange={value => setSelectedTab(value as 'coins' | 'collections')}>
+        <TabsRoot
+          value={selectedTab}
+          onValueChange={value => setSelectedTab(value as 'coins' | 'collections')}
+        >
           <Box marginBottom="5">
             {!isPending && (
               <TabsHeader
@@ -242,7 +269,9 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
 
           <TabsContent value="collections">
             <CollectionsTab
-              displayedCollectionBalances={search ? displayedSearchCollectionBalances : displayedCollectionBalances}
+              displayedCollectionBalances={
+                search ? displayedSearchCollectionBalances : displayedCollectionBalances
+              }
               fetchMoreCollectionBalances={fetchMoreCollectionBalances}
               fetchMoreSearchCollectionBalances={fetchMoreSearchCollectionBalances}
               hasMoreCollections={hasMoreCollections}

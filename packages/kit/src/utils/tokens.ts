@@ -1,8 +1,9 @@
-import { nativeTokenImageUrl } from '@0xsequence/design-system'
+import { zeroAddress } from 'viem'
 import { Chain } from 'wagmi/chains'
 
 import { chains } from '../chains'
-import { zeroAddress } from 'viem'
+
+import { nativeTokenImageUrl } from '@0xsequence/design-system'
 import { ContractType, TokenBalance } from '@0xsequence/indexer'
 
 export interface NativeTokenInfo {
@@ -15,7 +16,10 @@ export interface NativeTokenInfo {
   blockExplorerName?: string
 }
 
-export const getNativeTokenInfoByChainId = (chainId: number, wagmiChains: readonly [Chain, ...Chain[]]): NativeTokenInfo => {
+export const getNativeTokenInfoByChainId = (
+  chainId: number,
+  wagmiChains: readonly [Chain, ...Chain[]]
+): NativeTokenInfo => {
   // Get chain data from wagmi
   const chain = wagmiChains.find(chain => chain.id === chainId) || chains[chainId]
 
@@ -40,7 +44,11 @@ export const getNativeTokenInfoByChainId = (chainId: number, wagmiChains: readon
   }
 }
 
-export const createNativeTokenBalance = (chainId: number, accountAddress: string, balance: string = '0'): TokenBalance => {
+export const createNativeTokenBalance = (
+  chainId: number,
+  accountAddress: string,
+  balance: string = '0'
+): TokenBalance => {
   return {
     chainId,
     contractAddress: zeroAddress,

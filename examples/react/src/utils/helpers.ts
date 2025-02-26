@@ -1,7 +1,8 @@
-import { CheckoutSettings } from '@0xsequence/kit-checkout'
 import { Hex, encodeFunctionData } from 'viem'
 
 import { orderbookAbi } from '../constants/orderbook-abi'
+
+import { CheckoutSettings } from '@0xsequence/kit-checkout'
 
 export const delay = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))

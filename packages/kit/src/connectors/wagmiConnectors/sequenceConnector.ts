@@ -1,12 +1,13 @@
 import { sequence } from '0xsequence'
-import { ETHAuthProof } from '@0xsequence/auth'
-import { ChainIdLike } from '@0xsequence/network'
-import { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
 import { UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
 import { EthAuthSettings } from '../../types'
+
+import { ETHAuthProof } from '@0xsequence/auth'
+import { ChainIdLike } from '@0xsequence/network'
+import { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
 
 export interface BaseSequenceConnectorOptions {
   walletAppURL?: string
@@ -218,7 +219,8 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
 
 function normalizeChainId(chainId: string | number | bigint | { chainId: string }) {
   if (typeof chainId === 'object') return normalizeChainId(chainId.chainId)
-  if (typeof chainId === 'string') return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
+  if (typeof chainId === 'string')
+    return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
   if (typeof chainId === 'bigint') return Number(chainId)
   return chainId
 }

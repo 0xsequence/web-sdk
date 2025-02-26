@@ -1,4 +1,4 @@
-import React, { RefObject, PropsWithChildren, useEffect, useRef, useState, useMemo } from 'react'
+import React, { PropsWithChildren, RefObject, useEffect, useMemo, useRef, useState } from 'react'
 
 export const useIntersectionObserver = (ref: RefObject<Element>, options?: IntersectionObserverInit) => {
   const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)

@@ -1,7 +1,8 @@
-import { Box, Skeleton, vars } from '@0xsequence/design-system'
 import React from 'react'
 
 import { NetworkBadge } from '../../shared/NetworkBadge'
+
+import { Box, Skeleton, vars } from '@0xsequence/design-system'
 
 interface CollectionDetailsSkeletonProps {
   chainId: number

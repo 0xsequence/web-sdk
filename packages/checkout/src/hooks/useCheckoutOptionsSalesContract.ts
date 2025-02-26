@@ -1,7 +1,8 @@
-import { CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { useQuery } from '@tanstack/react-query'
 
 import { useMarketplaceClient } from './useMarketplaceClient'
+
+import { CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 
 export interface UseGenerateBuyTransactionOptions {
   disabled?: boolean

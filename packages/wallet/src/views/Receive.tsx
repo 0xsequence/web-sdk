@@ -1,11 +1,12 @@
-import { Box, Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { QRCodeCanvas } from 'qrcode.react'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../constants'
+
+import { Box, Button, CopyIcon, Image, ShareIcon, Text } from '@0xsequence/design-system'
+import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
 
 export const Receive = () => {
   const { address, chain } = useAccount()
@@ -34,7 +35,14 @@ export const Receive = () => {
 
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box padding="5" paddingTop="3" flexDirection="column" justifyContent="center" alignItems="center" gap="4">
+      <Box
+        padding="5"
+        paddingTop="3"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap="4"
+      >
         <Box
           marginTop="1"
           width="fit"
@@ -44,11 +52,23 @@ export const Receive = () => {
           justifyContent="center"
           padding="4"
         >
-          <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
+          <QRCodeCanvas
+            value={address || ''}
+            size={200}
+            bgColor="white"
+            fgColor="black"
+            data-id="receiveQR"
+          />
         </Box>
         <Box>
           <Box flexDirection="row" alignItems="center" justifyContent="center" gap="2">
-            <Text variant="medium" color="text100" textAlign="center" lineHeight="inherit" style={{ fontWeight: '700' }}>
+            <Text
+              variant="medium"
+              color="text100"
+              textAlign="center"
+              lineHeight="inherit"
+              style={{ fontWeight: '700' }}
+            >
               My Wallet
             </Text>
             <Image width="5" src={nativeTokenInfo.logoURI} alt="icon" />

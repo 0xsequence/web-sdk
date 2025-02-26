@@ -1,4 +1,3 @@
-import { Box, Card, Icon, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
@@ -6,6 +5,8 @@ import { appleAuthHelpers } from 'react-apple-signin-auth'
 import { LocalStorageKey } from '../../constants'
 import { useStorage, useStorageItem } from '../../hooks/useStorage'
 import { ExtendedConnector, WalletProperties } from '../../types'
+
+import { Box, Card, EllipsisIcon, Icon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'

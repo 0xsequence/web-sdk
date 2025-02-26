@@ -1,39 +1,40 @@
-import {
-  Box,
-  Button,
-  ChevronRightIcon,
-  CopyIcon,
-  CloseIcon,
-  GradientAvatar,
-  AddIcon,
-  SubtractIcon,
-  Text,
-  NumericInput,
-  TextInput,
-  vars,
-  Spinner,
-  Card
-} from '@0xsequence/design-system'
-import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import {
-  getNativeTokenInfoByChainId,
-  useAnalyticsContext,
-  ExtendedConnector,
-  truncateAtMiddle,
-  useCheckWaasFeeOptions,
-  useWaasFeeOptions
-} from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import { useRef, useState, ChangeEvent, useEffect } from 'react'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useAccount, useChainId, useConfig, useSendTransaction, useSwitchChain } from 'wagmi'
 
-import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
+import { ERC_721_ABI, ERC_1155_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
+import { isEthAddress, limitDecimals } from '../utils'
+
+import {
+  AddIcon,
+  Box,
+  Button,
+  Card,
+  ChevronRightIcon,
+  CloseIcon,
+  CopyIcon,
+  GradientAvatar,
+  NumericInput,
+  Spinner,
+  SubtractIcon,
+  Text,
+  TextInput,
+  vars
+} from '@0xsequence/design-system'
+import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import {
+  ExtendedConnector,
+  getNativeTokenInfoByChainId,
+  truncateAtMiddle,
+  useAnalyticsContext,
+  useCheckWaasFeeOptions,
+  useWaasFeeOptions
+} from '@0xsequence/kit'
 import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
-import { limitDecimals, isEthAddress } from '../utils'
 
 interface SendCollectibleProps {
   chainId: number
@@ -81,7 +82,8 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     chainIds: [chainId]
   })
 
-  const tokenBalance = dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
+  const tokenBalance =
+    dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
 
   let contractType: ContractType | undefined
   if (tokenBalance) {
@@ -338,9 +340,21 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 <>
                   {showAmountControls && (
                     <Box gap="2">
-                      <Button disabled={isMinimum} size="xs" onClick={handleSubtractOne} leftIcon={SubtractIcon} />
+                      <Button
+                        disabled={isMinimum}
+                        size="xs"
+                        onClick={handleSubtractOne}
+                        leftIcon={SubtractIcon}
+                      />
                       <Button disabled={isMaximum} size="xs" onClick={handleAddOne} leftIcon={AddIcon} />
-                      <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
+                      <Button
+                        size="xs"
+                        shape="square"
+                        label="Max"
+                        onClick={handleMax}
+                        data-id="maxCoin"
+                        flexShrink="0"
+                      />
                     </Box>
                   )}
                 </>
@@ -368,7 +382,10 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               >
                 <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
                   <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                  <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+                  <Text
+                    color="text100"
+                    variant="normal"
+                  >{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
                 </Box>
                 <CloseIcon size="sm" color="white" />
               </Card>

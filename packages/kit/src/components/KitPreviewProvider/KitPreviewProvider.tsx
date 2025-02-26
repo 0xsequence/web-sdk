@@ -2,9 +2,8 @@
 
 import { sequence } from '0xsequence'
 import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
-import { ThemeProvider } from '@0xsequence/design-system'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
@@ -15,8 +14,17 @@ import { ThemeContextProvider } from '../../contexts/Theme'
 import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
-import { ExtendedConnector, EthAuthSettings, KitConfig, Theme, ModalPosition, DisplayedAsset } from '../../types'
+import {
+  DisplayedAsset,
+  EthAuthSettings,
+  ExtendedConnector,
+  KitConfig,
+  ModalPosition,
+  Theme
+} from '../../types'
 import { Connect } from '../Connect/Connect'
+
+import { ThemeProvider } from '@0xsequence/design-system'
 
 export type KitConnectProviderProps = {
   children: React.ReactNode
@@ -119,7 +127,9 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
         }}
       >
         <GoogleOAuthProvider clientId={googleClientId}>
-          <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
+          <ConnectModalContextProvider
+            value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}
+          >
             <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">

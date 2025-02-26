@@ -1,11 +1,12 @@
 'use client'
 
-import { FeeOption } from '@0xsequence/waas'
 import { ethers } from 'ethers'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Connector, useConnections } from 'wagmi'
 
 import { Deferred } from '../utils/deferred'
+
+import { FeeOption } from '@0xsequence/waas'
 
 export type WaasFeeOptionConfirmation = {
   id: string
@@ -19,9 +20,14 @@ export function useWaasFeeOptions(): [
   (id: string) => void
 ] {
   const connections = useConnections()
-  const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
-  const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>()
-  const pendingConfirmationRef = useRef<Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>>()
+  const waasConnector: Connector | undefined = connections.find(c =>
+    c.connector.id.includes('waas')
+  )?.connector
+  const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<
+    WaasFeeOptionConfirmation | undefined
+  >()
+  const pendingConfirmationRef =
+    useRef<Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>>()
 
   function confirmPendingFeeOption(id: string, feeTokenAddress: string | null) {
     if (pendingConfirmationRef.current) {

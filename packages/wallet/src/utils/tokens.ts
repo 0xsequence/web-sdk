@@ -1,9 +1,10 @@
-import { TokenPrice } from '@0xsequence/api'
-import { vars } from '@0xsequence/design-system'
-import { compareAddress } from '@0xsequence/kit'
-import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
 import { InfiniteData } from '@tanstack/react-query'
 import { ethers } from 'ethers'
+
+import { TokenPrice } from '@0xsequence/api'
+import { vars } from '@0xsequence/design-system'
+import { GetTransactionHistoryReturn, TokenBalance, Transaction } from '@0xsequence/indexer'
+import { compareAddress } from '@0xsequence/kit'
 
 export const getPercentageColor = (value: number) => {
   if (value > 0) {
@@ -32,7 +33,12 @@ interface ComputeBalanceFiat {
   conversionRate: number
 }
 
-export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }: ComputeBalanceFiat): string => {
+export const computeBalanceFiat = ({
+  balance,
+  prices,
+  decimals,
+  conversionRate
+}: ComputeBalanceFiat): string => {
   let totalUsd = 0
 
   const priceForToken = prices.find(p => compareAddress(p.token.contractAddress, balance.contractAddress))

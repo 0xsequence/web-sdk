@@ -1,15 +1,16 @@
-import { commons } from '@0xsequence/core'
-import { Box, Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
 
 import { useAPIClient } from '../../hooks/useAPIClient'
-import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helpers'
+import { capitalize, compareAddress, truncateAtMiddle } from '../../utils/helpers'
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
-import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
+import { AwardItemProps, DecodingType, TransferProps, decodeTransactions } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../CollectibleTileImage'
+
+import { commons } from '@0xsequence/core'
+import { Box, Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
 import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 
 interface TxnDetailsProps {
@@ -91,7 +92,8 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const toAddress: string | undefined = transferProps.to
   const isNativeCoin = contractAddress ? compareAddress(contractAddress, ethers.ZeroAddress) : true
   const is1155 = transferProps.contractType === ContractType.ERC1155
-  const isNFT = transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
+  const isNFT =
+    transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
   const { data: balances = [] } = useGetTokenBalancesSummary({
@@ -110,7 +112,9 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
     tokenIDs: transferProps.tokenIds ?? []
   })
 
-  const tokenBalance = contractAddress ? balances.find(b => compareAddress(b.contractAddress, contractAddress)) : undefined
+  const tokenBalance = contractAddress
+    ? balances.find(b => compareAddress(b.contractAddress, contractAddress))
+    : undefined
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
 
   const imageUrl = isNativeCoin

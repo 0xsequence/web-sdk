@@ -1,4 +1,4 @@
-import { mock as mockBase, MockParameters } from 'wagmi/connectors'
+import { MockParameters, mock as mockBase } from 'wagmi/connectors'
 
 import { Wallet } from '../../types'
 import { SequenceLogo } from '../sequence/SequenceLogo'

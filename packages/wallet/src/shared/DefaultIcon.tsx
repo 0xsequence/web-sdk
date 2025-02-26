@@ -1,5 +1,6 @@
-import { Box, Text } from '@0xsequence/design-system'
 import React from 'react'
+
+import { Box, Text } from '@0xsequence/design-system'
 
 interface DefaultIconProps {
   size?: number

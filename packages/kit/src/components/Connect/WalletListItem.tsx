@@ -1,3 +1,5 @@
+import React, { useState } from 'react'
+
 import {
   Box,
   Button,
@@ -10,7 +12,6 @@ import {
   Tooltip,
   truncateAddress
 } from '@0xsequence/design-system'
-import React, { useState } from 'react'
 
 export interface WalletListItemProps {
   name: string
@@ -85,7 +86,12 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
           ) : showUnlinkConfirm ? (
             <Box display="flex" gap="3">
               <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={handleUnlink} />
-              <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
+              <IconButton
+                size="xs"
+                variant="glass"
+                icon={CloseIcon}
+                onClick={() => setShowUnlinkConfirm(false)}
+              />
             </Box>
           ) : (
             <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />

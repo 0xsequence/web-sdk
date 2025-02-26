@@ -1,10 +1,10 @@
-import { Box, Text } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransferFundsModal } from '../../hooks'
-
 import { QRCode } from './QRCode'
+
+import { Box, Text } from '@0xsequence/design-system'
 
 export const TransferToWallet = () => {
   const { address: userAddress } = useAccount()
@@ -33,7 +33,14 @@ export const TransferToWallet = () => {
             <QRCode value={address} data-id="receiveQR" />
           </Box>
 
-          <Text as="div" width="full" variant="normal" color="text50" textAlign="center" data-id="receiveAddress">
+          <Text
+            as="div"
+            width="full"
+            variant="normal"
+            color="text50"
+            textAlign="center"
+            data-id="receiveAddress"
+          >
             {address}
           </Text>
         </Box>

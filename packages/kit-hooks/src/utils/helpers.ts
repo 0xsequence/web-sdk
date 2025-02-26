@@ -1,4 +1,4 @@
-import { ZERO_ADDRESS } from '../constants/hooks'
+import { ZERO_ADDRESS } from '../constants'
 
 import { ContractType, TokenBalance } from '@0xsequence/indexer'
 

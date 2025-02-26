@@ -1,8 +1,8 @@
-import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
-
 import { HEADER_HEIGHT } from '../../constants'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
+
+import { Box, Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 interface CoinDetailsSkeletonProps {
   chainId: number
@@ -12,7 +12,14 @@ interface CoinDetailsSkeletonProps {
 export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeletonProps) => {
   return (
     <Box style={{ paddingTop: HEADER_HEIGHT }}>
-      <Box flexDirection="column" gap="10" paddingBottom="5" paddingX="4" paddingTop="0" style={{ marginTop: '-20px' }}>
+      <Box
+        flexDirection="column"
+        gap="10"
+        paddingBottom="5"
+        paddingX="4"
+        paddingTop="0"
+        style={{ marginTop: '-20px' }}
+      >
         <Box marginBottom="10" gap="2" alignItems="center" justifyContent="center" flexDirection="column">
           <Skeleton style={{ width: '64px', height: '64px' }} />
           <Skeleton style={{ height: '28px', width: '70px' }} />
@@ -28,7 +35,15 @@ export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeleton
           </Box>
         </Box>
         {!isReadOnly && (
-          <Button width="full" variant="primary" leftIcon={SendIcon} color="text100" label="Send" disabled onClick={() => {}} />
+          <Button
+            width="full"
+            variant="primary"
+            leftIcon={SendIcon}
+            color="text100"
+            label="Send"
+            disabled
+            onClick={() => {}}
+          />
         )}
         <Box>
           <TransactionHistorySkeleton />

@@ -1,6 +1,6 @@
-import { DEBUG } from '@0xsequence/kit'
-
 import { AddFundsSettings } from '../contexts'
+
+import { DEBUG } from '@0xsequence/kit'
 
 export const TRANSAK_API_KEY = '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
 export const TRANSAK_API_KEY_STAGING = 'c20f2a0e-fe6a-4133-8fa7-77e9f84edf98'

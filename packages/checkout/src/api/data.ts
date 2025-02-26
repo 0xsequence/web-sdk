@@ -1,8 +1,8 @@
+import { CreditCardCheckout } from '../contexts'
+
 import { DEBUG } from '@0xsequence/kit'
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
-
-import { CreditCardCheckout } from '../contexts'
 
 export interface FetchSardineClientTokenReturn {
   token: string
