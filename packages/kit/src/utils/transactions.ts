@@ -69,7 +69,9 @@ export const sendTransactions = async ({
       network: chainId
     })
 
-    let transactionsFeeOption = null
+    const isSponsored = resp.data.feeOptions.length == 0
+
+    let transactionsFeeOption
     const transactionsFeeQuote = resp.data.feeQuote
 
     const balances = await indexerClient.getTokenBalancesDetails({
