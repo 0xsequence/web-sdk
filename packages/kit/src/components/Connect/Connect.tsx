@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
-import { LocalStorageKey } from '../../constants'
+import { LocalStorageKey, KIT_VERSION } from '../../constants'
 import { CHAIN_ID_FOR_SIGNATURE } from '../../constants/walletLinking'
 import { useAnalyticsContext } from '../../contexts/Analytics'
 import { useKitWallets } from '../../hooks/useKitWallets'

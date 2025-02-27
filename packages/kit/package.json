@@ -26,13 +26,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:clean && pnpm build:css && pnpm build:types && pnpm build:esm && pnpm build:cjs",
+    "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:types && pnpm build:esm && pnpm build:cjs",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
     "build:esm": "tsc --module es2022 --outDir dist/esm/",
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
     "build:css": "tailwindcss --minify -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`;\" > ./src/styles.ts",
     "build:clean": "rimraf -g ./dist",
-    "dev": "pnpm pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "dev": "pnpm run writeVersion && pnpm pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "writeVersion": "node scripts/writeVersion.js",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
