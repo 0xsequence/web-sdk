@@ -1,6 +1,6 @@
 import { Box, Spinner, Text } from '@0xsequence/design-system'
 import { Transaction } from '@0xsequence/indexer'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { TransactionHistoryItem } from './TransactionHistoryItem'
 import { TransactionHistorySkeleton } from './TransactionHistorySkeleton'
@@ -12,7 +12,7 @@ interface TransactionHistoryListProps {
 }
 
 export const TransactionHistoryList = ({ transactions, isPending, isFetchingNextPage }: TransactionHistoryListProps) => {
-  type TransactionPeriodId = 'today' | 'yesterday' | 'week' | 'month' | 'year' | 'years'
+  type TransactionPeriodId = 'today' | 'yesterday' | 'week' | 'month' | 'year' | 'past'
 
   interface TransactionPeriods {
     id: TransactionPeriodId
@@ -30,28 +30,35 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
     },
     {
       id: 'week',
-      label: 'Last Week'
+      label: 'This Week'
     },
     {
       id: 'month',
-      label: 'Last Month'
+      label: 'This Month'
     },
     {
       id: 'year',
-      label: 'Last Year'
+      label: 'This Year'
     },
     {
-      id: 'years',
-      label: 'Past Years'
+      id: 'past',
+      label: 'Past'
     }
   ]
 
   const transactionsByTime = useMemo(() => {
-    const todayTreshold = new Date(new Date().setHours(0, 0, 0, 0)).getTime()
-    const yesterdayTreshold = new Date(new Date().setDate(new Date(todayTreshold).getDate() - 1)).getTime()
-    const weekTreshold = new Date(new Date().setDate(new Date().getDate() - 7)).getTime()
-    const monthTreshold = new Date(new Date().setDate(new Date().getDate() - 30)).getTime()
-    const yearTreshold = new Date(new Date().setDate(new Date().getDate() - 365)).getTime()
+    console.log('transactions', transactions)
+    const todayThreshold = new Date(new Date().setHours(0, 0, 0, 0)).getTime()
+    const yesterdayThreshold = new Date(new Date().setDate(new Date(todayThreshold).getDate() - 1)).getTime()
+
+    const currentDate = new Date(new Date().setHours(0, 0, 0, 0))
+    const firstDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()))
+    const firstDayOfMonth = new Date(currentDate.setDate(1))
+    const firstDayOfYear = new Date(currentDate.setMonth(0, 1))
+
+    const weekThreshold = firstDayOfWeek.getTime()
+    const monthThreshold = firstDayOfMonth.getTime()
+    const yearThreshold = firstDayOfYear.getTime()
 
     const transactionsByTime: {
       [key in TransactionPeriodId]: Transaction[]
@@ -61,23 +68,23 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
       week: [],
       month: [],
       year: [],
-      years: []
+      past: []
     }
 
     transactions.forEach(transaction => {
       const transactionTime = new Date(transaction.timestamp).getTime()
-      if (transactionTime > todayTreshold) {
+      if (transactionTime >= todayThreshold) {
         transactionsByTime.today.push(transaction)
-      } else if (transactionTime > yesterdayTreshold) {
+      } else if (transactionTime >= yesterdayThreshold) {
         transactionsByTime.yesterday.push(transaction)
-      } else if (transactionTime > weekTreshold) {
+      } else if (transactionTime >= weekThreshold) {
         transactionsByTime.week.push(transaction)
-      } else if (transactionTime > monthTreshold) {
+      } else if (transactionTime >= monthThreshold) {
         transactionsByTime.month.push(transaction)
-      } else if (transactionTime > yearTreshold) {
+      } else if (transactionTime >= yearThreshold) {
         transactionsByTime.year.push(transaction)
       } else {
-        transactionsByTime.years.push(transaction)
+        transactionsByTime.past.push(transaction)
       }
     })
 
