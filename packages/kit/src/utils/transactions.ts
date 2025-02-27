@@ -69,7 +69,9 @@ export const sendTransactions = async ({
       network: chainId
     })
 
-    let transactionsFeeOption = null
+    const isSponsored = resp.data.feeOptions.length == 0
+
+    let transactionsFeeOption
     const transactionsFeeQuote = resp.data.feeQuote
 
     const balances = await indexerClient.getTokenBalancesDetails({
@@ -100,7 +102,7 @@ export const sendTransactions = async ({
       }
     }
 
-    if (!transactionsFeeOption) {
+    if (!transactionsFeeOption && !isSponsored) {
       throw new FeeOptionInsufficientFundsError(`Transaction fee option with valid user balance not found: ${resp.data.feeOptions.map(f => f.token.symbol).join(', ')}`, resp.data.feeOptions)
     }
 
