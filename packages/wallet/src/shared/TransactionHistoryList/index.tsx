@@ -47,7 +47,6 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
   ]
 
   const transactionsByTime = useMemo(() => {
-    console.log('transactions', transactions)
     const todayThreshold = new Date(new Date().setHours(0, 0, 0, 0)).getTime()
     const yesterdayThreshold = new Date(new Date().setDate(new Date(todayThreshold).getDate() - 1)).getTime()
 
