@@ -1,5 +1,14 @@
 # @0xsequence/kit-connectors
 
+## 4.6.4
+
+### Patch Changes
+
+- Fix for sponsored transactions
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.4
+
 ## 4.6.3
 
 ### Patch Changes

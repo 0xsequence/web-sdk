@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.6.4
+
+### Patch Changes
+
+- Fix for sponsored transactions
+
 ## 4.6.3
 
 ### Patch Changes
