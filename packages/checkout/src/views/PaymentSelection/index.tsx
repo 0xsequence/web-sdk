@@ -214,6 +214,7 @@ export const PaymentSelectionContent = () => {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
+          ...supplementaryAnalyticsInfo,
           type: 'crypto',
           source: NFT_CHECKOUT_SOURCE,
           chainId: String(chainId),
@@ -224,8 +225,7 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
-          txHash,
-          ...supplementaryAnalyticsInfo
+          txHash
         }
       })
 
@@ -341,6 +341,7 @@ export const PaymentSelectionContent = () => {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
+          ...supplementaryAnalyticsInfo,
           type: 'crypto',
           source: NFT_CHECKOUT_SOURCE,
           chainId: String(chainId),
@@ -351,8 +352,7 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
-          txHash,
-          ...supplementaryAnalyticsInfo
+          txHash
         }
       })
 
