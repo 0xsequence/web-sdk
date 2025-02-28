@@ -67,7 +67,8 @@ export const PaymentSelectionContent = () => {
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess = () => {},
     onError = () => {},
-    onClose = () => {}
+    onClose = () => {},
+    supplementaryAnalyticsInfo
   } = selectPaymentSettings
 
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
@@ -222,7 +223,8 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
-          txHash
+          txHash,
+          ...supplementaryAnalyticsInfo
         }
       })
 
@@ -348,7 +350,8 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
-          txHash
+          txHash,
+          ...supplementaryAnalyticsInfo
         }
       })
 

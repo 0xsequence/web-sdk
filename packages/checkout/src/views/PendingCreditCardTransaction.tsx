@@ -144,7 +144,8 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             to: creditCardCheckout.contractAddress,
             item_ids: JSON.stringify([creditCardCheckout.nftId]),
             item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
-            txHash
+            txHash,
+            ...creditCardCheckout.supplementaryAnalyticsInfo
           }
         })
 
@@ -311,7 +312,8 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
             to: creditCardCheckout.contractAddress,
             item_ids: JSON.stringify([creditCardCheckout.nftId]),
             item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
-            txHash: transactionHash
+            txHash: transactionHash,
+            ...creditCardCheckout.supplementaryAnalyticsInfo
           }
         })
 

@@ -4,6 +4,8 @@ import { Theme } from '@0xsequence/design-system'
 
 import { createGenericContext } from './genericContext'
 
+import { SupplementaryAnalyticsInfo } from './SelectPaymentModal'
+
 interface CoinQuantity {
   contractAddress: string
   amountRequiredRaw: string
@@ -41,6 +43,7 @@ export interface CreditCardCheckout {
   onError?: (error: Error, settings: CreditCardCheckout) => void
   onClose?: () => void
   approvedSpenderAddress?: string
+  supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
 }
 
 export interface CheckoutSettings {

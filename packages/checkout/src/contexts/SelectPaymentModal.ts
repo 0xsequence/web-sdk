@@ -13,6 +13,10 @@ export interface Collectible {
   price?: string
 }
 
+export interface SupplementaryAnalyticsInfo {
+  [key: string]: string
+}
+
 export interface SelectPaymentSettings {
   collectibles: Collectible[]
   chain: number | string
@@ -34,6 +38,7 @@ export interface SelectPaymentSettings {
   copyrightText?: string
   transakConfig?: TransakConfig
   customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void
+  supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
 }
 
 type SelectPaymentModalContext = {
