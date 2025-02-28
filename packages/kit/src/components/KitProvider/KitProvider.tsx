@@ -10,7 +10,7 @@ import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
 import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 
-import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
+import { DEFAULT_SESSION_EXPIRATION, KIT_VERSION, LocalStorageKey } from '../../constants'
 import { AnalyticsContextProvider } from '../../contexts/Analytics'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal'
 import { KitConfigContextProvider } from '../../contexts/KitConfig'
@@ -70,6 +70,22 @@ export const KitProvider = (props: KitConnectProviderProps) => {
   const setupAnalytics = (projectAccessKey: string) => {
     const s = sequence.initWallet(projectAccessKey)
     const sequenceAnalytics = s.client.analytics
+
+    if (sequenceAnalytics) {
+      type TrackArgs = Parameters<typeof sequenceAnalytics.track>
+      const originalTrack = sequenceAnalytics.track
+      sequenceAnalytics.track = (...args: TrackArgs) => {
+        const [event] = args
+        if (event && typeof event === 'object' && 'props' in event) {
+          event.props = {
+            ...event.props,
+            sdkType: 'sequence kit',
+            version: KIT_VERSION
+          }
+        }
+        return originalTrack?.(...args)
+      }
+    }
     setAnalytics(sequenceAnalytics)
   }
 
