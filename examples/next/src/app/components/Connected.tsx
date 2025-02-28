@@ -1,12 +1,3 @@
-import { messageToSign } from '@/constants'
-import { abi } from '@/constants/nft-abi'
-import { ethers } from 'ethers'
-import { ComponentProps, useEffect, useState } from 'react'
-import { formatUnits, parseUnits } from 'viem'
-import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
-
-import { isDebugMode, sponsoredContractAddresses } from '../../config'
-
 import { Box, Button, Card, Select, Text } from '@0xsequence/design-system'
 import {
   ContractVerificationStatus,
@@ -22,6 +13,15 @@ import { CheckoutSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
+import { ethers } from 'ethers'
+import { ComponentProps, useEffect, useState } from 'react'
+import { formatUnits, parseUnits } from 'viem'
+import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
+
+import { isDebugMode, sponsoredContractAddresses } from '../../config'
+
+import { messageToSign } from '@/constants'
+import { abi } from '@/constants/nft-abi'
 
 export const Connected = () => {
   const { address } = useAccount()

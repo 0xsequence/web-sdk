@@ -1,10 +1,8 @@
-import { useConnections } from 'wagmi'
-
-import { Connected } from './Connected'
-
 import { Box, Button, Card, CheckmarkIcon, Image, Text, breakpoints, useTheme } from '@0xsequence/design-system'
 import { WalletType, useKitWallets, useOpenConnectModal } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
+
+import { Connected } from './Connected'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)

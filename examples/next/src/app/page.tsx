@@ -1,12 +1,10 @@
 'use client'
 
-import { useAccount } from 'wagmi'
-
-import { Connected } from './components/Connected'
-
 import { Box, Button, Image } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal } from '@0xsequence/kit'
 import { Footer } from '@0xsequence/kit-example-shared-components'
+
+import { Connected } from './components/Connected'
 
 export default function Home() {
   const { wallets } = useKitWallets()

@@ -1,13 +1,14 @@
+import { ThemeProvider } from '@0xsequence/design-system'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { headers } from 'next/headers'
 import { cookieToInitialState } from 'wagmi'
 
 import { config } from '../config'
+
 import { Providers } from './Providers'
 import './globals.css'
 
-import { ThemeProvider } from '@0xsequence/design-system'
 import '@0xsequence/kit/styles.css'
 
 const inter = Inter({ subsets: ['latin'] })

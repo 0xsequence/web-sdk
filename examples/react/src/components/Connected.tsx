@@ -1,15 +1,3 @@
-import { ethers } from 'ethers'
-import { AnimatePresence } from 'framer-motion'
-import React, { ComponentProps, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
-import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
-
-import { sponsoredContractAddresses } from '../config'
-import { messageToSign } from '../constants'
-import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
-import { abi } from '../constants/nft-abi'
-import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
-
 import { Box, Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints } from '@0xsequence/design-system'
 import {
   ContractVerificationStatus,
@@ -27,6 +15,17 @@ import type { SwapModalSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
+import { ethers } from 'ethers'
+import { AnimatePresence } from 'framer-motion'
+import React, { ComponentProps, useEffect } from 'react'
+import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
+import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
+
+import { sponsoredContractAddresses } from '../config'
+import { messageToSign } from '../constants'
+import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
+import { abi } from '../constants/nft-abi'
+import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)

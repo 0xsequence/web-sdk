@@ -1,7 +1,3 @@
-import * as PopoverPrimitive from '@radix-ui/react-popover'
-import { useState } from 'react'
-import { useAccount, useChainId, useChains, useDisconnect, useSwitchChain } from 'wagmi'
-
 import {
   Box,
   Button,
@@ -14,6 +10,9 @@ import {
   Text,
   truncateAddress
 } from '@0xsequence/design-system'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
+import { useState } from 'react'
+import { useAccount, useChainId, useChains, useDisconnect, useSwitchChain } from 'wagmi'
 
 export const Header = () => {
   return (

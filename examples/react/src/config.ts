@@ -1,7 +1,6 @@
-import { zeroAddress } from 'viem'
-
 import { KitConfig, WalletType, createConfig } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
+import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
 
