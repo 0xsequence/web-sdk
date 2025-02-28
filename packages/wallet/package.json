@@ -51,7 +51,7 @@
     "viem": ">= 2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/design-system": "^2.0.4",
+    "@0xsequence/design-system": "^2.0.6",
     "@0xsequence/kit": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",
