@@ -69,7 +69,7 @@ export const sendTransactions = async ({
       network: chainId
     })
 
-    const isSponsored = resp.data.feeOptions.length == 0
+    // const isSponsored = resp.data.feeOptions.length == 0
 
     let transactionsFeeOption
     const transactionsFeeQuote = resp.data.feeQuote
