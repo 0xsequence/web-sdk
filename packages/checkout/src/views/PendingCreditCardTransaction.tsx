@@ -133,6 +133,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         analytics?.track({
           event: 'SEND_TRANSACTION_REQUEST',
           props: {
+            ...creditCardCheckout.supplementaryAnalyticsInfo,
             type: 'credit_card',
             provider: 'transak',
             source: NFT_CHECKOUT_SOURCE,
@@ -144,8 +145,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             to: creditCardCheckout.contractAddress,
             item_ids: JSON.stringify([creditCardCheckout.nftId]),
             item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
-            txHash,
-            ...creditCardCheckout.supplementaryAnalyticsInfo
+            txHash
           }
         })
 
@@ -301,6 +301,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         analytics?.track({
           event: 'SEND_TRANSACTION_REQUEST',
           props: {
+            ...creditCardCheckout.supplementaryAnalyticsInfo,
             type: 'credit_card',
             provider: 'sardine',
             source: NFT_CHECKOUT_SOURCE,
@@ -312,8 +313,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
             to: creditCardCheckout.contractAddress,
             item_ids: JSON.stringify([creditCardCheckout.nftId]),
             item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
-            txHash: transactionHash,
-            ...creditCardCheckout.supplementaryAnalyticsInfo
+            txHash: transactionHash
           }
         })
 
