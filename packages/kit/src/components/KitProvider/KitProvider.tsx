@@ -142,7 +142,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
           <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
             <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                <ShadowRoot>
+                <ShadowRoot theme={theme}>
                   <AnimatePresence>
                     {openConnectModal && (
                       <Modal
