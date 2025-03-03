@@ -1,11 +1,9 @@
 import { ETHAuthProof } from '@0xsequence/auth'
-import { tokens } from '@0xsequence/design-system'
+import { Theme } from '@0xsequence/design-system'
 import { FunctionComponent } from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from './constants'
-
-type ColorTokens = (typeof tokens.colors)['dark']
 
 export interface LogoProps {
   className?: string
@@ -52,8 +50,6 @@ export interface EthAuthSettings {
   /** authorizeNonce is an optional number to be passed as ETHAuth's nonce claim for replay protection. **/
   nonce?: number
 }
-
-export type Theme = 'light' | 'dark' | Partial<ColorTokens>
 
 export type ModalPosition =
   | 'center'

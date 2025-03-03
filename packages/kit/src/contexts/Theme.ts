@@ -1,8 +1,9 @@
 'use client'
 
+import { Theme } from '@0xsequence/design-system'
 import React from 'react'
 
-import { ModalPosition, Theme } from '../index'
+import { ModalPosition } from '../index'
 
 import { createGenericContext } from './genericContext'
 
