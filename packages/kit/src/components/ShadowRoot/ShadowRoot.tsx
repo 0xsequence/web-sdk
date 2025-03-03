@@ -19,10 +19,15 @@ export const ShadowRoot = (props: ShadowRootProps) => {
     if (hostRef.current) {
       const shadowRoot = hostRef.current.attachShadow({ mode: 'open' })
 
-      // Create a style element
-      const style = document.createElement('style')
-      style.textContent = styles
-      shadowRoot.appendChild(style)
+      // Legacy way: Create a style element
+      // const style = document.createElement('style')
+      // style.textContent = styles
+      // shadowRoot.appendChild(style)
+
+      // Modern way: Create a style sheet and add to shadow root
+      const sheet = new CSSStyleSheet()
+      sheet.replaceSync(styles)
+      shadowRoot.adoptedStyleSheets = [sheet]
 
       // Create a container
       const container = document.createElement('div')
