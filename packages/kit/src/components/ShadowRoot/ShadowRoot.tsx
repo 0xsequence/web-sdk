@@ -2,7 +2,6 @@
 
 import { ThemeProvider, Theme } from '@0xsequence/design-system'
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
 
 import { styles } from '../../styles'
 
@@ -47,13 +46,11 @@ export const ShadowRoot = (props: ShadowRootProps) => {
   return (
     <>
       <div data-shadow-host ref={hostRef} />
-      {container &&
-        createPortal(
-          <ThemeProvider theme={theme} root={container ?? undefined}>
-            {children}
-          </ThemeProvider>,
-          container
-        )}
+      {container && (
+        <ThemeProvider theme={theme} root={container}>
+          {children}
+        </ThemeProvider>
+      )}
     </>
   )
 }
