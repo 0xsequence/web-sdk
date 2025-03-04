@@ -1,0 +1,52 @@
+{
+  "name": "@0xsequence/kit-immutable-connector",
+  "version": "4.4.6",
+  "description": "Immutable connector for Sequence Kit",
+  "keywords": [
+    "sequence",
+    "kit",
+    "wallet",
+    "immutable"
+  ],
+  "repository": "https://github.com/0xsequence/kit/tree/master/packages/immutable-connector",
+  "author": "Horizon Blockchain Games",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
+    "build:esm": "tsc --module es2022 --outDir dist/esm/",
+    "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
+    "build:clean": "rimraf -g ./dist",
+    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "test": "echo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@imtbl/sdk": "^2.1.0"
+  },
+  "peerDependencies": {
+    "@0xsequence/kit": "workspace:*",
+    "0xsequence": "^2.2.13",
+    "ethers": "^6.13.0",
+    "react": ">= 17 < 19",
+    "react-dom": ">= 17 < 19",
+    "viem": "^2.0.0",
+    "wagmi": "^2.14.11"
+  }
+}

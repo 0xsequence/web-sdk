@@ -15,7 +15,8 @@ export type {
   EthAuthSettings,
   ModalPosition,
   ConnectConfig,
-  StorageItem
+  StorageItem,
+  LogoProps
 } from './types'
 
 // Config

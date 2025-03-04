@@ -1,5 +1,6 @@
 import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
+import { immutable } from '@0xsequence/immutable-connector'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
@@ -93,7 +94,8 @@ export const config =
         },
         walletConnect: {
           projectId: walletConnectProjectId
-        }
+        },
+        additionalWallets: [immutable()]
       })
     : createConfig('universal', {
         ...connectConfig,
@@ -110,7 +112,8 @@ export const config =
 
         walletConnect: {
           projectId: walletConnectProjectId
-        }
+        },
+        additionalWallets: [immutable()]
       })
 
 export const getErc1155SaleContractConfig = (walletAddress: string) => ({
