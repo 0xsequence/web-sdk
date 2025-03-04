@@ -95,8 +95,8 @@ import Content from './components/Content'
 
 const config = createConfig('waas', {
   projectAccessKey: '<your-project-access-key>',
-  chainIds: [1, 137]
-  defaultChainId: 1
+  chainIds: [1, 137],
+  defaultChainId: 1,
   appName: 'Demo Dapp',
   waasConfigKey: '<your-waas-config-key>',
 

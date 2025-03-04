@@ -2,12 +2,10 @@ import { Box, Button, Card, Modal, Select, Switch, Text, TextInput, breakpoints 
 import {
   useStorage,
   useWaasFeeOptions,
-  useIndexerClient,
   signEthAuthProof,
   validateEthProof,
   getModalPositionCss,
   useOpenConnectModal,
-  ContractVerificationStatus,
   useKitWallets
 } from '@0xsequence/kit'
 import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
@@ -17,14 +15,14 @@ import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'framer-motion'
-import React, { ComponentProps, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
+import React, { type ComponentProps, useEffect } from 'react'
+import { encodeFunctionData, formatUnits, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
-import { abi } from '../constants/nft-abi'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
+import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode
@@ -83,7 +81,8 @@ export const Connected = () => {
     localStorage.getItem('confirmationEnabled') === 'true'
   )
 
-  const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
+  const chainId = useChainId()
+  const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions(chainId)
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
@@ -117,52 +116,7 @@ export const Connected = () => {
     }
   }, [sendUnsponsoredTransactionError])
 
-  const chainId = useChainId()
-
-  const indexerClient = useIndexerClient(chainId)
-
-  const [feeOptionBalances, setFeeOptionBalances] = React.useState<{ tokenName: string; decimals: number; balance: string }[]>([])
-
   const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>(undefined)
-
-  useEffect(() => {
-    checkTokenBalancesForFeeOptions()
-  }, [pendingFeeOptionConfirmation])
-
-  const checkTokenBalancesForFeeOptions = async () => {
-    if (pendingFeeOptionConfirmation && walletClient) {
-      const [account] = await walletClient.getAddresses()
-      const nativeTokenBalance = await indexerClient.getNativeTokenBalance({ accountAddress: account })
-
-      const tokenBalances = await indexerClient.getTokenBalancesSummary({
-        filter: {
-          accountAddresses: [account],
-          contractStatus: ContractVerificationStatus.ALL,
-          omitNativeBalances: true
-        }
-      })
-
-      const balances = pendingFeeOptionConfirmation.options.map(option => {
-        if (option.token.contractAddress === null) {
-          return {
-            tokenName: option.token.name,
-            decimals: option.token.decimals || 0,
-            balance: nativeTokenBalance.balance.balance
-          }
-        } else {
-          return {
-            tokenName: option.token.name,
-            decimals: option.token.decimals || 0,
-            balance:
-              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress?.toLowerCase())
-                ?.balance || '0'
-          }
-        }
-      })
-
-      setFeeOptionBalances(balances)
-    }
-  }
 
   const networkForCurrentChainId = allNetworks.find(n => n.chainId === chainId)!
 
@@ -505,7 +459,6 @@ export const Connected = () => {
     resetWriteContract()
     resetSendUnsponsoredTransaction()
     resetSendTransaction()
-    setFeeOptionBalances([])
   }, [chainId, address])
 
   return (
@@ -692,7 +645,7 @@ export const Connected = () => {
             />
           </Box>
 
-          {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
+          {pendingFeeOptionConfirmation && (
             <Box marginY="3">
               <Select
                 name="feeOption"
@@ -707,7 +660,7 @@ export const Connected = () => {
                 }}
                 value={selectedFeeOptionTokenName}
                 options={[
-                  ...pendingFeeOptionConfirmation?.options?.map(option => ({
+                  ...pendingFeeOptionConfirmation.options.map(option => ({
                     label: (
                       <Box alignItems="flex-start" flexDirection="column">
                         <Box flexDirection="row">
@@ -717,10 +670,7 @@ export const Connected = () => {
                         <Box flexDirection="row">
                           <Text>Wallet balance for {option.token.name}: </Text>{' '}
                           <Text>
-                            {formatUnits(
-                              BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
-                              option.token.decimals || 0
-                            )}
+                            {option.balanceFormatted}
                           </Text>
                         </Box>
                       </Box>
@@ -737,13 +687,7 @@ export const Connected = () => {
                     )
 
                     if (selected?.token.contractAddress !== undefined) {
-                      // check if wallet has enough balance, should be balance > feeOption.value
-                      const balance = parseUnits(
-                        feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
-                        selected.token.decimals || 0
-                      )
-                      const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
-                      if (balance && balance < feeOptionValue) {
+                      if (!selected.hasEnoughBalanceForFee) {
                         setFeeOptionAlert({
                           title: 'Insufficient balance',
                           description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,

@@ -1,12 +1,19 @@
 lockfileVersion: '9.0'
 
 settings:
-  autoInstallPeers: true
+  autoInstallPeers: false
   excludeLinksFromLockfile: false
 
 importers:
 
   .:
+    dependencies:
+      '@react-oauth/google':
+        specifier: ^0.12.1
+        version: 0.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-apple-signin-auth:
+        specifier: ^1.1.0
+        version: 1.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@0xsequence/kit':
         specifier: workspace:*
@@ -77,21 +84,12 @@ importers:
 
   examples/components:
     dependencies:
-      '@0xsequence/design-system':
-        specifier: '*'
-        version: 1.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@0xsequence/network':
-        specifier: '*'
-        version: 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@radix-ui/react-popover':
         specifier: ^1.0.7
         version: 1.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typescript:
         specifier: latest
         version: 5.7.3
-      wagmi:
-        specifier: '*'
-        version: 2.14.11(@tanstack/query-core@5.64.2)(@tanstack/react-query@5.64.2(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.10(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))
 
   examples/next:
     dependencies:
@@ -229,30 +227,9 @@ importers:
 
   packages/checkout:
     dependencies:
-      0xsequence:
-        specifier: ^2.2.13
-        version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/api':
-        specifier: ^2.2.13
-        version: 2.2.13
-      '@0xsequence/indexer':
-        specifier: ^2.2.13
-        version: 2.2.13
       '@0xsequence/marketplace':
         specifier: ^2.1.3
         version: 2.2.7
-      '@0xsequence/metadata':
-        specifier: ^2.2.13
-        version: 2.2.13
-      '@0xsequence/network':
-        specifier: ^2.2.13
-        version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/waas':
-        specifier: ^2.2.13
-        version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@tanstack/react-query':
-        specifier: ^5.0.0
-        version: 5.64.2(react@18.3.1)
       pako:
         specifier: ^2.1.0
         version: 2.1.0
@@ -265,9 +242,6 @@ importers:
       timeago-react:
         specifier: ^3.0.6
         version: 3.0.6(react@18.3.1)
-      viem:
-        specifier: ^2.0.0
-        version: 2.22.10(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)
     devDependencies:
       '@0xsequence/design-system':
         specifier: ^1.9.0
@@ -335,27 +309,12 @@ importers:
       '@0xsequence/waas':
         specifier: ^2.2.13
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@databeat/tracker':
-        specifier: ^0.9.3
-        version: 0.9.3
-      '@react-oauth/google':
-        specifier: ^0.11.1
-        version: 0.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       framer-motion:
         specifier: ^8.5.2
         version: 8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       fuse.js:
         specifier: ^6.6.2
         version: 6.6.2
-      react:
-        specifier: '>= 17 < 19'
-        version: 18.3.1
-      react-apple-signin-auth:
-        specifier: ^1.1.0
-        version: 1.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-dom:
-        specifier: '>= 17 < 19'
-        version: 18.3.1(react@18.3.1)
       uuid:
         specifier: ^10.0.0
         version: 10.0.0
@@ -381,24 +340,9 @@ importers:
 
   packages/wallet:
     dependencies:
-      '@0xsequence/api':
-        specifier: ^2.2.13
-        version: 2.2.13
-      '@0xsequence/indexer':
-        specifier: ^2.2.13
-        version: 2.2.13
-      '@0xsequence/metadata':
-        specifier: ^2.2.13
-        version: 2.2.13
-      '@0xsequence/network':
-        specifier: ^2.2.13
-        version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@radix-ui/react-popover':
         specifier: ^1.0.7
         version: 1.1.4(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tanstack/react-query':
-        specifier: ^5.0.0
-        version: 5.64.2(react@18.3.1)
       dayjs:
         specifier: ^1.11.11
         version: 1.11.13
@@ -411,9 +355,6 @@ importers:
       react-copy-to-clipboard:
         specifier: ^5.1.0
         version: 5.1.0(react@18.3.1)
-      viem:
-        specifier: ^2.0.0
-        version: 2.22.10(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)
     devDependencies:
       '@0xsequence/design-system':
         specifier: ^1.9.0
@@ -450,9 +391,6 @@ packages:
   '@0xsequence/abi@2.2.13':
     resolution: {integrity: sha512-cZDR83SNxpXTD9vZoJAtmn6/YgvttN0gmeB8feQ5cpo8yd+AeJvQpUGMPR6Ud1MQGsvcPTLnTwKkL432Pc6UGQ==}
 
-  '@0xsequence/abi@2.2.7':
-    resolution: {integrity: sha512-anDPBh3Uc2G40zSRHQsEVoF4MPjrbXLA1SZKRHwMz+1AkKbmUe36MQHP/Xf4a8qCtxmDOf6eWDkikno7ChxIVQ==}
-
   '@0xsequence/account@2.2.13':
     resolution: {integrity: sha512-+kGyDsLEYOQUMhahtJps1N2j0jLXl0hAl2ilGA4NiALck7JP1Q/IO0RtkOlfSgjqFdyaipGvhYYyJuok2ARF5w==}
     peerDependencies:
@@ -468,11 +406,6 @@ packages:
 
   '@0xsequence/core@2.2.13':
     resolution: {integrity: sha512-tu6OEGbDLg1KfMb+YOn0Z5BsYbK3UFBjuPVHRx7SpmCsZPEApJqqRKHpTYah2T3bmYIJy9tRBtqstfTsniSgng==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/core@2.2.7':
-    resolution: {integrity: sha512-GAGUK3/OK6bnenWduvSqJIQ1+n/PwTWSZl8Sg87b6ouR/qeWy9XRO8NxEeK71U2zMvwLZJxJ0aIdZXxAvuVlUg==}
     peerDependencies:
       ethers: '>=6'
 
@@ -496,9 +429,6 @@ packages:
   '@0xsequence/indexer@2.2.13':
     resolution: {integrity: sha512-RFjjjckuAhM0vgYFO1RgYyBqsUrU54l2N/Isr5DPSLCCczp+qcopNuFMB0e0FuvzUP1buunxTjHRVjFH75kQEA==}
 
-  '@0xsequence/indexer@2.2.7':
-    resolution: {integrity: sha512-DE9AH6irlCGG0r7QlEz3kSW5KcxNS9XTTraxF70Axw8Y5rvcU6UMLcKzmC0DiHrS7MCwLN5/A/vvGAS0YhVY1A==}
-
   '@0xsequence/marketplace@2.2.7':
     resolution: {integrity: sha512-fVVDnen71g6goQojZV2YJ/NP8x4+t967gSTjlGc3J2EtbK3Z8w2DJRveB4j6Fnh3ovDJqUU/NF6Opo/NDBSlZA==}
 
@@ -515,11 +445,6 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/network@2.2.7':
-    resolution: {integrity: sha512-hMNO23v4n4AfkdaGBz48Po8pOglmHTgMQuMo6ECcVkLNYYUkEmSf6VS195EtxcdedqbddTy0XwKpmn65aNJfUw==}
-    peerDependencies:
-      ethers: '>=6'
-
   '@0xsequence/provider@2.2.13':
     resolution: {integrity: sha512-p5DlA2eHWhgfyCK7JQL3k7qT+aNiNxFkiAMbO2Q/eRnBnmrKcN0dK9HjuK1lWvWH3eZniEgK/M9Kec6nfixbcw==}
     peerDependencies:
@@ -527,11 +452,6 @@ packages:
 
   '@0xsequence/relayer@2.2.13':
     resolution: {integrity: sha512-fnt4AJ1u9CPwx7JJwpZ7UbJ3eN2LOG0Wuwe4FS9OSfxCOhbokELRSWegToEyH6ew6FRPvsuRMN/im3Bu3Og0QQ==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/relayer@2.2.7':
-    resolution: {integrity: sha512-5eDG7hyGUb8hFdk9vWArUTCE0TyGbAJfaMHjL/Bf7mWRJ0ik7NnTDZSCZZlm6P3FUCTGxaUjc+xh4fKrLHxgnQ==}
     peerDependencies:
       ethers: '>=6'
 
@@ -552,11 +472,6 @@ packages:
 
   '@0xsequence/utils@2.2.13':
     resolution: {integrity: sha512-V4uip1fCZAzp5O2S+nkKnwrqmzzC7em1Mc4HJvUX+fqT0jzw20BZt0CNlX34DgW6E6MzBvWnrX+DTfz/+alBWQ==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/utils@2.2.7':
-    resolution: {integrity: sha512-c55ioCh1Dllp5iyDJhlD8KubZXmmXedZR5WrLg0dTPLTTnAdduaVIJhOVsrXyvfrmGloKVwTWHzrS/X1ZjQaVA==}
     peerDependencies:
       ethers: '>=6'
 
@@ -1740,8 +1655,8 @@ packages:
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
 
-  '@react-oauth/google@0.11.1':
-    resolution: {integrity: sha512-tywZisXbsdaRBVbEu0VX6dRbOSL2I6DgY97woq5NMOOOz+xtDsm418vqq+Vx10KMtra3kdHMRMf0hXLWrk2RMg==}
+  '@react-oauth/google@0.12.1':
+    resolution: {integrity: sha512-qagsy22t+7UdkYAiT5ZhfM4StXi9PPNvw0zuwNmabrWyMKddczMtBIOARflbaIj+wHiQjnMAsZmzsUYuXeyoSg==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -3765,6 +3680,7 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
@@ -5139,8 +5055,6 @@ snapshots:
 
   '@0xsequence/abi@2.2.13': {}
 
-  '@0xsequence/abi@2.2.7': {}
-
   '@0xsequence/account@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       '@0xsequence/abi': 2.2.13
@@ -5176,12 +5090,6 @@ snapshots:
     dependencies:
       '@0xsequence/abi': 2.2.13
       '@0xsequence/utils': 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-
-  '@0xsequence/core@2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@0xsequence/abi': 2.2.7
-      '@0xsequence/utils': 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   '@0xsequence/design-system@1.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(framer-motion@8.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
@@ -5223,8 +5131,6 @@ snapshots:
 
   '@0xsequence/indexer@2.2.13': {}
 
-  '@0xsequence/indexer@2.2.7': {}
-
   '@0xsequence/marketplace@2.2.7': {}
 
   '@0xsequence/metadata@2.2.13': {}
@@ -5242,14 +5148,6 @@ snapshots:
       '@0xsequence/indexer': 2.2.13
       '@0xsequence/relayer': 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/utils': 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-
-  '@0xsequence/network@2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@0xsequence/core': 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/indexer': 2.2.7
-      '@0xsequence/relayer': 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/utils': 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   '@0xsequence/provider@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
@@ -5275,13 +5173,6 @@ snapshots:
       '@0xsequence/utils': 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/relayer@2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@0xsequence/abi': 2.2.7
-      '@0xsequence/core': 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/utils': 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-
   '@0xsequence/replacer@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       '@0xsequence/abi': 2.2.13
@@ -5303,11 +5194,6 @@ snapshots:
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   '@0xsequence/utils@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
-    dependencies:
-      ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      js-base64: 3.7.7
-
-  '@0xsequence/utils@2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       js-base64: 3.7.7
@@ -6927,7 +6813,7 @@ snapshots:
 
   '@radix-ui/rect@1.1.0': {}
 
-  '@react-oauth/google@0.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@react-oauth/google@0.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -8918,7 +8804,7 @@ snapshots:
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.4.5))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.4(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.0.0-canary-7118f5dd7-20230705(eslint@8.57.1)
@@ -8967,6 +8853,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1):
+    dependencies:
+      debug: 3.2.7
+    optionalDependencies:
+      '@typescript-eslint/parser': 7.2.0(eslint@8.57.1)(typescript@5.7.3)
+      eslint: 8.57.1
+      eslint-import-resolver-node: 0.3.9
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
+    transitivePeerDependencies:
+      - supports-color
+
   eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.4.5))(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
@@ -8991,6 +8888,35 @@ snapshots:
       tsconfig-paths: 3.15.0
     optionalDependencies:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.4.5)
+    transitivePeerDependencies:
+      - eslint-import-resolver-typescript
+      - eslint-import-resolver-webpack
+      - supports-color
+
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1):
+    dependencies:
+      '@rtsao/scc': 1.1.0
+      array-includes: 3.1.8
+      array.prototype.findlastindex: 1.2.5
+      array.prototype.flat: 1.3.3
+      array.prototype.flatmap: 1.3.3
+      debug: 3.2.7
+      doctrine: 2.1.0
+      eslint: 8.57.1
+      eslint-import-resolver-node: 0.3.9
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      hasown: 2.0.2
+      is-core-module: 2.16.1
+      is-glob: 4.0.3
+      minimatch: 3.1.2
+      object.fromentries: 2.0.8
+      object.groupby: 1.0.3
+      object.values: 1.2.1
+      semver: 6.3.1
+      string.prototype.trimend: 1.0.9
+      tsconfig-paths: 3.15.0
+    optionalDependencies:
+      '@typescript-eslint/parser': 7.2.0(eslint@8.57.1)(typescript@5.7.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack

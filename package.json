@@ -54,5 +54,9 @@
     "wagmi": "^2.14.11"
   },
   "resolutions": {},
-  "packageManager": "pnpm@9.0.6"
+  "packageManager": "pnpm@9.0.6",
+  "dependencies": {
+    "@react-oauth/google": "^0.12.1",
+    "react-apple-signin-auth": "^1.1.0"
+  }
 }
