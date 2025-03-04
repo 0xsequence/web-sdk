@@ -12,7 +12,7 @@ Easily integrate web3 wallets in your app with Sequence Kit 🧰. Based on [wagm
 - Connect to popular web3 wallets eg: walletConnect, metamask ! 🦊 ⛓️
 - Full-fledged embedded wallet for coins and collectibles 👛 🖼️ 🪙
 
-View the [demo](https://0xsequence.github.io/kit)! 👀
+View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 
 ## Quick Start
 
