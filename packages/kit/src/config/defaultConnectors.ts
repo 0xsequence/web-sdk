@@ -81,7 +81,7 @@ export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions
     | {
         projectId: string
       }
-
+  additionalWallets?: Wallet[]
   /**
    * @deprecated, use connectors.walletConnect.projectId instead
    */
@@ -284,6 +284,11 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
         defaultNetwork: defaultChainId
       })
     )
+  }
+
+
+  if (options?.additionalWallets && options?.additionalWallets.length > 0) {
+    wallets.push(...options.additionalWallets)
   }
 
   return getKitConnectWallets(projectAccessKey, wallets)
