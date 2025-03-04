@@ -4,6 +4,10 @@ import { createPortal } from 'react-dom'
 
 import { styles } from './styles'
 
+// Create a stylesheet which is shared by all ShadowRoot components
+const sheet = new CSSStyleSheet()
+sheet.replaceSync(styles)
+
 interface ShadowRootProps {
   theme?: Theme
   children: ReactNode
@@ -17,16 +21,10 @@ export const ShadowRoot = (props: ShadowRootProps) => {
 
   useEffect(() => {
     if (hostRef.current) {
+      // Create a shadow root
       const shadowRoot = hostRef.current.attachShadow({ mode: 'open' })
 
-      // Legacy way: Create a style element
-      // const style = document.createElement('style')
-      // style.textContent = styles
-      // shadowRoot.appendChild(style)
-
-      // Modern way: Create a style sheet and add to shadow root
-      const sheet = new CSSStyleSheet()
-      sheet.replaceSync(styles)
+      // Attach the stylesheet
       shadowRoot.adoptedStyleSheets = [sheet]
 
       // Create a container
@@ -41,7 +39,7 @@ export const ShadowRoot = (props: ShadowRootProps) => {
 
   return (
     <>
-      <div id="sequence-kit-shadow-host" ref={hostRef} />
+      <div data-shadow-host ref={hostRef} />
       {container &&
         createPortal(
           <ThemeProvider theme={theme} root={container ?? undefined}>
