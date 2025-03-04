@@ -7,8 +7,15 @@ import { createPortal } from 'react-dom'
 import { styles } from '../../styles'
 
 // Create a stylesheet which is shared by all ShadowRoot components
-const sheet = new CSSStyleSheet()
-sheet.replaceSync(styles)
+let sheet: CSSStyleSheet
+const getCSSStyleSheet = () => {
+  if (!sheet) {
+    sheet = new CSSStyleSheet()
+    sheet.replaceSync(styles)
+  }
+
+  return sheet
+}
 
 interface ShadowRootProps {
   theme?: Theme
@@ -26,7 +33,7 @@ export const ShadowRoot = (props: ShadowRootProps) => {
       const shadowRoot = hostRef.current.attachShadow({ mode: 'open' })
 
       // Attach the stylesheet
-      shadowRoot.adoptedStyleSheets = [sheet]
+      shadowRoot.adoptedStyleSheets = [getCSSStyleSheet()]
 
       // Create a container
       const container = document.createElement('div')
