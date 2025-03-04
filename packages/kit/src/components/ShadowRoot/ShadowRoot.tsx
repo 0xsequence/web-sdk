@@ -2,7 +2,7 @@ import { ThemeProvider, Theme } from '@0xsequence/design-system'
 import { ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import { styles } from './styles'
+import { styles } from '../../styles'
 
 // Create a stylesheet which is shared by all ShadowRoot components
 const sheet = new CSSStyleSheet()
