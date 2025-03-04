@@ -1,17 +1,15 @@
 'use client'
 
-import { ContractVerificationStatus, SequenceIndexer } from '@0xsequence/indexer'
-import { type ChainId, networks } from '@0xsequence/network'
+import { ContractVerificationStatus } from '@0xsequence/indexer'
 import type { FeeOption } from '@0xsequence/waas'
 import { formatUnits, type ethers } from 'ethers'
 import { useState, useEffect, useRef } from 'react'
 import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
 
-import { DEBUG } from '../env'
 import { Deferred } from '../utils/deferred'
 
-import { useProjectAccessKey } from './useProjectAccessKey'
+import { useIndexerClient } from './useIndexerClient'
 
 /**
  * Extended FeeOption type that includes balance information
@@ -32,7 +30,7 @@ export type WaasFeeOptionConfirmation = {
   /** Unique identifier for the fee confirmation */
   id: string
   /** Available fee options with balance information */
-  options: FeeOptionExtended[]
+  options: FeeOptionExtended[] | FeeOption[]
   /** Chain ID where the transaction will be executed */
   chainId: number
 }
@@ -78,21 +76,18 @@ export type UseWaasFeeOptionsReturn = [
  * 
  * ```
  */
-export function useWaasFeeOptions(chainId: ChainId): UseWaasFeeOptionsReturn {
-  const projectAccessKey = useProjectAccessKey()
-  const network = networks[chainId]
-  const clientUrl = DEBUG ? `https://dev-${network.name}-indexer.sequence.app` : `https://${network.name}-indexer.sequence.app`
-  const indexerClient = new SequenceIndexer(clientUrl, projectAccessKey)
+export function useWaasFeeOptions(skipFeeBalanceCheck = false): UseWaasFeeOptionsReturn {
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
   const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>()
   const pendingConfirmationRef = useRef<Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>>()
+  const indexerClient = useIndexerClient(connections[0].chainId ?? 1)
 
   // Reset state when chainId changes
   useEffect(() => {
     setPendingFeeOptionConfirmation(undefined)
     pendingConfirmationRef.current = undefined
-  }, [chainId])
+  }, [])
 
   /**
    * Confirms the selected fee option
@@ -143,36 +138,39 @@ export function useWaasFeeOptions(chainId: ChainId): UseWaasFeeOptionsReturn {
         const accountAddress = connections[0]?.accounts[0]
         if (!accountAddress) {
           throw new Error('No account address available')
-        }
-        
-        const optionsWithBalances = await Promise.all(options.map(async (option) => {
-          if (option.token.contractAddress) {
-            const tokenBalances = await indexerClient.getTokenBalancesByContract({
-              filter: {
-                accountAddresses: [accountAddress],
-                contractStatus: ContractVerificationStatus.ALL,
-                contractAddresses: [option.token.contractAddress]
-              },
-              omitMetadata: true
-            })
-            const tokenBalance = tokenBalances.balances[0]?.balance;
+        }        
+
+        if (!skipFeeBalanceCheck) {  
+          const optionsWithBalances = await Promise.all(options.map(async (option) => {
+            if (option.token.contractAddress) {
+              const tokenBalances = await indexerClient.getTokenBalancesByContract({
+                filter: {
+                  accountAddresses: [accountAddress],
+                  contractStatus: ContractVerificationStatus.ALL,
+                  contractAddresses: [option.token.contractAddress]
+                },
+                omitMetadata: true
+              })
+              const tokenBalance = tokenBalances.balances[0]?.balance;
+              return {
+                ...option,
+                balanceFormatted: option.token.decimals ? formatUnits(tokenBalances.balances[0]?.balance ?? '0', option.token.decimals) : tokenBalances.balances[0]?.balance ?? '0',
+                balance: tokenBalances.balances[0]?.balance ?? '0',
+                hasEnoughBalanceForFee: tokenBalance ? BigInt(option.value) <= BigInt(tokenBalance) : false
+              }
+            }
+            const nativeBalance = await indexerClient.getNativeTokenBalance({ accountAddress })
             return {
               ...option,
-              balanceFormatted: option.token.decimals ? formatUnits(tokenBalances.balances[0]?.balance ?? '0', option.token.decimals) : tokenBalances.balances[0]?.balance ?? '0',
-              balance: tokenBalances.balances[0]?.balance ?? '0',
-              hasEnoughBalanceForFee: tokenBalance ? BigInt(option.value) <= BigInt(tokenBalance) : false
+              balanceFormatted: formatUnits(nativeBalance.balance.balance, 18),
+              balance: nativeBalance.balance.balance,
+              hasEnoughBalanceForFee: BigInt(option.value) <= BigInt(nativeBalance.balance.balance)
             }
-          }
-          const nativeBalance = await indexerClient.getNativeTokenBalance({ accountAddress })
-          return {
-            ...option,
-            balanceFormatted: formatUnits(nativeBalance.balance.balance, 18),
-            balance: nativeBalance.balance.balance,
-            hasEnoughBalanceForFee: BigInt(option.value) <= BigInt(nativeBalance.balance.balance)
-          }
-        }))
-
-        setPendingFeeOptionConfirmation({ id, options: optionsWithBalances, chainId })
+          }))
+          setPendingFeeOptionConfirmation({ id, options: optionsWithBalances, chainId })
+        } else {
+          setPendingFeeOptionConfirmation({ id, options, chainId })
+        }
         return pending.promise
       }
     }
@@ -180,7 +178,7 @@ export function useWaasFeeOptions(chainId: ChainId): UseWaasFeeOptionsReturn {
     return () => {
       waasProvider.feeConfirmationHandler = originalHandler
     }
-  }, [waasConnector, chainId, indexerClient])
+  }, [waasConnector, indexerClient])
 
   return [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption]
 }

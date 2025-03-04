@@ -9,12 +9,12 @@ import {
   ContractVerificationStatus,
   useOpenConnectModal
 } from '@0xsequence/kit'
-import { CheckoutSettings } from '@0xsequence/kit-checkout'
+import type { CheckoutSettings } from '@0xsequence/kit-checkout'
 import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/kit-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
 import { ethers } from 'ethers'
-import { ComponentProps, useEffect, useState } from 'react'
+import { type ComponentProps, useEffect, useState } from 'react'
 import { formatUnits, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
@@ -117,7 +117,7 @@ export const Connected = () => {
             decimals: option.token.decimals || 0,
             balance: nativeTokenBalance.balance.balance
           }
-        } else {
+        }
           return {
             tokenName: option.token.name,
             decimals: option.token.decimals || 0,
@@ -125,7 +125,6 @@ export const Connected = () => {
               tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress!.toLowerCase())
                 ?.balance || '0'
           }
-        }
       })
 
       setFeeOptionBalances(balances)
