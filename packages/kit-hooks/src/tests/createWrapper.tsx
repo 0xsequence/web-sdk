@@ -25,6 +25,7 @@ export const createWrapper = () => {
           env: {
             indexerGatewayUrl: "https://indexer-gateway.sequence.app",
             metadataUrl: "https://metadata.sequence.app",
+            apiUrl: "https://api.sequence.app",
             indexerUrl: "https://indexer.sequence.app",
             imageProxyUrl: "https://image-proxy.sequence.app",
           },

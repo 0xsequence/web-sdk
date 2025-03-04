@@ -1,10 +1,9 @@
 import { Box, Spinner, Text, TokenImage } from '@0xsequence/design-system'
-import { useCoinPrices } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'
-import { useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useGetCoinPrices, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export const Price = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
@@ -18,7 +17,7 @@ export const Price = () => {
     contractAddress: currencyAddress
   })
   const fullPrice = BigInt(price)
-  const { data: coinPricesData, isLoading: isLoadingCoinPrice } = useCoinPrices([
+  const { data: coinPricesData, isLoading: isLoadingCoinPrice } = useGetCoinPrices([
     {
       chainId,
       contractAddress: currencyAddress

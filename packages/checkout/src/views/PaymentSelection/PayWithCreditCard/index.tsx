@@ -5,9 +5,9 @@ import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
-import { useClearCachedBalances, useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
+import { useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
 
-import { useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useClearCachedBalances, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings

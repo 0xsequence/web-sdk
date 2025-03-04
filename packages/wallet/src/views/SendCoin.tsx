@@ -19,8 +19,6 @@ import {
   useAnalyticsContext,
   ExtendedConnector,
   truncateAtMiddle,
-  useExchangeRate,
-  useCoinPrices,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
@@ -34,7 +32,7 @@ import { useSettings, useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
 import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface SendCoinProps {
   chainId: number
@@ -82,14 +80,14 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   })
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
   const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useCoinPrices([
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
 

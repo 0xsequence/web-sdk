@@ -29,6 +29,7 @@ export const SequenceKit = (props: SequenceKitProps) => {
             env: {
               indexerGatewayUrl: DEBUG ? 'https://dev-indexer.sequence.app' : 'https://indexer.sequence.app',
               metadataUrl: DEBUG ? 'https://dev-metadata.sequence.app' : 'https://metadata.sequence.app',
+              apiUrl: DEBUG ? 'https://dev-api.sequence.app' : 'https://api.sequence.app',
               indexerUrl: DEBUG ? 'https://dev-indexer.sequence.app' : 'https://indexer.sequence.app',
               imageProxyUrl: 'https://imgproxy.sequence.xyz/'
             }

@@ -1,13 +1,5 @@
 import { Box, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
-import {
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId,
-  useExchangeRate,
-  useCoinPrices,
-  useTransactionHistory,
-  ContractVerificationStatus
-} from '@0xsequence/kit'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, ContractVerificationStatus } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
@@ -19,7 +11,7 @@ import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CoinDetailsSkeleton } from './Skeleton'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate, useGetTransactionHistory } from '@0xsequence/kit-hooks'
 
 export interface CoinDetailsProps {
   contractAddress: string
@@ -40,7 +32,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useTransactionHistory({
+  } = useGetTransactionHistory({
     chainId,
     accountAddress: accountAddress || '',
     contractAddress
@@ -65,14 +57,14 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
         : tokenBalance?.[1]
       : undefined
 
-  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useCoinPrices([
+  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
 

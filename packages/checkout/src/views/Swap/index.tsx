@@ -3,8 +3,6 @@ import {
   CryptoOption,
   compareAddress,
   formatDisplay,
-  useSwapPrices,
-  useSwapQuote,
   sendTransactions,
   useIndexerClient
 } from '@0xsequence/kit'
@@ -16,7 +14,7 @@ import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
 
-import { useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
@@ -41,24 +39,17 @@ export const Swap = () => {
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-<<<<<<< HEAD
-  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo, isError: isErrorCurrencyInfo } = useGetContractInfo({
-    chainID: String(chainId),
-    contractAddress: currencyAddress
-  })
-=======
   const {
     data: currencyInfoData,
     isLoading: isLoadingCurrencyInfo,
     isError: isErrorCurrencyInfo
   } = useGetContractInfo({ chainID: String(chainId), contractAddress: currencyAddress })
->>>>>>> 023b484f (fixed merge error)
 
   const {
     data: swapPrices = [],
     isLoading: swapPricesIsLoading,
     isError: isErrorPrices
-  } = useSwapPrices(
+  } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -83,7 +74,7 @@ export const Swap = () => {
     data: swapQuote,
     isLoading: isLoadingSwapQuote,
     isError: isErrorSwapQuote
-  } = useSwapQuote(
+  } = useGetSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress: currencyAddress,

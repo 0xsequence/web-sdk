@@ -1,5 +1,5 @@
 import { AddIcon, Box, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
-import { CryptoOption, useSwapPrices, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
+import { CryptoOption, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'framer-motion'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
@@ -7,8 +7,7 @@ import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
-import { useClearCachedBalances } from '../../../hooks'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapPrices } from '@0xsequence/kit-hooks'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings
@@ -54,7 +53,7 @@ export const PayWithCrypto = ({
 
   const buyCurrencyAddress = settings?.currencyAddress
 
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useSwapPrices(
+  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,

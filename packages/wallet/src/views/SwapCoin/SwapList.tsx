@@ -3,14 +3,10 @@ import {
   CryptoOption,
   compareAddress,
   formatDisplay,
-  useSwapPrices,
-  useSwapQuote,
   sendTransactions,
   useIndexerClient,
   useAnalyticsContext,
   ExtendedConnector,
-  useClearCachedBalances,
-  useCurrencyInfo
 } from '@0xsequence/kit'
 import { useState } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
@@ -18,6 +14,8 @@ import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClien
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
+
+import { useGetSwapPrices, useGetSwapQuote, useGetCurrencyInfo, useClearCachedBalances } from '@0xsequence/kit-hooks'
 
 interface SwapListProps {
   chainId: number
@@ -49,7 +47,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     data: swapPrices = [],
     isLoading: swapPricesIsLoading,
     isError: isErrorSwapPrices
-  } = useSwapPrices(
+  } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -60,7 +58,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     { disabled: false }
   )
 
-  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useCurrencyInfo({ chainId, currencyAddress: contractAddress })
+  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetCurrencyInfo({ chainId, currencyAddress: contractAddress })
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
@@ -68,7 +66,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     data: swapQuote,
     isLoading: isLoadingSwapQuote,
     isError: isErrorSwapQuote
-  } = useSwapQuote(
+  } = useGetSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,

@@ -5,6 +5,7 @@ interface UseClearCachedBalances {
   clearCachedBalances: () => void
 }
 
+/* deprecated use kit-hooks instead */
 export const useClearCachedBalances = (): UseClearCachedBalances => {
   const queryClient = useQueryClient()
 

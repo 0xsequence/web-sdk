@@ -1,8 +1,6 @@
 import { Box, Button, Divider, Text } from '@0xsequence/design-system'
 import {
   useAnalyticsContext,
-  useSwapPrices,
-  useSwapQuote,
   compareAddress,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions,
@@ -17,7 +15,7 @@ import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'w
 
 import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { useClearCachedBalances, useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
+import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 import { NavigationHeader } from '../../shared/components/NavigationHeader'
 
 import { Footer } from './Footer'
@@ -25,7 +23,13 @@ import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
+import {
+  useClearCachedBalances,
+  useGetTokenBalancesSummary,
+  useGetContractInfo,
+  useGetSwapPrices,
+  useGetSwapQuote
+} from '@0xsequence/kit-hooks'
 
 export const PaymentSelection = () => {
   return (
@@ -117,7 +121,7 @@ export const PaymentSelectionContent = () => {
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-  const { data: swapPrices = [], isLoading: _swapPricesIsLoading } = useSwapPrices(
+  const { data: swapPrices = [], isLoading: _swapPricesIsLoading } = useGetSwapPrices(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress,
@@ -130,7 +134,7 @@ export const PaymentSelectionContent = () => {
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
-  const { data: swapQuote, isLoading: isLoadingSwapQuote } = useSwapQuote(
+  const { data: swapQuote, isLoading: isLoadingSwapQuote } = useGetSwapQuote(
     {
       userAddress: userAddress ?? '',
       buyCurrencyAddress: currencyAddress,

@@ -11,6 +11,7 @@ Wrap your application with the `ReactHooksConfigProvider` to provide a config to
     env: {
       indexerGatewayUrl: 'your-indexer-gateway-url',
       metadataUrl: 'your-metadata-url',
+      apiUrl: 'your-api-url',
       indexerUrl: 'your-indexer-url',
       imageProxyUrl: 'your-image-proxy-url'
     }

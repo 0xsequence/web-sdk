@@ -1,7 +1,7 @@
 import { Box, Spinner, NetworkImage, Text } from '@0xsequence/design-system'
-import { formatDisplay, NetworkBadge, CollectibleTileImage, useCoinPrices } from '@0xsequence/kit'
+import { formatDisplay, NetworkBadge, CollectibleTileImage } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useGetTokenMetadata, useGetContractInfo, useGetCoinPrices } from '@0xsequence/kit-hooks'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'
@@ -26,7 +26,7 @@ export const OrderSummary = () => {
     chainID: String(chainId),
     contractAddress: selectPaymentSettings!.currencyAddress
   })
-  const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useCoinPrices([
+  const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress: selectPaymentSettings!.currencyAddress
@@ -72,7 +72,7 @@ export const OrderSummary = () => {
       <Box flexDirection="row" gap="1">
         {selectPaymentSettings!.collectibles.map(collectible => {
           const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
-          const tokenMetadata = tokenMetadatas?.tokenMetadata.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
+          const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
             <Box gap="3" alignItems="center" key={collectible.tokenId}>
