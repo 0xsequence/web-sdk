@@ -18,11 +18,10 @@ interface ShadowRootProps {
 export const ShadowRoot = (props: ShadowRootProps) => {
   const { theme, children } = props
   const hostRef = useRef<HTMLDivElement>(null)
-  // const [shadowRoot, setShadowRoot] = useState<ShadowRoot | null>(null)
   const [container, setContainer] = useState<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (hostRef.current) {
+    if (hostRef.current && !hostRef.current.shadowRoot) {
       // Create a shadow root
       const shadowRoot = hostRef.current.attachShadow({ mode: 'open' })
 
@@ -31,10 +30,9 @@ export const ShadowRoot = (props: ShadowRootProps) => {
 
       // Create a container
       const container = document.createElement('div')
-      container.id = 'sequence-kit-shadow-root'
+      container.id = 'shadow-root-container'
       shadowRoot.appendChild(container)
 
-      //setShadowRoot(shadowRoot)
       setContainer(container)
     }
   }, [])
