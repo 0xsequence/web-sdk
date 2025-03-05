@@ -562,6 +562,11 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
+  '@0xsequence/core@2.2.7':
+    resolution: {integrity: sha512-GAGUK3/OK6bnenWduvSqJIQ1+n/PwTWSZl8Sg87b6ouR/qeWy9XRO8NxEeK71U2zMvwLZJxJ0aIdZXxAvuVlUg==}
+    peerDependencies:
+      ethers: '>=6'
+
   '@0xsequence/design-system@2.0.7':
     resolution: {integrity: sha512-7or+Yd4e8Q9KckobXfW4SK+L1rtbBntRJVBCsODKNASgv0eNdUodK+xbwKnZ4MJEusn/x+bZntzOerktU5okxw==}
     peerDependencies:
@@ -6388,6 +6393,12 @@ snapshots:
     dependencies:
       '@0xsequence/abi': 2.2.13
       '@0xsequence/utils': 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+
+  '@0xsequence/core@2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+    dependencies:
+      '@0xsequence/abi': 2.2.7
+      '@0xsequence/utils': 2.2.7(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   '@0xsequence/design-system@2.0.7(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.7(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
