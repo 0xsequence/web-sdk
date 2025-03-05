@@ -1,5 +1,11 @@
 # @0xsequence/kit
 
+## 4.6.5
+
+### Patch Changes
+
+- added custom callback to credit card providers
+
 ## 4.6.4
 
 ### Patch Changes

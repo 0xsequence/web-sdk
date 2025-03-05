@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 4.6.5
+
+### Patch Changes
+
+- added custom callback to credit card providers
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.5
+
 ## 4.6.4
 
 ### Patch Changes
