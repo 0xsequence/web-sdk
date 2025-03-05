@@ -1,11 +1,11 @@
 import { useWalletConfigContext } from '../contexts/WalletSettings'
 
 export const useWalletSettings = () => {
-  const { displayedChainIds, displayedContracts, readOnlyNetworks } = useWalletConfigContext()
+  const { setDisplayedAssets, displayedAssets, readOnlyNetworks } = useWalletConfigContext()
 
   return {
-    displayedChainIds,
-    displayedContracts,
-    readOnlyNetworks
+    displayedAssets,
+    readOnlyNetworks,
+    setDisplayedAssets
   }
 }
