@@ -68,7 +68,8 @@ export const PaymentSelectionContent = () => {
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess = () => {},
     onError = () => {},
-    onClose = () => {}
+    onClose = () => {},
+    supplementaryAnalyticsInfo
   } = selectPaymentSettings
 
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
@@ -213,6 +214,7 @@ export const PaymentSelectionContent = () => {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
+          ...supplementaryAnalyticsInfo,
           type: 'crypto',
           source: NFT_CHECKOUT_SOURCE,
           chainId: String(chainId),
@@ -339,6 +341,7 @@ export const PaymentSelectionContent = () => {
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
         props: {
+          ...supplementaryAnalyticsInfo,
           type: 'crypto',
           source: NFT_CHECKOUT_SOURCE,
           chainId: String(chainId),

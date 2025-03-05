@@ -30,7 +30,8 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
     onError = () => {},
     onClose = () => {},
     creditCardProviders = [],
-    transakConfig
+    transakConfig,
+    supplementaryAnalyticsInfo = {}
   } = settings
 
   const { address: userAddress } = useAccount()
