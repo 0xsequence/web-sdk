@@ -668,10 +668,7 @@ export const Connected = () => {
                           <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
                         </Box>
                         <Box flexDirection="row">
-                          <Text>Wallet balance for {option.token.name}: </Text>{' '}
-                          <Text>
-                            {option.balanceFormatted}
-                          </Text>
+                          <Text>Wallet balance for {option.token.name}: </Text> <Text>{option.balanceFormatted}</Text>
                         </Box>
                       </Box>
                     ),

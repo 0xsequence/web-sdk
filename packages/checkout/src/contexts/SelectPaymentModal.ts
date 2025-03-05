@@ -33,6 +33,7 @@ export interface SelectPaymentSettings {
   creditCardProviders?: string[]
   copyrightText?: string
   transakConfig?: TransakConfig
+  customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void
 }
 
 type SelectPaymentModalContext = {

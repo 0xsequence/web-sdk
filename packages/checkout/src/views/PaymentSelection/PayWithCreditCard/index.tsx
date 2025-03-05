@@ -14,7 +14,9 @@ interface PayWithCreditCardProps {
   skipOnCloseCallback: () => void
 }
 
-type PaymentProviderOptions = 'sardine' | 'transak'
+type BasePaymentProviderOptions = 'sardine' | 'transak'
+type CustomPaymentProviderOptions = 'custom'
+type PaymentProviderOptions = BasePaymentProviderOptions | CustomPaymentProviderOptions
 
 export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallback }: PayWithCreditCardProps) => {
   const {
@@ -51,12 +53,24 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
 
   const payWithSelectedProvider = () => {
     switch (selectedPaymentProvider) {
+      case 'custom':
+        if (settings.customProviderCallback) {
+          onClickCustomProvider()
+        }
+        return
       case 'sardine':
       case 'transak':
         onPurchase()
         return
       default:
         return
+    }
+  }
+
+  const onClickCustomProvider = () => {
+    if (settings.customProviderCallback) {
+      closeSelectPaymentModal()
+      settings.customProviderCallback(onSuccess, onError, onClose)
     }
   }
 
@@ -86,7 +100,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         nftAddress: collectionAddress,
         nftQuantity: collectible.quantity,
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
-        provider: selectedPaymentProvider,
+        provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
         transakConfig,
         approvedSpenderAddress: approvedSpenderAddress || targetContractAddress
@@ -115,6 +129,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
             switch (creditCardProvider) {
               case 'sardine':
               case 'transak':
+              case 'custom':
                 return (
                   <Card
                     key="sardine"
