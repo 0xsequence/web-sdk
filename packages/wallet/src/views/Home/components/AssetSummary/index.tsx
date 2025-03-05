@@ -15,7 +15,7 @@ import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 export const AssetSummary = () => {
   const { address } = useAccount()
   const { setNavigation } = useNavigation()
-  const { displayedContracts } = useWalletSettings()
+  const { displayedAssets } = useWalletSettings()
   const { hideUnlistedTokens, hideCollectibles, selectedNetworks } = useSettings()
 
   const pageSize = 10
@@ -58,7 +58,7 @@ export const AssetSummary = () => {
     {
       filter: {
         accountAddresses: [address || ''],
-        contractWhitelist: displayedContracts,
+        contractWhitelist: displayedAssets.map(asset => asset.contractAddress),
         contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
         omitNativeBalances: false
       },

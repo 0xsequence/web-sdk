@@ -50,17 +50,10 @@ interface CreateConfigOptions {
     projectName?: string
     useMock?: boolean
   }
-  /**
-   * @deprecated 'displayedAssets' is deprecated. Use `displayedChainIds` and `displayedContracts` instead.
-   * if deprecated `displayedAssets` are provided as well as `displayedChainIds` and `displayedContracts`,
-   * `displayedChainIds` and `displayedContracts` will take precedence and 'displayedAssets' will be ignored
-   */
   displayedAssets?: Array<{
     contractAddress: string
     chainId: number
   }>
-  displayedChainIds?: number[]
-  displayedContracts?: string[]
   ethAuth?: EthAuthSettings
 
   wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
@@ -247,10 +240,15 @@ The settings are described in more detailed in the Sequence Kit documentation.
       projectName: 'my app',
     },
     // limits the digital assets displayed on the assets summary screen
-    displayedChainIds: [137],
-    displayedContracts: [
-      ethers.ZeroAddress,
-      '0x631998e91476da5b870d741192fc5cbc55f5a52e'
+    displayedAssets: [
+      {
+        contractAddress: ethers.ZeroAddress,
+        chainId: 137,
+      },
+      {
+        contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
+        chainId: 137
+      }
     ],
     readOnlyNetworks: [10],
   }
