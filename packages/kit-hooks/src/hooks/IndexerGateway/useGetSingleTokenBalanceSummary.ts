@@ -5,11 +5,41 @@ import { BalanceHookOptions } from '../../types'
 import { compareAddress, createNativeTokenBalance } from '../../utils/helpers'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
+import { ContractType, SequenceIndexerGateway } from '@0xsequence/indexer'
 
 export interface GetSingleTokenBalanceSummaryArgs {
   chainId: number
   accountAddress: string
   contractAddress: string
+}
+
+const getSingleTokenBalanceSummary = async (
+  args: GetSingleTokenBalanceSummaryArgs,
+  indexerGatewayClient: SequenceIndexerGateway,
+  hideCollectibles: boolean
+) => {
+  const balance = await indexerGatewayClient.getTokenBalancesSummary({
+    chainIds: [args.chainId],
+    filter: {
+      accountAddresses: [args.accountAddress],
+      contractWhitelist: [args.contractAddress],
+      omitNativeBalances: false
+    }
+  })
+
+  if (hideCollectibles) {
+    for (const chainBalance of balance.balances) {
+      chainBalance.results = chainBalance.results.filter(
+        result => result.contractType !== ContractType.ERC721 && result.contractType !== ContractType.ERC1155
+      )
+    }
+  }
+
+  if (compareAddress(args.contractAddress, ZERO_ADDRESS)) {
+    return createNativeTokenBalance(args.chainId, args.accountAddress, balance.nativeBalances[0].results[0].balance)
+  } else {
+    return balance.balances[0].results[0]
+  }
 }
 
 /**
@@ -21,20 +51,7 @@ export const useGetSingleTokenBalanceSummary = (args: GetSingleTokenBalanceSumma
   return useQuery({
     queryKey: [QUERY_KEYS.useGetSingleTokenBalanceSummary, args, options],
     queryFn: async () => {
-      const balance = await indexerGatewayClient.getTokenBalancesSummary({
-        chainIds: [args.chainId],
-        filter: {
-          accountAddresses: [args.accountAddress],
-          contractWhitelist: [args.contractAddress],
-          omitNativeBalances: false
-        }
-      })
-
-      if (compareAddress(args.contractAddress, ZERO_ADDRESS)) {
-        return createNativeTokenBalance(args.chainId, args.accountAddress, balance.nativeBalances[0].results[0].balance)
-      } else {
-        return balance.balances[0].results[0]
-      }
+      return await getSingleTokenBalanceSummary(args, indexerGatewayClient, options?.hideCollectibles ?? false)
     },
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,

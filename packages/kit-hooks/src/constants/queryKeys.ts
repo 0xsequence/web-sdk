@@ -13,7 +13,5 @@ export const QUERY_KEYS = {
   useGetCoinPrices: 'useGetCoinPrices',
   useGetCollectiblePrices: 'useGetCollectiblePrices',
   useGetSwapPrices: 'useGetSwapPrices',
-  useGetSwapQuote: 'useGetSwapQuote',
-  useGetCurrencyInfo: 'useGetCurrencyInfo',
-  useGetCollectionsMetadata: 'useGetCollectionsMetadata'
+  useGetSwapQuote: 'useGetSwapQuote'
 }

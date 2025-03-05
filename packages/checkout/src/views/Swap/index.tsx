@@ -56,8 +56,7 @@ export const Swap = () => {
       chainId: chainId,
       buyAmount: currencyAmount,
       withContractInfo: true
-    },
-    { disabled: false }
+    }
   )
 
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)

@@ -19,12 +19,11 @@ export const useClearCachedBalances = () => {
           QUERY_KEYS.useGetContractInfo,
           QUERY_KEYS.useGetMultipleContractInfo,
           QUERY_KEYS.useGetSingleTokenBalanceSummary,
+          QUERY_KEYS.useGetExchangeRate,
           QUERY_KEYS.useGetCoinPrices,
           QUERY_KEYS.useGetCollectiblePrices,
           QUERY_KEYS.useGetSwapPrices,
-          QUERY_KEYS.useGetSwapQuote,
-          QUERY_KEYS.useGetCurrencyInfo,
-          QUERY_KEYS.useGetCollectionsMetadata
+          QUERY_KEYS.useGetSwapQuote
         ]
       })
     }

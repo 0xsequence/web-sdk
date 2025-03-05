@@ -6,7 +6,7 @@ import {
   sendTransactions,
   useIndexerClient,
   useAnalyticsContext,
-  ExtendedConnector,
+  ExtendedConnector
 } from '@0xsequence/kit'
 import { useState } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
@@ -47,16 +47,13 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     data: swapPrices = [],
     isLoading: swapPricesIsLoading,
     isError: isErrorSwapPrices
-  } = useGetSwapPrices(
-    {
-      userAddress: userAddress ?? '',
-      buyCurrencyAddress,
-      chainId: chainId,
-      buyAmount: amount,
-      withContractInfo: true
-    },
-    { disabled: false }
-  )
+  } = useGetSwapPrices({
+    userAddress: userAddress ?? '',
+    buyCurrencyAddress,
+    chainId: chainId,
+    buyAmount: amount,
+    withContractInfo: true
+  })
 
   const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
     chainID: String(chainId),
