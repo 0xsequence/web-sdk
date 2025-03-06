@@ -16,8 +16,6 @@ export const TransactionSuccess = () => {
   useEffect(() => {
     settings?.creditCardCheckout?.onSuccess &&
       settings?.creditCardCheckout?.onSuccess(navigation.params.transactionHash, settings?.creditCardCheckout)
-    settings?.creditCardCheckout?.onSuccess &&
-      settings?.creditCardCheckout?.onSuccess(navigation.params.transactionHash, settings?.creditCardCheckout)
   }, [])
 
   return (
