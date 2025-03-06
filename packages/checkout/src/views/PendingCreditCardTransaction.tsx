@@ -16,6 +16,8 @@ import {
   useSkipOnCloseCallback
 } from '../hooks'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
+
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 const POLLING_TIME = 10 * 1000
 
 interface PendingCreditTransactionProps {
@@ -57,12 +59,19 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     data: tokensMetadata,
     isLoading: isLoadingTokenMetadata,
     isError: isErrorTokenMetadata
-  } = useTokenMetadata(creditCardCheckout.chainId, creditCardCheckout.nftAddress, [creditCardCheckout.nftId])
+  } = useGetTokenMetadata({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress,
+    tokenIDs: [creditCardCheckout.nftId]
+  })
   const {
     data: collectionInfo,
     isLoading: isLoadingCollectionInfo,
     isError: isErrorCollectionInfo
-  } = useContractInfo(creditCardCheckout.chainId, creditCardCheckout.nftAddress)
+  } = useGetContractInfo({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress
+  })
 
   const network = findSupportedNetwork(creditCardCheckout.chainId)
 
@@ -252,11 +261,11 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   const { setNavigation } = nav
   const projectAccessKey = useProjectAccessKey()
 
-  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useTokenMetadata(
-    creditCardCheckout.chainId,
-    creditCardCheckout.nftAddress,
-    [creditCardCheckout.nftId]
-  )
+  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useGetTokenMetadata({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress,
+    tokenIDs: [creditCardCheckout.nftId]
+  })
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const disableSardineClientTokenFetch = isLoadingTokenMetadata

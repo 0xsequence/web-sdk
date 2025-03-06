@@ -1,9 +1,6 @@
 'use client'
 
-import React from 'react'
-
 import { DisplayedAsset } from '../types'
-
 import { createGenericContext } from './genericContext'
 
 type WalletConfigContext = {

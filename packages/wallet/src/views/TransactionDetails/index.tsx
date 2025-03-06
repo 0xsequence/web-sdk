@@ -11,22 +11,16 @@ import {
   TokenImage
 } from '@0xsequence/design-system'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
-import {
-  compareAddress,
-  formatDisplay,
-  getNativeTokenInfoByChainId,
-  useExchangeRate,
-  useCoinPrices,
-  useCollectiblePrices
-} from '@0xsequence/kit'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
-import React from 'react'
 import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { CopyButton } from '../../shared/CopyButton'
 import { NetworkBadge } from '../../shared/NetworkBadge'
+
+import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface TransactionDetailProps {
   transaction: Transaction
@@ -69,11 +63,11 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     }
   })
 
-  const { data: coinPricesData, isPending: isPendingCoinPrices } = useCoinPrices(coins)
+  const { data: coinPricesData, isPending: isPendingCoinPrices } = useGetCoinPrices(coins)
 
-  const { data: collectiblePricesData, isPending: isPendingCollectiblePrices } = useCollectiblePrices(collectibles)
+  const { data: collectiblePricesData, isPending: isPendingCollectiblePrices } = useGetCollectiblePrices(collectibles)
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const arePricesLoading =
     (coins.length > 0 && isPendingCoinPrices) ||

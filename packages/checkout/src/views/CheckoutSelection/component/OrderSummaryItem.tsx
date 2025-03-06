@@ -1,8 +1,7 @@
 import { Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system'
 import { useContractInfo, useTokenMetadata, formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
-import React from 'react'
-
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 interface OrderSummaryItem {
   contractAddress: string
   tokenId: string
@@ -11,8 +10,15 @@ interface OrderSummaryItem {
 }
 
 export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainId }: OrderSummaryItem) => {
-  const { data: tokenMetadata, isPending: isPendingTokenMetadata } = useTokenMetadata(chainId, contractAddress, [tokenId])
-  const { data: contractInfo, isPending: isPendingContractInfo } = useContractInfo(chainId, contractAddress)
+  const { data: tokenMetadata, isPending: isPendingTokenMetadata } = useGetTokenMetadata({
+    chainID: String(chainId),
+    contractAddress,
+    tokenIDs: [tokenId]
+  })
+  const { data: contractInfo, isPending: isPendingContractInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress
+  })
   const isPending = isPendingTokenMetadata || isPendingContractInfo
 
   if (isPending) {

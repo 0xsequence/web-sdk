@@ -1,10 +1,6 @@
 import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
 import {
   formatDisplay,
-  useExchangeRate,
-  useTransactionHistory,
-  useCollectiblePrices,
-  useCollectibleBalanceDetails,
   ContractVerificationStatus
 } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -18,6 +14,7 @@ import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
+import { useGetTokenBalancesDetails, useGetTransactionHistory, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 export interface CollectibleDetailsProps {
   contractAddress: string
@@ -40,7 +37,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useTransactionHistory({
+  } = useGetTransactionHistory({
     chainId,
     accountAddress: accountAddress || '',
     contractAddress,
@@ -49,18 +46,20 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: dataCollectibleBalance, isPending: isPendingCollectibleBalance } = useCollectibleBalanceDetails({
+  const { data: dataTokens, isPending: isPendingCollectibleBalance } = useGetTokenBalancesDetails({
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
       omitNativeBalances: true
     },
-    chainId,
-    tokenId
+    chainIds: [chainId]
   })
 
-  const { data: dataCollectiblePrices, isPending: isPendingCollectiblePrices } = useCollectiblePrices([
+  const dataCollectibleBalance =
+    dataTokens && dataTokens.length > 0 ? dataTokens.find(token => token.tokenID === tokenId) : undefined
+
+  const { data: dataCollectiblePrices, isPending: isPendingCollectiblePrices } = useGetCollectiblePrices([
     {
       chainId,
       contractAddress,
@@ -68,7 +67,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isPendingCollectibleBalance || isPendingCollectiblePrices || isPendingConversionRate
 

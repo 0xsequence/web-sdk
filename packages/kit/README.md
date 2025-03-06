@@ -252,6 +252,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
         chainId: 137
       }
     ],
+    readOnlyNetworks: [10],
   }
 
   <KitProvider config={kitConfig}>
