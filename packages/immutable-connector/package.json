@@ -38,7 +38,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@imtbl/sdk": "^2.1.0"
+    "@imtbl/config": "^2.1.2",
+    "@imtbl/passport": "^2.1.2",
+    "@imtbl/sdk": "^2.1.2",
+    "@imtbl/x-provider": "^2.1.2"
   },
   "peerDependencies": {
     "@0xsequence/kit": "workspace:*",
