@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@0xsequence/design-system/preset';
 
 @source '../../components/src';
 
@@ -8,7 +9,7 @@ body {
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--seq-color-background-primary);
+  background: var(--color-background-primary);
 }
 
 code {
