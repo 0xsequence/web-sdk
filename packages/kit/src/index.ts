@@ -131,6 +131,7 @@ export { NetworkBadge } from './components/NetworkBadge'
 export { CollectibleTileImage } from './components/CollectibleTileImage'
 export { CryptoOption } from './components/CryptoOption'
 export { SelectedIndicator } from './components/SelectedIndicator'
+export { ShadowRoot } from './components/ShadowRoot'
 
 // Indexer
 export { ContractVerificationStatus } from '@0xsequence/indexer'

@@ -19,21 +19,20 @@
       "require": "./dist/cjs/index.js",
       "import": "./dist/esm/index.js",
       "default": "./dist/esm/index.js"
-    },
-    "./styles.css": "./dist/styles.css"
+    }
   },
   "files": [
     "src",
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types && pnpm build:css",
+    "build": "pnpm build:clean && pnpm build:css && pnpm build:types && pnpm build:esm && pnpm build:cjs",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
     "build:esm": "tsc --module es2022 --outDir dist/esm/",
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
-    "build:css": "tailwindcss -i ./src/index.css -o ./dist/styles.css",
+    "build:css": "tailwindcss --minify -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`;\" > ./src/styles.ts",
     "build:clean": "rimraf -g ./dist",
-    "dev": "pnpm build:types && pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "dev": "pnpm pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
