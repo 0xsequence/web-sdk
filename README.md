@@ -129,8 +129,6 @@ function App() {
 React apps must be wrapped by a WagmiProvider and the KitProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
 
 ```js
-import '@0xsequence/kit/styles.css'
-
 import Content from './components/Content'
 import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/kit'
 import { KitWalletProvider } from '@0xsequence/kit-wallet'

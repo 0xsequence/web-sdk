@@ -151,7 +151,7 @@ export const ConnectedWallets = ({
           className="scroll-fade-top absolute top-0 left-0 right-0"
           style={{
             height: '30px',
-            background: 'linear-gradient(to top, rgba(0, 0, 0, 0), var(--seq-color-background-primary))',
+            background: 'linear-gradient(to top, rgba(0, 0, 0, 0), var(--color-background-primary))',
             pointerEvents: 'none',
             opacity: 0,
             transition: 'opacity 0.2s'
@@ -161,7 +161,7 @@ export const ConnectedWallets = ({
           className="scroll-fade absolute bottom-0 left-0 right-0"
           style={{
             height: '40px',
-            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--seq-color-background-primary))',
+            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--color-background-primary))',
             pointerEvents: 'none',
             opacity: 0,
             transition: 'opacity 0.2s'

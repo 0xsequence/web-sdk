@@ -134,8 +134,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
 
-import '@0xsequence/kit/styles.css'
-
 const projectAccessKey = 'xyz'
 
 const chains = getDefaultChains(/* optional array of chain ids to filter */)
