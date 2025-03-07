@@ -311,9 +311,18 @@ importers:
       '@0xsequence/kit':
         specifier: workspace:*
         version: link:../kit
+      '@imtbl/config':
+        specifier: ^2.1.2
+        version: 2.1.2
+      '@imtbl/passport':
+        specifier: ^2.1.2
+        version: 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@imtbl/sdk':
-        specifier: ^2.1.0
-        version: 2.1.0(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
+        specifier: ^2.1.2
+        version: 2.1.2(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
+      '@imtbl/x-provider':
+        specifier: ^2.1.2
+        version: 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       ethers:
         specifier: ^6.13.0
         version: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -1260,59 +1269,59 @@ packages:
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
     deprecated: Use @eslint/object-schema instead
 
-  '@imtbl/blockchain-data@2.1.0':
-    resolution: {integrity: sha512-Je6beQQrbhPGcPXRXHfYbnjCwT+8nOTjnp2eMir0M8N5wRoPbThVvvZmAlGR6DQWmg3Fxf1GTrSFqBbolpMGCg==}
+  '@imtbl/blockchain-data@2.1.2':
+    resolution: {integrity: sha512-tjgUI+a2q7sqJwZmN2/Jc+EZH2Efo1ZS/+wVx2f8mbDrzUF7xn61h31ymTOXpdaSDzsefG+B37pGclfifOz5Vw==}
 
-  '@imtbl/bridge-sdk@2.1.0':
-    resolution: {integrity: sha512-O3uiSZF7KdDsgrNw8dNQxdjf0XS1xNbXcO9lv8DEnL64/uYt+DnYrY+FZc3iAmCYN7jSHEEQD4PNopueuzKIYg==}
+  '@imtbl/bridge-sdk@2.1.2':
+    resolution: {integrity: sha512-UJZLJxSot0AlND7/5muOaHOmRy7ZhzGinlIKR549nXpF0k3wsyY7RiPHP/InHpWHOCwhi5jve9aGCo4ugw/4NQ==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/checkout-sdk@2.1.0':
-    resolution: {integrity: sha512-8QBkXMH95XRjl+87MpjT4GNIRR7xO898UooDMtVdHnUXGplw8vpRn2R0RX8OneMBQZEjGpwTMvg4er/8oa33rQ==}
+  '@imtbl/checkout-sdk@2.1.2':
+    resolution: {integrity: sha512-fJGry7JjrIz9ya86OaY80GkeUJu1hyubgDSDRfwMMaSvU9CcYv5FkoFOAo3AESdMK3U7tq4CkX5UqyUfD6Smhg==}
 
-  '@imtbl/config@2.1.0':
-    resolution: {integrity: sha512-brj9S9Kidc9t1jWnoxEPwqmcWVvNDuGukkqzInu6xg3ULtPRUCXWK3SW7D5p+I7mE7n/A2+IyU/TV0Ubtxe9GQ==}
+  '@imtbl/config@2.1.2':
+    resolution: {integrity: sha512-KEvtaASR5G/vHWh0Vf9beHylxnWwWygMjTO5MEWnBLC/JbtjTZsZ2A6PGfX2UMUHZDIMPpsdX4zqdl0KNg/WKw==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/dex-sdk@2.1.0':
-    resolution: {integrity: sha512-iXfwiURb6CxGRLMnE8eH48vB8Y/wPlmDPMoQCkCiWkNz9Ka5U4K1FCTO85NVO3/9we74vjE5j7AlFPh9FOq9DA==}
+  '@imtbl/dex-sdk@2.1.2':
+    resolution: {integrity: sha512-EU4lNHqUt5C8Yca8GQDtKC3E50dvk7Z9U0eoXYPXRInMNFs2l4VHXdUBZ45LoPlxcxD8V7OZUoeAcK8nyKzG1Q==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/generated-clients@2.1.0':
-    resolution: {integrity: sha512-agNkFukELHXE/Dkq25HIPIXDJJ3P3VN3bws+vcO8tZE6I3AMmsHof4nkdVAvTQ98x5R8pQWdrH+yLz9kaDAeOA==}
+  '@imtbl/generated-clients@2.1.2':
+    resolution: {integrity: sha512-qnBP3zRBWhgo+tTyqJvPkVMHZlJXQxcWEStJvS3JXPRDAOST/+FMK56epdgsYfztnstjeAvZxfV/V/b8+dPoXg==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/metrics@2.1.0':
-    resolution: {integrity: sha512-RPp30M/O0KEisQ4k64sf4OVUBtfj/q6v6LSupXDZeJWZYu4o64PSw/BHL67Eu2c2FeT/ZKe1cR7nn5MB+cB8og==}
+  '@imtbl/metrics@2.1.2':
+    resolution: {integrity: sha512-LXR4V5W7cRNYnuBzWeVTEQ0mel8lMro5X9GJ4Rp/Vdt9G/gbVELHtMVLyf52DIdWx8CsQHcP8+0n/X7hUO8nRg==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/minting-backend@2.1.0':
-    resolution: {integrity: sha512-M2PP+C1MrgfeJi+l5o106nGkMUFbWXNzlL4eAWL4wdEOYByzCkp4dmAgqF45tDD9gXPT6z+2HurFtQ0xbXpN5A==}
+  '@imtbl/minting-backend@2.1.2':
+    resolution: {integrity: sha512-+cf7WymhnT25I9xQzqrYpPIf7m4UPhG6gqNEUjzsGKQK5bmK+9mtdjXPP8uWLsPmpIoMByphiXDGAESt2KxU0Q==}
 
-  '@imtbl/orderbook@2.1.0':
-    resolution: {integrity: sha512-qSvOLCIxesgrAd0UabH0r0NpBoKDqeQbaGLq+RkWdWnmiWUS5IFFinzvrEpn6akHOHzVmhfLEL17iCfoUhpL5Q==}
+  '@imtbl/orderbook@2.1.2':
+    resolution: {integrity: sha512-qrzQtIACJA+RzJM2NJXqfF+rlrCAhbPmVO1Wr6mJzfYI3KOXQmNnCfcJTeXJKmpM0kPxLpjG1y1Ufux/wwVRIg==}
 
-  '@imtbl/passport@2.1.0':
-    resolution: {integrity: sha512-RmxKXpdiW5QOwkY9LxQy4cYU8DXqg20Zj0UXGun8exISI1AG7jdrBArb5eGtx6joGT8nQIBJp05d6Q5t1rMlXA==}
+  '@imtbl/passport@2.1.2':
+    resolution: {integrity: sha512-vx2p3fnpns58cVbvv4mpnqIrvfPvUA7qp94ZxCbPOXP92K76Q9zUv7sGWMPaQbwOrezruOFLkdiNiRfo08WLgA==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/sdk@2.1.0':
-    resolution: {integrity: sha512-gjnSZIrl9QQ+reCO5iy7vUpC7dDMTLZ0RsqTo0TmhsL2klfjiXocb9J5UHyd6u30sUDAcoVe5Av5WbyCbfxxuA==}
+  '@imtbl/sdk@2.1.2':
+    resolution: {integrity: sha512-MNT9iAdPVLIaB+vzad0snnuW6kmX5BpVHus3TInuYxFeAvtNrCXxsucGe3GEtUUSDr401Ncd5AAR5x2GstSplw==}
     engines: {node: '>=20.0.0'}
 
-  '@imtbl/toolkit@2.1.0':
-    resolution: {integrity: sha512-kp/Igy9g2ofTyNmRv4EhTBIJYWlMROcNdnBqJMWsXdayHQPE8L6wtXFZL3z+OwdT0z+f3O8wdAMzUwzg866Pwg==}
+  '@imtbl/toolkit@2.1.2':
+    resolution: {integrity: sha512-g6OHMXS+i1U/aF67zCNSojib0csP57nJ2eG4byc8bz8QITKcgWrxJrYOxL8s5OB2QrSeBrW3OzyPMxCOXJK03A==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/webhook@2.1.0':
-    resolution: {integrity: sha512-1vEiuG7txVRcnJoSKZ6gmb7/2wDoaMiL33QquY4EZRqRTC73W1F3xG73qrCLvLtymBxqBA2W+0zqyy3SJ1VWsw==}
+  '@imtbl/webhook@2.1.2':
+    resolution: {integrity: sha512-0/bE6OygYt5ZCZ2uHIL6+o9SOTtEP0Ro3/Z8UP7PM2MwarRyu40/7k52nkjEtC9P/vkCQ6xMFySSuQVBAnsHPA==}
 
-  '@imtbl/x-client@2.1.0':
-    resolution: {integrity: sha512-P3mkkhHXL2/KCF4UE8iRBdKl7Pb78OpGe2AvcxJobtIjq2d1+Mj2wNwulp0k+YfNdGhxcxpmdUYer8dLP1Czmw==}
+  '@imtbl/x-client@2.1.2':
+    resolution: {integrity: sha512-diD+xr0Gad5b5wFcsziXZyhNbREYIJ3A0C3XVung/xYmKkU+to3u/LW2cLJ5AIUOoJXtiNg+lEatFqxHH4Rzhw==}
     engines: {node: '>=20.11.0'}
 
-  '@imtbl/x-provider@2.1.0':
-    resolution: {integrity: sha512-wJirt7sk2LvH97Jf65ovWhBbyk8PAxD83RfeVnk5Tzc7eZ/3qeIVGpzHpnIbOufWmf1VgeNgTLJYGG0EfXdSbw==}
+  '@imtbl/x-provider@2.1.2':
+    resolution: {integrity: sha512-ROa4Z/VZCb2EGKDQdO3XwAEKnAv92Ipxvi1TuXmGwTIIpKKmgcZRScm/ZRCE4qWT3X4GtlcdOt5ijfoRAPwsIg==}
     engines: {node: '>=20.11.0'}
 
   '@isaacs/cliui@8.0.2':
@@ -1383,22 +1392,22 @@ packages:
   '@lit/reactive-element@1.6.3':
     resolution: {integrity: sha512-QuTgnG52Poic7uM1AN5yJ09QMe0O28e10XzSvWDz02TJiiKee4stsiownEIadWm8nYzyDAyT+gKzUoZmiWQtsQ==}
 
-  '@magic-ext/oidc@4.3.1':
-    resolution: {integrity: sha512-HjriTgPxECC37z4UPbomuL0sFd5Fe0aC8BEDSShD5Ltbi0oMjamEW7avYdZi14S5F4UHfcol0M3xTc+0FTNwrw==}
+  '@magic-ext/oidc@12.0.0':
+    resolution: {integrity: sha512-IeycCoW8BUqcdJoggynq63bj8XyRxZfiX5cBdxq7LEr4gWWpTz1zexEkWrJoP76XDr6Yn/wYQXiL4/AvJ6wcjw==}
 
-  '@magic-sdk/commons@17.5.0':
-    resolution: {integrity: sha512-2KdLT6KTNnToOuTb92a/Ur/zGfV8/M89W+wqrcumcSmdOOyD65C80q2Gd70OF2+HZEOPEfBp8vBTfOGyRSb8fg==}
+  '@magic-sdk/commons@25.0.1':
+    resolution: {integrity: sha512-MsG626xwegauesqSWCgxI33TthBLTWD8FFXcMDwSFRXqpP6WJW4RxC1McU6xB6v88bPrmociH2LjaFlKtg4ZKg==}
     peerDependencies:
       '@magic-sdk/provider': '>=18.6.0'
       '@magic-sdk/types': '>=15.8.0'
 
-  '@magic-sdk/provider@21.5.0':
-    resolution: {integrity: sha512-q2UAww4Hv8qDg+GYUqmUhdLPL5lfmYXpD6HN1IMI1HBU/SG2hLMVs/28u+RrCC1GddrqTTDal9GXONd3OHurHA==}
+  '@magic-sdk/provider@29.0.1':
+    resolution: {integrity: sha512-xFl89bbV62nOibT9TrR21DwiNnZn6StpGkgW/G/8E8WoC2sXp5Yerr4Lkmu6b9sQC0zF9bkN9njb2y+y0oy+Ew==}
     peerDependencies:
       localforage: ^1.7.4
 
-  '@magic-sdk/types@17.3.0':
-    resolution: {integrity: sha512-0mTFr1qDJ94pOJkFu1oZ/s2KnV7lHgILvWuFh7fs7ugyn7z9M7euP9g+Bv+kEdZ6ja4QlNi+UR0OryaXowv75w==}
+  '@magic-sdk/types@24.18.0':
+    resolution: {integrity: sha512-6HS9WMgzLNCkvkJeDZW8+/maP8JInDYqnfudp/SgPWMosm9l6zH3X+x+ntDjRIUm5Qdugsg+L1fxMBj48r616Q==}
 
   '@manypkg/find-root@1.1.0':
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -4795,8 +4804,8 @@ packages:
   lru_map@0.3.3:
     resolution: {integrity: sha512-Pn9cox5CsMYngeDbmChANltQl+5pi6XmTrraMSzhPmMBbmgcxmqWry0U3PGapCU1yB4/LqCcom7qhHZiF/jGfQ==}
 
-  magic-sdk@21.5.0:
-    resolution: {integrity: sha512-LNSTJGOO1wtJSwoEnO8ehH3RePdYc3lc0pD+SGZWyY78Ly6CgNE15lILBGJvpdaZjZd6wVqDYOf6Hh+PayuNKg==}
+  magic-sdk@29.0.1:
+    resolution: {integrity: sha512-wT35qQcuIeVfnVISmOtNzkCBLBZdTUAiVIUSp+Pa9cB5hi87kPUVOLU5t4PrQ23M79IPrjUP/0QxxaqiV57+YQ==}
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -6487,6 +6496,7 @@ packages:
   yaeti@0.0.6:
     resolution: {integrity: sha512-MvQa//+KcZCUkBTIC9blM+CU9J2GzuTytsOUwf2lidtvkx/6gnEp1QvJv34t9vdjhFmha/mUiNDbN0D0mJWdug==}
     engines: {node: '>=0.10.32'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -7848,17 +7858,17 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.3': {}
 
-  '@imtbl/blockchain-data@2.1.0':
+  '@imtbl/blockchain-data@2.1.2':
     dependencies:
-      '@imtbl/config': 2.1.0
-      '@imtbl/generated-clients': 2.1.0
+      '@imtbl/config': 2.1.2
+      '@imtbl/generated-clients': 2.1.2
       axios: 1.8.1
     transitivePeerDependencies:
       - debug
 
-  '@imtbl/bridge-sdk@2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
+  '@imtbl/bridge-sdk@2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
-      '@imtbl/config': 2.1.0
+      '@imtbl/config': 2.1.2
       '@jest/globals': 29.7.0
       axios: 1.8.1
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -7868,16 +7878,16 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@imtbl/checkout-sdk@2.1.0(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)':
+  '@imtbl/checkout-sdk@2.1.2(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)':
     dependencies:
-      '@imtbl/blockchain-data': 2.1.0
-      '@imtbl/bridge-sdk': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/config': 2.1.0
-      '@imtbl/dex-sdk': 2.1.0(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
-      '@imtbl/generated-clients': 2.1.0
-      '@imtbl/metrics': 2.1.0
-      '@imtbl/orderbook': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/passport': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/blockchain-data': 2.1.2
+      '@imtbl/bridge-sdk': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/config': 2.1.2
+      '@imtbl/dex-sdk': 2.1.2(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
+      '@imtbl/generated-clients': 2.1.2
+      '@imtbl/metrics': 2.1.2
+      '@imtbl/orderbook': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/passport': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@metamask/detect-provider': 2.0.0
       axios: 1.8.1
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -7890,15 +7900,15 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@imtbl/config@2.1.0':
+  '@imtbl/config@2.1.2':
     dependencies:
-      '@imtbl/metrics': 2.1.0
+      '@imtbl/metrics': 2.1.2
     transitivePeerDependencies:
       - debug
 
-  '@imtbl/dex-sdk@2.1.0(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)':
+  '@imtbl/dex-sdk@2.1.2(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)':
     dependencies:
-      '@imtbl/config': 2.1.0
+      '@imtbl/config': 2.1.2
       '@uniswap/sdk-core': 3.2.3
       '@uniswap/swap-router-contracts': 1.3.1(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))
       '@uniswap/v3-sdk': 3.24.1(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))
@@ -7909,13 +7919,13 @@ snapshots:
       - hardhat
       - utf-8-validate
 
-  '@imtbl/generated-clients@2.1.0':
+  '@imtbl/generated-clients@2.1.2':
     dependencies:
       axios: 1.8.1
     transitivePeerDependencies:
       - debug
 
-  '@imtbl/metrics@2.1.0':
+  '@imtbl/metrics@2.1.2':
     dependencies:
       axios: 1.8.1
       global-const: 0.1.2
@@ -7923,13 +7933,13 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@imtbl/minting-backend@2.1.0':
+  '@imtbl/minting-backend@2.1.2':
     dependencies:
-      '@imtbl/blockchain-data': 2.1.0
-      '@imtbl/config': 2.1.0
-      '@imtbl/generated-clients': 2.1.0
-      '@imtbl/metrics': 2.1.0
-      '@imtbl/webhook': 2.1.0
+      '@imtbl/blockchain-data': 2.1.2
+      '@imtbl/config': 2.1.2
+      '@imtbl/generated-clients': 2.1.2
+      '@imtbl/metrics': 2.1.2
+      '@imtbl/webhook': 2.1.2
       uuid: 8.3.2
     optionalDependencies:
       pg: 8.13.3
@@ -7938,10 +7948,10 @@ snapshots:
       - debug
       - pg-native
 
-  '@imtbl/orderbook@2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
+  '@imtbl/orderbook@2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
-      '@imtbl/config': 2.1.0
-      '@imtbl/metrics': 2.1.0
+      '@imtbl/config': 2.1.2
+      '@imtbl/metrics': 2.1.2
       '@opensea/seaport-js': 4.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       axios: 1.8.1
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -7952,25 +7962,25 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@imtbl/passport@2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
+  '@imtbl/passport@2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
       '@0xsequence/abi': 2.2.13
       '@0xsequence/core': 2.2.13(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@imtbl/config': 2.1.0
-      '@imtbl/generated-clients': 2.1.0
-      '@imtbl/metrics': 2.1.0
-      '@imtbl/toolkit': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/x-client': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/x-provider': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@magic-ext/oidc': 4.3.1
-      '@magic-sdk/provider': 21.5.0(localforage@1.10.0)
+      '@imtbl/config': 2.1.2
+      '@imtbl/generated-clients': 2.1.2
+      '@imtbl/metrics': 2.1.2
+      '@imtbl/toolkit': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/x-client': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/x-provider': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@magic-ext/oidc': 12.0.0
+      '@magic-sdk/provider': 29.0.1(localforage@1.10.0)
       '@metamask/detect-provider': 2.0.0
       axios: 1.8.1
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       events: 3.3.0
       jwt-decode: 3.1.2
       localforage: 1.10.0
-      magic-sdk: 21.5.0
+      magic-sdk: 29.0.1
       oidc-client-ts: 2.4.0
       uuid: 8.3.2
     transitivePeerDependencies:
@@ -7979,17 +7989,17 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@imtbl/sdk@2.1.0(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)':
+  '@imtbl/sdk@2.1.2(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)':
     dependencies:
-      '@imtbl/blockchain-data': 2.1.0
-      '@imtbl/checkout-sdk': 2.1.0(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
-      '@imtbl/config': 2.1.0
-      '@imtbl/minting-backend': 2.1.0
-      '@imtbl/orderbook': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/passport': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/webhook': 2.1.0
-      '@imtbl/x-client': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/x-provider': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/blockchain-data': 2.1.2
+      '@imtbl/checkout-sdk': 2.1.2(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
+      '@imtbl/config': 2.1.2
+      '@imtbl/minting-backend': 2.1.2
+      '@imtbl/orderbook': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/passport': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/webhook': 2.1.2
+      '@imtbl/x-client': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/x-provider': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -7998,16 +8008,16 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@imtbl/toolkit@2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
+  '@imtbl/toolkit@2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
-      '@imtbl/x-client': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@magic-ext/oidc': 4.3.1
+      '@imtbl/x-client': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@magic-ext/oidc': 12.0.0
       '@metamask/detect-provider': 2.0.0
       axios: 1.8.1
       bn.js: 5.2.1
       enc-utils: 3.0.0
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      magic-sdk: 21.5.0
+      magic-sdk: 29.0.1
       oidc-client-ts: 2.4.0
     transitivePeerDependencies:
       - bufferutil
@@ -8015,19 +8025,19 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@imtbl/webhook@2.1.0':
+  '@imtbl/webhook@2.1.2':
     dependencies:
-      '@imtbl/config': 2.1.0
-      '@imtbl/generated-clients': 2.1.0
+      '@imtbl/config': 2.1.2
+      '@imtbl/generated-clients': 2.1.2
       sns-validator: 0.3.5
     transitivePeerDependencies:
       - debug
 
-  '@imtbl/x-client@2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
+  '@imtbl/x-client@2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
       '@ethereumjs/wallet': 2.0.4
-      '@imtbl/config': 2.1.0
-      '@imtbl/generated-clients': 2.1.0
+      '@imtbl/config': 2.1.2
+      '@imtbl/generated-clients': 2.1.2
       axios: 1.8.1
       bn.js: 5.2.1
       elliptic: 6.6.1
@@ -8039,18 +8049,18 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@imtbl/x-provider@2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
+  '@imtbl/x-provider@2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
-      '@imtbl/config': 2.1.0
-      '@imtbl/generated-clients': 2.1.0
-      '@imtbl/toolkit': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@imtbl/x-client': 2.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@magic-ext/oidc': 4.3.1
+      '@imtbl/config': 2.1.2
+      '@imtbl/generated-clients': 2.1.2
+      '@imtbl/toolkit': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@imtbl/x-client': 2.1.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@magic-ext/oidc': 12.0.0
       '@metamask/detect-provider': 2.0.0
       axios: 1.8.1
       enc-utils: 3.0.0
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      magic-sdk: 21.5.0
+      magic-sdk: 29.0.1
       oidc-client-ts: 2.4.0
     transitivePeerDependencies:
       - bufferutil
@@ -8169,23 +8179,23 @@ snapshots:
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.3.0
 
-  '@magic-ext/oidc@4.3.1': {}
+  '@magic-ext/oidc@12.0.0': {}
 
-  '@magic-sdk/commons@17.5.0(@magic-sdk/provider@21.5.0(localforage@1.10.0))(@magic-sdk/types@17.3.0)':
+  '@magic-sdk/commons@25.0.1(@magic-sdk/provider@29.0.1(localforage@1.10.0))(@magic-sdk/types@24.18.0)':
     dependencies:
-      '@magic-sdk/provider': 21.5.0(localforage@1.10.0)
-      '@magic-sdk/types': 17.3.0
+      '@magic-sdk/provider': 29.0.1(localforage@1.10.0)
+      '@magic-sdk/types': 24.18.0
 
-  '@magic-sdk/provider@21.5.0(localforage@1.10.0)':
+  '@magic-sdk/provider@29.0.1(localforage@1.10.0)':
     dependencies:
-      '@magic-sdk/types': 17.3.0
+      '@magic-sdk/types': 24.18.0
       eventemitter3: 4.0.7
       localforage: 1.10.0
       web3-core: 1.5.2
     transitivePeerDependencies:
       - supports-color
 
-  '@magic-sdk/types@17.3.0': {}
+  '@magic-sdk/types@24.18.0': {}
 
   '@manypkg/find-root@1.1.0':
     dependencies:
@@ -12685,11 +12695,11 @@ snapshots:
 
   lru_map@0.3.3: {}
 
-  magic-sdk@21.5.0:
+  magic-sdk@29.0.1:
     dependencies:
-      '@magic-sdk/commons': 17.5.0(@magic-sdk/provider@21.5.0(localforage@1.10.0))(@magic-sdk/types@17.3.0)
-      '@magic-sdk/provider': 21.5.0(localforage@1.10.0)
-      '@magic-sdk/types': 17.3.0
+      '@magic-sdk/commons': 25.0.1(@magic-sdk/provider@29.0.1(localforage@1.10.0))(@magic-sdk/types@24.18.0)
+      '@magic-sdk/provider': 29.0.1(localforage@1.10.0)
+      '@magic-sdk/types': 24.18.0
       localforage: 1.10.0
     transitivePeerDependencies:
       - supports-color
