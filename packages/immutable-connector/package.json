@@ -39,7 +39,6 @@
   },
   "dependencies": {
     "@imtbl/config": "^2.1.2",
-    "@imtbl/passport": "^2.1.2",
     "@imtbl/sdk": "^2.1.2",
     "@imtbl/x-provider": "^2.1.2"
   },
