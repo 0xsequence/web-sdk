@@ -39,9 +39,9 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
     async setup() {},
 
     async connect() {
-      await passportInstance.login({ useCachedSession: true })
+      provider = await passportInstance.connectImx()
 
-      const provider = (await this.getProvider()) as IMXProvider
+      await passportInstance.login({ useCachedSession: true })
 
       const isRegistered = await provider.isRegisteredOffchain()
       if (!isRegistered) {
@@ -69,12 +69,9 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
     },
 
     async getProvider(): Promise<IMXProvider> {
-      if (provider) {
-        return provider
+      if (!provider) {
+        throw new Error('Provider not initialized')
       }
-
-      provider = await passportInstance.connectImx()
-
       return provider
     },
 
