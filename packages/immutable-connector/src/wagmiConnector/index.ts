@@ -5,11 +5,8 @@ import { type Address } from 'viem'
 import { createConnector } from 'wagmi'
 
 export interface BaseImmutableConnectorOptions {
-  environment?: Environment,
-  redirectUri?: string,
-  logoutRedirectUri?: string,
-  publishableKey?: string,
-  clientId?: string,
+  passportInstance: passport.Passport
+  environment: Environment
 }
 
 immutableConnector.type = 'immutable' as const
@@ -28,19 +25,7 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
     [Environment.PRODUCTION]: 13371
   } as const;
 
-  const { environment = Environment.SANDBOX } = params
-
-  const passportInstance = new passport.Passport({
-    baseConfig: {
-      environment,
-      publishableKey: params.publishableKey || 'pk_imapik-test-lnUqNu5uDYfKDz_stwpN'
-    },
-    clientId: params.clientId || '420lberPuiZaO6SBX6Anoa7C9kpcsuer',
-    redirectUri: params.redirectUri || window.location.origin,
-    logoutRedirectUri: params.logoutRedirectUri,
-    audience: 'platform_api',
-    scope: 'openid offline_access email transact',
-  });
+  const { passportInstance, environment } = params
 
   return createConnector<Provider, Properties, StorageItem>(config => ({
     id: 'immutable',
