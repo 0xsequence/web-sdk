@@ -1,3 +1,4 @@
+import type { CreateConnectorFn } from 'wagmi'
 import type { Wallet } from '@0xsequence/kit'
 
 import { ImmutableLogo } from './ImmutableLogo'
@@ -12,6 +13,7 @@ export const immutable = (options: ImmutableOptions): Wallet => ({
   logoDark: ImmutableLogo,
   logoLight: ImmutableLogo,
   name: 'Immutable',
+  type: 'wallet',
   createConnector: () => {
     const connector = immutableConnector({
       ...options

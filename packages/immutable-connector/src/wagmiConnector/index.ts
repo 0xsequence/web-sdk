@@ -12,6 +12,8 @@ export interface BaseImmutableConnectorOptions {
 immutableConnector.type = 'immutable' as const
 
 export function immutableConnector(params: BaseImmutableConnectorOptions) {
+  console.log('Immutable connector created')
+
   type Provider = IMXProvider
   type Properties = {
     params: BaseImmutableConnectorOptions
@@ -23,32 +25,31 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
   const IMMUTABLE_CHAINS = {
     [Environment.SANDBOX]: 13473,
     [Environment.PRODUCTION]: 13371
-  } as const;
+  } as const
 
   const { passportInstance, environment } = params
 
   return createConnector<Provider, Properties, StorageItem>(config => ({
     id: 'immutable',
-    name: 'Immutable Passport',
-    type: immutableConnector.type,
+    name: 'Immutable',
+    type: 'immutable',
     params,
     passportInstance,
 
-    async setup() {
-    },
+    async setup() {},
 
     async connect() {
-      await passportInstance.login({ useCachedSession: true });
-    
-      const provider = (await this.getProvider()) as IMXProvider;
+      await passportInstance.login({ useCachedSession: true })
 
-      const isRegistered = await provider.isRegisteredOffchain();
+      const provider = (await this.getProvider()) as IMXProvider
+
+      const isRegistered = await provider.isRegisteredOffchain()
       if (!isRegistered) {
-        await provider.registerOffchain();
+        await provider.registerOffchain()
       }
 
-      const accounts = await this.getAccounts();
-      const chainId = await this.getChainId();
+      const accounts = await this.getAccounts()
+      const chainId = await this.getChainId()
 
       return { accounts, chainId }
     },
@@ -72,23 +73,25 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
         return provider
       }
 
-      provider = await passportInstance.connectImx();
+      provider = await passportInstance.connectImx()
 
-      return provider 
+      return provider
     },
 
     async isAuthorized() {
       try {
-        const provider = await this.getProvider();
-        const address = await provider.getAddress();
-        return Boolean(address);
+        if (!provider) {
+          return false
+        }
+        const address = await provider.getAddress()
+        return Boolean(address)
       } catch {
-        return false;
+        return false
       }
     },
 
     async switchChain() {
-      throw new Error('Chain switching is not supported by Immutable Passport');
+      throw new Error('Chain switching is not supported by Immutable Passport')
     },
 
     async getChainId() {
@@ -99,8 +102,7 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
       return { account: accounts[0] }
     },
 
-    async onChainChanged() {
-    },
+    async onChainChanged() {},
 
     async onConnect(_connectinfo) {},
 

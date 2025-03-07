@@ -76,7 +76,7 @@ export const passportInstance = new passport.Passport({
   clientId: '420lberPuiZaO6SBX6Anoa7C9kpcsuer',
   redirectUri: `${window.location.origin}/auth/callback`,
   audience: 'platform_api',
-  scope: 'openid offline_access email transact',
+  scope: 'openid offline_access email transact'
 })
 
 export const config =
@@ -126,10 +126,12 @@ export const config =
         walletConnect: {
           projectId: walletConnectProjectId
         },
-        additionalWallets: [immutable({
-          passportInstance,
-          environment: Environment.SANDBOX
-        })]
+        additionalWallets: [
+          immutable({
+            passportInstance,
+            environment: Environment.SANDBOX
+          })
+        ]
       })
 
 export const getErc1155SaleContractConfig = (walletAddress: string) => ({
