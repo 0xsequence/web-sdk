@@ -44,13 +44,13 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
       }
     },
 
-    async connect(_connectInfo) {
+    async connect(parameters?: { chainId?: number | undefined; isReconnecting?: boolean | undefined }, auxData?: any) {
       const provider = await this.getProvider()
       let walletAddress = provider.transport.getWalletAddress()
 
       if (!walletAddress) {
         try {
-          const res = await provider.transport.connect()
+          const res = await provider.transport.connect(auxData)
           walletAddress = res.walletAddress
         } catch (e) {
           console.log(e)

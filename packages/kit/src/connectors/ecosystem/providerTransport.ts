@@ -77,14 +77,18 @@ export class ProviderTransport {
     localStorage.setItem('walletSession', JSON.stringify(this.session))
   }
 
-  async connect(): Promise<{ walletAddress: string }> {
+  async connect(auxData?: Record<string, unknown>): Promise<{ walletAddress: string }> {
     if (this.connectionState === 'connected' && this.session) {
       return { walletAddress: this.session.walletAddress }
     }
 
     this.connectionState = 'connecting'
     const connectionId = crypto.randomUUID()
-    const connectionRequest = { type: 'connection', id: connectionId }
+    const connectionRequest = {
+      type: 'connection',
+      id: connectionId,
+      ...(auxData ? { auxData } : {})
+    }
 
     return new Promise((resolve, reject) => {
       this.callbacks.set(connectionId, response => {
