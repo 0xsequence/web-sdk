@@ -44,7 +44,10 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
       }
     },
 
-    async connect(parameters?: { chainId?: number | undefined; isReconnecting?: boolean | undefined }, auxData?: any) {
+    async connect(
+      parameters?: { chainId?: number | undefined; isReconnecting?: boolean | undefined },
+      auxData?: Record<string, unknown>
+    ) {
       const provider = await this.getProvider()
       let walletAddress = provider.transport.getWalletAddress()
 
