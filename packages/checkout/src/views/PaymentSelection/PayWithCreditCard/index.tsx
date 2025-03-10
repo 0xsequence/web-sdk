@@ -9,7 +9,6 @@ import { SelectPaymentSettings } from '../../../contexts'
 import { CheckoutSettings } from '../../../contexts/CheckoutModal'
 import { useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
 
-
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings
   disableButtons: boolean
@@ -109,7 +108,8 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
         transakConfig,
-        approvedSpenderAddress: approvedSpenderAddress || targetContractAddress
+        approvedSpenderAddress: approvedSpenderAddress || targetContractAddress,
+        supplementaryAnalyticsInfo
       }
     }
 
