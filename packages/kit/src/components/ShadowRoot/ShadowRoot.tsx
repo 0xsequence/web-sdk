@@ -26,6 +26,11 @@ export const ShadowRoot = (props: ShadowRootProps) => {
   const { theme, children } = props
   const hostRef = useRef<HTMLDivElement>(null)
   const [container, setContainer] = useState<HTMLDivElement | null>(null)
+  const [windowDocument, setWindowDocument] = useState<Document | null>(null)
+
+  useEffect(() => {
+    setWindowDocument(document)
+  }, [])
 
   useEffect(() => {
     if (hostRef.current && !hostRef.current.shadowRoot) {
@@ -42,16 +47,18 @@ export const ShadowRoot = (props: ShadowRootProps) => {
 
       setContainer(container)
     }
-  }, [])
+  }, [windowDocument])
 
-  return createPortal(
-    <div data-shadow-host ref={hostRef}>
-      {container && (
-        <ThemeProvider theme={theme} root={container}>
-          {children}
-        </ThemeProvider>
-      )}
-    </div>,
-    document.body
-  )
+  return windowDocument
+    ? createPortal(
+        <div data-shadow-host ref={hostRef}>
+          {container && (
+            <ThemeProvider theme={theme} root={container}>
+              {children}
+            </ThemeProvider>
+          )}
+        </div>,
+        document.body
+      )
+    : null
 }
