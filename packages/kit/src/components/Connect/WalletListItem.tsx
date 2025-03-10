@@ -1,7 +1,9 @@
 import {
   Button,
+  Card,
   CheckmarkIcon,
   CloseIcon,
+  cn,
   IconButton,
   LinkIcon,
   Spinner,
@@ -41,7 +43,9 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
   }
 
   return (
-    <div className="flex p-4 rounded-xl bg-background-secondary flex-row items-center justify-between">
+    <Card
+      className={cn('flex flex-row items-center justify-between', isActive ? 'bg-background-secondary' : 'bg-background-muted')}
+    >
       <div className="flex flex-row items-center gap-2">
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-1">
@@ -67,7 +71,9 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
           </Text>
         </div>
       </div>
+
       {!isReadOnly && <Button size="xs" variant="glass" label="Disconnect" onClick={onDisconnect} />}
+
       {isReadOnly && isLinked && (
         <div className="flex relative items-center gap-2">
           {isUnlinking ? (
@@ -82,6 +88,6 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
           )}
         </div>
       )}
-    </div>
+    </Card>
   )
 }

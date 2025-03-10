@@ -3,7 +3,6 @@
 import { Theme } from '@0xsequence/design-system'
 
 import { createGenericContext } from './genericContext'
-
 import { SupplementaryAnalyticsInfo } from './SelectPaymentModal'
 
 interface CoinQuantity {

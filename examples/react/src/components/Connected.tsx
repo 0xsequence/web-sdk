@@ -471,7 +471,7 @@ export const Connected = () => {
               <Text fontWeight="semibold" variant="small" color="muted">
                 Connected Wallets
               </Text>
-              <Card className="flex flex-col gap-2 p-2">
+              <div className="flex flex-col gap-2 p-2">
                 {[...wallets]
                   .sort((a, b) => {
                     // Sort embedded wallet to the top
@@ -491,7 +491,7 @@ export const Connected = () => {
                       onDisconnect={() => disconnectWallet(wallet.address)}
                     />
                   ))}
-              </Card>
+              </div>
             </div>
 
             <div className="flex gap-2 flex-row items-center justify-center">
