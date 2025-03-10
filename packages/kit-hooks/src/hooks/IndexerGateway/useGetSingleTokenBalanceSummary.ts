@@ -1,3 +1,4 @@
+import { ContractType, SequenceIndexerGateway } from '@0xsequence/indexer'
 import { useQuery } from '@tanstack/react-query'
 
 import { ZERO_ADDRESS, QUERY_KEYS, time } from '../../constants'
@@ -5,7 +6,6 @@ import { BalanceHookOptions } from '../../types'
 import { compareAddress, createNativeTokenBalance } from '../../utils/helpers'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
-import { ContractType, SequenceIndexerGateway } from '@0xsequence/indexer'
 
 export interface GetSingleTokenBalanceSummaryArgs {
   chainId: number

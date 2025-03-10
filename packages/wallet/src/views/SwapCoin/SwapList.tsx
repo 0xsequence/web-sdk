@@ -8,6 +8,7 @@ import {
   useAnalyticsContext,
   ExtendedConnector
 } from '@0xsequence/kit'
+import { useGetSwapPrices, useGetSwapQuote, useClearCachedBalances, useGetContractInfo } from '@0xsequence/kit-hooks'
 import { useState } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
@@ -15,7 +16,6 @@ import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClien
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
 
-import { useGetSwapPrices, useGetSwapQuote, useClearCachedBalances, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 interface SwapListProps {
   chainId: number

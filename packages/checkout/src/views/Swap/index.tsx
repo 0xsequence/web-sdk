@@ -6,6 +6,7 @@ import {
   sendTransactions,
   useIndexerClient
 } from '@0xsequence/kit'
+import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
@@ -14,7 +15,6 @@ import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
 
-import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/kit-hooks'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()

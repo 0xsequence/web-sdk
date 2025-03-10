@@ -1,6 +1,7 @@
 import { Spinner } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { useWalletSettings } from '@0xsequence/kit'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 
@@ -10,7 +11,6 @@ import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
 import { SkeletonTiles } from './SkeletonTiles'
 
-import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 
 export const AssetSummary = () => {
   const { address } = useAccount()

@@ -17,6 +17,7 @@ import {
   waitForTransactionReceipt,
   useIndexerClient
 } from '@0xsequence/kit'
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
@@ -26,7 +27,6 @@ import { usePublicClient } from 'wagmi'
 import { HEADER_HEIGHT } from '../../constants'
 import { useTransactionStatusModal } from '../../hooks'
 
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 

@@ -1,5 +1,6 @@
 import { TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetContractInfo, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 
@@ -7,7 +8,6 @@ import { useSettings } from '../../../../../hooks'
 import { computeBalanceFiat, getPercentagePriceChange } from '../../../../../utils'
 
 import { CoinTileContent } from './CoinTileContent'
-import { useGetContractInfo, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 interface CoinTileProps {
   balance: TokenBalance
 }

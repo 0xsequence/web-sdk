@@ -1,6 +1,7 @@
 import { commons } from '@0xsequence/core'
 import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
+import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
@@ -10,7 +11,6 @@ import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helper
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
 import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../CollectibleTileImage'
-import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/kit-hooks'
 
 interface TxnDetailsProps {
   address: string

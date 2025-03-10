@@ -1,5 +1,6 @@
 import { SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, ContractVerificationStatus, compareAddress } from '@0xsequence/kit'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useState, useEffect } from 'react'
@@ -10,7 +11,6 @@ import { computeBalanceFiat } from '../../utils'
 
 import { CoinsTab } from './components/CoinsTab'
 import { CollectionsTab } from './components/CollectionsTab'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'

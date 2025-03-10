@@ -7,6 +7,14 @@ import {
   ContractVerificationStatus,
   useIndexerClient
 } from '@0xsequence/kit'
+import {
+  useClearCachedBalances,
+  useGetTokenBalancesSummary,
+  useGetContractInfo,
+  SwapPricesWithCurrencyInfo,
+  useGetSwapPrices,
+  useGetSwapQuote
+} from '@0xsequence/kit-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'
@@ -22,14 +30,6 @@ import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
 import { TransferFunds } from './TransferFunds'
-import {
-  useClearCachedBalances,
-  useGetTokenBalancesSummary,
-  useGetContractInfo,
-  SwapPricesWithCurrencyInfo,
-  useGetSwapPrices,
-  useGetSwapQuote
-} from '@0xsequence/kit-hooks'
 
 export const PaymentSelection = () => {
   return (

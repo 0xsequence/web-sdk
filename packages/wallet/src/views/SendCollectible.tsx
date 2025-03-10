@@ -21,6 +21,7 @@ import {
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
@@ -30,7 +31,6 @@ import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
-import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { limitDecimals, isEthAddress } from '../utils'
 
 interface SendCollectibleProps {

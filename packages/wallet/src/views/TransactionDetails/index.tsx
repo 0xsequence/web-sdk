@@ -12,6 +12,7 @@ import {
 } from '@0xsequence/design-system'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
@@ -20,7 +21,6 @@ import { useSettings } from '../../hooks'
 import { CopyButton } from '../../shared/CopyButton'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 
-import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface TransactionDetailProps {
   transaction: Transaction

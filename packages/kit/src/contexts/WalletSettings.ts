@@ -1,6 +1,7 @@
 'use client'
 
 import { DisplayedAsset } from '../types'
+
 import { createGenericContext } from './genericContext'
 
 type WalletConfigContext = {

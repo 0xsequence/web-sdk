@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { State, WagmiProvider } from 'wagmi'
 
 import { SequenceKitConfig } from '../../config/createConfig'
-import { KitProvider } from '../KitProvider'
 import { DEBUG } from '../../env'
+import { KitProvider } from '../KitProvider'
 
 const defaultQueryClient = new QueryClient()
 

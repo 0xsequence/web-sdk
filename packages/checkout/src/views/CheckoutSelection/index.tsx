@@ -10,6 +10,7 @@ import {
   TokenImage
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus, getNativeTokenInfoByChainId, compareAddress, formatDisplay } from '@0xsequence/kit'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
@@ -17,7 +18,6 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useCheckoutModal } from '../../hooks'
 
 import { OrderSummaryItem } from './component/OrderSummaryItem'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
 
 export const CheckoutSelection = () => {
   const { chains } = useConfig()

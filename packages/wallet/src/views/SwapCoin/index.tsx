@@ -1,6 +1,7 @@
 import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, getNativeTokenInfoByChainId} from '@0xsequence/kit'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent } from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -9,7 +10,6 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
 import { SendItemInfo } from '../../shared/SendItemInfo'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 export interface SwapCoinProps {
   contractAddress: string

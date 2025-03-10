@@ -3,6 +3,7 @@ import {
   formatDisplay,
   ContractVerificationStatus
 } from '@0xsequence/kit'
+import { useGetTokenBalancesDetails, useGetTransactionHistory, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
@@ -14,7 +15,6 @@ import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
-import { useGetTokenBalancesDetails, useGetTransactionHistory, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 export interface CollectibleDetailsProps {
   contractAddress: string

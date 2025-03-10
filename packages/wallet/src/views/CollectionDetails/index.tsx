@@ -1,6 +1,7 @@
 import { Image, Text, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { formatDisplay, ContractVerificationStatus } from '@0xsequence/kit'
+import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 
@@ -8,7 +9,6 @@ import { useNavigation } from '../../hooks'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 
 import { CollectionDetailsSkeleton } from './Skeleton'
-import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 
 interface CollectionDetailsProps {
   chainId: number

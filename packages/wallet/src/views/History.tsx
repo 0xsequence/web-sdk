@@ -1,10 +1,10 @@
+import { useGetTransactionHistorySummary } from '@0xsequence/kit-hooks'
 import React from 'react'
 import { useAccount } from 'wagmi'
 
 import { useSettings } from '../hooks'
 import { TransactionHistoryList } from '../shared/TransactionHistoryList'
 
-import { useGetTransactionHistorySummary } from '@0xsequence/kit-hooks'
 
 export const History = () => {
   const { selectedNetworks } = useSettings()

@@ -1,7 +1,7 @@
 import { Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system'
-import { useContractInfo, useTokenMetadata, formatDisplay } from '@0xsequence/kit'
-import { ethers } from 'ethers'
+import { formatDisplay } from '@0xsequence/kit'
 import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
+import { ethers } from 'ethers'
 interface OrderSummaryItem {
   contractAddress: string
   tokenId: string

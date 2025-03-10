@@ -20,6 +20,7 @@ import {
   useCheckWaasFeeOptions,
   useWaasFeeOptions
 } from '@0xsequence/kit'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
@@ -30,7 +31,6 @@ import { useSettings, useNavigation } from '../hooks'
 import { SendItemInfo } from '../shared/SendItemInfo'
 import { TransactionConfirmation } from '../shared/TransactionConfirmation'
 import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 
 interface SendCoinProps {
   chainId: number
