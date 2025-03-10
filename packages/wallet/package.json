@@ -31,7 +31,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/kit-hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.0.7",
     "dayjs": "^1.11.11",
     "fuse.js": "^6.6.2",
@@ -55,6 +54,7 @@
   "devDependencies": {
     "@0xsequence/design-system": "^2.0.9",
     "@0xsequence/kit": "workspace:*",
+    "@0xsequence/kit-hooks": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",
     "motion": "^12.3.1",
