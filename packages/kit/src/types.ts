@@ -23,7 +23,6 @@ export interface WalletProperties {
   hideConnectorId?: string | null
   isSequenceBased?: boolean
   type?: 'social' | 'wallet'
-  iconWidth?: string
 }
 
 export type Wallet = WalletProperties & {
