@@ -221,7 +221,7 @@ export const handlers = [
     )
   }),
 
-  http.post('*/GetTransactionHistory', async ({ request }) => {
+  http.post('*/GetTransactionHistory', async () => {
     return HttpResponse.json(
       {
         page: { page: 1 },
@@ -239,7 +239,7 @@ export const handlers = [
     )
   }),
 
-  http.post('*/GetExchangeRate', async ({ request }) => {
+  http.post('*/GetExchangeRate', async () => {
     return HttpResponse.json(
       {
         exchangeRate: {
@@ -250,7 +250,7 @@ export const handlers = [
     )
   }),
 
-  http.post('*/GetCoinPrices', async ({ request }) => {
+  http.post('*/GetCoinPrices', async () => {
     return HttpResponse.json({
       tokenPrices: [
         {
@@ -263,7 +263,7 @@ export const handlers = [
     })
   }),
 
-  http.post('*/getCollectiblePrices', async ({ request }) => {
+  http.post('*/getCollectiblePrices', async () => {
     return HttpResponse.json({
       tokenPrices: [
         {
