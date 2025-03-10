@@ -1,4 +1,4 @@
-import { Box, SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
+import { SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
 import {
   getNativeTokenInfoByChainId,
   useExchangeRate,
@@ -120,16 +120,8 @@ export const SearchWallet = () => {
   ).slice(0, 5)
 
   return (
-    <Box
-      paddingX="4"
-      paddingBottom="5"
-      paddingTop="3"
-      flexDirection="column"
-      gap="10"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Box width="full">
+    <div className="flex px-4 pb-5 pt-3 flex-col gap-10 items-center justify-center">
+      <div className="w-full">
         <TextInput
           autoFocus
           name="search wallet"
@@ -139,8 +131,8 @@ export const SearchWallet = () => {
           placeholder="Search your wallet"
           data-1p-ignore
         />
-      </Box>
-      <Box width="full" flexDirection="column" alignItems="center" justifyContent="center" gap="5">
+      </div>
+      <div className="flex w-full flex-col items-center justify-center gap-5">
         <WalletLink
           toLocation={{
             location: 'search-view-all',
@@ -153,17 +145,17 @@ export const SearchWallet = () => {
         {isPending ? (
           Array(5)
             .fill(null)
-            .map((_, i) => <Skeleton key={i} width="full" height="8" />)
+            .map((_, i) => <Skeleton className="w-full h-8" key={i} />)
         ) : foundCoinBalances.length === 0 ? (
-          <Text color="text100">No coins found</Text>
+          <Text color="primary">No coins found</Text>
         ) : (
           foundCoinBalances.map((indexItem, index) => {
             const balance = coinBalances[indexItem.index]
             return <BalanceItem key={index} balance={balance} />
           })
         )}
-      </Box>
-      <Box width="full" flexDirection="column" alignItems="center" justifyContent="center" gap="5">
+      </div>
+      <div className="flex w-full flex-col items-center justify-center gap-5">
         <WalletLink
           toLocation={{
             location: 'search-view-all',
@@ -176,16 +168,16 @@ export const SearchWallet = () => {
         {isPending ? (
           Array(5)
             .fill(null)
-            .map((_, i) => <Skeleton key={i} width="full" height="8" />)
+            .map((_, i) => <Skeleton className="w-full h-8" key={i} />)
         ) : foundCollectionBalances.length === 0 ? (
-          <Text color="text100">No collections found</Text>
+          <Text color="primary">No collections found</Text>
         ) : (
           foundCollectionBalances.map((indexedItem, index) => {
             const balance = collectionBalances[indexedItem.index]
             return <BalanceItem key={index} balance={balance} />
           })
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

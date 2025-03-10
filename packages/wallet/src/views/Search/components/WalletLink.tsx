@@ -1,4 +1,4 @@
-import { Box, Text, ChevronRightIcon } from '@0xsequence/design-system'
+import { Text, ChevronRightIcon } from '@0xsequence/design-system'
 import React from 'react'
 
 import { Navigation } from '../../../contexts'
@@ -17,25 +17,16 @@ export const WalletLink = ({ toLocation, label }: WalletLinkProps) => {
   }
 
   return (
-    <Box
-      onClick={onClick}
-      width="full"
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      userSelect="none"
-      cursor="pointer"
-      opacity={{ hover: '80' }}
-    >
-      <Text variant="normal" color="text50" fontWeight="medium">
+    <div className="flex w-full flex-row justify-between items-center select-none cursor-pointer" onClick={onClick}>
+      <Text variant="normal" color="muted" fontWeight="medium">
         {label}
       </Text>
-      <Box flexDirection="row" justifyContent="center" alignItems="center">
-        <Text variant="normal" color="text50" fontWeight="medium">
+      <div className="flex flex-row justify-center items-center">
+        <Text variant="normal" color="muted" fontWeight="medium">
           View all
         </Text>
-        <ChevronRightIcon color="text50" size="sm" />
-      </Box>
-    </Box>
+        <ChevronRightIcon className="text-muted" size="sm" />
+      </div>
+    </div>
   )
 }

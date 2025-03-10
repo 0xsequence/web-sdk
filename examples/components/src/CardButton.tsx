@@ -1,4 +1,4 @@
-import { Card, Box, Text, Spinner } from '@0xsequence/design-system'
+import { Card, Text, Spinner } from '@0xsequence/design-system'
 
 interface CardButtonProps {
   title: string
@@ -12,20 +12,19 @@ export const CardButton = (props: CardButtonProps) => {
 
   return (
     <Card clickable onClick={onClick}>
-      <Text variant="normal" fontWeight="bold" color="text100">
+      <Text variant="normal" fontWeight="bold" color="primary">
         {title}
       </Text>
-      <Text as="div" variant="normal" color="text50" marginTop="2">
-        {description}
+      <Text className="mt-2" variant="normal" color="muted" asChild>
+        <div>{description}</div>
       </Text>
-
       {isPending && (
-        <Box gap="2" alignItems="center" marginTop="4">
+        <div className="flex gap-2 items-center mt-4">
           <Spinner size="sm" />
-          <Text variant="small" color="text50">
+          <Text variant="small" color="muted">
             Pending...
           </Text>
-        </Box>
+        </div>
       )}
     </Card>
   )

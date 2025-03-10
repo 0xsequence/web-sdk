@@ -1,4 +1,4 @@
-import { Box, Button, ChevronRightIcon, Text, vars, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
+import { Button, ChevronRightIcon, Text, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
 import { truncateAtMiddle, useIndexerClient } from '@0xsequence/kit'
 import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
@@ -103,9 +103,9 @@ export const TransactionConfirmation = ({
   const isConfirmDisabled = isFeeSelectionRequired && !selectedFeeOptionAddress
 
   return (
-    <Box width="full" height="full" display="flex" alignItems="center" justifyContent="center" background="backgroundPrimary">
-      <Box gap="2" flexDirection="column" background="backgroundPrimary" width="full">
-        <Box background="backgroundSecondary" borderRadius="md" padding="4" paddingBottom="3" gap="2" flexDirection="column">
+    <div className="flex w-full h-full items-center justify-center bg-background-primary">
+      <div className="flex gap-2 flex-col bg-background-primary w-full">
+        <div className="flex bg-background-secondary rounded-xl p-4 pb-3 gap-2 flex-col">
           <SendItemInfo
             imageUrl={imageUrl}
             showSquareImage={showSquareImage}
@@ -116,33 +116,33 @@ export const TransactionConfirmation = ({
             decimals={decimals}
           />
 
-          <Box marginTop="2" gap="1" flexDirection="column">
-            <Text variant="small" color="text50">
+          <div className="flex mt-2 gap-1 flex-col">
+            <Text variant="small" color="muted">
               Amount
             </Text>
-            <Box flexDirection="row" alignItems="center" gap="2">
-              <Text variant="normal" color="text100">
+            <div className="flex flex-row items-center gap-2">
+              <Text variant="normal" color="primary">
                 {amount} {symbol}
               </Text>
               {fiatValue && (
-                <Text variant="small" color="text50">
+                <Text variant="small" color="muted">
                   ~${fiatValue}
                 </Text>
               )}
-            </Box>
-          </Box>
+            </div>
+          </div>
 
-          <Box marginTop="2" gap="1" flexDirection="column">
-            <Text variant="small" color="text50">
+          <div className="flex mt-2 gap-1 flex-col">
+            <Text variant="small" color="muted">
               To
             </Text>
-            <Card width="full" flexDirection="row" alignItems="center" style={{ height: '52px' }}>
-              <Box flexDirection="row" justifyContent="center" alignItems="center" gap="2">
-                <GradientAvatar address={toAddress} style={{ width: '20px' }} />
-                <Text color="text100" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
-              </Box>
+            <Card className="flex w-full flex-row items-center" style={{ height: '52px' }}>
+              <div className="flex flex-row justify-center items-center gap-2">
+                <GradientAvatar size="sm" address={toAddress} />
+                <Text color="primary" variant="normal">{`0x${truncateAtMiddle(toAddress.substring(2), 10)}`}</Text>
+              </div>
             </Card>
-          </Box>
+          </div>
 
           {isFeeSelectionRequired && feeOptions?.options && (
             <FeeOptionSelector
@@ -152,35 +152,29 @@ export const TransactionConfirmation = ({
               setSelectedFeeOptionAddress={handleFeeOptionSelect}
             />
           )}
-        </Box>
+        </div>
 
-        <Box marginTop="3" gap="2">
+        <div className="flex mt-3 gap-2">
           {isLoading ? (
-            <Box width="full" style={{ height: '52px' }} alignItems="center" justifyContent="center">
+            <div className="flex w-full items-center justify-center" style={{ height: '52px' }}>
               <Spinner />
-            </Box>
+            </div>
           ) : (
             <>
               <Button
-                width="full"
+                className="w-full"
                 variant="primary"
+                size="lg"
                 onClick={onConfirm}
                 label="Confirm"
                 rightIcon={ChevronRightIcon}
                 disabled={isConfirmDisabled}
-                style={{ height: '52px', borderRadius: vars.radii.md }}
               />
-              <Button
-                variant="glass"
-                width="full"
-                onClick={onCancel}
-                label="Cancel"
-                style={{ height: '52px', borderRadius: vars.radii.md }}
-              />
+              <Button className="w-full" variant="glass" size="lg" onClick={onCancel} label="Cancel" />
             </>
           )}
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

@@ -1,4 +1,5 @@
 import { ETHAuthProof } from '@0xsequence/auth'
+import { Theme } from '@0xsequence/design-system'
 import { FunctionComponent } from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
@@ -50,8 +51,6 @@ export interface EthAuthSettings {
   /** authorizeNonce is an optional number to be passed as ETHAuth's nonce claim for replay protection. **/
   nonce?: number
 }
-
-export type Theme = 'light' | 'dark'
 
 export type ModalPosition =
   | 'center'

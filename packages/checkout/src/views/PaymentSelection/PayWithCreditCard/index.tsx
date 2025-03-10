@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Box, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
+import { ArrowRightIcon, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
 import { useContractInfo } from '@0xsequence/kit'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
@@ -14,7 +14,9 @@ interface PayWithCreditCardProps {
   skipOnCloseCallback: () => void
 }
 
-type PaymentProviderOptions = 'sardine' | 'transak'
+type BasePaymentProviderOptions = 'sardine' | 'transak'
+type CustomPaymentProviderOptions = 'custom'
+type PaymentProviderOptions = BasePaymentProviderOptions | CustomPaymentProviderOptions
 
 export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallback }: PayWithCreditCardProps) => {
   const {
@@ -51,12 +53,24 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
 
   const payWithSelectedProvider = () => {
     switch (selectedPaymentProvider) {
+      case 'custom':
+        if (settings.customProviderCallback) {
+          onClickCustomProvider()
+        }
+        return
       case 'sardine':
       case 'transak':
         onPurchase()
         return
       default:
         return
+    }
+  }
+
+  const onClickCustomProvider = () => {
+    if (settings.customProviderCallback) {
+      closeSelectPaymentModal()
+      settings.customProviderCallback(onSuccess, onError, onClose)
     }
   }
 
@@ -86,7 +100,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         nftAddress: collectionAddress,
         nftQuantity: collectible.quantity,
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
-        provider: selectedPaymentProvider,
+        provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
         transakConfig,
         approvedSpenderAddress: approvedSpenderAddress || targetContractAddress
@@ -100,7 +114,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
 
   const Options = () => {
     return (
-      <Box flexDirection="column" justifyContent="center" alignItems="center" gap="2" width="full">
+      <div className="flex flex-col justify-center items-center gap-2 w-full">
         {/* Only 1 option will be displayed, even if multiple providers are passed */}
         {creditCardProviders
           .slice(0, 1)
@@ -115,50 +129,44 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
             switch (creditCardProvider) {
               case 'sardine':
               case 'transak':
+              case 'custom':
                 return (
                   <Card
+                    className="flex justify-between items-center p-4 cursor-pointer"
                     key="sardine"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    padding="4"
                     onClick={() => {
                       setSelectedPaymentProvider(creditCardProvider)
                     }}
-                    opacity={{
-                      hover: '80',
-                      base: '100'
-                    }}
-                    cursor="pointer"
                     disabled={disableButtons}
                   >
-                    <Box flexDirection="row" gap="3" alignItems="center">
-                      <PaymentsIcon color="white" />
-                      <Text color="text100" variant="normal" fontWeight="bold">
+                    <div className="flex flex-row gap-3 items-center">
+                      <PaymentsIcon className="text-white" />
+                      <Text color="primary" variant="normal" fontWeight="bold">
                         Pay with credit or debit card
                       </Text>
-                    </Box>
-                    <Box style={{ transform: 'rotate(-45deg)' }}>
-                      <ArrowRightIcon color="white" />
-                    </Box>
+                    </div>
+                    <div style={{ transform: 'rotate(-45deg)' }}>
+                      <ArrowRightIcon className="text-white" />
+                    </div>
                   </Card>
                 )
               default:
                 return null
             }
           })}
-      </Box>
+      </div>
     )
   }
 
   return (
-    <Box width="full">
+    <div className="w-full">
       {isLoading ? (
-        <Box width="full" paddingTop="5" justifyContent="center" alignItems="center">
+        <div className="flex w-full pt-5 justify-center items-center">
           <Spinner />
-        </Box>
+        </div>
       ) : (
         <Options />
       )}
-    </Box>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Image, Text, useTheme } from '@0xsequence/design-system'
+import { Button, Image, Text, useTheme } from '@0xsequence/design-system'
 
 interface BottomPageLink {
   label: string
@@ -68,29 +68,28 @@ export const Footer = () => {
 
   const Links = () => {
     return (
-      <Box flexDirection="row" gap="4">
+      <div className="flex flex-row gap-4">
         {bottomPageLinks.map((link, index) => (
           <Button
+            className="flex gap-4"
             variant="text"
             onClick={() => onClickLinkUrl(link.url)}
             key={index}
-            gap="4"
             label={<Text variant="small">{link.label}</Text>}
           />
         ))}
-      </Box>
+      </div>
     )
   }
 
   const Socials = () => {
     return (
-      <Box gap="4" justifyContent="center" alignItems="center">
+      <div className="flex gap-4 justify-center items-center">
         {socialLinks.map((socialLink, index) => {
           return (
-            <Box
+            <div
+              className="cursor-pointer"
               key={index}
-              cursor="pointer"
-              opacity={{ hover: '80' }}
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   window.open(socialLink.url)
@@ -98,7 +97,7 @@ export const Footer = () => {
               }}
             >
               <Image
-                height="3"
+                className="h-3"
                 src={socialLink.icon}
                 alt={socialLink.id}
                 style={{
@@ -106,26 +105,17 @@ export const Footer = () => {
                 }}
                 disableAnimation
               />
-            </Box>
+            </div>
           )
         })}
-      </Box>
+      </div>
     )
   }
 
   return (
-    <Box
-      padding="5"
-      style={{ height: '60px', borderTop: '1px solid #222' }}
-      position="fixed"
-      bottom="0"
-      width="full"
-      justifyContent="space-between"
-      background="backgroundOverlay"
-      backdropFilter="blur"
-    >
+    <div className="h-[60px] flex p-5 fixed bottom-0 w-full justify-between bg-background-overlay backdrop-blur-md border-t-1 border-t-[#222]">
       <Links />
       <Socials />
-    </Box>
+    </div>
   )
 }

@@ -130,7 +130,8 @@ const MyComponent = () => {
 - **creditCardProviders**: The list of credit card providers to execute a payment with. It is up to the developer to make sure that the region, currency and network is compatible.
 - **txData**: Encoded transaction data to interact with the mint function.
 - **copyrightText**: The copyright text shown at the bottom of the modal.
-- **onSuccess**: Callback function triggered once the transaction has been confirmed on the blockchain
+- **onSuccess**: Callback function triggered once the transaction has been confirmed on the blockchain.
+- **blockConfirmations**: The number of block confirmations required for the transaction to be considered successful and trigger `onSuccess`.
 - **onError**: Callback function triggered if an error has occurred before or after sending the transaction.
 
 ## Utility functions
@@ -138,50 +139,40 @@ const MyComponent = () => {
 The `@0xsequence/kit-checkout` library indeed simplifies the integration of Web3 payment solutions by providing utility functions. One such function, `useERC1155SaleContractPaymentModal`, is tailored for use cases involving the minting of ERC-1155 tokens. This function works in conjunction with Sequence's wallet ecosystem and its deployable smart contract infrastructure, such as the ERC-1155 sale contract available through the [Sequence Builder](https://sequence.build).
 
 ```js
-import { useERC1155SaleContractPaymentModal } from '@0xsequence/kit-checkout'
+import { useERC1155SaleContractCheckout } from "@0xsequence/kit-checkout";
+import { useAccount } from "wagmi";
 
 const MyComponent = () => {
-  const { openERC1155SaleContractPaymentModal } = useERC1155SaleContractPaymentModal()
-
+  const { address: userAddress } = useAccount();
+  const { openCheckoutModal } = useERC1155SaleContractCheckout({
+    chain: 80001, // chainId of the chain the collectible is on
+    contractAddress: "0x0327b2f274e04d292e74a06809bcd687c63a4ba4", // address of the contract handling the minting function
+    wallet: userAddress!, // address of the recipient
+    collectionAddress: "0x888a322db4b8033bac3ff84412738c096f87f9d0", // address of the collection contract
+    items: [
+      // array of collectibles to purchase
+      {
+        tokenId: "0",
+        quantity: "1",
+      },
+    ],
+    onSuccess: (txnHash: string) => {
+      console.log("success!", txnHash);
+    },
+    onError: (error: Error) => {
+      console.error(error);
+    },
+  });
 
   const onClick = () => {
-    if (!address) {
-      return
+    if (!userAddress) {
+      return;
     }
-    // // ERC-20 contract
-    const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-    const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
-    const price = '20000'
+    openCheckoutModal();
+  };
 
-    const chainId = 137
-
-    openERC1155SaleContractPaymentModal({
-      collectibles: [
-        {
-          tokenId: '1',
-          quantity: '1'
-        }
-      ],
-      chain: chainId,
-      price,
-      targetContractAddress: salesContractAddress,
-      recipientAddress: address,
-      currencyAddress,
-      collectionAddress,
-      creditCardProviders: ['sardine'],
-      copyrightText: 'ⓒ2024 Sequence',
-      onSuccess: (txnHash: string) => {
-        console.log('success!', txnHash)
-      },
-      onError: (error: Error) => {
-        console.error(error)
-      }
-    })
-  }
-
-  return <button onClick={onClick}>Buy ERC-1155 collectble!</button>
-}
+  return <button onClick={onClick}>Buy ERC-1155 collectible!</button>;
+};
 ```
 
 # Swap

@@ -1,5 +1,4 @@
 import {
-  Box,
   Image,
   Text,
   GradientAvatar,
@@ -16,18 +15,11 @@ import { useAccount, useChainId, useChains, useDisconnect, useSwitchChain } from
 
 export const Header = () => {
   return (
-    <Box
-      position="fixed"
-      top="0"
-      width="full"
-      padding="4"
-      justifyContent="space-between"
-      background="backgroundOverlay"
-      backdropFilter="blur"
-      zIndex="1"
+    <div
+      className="flex fixed top-0 w-full p-4 justify-between bg-background-overlay backdrop-blur-md z-3"
       style={{ borderBottom: '1px solid #222' }}
     >
-      <Box flexDirection="row" alignItems="center" justifyContent="center" gap="3">
+      <div className="flex flex-row items-center justify-center gap-3">
         <Image style={{ width: '36px' }} src="images/kit-logo.svg" alt="Sequence kit" disableAnimation />
         <Image
           style={{
@@ -38,12 +30,12 @@ export const Header = () => {
           alt="Sequence Kit Text Logo"
           disableAnimation
         />
-      </Box>
-      <Box gap="2" alignItems="center">
+      </div>
+      <div className="flex gap-2 items-center">
         <NetworkSelect />
         <AccountMenu />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -55,71 +47,53 @@ const AccountMenu = () => {
   return (
     <PopoverPrimitive.Root open={isOpen} onOpenChange={toggleOpen}>
       <PopoverPrimitive.Trigger asChild>
-        <Box
-          borderColor={isOpen ? 'borderFocus' : 'borderNormal'}
-          borderWidth="thin"
-          borderStyle="solid"
-          borderRadius="md"
-          paddingX="4"
-          paddingY="3"
-          cursor="pointer"
-          gap="2"
-          alignItems="center"
-          userSelect="none"
-          opacity={{ hover: '80' }}
+        <div
+          className="flex border-1 border-solid rounded-xl px-4 py-3 cursor-pointer gap-2 items-center select-none"
           style={{ height: 52 }}
         >
-          <Box flexDirection="column">
-            <Box flexDirection="row" gap="2" justifyContent="flex-end" alignItems="center">
+          <div className="flex flex-col">
+            <div className="flex flex-row gap-2 justify-end items-center">
               <GradientAvatar address={String(address)} size="sm" />
-              <Text variant="normal" fontWeight="bold" color="text100">
+              <Text variant="normal" fontWeight="bold" color="primary">
                 {truncateAddress(String(address), 4)}
               </Text>
-            </Box>
-          </Box>
+            </div>
+          </div>
 
-          <Box color="text50">
+          <div className="text-muted">
             <ChevronDownIcon />
-          </Box>
-        </Box>
+          </div>
+        </div>
       </PopoverPrimitive.Trigger>
-
       {isOpen && (
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content side="bottom" sideOffset={8} align="end" asChild>
-            <Card
-              zIndex="20"
-              background="backgroundRaised"
-              backdropFilter="blur"
-              position="relative"
-              padding="2"
-              style={{ minWidth: 360 }}
-            >
+            <Card className="z-20 bg-background-raised backdrop-blur-md relative p-2" style={{ minWidth: 360 }}>
               <Card>
-                <Box alignItems="center" justifyContent="space-between">
-                  <Text variant="normal" fontWeight="bold" color="text100">
+                <div className="flex items-center justify-between">
+                  <Text variant="normal" fontWeight="bold" color="primary">
                     Account
                   </Text>
-                  <Text variant="small" color="text50">
+                  <Text variant="small" color="muted">
                     {connector?.name}
                   </Text>
-                </Box>
+                </div>
 
-                <Text as="div" marginTop="2" variant="normal" color="text80">
-                  {address}
+                <Text className="mt-2" variant="normal" color="secondary" asChild>
+                  <div>{address}</div>
                 </Text>
               </Card>
 
-              <Box marginTop="2">
+              <div className="mt-2">
                 <Button
-                  width="full"
+                  className="w-full"
                   shape="square"
                   variant="emphasis"
                   rightIcon={SignoutIcon}
                   label="Sign out"
                   onClick={() => disconnect()}
                 />
-              </Box>
+              </div>
             </Card>
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
@@ -137,49 +111,30 @@ const NetworkSelect = () => {
   return (
     <PopoverPrimitive.Root open={isOpen} onOpenChange={toggleOpen}>
       <PopoverPrimitive.Trigger asChild>
-        <Box
-          borderColor={isOpen ? 'borderFocus' : 'borderNormal'}
-          borderWidth="thin"
-          borderStyle="solid"
-          borderRadius="md"
-          paddingX="4"
-          paddingY="3"
-          cursor="pointer"
-          gap="2"
-          alignItems="center"
-          userSelect="none"
-          opacity={{ hover: '80' }}
+        <div
+          className="flex border-1 border-solid rounded-xl px-4 py-3 cursor-pointer gap-2 items-center select-none"
           style={{ height: 52 }}
         >
-          <Box alignItems="center" gap="2">
+          <div className="flex items-center gap-2">
             <NetworkImage chainId={chainId} size="sm" />
-            <Text display={{ sm: 'none', lg: 'block' }} variant="normal" fontWeight="bold" color="text100">
+            <Text display={{ sm: 'none', lg: 'block' }} variant="normal" fontWeight="bold" color="primary">
               {chains.find(chain => chain.id === chainId)?.name || chainId}
             </Text>
-          </Box>
+          </div>
 
-          <Box color="text50">
+          <div className="text-muted">
             <ChevronDownIcon />
-          </Box>
-        </Box>
+          </div>
+        </div>
       </PopoverPrimitive.Trigger>
-
       {isOpen && (
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content side="bottom" sideOffset={8} align="end" asChild>
-            <Card
-              zIndex="20"
-              background="backgroundRaised"
-              backdropFilter="blur"
-              position="relative"
-              padding="2"
-              flexDirection="column"
-              gap="2"
-            >
+            <Card className="flex z-20 bg-background-raised backdrop-blur-md relative p-2 flex-col gap-2">
               {chains.map(chain => (
                 <Button
+                  className="w-full"
                   key={chain.id}
-                  width="full"
                   shape="square"
                   onClick={() => {
                     switchChain({ chainId: chain.id })
@@ -187,11 +142,11 @@ const NetworkSelect = () => {
                   }}
                   leftIcon={() => <NetworkImage chainId={chain.id} size="sm" />}
                   label={
-                    <Box alignItems="center" gap="2">
-                      <Text variant="normal" fontWeight="bold" color="text100">
+                    <div className="flex items-center gap-2">
+                      <Text variant="normal" fontWeight="bold" color="primary">
                         {chain.name}
                       </Text>
-                    </Box>
+                    </div>
                   }
                 />
               ))}

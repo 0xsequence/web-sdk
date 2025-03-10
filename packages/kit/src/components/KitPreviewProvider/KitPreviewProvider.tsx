@@ -2,7 +2,7 @@
 
 import { sequence } from '0xsequence'
 import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
-import { ThemeProvider } from '@0xsequence/design-system'
+import { Theme, ThemeProvider } from '@0xsequence/design-system'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { useState, useEffect } from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -15,7 +15,7 @@ import { ThemeContextProvider } from '../../contexts/Theme'
 import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
-import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, Theme, ModalPosition } from '../../types'
+import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, ModalPosition } from '../../types'
 import { Connect } from '../Connect/Connect'
 
 export type KitConnectProviderProps = {

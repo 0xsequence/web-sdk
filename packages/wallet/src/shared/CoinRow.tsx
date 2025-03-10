@@ -1,4 +1,4 @@
-import { Box, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { formatDisplay } from '@0xsequence/kit'
 import { ethers } from 'ethers'
 import React from 'react'
@@ -17,27 +17,19 @@ interface CoinRowProps {
 
 export const CoinRowSkeleton = () => {
   return (
-    <Box
-      height="14"
-      alignItems="center"
-      justifyContent="space-between"
-      background="backgroundSecondary"
-      borderRadius="md"
-      paddingY="2"
-      paddingX="3"
-    >
-      <Box justifyContent="center" alignItems="center" gap="2">
-        <Skeleton style={{ width: 30, height: 30 }} borderRadius="circle" />
-        <Box flexDirection="column" gap="2" alignItems="flex-start">
+    <div className="flex h-14 items-center justify-between bg-background-secondary rounded-xl py-2 px-3">
+      <div className="flex justify-center items-center gap-2">
+        <Skeleton className="rounded-full" style={{ width: 30, height: 30 }} />
+        <div className="flex flex-col gap-2 items-start">
           <Skeleton style={{ width: 100, height: 14 }} />
           <Skeleton style={{ width: 75, height: 14 }} />
-        </Box>
-      </Box>
-      <Box flexDirection="column" gap="2" alignItems="flex-end">
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 items-end">
         <Skeleton style={{ width: 100, height: 14 }} />
         <Skeleton style={{ width: 50, height: 12 }} />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -46,33 +38,25 @@ export const CoinRow = ({ imageUrl, name, decimals, balance, symbol, fiatValue, 
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   return (
-    <Box
-      height="14"
-      alignItems="center"
-      justifyContent="space-between"
-      background="backgroundSecondary"
-      borderRadius="md"
-      paddingY="2"
-      paddingX="3"
-    >
-      <Box justifyContent="center" alignItems="center" gap="2">
+    <div className="flex h-14 items-center justify-between bg-background-secondary rounded-xl py-2 px-3">
+      <div className="flex justify-center items-center gap-2">
         <TokenImage src={imageUrl} symbol={symbol} size="lg" />
-        <Box flexDirection="column" alignItems="flex-start">
-          <Text variant="medium" color="text100">
+        <div className="flex flex-col items-start">
+          <Text variant="medium" color="primary">
             {name}
           </Text>
-          <Text color="text50" variant="normal">
+          <Text color="muted" variant="normal">
             {' '}
             {`${balanceDisplayed} ${symbol}`}
           </Text>
-        </Box>
-      </Box>
-      <Box flexDirection="column" alignItems="flex-end">
-        <Text variant="normal" color="text100">{`$${fiatValue}`}</Text>
-        <Text variant="small" style={{ color: getPercentageColor(priceChangePercentage) }}>
+        </div>
+      </div>
+      <div className="flex flex-col items-end">
+        <Text variant="normal" color="primary">{`$${fiatValue}`}</Text>
+        <Text variant="small" color={getPercentageColor(priceChangePercentage)}>
           {priceChangePercentage.toFixed(2)}%
         </Text>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

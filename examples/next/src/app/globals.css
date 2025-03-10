@@ -1,11 +1,10 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@import 'tailwindcss';
+@import '@0xsequence/design-system/preset';
+
+@source '../../../components/src';
 
 body {
-  background-color: var(--seq-colors-background-primary);
+  background-color: var(--color-background-primary);
   margin: 0;
   padding: 0;
 }

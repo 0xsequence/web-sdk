@@ -1,0 +1,21 @@
+export const QUERY_KEYS = {
+  balances: 'balances',
+  balancesAssetsSummary: 'balancesAssetsSummary',
+  balancesSummary: 'balancesSummary',
+  coinBalance: 'coinBalance',
+  coinBalanceSummary: 'coinBalanceSummary',
+  coinPrices: 'coinPrices',
+  collectibleBalance: 'collectibleBalance',
+  collectibleBalanceDetails: 'collectibleBalanceDetails',
+  collectiblePrices: 'collectiblePrices',
+  collectionBalance: 'collectionBalance',
+  collectionBalanceDetails: 'collectionBalanceDetails',
+  contractInfo: 'contractInfo',
+  currencyInfo: 'currencyInfo',
+  exchangeRate: 'exchangeRate',
+  swapPrices: 'swapPrices',
+  swapQuotes: 'swapQuotes',
+  tokenMetadata: 'tokenMetadata',
+  transactionHistory: 'transactionHistory',
+  transactionHistorySummary: 'transactionHistorySummary'
+}

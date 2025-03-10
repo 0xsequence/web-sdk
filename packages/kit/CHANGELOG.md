@@ -1,5 +1,23 @@
 # @0xsequence/kit
 
+## 4.6.5
+
+### Patch Changes
+
+- added custom callback to credit card providers
+
+## 4.6.4
+
+### Patch Changes
+
+- Fix for sponsored transactions
+
+## 4.6.3
+
+### Patch Changes
+
+- Swap flow for tokens, various fixes
+
 ## 4.6.2
 
 ### Patch Changes

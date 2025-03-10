@@ -1,9 +1,9 @@
 'use client'
 
-import { Box, Modal, ThemeProvider, Scroll } from '@0xsequence/design-system'
-import { getModalPositionCss, useTheme } from '@0xsequence/kit'
+import { Modal, Scroll } from '@0xsequence/design-system'
+import { getModalPositionCss, useTheme, ShadowRoot } from '@0xsequence/kit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
 import React, { useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -60,38 +60,35 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
-        <div id="kit-wallet">
-          <ThemeProvider root="#kit-wallet" scope="kit" theme={theme}>
-            <AnimatePresence>
-              {openWalletModal && (
-                <Modal
-                  contentProps={{
-                    style: {
-                      maxWidth: '400px',
-                      height: 'fit-content',
-                      ...getModalPositionCss(position),
-                      scrollbarColor: 'gray black',
-                      scrollbarWidth: 'thin'
-                    }
-                  }}
-                  scroll={false}
-                  backdropColor="backgroundBackdrop"
-                  onClose={() => setOpenWalletModal(false)}
-                >
-                  <Box id="sequence-kit-wallet-content">
-                    {getHeader(navigation)}
+        <ShadowRoot theme={theme}>
+          <AnimatePresence>
+            {openWalletModal && (
+              <Modal
+                contentProps={{
+                  style: {
+                    maxWidth: '400px',
+                    height: 'fit-content',
+                    ...getModalPositionCss(position),
+                    scrollbarColor: 'gray black',
+                    scrollbarWidth: 'thin'
+                  }
+                }}
+                scroll={false}
+                onClose={() => setOpenWalletModal(false)}
+              >
+                <div id="sequence-kit-wallet-content">
+                  {getHeader(navigation)}
 
-                    {displayScrollbar ? (
-                      <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 80vh)' }}>{getContent(navigation)}</Scroll>
-                    ) : (
-                      getContent(navigation)
-                    )}
-                  </Box>
-                </Modal>
-              )}
-            </AnimatePresence>
-          </ThemeProvider>
-        </div>
+                  {displayScrollbar ? (
+                    <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 80vh)' }}>{getContent(navigation)}</Scroll>
+                  ) : (
+                    getContent(navigation)
+                  )}
+                </div>
+              </Modal>
+            )}
+          </AnimatePresence>
+        </ShadowRoot>
         {children}
       </NavigationContextProvider>
     </WalletModalContextProvider>

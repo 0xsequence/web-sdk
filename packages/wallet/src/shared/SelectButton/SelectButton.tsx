@@ -1,9 +1,9 @@
-import { BoxProps, Card } from '@0xsequence/design-system'
+import { Card, cn } from '@0xsequence/design-system'
 import React, { ReactNode } from 'react'
 
 import { SelectedIndicator } from './SelectedIndicator'
 
-export interface SelectButtonProps extends BoxProps {
+export interface SelectButtonProps {
   children?: ReactNode
   className?: string
   onClick: (value: any) => void
@@ -19,25 +19,15 @@ export const SelectButton = (props: SelectButtonProps) => {
 
   return (
     <Card
-      as="button"
+      className={cn('flex select-none items-center justify-between text-left w-full border-none appearance-none', className)}
       clickable
-      className={className}
       disabled={disabled}
-      onClick={() => onClick(value)}
-      userSelect="none"
-      alignItems="center"
-      justifyContent="space-between"
-      textAlign="left"
-      width="full"
-      border="none"
-      style={{
-        appearance: 'none'
-      }}
-      {...rest}
+      asChild
     >
-      {children}
-
-      {!hideIndicator && <SelectedIndicator selected={selected} squareIndicator={squareIndicator} />}
+      <button onClick={() => onClick(value)} {...rest}>
+        {children}
+        {!hideIndicator && <SelectedIndicator selected={selected} squareIndicator={squareIndicator} />}
+      </button>
     </Card>
   )
 }

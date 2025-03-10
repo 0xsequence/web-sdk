@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+@import '@0xsequence/design-system/preset';
+
+@source '../../wallet/src';
+@source '../../checkout/src';

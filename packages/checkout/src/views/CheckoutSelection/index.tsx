@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   ChevronRightIcon,
   Divider,
@@ -7,7 +6,6 @@ import {
   Text,
   Tooltip,
   PaymentsIcon,
-  vars,
   Skeleton,
   TokenImage
 } from '@0xsequence/design-system'
@@ -104,19 +102,16 @@ export const CheckoutSelection = () => {
   }
 
   return (
-    <Box
-      paddingX="5"
-      paddingBottom="5"
+    <div
+      className="flex px-5 pb-5 flex-col gap-3"
       style={{
         marginTop: HEADER_HEIGHT
       }}
-      flexDirection="column"
-      gap="3"
     >
       {orderSummaryItems.length > 0 && (
         <>
-          <Box flexDirection="row" gap="2" alignItems="center">
-            <Text variant="normal" color="text50">
+          <div className="flex flex-row gap-2 items-center">
+            <Text variant="normal" color="muted">
               Order summary
             </Text>
             <Tooltip
@@ -129,54 +124,47 @@ export const CheckoutSelection = () => {
                 </>
               }
             >
-              <Box width="5" height="5">
-                <HelpIcon color="text80" />
-              </Box>
+              <div className="w-5 h-5">
+                <HelpIcon className="text-secondary" />
+              </div>
             </Tooltip>
-          </Box>
-          <Box flexDirection="column" gap="2">
+          </div>
+          <div className="flex flex-col gap-2">
             {orderSummaryItems.map((orderSummaryItem, index) => {
               return <OrderSummaryItem key={index} {...orderSummaryItem} chainId={chainId} />
             })}
-          </Box>
-          <Box marginTop="2">
+          </div>
+          <div className="mt-2">
             <Divider
-              color="backgroundSecondary"
+              className="text-background-secondary"
               style={{
                 margin: '0px'
               }}
             />
-          </Box>
+          </div>
         </>
       )}
-
       {displayCryptoCheckout && (
-        <Box justifyContent="space-between" alignItems="center">
-          <Text variant="normal" color="text50">
+        <div className="flex justify-between items-center">
+          <Text variant="normal" color="muted">
             Total
           </Text>
           {isPending ? (
             <Skeleton style={{ width: '100px', height: '17px' }} />
           ) : (
-            <Box flexDirection="row" gap="1" alignItems="center">
+            <div className="flex flex-row gap-1 items-center">
               <TokenImage src={coinImageUrl} size="xs" />
-              <Text variant="normal" color="text100">
+              <Text variant="normal" color="primary">
                 {`${formatDisplay(requestAmount)} ${coinSymbol}`}
               </Text>
-            </Box>
+            </div>
           )}
-        </Box>
+        </div>
       )}
-
-      <Box flexDirection="column" alignItems="center" justifyContent="center" gap="2">
+      <div className="flex flex-col items-center justify-center gap-2">
         {displayCreditCardCheckout && (
           <Button
-            style={{
-              borderRadius: vars.radii.md,
-              height: '56px'
-            }}
-            width="full"
-            borderRadius="md"
+            className="w-full h-14 rounded-xl"
             leftIcon={PaymentsIcon}
             variant="primary"
             label="Pay with credit card"
@@ -186,11 +174,7 @@ export const CheckoutSelection = () => {
         )}
         {displayCryptoCheckout && !isInsufficientBalance && !isPending && (
           <Button
-            style={{
-              borderRadius: vars.radii.md,
-              height: '56px'
-            }}
-            width="full"
+            className="w-full h-14 rounded-xl"
             leftIcon={() => <TokenImage src={coinImageUrl} size="sm" />}
             variant="primary"
             label={`Pay with ${coinSymbol}`}
@@ -200,31 +184,31 @@ export const CheckoutSelection = () => {
         )}
         {displayCryptoCheckout && (isInsufficientBalance || isPending) && (
           <Button
+            className="w-full"
             shape="square"
-            width="full"
             variant="glass"
             label={
-              <Box placeItems="center" gap="2">
+              <div className="flex items-center justify-center gap-2">
                 <TokenImage src={coinImageUrl} size="sm" />
                 <Text>Insufficient ${coinSymbol}</Text>
-              </Box>
+              </div>
             }
             onClick={onClickPayWithCrypto}
             disabled
           />
         )}
-      </Box>
+      </div>
       {displayCryptoCheckout && (
-        <Box width="full" justifyContent="flex-end">
+        <div className="flex w-full justify-end">
           {isPending ? (
             <Skeleton style={{ width: '102px', height: '14px' }} />
           ) : (
-            <Text variant="small" fontWeight="bold" color="text50">
+            <Text variant="small" fontWeight="bold" color="muted">
               Balance: {`${formatDisplay(userBalance)} ${coinSymbol}`}
             </Text>
           )}
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }

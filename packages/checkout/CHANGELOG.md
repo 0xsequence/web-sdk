@@ -1,5 +1,32 @@
 # @0xsequence/kit-connectors
 
+## 4.6.5
+
+### Patch Changes
+
+- added custom callback to credit card providers
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.5
+
+## 4.6.4
+
+### Patch Changes
+
+- Fix for sponsored transactions
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.4
+
+## 4.6.3
+
+### Patch Changes
+
+- Swap flow for tokens, various fixes
+
+- Updated dependencies []:
+  - @0xsequence/kit@4.6.3
+
 ## 4.6.2
 
 ### Patch Changes

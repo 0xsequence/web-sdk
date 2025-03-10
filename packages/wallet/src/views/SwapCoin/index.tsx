@@ -1,4 +1,4 @@
-import { Box, Button, ChevronRightIcon, Text, NumericInput, vars } from '@0xsequence/design-system'
+import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, getNativeTokenInfoByChainId, useExchangeRate, useCoinPrices, useBalancesSummary } from '@0xsequence/kit'
 import { ethers } from 'ethers'
@@ -55,13 +55,6 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
     setAmount(formattedValue)
   }
 
-  const handleMax = () => {
-    amountInputRef.current?.focus()
-    const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
-
-    setAmount(maxAmount)
-  }
-
   const handleFindQuotesClick = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
     setNavigation({
@@ -99,17 +92,14 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const isNonZeroAmount = amountRaw > 0n
 
   return (
-    <Box
-      padding="5"
-      gap="2"
-      flexDirection="column"
-      as="form"
+    <form
+      className="flex p-5 gap-2 flex-col"
       onSubmit={handleFindQuotesClick}
       style={{
         marginTop: HEADER_HEIGHT
       }}
     >
-      <Box background="backgroundSecondary" borderRadius="md" padding="4" gap="2" flexDirection="column">
+      <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
         <SendItemInfo
           imageUrl={imageUrl}
           decimals={decimals}
@@ -123,40 +113,36 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
             decimals
           })}
           chainId={chainId}
+          balanceSuffix="owned"
         />
         <NumericInput
           ref={amountInputRef}
-          style={{ fontSize: vars.fontSizes.xlarge, fontWeight: vars.fontWeights.bold }}
           name="amount"
           value={amount}
           onChange={handleChangeAmount}
           controls={
             <>
-              <Text variant="small" color="text50" whiteSpace="nowrap">
+              <Text className="whitespace-nowrap" variant="small" color="muted">
                 {`~${fiatCurrency.sign}${amountToSendFiat}`}
               </Text>
-              <Button size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" flexShrink="0" />
               <Text variant="xlarge" fontWeight="bold" color="text100">
                 {symbol}
               </Text>
             </>
           }
         />
-      </Box>
-
-      <Box style={{ height: '52px' }} alignItems="center" justifyContent="center">
+      </div>
+      <div className="flex items-center justify-center" style={{ height: '52px' }}>
         <Button
-          color="text100"
-          marginTop="3"
-          width="full"
+          className="text-primary mt-3 w-full"
           variant="primary"
+          size="lg"
           type="submit"
           disabled={!isNonZeroAmount}
           label="Continue"
           rightIcon={ChevronRightIcon}
-          style={{ height: '52px', borderRadius: vars.radii.md }}
         />
-      </Box>
-    </Box>
+      </div>
+    </form>
   )
 }

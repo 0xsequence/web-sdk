@@ -1,18 +1,21 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@import 'tailwindcss';
+@import '@0xsequence/design-system/preset';
+
+@source '../../components/src';
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--seq-colors-background-primary);
+  background: var(--color-background-primary);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+[data-radix-popper-content-wrapper] {
+  z-index: 1000;
 }

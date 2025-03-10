@@ -95,8 +95,8 @@ import Content from './components/Content'
 
 const config = createConfig('waas', {
   projectAccessKey: '<your-project-access-key>',
-  chainIds: [1, 137]
-  defaultChainId: 1
+  chainIds: [1, 137],
+  defaultChainId: 1,
   appName: 'Demo Dapp',
   waasConfigKey: '<your-waas-config-key>',
 
@@ -133,8 +133,6 @@ import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
-
-import '@0xsequence/kit/styles.css'
 
 const projectAccessKey = 'xyz'
 

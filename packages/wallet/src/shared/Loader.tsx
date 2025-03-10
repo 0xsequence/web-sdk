@@ -1,12 +1,12 @@
-import { Box, Spinner } from '@0xsequence/design-system'
+import { Spinner } from '@0xsequence/design-system'
 import React from 'react'
 
 export const Loader = () => {
   return (
-    <Box flexDirection="column" justifyContent="center" alignItems="center" gap="6" marginTop="4">
-      <Box>
+    <div className="flex flex-col justify-center items-center gap-6 mt-4">
+      <div>
         <Spinner size="lg" />
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

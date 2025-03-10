@@ -1,4 +1,4 @@
-import { Box, Spinner, Text } from '@0xsequence/design-system'
+import { Spinner, Text } from '@0xsequence/design-system'
 import { Transaction } from '@0xsequence/indexer'
 import React, { useMemo } from 'react'
 
@@ -86,9 +86,9 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
 
   if (isPending) {
     return (
-      <Box flexDirection="column" gap="2">
+      <div className="flex flex-col gap-2">
         <TransactionHistorySkeleton />
-      </Box>
+      </div>
     )
   }
 
@@ -98,11 +98,11 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
 
   const TimeLabel = ({ label }: TimeLabelProps) => {
     return (
-      <Box>
-        <Text variant="normal" color="text50" fontWeight="medium">
+      <div>
+        <Text variant="normal" color="muted" fontWeight="medium">
           {label}
         </Text>
-      </Box>
+      </div>
     )
   }
 
@@ -112,43 +112,43 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
 
   const TransactionsList = ({ transactions }: TransactionsListProps) => {
     return (
-      <Box flexDirection="column" gap="2">
+      <div className="flex flex-col gap-2">
         {transactions.map((transaction, index) => {
           return (
-            <Box key={`${transaction.txnHash}-${index}`} flexDirection="column" gap="2">
+            <div className="flex flex-col gap-2" key={`${transaction.txnHash}-${index}`}>
               <TransactionHistoryItem transaction={transaction} />
-            </Box>
+            </div>
           )
         })}
-      </Box>
+      </div>
     )
   }
 
   return (
-    <Box flexDirection="column" gap="5">
+    <div className="flex flex-col gap-5">
       {transactionPeriods.map(period => {
         const txs = transactionsByTime[period.id]
         if (txs.length === 0) {
           return null
         }
         return (
-          <Box key={period.id} flexDirection="column" gap="3">
+          <div className="flex flex-col gap-3" key={period.id}>
             <TimeLabel label={period.label} />
             <TransactionsList transactions={txs} />
-          </Box>
+          </div>
         )
       })}
       {transactions.length === 0 && (
-        <Box flexDirection="column" gap="3">
+        <div className="flex flex-col gap-3">
           <TimeLabel label={'History'} />
-          <Text color="text100">No Recent Transaction History Found</Text>
-        </Box>
+          <Text color="primary">No Recent Transaction History Found</Text>
+        </div>
       )}
       {isFetchingNextPage && (
-        <Box margin="4" alignItems="center" justifyContent="center">
+        <div className="flex m-4 items-center justify-center">
           <Spinner />
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }

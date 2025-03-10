@@ -1,4 +1,3 @@
-import { Box } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import {
   compareAddress,
@@ -40,7 +39,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
 
   const isPending = isPendingCoinPrice || isPendingConversionRate || isPendingContractInfo
   if (isPending) {
-    return <Box background="backgroundSecondary" width="full" height="full" borderRadius="md" />
+    return <div className="bg-background-secondary w-full h-full rounded-xl" />
   }
 
   if (isNativeToken) {

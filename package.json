@@ -38,8 +38,6 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
-    "@vanilla-extract/css": "^1.15.2",
-    "@vanilla-extract/recipes": "^0.5.3",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-import": "^2.29.1",
@@ -54,5 +52,11 @@
     "wagmi": "^2.14.11"
   },
   "resolutions": {},
-  "packageManager": "pnpm@9.0.6"
+  "packageManager": "pnpm@9.0.6",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.6",
+    "@tailwindcss/postcss": "^4.0.6",
+    "postcss": "^8",
+    "tailwindcss": "^4.0.6"
+  }
 }

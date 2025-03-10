@@ -10,17 +10,19 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "^1.9.0",
+    "@0xsequence/design-system": "^2.0.9",
     "@0xsequence/kit": "workspace:*",
     "@0xsequence/kit-checkout": "workspace:*",
-    "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/kit-example-shared-components": "workspace:*",
+    "@0xsequence/kit-wallet": "workspace:*",
     "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/waas": ">= 2.2.13",
+    "@tailwindcss/postcss": "^4.0.6",
     "@tanstack/react-query": "^5.37.1",
     "next": "14.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "tailwindcss": "^4.0.6",
     "viem": "^2.12.0",
     "wagmi": "^2.14.11"
   },
@@ -30,7 +32,7 @@
     "@types/react-dom": "^18.3.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
-    "postcss": "^8",
+    "postcss": "^8.5.1",
     "typescript": "^5"
   }
 }

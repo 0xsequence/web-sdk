@@ -1,4 +1,4 @@
-import { Box, Card, Text, TokenImage } from '@0xsequence/design-system'
+import { Card, Text, TokenImage } from '@0xsequence/design-system'
 
 import { SelectedIndicator } from './SelectedIndicator'
 
@@ -32,27 +32,17 @@ export const CryptoOption = ({
   }
 
   return (
-    <Card
-      width="full"
-      justifyContent="space-between"
-      padding="4"
-      onClick={onClickCard}
-      opacity={{
-        hover: disabled || isInsufficientFunds ? '50' : '80',
-        base: disabled || isInsufficientFunds ? '50' : '100'
-      }}
-      cursor="pointer"
-    >
-      <Box flexDirection="row" gap="3">
-        <Box width="fit">
+    <Card className="flex w-full justify-between p-4 cursor-pointer" onClick={onClickCard}>
+      <div className="flex flex-row gap-3">
+        <div className="w-fit">
           <TokenImage src={iconUrl} size="lg" symbol={symbol} withNetwork={chainId} disableAnimation />
-        </Box>
-        <Box flexDirection="column" justifyContent="space-between">
+        </div>
+        <div className="flex flex-col justify-between">
           <Text
+            className="whitespace-nowrap"
             variant="normal"
             fontWeight="bold"
-            color="text100"
-            whiteSpace="nowrap"
+            color="primary"
             ellipsis
             style={{
               overflow: 'hidden',
@@ -62,9 +52,9 @@ export const CryptoOption = ({
             {currencyName}
           </Text>
           <Text
+            className="whitespace-nowrap"
             variant="normal"
-            color="text50"
-            whiteSpace="nowrap"
+            color="muted"
             ellipsis
             style={{
               overflow: 'hidden',
@@ -73,18 +63,18 @@ export const CryptoOption = ({
           >
             {`${price} ${symbol}`}
           </Text>
-        </Box>
-      </Box>
-      <Box flexDirection="row" justifyContent="center" alignItems="center" gap="3">
-        <Box flexDirection="column" justifyContent="space-between" alignItems="flex-end">
+        </div>
+      </div>
+      <div className="flex flex-row justify-center items-center gap-3">
+        <div className="flex flex-col justify-between items-end">
           {isInsufficientFunds ? (
             <Text variant="normal" color="negative">
               Insufficient funds
             </Text>
           ) : null}
-        </Box>
+        </div>
         <SelectedIndicator selected={isSelected} />
-      </Box>
+      </div>
     </Card>
   )
 }

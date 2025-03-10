@@ -13,7 +13,6 @@ export type {
   DisplayedAsset,
   ExtendedConnector,
   EthAuthSettings,
-  Theme,
   ModalPosition,
   KitConfig,
   StorageItem
@@ -38,7 +37,8 @@ export {
   LocalStorageKey,
   DEFAULT_SESSION_EXPIRATION,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
-  NATIVE_TOKEN_ADDRESS_0X
+  NATIVE_TOKEN_ADDRESS_0X,
+  QUERY_KEYS
 } from './constants'
 
 // Utils
@@ -132,6 +132,7 @@ export { NetworkBadge } from './components/NetworkBadge'
 export { CollectibleTileImage } from './components/CollectibleTileImage'
 export { CryptoOption } from './components/CryptoOption'
 export { SelectedIndicator } from './components/SelectedIndicator'
+export { ShadowRoot } from './components/ShadowRoot'
 
 // Indexer
 export { ContractVerificationStatus } from '@0xsequence/indexer'
