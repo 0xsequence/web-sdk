@@ -11,7 +11,6 @@ import { CoinTile } from './CoinTile'
 import { CollectibleTile } from './CollectibleTile'
 import { SkeletonTiles } from './SkeletonTiles'
 
-
 export const AssetSummary = () => {
   const { address } = useAccount()
   const { setNavigation } = useNavigation()

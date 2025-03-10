@@ -1,6 +1,6 @@
 import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, getNativeTokenInfoByChainId} from '@0xsequence/kit'
+import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/kit'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent } from 'react'

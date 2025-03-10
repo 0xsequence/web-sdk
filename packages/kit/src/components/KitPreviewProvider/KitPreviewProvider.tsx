@@ -120,9 +120,7 @@ export const KitPreviewProvider = (props: KitConnectProviderProps) => {
       >
         <GoogleOAuthProvider clientId={googleClientId}>
           <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
-            <WalletConfigContextProvider
-              value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks}}
-            >
+            <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">
                   <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>

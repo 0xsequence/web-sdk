@@ -45,16 +45,16 @@ export type UseWaasFeeOptionsReturn = [
 ]
 
 /**
- * Hook for handling WaaS (Wallet as a Service) fee options for unsponsored transactions 
- * 
+ * Hook for handling WaaS (Wallet as a Service) fee options for unsponsored transactions
+ *
  * This hook provides functionality to:
  * - Get available fee options for a transaction in Native Token and ERC20's
  * - Check wallet balances for each fee option
  * - Confirm or reject fee selections
- * 
+ *
  * @param chainId - The chain ID for which to get fee options
  * @returns {UseWaasFeeOptionsReturn} Array containing the confirmation state and control functions
- * 
+ *
  * @example
  * ```tsx
  *   const chainId = 137 // Polygon mainnet
@@ -63,17 +63,17 @@ export type UseWaasFeeOptionsReturn = [
  *     confirmPendingFeeOption,
  *     rejectPendingFeeOption
  *   ] = useWaasFeeOptions(chainId);
- * 
+ *
  *   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = useState<string>();
  *   const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps>();
- * 
+ *
  *   // Initialize with first option when fee options become available
  *   useEffect(() => {
  *     if (pendingFeeOptionConfirmation) {
  *       console.log('Pending fee options: ', pendingFeeOptionConfirmation.options)
  *     }
  *   }, [pendingFeeOptionConfirmation]);
- * 
+ *
  * ```
  */
 export function useWaasFeeOptions(skipFeeBalanceCheck = false): UseWaasFeeOptionsReturn {
@@ -138,35 +138,39 @@ export function useWaasFeeOptions(skipFeeBalanceCheck = false): UseWaasFeeOption
         const accountAddress = connections[0]?.accounts[0]
         if (!accountAddress) {
           throw new Error('No account address available')
-        }        
+        }
 
-        if (!skipFeeBalanceCheck) {  
-          const optionsWithBalances = await Promise.all(options.map(async (option) => {
-            if (option.token.contractAddress) {
-              const tokenBalances = await indexerClient.getTokenBalancesByContract({
-                filter: {
-                  accountAddresses: [accountAddress],
-                  contractStatus: ContractVerificationStatus.ALL,
-                  contractAddresses: [option.token.contractAddress]
-                },
-                omitMetadata: true
-              })
-              const tokenBalance = tokenBalances.balances[0]?.balance;
+        if (!skipFeeBalanceCheck) {
+          const optionsWithBalances = await Promise.all(
+            options.map(async option => {
+              if (option.token.contractAddress) {
+                const tokenBalances = await indexerClient.getTokenBalancesByContract({
+                  filter: {
+                    accountAddresses: [accountAddress],
+                    contractStatus: ContractVerificationStatus.ALL,
+                    contractAddresses: [option.token.contractAddress]
+                  },
+                  omitMetadata: true
+                })
+                const tokenBalance = tokenBalances.balances[0]?.balance
+                return {
+                  ...option,
+                  balanceFormatted: option.token.decimals
+                    ? formatUnits(tokenBalances.balances[0]?.balance ?? '0', option.token.decimals)
+                    : (tokenBalances.balances[0]?.balance ?? '0'),
+                  balance: tokenBalances.balances[0]?.balance ?? '0',
+                  hasEnoughBalanceForFee: tokenBalance ? BigInt(option.value) <= BigInt(tokenBalance) : false
+                }
+              }
+              const nativeBalance = await indexerClient.getNativeTokenBalance({ accountAddress })
               return {
                 ...option,
-                balanceFormatted: option.token.decimals ? formatUnits(tokenBalances.balances[0]?.balance ?? '0', option.token.decimals) : tokenBalances.balances[0]?.balance ?? '0',
-                balance: tokenBalances.balances[0]?.balance ?? '0',
-                hasEnoughBalanceForFee: tokenBalance ? BigInt(option.value) <= BigInt(tokenBalance) : false
+                balanceFormatted: formatUnits(nativeBalance.balance.balance, 18),
+                balance: nativeBalance.balance.balance,
+                hasEnoughBalanceForFee: BigInt(option.value) <= BigInt(nativeBalance.balance.balance)
               }
-            }
-            const nativeBalance = await indexerClient.getNativeTokenBalance({ accountAddress })
-            return {
-              ...option,
-              balanceFormatted: formatUnits(nativeBalance.balance.balance, 18),
-              balance: nativeBalance.balance.balance,
-              hasEnoughBalanceForFee: BigInt(option.value) <= BigInt(nativeBalance.balance.balance)
-            }
-          }))
+            })
+          )
           setPendingFeeOptionConfirmation({ id, options: optionsWithBalances, chainId })
         } else {
           setPendingFeeOptionConfirmation({ id, options, chainId })

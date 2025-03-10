@@ -652,7 +652,7 @@ export const useTransactionHistory = (args: UseTransactionHistoryArgs) => {
   })
 }
 
-/** @deprecated Use kit-hooks instead */  
+/** @deprecated Use kit-hooks instead */
 interface Balance {
   balance: string
 }

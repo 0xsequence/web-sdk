@@ -1,9 +1,11 @@
 import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
+import { formatDisplay, ContractVerificationStatus } from '@0xsequence/kit'
 import {
-  formatDisplay,
-  ContractVerificationStatus
-} from '@0xsequence/kit'
-import { useGetTokenBalancesDetails, useGetTransactionHistory, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
+  useGetTokenBalancesDetails,
+  useGetTransactionHistory,
+  useGetCollectiblePrices,
+  useGetExchangeRate
+} from '@0xsequence/kit-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 

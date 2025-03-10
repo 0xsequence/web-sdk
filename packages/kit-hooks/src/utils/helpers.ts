@@ -2,7 +2,6 @@ import { ContractType, TokenBalance } from '@0xsequence/indexer'
 
 import { ZERO_ADDRESS } from '../constants/hooks'
 
-
 export const compareAddress = (a: string, b: string) => {
   return a.toLowerCase() === b.toLowerCase()
 }
@@ -19,11 +18,7 @@ export const splitEvery = (n: number, list: any[]) => {
   return result
 }
 
-export const createNativeTokenBalance = (
-  chainId: number,
-  accountAddress: string,
-  balance: string = '0'
-): TokenBalance => {
+export const createNativeTokenBalance = (chainId: number, accountAddress: string, balance: string = '0'): TokenBalance => {
   return {
     chainId,
     contractAddress: ZERO_ADDRESS,

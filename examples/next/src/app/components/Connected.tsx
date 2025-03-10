@@ -118,13 +118,13 @@ export const Connected = () => {
             balance: nativeTokenBalance.balance.balance
           }
         }
-          return {
-            tokenName: option.token.name,
-            decimals: option.token.decimals || 0,
-            balance:
-              tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress!.toLowerCase())
-                ?.balance || '0'
-          }
+        return {
+          tokenName: option.token.name,
+          decimals: option.token.decimals || 0,
+          balance:
+            tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress!.toLowerCase())
+              ?.balance || '0'
+        }
       })
 
       setFeeOptionBalances(balances)

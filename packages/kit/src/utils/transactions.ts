@@ -8,7 +8,6 @@ import { TRANSACTION_CONFIRMATIONS_DEFAULT } from '../constants'
 import { ExtendedConnector } from '../types'
 import { compareAddress } from '../utils/helpers'
 
-
 class FeeOptionInsufficientFundsError extends Error {
   public readonly feeOptions: FeeOption[]
 

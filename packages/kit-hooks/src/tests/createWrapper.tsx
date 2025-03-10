@@ -1,10 +1,10 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import React from 'react'
 
 import { KitHooksProvider } from '../contexts/ConfigContext'
 
 interface CreateWrapperProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const createWrapper = () => {
@@ -12,27 +12,27 @@ export const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: false,
-      },
-    },
-  });
+        retry: false
+      }
+    }
+  })
 
   return ({ children }: CreateWrapperProps) => (
     <QueryClientProvider client={queryClient}>
       <KitHooksProvider
         value={{
-          projectAccessKey: "test-access",
+          projectAccessKey: 'test-access',
           env: {
-            indexerGatewayUrl: "https://indexer-gateway.sequence.app",
-            metadataUrl: "https://metadata.sequence.app",
-            apiUrl: "https://api.sequence.app",
-            indexerUrl: "https://indexer.sequence.app",
-            imageProxyUrl: "https://image-proxy.sequence.app",
-          },
+            indexerGatewayUrl: 'https://indexer-gateway.sequence.app',
+            metadataUrl: 'https://metadata.sequence.app',
+            apiUrl: 'https://api.sequence.app',
+            indexerUrl: 'https://indexer.sequence.app',
+            imageProxyUrl: 'https://image-proxy.sequence.app'
+          }
         }}
       >
         {children}
       </KitHooksProvider>
     </QueryClientProvider>
-  );
-};
+  )
+}

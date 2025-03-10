@@ -21,7 +21,6 @@ import { useSettings } from '../../hooks'
 import { CopyButton } from '../../shared/CopyButton'
 import { NetworkBadge } from '../../shared/NetworkBadge'
 
-
 interface TransactionDetailProps {
   transaction: Transaction
 }
