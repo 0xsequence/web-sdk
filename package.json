@@ -48,7 +48,7 @@
     "react-dom": "^18.3.1",
     "rimraf": "^5.0.7",
     "turbo": "2.0.1",
-    "typescript": "~5.4.5",
+    "typescript": "^5.8.2",
     "wagmi": "^2.14.11"
   },
   "resolutions": {},

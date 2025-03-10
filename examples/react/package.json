@@ -24,7 +24,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^4.0.6",
-    "typescript": "^5.4.5",
+    "typescript": "^5.8.2",
     "viem": "^2.12.0",
     "wagmi": "^2.14.11"
   },
