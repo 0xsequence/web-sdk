@@ -10,7 +10,7 @@ import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
 import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 
-import { DEFAULT_SESSION_EXPIRATION, KIT_VERSION, LocalStorageKey } from '../../constants'
+import { DEFAULT_SESSION_EXPIRATION, WEB_SDK_VERSION, LocalStorageKey } from '../../constants'
 import { AnalyticsContextProvider } from '../../contexts/Analytics'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal'
 import { KitConfigContextProvider } from '../../contexts/KitConfig'
@@ -80,7 +80,7 @@ export const KitProvider = (props: KitConnectProviderProps) => {
           event.props = {
             ...event.props,
             sdkType: 'sequence kit',
-            version: KIT_VERSION
+            version: WEB_SDK_VERSION
           }
         }
         return originalTrack?.(...args)
