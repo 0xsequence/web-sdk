@@ -23,7 +23,7 @@ importers:
     devDependencies:
       '@0xsequence/web-sdk-connect':
         specifier: workspace:*
-        version: link:packages/kit
+        version: link:packages/connect
       '@changesets/changelog-github':
         specifier: ^0.5.0
         version: 0.5.0
@@ -116,7 +116,7 @@ importers:
         version: link:../../packages/checkout
       '@0xsequence/web-sdk-connect':
         specifier: workspace:*
-        version: link:../../packages/kit
+        version: link:../../packages/connect
       '@0xsequence/web-sdk-wallet':
         specifier: workspace:*
         version: link:../../packages/wallet
@@ -186,7 +186,7 @@ importers:
         version: link:../../packages/checkout
       '@0xsequence/web-sdk-connect':
         specifier: workspace:*
-        version: link:../../packages/kit
+        version: link:../../packages/connect
       '@0xsequence/web-sdk-wallet':
         specifier: workspace:*
         version: link:../../packages/wallet
@@ -293,7 +293,7 @@ importers:
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/web-sdk-connect':
         specifier: workspace:*
-        version: link:../kit
+        version: link:../connect
       '@0xsequence/web-sdk-hooks':
         specifier: workspace:*
         version: link:../kit-hooks
@@ -322,7 +322,7 @@ importers:
         specifier: ^2.14.11
         version: 2.14.11(@tanstack/query-core@5.64.2)(@tanstack/react-query@5.64.2(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.22.10(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10))
 
-  packages/kit:
+  packages/connect:
     dependencies:
       '@0xsequence/api':
         specifier: '>= 2.2.13'
@@ -505,7 +505,7 @@ importers:
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@0xsequence/web-sdk-connect':
         specifier: workspace:*
-        version: link:../kit
+        version: link:../connect
       '@0xsequence/web-sdk-hooks':
         specifier: workspace:*
         version: link:../kit-hooks

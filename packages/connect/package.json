@@ -7,7 +7,7 @@
     "kit",
     "wallet"
   ],
-  "repository": "https://github.com/0xsequence/kit/tree/master/packages/kit",
+  "repository": "https://github.com/0xsequence/kit/tree/master/packages/connect",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
