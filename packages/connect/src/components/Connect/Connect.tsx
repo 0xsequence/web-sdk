@@ -18,7 +18,7 @@ import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet'
 import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
-import { KitConnectProviderProps } from '../KitProvider/KitProvider'
+import { SequenceConnectProviderProps } from '../SequenceConnectProvider'
 import { PoweredBySequence } from '../SequenceLogo'
 
 import { Banner } from './Banner'
@@ -29,13 +29,13 @@ import { ExtendedWalletList } from './ExtendedWalletList'
 const MAX_ITEM_PER_ROW = 4
 export const SEQUENCE_UNIVERSAL_CONNECTOR_NAME = 'Sequence'
 
-interface ConnectWalletContentProps extends KitConnectProviderProps {
+interface ConnectProps extends SequenceConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
   onClose: () => void
   isPreview?: boolean
 }
 
-export const Connect = (props: ConnectWalletContentProps) => {
+export const Connect = (props: ConnectProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const { analytics } = useAnalyticsContext()

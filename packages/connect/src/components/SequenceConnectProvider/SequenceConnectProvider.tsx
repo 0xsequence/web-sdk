@@ -28,12 +28,12 @@ import { PoweredBySequence } from '../SequenceLogo'
 import { ShadowRoot } from '../ShadowRoot'
 import { TxnDetails } from '../TxnDetails'
 
-export type KitConnectProviderProps = {
+export type SequenceConnectProviderProps = {
   children: React.ReactNode
   config: KitConfig
 }
 
-export const KitProvider = (props: KitConnectProviderProps) => {
+export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => {
   const { config, children } = props
   const {
     defaultTheme = 'dark',

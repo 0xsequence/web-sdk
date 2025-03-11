@@ -18,12 +18,12 @@ import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, ModalPosition } from '../../types'
 import { Connect } from '../Connect/Connect'
 
-export type KitConnectProviderProps = {
+export type SequenceConnectProviderProps = {
   children: React.ReactNode
   config: KitConfig
 }
 
-export const KitPreviewProvider = (props: KitConnectProviderProps) => {
+export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderProps) => {
   const { config, children } = props
   const {
     defaultTheme = 'dark',

@@ -126,11 +126,11 @@ function App() {
 
 #### Need more customization?
 
-React apps must be wrapped by a WagmiProvider and the KitProvider components. It is important that the Wagmi wrapper comes before the Sequence Web SDK wrapper.
+React apps must be wrapped by a WagmiProvider and the SequenceConnectProvider components. It is important that the Wagmi wrapper comes before the SequenceConnectProvider wrapper.
 
 ```js
 import Content from './components/Content'
-import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/web-sdk-connect'
+import { SequenceConnectProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/web-sdk-connect'
 import { SequenceWalletProvider } from '@0xsequence/web-sdk-wallet'
 import { SequenceCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -197,7 +197,7 @@ function App() {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <KitProvider config={kitConfig}>
+        <SequenceConnectProvider config={kitConfig}>
           {/* If you want to use wallet modal to show assets etc. */}
           <SequenceWalletProvider>
             {/* If you want to use checkout functionalities */}
@@ -205,7 +205,7 @@ function App() {
               <Content />
             </SequenceCheckoutProvider>
           </SequenceWalletProvider>
-        </KitProvider>
+        </SequenceConnectProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )
@@ -300,7 +300,7 @@ setTheme('light')
 
 ## Customization
 
-The `KitProvider` wrapper can accept an optional config object.
+The `SequenceConnectProvider` wrapper can accept an optional config object.
 
 The settings are described in more detailed in the Sequence Web SDK documentation.
 
@@ -327,9 +327,9 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
     readOnlyNetworks: [10], // Display assets in wallet from Optimism (chain ID 10) in addition to the networks specified in chainIds
   }
 
-  <KitProvider config={kitConfig}>
+  <SequenceConnectProvider config={kitConfig}>
     <App />
-  <KitProvider>
+  <SequenceConnectProvider>
 ```
 
 ## Packages

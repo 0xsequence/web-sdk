@@ -4,7 +4,7 @@ import { State, WagmiProvider } from 'wagmi'
 
 import { SequenceKitConfig } from '../../config/createConfig'
 import { DEBUG } from '../../env'
-import { KitProvider } from '../KitProvider'
+import { SequenceConnectProvider } from '../SequenceConnectProvider'
 
 const defaultQueryClient = new QueryClient()
 
@@ -34,7 +34,7 @@ export const SequenceKit = (props: SequenceKitProps) => {
             }
           }}
         >
-          <KitProvider config={kitConfig}>{children}</KitProvider>
+          <SequenceConnectProvider config={kitConfig}>{children}</SequenceConnectProvider>
         </SequenceHooksProvider>
       </QueryClientProvider>
     </WagmiProvider>

@@ -1,8 +1,8 @@
 export { SequenceKit } from './components/SequenceKit'
 
 // Provider
-export { KitProvider } from './components/KitProvider'
-export { KitPreviewProvider } from './components/KitPreviewProvider'
+export { SequenceConnectProvider } from './components/SequenceConnectProvider'
+export { SequenceConnectPreviewProvider } from './components/SequenceConnectPreviewProvider'
 
 // Types
 export type {

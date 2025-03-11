@@ -129,7 +129,7 @@ React apps must be wrapped by a Wagmi client and the SequenceWalletProvider comp
 
 ```js
 import Content from './components/Content'
-import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/web-sdk-connect'
+import { SequenceConnectProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/web-sdk-connect'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
@@ -166,9 +166,9 @@ function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <KitProvider>
+        <SequenceConnectProvider>
           <Content />
-        </KitProvider>
+        </SequenceConnectProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )
@@ -226,7 +226,7 @@ setTheme('light')
 
 ## Customization
 
-The `KitProvider` wrapper can accept an optional config object.
+The `SequenceConnectProvider` wrapper can accept an optional config object.
 
 The settings are described in more detailed in the Sequence Web SDK documentation.
 
@@ -253,9 +253,9 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
     readOnlyNetworks: [10],
   }
 
-  <KitProvider config={kitConfig}>
+  <SequenceConnectProvider config={kitConfig}>
     <App />
-  <KitProvider>
+  <SequenceConnectProvider>
 ```
 
 ## Packages
