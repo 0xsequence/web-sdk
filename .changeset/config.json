@@ -3,9 +3,11 @@
   "changelog": ["@changesets/changelog-github", { "repo": "0xsequence/kit" }],
   "commit": false,
   "linked": [],
-  "fixed": [["@0xsequence/kit", "@0xsequence/kit-checkout", "@0xsequence/kit-wallet", "@0xsequence/kit-hooks"]],
+  "fixed": [
+    ["@0xsequence/web-sdk-connect", "@0xsequence/web-sdk-checkout", "@0xsequence/web-sdk-wallet", "@0xsequence/web-sdk-hooks"]
+  ],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["@0xsequence/kit-example-react", "@0xsequence/kit-example-next", "@0xsequence/kit-example-shared-components"]
+  "ignore": ["example-react", "example-next", "example-shared-components"]
 }

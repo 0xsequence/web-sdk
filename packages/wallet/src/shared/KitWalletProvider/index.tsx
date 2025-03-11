@@ -1,7 +1,7 @@
 'use client'
 
 import { Modal, Scroll } from '@0xsequence/design-system'
-import { getModalPositionCss, useTheme, ShadowRoot } from '@0xsequence/kit'
+import { getModalPositionCss, useTheme, ShadowRoot } from '@0xsequence/web-sdk-connect'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'motion/react'
 import React, { useState } from 'react'

@@ -1,5 +1,5 @@
 {
-  "name": "@0xsequence/kit-hooks",
+  "name": "@0xsequence/web-sdk-hooks",
   "version": "4.6.5",
   "description": "React hooks for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/kit-hooks",

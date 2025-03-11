@@ -9,7 +9,7 @@ import {
   SignoutIcon,
   TransactionIcon
 } from '@0xsequence/design-system'
-import { formatAddress, useTheme } from '@0xsequence/kit'
+import { formatAddress, useTheme } from '@0xsequence/web-sdk-connect'
 import React, { forwardRef } from 'react'
 import { useDisconnect, useAccount } from 'wagmi'
 

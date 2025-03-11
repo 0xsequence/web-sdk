@@ -1,5 +1,5 @@
 import { TokenBalance } from '@0xsequence/indexer'
-import { useGetTokenMetadata } from '@0xsequence/kit-hooks'
+import { useGetTokenMetadata } from '@0xsequence/web-sdk-hooks'
 
 import { CollectibleTileImage } from '../../../../../shared/CollectibleTileImage'
 

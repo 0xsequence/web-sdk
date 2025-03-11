@@ -1,4 +1,4 @@
-import { DEBUG } from '@0xsequence/kit'
+import { DEBUG } from '@0xsequence/web-sdk-connect'
 import { ChainId, networks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 

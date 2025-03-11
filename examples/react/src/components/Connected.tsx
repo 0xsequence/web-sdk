@@ -7,11 +7,11 @@ import {
   getModalPositionCss,
   useOpenConnectModal,
   useKitWallets
-} from '@0xsequence/kit'
-import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/kit-checkout'
-import type { SwapModalSettings } from '@0xsequence/kit-checkout'
-import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
-import { useOpenWalletModal } from '@0xsequence/kit-wallet'
+} from '@0xsequence/web-sdk-connect'
+import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/web-sdk-checkout'
+import type { SwapModalSettings } from '@0xsequence/web-sdk-checkout'
+import { CardButton, Header, WalletListItem } from 'example-shared-components'
+import { useOpenWalletModal } from '@0xsequence/web-sdk-wallet'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'

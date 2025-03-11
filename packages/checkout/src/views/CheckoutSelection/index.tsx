@@ -9,8 +9,13 @@ import {
   Skeleton,
   TokenImage
 } from '@0xsequence/design-system'
-import { ContractVerificationStatus, getNativeTokenInfoByChainId, compareAddress, formatDisplay } from '@0xsequence/kit'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/kit-hooks'
+import {
+  ContractVerificationStatus,
+  getNativeTokenInfoByChainId,
+  compareAddress,
+  formatDisplay
+} from '@0xsequence/web-sdk-connect'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 

@@ -1,5 +1,5 @@
 import { Button, Card, cn, Text } from '@0xsequence/design-system'
-import { truncateAtMiddle } from '@0xsequence/kit'
+import { truncateAtMiddle } from '@0xsequence/web-sdk-connect'
 
 interface WalletListItemProps {
   id: string

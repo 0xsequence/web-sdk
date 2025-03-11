@@ -1,4 +1,4 @@
-import { QUERY_KEYS } from '@0xsequence/kit'
+import { QUERY_KEYS } from '@0xsequence/web-sdk-connect'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface UseClearCachedBalances {

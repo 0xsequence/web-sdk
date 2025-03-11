@@ -6,7 +6,7 @@ import {
   sendTransactions,
   ContractVerificationStatus,
   useIndexerClient
-} from '@0xsequence/kit'
+} from '@0xsequence/web-sdk-connect'
 import {
   useClearCachedBalances,
   useGetTokenBalancesSummary,
@@ -14,7 +14,7 @@ import {
   SwapPricesWithCurrencyInfo,
   useGetSwapPrices,
   useGetSwapQuote
-} from '@0xsequence/kit-hooks'
+} from '@0xsequence/web-sdk-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'

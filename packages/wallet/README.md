@@ -11,17 +11,17 @@ Embedded wallet allowing to display and send collectibles and coins.
 First install the package:
 
 ```bash
-npm install @0xsequence/kit-wallet
+npm install @0xsequence/web-sdk-wallet
 # or
-pnpm install @0xsequence/kit-wallet
+pnpm install @0xsequence/web-sdk-wallet
 # or
-yarn add @0xsequence/kit-wallet
+yarn add @0xsequence/web-sdk-wallet
 ```
 
 Then the wallet provider module must placed below the Sequence Kit Core provider.
 
 ```js
-import { KitWalletProvider } from '@0xsequence/kit-wallet'
+import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
 
 const App = () => {
   return (
@@ -39,7 +39,7 @@ const App = () => {
 The embedded wallet modal can be summoded with the `useOpenWalletModal` hook.
 
 ```js
-import { useOpenWalletModal } from '@0xsequence/kit-wallet'
+import { useOpenWalletModal } from '@0xsequence/web-sdk-wallet'
 
 const MyComponent = () => {
   const { setOpenWalletModal } = useOpenWalletModal()

@@ -1,4 +1,4 @@
-import { LocalStorageKey, useWalletSettings } from '@0xsequence/kit'
+import { LocalStorageKey, useWalletSettings } from '@0xsequence/web-sdk-connect'
 import { useState } from 'react'
 import { useConfig } from 'wagmi'
 

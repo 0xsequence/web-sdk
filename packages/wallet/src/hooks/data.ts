@@ -14,7 +14,7 @@ import {
   getTokenBalancesDetails,
   ContractVerificationStatus,
   QUERY_KEYS
-} from '@0xsequence/kit'
+} from '@0xsequence/web-sdk-connect'
 import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'

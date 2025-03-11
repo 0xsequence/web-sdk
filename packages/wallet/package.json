@@ -1,5 +1,5 @@
 {
-  "name": "@0xsequence/kit-wallet",
+  "name": "@0xsequence/web-sdk-wallet",
   "version": "4.6.5",
   "description": "Wallet UI for Sequence Kit",
   "repository": "https://github.com/0xsequence/kit/tree/master/packages/wallet",
@@ -38,8 +38,8 @@
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
-    "@0xsequence/kit": "workspace:*",
-    "@0xsequence/kit-hooks": "workspace:*",
+    "@0xsequence/web-sdk-connect": "workspace:*",
+    "@0xsequence/web-sdk-hooks": "workspace:*",
     "@0xsequence/design-system": ">= 2.0.4",
     "@0xsequence/api": ">= 2.2.13",
     "@0xsequence/indexer": ">= 2.2.13",
@@ -53,8 +53,8 @@
   },
   "devDependencies": {
     "@0xsequence/design-system": "^2.0.9",
-    "@0xsequence/kit": "workspace:*",
-    "@0xsequence/kit-hooks": "workspace:*",
+    "@0xsequence/web-sdk-connect": "workspace:*",
+    "@0xsequence/web-sdk-hooks": "workspace:*",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",
     "motion": "^12.3.1",

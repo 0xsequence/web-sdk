@@ -19,8 +19,8 @@ import {
   truncateAtMiddle,
   useCheckWaasFeeOptions,
   useWaasFeeOptions
-} from '@0xsequence/kit'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
+} from '@0xsequence/web-sdk-connect'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'

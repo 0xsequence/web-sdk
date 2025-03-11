@@ -1,5 +1,5 @@
 {
-  "name": "@0xsequence/kit-example-shared-components",
+  "name": "example-shared-components",
   "exports": {
     ".": "./src/index.ts"
   },

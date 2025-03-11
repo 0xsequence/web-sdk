@@ -1,5 +1,5 @@
 import { Text, GradientAvatar, ChevronDownIcon } from '@0xsequence/design-system'
-import { formatAddress } from '@0xsequence/kit'
+import { formatAddress } from '@0xsequence/web-sdk-connect'
 import React, { forwardRef } from 'react'
 import { useAccount } from 'wagmi'
 

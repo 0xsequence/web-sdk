@@ -1,5 +1,5 @@
 import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
-import { useGetCoinPrices, useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useGetCoinPrices, useGetContractInfo } from '@0xsequence/web-sdk-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 

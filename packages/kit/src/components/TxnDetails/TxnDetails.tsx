@@ -1,7 +1,7 @@
 import { commons } from '@0xsequence/core'
 import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/kit-hooks'
+import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'

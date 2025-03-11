@@ -1,6 +1,6 @@
 import { TokenPrice } from '@0xsequence/api'
 import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
-import { compareAddress } from '@0xsequence/kit'
+import { compareAddress } from '@0xsequence/web-sdk-connect'
 import { InfiniteData } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 

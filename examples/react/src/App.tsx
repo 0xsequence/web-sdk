@@ -1,7 +1,7 @@
 import { ThemeProvider } from '@0xsequence/design-system'
-import { SequenceKit } from '@0xsequence/kit'
-import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
-import { KitWalletProvider } from '@0xsequence/kit-wallet'
+import { SequenceKit } from '@0xsequence/web-sdk-connect'
+import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
+import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
 
 import { Homepage } from './components/Homepage'
 import { config } from './config'

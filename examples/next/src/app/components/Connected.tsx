@@ -8,10 +8,10 @@ import {
   validateEthProof,
   ContractVerificationStatus,
   useOpenConnectModal
-} from '@0xsequence/kit'
-import type { CheckoutSettings } from '@0xsequence/kit-checkout'
-import { CardButton, Header, WalletListItem } from '@0xsequence/kit-example-shared-components'
-import { useOpenWalletModal } from '@0xsequence/kit-wallet'
+} from '@0xsequence/web-sdk-connect'
+import type { CheckoutSettings } from '@0xsequence/web-sdk-checkout'
+import { CardButton, Header, WalletListItem } from 'example-shared-components'
+import { useOpenWalletModal } from '@0xsequence/web-sdk-wallet'
 import { ChainId, allNetworks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { type ComponentProps, useEffect, useState } from 'react'

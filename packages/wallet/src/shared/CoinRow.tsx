@@ -1,5 +1,5 @@
 import { Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-import { formatDisplay } from '@0xsequence/kit'
+import { formatDisplay } from '@0xsequence/web-sdk-connect'
 import { ethers } from 'ethers'
 import React from 'react'
 

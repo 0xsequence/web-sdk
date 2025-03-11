@@ -1,6 +1,6 @@
 import { SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, ContractVerificationStatus, compareAddress } from '@0xsequence/kit'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
+import { getNativeTokenInfoByChainId, ContractVerificationStatus, compareAddress } from '@0xsequence/web-sdk-connect'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useState, useEffect } from 'react'

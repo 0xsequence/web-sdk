@@ -11,8 +11,8 @@ import {
   TokenImage
 } from '@0xsequence/design-system'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-connect'
+import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/web-sdk-hooks'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'

@@ -1,5 +1,5 @@
 import { Text, TokenImage } from '@0xsequence/design-system'
-import { useWalletSettings } from '@0xsequence/kit'
+import { useWalletSettings } from '@0xsequence/web-sdk-connect'
 import { ChainId } from '@0xsequence/network'
 import { useConfig } from 'wagmi'
 

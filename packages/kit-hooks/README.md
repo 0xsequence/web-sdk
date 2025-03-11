@@ -1,4 +1,4 @@
-# @0xsequence/kit-hooks
+# @0xsequence/web-sdk-hooks
 
 React hooks to interface with Sequence services.
 
@@ -60,7 +60,7 @@ Kit hooks are grouped into 5 categories, based on the sequence service they inte
 ### useGetCoinPrices
 
 ```tsx
-import { useGetCoinPrices } from '@0xsequence/kit-hooks'
+import { useGetCoinPrices } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetCoinPrices(
   [
@@ -80,7 +80,7 @@ const { data, isLoading, error } = useGetCoinPrices(
 ### useGetCollectiblePrices
 
 ```tsx
-import { useGetCollectiblePrices } from '@0xsequence/kit-hooks'
+import { useGetCollectiblePrices } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetCollectiblePrices(
   [
@@ -101,7 +101,7 @@ const { data, isLoading, error } = useGetCollectiblePrices(
 ### useGetExchangeRate
 
 ```tsx
-import { useGetExchangeRate } from '@0xsequence/kit-hooks'
+import { useGetExchangeRate } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetExchangeRate('CAD', {
   // options param is optional and default values are below
@@ -113,7 +113,7 @@ const { data, isLoading, error } = useGetExchangeRate('CAD', {
 ### useGetTransactionHistory
 
 ```tsx
-import { useGetTransactionHistory } from '@0xsequence/kit-hooks'
+import { useGetTransactionHistory } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetTransactionHistory({
   accountAddress: '0x0123456789012345678901234567890123456789',
@@ -135,7 +135,7 @@ const { data, isLoading, error } = useGetTransactionHistory({
 ### useGetTransactionHistorySummary
 
 ```tsx
-import { useGetTransactionHistorySummary } from '@0xsequence/kit-hooks'
+import { useGetTransactionHistorySummary } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetTransactionHistorySummary(
   {
@@ -153,7 +153,7 @@ const { data, isLoading, error } = useGetTransactionHistorySummary(
 ### useGetNativeTokenBalance
 
 ```tsx
-import { useGetNativeTokenBalance } from '@0xsequence/kit-hooks'
+import { useGetNativeTokenBalance } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetNativeTokenBalance(
   {
@@ -173,7 +173,7 @@ const { data, isLoading, error } = useGetNativeTokenBalance(
 
 ```tsx
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesSummary } from '@0xsequence/kit-hooks'
+import { useGetTokenBalancesSummary } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetTokenBalancesSummary(
   {
@@ -206,7 +206,7 @@ const { data, isLoading, error } = useGetTokenBalancesSummary(
 
 ```tsx
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
+import { useGetTokenBalancesDetails } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetTokenBalancesDetails(
   {
@@ -239,7 +239,7 @@ const { data, isLoading, error } = useGetTokenBalancesDetails(
 
 ```tsx
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesByContract } from '@0xsequence/kit-hooks'
+import { useGetTokenBalancesByContract } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetTokenBalancesByContract(
   {
@@ -271,7 +271,7 @@ const { data, isLoading, error } = useGetTokenBalancesByContract(
 ### useGetSingleTokenBalanceSummary
 
 ```tsx
-import { useGetSingleTokenBalanceSummary } from '@0xsequence/kit-hooks'
+import { useGetSingleTokenBalanceSummary } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetSingleTokenBalanceSummary({
   chainId: 1,
@@ -283,7 +283,7 @@ const { data, isLoading, error } = useGetSingleTokenBalanceSummary({
 ### useGetContractInfo
 
 ```tsx
-import { useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useGetContractInfo } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetContractInfo(
   {
@@ -301,7 +301,7 @@ const { data, isLoading, error } = useGetContractInfo(
 ### useGetMultipleContractInfo
 
 ```tsx
-import { useGetMultipleContractInfo } from '@0xsequence/kit-hooks'
+import { useGetMultipleContractInfo } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetMultipleContractInfo(
   [
@@ -319,7 +319,7 @@ const { data, isLoading, error } = useGetMultipleContractInfo(
 ### useGetTokenMetadata
 
 ```tsx
-import { useGetTokenMetadata } from '@0xsequence/kit-hooks'
+import { useGetTokenMetadata } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetTokenMetadata(
   {
@@ -338,7 +338,7 @@ const { data, isLoading, error } = useGetTokenMetadata(
 ### useGetSwapPrices
 
 ```tsx
-import { useGetSwapPrices } from '@0xsequence/kit-hooks'
+import { useGetSwapPrices } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetSwapPrices({
   userAddress: '0x0123456789012345678901234567890123456789',
@@ -352,7 +352,7 @@ const { data, isLoading, error } = useGetSwapPrices({
 ### useGetSwapQuote
 
 ```tsx
-import { useGetSwapQuote } from '@0xsequence/kit-hooks'
+import { useGetSwapQuote } from '@0xsequence/web-sdk-hooks'
 
 const { data, isLoading, error } = useGetSwapQuote({
   userAddress: '0x9876543210987654321098765432109876543210',

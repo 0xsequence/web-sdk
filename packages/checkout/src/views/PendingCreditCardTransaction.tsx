@@ -1,6 +1,6 @@
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useAnalyticsContext, useProjectAccessKey, DEBUG } from '@0xsequence/kit'
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
+import { useAnalyticsContext, useProjectAccessKey, DEBUG } from '@0xsequence/web-sdk-connect'
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/web-sdk-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect } from 'react'

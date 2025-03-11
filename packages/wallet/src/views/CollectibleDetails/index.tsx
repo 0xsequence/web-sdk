@@ -1,11 +1,11 @@
 import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
-import { formatDisplay, ContractVerificationStatus } from '@0xsequence/kit'
+import { formatDisplay, ContractVerificationStatus } from '@0xsequence/web-sdk-connect'
 import {
   useGetTokenBalancesDetails,
   useGetTransactionHistory,
   useGetCollectiblePrices,
   useGetExchangeRate
-} from '@0xsequence/kit-hooks'
+} from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 

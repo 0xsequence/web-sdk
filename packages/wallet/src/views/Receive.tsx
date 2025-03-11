@@ -1,5 +1,5 @@
 import { Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId } from '@0xsequence/kit'
+import { getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-connect'
 import { QRCodeCanvas } from 'qrcode.react'
 import React, { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'

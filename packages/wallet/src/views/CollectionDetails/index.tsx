@@ -1,7 +1,7 @@
 import { Image, Text, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import { formatDisplay, ContractVerificationStatus } from '@0xsequence/kit'
-import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
+import { formatDisplay, ContractVerificationStatus } from '@0xsequence/web-sdk-connect'
+import { useGetTokenBalancesDetails } from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 

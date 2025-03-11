@@ -1,8 +1,8 @@
 'use client'
 
-import { SequenceKit } from '@0xsequence/kit'
-import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
-import { KitWalletProvider } from '@0xsequence/kit-wallet'
+import { SequenceKit } from '@0xsequence/web-sdk-connect'
+import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
+import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
 import { State } from 'wagmi'
 
 import { config } from '../config'

@@ -16,8 +16,8 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt,
   useIndexerClient
-} from '@0xsequence/kit'
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/kit-hooks'
+} from '@0xsequence/web-sdk-connect'
+import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/web-sdk-hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'

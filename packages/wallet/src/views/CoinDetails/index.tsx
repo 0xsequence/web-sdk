@@ -1,6 +1,16 @@
 import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, ContractVerificationStatus } from '@0xsequence/kit'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate, useGetTransactionHistory } from '@0xsequence/kit-hooks'
+import {
+  compareAddress,
+  formatDisplay,
+  getNativeTokenInfoByChainId,
+  ContractVerificationStatus
+} from '@0xsequence/web-sdk-connect'
+import {
+  useGetTokenBalancesSummary,
+  useGetCoinPrices,
+  useGetExchangeRate,
+  useGetTransactionHistory
+} from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 

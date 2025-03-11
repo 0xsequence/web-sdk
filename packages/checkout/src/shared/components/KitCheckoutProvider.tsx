@@ -1,7 +1,7 @@
 'use client'
 
 import { Modal } from '@0xsequence/design-system'
-import { getModalPositionCss, ShadowRoot, useTheme } from '@0xsequence/kit'
+import { getModalPositionCss, ShadowRoot, useTheme } from '@0xsequence/web-sdk-connect'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'

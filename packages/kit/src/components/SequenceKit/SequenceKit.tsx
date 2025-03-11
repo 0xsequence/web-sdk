@@ -1,4 +1,4 @@
-import { KitHooksProvider } from '@0xsequence/kit-hooks'
+import { KitHooksProvider } from '@0xsequence/web-sdk-hooks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { State, WagmiProvider } from 'wagmi'
 

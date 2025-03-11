@@ -1,5 +1,5 @@
 import { Card, Switch, Text } from '@0xsequence/design-system'
-// import { useTheme } from '@0xsequence/kit'
+// import { useTheme } from '@0xsequence/web-sdk-connect'
 import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'

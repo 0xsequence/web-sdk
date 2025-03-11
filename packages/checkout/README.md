@@ -13,17 +13,17 @@ Sequence Checkout provides a seamless and flexible payment experience for intera
 First install the package:
 
 ```bash
-npm install @0xsequence/kit-checkout
+npm install @0xsequence/web-sdk-checkout
 # or
-pnpm install @0xsequence/kit-checkout
+pnpm install @0xsequence/web-sdk-checkout
 # or
-yarn add @0xsequence/kit-checkout
+yarn add @0xsequence/web-sdk-checkout
 ```
 
 Then the wallet provider module must placed below the Sequence Kit Core provider.
 
 ```js
-import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
+import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 
 const App = () => {
   return (
@@ -46,10 +46,10 @@ Sequence Pay Checkout allows users to purchase NFTs using various payment method
 
 ## Basic Usage
 
-To enable this functionality in your app, use the `useSelectPaymentModal` hook from the `@0xsequence/kit-checkout` package. The following code demonstrates how to set up the checkout modal and trigger it on a button click:
+To enable this functionality in your app, use the `useSelectPaymentModal` hook from the `@0xsequence/web-sdk-checkout` package. The following code demonstrates how to set up the checkout modal and trigger it on a button click:
 
 ```js
-import { useSelectPaymentModal, type SelectPaymentSettings } from '@0xsequence/kit-checkout'
+import { useSelectPaymentModal, type SelectPaymentSettings } from '@0xsequence/web-sdk-checkout'
 
 const MyComponent = () => {
   const { openSelectPaymentModal } = useSelectPaymentModal()
@@ -136,10 +136,10 @@ const MyComponent = () => {
 
 ## Utility functions
 
-The `@0xsequence/kit-checkout` library indeed simplifies the integration of Web3 payment solutions by providing utility functions. One such function, `useERC1155SaleContractPaymentModal`, is tailored for use cases involving the minting of ERC-1155 tokens. This function works in conjunction with Sequence's wallet ecosystem and its deployable smart contract infrastructure, such as the ERC-1155 sale contract available through the [Sequence Builder](https://sequence.build).
+The `@0xsequence/web-sdk-checkout` library indeed simplifies the integration of Web3 payment solutions by providing utility functions. One such function, `useERC1155SaleContractPaymentModal`, is tailored for use cases involving the minting of ERC-1155 tokens. This function works in conjunction with Sequence's wallet ecosystem and its deployable smart contract infrastructure, such as the ERC-1155 sale contract available through the [Sequence Builder](https://sequence.build).
 
 ```js
-import { useERC1155SaleContractCheckout } from "@0xsequence/kit-checkout";
+import { useERC1155SaleContractCheckout } from "@0xsequence/web-sdk-checkout";
 import { useAccount } from "wagmi";
 
 const MyComponent = () => {
@@ -188,7 +188,7 @@ The **Swap Modal** allows users to swap one currency for another (e.g., ETH to U
 Here’s an example of how to use the Swap Modal with the `useSwapModal` hook:
 
 ```js
-import { useSwapModal, type SwapModalSettings } from '@0xsequence/kit-checkout'
+import { useSwapModal, type SwapModalSettings } from '@0xsequence/web-sdk-checkout'
 
 const MyComponent = () => {
   const { openSwapModal } = useSwapModal()
@@ -243,7 +243,7 @@ const MyComponent = () => {
 The Fiat Onramp feature allows users to convert traditional fiat currencies (e.g., USD) into cryptocurrencies. This feature makes it easier for non-crypto users to interact with decentralized applications (dApps) by onboarding them directly through fiat payments.
 
 ```js
-import { useAddFundsModal } from '@0xsequence/kit-checkout'
+import { useAddFundsModal } from '@0xsequence/web-sdk-checkout'
 
 const MyComponent = () => {
   const { triggerAddFunds } = useAddFundsModal()

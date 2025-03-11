@@ -7,8 +7,8 @@ import {
   useIndexerClient,
   useAnalyticsContext,
   ExtendedConnector
-} from '@0xsequence/kit'
-import { useGetSwapPrices, useGetSwapQuote, useClearCachedBalances, useGetContractInfo } from '@0xsequence/kit-hooks'
+} from '@0xsequence/web-sdk-connect'
+import { useGetSwapPrices, useGetSwapQuote, useClearCachedBalances, useGetContractInfo } from '@0xsequence/web-sdk-hooks'
 import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'

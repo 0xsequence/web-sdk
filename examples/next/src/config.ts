@@ -1,4 +1,4 @@
-import { KitConfig, createConfig } from '@0xsequence/kit'
+import { KitConfig, createConfig } from '@0xsequence/web-sdk-connect'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'

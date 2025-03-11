@@ -1,6 +1,6 @@
 import { TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/kit'
-import { useGetContractInfo, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/kit-hooks'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-connect'
+import { useGetContractInfo, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 

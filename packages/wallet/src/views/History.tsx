@@ -1,4 +1,4 @@
-import { useGetTransactionHistorySummary } from '@0xsequence/kit-hooks'
+import { useGetTransactionHistorySummary } from '@0xsequence/web-sdk-hooks'
 import React from 'react'
 import { useAccount } from 'wagmi'
 

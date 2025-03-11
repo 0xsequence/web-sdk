@@ -21,7 +21,7 @@ importers:
         specifier: ^4.0.6
         version: 4.0.12
     devDependencies:
-      '@0xsequence/kit':
+      '@0xsequence/web-sdk-connect':
         specifier: workspace:*
         version: link:packages/kit
       '@changesets/changelog-github':
@@ -105,30 +105,30 @@ importers:
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@0xsequence/kit':
-        specifier: workspace:*
-        version: link:../../packages/kit
-      '@0xsequence/kit-checkout':
-        specifier: workspace:*
-        version: link:../../packages/checkout
-      '@0xsequence/kit-example-shared-components':
-        specifier: workspace:*
-        version: link:../components
-      '@0xsequence/kit-wallet':
-        specifier: workspace:*
-        version: link:../../packages/wallet
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/web-sdk-checkout':
+        specifier: workspace:*
+        version: link:../../packages/checkout
+      '@0xsequence/web-sdk-connect':
+        specifier: workspace:*
+        version: link:../../packages/kit
+      '@0xsequence/web-sdk-wallet':
+        specifier: workspace:*
+        version: link:../../packages/wallet
       '@tailwindcss/postcss':
         specifier: ^4.0.6
         version: 4.0.12
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.64.2(react@18.3.1)
+      example-shared-components:
+        specifier: workspace:*
+        version: link:../components
       next:
         specifier: 14.2.3
         version: 14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -175,30 +175,30 @@ importers:
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@0xsequence/kit':
-        specifier: workspace:*
-        version: link:../../packages/kit
-      '@0xsequence/kit-checkout':
-        specifier: workspace:*
-        version: link:../../packages/checkout
-      '@0xsequence/kit-example-shared-components':
-        specifier: workspace:*
-        version: link:../components
-      '@0xsequence/kit-wallet':
-        specifier: workspace:*
-        version: link:../../packages/wallet
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/web-sdk-checkout':
+        specifier: workspace:*
+        version: link:../../packages/checkout
+      '@0xsequence/web-sdk-connect':
+        specifier: workspace:*
+        version: link:../../packages/kit
+      '@0xsequence/web-sdk-wallet':
+        specifier: workspace:*
+        version: link:../../packages/wallet
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.64.2(react@18.3.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      example-shared-components:
+        specifier: workspace:*
+        version: link:../components
       motion:
         specifier: ^12.3.1
         version: 12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -291,10 +291,10 @@ importers:
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@0xsequence/kit':
+      '@0xsequence/web-sdk-connect':
         specifier: workspace:*
         version: link:../kit
-      '@0xsequence/kit-hooks':
+      '@0xsequence/web-sdk-hooks':
         specifier: workspace:*
         version: link:../kit-hooks
       '@types/pako':
@@ -388,7 +388,7 @@ importers:
       0xsequence:
         specifier: ^2.2.13
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/kit-hooks':
+      '@0xsequence/web-sdk-hooks':
         specifier: workspace:*
         version: link:../kit-hooks
       '@tanstack/react-query':
@@ -503,10 +503,10 @@ importers:
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@0xsequence/kit':
+      '@0xsequence/web-sdk-connect':
         specifier: workspace:*
         version: link:../kit
-      '@0xsequence/kit-hooks':
+      '@0xsequence/web-sdk-hooks':
         specifier: workspace:*
         version: link:../kit-hooks
       '@types/react-copy-to-clipboard':
