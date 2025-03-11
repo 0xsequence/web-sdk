@@ -1,7 +1,7 @@
 import { Button, Spinner, Text } from '@0xsequence/design-system'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { CryptoOption, compareAddress, formatDisplay, sendTransactions, useIndexerClient } from '@0xsequence/web-sdk-connect'
 import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/web-sdk-hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'

@@ -1,4 +1,6 @@
 import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
+import { ChainId, allNetworks } from '@0xsequence/network'
+import type { CheckoutSettings } from '@0xsequence/web-sdk-checkout'
 import {
   signEthAuthProof,
   useIndexerClient,
@@ -9,11 +11,9 @@ import {
   ContractVerificationStatus,
   useOpenConnectModal
 } from '@0xsequence/web-sdk-connect'
-import type { CheckoutSettings } from '@0xsequence/web-sdk-checkout'
-import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { useOpenWalletModal } from '@0xsequence/web-sdk-wallet'
-import { ChainId, allNetworks } from '@0xsequence/network'
 import { ethers } from 'ethers'
+import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { type ComponentProps, useEffect, useState } from 'react'
 import { formatUnits, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'

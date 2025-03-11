@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@0xsequence/design-system'
-import { SequenceKit } from '@0xsequence/web-sdk-connect'
 import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
+import { SequenceKit } from '@0xsequence/web-sdk-connect'
 import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
 
 import { Homepage } from './components/Homepage'

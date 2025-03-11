@@ -1,5 +1,5 @@
-import { DEBUG } from '@0xsequence/web-sdk-connect'
 import { ChainId, networks } from '@0xsequence/network'
+import { DEBUG } from '@0xsequence/web-sdk-connect'
 import { ethers } from 'ethers'
 
 export interface CheckSardineWhitelistStatusArgs {

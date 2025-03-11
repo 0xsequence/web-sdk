@@ -1,6 +1,6 @@
 import { Text, TokenImage } from '@0xsequence/design-system'
-import { useWalletSettings } from '@0xsequence/web-sdk-connect'
 import { ChainId } from '@0xsequence/network'
+import { useWalletSettings } from '@0xsequence/web-sdk-connect'
 import { useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'

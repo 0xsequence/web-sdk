@@ -1,6 +1,6 @@
-import { DEBUG } from '@0xsequence/web-sdk-connect'
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
+import { DEBUG } from '@0xsequence/web-sdk-connect'
 
 import { CreditCardCheckout } from '../contexts'
 

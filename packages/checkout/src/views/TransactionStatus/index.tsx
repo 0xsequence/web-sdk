@@ -10,6 +10,7 @@ import {
   truncateAddress
 } from '@0xsequence/design-system'
 import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
+import { findSupportedNetwork } from '@0xsequence/network'
 import {
   CollectibleTileImage,
   formatDisplay,
@@ -18,7 +19,6 @@ import {
   useIndexerClient
 } from '@0xsequence/web-sdk-connect'
 import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/web-sdk-hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
 import { formatUnits, Hex, PublicClient } from 'viem'

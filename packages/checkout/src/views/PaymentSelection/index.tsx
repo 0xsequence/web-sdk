@@ -1,4 +1,5 @@
 import { Button, Divider, Text } from '@0xsequence/design-system'
+import { findSupportedNetwork } from '@0xsequence/network'
 import {
   useAnalyticsContext,
   compareAddress,
@@ -15,7 +16,6 @@ import {
   useGetSwapPrices,
   useGetSwapQuote
 } from '@0xsequence/web-sdk-hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'

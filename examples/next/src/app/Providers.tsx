@@ -1,7 +1,7 @@
 'use client'
 
-import { SequenceKit } from '@0xsequence/web-sdk-connect'
 import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
+import { SequenceKit } from '@0xsequence/web-sdk-connect'
 import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
 import { State } from 'wagmi'
 

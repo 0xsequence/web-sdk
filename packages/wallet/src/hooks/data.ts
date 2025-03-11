@@ -1,5 +1,6 @@
 import { SequenceAPIClient, TokenPrice } from '@0xsequence/api'
 import { Transaction, TokenBalance, SequenceIndexer } from '@0xsequence/indexer'
+import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 import {
   compareAddress,
   getTransactionHistory,
@@ -15,7 +16,6 @@ import {
   ContractVerificationStatus,
   QUERY_KEYS
 } from '@0xsequence/web-sdk-connect'
-import { GetContractInfoBatchReturn, SequenceMetadata } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 

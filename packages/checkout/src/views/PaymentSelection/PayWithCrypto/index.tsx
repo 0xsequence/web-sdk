@@ -1,4 +1,5 @@
 import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { CryptoOption, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/web-sdk-connect'
 import {
   useClearCachedBalances,
@@ -6,7 +7,6 @@ import {
   useGetContractInfo,
   useGetSwapPrices
 } from '@0xsequence/web-sdk-hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
 import { formatUnits } from 'viem'

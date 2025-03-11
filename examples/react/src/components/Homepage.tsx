@@ -1,7 +1,7 @@
 import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
 import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/web-sdk-connect'
-import { Footer } from 'example-shared-components'
 import { clsx } from 'clsx'
+import { Footer } from 'example-shared-components'
 
 import { Connected } from './Connected'
 

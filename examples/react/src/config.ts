@@ -1,5 +1,5 @@
-import { KitConfig, createConfig, WalletType } from '@0xsequence/web-sdk-connect'
 import { ChainId } from '@0xsequence/network'
+import { KitConfig, createConfig, WalletType } from '@0xsequence/web-sdk-connect'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
