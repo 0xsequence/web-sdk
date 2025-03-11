@@ -2,10 +2,10 @@
 
 React hooks to interface with Sequence services.
 
-Wrap your application with the `ReactHooksConfigProvider` to provide a config to the hooks.
+Wrap your application with the `SequenceHooksProvider` to provide a config to the hooks.
 
 ```tsx
-<KitHooksConfigProvider
+<SequenceHooksProvider
   value={{
     projectAccessKey: 'your-project-access-key',
     env: {
@@ -18,12 +18,12 @@ Wrap your application with the `ReactHooksConfigProvider` to provide a config to
   }}
 >
   <App />
-</KitHooksConfigProvider>
+</SequenceHooksProvider>
 ```
 
 ## Hooks:
 
-Kit hooks are grouped into 5 categories, based on the sequence service they interact with:
+Sequence hooks are grouped into 5 categories, based on the sequence service they interact with:
 
 ### API
 

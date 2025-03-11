@@ -2,7 +2,7 @@
 
 import { createContext } from 'react'
 
-export interface KitHooksConfig {
+export interface SequenceHooksConfig {
   projectAccessKey: string
   env: {
     indexerGatewayUrl: string
@@ -13,6 +13,6 @@ export interface KitHooksConfig {
   }
 }
 
-export const KitHooksConfigContext = createContext<KitHooksConfig | null>(null)
+export const SequenceHooksContext = createContext<SequenceHooksConfig | null>(null)
 
-export const KitHooksProvider = KitHooksConfigContext.Provider
+export const SequenceHooksProvider = SequenceHooksContext.Provider

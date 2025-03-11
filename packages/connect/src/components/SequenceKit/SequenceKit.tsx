@@ -1,4 +1,4 @@
-import { KitHooksProvider } from '@0xsequence/web-sdk-hooks'
+import { SequenceHooksProvider } from '@0xsequence/web-sdk-hooks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { State, WagmiProvider } from 'wagmi'
 
@@ -22,7 +22,7 @@ export const SequenceKit = (props: SequenceKitProps) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient || defaultQueryClient}>
-        <KitHooksProvider
+        <SequenceHooksProvider
           value={{
             projectAccessKey: kitConfig.projectAccessKey,
             env: {
@@ -35,7 +35,7 @@ export const SequenceKit = (props: SequenceKitProps) => {
           }}
         >
           <KitProvider config={kitConfig}>{children}</KitProvider>
-        </KitHooksProvider>
+        </SequenceHooksProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )
