@@ -60,6 +60,11 @@ export class EcosystemWalletTransportProvider extends ethers.AbstractProvider im
       try {
         const response = await this.transport.sendRequest(method, params, this.getChainId())
 
+        if (response.walletAddress && response.walletAddress !== this.transport.getWalletAddress()) {
+          this.transport.disconnect()
+          throw new TransactionRejectedRpcError(new Error('Wallet address mismatch, please reconnect.'))
+        }
+
         if (response.code === 'transactionFailed') {
           throw new TransactionRejectedRpcError(new Error(`Unable to send transaction: ${response.data.error}`))
         }
@@ -85,6 +90,11 @@ export class EcosystemWalletTransportProvider extends ethers.AbstractProvider im
       }
       try {
         const response = await this.transport.sendRequest(method, params, this.getChainId())
+
+        if (response.walletAddress && response.walletAddress !== this.transport.getWalletAddress()) {
+          this.transport.disconnect()
+          throw new TransactionRejectedRpcError(new Error('Wallet address mismatch, please reconnect.'))
+        }
 
         return response.data.signature
       } catch (e) {
