@@ -29,8 +29,8 @@ import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction }
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigationContext } from '../contexts/Navigation'
 import { useNavigation } from '../hooks'
-import { SendItemInfo } from '../shared/SendItemInfo'
-import { TransactionConfirmation } from '../shared/TransactionConfirmation'
+import { SendItemInfo } from '../components/SendItemInfo'
+import { TransactionConfirmation } from '../components/TransactionConfirmation'
 import { limitDecimals, isEthAddress } from '../utils'
 
 interface SendCollectibleProps {

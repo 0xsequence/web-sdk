@@ -28,8 +28,8 @@ import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction }
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigationContext } from '../contexts/Navigation'
 import { useSettings, useNavigation } from '../hooks'
-import { SendItemInfo } from '../shared/SendItemInfo'
-import { TransactionConfirmation } from '../shared/TransactionConfirmation'
+import { SendItemInfo } from '../components/SendItemInfo'
+import { TransactionConfirmation } from '../components/TransactionConfirmation'
 import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
 
 interface SendCoinProps {

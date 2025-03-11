@@ -16,9 +16,9 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
-import { InfiniteScroll } from '../../shared/InfiniteScroll'
-import { NetworkBadge } from '../../shared/NetworkBadge'
-import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
+import { InfiniteScroll } from '../../components/InfiniteScroll'
+import { NetworkBadge } from '../../components/NetworkBadge'
+import { TransactionHistoryList } from '../../components/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CoinDetailsSkeleton } from './Skeleton'

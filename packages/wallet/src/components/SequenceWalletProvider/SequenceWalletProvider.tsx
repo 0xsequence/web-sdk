@@ -11,7 +11,7 @@ import { History, Navigation, NavigationContextProvider, WalletModalContextProvi
 
 import { getHeader, getContent } from './utils'
 
-export type KitWalletProviderProps = {
+export type SequenceWalletProviderProps = {
   children: React.ReactNode
 }
 
@@ -19,17 +19,17 @@ const DEFAULT_LOCATION: Navigation = {
   location: 'home'
 }
 
-export const KitWalletProvider = (props: KitWalletProviderProps) => {
+export const SequenceWalletProvider = (props: SequenceWalletProviderProps) => {
   const queryClient = new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <KitWalletContent {...props} />
+      <WalletContent {...props} />
     </QueryClientProvider>
   )
 }
 
-export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
+export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
 
   // Wallet Modal Context

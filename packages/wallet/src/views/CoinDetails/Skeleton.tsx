@@ -1,8 +1,8 @@
 import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { NetworkBadge } from '../../shared/NetworkBadge'
-import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
+import { NetworkBadge } from '../../components/NetworkBadge'
+import { TransactionHistorySkeleton } from '../../components/TransactionHistoryList/TransactionHistorySkeleton'
 
 interface CoinDetailsSkeletonProps {
   chainId: number

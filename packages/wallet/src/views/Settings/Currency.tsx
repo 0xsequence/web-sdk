@@ -3,7 +3,7 @@ import React from 'react'
 
 import { supportedFiatCurrencies } from '../../constants'
 import { useSettings } from '../../hooks'
-import { SelectButton } from '../../shared/SelectButton'
+import { SelectButton } from '../../components/SelectButton'
 
 export const SettingsCurrency = () => {
   const { fiatCurrency, setFiatCurrency } = useSettings()

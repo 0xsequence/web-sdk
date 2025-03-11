@@ -5,7 +5,7 @@ import { useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
-import { SelectButton } from '../../shared/SelectButton'
+import { SelectButton } from '../../components/SelectButton'
 
 export const SettingsNetwork = () => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()

@@ -21,14 +21,14 @@ yarn add @0xsequence/web-sdk-wallet
 Then the wallet provider module must placed below the Sequence Web SDK Core provider.
 
 ```js
-import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
+import { SequenceWalletProvider } from '@0xsequence/web-sdk-wallet'
 
 const App = () => {
   return (
     <SequenceKit config={config}>
-      <KitWalletProvider>
+      <SequenceWalletProvider>
         <Page />
-      </KitWalletProvider>
+      </SequenceWalletProvider>
     </WagmiProvider>
   )
 }

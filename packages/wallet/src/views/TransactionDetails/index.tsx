@@ -18,8 +18,8 @@ import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
-import { CopyButton } from '../../shared/CopyButton'
-import { NetworkBadge } from '../../shared/NetworkBadge'
+import { CopyButton } from '../../components/CopyButton'
+import { NetworkBadge } from '../../components/NetworkBadge'
 
 interface TransactionDetailProps {
   transaction: Transaction

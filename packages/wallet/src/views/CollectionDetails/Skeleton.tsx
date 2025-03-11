@@ -1,7 +1,7 @@
 import { Skeleton } from '@0xsequence/design-system'
 import React from 'react'
 
-import { NetworkBadge } from '../../shared/NetworkBadge'
+import { NetworkBadge } from '../../components/NetworkBadge'
 
 interface CollectionDetailsSkeletonProps {
   chainId: number

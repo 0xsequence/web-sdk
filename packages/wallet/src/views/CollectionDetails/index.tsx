@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 
 import { useNavigation } from '../../hooks'
-import { NetworkBadge } from '../../shared/NetworkBadge'
+import { NetworkBadge } from '../../components/NetworkBadge'
 
 import { CollectionDetailsSkeleton } from './Skeleton'
 

@@ -1,7 +1,7 @@
 import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { TransactionHistorySkeleton } from '../../shared/TransactionHistoryList/TransactionHistorySkeleton'
+import { TransactionHistorySkeleton } from '../../components/TransactionHistoryList/TransactionHistorySkeleton'
 
 interface CollectibleDetailsSkeletonProps {
   isReadOnly: boolean

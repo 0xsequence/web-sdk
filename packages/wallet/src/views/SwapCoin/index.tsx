@@ -8,7 +8,7 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
-import { SendItemInfo } from '../../shared/SendItemInfo'
+import { SendItemInfo } from '../../components/SendItemInfo'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
 
 export interface SwapCoinProps {

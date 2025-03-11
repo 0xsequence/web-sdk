@@ -2,7 +2,7 @@
 
 import { SequenceCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 import { SequenceKit } from '@0xsequence/web-sdk-connect'
-import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
+import { SequenceWalletProvider } from '@0xsequence/web-sdk-wallet'
 import { State } from 'wagmi'
 
 import { config } from '../config'
@@ -17,9 +17,9 @@ export const Providers = (props: ProvidersProps) => {
 
   return (
     <SequenceKit config={config} initialState={initialState}>
-      <KitWalletProvider>
+      <SequenceWalletProvider>
         <SequenceCheckoutProvider>{children}</SequenceCheckoutProvider>
-      </KitWalletProvider>
+      </SequenceWalletProvider>
     </SequenceKit>
   )
 }

@@ -131,7 +131,7 @@ React apps must be wrapped by a WagmiProvider and the KitProvider components. It
 ```js
 import Content from './components/Content'
 import { KitProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/web-sdk-connect'
-import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
+import { SequenceWalletProvider } from '@0xsequence/web-sdk-wallet'
 import { SequenceCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
@@ -199,12 +199,12 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <KitProvider config={kitConfig}>
           {/* If you want to use wallet modal to show assets etc. */}
-          <KitWalletProvider>
+          <SequenceWalletProvider>
             {/* If you want to use checkout functionalities */}
             <SequenceCheckoutProvider>
               <Content />
             </SequenceCheckoutProvider>
-          </KitWalletProvider>
+          </SequenceWalletProvider>
         </KitProvider>
       </QueryClientProvider>
     </WagmiProvider>

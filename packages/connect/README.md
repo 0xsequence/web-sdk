@@ -125,7 +125,7 @@ function App() {
 
 #### Need more customization?
 
-React apps must be wrapped by a Wagmi client and the KitWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Web SDK wrapper.
+React apps must be wrapped by a Wagmi client and the SequenceWalletProvider components. It is important that the Wagmi wrapper comes before the Sequence Web SDK wrapper.
 
 ```js
 import Content from './components/Content'

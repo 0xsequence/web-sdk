@@ -11,9 +11,9 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
-import { CollectibleTileImage } from '../../shared/CollectibleTileImage'
-import { InfiniteScroll } from '../../shared/InfiniteScroll'
-import { TransactionHistoryList } from '../../shared/TransactionHistoryList'
+import { CollectibleTileImage } from '../../components/CollectibleTileImage'
+import { InfiniteScroll } from '../../components/InfiniteScroll'
+import { TransactionHistoryList } from '../../components/TransactionHistoryList'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
