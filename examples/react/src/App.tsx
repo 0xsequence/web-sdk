@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@0xsequence/design-system'
-import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
+import { SequenceCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 import { SequenceKit } from '@0xsequence/web-sdk-connect'
 import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
 
@@ -11,9 +11,9 @@ export const App = () => {
     <ThemeProvider theme="dark">
       <SequenceKit config={config}>
         <KitWalletProvider>
-          <KitCheckoutProvider>
+          <SequenceCheckoutProvider>
             <Homepage />
-          </KitCheckoutProvider>
+          </SequenceCheckoutProvider>
         </KitWalletProvider>
       </SequenceKit>
     </ThemeProvider>

@@ -20,10 +20,10 @@ import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'
 
+import { NavigationHeader } from '../../components/NavigationHeader'
 import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
 import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
-import { NavigationHeader } from '../../shared/components/NavigationHeader'
 
 import { Footer } from './Footer'
 import { OrderSummary } from './OrderSummary'

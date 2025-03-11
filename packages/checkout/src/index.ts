@@ -1,5 +1,5 @@
 // Provider
-export { KitCheckoutProvider } from './shared/components/KitCheckoutProvider'
+export { SequenceCheckoutProvider } from './components/SequenceCheckoutProvider'
 
 // Hooks
 export { useCheckoutModal } from './hooks/useCheckoutModal'

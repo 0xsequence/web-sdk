@@ -23,7 +23,6 @@ import {
   SwapModalSettings,
   SwapModalContextProvider
 } from '../../contexts'
-import { NavigationHeader } from '../../shared/components/NavigationHeader'
 import {
   PendingCreditCardTransaction,
   TransactionError,
@@ -35,22 +34,23 @@ import {
   TransactionStatus,
   Swap
 } from '../../views'
+import { NavigationHeader } from '../NavigationHeader'
 
-export type KitCheckoutProvider = {
+export type SequenceCheckoutProvider = {
   children: React.ReactNode
 }
 
-export const KitCheckoutProvider = (props: KitCheckoutProvider) => {
+export const SequenceCheckoutProvider = (props: SequenceCheckoutProvider) => {
   const queryClient = new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <KitCheckoutContent {...props} />
+      <SequenceCheckoutContent {...props} />
     </QueryClientProvider>
   )
 }
 
-export const KitCheckoutContent = ({ children }: KitCheckoutProvider) => {
+export const SequenceCheckoutContent = ({ children }: SequenceCheckoutProvider) => {
   const { theme, position } = useTheme()
   const [openCheckoutModal, setOpenCheckoutModal] = useState<boolean>(false)
   const [openAddFundsModal, setOpenAddFundsModal] = useState<boolean>(false)

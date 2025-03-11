@@ -1,6 +1,6 @@
 'use client'
 
-import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
+import { SequenceCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 import { SequenceKit } from '@0xsequence/web-sdk-connect'
 import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'
 import { State } from 'wagmi'
@@ -18,7 +18,7 @@ export const Providers = (props: ProvidersProps) => {
   return (
     <SequenceKit config={config} initialState={initialState}>
       <KitWalletProvider>
-        <KitCheckoutProvider>{children}</KitCheckoutProvider>
+        <SequenceCheckoutProvider>{children}</SequenceCheckoutProvider>
       </KitWalletProvider>
     </SequenceKit>
   )

@@ -23,14 +23,14 @@ yarn add @0xsequence/web-sdk-checkout
 Then the wallet provider module must placed below the Sequence Web SDK Core provider.
 
 ```js
-import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'
+import { SequenceCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 
 const App = () => {
   return (
     <SequenceKit config={config}>
-      <KitCheckoutProvider>
+      <SequenceCheckoutProvider>
         <Page />
-      </KitCheckoutProvider>
+      </SequenceCheckoutProvider>
     </SequenceKit>
   )
 }
