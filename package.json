@@ -1,5 +1,5 @@
 {
-  "name": "kit",
+  "name": "web-sdk",
   "private": true,
   "license": "Apache-2.0",
   "sideEffects": false,

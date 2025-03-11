@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/0xsequence/kit/master/public/docs/kit-logo-in-one.png">
+  <img src="https://raw.githubusercontent.com/0xsequence/web-sdk/master/public/docs/kit-logo-in-one.png">
 </div>
 
 # Sequence Kit 🧰
@@ -11,7 +11,7 @@ Sequence Kit 🧰 is a library enabling developers to easily integrate web3 wall
 - Full-fledged embedded wallet for coins and collectibles 👛 🖼️ 🪙
 - Fiat onramp 💵 💶 💴 💷
 
-View the [demo](https://0xsequence.github.io/kit)! 👀
+View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 
 ## Quick Start
 
@@ -260,12 +260,12 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 ## Packages
 
-| Package                                                                                             | Description                                                     | Docs                                                                                   |
-| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)   | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connect/README.md)  |
-| [@0xsequence/web-sdk-wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)   |
-| [@0xsequence/web-sdk-checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md) |
-| [example-react](https://github.com/0xsequence/web-sdk/tree/master/examples/react)                   | Example application showing sign in, wallet and checkout        | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md)    |
+| Package                                                                                             | Description                                                     | Docs                                                                                       |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)   | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/connect/README.md)  |
+| [@0xsequence/web-sdk-wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/wallet/README.md)   |
+| [@0xsequence/web-sdk-checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/checkout/README.md) |
+| [example-react](https://github.com/0xsequence/web-sdk/tree/master/examples/react)                   | Example application showing sign in, wallet and checkout        | [Read more](https://github.com/0xsequence/web-sdk/blob/master/examples/react/README.md)    |
 
 ## Local Development
 

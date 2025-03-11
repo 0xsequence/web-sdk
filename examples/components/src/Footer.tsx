@@ -12,7 +12,7 @@ export const bottomPageLinks: BottomPageLink[] = [
   },
   {
     label: 'About',
-    url: 'https://github.com/0xsequence/kit'
+    url: 'https://github.com/0xsequence/web-sdk'
   },
   {
     label: 'Blog',

@@ -324,7 +324,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
         chainId: 137
       }
     ],
-    readOnlyNetworks: [10], // Display assets in wallet (kit/wallet) from Optimism (chain ID 10) in addition to the networks specified in chainIds
+    readOnlyNetworks: [10], // Display assets in wallet from Optimism (chain ID 10) in addition to the networks specified in chainIds
   }
 
   <KitProvider config={kitConfig}>
@@ -334,18 +334,18 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 ## Packages
 
-| Package                                                                                             | Description                                                     | Docs                                                                                   |
-| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)   | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connect/README.md)  |
-| [@0xsequence/web-sdk-wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)   |
-| [@0xsequence/web-sdk-checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md) |
+| Package                                                                                             | Description                                                     | Docs                                                                                       |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)   | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/connect/README.md)  |
+| [@0xsequence/web-sdk-wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/wallet/README.md)   |
+| [@0xsequence/web-sdk-checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/checkout/README.md) |
 
 ## Examples
 
-| Application                                                                       | Description                                                            | Docs                                                                                |
-| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| [example-react](https://github.com/0xsequence/web-sdk/tree/master/examples/react) | React example application showing sign in, wallet and checkout         | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md) |
-| [example-next](https://github.com/0xsequence/web-sdk/tree/master/examples/next)   | Next example application showing sign in, wallet and checkout with SSR | [Read more](https://github.com/0xsequence/kit/blob/master/examples/next/README.md)  |
+| Application                                                                       | Description                                                            | Docs                                                                                    |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [example-react](https://github.com/0xsequence/web-sdk/tree/master/examples/react) | React example application showing sign in, wallet and checkout         | [Read more](https://github.com/0xsequence/web-sdk/blob/master/examples/react/README.md) |
+| [example-next](https://github.com/0xsequence/web-sdk/tree/master/examples/next)   | Next example application showing sign in, wallet and checkout with SSR | [Read more](https://github.com/0xsequence/web-sdk/blob/master/examples/next/README.md)  |
 
 ## Local Development
 
@@ -355,7 +355,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 The React example can be used to test the library locally.
 
-1. Replace the kit dependencies to the ones of the workspace in order to use hot reload.:
+1. Replace the web-sdk dependencies to the ones of the workspace in order to use hot reload.:
 
 ```js
 "@0xsequence/web-sdk-connect": "workspace:*",
