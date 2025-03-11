@@ -11,14 +11,10 @@ import { computeBalanceFiat } from '../../utils'
 
 import { CoinsTab } from './components/CoinsTab'
 import { CollectionsTab } from './components/CollectionsTab'
+import { IndexedData } from './SearchTokens'
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'
-}
-
-export interface IndexedData {
-  index: number
-  name: string
 }
 
 export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) => {

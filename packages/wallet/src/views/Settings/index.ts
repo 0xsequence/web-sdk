@@ -1,4 +1,4 @@
 export * from './Menu'
-export * from './General'
-export * from './Currency'
-export * from './Network'
+export * from './Wallets'
+export * from './Profiles'
+export * from './Apps'

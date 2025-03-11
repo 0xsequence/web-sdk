@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Navigation } from '../../../contexts'
 import {
   CoinDetails,
@@ -12,21 +10,29 @@ import {
   History,
   SearchWallet,
   SearchWalletViewAll,
-  SettingsMenu,
-  SettingsCurrency,
-  SettingsNetwork,
-  SettingsGeneral,
+  LegacySettingsMenu,
+  LegacySettingsCurrency,
+  LegacySettingsNetwork,
+  LegacySettingsGeneral,
   TransactionDetails,
   SwapCoin,
-  SwapList
+  SwapList,
+  SearchCollectibles
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
+import { SearchTokens } from '../../../views/Search/SearchTokens'
+import { SettingsMenu } from '../../../views/Settings/Menu'
+import { SettingsProfiles } from '../../../views/Settings/Profiles'
+import { SettingsApps } from '../../../views/Settings/Apps'
+import { SettingsWallets } from '../../../views/Settings'
 
 export const getContent = (navigation: Navigation) => {
   const { location } = navigation
 
   switch (location) {
+    case 'send':
+      return <History />
     case 'send-coin':
       return <SendCoin chainId={navigation.params.chainId} contractAddress={navigation.params.contractAddress} />
     case 'send-collectible':
@@ -37,22 +43,37 @@ export const getContent = (navigation: Navigation) => {
           tokenId={navigation.params.tokenId}
         />
       )
+    case 'swap':
+      return <History />
     case 'receive':
       return <Receive />
+    case 'buy':
     case 'history':
       return <History />
     case 'search':
       return <SearchWallet />
     case 'search-view-all':
       return <SearchWalletViewAll defaultTab={navigation.params.defaultTab} />
+    case 'search-tokens':
+      return <SearchTokens />
+    case 'search-collectibles':
+      return <SearchCollectibles />
     case 'settings':
       return <SettingsMenu />
-    case 'settings-general':
-      return <SettingsGeneral />
-    case 'settings-currency':
-      return <SettingsCurrency />
-    case 'settings-networks':
-      return <SettingsNetwork />
+    case 'settings-wallets':
+      return <SettingsWallets />
+    case 'settings-profiles':
+      return <SettingsProfiles />
+    case 'settings-apps':
+      return <SettingsApps />
+    case 'legacy-settings':
+      return <LegacySettingsMenu />
+    case 'legacy-settings-general':
+      return <LegacySettingsGeneral />
+    case 'legacy-settings-currency':
+      return <LegacySettingsCurrency />
+    case 'legacy-settings-networks':
+      return <LegacySettingsNetwork />
     case 'coin-details':
       return <CoinDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
     case 'collectible-details':
@@ -77,6 +98,7 @@ export const getContent = (navigation: Navigation) => {
           amount={navigation.params.amount}
         />
       )
+    case 'home':
     default:
       return <Home />
   }
@@ -89,16 +111,18 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader primaryText="Search wallet" />
     case 'search-view-all':
       return <NavigationHeader secondaryText="Search wallet / " primaryText="View all" />
-    case 'settings':
+    case 'search-tokens':
+      return <NavigationHeader primaryText="Search tokens" />
+    case 'search-collectibles':
+      return <NavigationHeader primaryText="Search collectibles" />
+    case 'legacy-settings':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Settings" />
-    case 'settings-general':
+    case 'legacy-settings-general':
       return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="General" />
-    case 'settings-currency':
+    case 'legacy-settings-currency':
       return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Currency" />
-    case 'settings-networks':
+    case 'legacy-settings-networks':
       return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Networks" />
-    case 'receive':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Receive" />
     case 'history':
       return <NavigationHeader secondaryText="Wallet / " primaryText="History" />
     case 'coin-details':
@@ -107,12 +131,22 @@ export const getHeader = (navigation: Navigation) => {
       return <WalletHeader />
     case 'transaction-details':
       return <NavigationHeader secondaryText="" primaryText="" />
-    case 'send-collectible':
-    case 'send-coin':
+    case 'send':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Send" />
+    case 'send-coin':
+      return <NavigationHeader secondaryText="Wallet / " primaryText="Send Coin" />
+    case 'send-collectible':
+      return <NavigationHeader secondaryText="Wallet / " primaryText="Send Collectible" />
+    case 'swap':
+      return <NavigationHeader secondaryText="Wallet / " primaryText="Swap" />
     case 'swap-coin':
     case 'swap-coin-list':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Buy" />
+    case 'receive':
+      return <NavigationHeader secondaryText="Wallet / " primaryText="Receive" />
+    case 'buy':
+      return <NavigationHeader secondaryText="Wallet / " primaryText="Add Funds" />
+    case 'home':
     default:
       return <WalletHeader />
   }

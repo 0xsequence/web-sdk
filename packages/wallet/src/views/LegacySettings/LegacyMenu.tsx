@@ -1,26 +1,27 @@
 import { Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon } from '@0xsequence/design-system'
+import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
 
-export const SettingsMenu = () => {
+export const LegacySettingsMenu = () => {
   const { setNavigation } = useNavigation()
 
-  const onClickWallets = () => {
+  const onClickGeneral = () => {
     setNavigation({
-      location: 'settings-wallets'
+      location: 'legacy-settings-general'
     })
   }
 
-  const onClickProfiles = () => {
+  const onClickCurrency = () => {
     setNavigation({
-      location: 'settings-profiles'
+      location: 'legacy-settings-currency'
     })
   }
 
-  const onClickApps = () => {
+  const onClickNetworks = () => {
     setNavigation({
-      location: 'settings-apps'
+      location: 'legacy-settings-networks'
     })
   }
 
@@ -31,26 +32,26 @@ export const SettingsMenu = () => {
           <Button
             className="w-full rounded-xl"
             size="lg"
-            onClick={onClickWallets}
+            onClick={onClickGeneral}
             leftIcon={SettingsIcon}
             rightIcon={ChevronRightIcon}
-            label="Wallets"
+            label="General"
           />
           <Button
             className="w-full rounded-xl"
             size="lg"
-            onClick={onClickProfiles}
+            onClick={onClickCurrency}
             leftIcon={CurrencyIcon}
             rightIcon={ChevronRightIcon}
-            label="Profiles"
+            label="Currency"
           />
           <Button
             className="w-full rounded-xl"
             size="lg"
-            onClick={onClickApps}
+            onClick={onClickNetworks}
             leftIcon={NetworkIcon}
             rightIcon={ChevronRightIcon}
-            label="Apps"
+            label="Networks"
           />
         </div>
       </div>

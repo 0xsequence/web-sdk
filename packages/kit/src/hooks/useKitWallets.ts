@@ -5,6 +5,7 @@ import { ExtendedConnector } from '../types'
 
 import { useLinkedWallets } from './data'
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
+import { IconProps } from '@0xsequence/design-system'
 
 export interface KitWallet {
   id: string
@@ -12,6 +13,9 @@ export interface KitWallet {
   address: string
   isActive: boolean
   isEmbedded: boolean
+  signInMethod: string
+  logoDark: React.ComponentType<IconProps>
+  logoLight: React.ComponentType<IconProps>
 }
 
 export const useKitWallets = () => {
@@ -53,7 +57,10 @@ export const useKitWallets = () => {
     name: getConnectorName(connection.connector),
     address: connection.accounts[0],
     isActive: connection.accounts[0] === address,
-    isEmbedded: connection.connector.id.includes('waas')
+    isEmbedded: connection.connector.id.includes('waas'),
+    signInMethod: (connection.connector._wallet as any)?.id,
+    logoDark: (connection.connector._wallet as any)?.logoDark,
+    logoLight: (connection.connector._wallet as any)?.logoLight
   }))
 
   const setActiveWallet = async (walletAddress: string) => {

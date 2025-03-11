@@ -7,7 +7,7 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 import { SelectButton } from '../../shared/SelectButton'
 
-export const SettingsNetwork = () => {
+export const LegacySettingsNetwork = () => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()
   const { selectedNetworks, setSelectedNetworks } = useSettings()
   const { chains } = useConfig()

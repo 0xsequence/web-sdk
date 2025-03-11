@@ -11,6 +11,8 @@ import { History, Navigation, NavigationContextProvider, WalletModalContextProvi
 
 import { getHeader, getContent } from './utils'
 
+export const WALLET_WIDTH = 400
+
 export type KitWalletProviderProps = {
   children: React.ReactNode
 }
@@ -55,7 +57,13 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
-    navigation.location === 'settings-currency'
+    navigation.location === 'settings-wallets' ||
+    navigation.location === 'settings-profiles' ||
+    navigation.location === 'settings-apps' ||
+    navigation.location === 'legacy-settings-currency' ||
+    navigation.location === 'search-tokens' ||
+    navigation.location === 'search-collectibles' ||
+    navigation.location === 'settings'
 
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
@@ -66,7 +74,7 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
               <Modal
                 contentProps={{
                   style: {
-                    maxWidth: '400px',
+                    maxWidth: WALLET_WIDTH,
                     height: 'fit-content',
                     ...getModalPositionCss(position),
                     scrollbarColor: 'gray black',
