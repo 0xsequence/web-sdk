@@ -21,14 +21,14 @@ import { ethers } from 'ethers'
 
 import { sortBalancesByType, isTruthy } from '../utils'
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use @0xsequence/web-sdk-hooks instead */
 export const time = {
   oneSecond: 1 * 1000,
   oneMinute: 60 * 1000,
   oneHour: 60 * 60 * 1000
 }
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use @0xsequence/web-sdk-hooks instead */
 export interface GetBalancesAssetsArgs {
   accountAddress: string
   chainIds: number[]
@@ -37,7 +37,7 @@ export interface GetBalancesAssetsArgs {
   hideCollectibles?: boolean
 }
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use @0xsequence/web-sdk-hooks instead */
 export const getBalancesAssetsSummary = async (
   apiClient: SequenceAPIClient,
   metadataClient: SequenceMetadata,
@@ -255,7 +255,7 @@ export const getBalancesAssetsSummary = async (
   }
 }
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use @0xsequence/web-sdk-hooks instead */
 export const useBalancesAssetsSummary = (args: GetBalancesAssetsArgs) => {
   const apiClient = useAPIClient()
   const metadataClient = useMetadataClient()
@@ -272,13 +272,13 @@ export const useBalancesAssetsSummary = (args: GetBalancesAssetsArgs) => {
   })
 }
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use @0xsequence/web-sdk-hooks instead */
 interface GetTransactionHistorySummaryArgs {
   chainIds: number[]
   accountAddress: string
 }
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use @0xsequence/web-sdk-hooks instead */
 const getTransactionHistorySummary = async (
   indexerClients: Map<number, SequenceIndexer>,
   { accountAddress }: GetTransactionHistorySummaryArgs
@@ -304,7 +304,7 @@ const getTransactionHistorySummary = async (
   return orderedTransactions
 }
 
-/** @deprecated Use kit-hooks instead */
+/** @deprecated Use @0xsequence/web-sdk-hooks instead */
 export const useTransactionHistorySummary = (args: GetTransactionHistorySummaryArgs) => {
   const indexerClients = useIndexerClients(args.chainIds)
 

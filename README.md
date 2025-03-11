@@ -334,18 +334,18 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 ## Packages
 
-| Package                                                                                         | Description                                                     | Docs                                                                                   |
-| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/kit/tree/master/packages/connect)   | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connect/README.md)  |
-| [@0xsequence/web-sdk-wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)   |
-| [@0xsequence/web-sdk-checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md) |
+| Package                                                                                             | Description                                                     | Docs                                                                                   |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)   | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/kit/blob/master/packages/connect/README.md)  |
+| [@0xsequence/web-sdk-wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/kit/blob/master/packages/wallet/README.md)   |
+| [@0xsequence/web-sdk-checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/kit/blob/master/packages/checkout/README.md) |
 
 ## Examples
 
-| Application                                                                   | Description                                                            | Docs                                                                                |
-| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| [example-react](https://github.com/0xsequence/kit/tree/master/examples/react) | React example application showing sign in, wallet and checkout         | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md) |
-| [example-next](https://github.com/0xsequence/kit/tree/master/examples/next)   | Next example application showing sign in, wallet and checkout with SSR | [Read more](https://github.com/0xsequence/kit/blob/master/examples/next/README.md)  |
+| Application                                                                       | Description                                                            | Docs                                                                                |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [example-react](https://github.com/0xsequence/web-sdk/tree/master/examples/react) | React example application showing sign in, wallet and checkout         | [Read more](https://github.com/0xsequence/kit/blob/master/examples/react/README.md) |
+| [example-next](https://github.com/0xsequence/web-sdk/tree/master/examples/next)   | Next example application showing sign in, wallet and checkout with SSR | [Read more](https://github.com/0xsequence/kit/blob/master/examples/next/README.md)  |
 
 ## Local Development
 
@@ -369,7 +369,7 @@ The React example can be used to test the library locally.
 
 ## What to do next?
 
-Now that the core package is installed, you can install the [embedded wallet](https://github.com/0xsequence/kit/tree/master/packages/wallet) or take a look at the [checkout](https://github.com/0xsequence/kit/tree/master/packages/checkout).
+Now that the core package is installed, you can install the [embedded wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet) or take a look at the [checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout).
 
 ## LICENSE
 

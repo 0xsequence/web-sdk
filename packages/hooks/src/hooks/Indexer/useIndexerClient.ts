@@ -2,7 +2,7 @@ import { SequenceIndexer } from '@0xsequence/indexer'
 import { ChainId, networks } from '@0xsequence/network'
 import { useMemo } from 'react'
 
-import { useNetwork } from '../../hooks/useNetwork'
+import { useNetwork } from '../useNetwork'
 import { envString } from '../../utils/envstring'
 import { useConfig } from '../useConfig'
 
