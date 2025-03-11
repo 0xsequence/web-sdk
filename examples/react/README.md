@@ -1,6 +1,6 @@
-# Sequence Kit React Example
+# Sequence Web SDK React Example
 
-This demo showcases the sign in flow, the embedded wallet and the checkout component of Sequence Kit.
+This demo showcases the sign in flow, the embedded wallet and the checkout component of Sequence Web SDK.
 
 View the [demo here](https://0xsequence.github.io/web-sdk)! 👀
 

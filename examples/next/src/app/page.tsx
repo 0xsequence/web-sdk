@@ -18,9 +18,9 @@ export default function Home() {
             <Image className="h-3" alt="Next" src="images/next.svg" disableAnimation />
           </div>
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image alt="Sequence Kit Logo" style={{ width: '48px' }} src="images/kit-logo.svg" disableAnimation />
+            <Image alt="Sequence Web SDK Logo" style={{ width: '48px' }} src="images/kit-logo.svg" disableAnimation />
             <Image
-              alt="Sequence Kit Text Logo"
+              alt="Sequence Web SDK Text Logo"
               style={{
                 width: '32px'
                 // filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'

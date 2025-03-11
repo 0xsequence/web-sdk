@@ -1,7 +1,7 @@
 {
   "name": "@0xsequence/web-sdk-wallet",
   "version": "4.6.5",
-  "description": "Wallet UI for Sequence Kit",
+  "description": "Wallet UI for Sequence Web SDK",
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/wallet",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",

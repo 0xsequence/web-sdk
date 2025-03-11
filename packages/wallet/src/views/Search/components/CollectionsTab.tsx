@@ -1,4 +1,3 @@
-// kit/packages/wallet/src/views/Search/CollectionsTab.tsx
 import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import React, { useEffect, useRef, useState } from 'react'

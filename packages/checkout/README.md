@@ -1,4 +1,4 @@
-# Sequence Kit Checkout
+# Sequence Web SDK Checkout
 
 Sequence Checkout provides a seamless and flexible payment experience for interacting with NFTs, cryptocurrencies, and fiat currencies. It supports multiple payment options, including cryptocurrency transfers, currency swaps, and even credit card payments for whitelisted contracts.
 
@@ -20,7 +20,7 @@ pnpm install @0xsequence/web-sdk-checkout
 yarn add @0xsequence/web-sdk-checkout
 ```
 
-Then the wallet provider module must placed below the Sequence Kit Core provider.
+Then the wallet provider module must placed below the Sequence Web SDK Core provider.
 
 ```js
 import { KitCheckoutProvider } from '@0xsequence/web-sdk-checkout'

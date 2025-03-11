@@ -6,7 +6,7 @@
 
 [![npm version](https://badge.fury.io/js/@0xsequence%2Fkit.svg)](https://badge.fury.io/js/@0xsequence%2Fkit)
 
-Easily integrate web3 wallets in your app with Sequence Kit 🧰. Based on [wagmi](https://wagmi.sh/), and supporting all wagmi features.
+Easily integrate web3 wallets in your app with Sequence Web SDK 🧰. Based on [wagmi](https://wagmi.sh/), and supporting all wagmi features.
 
 - Connect via social logins eg: facebook, google, discord, etc...! 🔐🪪
 - Connect to popular web3 wallets eg: walletConnect, metamask ! 🦊 ⛓️
@@ -126,7 +126,7 @@ function App() {
 
 #### Need more customization?
 
-React apps must be wrapped by a WagmiProvider and the KitProvider components. It is important that the Wagmi wrapper comes before the Sequence Kit wrapper.
+React apps must be wrapped by a WagmiProvider and the KitProvider components. It is important that the Wagmi wrapper comes before the Sequence Web SDK wrapper.
 
 ```js
 import Content from './components/Content'
@@ -302,7 +302,7 @@ setTheme('light')
 
 The `KitProvider` wrapper can accept an optional config object.
 
-The settings are described in more detailed in the Sequence Kit documentation.
+The settings are described in more detailed in the Sequence Web SDK documentation.
 
 ```js
 
@@ -336,7 +336,7 @@ The settings are described in more detailed in the Sequence Kit documentation.
 
 | Package                                                                                             | Description                                                     | Docs                                                                                       |
 | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)   | Core package for Sequence Kit                                   | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/connect/README.md)  |
+| [@0xsequence/web-sdk-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)   | Core package for Sequence Web SDK                               | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/connect/README.md)  |
 | [@0xsequence/web-sdk-wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/wallet/README.md)   |
 | [@0xsequence/web-sdk-checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/checkout/README.md) |
 

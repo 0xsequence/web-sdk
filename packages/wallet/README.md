@@ -1,4 +1,4 @@
-# Sequence Kit Wallet
+# Sequence Web SDK Wallet
 
 <div align="center">
   <img src="../../public/docs/embedded-wallet.png">
@@ -18,7 +18,7 @@ pnpm install @0xsequence/web-sdk-wallet
 yarn add @0xsequence/web-sdk-wallet
 ```
 
-Then the wallet provider module must placed below the Sequence Kit Core provider.
+Then the wallet provider module must placed below the Sequence Web SDK Core provider.
 
 ```js
 import { KitWalletProvider } from '@0xsequence/web-sdk-wallet'

@@ -1,10 +1,10 @@
 {
   "name": "@0xsequence/web-sdk-connect",
   "version": "4.6.5",
-  "description": "Core package for Sequence Kit",
+  "description": "Connect package for Sequence Web SDK",
   "keywords": [
     "sequence",
-    "kit",
+    "web-sdk",
     "wallet"
   ],
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/connect",
