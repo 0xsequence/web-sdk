@@ -1,8 +1,13 @@
 import { ethers } from 'ethers'
 import { getAddress } from 'viem'
-import { createConnector } from 'wagmi'
+import { createConnector, Connector } from 'wagmi'
 
 import { EcosystemWalletTransportProvider } from './provider'
+
+export interface EcosystemConnector extends Connector {
+  type: 'ecosystem-wallet'
+  auxData?: Record<string, unknown>
+}
 
 export interface BaseEcosystemConnectorOptions {
   projectAccessKey: string
@@ -17,6 +22,7 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
   type Provider = EcosystemWalletTransportProvider
   type Properties = {
     ecosystemProvider: EcosystemWalletTransportProvider
+    auxData?: Record<string, unknown>
   }
   type StorageItem = {}
 
@@ -36,6 +42,7 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
     type: ecosystemWallet.type,
     ecosystemProvider,
     params,
+    auxData: undefined as Record<string, unknown> | undefined,
 
     async setup() {
       if (typeof window !== 'object') {
@@ -44,16 +51,13 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
       }
     },
 
-    async connect(
-      parameters?: { chainId?: number | undefined; isReconnecting?: boolean | undefined },
-      auxData?: Record<string, unknown>
-    ) {
+    async connect(_connectInfo) {
       const provider = await this.getProvider()
       let walletAddress = provider.transport.getWalletAddress()
 
       if (!walletAddress) {
         try {
-          const res = await provider.transport.connect(auxData)
+          const res = await provider.transport.connect(this.auxData)
           walletAddress = res.walletAddress
         } catch (e) {
           console.log(e)

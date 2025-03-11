@@ -70,7 +70,7 @@ export class EcosystemWalletTransportProvider extends ethers.AbstractProvider im
         }
       } catch (e) {
         console.log('error in sendTransaction', e)
-        throw new TransactionRejectedRpcError(new Error(`Unable to send transaction: wallet window was closed.`))
+        throw new TransactionRejectedRpcError(new Error(`Unable to send transaction: ${e}`))
       }
     }
 
@@ -89,7 +89,7 @@ export class EcosystemWalletTransportProvider extends ethers.AbstractProvider im
         return response.data.signature
       } catch (e) {
         console.log('error in sign', e)
-        throw new TransactionRejectedRpcError(new Error(`Unable to sign: wallet window was closed.`))
+        throw new TransactionRejectedRpcError(new Error(`Unable to sign: ${e}`))
       }
     }
 

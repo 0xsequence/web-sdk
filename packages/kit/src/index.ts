@@ -127,6 +127,8 @@ export {
   useCurrencyInfo
 } from './hooks/data'
 
+export { useDirectEcosystemConnect } from './hooks/useDirectEcosystemConnect'
+
 // Components
 export { NetworkBadge } from './components/NetworkBadge'
 export { CollectibleTileImage } from './components/CollectibleTileImage'
