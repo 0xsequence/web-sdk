@@ -14,7 +14,9 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
   const { isBackButtonEnabled } = useNavigationContext()
 
   const onClickBack = () => {
-    if (!isBackButtonEnabled) return
+    if (!isBackButtonEnabled) {
+      return
+    }
     goBack()
   }
 

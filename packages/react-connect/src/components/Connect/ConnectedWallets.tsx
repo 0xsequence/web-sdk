@@ -70,8 +70,12 @@ export const ConnectedWallets = ({
 
     // Sort wallets: embedded first, then by name and address
     const sortedConnectedWallets = [...connectedWallets].sort((a, b) => {
-      if (a.isEmbedded && !b.isEmbedded) return -1
-      if (!a.isEmbedded && b.isEmbedded) return 1
+      if (a.isEmbedded && !b.isEmbedded) {
+        return -1
+      }
+      if (!a.isEmbedded && b.isEmbedded) {
+        return 1
+      }
       return (
         a.name.toLowerCase().localeCompare(b.name.toLowerCase()) || a.address.toLowerCase().localeCompare(b.address.toLowerCase())
       )
@@ -102,7 +106,9 @@ export const ConnectedWallets = ({
     }
   }, [allWallets]) // Re-run when wallets change as it affects content height
 
-  if (wallets.length === 0) return null
+  if (wallets.length === 0) {
+    return null
+  }
 
   return (
     <div className="flex mt-4 flex-col">

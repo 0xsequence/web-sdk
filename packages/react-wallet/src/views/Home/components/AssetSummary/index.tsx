@@ -33,7 +33,9 @@ export const AssetSummary = () => {
   }
 
   useEffect(() => {
-    if (!endOfPageRef.current) return
+    if (!endOfPageRef.current) {
+      return
+    }
 
     const observer = new IntersectionObserver(entries => {
       const endOfPage = entries[0]

@@ -38,7 +38,9 @@ const useFeeOptionBalances = (feeOptions: TransactionConfirmationProps['feeOptio
   return useQuery({
     queryKey: ['feeOptionBalances', chainId, accountAddress, feeOptions?.options?.length],
     queryFn: async () => {
-      if (!feeOptions?.options || !accountAddress || !indexerClient) return []
+      if (!feeOptions?.options || !accountAddress || !indexerClient) {
+        return []
+      }
 
       const nativeTokenBalance = await indexerClient.getEtherBalance({
         accountAddress

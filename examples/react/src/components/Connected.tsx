@@ -475,8 +475,12 @@ export const Connected = () => {
                 {[...wallets]
                   .sort((a, b) => {
                     // Sort embedded wallet to the top
-                    if (a.isEmbedded && !b.isEmbedded) return -1
-                    if (!a.isEmbedded && b.isEmbedded) return 1
+                    if (a.isEmbedded && !b.isEmbedded) {
+                      return -1
+                    }
+                    if (!a.isEmbedded && b.isEmbedded) {
+                      return 1
+                    }
                     return 0
                   })
                   .map(wallet => (

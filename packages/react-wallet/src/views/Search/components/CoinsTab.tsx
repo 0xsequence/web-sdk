@@ -32,11 +32,15 @@ export const CoinsTab: React.FC<CoinsTabProps> = ({
   const endOfPageRefCoins = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (!endOfPageRefCoins.current) return
+    if (!endOfPageRefCoins.current) {
+      return
+    }
 
     const observer = new IntersectionObserver(entries => {
       const endOfPage = entries[0]
-      if (!endOfPage.isIntersecting) return
+      if (!endOfPage.isIntersecting) {
+        return
+      }
       if (isSearching && hasMoreSearchCoins) {
         setIsLoading(true)
         setTimeout(() => {

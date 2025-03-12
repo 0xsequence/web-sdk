@@ -20,9 +20,10 @@ export const publicClientToProvider = (publicClient: Client<Transport, Chain>) =
     name: chain.name,
     ensAddress: chain.contracts?.ensRegistry?.address
   }
-  if (transport.type === 'fallback')
+  if (transport.type === 'fallback') {
     return new ethers.FallbackProvider(
       (transport.transports as ReturnType<HttpTransport>[]).map(({ value }) => new ethers.JsonRpcProvider(value?.url, network))
     )
+  }
   return new ethers.JsonRpcProvider(transport.url, network)
 }

@@ -131,7 +131,9 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     const transakIframe = transakIframeElement.contentWindow
 
     const readMessage = (message: any) => {
-      if (message.source !== transakIframe) return
+      if (message.source !== transakIframe) {
+        return
+      }
 
       if (message?.data?.event_id === 'TRANSAK_ORDER_SUCCESSFUL' && message?.data?.data?.status === 'COMPLETED') {
         console.log('Order Data: ', message?.data?.data)

@@ -222,7 +222,9 @@ export const useSaleContractConfig = ({
   const getSaleConfigs = (): SaleConfig[] => {
     let saleInfos: SaleConfig[] = []
 
-    if (isLoadingERC1155 || isErrorERC1155) return saleInfos
+    if (isLoadingERC1155 || isErrorERC1155) {
+      return saleInfos
+    }
 
     // In the sale contract, the global sale has priority over the token sale
     // So we need to check if the global sale is set, and if it is, use that

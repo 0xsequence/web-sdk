@@ -2,13 +2,12 @@
 
 import { SequenceAPIClient, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useAPIClient } from './useAPIClient'
-
 import { Connector, type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
 
 import { SEQUENCE_UNIVERSAL_CONNECTOR_NAME } from '../components/Connect/Connect'
 import { ExtendedConnector } from '../types'
 
+import { useAPIClient } from './useAPIClient'
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
 
 interface UseLinkedWalletsOptions {
@@ -74,7 +73,9 @@ export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedW
   const abortControllerRef = useRef<AbortController | undefined>(undefined)
 
   const fetchData = useCallback(async () => {
-    if (!options.enabled) return
+    if (!options.enabled) {
+      return
+    }
 
     setIsLoading(true)
     setError(null)
@@ -176,7 +177,9 @@ export const useWallets = () => {
 
   const setActiveWallet = async (walletAddress: string) => {
     const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
-    if (!connection) return
+    if (!connection) {
+      return
+    }
 
     try {
       await connectAsync({ connector: connection.connector })
@@ -187,7 +190,9 @@ export const useWallets = () => {
 
   const disconnectWallet = async (walletAddress: string) => {
     const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
-    if (!connection) return
+    if (!connection) {
+      return
+    }
 
     // invalidate linked wallets if we're disconnecting waas wallet
     if (connection.connector.id.includes('waas')) {

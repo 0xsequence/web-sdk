@@ -32,11 +32,15 @@ export const CollectionsTab: React.FC<CollectionsTabProps> = ({
   const endOfPageRefCollections = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (!endOfPageRefCollections.current) return
+    if (!endOfPageRefCollections.current) {
+      return
+    }
 
     const observer = new IntersectionObserver(entries => {
       const endOfPage = entries[0]
-      if (!endOfPage.isIntersecting) return
+      if (!endOfPage.isIntersecting) {
+        return
+      }
       if (isSearching && hasMoreSearchCollections) {
         setIsLoading(true)
         setTimeout(() => {
