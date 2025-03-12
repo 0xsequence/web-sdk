@@ -9,7 +9,7 @@ import {
   validateEthProof,
   getModalPositionCss,
   useOpenConnectModal,
-  useKitWallets
+  useWallets
 } from '@0xsequence/react-connect'
 import { useOpenWalletModal } from '@0xsequence/react-wallet'
 import { ethers } from 'ethers'
@@ -47,7 +47,7 @@ export const Connected = () => {
   const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
   const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
-  const { wallets, setActiveWallet, disconnectWallet } = useKitWallets()
+  const { wallets, setActiveWallet, disconnectWallet } = useWallets()
   const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
 
   const {

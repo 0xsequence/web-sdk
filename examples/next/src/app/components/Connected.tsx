@@ -4,7 +4,7 @@ import type { CheckoutSettings } from '@0xsequence/react-checkout'
 import {
   signEthAuthProof,
   useIndexerClient,
-  useKitWallets,
+  useWallets,
   useStorage,
   useWaasFeeOptions,
   validateEthProof,
@@ -31,7 +31,7 @@ export const Connected = () => {
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
-  const { wallets, setActiveWallet, disconnectWallet } = useKitWallets()
+  const { wallets, setActiveWallet, disconnectWallet } = useWallets()
 
   const onClickConnect = () => {
     setOpenConnectModal(true)

@@ -10,11 +10,11 @@ import { useConnect, useConnections, useSignMessage } from 'wagmi'
 import { LocalStorageKey } from '../../constants'
 import { CHAIN_ID_FOR_SIGNATURE } from '../../constants/walletLinking'
 import { useAnalyticsContext } from '../../contexts/Analytics'
-import { useKitWallets } from '../../hooks/useKitWallets'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet'
+import { useWallets } from '../../hooks/useWallets'
 import { ExtendedConnector, ConnectConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
@@ -55,7 +55,7 @@ export const Connect = (props: ConnectProps) => {
   const { status, connectors, connect } = useConnect()
   const connections = useConnections()
   const { signMessageAsync } = useSignMessage()
-  const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useKitWallets()
+  const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 

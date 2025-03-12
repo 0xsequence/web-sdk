@@ -2,12 +2,12 @@ import { LinkedWallet } from '@0xsequence/api'
 import { motion, AnimatePresence } from 'motion/react'
 import React, { useMemo, useEffect, useRef, JSX } from 'react'
 
-import { KitWallet } from '../../hooks/useKitWallets'
+import { ConnectedWallet } from '../../hooks/useWallets'
 
 import { WalletListItem, WalletListItemProps } from './WalletListItem'
 
 interface ConnectedWalletsProps {
-  wallets: KitWallet[]
+  wallets: ConnectedWallet[]
   linkedWallets?: LinkedWallet[]
   disconnectWallet: (address: string) => void
   unlinkWallet: (address: string) => void
@@ -56,7 +56,7 @@ export const ConnectedWallets = ({
         }
       }))
 
-    // Transform KitWallet to WalletListItemProps
+    // Transform ConnectedWallet to WalletListItemProps
     const connectedWallets = wallets.map(wallet => ({
       name: wallet.name,
       address: wallet.address,

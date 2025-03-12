@@ -1,13 +1,13 @@
 'use client'
 
 import { Image, Button } from '@0xsequence/design-system'
-import { useKitWallets, useOpenConnectModal } from '@0xsequence/react-connect'
+import { useWallets, useOpenConnectModal } from '@0xsequence/react-connect'
 import { Footer } from 'example-shared-components'
 
 import { Connected } from './components/Connected'
 
 export default function Home() {
-  const { wallets } = useKitWallets()
+  const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
   return (

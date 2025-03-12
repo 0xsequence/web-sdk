@@ -1,5 +1,5 @@
 import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
-import { useKitWallets, useOpenConnectModal, WalletType } from '@0xsequence/react-connect'
+import { useWallets, useOpenConnectModal, WalletType } from '@0xsequence/react-connect'
 import { clsx } from 'clsx'
 import { Footer } from 'example-shared-components'
 
@@ -12,7 +12,7 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 export const Homepage = () => {
   const { theme } = useTheme()
 
-  const { wallets } = useKitWallets()
+  const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
   const handleSwitchWalletType = (type: WalletType) => {

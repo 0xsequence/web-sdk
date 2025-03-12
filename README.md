@@ -227,7 +227,7 @@ import { useDisconnect, useAccount } from 'wagmi'
 const MyReactComponent = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
 
-  const { wallets } = useKitWallets()
+  const { wallets } = useWallets()
 
   const onClick = () => {
     setOpenConnectModal(true)
@@ -250,24 +250,24 @@ const { setOpenConnectModal } = useOpenConnectModal()
 setOpenConnectModal(true)
 ```
 
-### useKitWallets
+### useWallets
 
-Use the `useKitWallets` hook to manage multiple connected wallets in your application and see linked wallets of the connected embedded wallet. This hook is particularly useful when working with a combination of embedded and external wallets.
+Use the `useWallets` hook to manage multiple connected wallets in your application and see linked wallets of the connected embedded wallet. This hook is particularly useful when working with a combination of embedded and external wallets.
 
 ```js
-import { useKitWallets } from '@0xsequence/react-connect'
+import { useWallets } from '@0xsequence/react-connect'
 
 const {
   wallets, // Array of connected wallets
   linkedWallets, // Array of linked wallets (for embedded wallets)
   setActiveWallet, // Function to set a wallet as active
   disconnectWallet // Function to disconnect a wallet
-} = useKitWallets()
+} = useWallets()
 
 /**
  * Interface representing a connected wallet
  */
-interface KitWallet {
+interface ConnectedWallet {
   /** Unique identifier */
   id: string
   /** Display name of the wallet */

@@ -6,7 +6,7 @@ import { ExtendedConnector } from '../types'
 import { useLinkedWallets } from './data'
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
 
-export interface KitWallet {
+export interface ConnectedWallet {
   id: string
   name: string
   address: string
@@ -14,7 +14,7 @@ export interface KitWallet {
   isEmbedded: boolean
 }
 
-export const useKitWallets = () => {
+export const useWallets = () => {
   const { address } = useAccount()
   const connections = useConnections()
   const { connectAsync } = useConnect()
@@ -48,7 +48,7 @@ export const useKitWallets = () => {
     }
   )
 
-  const wallets: KitWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
+  const wallets: ConnectedWallet[] = connections.map((connection: UseConnectionsReturnType[number]) => ({
     id: connection.connector.id,
     name: getConnectorName(connection.connector),
     address: connection.accounts[0],
