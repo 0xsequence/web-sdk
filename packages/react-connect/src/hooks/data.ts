@@ -83,7 +83,7 @@ export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedW
   const [data, setData] = useState<LinkedWallet[] | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const abortControllerRef = useRef<AbortController>()
+  const abortControllerRef = useRef<AbortController | undefined>(undefined)
 
   const fetchData = useCallback(async () => {
     if (!options.enabled) return

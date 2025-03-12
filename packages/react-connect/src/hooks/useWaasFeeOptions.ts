@@ -80,7 +80,9 @@ export function useWaasFeeOptions(skipFeeBalanceCheck = false): UseWaasFeeOption
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
   const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>()
-  const pendingConfirmationRef = useRef<Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>>()
+  const pendingConfirmationRef = useRef<
+    Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | undefined
+  >(undefined)
   const indexerClient = useIndexerClient(connections[0].chainId ?? 1)
 
   // Reset state when chainId changes
