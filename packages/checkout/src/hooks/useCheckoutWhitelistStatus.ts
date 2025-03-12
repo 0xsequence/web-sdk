@@ -11,9 +11,9 @@ export const useCheckoutWhitelistStatus = (args: CheckSardineWhitelistStatusArgs
   const projectAccessKey = isEnabledDevSardine ? devProjectAccessKey : prodProjectAccessKey
 
   return useQuery({
-    queryKey: ['useCheckoutWhitelistStatus', args],
+    queryKey: ['useCheckoutWhitelistStatus', args, projectAccessKey, isEnabledDevSardine],
     queryFn: async () => {
-      const res = await checkSardineWhitelistStatus(args, projectAccessKey)
+      const res = await checkSardineWhitelistStatus(args, projectAccessKey, isEnabledDevSardine)
 
       return res
     },

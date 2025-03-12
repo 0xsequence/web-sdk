@@ -1,5 +1,3 @@
-import { DEBUG } from '@0xsequence/kit'
-
 import { AddFundsSettings } from '../contexts'
 
 export const TRANSAK_API_KEY = '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
@@ -9,7 +7,7 @@ export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a
 const TransakUrlProd = 'https://global.transak.com'
 const TransakUrlSandbox = 'https://global-stg.transak.com'
 
-export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
+export const getTransakLink = (addFundsSettings: AddFundsSettings, isDev?: boolean) => {
   const defaultNetworks =
     'ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain,immutablezkevm'
 
@@ -17,8 +15,8 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
     [index: string]: string | undefined
   }
 
-  const url = new URL(DEBUG ? TransakUrlSandbox : TransakUrlProd)
-  const apiKey = DEBUG ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY
+  const url = new URL(isDev ? TransakUrlSandbox : TransakUrlProd)
+  const apiKey = isDev ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY
 
   const options: Options = {
     apiKey: apiKey,

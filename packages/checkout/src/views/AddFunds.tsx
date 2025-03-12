@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useEnvironment } from '@0xsequence/kit'
 
 import { HEADER_HEIGHT } from '../constants'
 import { useAddFundsModal } from '../hooks'
@@ -11,6 +12,7 @@ const EventTypeOrderFailed = 'TRANSAK_ORDER_FAILED'
 
 export const AddFundsContent = () => {
   const { addFundsSettings } = useAddFundsModal()
+  const { isEnabledDevTransak } = useEnvironment()
 
   if (!addFundsSettings) {
     return
@@ -43,7 +45,7 @@ export const AddFundsContent = () => {
     }
   }
 
-  const link = getTransakLink(addFundsSettings)
+  const link = getTransakLink(addFundsSettings, isEnabledDevTransak)
 
   return (
     <div

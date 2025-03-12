@@ -1,4 +1,4 @@
-import { DEBUG } from '@0xsequence/kit'
+import { useEnvironment } from '@0xsequence/kit'
 import { ChainId, networks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 
@@ -9,13 +9,12 @@ export interface CheckSardineWhitelistStatusArgs {
 
 export const checkSardineWhitelistStatus = async (
   { chainId, marketplaceAddress }: CheckSardineWhitelistStatusArgs,
-  projectAccessKey: string
+  projectAccessKey: string,
+  isDev?: boolean
 ) => {
   const referenceId = `sequence-kit-sardine-whitelist-check`
 
-  const accessKey = DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-
-  const url = DEBUG
+  const url = isDev
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
 
@@ -23,7 +22,7 @@ export const checkSardineWhitelistStatus = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Access-Key': `${accessKey || ''}`
+      'X-Access-Key': `${projectAccessKey}`
     },
     body: JSON.stringify({
       params: {

@@ -1,3 +1,4 @@
+import { useEnvironment } from '@0xsequence/kit'
 import { useQuery } from '@tanstack/react-query'
 
 import { FetchSardineClientTokenArgs, fetchSardineClientToken } from '../api/data'
