@@ -17,7 +17,6 @@ export type {
   KitConfig,
   StorageItem
 } from './types'
-export type { SwapPricesWithCurrencyInfo } from './hooks/data'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig'
@@ -97,35 +96,6 @@ export { useChain } from './hooks/useChain'
 export { useKitWallets } from './hooks/useKitWallets'
 export type { KitWallet } from './hooks/useKitWallets'
 export type { LinkedWallet } from '@0xsequence/api'
-export {
-  getNativeTokenBalance,
-  getCollectionBalance,
-  getCollectionBalanceDetails,
-  getCoinPrices,
-  getTransactionHistory,
-  useBalances,
-  useBalancesSummary,
-  useExchangeRate,
-  getTokenBalances,
-  getTokenBalancesSummary,
-  getTokenBalancesDetails,
-  getTokenBalancesByContract,
-  useCoinBalance,
-  useCoinBalanceSummary,
-  useCoinPrices,
-  useCollectionBalance,
-  useCollectionBalanceDetails,
-  useCollectibleBalance,
-  useCollectibleBalanceDetails,
-  useCollectiblePrices,
-  useTokenMetadata,
-  useContractInfo,
-  useTransactionHistory,
-  useSwapPrices,
-  useSwapQuote,
-  useClearCachedBalances,
-  useCurrencyInfo
-} from './hooks/data'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge'

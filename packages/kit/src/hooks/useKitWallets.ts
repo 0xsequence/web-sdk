@@ -1,10 +1,127 @@
+'use client'
+
+import { SequenceAPIClient, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useAPIClient } from './useAPIClient'
 import { Connector, type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
 
 import { SEQUENCE_UNIVERSAL_CONNECTOR_NAME } from '../components/Connect/Connect'
 import { ExtendedConnector } from '../types'
 
-import { useLinkedWallets } from './data'
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
+
+interface UseLinkedWalletsOptions {
+  enabled?: boolean
+}
+
+// Create a stable storage key from args
+const createStorageKey = (args: GetLinkedWalletsArgs): string =>
+  `@0xsequence.linked_wallets-${args.parentWalletAddress}-${args.signatureChainId}`
+
+const getLinkedWallets = async (
+  apiClient: SequenceAPIClient,
+  args: GetLinkedWalletsArgs,
+  headers?: object,
+  signal?: AbortSignal
+): Promise<Array<LinkedWallet>> => {
+  const storageKey = createStorageKey(args)
+  const now = Date.now()
+
+  // Check localStorage for cached data
+  const stored = localStorage.getItem(storageKey)
+  if (stored) {
+    try {
+      const { data, timestamp } = JSON.parse(stored)
+      // Check if cache is still valid (5 minutes)
+      if (now - timestamp <= 5 * 60 * 1000) {
+        return data
+      }
+    } catch (error) {
+      console.error('Error parsing stored linked wallets:', error)
+    }
+  }
+
+  // If no valid cache, fetch new data
+  const result = await apiClient.getLinkedWallets(args, headers, signal)
+  const linkedWallets = result.linkedWallets
+
+  // Store in localStorage with timestamp
+  localStorage.setItem(
+    storageKey,
+    JSON.stringify({
+      data: linkedWallets,
+      timestamp: now
+    })
+  )
+
+  return linkedWallets
+}
+
+export interface UseLinkedWalletsResult {
+  data: LinkedWallet[] | undefined
+  isLoading: boolean
+  error: Error | null
+  refetch: () => Promise<void>
+  clearCache: () => void
+}
+
+export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}): UseLinkedWalletsResult => {
+  const apiClient = useAPIClient()
+  const [data, setData] = useState<LinkedWallet[] | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
+  const abortControllerRef = useRef<AbortController>()
+
+  const fetchData = useCallback(async () => {
+    if (!options.enabled) return
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      // Cancel any ongoing request
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = new AbortController()
+
+      const linkedWallets = await getLinkedWallets(apiClient, args, undefined, abortControllerRef.current.signal)
+
+      setData(linkedWallets)
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name !== 'AbortError') {
+        setError(error)
+      } else if (error && typeof error === 'object' && 'name' in error && error.name !== 'AbortError') {
+        setError(new Error('Failed to fetch linked wallets'))
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }, [apiClient, args.parentWalletAddress, args.signatureChainId, options.enabled])
+
+  // Fetch on mount and when dependencies change
+  useEffect(() => {
+    fetchData()
+    return () => {
+      abortControllerRef.current?.abort()
+    }
+  }, [fetchData])
+
+  const clearCache = useCallback(() => {
+    localStorage.removeItem(createStorageKey(args))
+  }, [args])
+
+  const refetch = async () => {
+    clearCache()
+    await fetchData()
+  }
+
+  return {
+    data,
+    isLoading,
+    error,
+    refetch,
+    clearCache
+  }
+}
 
 export interface KitWallet {
   id: string
