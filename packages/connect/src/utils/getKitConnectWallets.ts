@@ -2,7 +2,7 @@ import { CreateConnectorFn } from 'wagmi'
 
 import { ExtendedConnector, Wallet } from '../types'
 
-export const getKitConnectWallets = (projectAccessKey: string, wallets: Wallet[]): CreateConnectorFn[] => {
+export const getConnectWallets = (projectAccessKey: string, wallets: Wallet[]): CreateConnectorFn[] => {
   const connectors: CreateConnectorFn[] = []
 
   wallets.forEach(wallet => {

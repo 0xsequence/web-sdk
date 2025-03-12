@@ -20,7 +20,7 @@ export const connectConfig: ConnectConfig = {
   projectAccessKey,
   defaultTheme: 'dark',
   signIn: {
-    projectName: 'Kit Demo',
+    projectName: 'Sequence Web SDK Demo',
     useMock: isDebugMode
   },
   displayedAssets: [
@@ -57,7 +57,7 @@ export const config =
   walletType === 'waas'
     ? createConfig('waas', {
         ...connectConfig,
-        appName: 'Kit Demo',
+        appName: 'Sequence Web SDK Demo',
         chainIds: [
           ChainId.ARBITRUM_NOVA,
           ChainId.ARBITRUM_SEPOLIA,
@@ -86,7 +86,7 @@ export const config =
       })
     : createConfig('universal', {
         ...connectConfig,
-        appName: 'Kit Demo',
+        appName: 'Sequence Web SDK Demo',
         chainIds: [
           ChainId.ARBITRUM_NOVA,
           ChainId.ARBITRUM,

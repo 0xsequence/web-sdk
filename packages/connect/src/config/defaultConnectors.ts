@@ -13,7 +13,7 @@ import { sequence } from '../connectors/sequence'
 import { twitch } from '../connectors/twitch'
 import { walletConnect } from '../connectors/walletConnect'
 import { Wallet, WalletType } from '../types'
-import { getKitConnectWallets } from '../utils/getKitConnectWallets'
+import { getConnectWallets } from '../utils/getConnectWallets'
 
 export interface CommonConnectorOptions {
   appName: string
@@ -179,7 +179,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
     )
   }
 
-  return getKitConnectWallets(projectAccessKey, wallets)
+  return getConnectWallets(projectAccessKey, wallets)
 }
 
 export const getDefaultUniversalConnectors = (options: DefaultUniversalConnectorOptions): CreateConnectorFn[] => {
@@ -286,5 +286,5 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
     )
   }
 
-  return getKitConnectWallets(projectAccessKey, wallets)
+  return getConnectWallets(projectAccessKey, wallets)
 }

@@ -43,7 +43,7 @@ export {
 } from './constants'
 
 // Utils
-export { getKitConnectWallets } from './utils/getKitConnectWallets'
+export { getConnectWallets } from './utils/getConnectWallets'
 export { isEmailValid, compareAddress, formatDisplay, capitalize, truncateAtMiddle, formatAddress } from './utils/helpers'
 export { getNativeTokenInfoByChainId, createNativeTokenBalance } from './utils/tokens'
 export { getModalPositionCss } from './utils/styling'
