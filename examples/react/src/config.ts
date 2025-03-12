@@ -1,5 +1,5 @@
 import { ChainId } from '@0xsequence/network'
-import { ConnectConfig, createConfig, WalletType } from '@0xsequence/web-sdk-connect'
+import { ConnectConfig, createConfig, WalletType } from '@0xsequence/react-connect'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)

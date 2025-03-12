@@ -21,9 +21,9 @@ importers:
         specifier: ^4.0.6
         version: 4.0.12
     devDependencies:
-      '@0xsequence/web-sdk-connect':
+      '@0xsequence/react-connect':
         specifier: workspace:*
-        version: link:packages/connect
+        version: link:packages/react-connect
       '@changesets/changelog-github':
         specifier: ^0.5.0
         version: 0.5.0
@@ -108,18 +108,18 @@ importers:
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/react-checkout':
+        specifier: workspace:*
+        version: link:../../packages/react-checkout
+      '@0xsequence/react-connect':
+        specifier: workspace:*
+        version: link:../../packages/react-connect
+      '@0xsequence/react-wallet':
+        specifier: workspace:*
+        version: link:../../packages/react-wallet
       '@0xsequence/waas':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/web-sdk-checkout':
-        specifier: workspace:*
-        version: link:../../packages/checkout
-      '@0xsequence/web-sdk-connect':
-        specifier: workspace:*
-        version: link:../../packages/connect
-      '@0xsequence/web-sdk-wallet':
-        specifier: workspace:*
-        version: link:../../packages/wallet
       '@tailwindcss/postcss':
         specifier: ^4.0.6
         version: 4.0.12
@@ -178,18 +178,18 @@ importers:
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/react-checkout':
+        specifier: workspace:*
+        version: link:../../packages/react-checkout
+      '@0xsequence/react-connect':
+        specifier: workspace:*
+        version: link:../../packages/react-connect
+      '@0xsequence/react-wallet':
+        specifier: workspace:*
+        version: link:../../packages/react-wallet
       '@0xsequence/waas':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/web-sdk-checkout':
-        specifier: workspace:*
-        version: link:../../packages/checkout
-      '@0xsequence/web-sdk-connect':
-        specifier: workspace:*
-        version: link:../../packages/connect
-      '@0xsequence/web-sdk-wallet':
-        specifier: workspace:*
-        version: link:../../packages/wallet
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.64.2(react@18.3.1)
@@ -246,7 +246,7 @@ importers:
         specifier: ^4.3.2
         version: 4.3.2(typescript@5.8.2)(vite@5.4.14(@types/node@20.17.14)(lightningcss@1.29.2))
 
-  packages/checkout:
+  packages/react-checkout:
     dependencies:
       0xsequence:
         specifier: '>= 2.2.13'
@@ -291,12 +291,12 @@ importers:
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@0xsequence/web-sdk-connect':
+      '@0xsequence/react-connect':
         specifier: workspace:*
-        version: link:../connect
-      '@0xsequence/web-sdk-hooks':
+        version: link:../react-connect
+      '@0xsequence/react-hooks':
         specifier: workspace:*
-        version: link:../hooks
+        version: link:../react-hooks
       '@types/pako':
         specifier: ^2.0.3
         version: 2.0.3
@@ -322,7 +322,7 @@ importers:
         specifier: ^2.14.11
         version: 2.14.11(@tanstack/query-core@5.64.2)(@tanstack/react-query@5.64.2(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.22.10(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10))
 
-  packages/connect:
+  packages/react-connect:
     dependencies:
       '@0xsequence/api':
         specifier: '>= 2.2.13'
@@ -388,9 +388,9 @@ importers:
       0xsequence:
         specifier: ^2.2.13
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/web-sdk-hooks':
+      '@0xsequence/react-hooks':
         specifier: workspace:*
-        version: link:../hooks
+        version: link:../react-hooks
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.64.2(react@18.3.1)
@@ -407,7 +407,7 @@ importers:
         specifier: ^2.14.11
         version: 2.14.11(@tanstack/query-core@5.64.2)(@tanstack/react-query@5.64.2(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.22.10(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10))
 
-  packages/hooks:
+  packages/react-hooks:
     devDependencies:
       '@0xsequence/api':
         specifier: '>=2.2.13'
@@ -464,7 +464,7 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.17.14)(jsdom@25.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(lightningcss@1.29.2)(msw@2.7.3(@types/node@20.17.14)(typescript@5.8.2))
 
-  packages/wallet:
+  packages/react-wallet:
     dependencies:
       '@0xsequence/api':
         specifier: '>= 2.2.13'
@@ -503,12 +503,12 @@ importers:
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@0xsequence/web-sdk-connect':
+      '@0xsequence/react-connect':
         specifier: workspace:*
-        version: link:../connect
-      '@0xsequence/web-sdk-hooks':
+        version: link:../react-connect
+      '@0xsequence/react-hooks':
         specifier: workspace:*
-        version: link:../hooks
+        version: link:../react-hooks
       '@types/react-copy-to-clipboard':
         specifier: ^5.0.7
         version: 5.0.7

@@ -1,6 +1,6 @@
 import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
 import { ChainId, allNetworks } from '@0xsequence/network'
-import type { CheckoutSettings } from '@0xsequence/web-sdk-checkout'
+import type { CheckoutSettings } from '@0xsequence/react-checkout'
 import {
   signEthAuthProof,
   useIndexerClient,
@@ -10,8 +10,8 @@ import {
   validateEthProof,
   ContractVerificationStatus,
   useOpenConnectModal
-} from '@0xsequence/web-sdk-connect'
-import { useOpenWalletModal } from '@0xsequence/web-sdk-wallet'
+} from '@0xsequence/react-connect'
+import { useOpenWalletModal } from '@0xsequence/react-wallet'
 import { ethers } from 'ethers'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { type ComponentProps, useEffect, useState } from 'react'

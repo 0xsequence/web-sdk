@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "@0xsequence/design-system": "^2.0.9",
-    "@0xsequence/web-sdk-connect": "workspace:*",
-    "@0xsequence/web-sdk-checkout": "workspace:*",
+    "@0xsequence/react-connect": "workspace:*",
+    "@0xsequence/react-checkout": "workspace:*",
     "example-shared-components": "workspace:*",
-    "@0xsequence/web-sdk-wallet": "workspace:*",
+    "@0xsequence/react-wallet": "workspace:*",
     "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/waas": ">= 2.2.13",
     "@tanstack/react-query": "^5.37.1",

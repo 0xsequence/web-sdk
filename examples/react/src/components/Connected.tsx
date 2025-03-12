@@ -1,7 +1,7 @@
 import { Button, Card, Modal, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
-import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/web-sdk-checkout'
-import type { SwapModalSettings } from '@0xsequence/web-sdk-checkout'
+import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/react-checkout'
+import type { SwapModalSettings } from '@0xsequence/react-checkout'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -10,8 +10,8 @@ import {
   getModalPositionCss,
   useOpenConnectModal,
   useKitWallets
-} from '@0xsequence/web-sdk-connect'
-import { useOpenWalletModal } from '@0xsequence/web-sdk-wallet'
+} from '@0xsequence/react-connect'
+import { useOpenWalletModal } from '@0xsequence/react-wallet'
 import { ethers } from 'ethers'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'

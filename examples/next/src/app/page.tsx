@@ -1,7 +1,7 @@
 'use client'
 
 import { Image, Button } from '@0xsequence/design-system'
-import { useKitWallets, useOpenConnectModal } from '@0xsequence/web-sdk-connect'
+import { useKitWallets, useOpenConnectModal } from '@0xsequence/react-connect'
 import { Footer } from 'example-shared-components'
 
 import { Connected } from './components/Connected'
