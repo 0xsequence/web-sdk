@@ -1,12 +1,12 @@
 import { Image } from '@0xsequence/design-system'
 
-import { KitConfig } from '../../types'
+import { ConnectConfig } from '../../types'
 
 interface BannerProps {
-  config: KitConfig
+  config: ConnectConfig
 }
 
-export const Banner = ({ config = {} as KitConfig }: BannerProps) => {
+export const Banner = ({ config = {} as ConnectConfig }: BannerProps) => {
   const { signIn = {} } = config
   const { logoUrl } = signIn
 

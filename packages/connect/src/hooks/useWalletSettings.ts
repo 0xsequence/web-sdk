@@ -1,4 +1,4 @@
-import { useWalletConfigContext } from '../contexts/WalletSettings'
+import { useWalletConfigContext } from '../contexts/WalletConfig'
 
 export const useWalletSettings = () => {
   const { setDisplayedAssets, displayedAssets, readOnlyNetworks } = useWalletConfigContext()

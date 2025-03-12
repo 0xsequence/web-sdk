@@ -14,7 +14,7 @@ export type {
   ExtendedConnector,
   EthAuthSettings,
   ModalPosition,
-  KitConfig,
+  ConnectConfig,
   StorageItem
 } from './types'
 export type { SwapPricesWithCurrencyInfo } from './hooks/data'
@@ -53,11 +53,11 @@ export { signEthAuthProof, validateEthProof } from './utils/ethAuth'
 export { sendTransactions, waitForTransactionReceipt } from './utils/transactions'
 
 // Contexts
-export { useKitConfig, KitConfigContextProvider } from './contexts/KitConfig'
+export { useConnectConfigContext, ConnectConfigContextProvider } from './contexts/ConnectConfig'
 export { useAnalyticsContext, AnalyticsContextProvider } from './contexts/Analytics'
 export { useConnectModalContext, ConnectModalContextProvider } from './contexts/ConnectModal'
 export { useThemeContext, ThemeContextProvider } from './contexts/Theme'
-export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/WalletSettings'
+export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/WalletConfig'
 
 // Connectors
 export { apple, type AppleOptions } from './connectors/apple'

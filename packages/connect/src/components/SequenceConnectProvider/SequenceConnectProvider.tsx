@@ -12,14 +12,14 @@ import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, WEB_SDK_VERSION, LocalStorageKey } from '../../constants'
 import { AnalyticsContextProvider } from '../../contexts/Analytics'
+import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal'
-import { KitConfigContextProvider } from '../../contexts/KitConfig'
 import { ThemeContextProvider } from '../../contexts/Theme'
-import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
+import { WalletConfigContextProvider } from '../../contexts/WalletConfig'
 import { useStorage } from '../../hooks/useStorage'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
-import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, ModalPosition } from '../../types'
+import { ExtendedConnector, DisplayedAsset, EthAuthSettings, ConnectConfig, ModalPosition } from '../../types'
 import { getModalPositionCss } from '../../utils/styling'
 import { Connect } from '../Connect/Connect'
 import { NetworkBadge } from '../NetworkBadge'
@@ -30,7 +30,7 @@ import { TxnDetails } from '../TxnDetails'
 
 export type SequenceConnectProviderProps = {
   children: React.ReactNode
-  config: KitConfig
+  config: ConnectConfig
 }
 
 export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => {
@@ -145,7 +145,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const { isEmailConflictOpen, emailConflictInfo, toggleEmailConflictModal } = useEmailConflict()
 
   return (
-    <KitConfigContextProvider value={config}>
+    <ConnectConfigContextProvider value={config}>
       <ThemeContextProvider
         value={{
           theme,
@@ -319,6 +319,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
           </ConnectModalContextProvider>
         </GoogleOAuthProvider>
       </ThemeContextProvider>
-    </KitConfigContextProvider>
+    </ConnectConfigContextProvider>
   )
 }

@@ -62,7 +62,7 @@ export type ModalPosition =
   | 'bottom-right'
   | 'bottom-left'
 
-export interface KitConfig {
+export interface ConnectConfig {
   projectAccessKey: string
   disableAnalytics?: boolean
   defaultTheme?: Theme

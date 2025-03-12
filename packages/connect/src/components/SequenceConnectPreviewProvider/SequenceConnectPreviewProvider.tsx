@@ -9,18 +9,18 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
 import { AnalyticsContextProvider } from '../../contexts/Analytics'
+import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal'
-import { KitConfigContextProvider } from '../../contexts/KitConfig'
 import { ThemeContextProvider } from '../../contexts/Theme'
-import { WalletConfigContextProvider } from '../../contexts/WalletSettings'
+import { WalletConfigContextProvider } from '../../contexts/WalletConfig'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
-import { ExtendedConnector, DisplayedAsset, EthAuthSettings, KitConfig, ModalPosition } from '../../types'
+import { ExtendedConnector, DisplayedAsset, EthAuthSettings, ConnectConfig, ModalPosition } from '../../types'
 import { Connect } from '../Connect/Connect'
 
 export type SequenceConnectProviderProps = {
   children: React.ReactNode
-  config: KitConfig
+  config: ConnectConfig
 }
 
 export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderProps) => {
@@ -109,7 +109,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
   const { emailConflictInfo } = useEmailConflict()
 
   return (
-    <KitConfigContextProvider value={config}>
+    <ConnectConfigContextProvider value={config}>
       <ThemeContextProvider
         value={{
           theme,
@@ -138,6 +138,6 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
           </ConnectModalContextProvider>
         </GoogleOAuthProvider>
       </ThemeContextProvider>
-    </KitConfigContextProvider>
+    </ConnectConfigContextProvider>
   )
 }

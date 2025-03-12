@@ -15,7 +15,7 @@ import { useStorage } from '../../hooks/useStorage'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet'
-import { ExtendedConnector, KitConfig, LogoProps } from '../../types'
+import { ExtendedConnector, ConnectConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
 import { SequenceConnectProviderProps } from '../SequenceConnectProvider'
@@ -40,7 +40,7 @@ export const Connect = (props: ConnectProps) => {
 
   const { analytics } = useAnalyticsContext()
 
-  const { onClose, emailConflictInfo, config = {} as KitConfig, isPreview = false } = props
+  const { onClose, emailConflictInfo, config = {} as ConnectConfig, isPreview = false } = props
   const { signIn = {} } = config
   const storage = useStorage()
 
@@ -411,7 +411,7 @@ export const Connect = (props: ConnectProps) => {
             <>
               {!hasConnectedSocialOrSequenceUniversal && (
                 <>
-                  <Banner config={config as KitConfig} />
+                  <Banner config={config as ConnectConfig} />
 
                   <div className="flex mt-6 gap-6 flex-col">
                     <>

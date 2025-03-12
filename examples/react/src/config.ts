@@ -1,5 +1,5 @@
 import { ChainId } from '@0xsequence/network'
-import { KitConfig, createConfig, WalletType } from '@0xsequence/web-sdk-connect'
+import { ConnectConfig, createConfig, WalletType } from '@0xsequence/web-sdk-connect'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
@@ -16,7 +16,7 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
   [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470'
 }
 
-export const kitConfig: KitConfig = {
+export const kitConfig: ConnectConfig = {
   projectAccessKey,
   defaultTheme: 'dark',
   signIn: {

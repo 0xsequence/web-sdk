@@ -1,7 +1,7 @@
-import { useKitConfig } from '../contexts/KitConfig'
+import { useConnectConfigContext } from '../contexts/ConnectConfig'
 
 export const useProjectAccessKey = () => {
-  const { projectAccessKey } = useKitConfig()
+  const { projectAccessKey } = useConnectConfigContext()
 
   return projectAccessKey
 }
