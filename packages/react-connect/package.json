@@ -30,7 +30,7 @@
     "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
     "build:esm": "tsc --module es2022 --outDir dist/esm/",
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
-    "build:css": "tailwindcss -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`;\" > ./src/styles.ts",
+    "build:css": "tailwindcss -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`\" > ./src/styles.ts",
     "build:clean": "rimraf -g ./dist",
     "dev": "pnpm run writeVersion && pnpm pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "writeVersion": "node scripts/writeVersion.js",

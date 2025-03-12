@@ -609,6 +609,9 @@ export const styles = String.raw`
   .shrink-0 {
     flex-shrink: 0;
   }
+  .flex-grow {
+    flex-grow: 1;
+  }
   .grow {
     flex-grow: 1;
   }
@@ -2188,4 +2191,4 @@ export const styles = String.raw`
   to {
     transform: rotate(360deg);
   }
-}`;
+}`
