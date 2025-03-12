@@ -3,9 +3,9 @@ import { ChainId } from '@0xsequence/network'
 import { useWalletSettings } from '@0xsequence/web-sdk-connect'
 import { useConfig } from 'wagmi'
 
+import { SelectButton } from '../../components/SelectButton'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
-import { SelectButton } from '../../components/SelectButton'
 
 export const SettingsNetwork = () => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()

@@ -17,9 +17,9 @@ import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import { useConfig } from 'wagmi'
 
-import { useSettings } from '../../hooks'
 import { CopyButton } from '../../components/CopyButton'
 import { NetworkBadge } from '../../components/NetworkBadge'
+import { useSettings } from '../../hooks'
 
 interface TransactionDetailProps {
   transaction: Transaction

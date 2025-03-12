@@ -14,11 +14,11 @@ import {
 import { ethers } from 'ethers'
 import { useAccount, useConfig } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../constants'
-import { useSettings, useNavigation } from '../../hooks'
 import { InfiniteScroll } from '../../components/InfiniteScroll'
 import { NetworkBadge } from '../../components/NetworkBadge'
 import { TransactionHistoryList } from '../../components/TransactionHistoryList'
+import { HEADER_HEIGHT } from '../../constants'
+import { useSettings, useNavigation } from '../../hooks'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CoinDetailsSkeleton } from './Skeleton'

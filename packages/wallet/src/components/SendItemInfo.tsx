@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import React from 'react'
 
 import { useSettings } from '../hooks'
+
 import { CollectibleTileImage } from './CollectibleTileImage'
 
 interface SendItemInfoProps {

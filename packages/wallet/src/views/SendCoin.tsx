@@ -25,11 +25,11 @@ import { ethers } from 'ethers'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
+import { SendItemInfo } from '../components/SendItemInfo'
+import { TransactionConfirmation } from '../components/TransactionConfirmation'
 import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
 import { useNavigationContext } from '../contexts/Navigation'
 import { useSettings, useNavigation } from '../hooks'
-import { SendItemInfo } from '../components/SendItemInfo'
-import { TransactionConfirmation } from '../components/TransactionConfirmation'
 import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
 
 interface SendCoinProps {

@@ -6,9 +6,9 @@ import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
+import { SendItemInfo } from '../../components/SendItemInfo'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings, useNavigation } from '../../hooks'
-import { SendItemInfo } from '../../components/SendItemInfo'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
 
 export interface SwapCoinProps {

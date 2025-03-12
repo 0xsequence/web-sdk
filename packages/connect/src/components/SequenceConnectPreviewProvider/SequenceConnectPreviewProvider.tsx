@@ -1,8 +1,8 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { SequenceClient } from '0xsequence/dist/declarations/src/provider'
 import { Theme, ThemeProvider } from '@0xsequence/design-system'
+import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import React, { useState, useEffect } from 'react'
 import { useAccount, useConfig } from 'wagmi'

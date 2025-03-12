@@ -5,8 +5,8 @@ import { useGetTokenBalancesDetails } from '@0xsequence/web-sdk-hooks'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 
-import { useNavigation } from '../../hooks'
 import { NetworkBadge } from '../../components/NetworkBadge'
+import { useNavigation } from '../../hooks'
 
 import { CollectionDetailsSkeleton } from './Skeleton'
 
