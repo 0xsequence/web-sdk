@@ -17,14 +17,14 @@ interface SequenceKitProps {
 
 export const SequenceKit = (props: SequenceKitProps) => {
   const { config, queryClient, children } = props
-  const { kitConfig, wagmiConfig } = config
+  const { connectConfig, wagmiConfig } = config
 
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient || defaultQueryClient}>
         <SequenceHooksProvider
           value={{
-            projectAccessKey: kitConfig.projectAccessKey,
+            projectAccessKey: connectConfig.projectAccessKey,
             env: {
               indexerGatewayUrl: DEBUG ? 'https://dev-indexer.sequence.app' : 'https://indexer.sequence.app',
               metadataUrl: DEBUG ? 'https://dev-metadata.sequence.app' : 'https://metadata.sequence.app',
@@ -34,7 +34,7 @@ export const SequenceKit = (props: SequenceKitProps) => {
             }
           }}
         >
-          <SequenceConnectProvider config={kitConfig}>{children}</SequenceConnectProvider>
+          <SequenceConnectProvider config={connectConfig}>{children}</SequenceConnectProvider>
         </SequenceHooksProvider>
       </QueryClientProvider>
     </WagmiProvider>

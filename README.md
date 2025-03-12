@@ -187,7 +187,7 @@ const wagmiConfig = createConfig({
   connectors
 })
 
-const kitConfig = {
+const connectConfig = {
   projectAccessKey: '...'
 }
 
@@ -197,7 +197,7 @@ function App() {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <SequenceConnectProvider config={kitConfig}>
+        <SequenceConnectProvider config={connectConfig}>
           {/* If you want to use wallet modal to show assets etc. */}
           <SequenceWalletProvider>
             {/* If you want to use checkout functionalities */}
@@ -306,7 +306,7 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
 
 ```js
 
-  const kitConfig = {
+  const connectConfig = {
     defaultTheme: 'light',
     position: 'top-left',
     signIn: {
@@ -327,7 +327,7 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
     readOnlyNetworks: [10], // Display assets in wallet from Optimism (chain ID 10) in addition to the networks specified in chainIds
   }
 
-  <SequenceConnectProvider config={kitConfig}>
+  <SequenceConnectProvider config={connectConfig}>
     <App />
   <SequenceConnectProvider>
 ```

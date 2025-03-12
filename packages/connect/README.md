@@ -232,7 +232,7 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
 
 ```js
 
-  const kitConfig =  {
+  const connectConfig =  {
     defaultTheme: 'light',
     position: 'top-left',
     signIn: {
@@ -253,7 +253,7 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
     readOnlyNetworks: [10],
   }
 
-  <SequenceConnectProvider config={kitConfig}>
+  <SequenceConnectProvider config={connectConfig}>
     <App />
   <SequenceConnectProvider>
 ```

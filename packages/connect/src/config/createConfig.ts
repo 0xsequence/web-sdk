@@ -14,7 +14,7 @@ export type CreateConfigOptions<T extends WalletType> = ConnectConfig &
 
 export interface SequenceKitConfig {
   wagmiConfig: Config
-  kitConfig: ConnectConfig
+  connectConfig: ConnectConfig
 }
 
 export const createConfig = <T extends WalletType>(walletType: T, options: CreateConfigOptions<T>): SequenceKitConfig => {
@@ -25,7 +25,7 @@ export const createConfig = <T extends WalletType>(walletType: T, options: Creat
   const connectors = wagmiConfig?.connectors || getDefaultConnectors(walletType, options)
 
   return {
-    kitConfig: {
+    connectConfig: {
       projectAccessKey,
       ...rest
     },
