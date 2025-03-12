@@ -1,19 +1,21 @@
-import { SearchIcon, TextInput, GearIcon } from '@0xsequence/design-system'
+import { SearchIcon, TextInput, GearIcon, cn, cardVariants } from '@0xsequence/design-system'
 import { ContractVerificationStatus } from '@0xsequence/kit'
 import Fuse from 'fuse.js'
 import { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
-import { useNavigation, useSettings } from '../../hooks'
+import { useSettings } from '../../hooks'
 
 import { CollectiblesTab } from './components/CollectiblesTab'
 import { useGetTokenBalancesDetails } from '@0xsequence/kit-hooks'
 import { IndexedData } from './SearchTokens'
+import { FilterMenu } from '../FilterMenu'
+import { AnimatePresence } from 'motion/react'
 
 export const SearchCollectibles = () => {
-  const { setNavigation } = useNavigation()
   const { hideUnlistedTokens, selectedNetworks } = useSettings()
   const [search, setSearch] = useState('')
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const pageSize = 20
   const [displayedCollectibleBalances, setDisplayedCollectibleBalances] = useState<IndexedData[]>([])
@@ -95,9 +97,7 @@ export const SearchCollectibles = () => {
   })
 
   const onFilterClick = () => {
-    setNavigation && setNavigation({
-      location: 'filter-collectibles'
-    })
+    setIsFilterOpen(true)
   }
 
   return (
@@ -114,7 +114,9 @@ export const SearchCollectibles = () => {
             data-1p-ignore
           />
         </div>
-        <GearIcon size="lg" color="white" onClick={onFilterClick}/>
+        <div className={cn(cardVariants({ clickable: true }), 'bg-background-primary p-0 w-fit')} onClick={onFilterClick}>
+          <GearIcon size="lg" color="white" />
+        </div>
       </div>
       <div className="w-full">
         <CollectiblesTab
@@ -128,6 +130,18 @@ export const SearchCollectibles = () => {
           collectibleBalances={collectibleBalances}
         />
       </div>
+
+      <AnimatePresence>
+        {isFilterOpen && (
+          <FilterMenu
+            onClose={() => setIsFilterOpen(false)}
+            label="Collectible Filters"
+            buttonLabel="Show Collectibles"
+            type="collectibles"
+            handleButtonPress={() => {}}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

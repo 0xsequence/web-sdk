@@ -1,4 +1,4 @@
-import { LocalStorageKey, useWalletSettings } from '@0xsequence/kit'
+import { LocalStorageKey, useKitWallets, useWalletSettings } from '@0xsequence/kit'
 import { useState } from 'react'
 import { useConfig } from 'wagmi'
 
@@ -9,17 +9,25 @@ interface Settings {
   hideUnlistedTokens: boolean
   fiatCurrency: FiatCurrency
   selectedNetworks: number[]
+  selectedWallets: string[]
+  selectedCollections: string[]
   setFiatCurrency: (newFiatCurrency: FiatCurrency) => void
   setHideCollectibles: (newState: boolean) => void
   setHideUnlistedTokens: (newState: boolean) => void
   setSelectedNetworks: (newNetworks: number[]) => void
+  setSelectedWallets: (newWallets: string[]) => void
+  setSelectedCollections: (newCollections: string[]) => void
 }
 
-type SettingsItems = Pick<Settings, 'hideCollectibles' | 'hideUnlistedTokens' | 'fiatCurrency' | 'selectedNetworks'>
+type SettingsItems = Pick<
+  Settings,
+  'hideCollectibles' | 'hideUnlistedTokens' | 'fiatCurrency' | 'selectedWallets' | 'selectedNetworks' | 'selectedCollections'
+>
 
 export const useSettings = (): Settings => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()
   const { chains } = useConfig()
+  const { wallets: allWallets } = useKitWallets()
 
   const allChains = [
     ...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedAssets.map(asset => asset.chainId)])
@@ -29,7 +37,9 @@ export const useSettings = (): Settings => {
     let hideUnlistedTokens = true
     let hideCollectibles = false
     let fiatCurrency = defaultFiatCurrency
-    let selectedNetworks = allChains
+    let selectedWallets: string[] = allWallets.map(wallet => wallet.address)
+    let selectedNetworks: number[] = allChains
+    let selectedCollections: string[] = []
 
     try {
       const settingsStorage = localStorage.getItem(LocalStorageKey.Settings)
@@ -64,7 +74,9 @@ export const useSettings = (): Settings => {
       hideUnlistedTokens,
       hideCollectibles,
       fiatCurrency,
-      selectedNetworks
+      selectedWallets,
+      selectedNetworks,
+      selectedCollections
     }
   }
   const defaultSettings = getSettingsFromStorage()
@@ -81,6 +93,7 @@ export const useSettings = (): Settings => {
     setSettings(newSettings)
   }
 
+  // TODO: remove later
   const setHideCollectibles = (newState: boolean) => {
     const oldSettings = getSettingsFromStorage()
     const newSettings = {
@@ -101,6 +114,16 @@ export const useSettings = (): Settings => {
     setSettings(newSettings)
   }
 
+  const setSelectedWallets = (newSelectedWallets: string[]) => {
+    const oldSettings = getSettingsFromStorage()
+    const newSettings = {
+      ...oldSettings,
+      selectedWallets: newSelectedWallets
+    }
+    localStorage.setItem(LocalStorageKey.Settings, JSON.stringify(newSettings))
+    setSettings(newSettings)
+  }
+
   const setSelectedNetworks = (newSelectedNetworks: number[]) => {
     const oldSettings = getSettingsFromStorage()
     const newSettings = {
@@ -111,11 +134,23 @@ export const useSettings = (): Settings => {
     setSettings(newSettings)
   }
 
+  const setSelectedCollections = (newSelectedCollections: string[]) => {
+    const oldSettings = getSettingsFromStorage()
+    const newSettings = {
+      ...oldSettings,
+      selectedCollections: newSelectedCollections
+    }
+    localStorage.setItem(LocalStorageKey.Settings, JSON.stringify(newSettings))
+    setSettings(newSettings)
+  }
+
   return {
     ...settings,
     setFiatCurrency,
     setHideCollectibles,
     setHideUnlistedTokens,
-    setSelectedNetworks
+    setSelectedWallets,
+    setSelectedNetworks,
+    setSelectedCollections
   }
 }

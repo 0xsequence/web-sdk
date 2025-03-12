@@ -26,6 +26,7 @@ import { GradientAvatarList } from '../../../../shared/GradientAvatarList'
 import { useState } from 'react'
 import { SlideupDrawer } from '../../../../shared/SlideupDrawer'
 import { SelectWalletRow } from '../../../../shared/SelectWalletRow'
+import { AnimatePresence } from 'motion/react'
 
 export const IntegratedWallet = () => {
   const { setNavigation } = useNavigation()
@@ -218,7 +219,7 @@ export const IntegratedWallet = () => {
           </Text>
           <div className="flex flex-row gap-1 items-center">
             <Text color="primary" fontWeight="medium" variant="small">
-              ${totalCoinPrices}
+              {fiatCurrency.sign}{totalCoinPrices}
             </Text>
             <Text color="primary" fontWeight="medium" variant="small">
               {coinBalancesAmount}
@@ -267,25 +268,28 @@ export const IntegratedWallet = () => {
         </div>
       </Card>
 
-      {accountSelectorModalOpen && (
-        <SlideupDrawer
-          onClose={() => setAccountSelectorModalOpen(false)}
-          label="Select active wallet"
-          buttonLabel="+ Add new wallet"
-          handleButtonPress={handleAddNewWallet}
-          dragHandleWidth={28}
-        >
-          <div className="flex flex-col gap-2">
-            {wallets.map(wallet => (
-              <SelectWalletRow
-                wallet={wallet}
-                onClose={() => setAccountSelectorModalOpen(false)}
-                setActiveWallet={setActiveWallet}
-              />
-            ))}
-          </div>
-        </SlideupDrawer>
-      )}
+      <AnimatePresence>
+        {accountSelectorModalOpen && (
+          <SlideupDrawer
+            onClose={() => setAccountSelectorModalOpen(false)}
+            label="Select active wallet"
+            buttonLabel="+ Add new wallet"
+            handleButtonPress={handleAddNewWallet}
+            dragHandleWidth={28}
+          >
+            <div className="flex flex-col gap-2">
+              {wallets.map((wallet, index) => (
+                <SelectWalletRow
+                  key={index}
+                  wallet={wallet}
+                  onClose={() => setAccountSelectorModalOpen(false)}
+                  setActiveWallet={setActiveWallet}
+                />
+              ))}
+            </div>
+          </SlideupDrawer>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
