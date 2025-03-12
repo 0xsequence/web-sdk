@@ -7,28 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@eslint/js':
-        specifier: ^9.22.0
-        version: 9.22.0
-      '@tailwindcss/cli':
-        specifier: ^4.0.6
-        version: 4.0.12
-      '@tailwindcss/postcss':
-        specifier: ^4.0.6
-        version: 4.0.12
-      eslint-plugin-react-hooks:
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@9.22.0(jiti@2.4.2))
-      postcss:
-        specifier: ^8
-        version: 8.5.1
-      tailwindcss:
-        specifier: ^4.0.6
-        version: 4.0.12
-      typescript-eslint:
-        specifier: ^8.26.1
-        version: 8.26.1(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)
     devDependencies:
       '@0xsequence/react-connect':
         specifier: workspace:*
@@ -39,6 +17,15 @@ importers:
       '@changesets/cli':
         specifier: ^2.25.2
         version: 2.27.11
+      '@eslint/js':
+        specifier: ^9.22.0
+        version: 9.22.0
+      '@tailwindcss/cli':
+        specifier: ^4.0.6
+        version: 4.0.12
+      '@tailwindcss/postcss':
+        specifier: ^4.0.6
+        version: 4.0.12
       '@types/node':
         specifier: ^20.12.12
         version: 20.17.14
@@ -54,9 +41,18 @@ importers:
       eslint-plugin-import:
         specifier: ^2.29.1
         version: 2.31.0(@typescript-eslint/parser@8.26.1(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2))(eslint@9.22.0(jiti@2.4.2))
+      eslint-plugin-react-hooks:
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@9.22.0(jiti@2.4.2))
       ethers:
         specifier: ^6.13.0
         version: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      husky:
+        specifier: ^9.1.7
+        version: 9.1.7
+      postcss:
+        specifier: ^8
+        version: 8.5.1
       prettier:
         specifier: ^3.2.5
         version: 3.4.2
@@ -69,12 +65,18 @@ importers:
       rimraf:
         specifier: ^5.0.7
         version: 5.0.10
+      tailwindcss:
+        specifier: ^4.0.6
+        version: 4.0.12
       turbo:
         specifier: 2.0.1
         version: 2.0.1
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
+      typescript-eslint:
+        specifier: ^8.26.1
+        version: 8.26.1(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)
       wagmi:
         specifier: ^2.14.11
         version: 2.14.11(@tanstack/query-core@5.64.2)(@tanstack/react-query@5.64.2(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.22.10(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10))
@@ -4247,6 +4249,11 @@ packages:
 
   human-id@1.0.2:
     resolution: {integrity: sha512-UNopramDEhHJD+VR+ehk8rOslwSfByxPIZyJRfV739NDhN5LF1fa1MqnzKm2lGTQRjNrjK19Q5fhkgIfjlVUKw==}
+
+  husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -11274,6 +11281,8 @@ snapshots:
       - supports-color
 
   human-id@1.0.2: {}
+
+  husky@9.1.7: {}
 
   iconv-lite@0.4.24:
     dependencies:
