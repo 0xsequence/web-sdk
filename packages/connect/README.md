@@ -89,7 +89,7 @@ interface CreateConfigOptions {
 ```
 
 ```js
-import { SequenceKit, createConfig } from '@0xsequence/web-sdk-connect'
+import { SequenceConnect, createConfig } from '@0xsequence/web-sdk-connect'
 
 import Content from './components/Content'
 
@@ -116,9 +116,9 @@ const config = createConfig('waas', {
 
 function App() {
   return (
-    <SequenceKit config={config}>
+    <SequenceConnect config={config}>
       <Content />
-    </SequenceKit>
+    </SequenceConnect>
   )
 }
 ```

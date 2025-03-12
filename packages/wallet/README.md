@@ -25,7 +25,7 @@ import { SequenceWalletProvider } from '@0xsequence/web-sdk-wallet'
 
 const App = () => {
   return (
-    <SequenceKit config={config}>
+    <SequenceConnect config={config}>
       <SequenceWalletProvider>
         <Page />
       </SequenceWalletProvider>

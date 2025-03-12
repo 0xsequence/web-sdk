@@ -27,11 +27,11 @@ import { SequenceCheckoutProvider } from '@0xsequence/web-sdk-checkout'
 
 const App = () => {
   return (
-    <SequenceKit config={config}>
+    <SequenceConnect config={config}>
       <SequenceCheckoutProvider>
         <Page />
       </SequenceCheckoutProvider>
-    </SequenceKit>
+    </SequenceConnect>
   )
 }
 ```

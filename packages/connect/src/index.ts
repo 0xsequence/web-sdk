@@ -1,4 +1,4 @@
-export { SequenceKit } from './components/SequenceKit'
+export { SequenceConnect } from './components/SequenceConnect'
 
 // Provider
 export { SequenceConnectProvider } from './components/SequenceConnectProvider'

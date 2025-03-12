@@ -12,12 +12,12 @@ export type CreateConfigOptions<T extends WalletType> = ConnectConfig &
     wagmiConfig?: Partial<Omit<CreateConfigParameters, 'client'>>
   }
 
-export interface SequenceKitConfig {
+export interface SequenceConnectConfig {
   wagmiConfig: Config
   connectConfig: ConnectConfig
 }
 
-export const createConfig = <T extends WalletType>(walletType: T, options: CreateConfigOptions<T>): SequenceKitConfig => {
+export const createConfig = <T extends WalletType>(walletType: T, options: CreateConfigOptions<T>): SequenceConnectConfig => {
   const { projectAccessKey, chainIds, wagmiConfig, ...rest } = options
 
   const chains = wagmiConfig?.chains || getDefaultChains(chainIds)
