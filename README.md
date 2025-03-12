@@ -14,6 +14,8 @@ Easily integrate web3 wallets in your app with Sequence Web SDK 🧰. Based on [
 
 View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 
+## [Migration Guide from kit v4 to web-sdk v5](MIGRATION.md)
+
 ## Quick Start
 
 ### Installing the Library
@@ -22,11 +24,7 @@ View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/react-connect wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
-# or
-pnpm install @0xsequence/react-connect wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
-# or
-yarn add @0xsequence/react-connect wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
+npm install @0xsequence/react-connect @0xsequence/react-hooks wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library
