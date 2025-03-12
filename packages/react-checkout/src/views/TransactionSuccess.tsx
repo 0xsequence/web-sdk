@@ -14,8 +14,7 @@ export const TransactionSuccess = () => {
   const network = allNetworks.find(n => n.chainId === chainId)
 
   useEffect(() => {
-    settings?.creditCardCheckout?.onSuccess &&
-      settings?.creditCardCheckout?.onSuccess(navigation.params.transactionHash, settings?.creditCardCheckout)
+    settings?.creditCardCheckout?.onSuccess?.(navigation.params.transactionHash, settings?.creditCardCheckout)
   }, [])
 
   return (

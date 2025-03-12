@@ -36,15 +36,14 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
   }
 
   const onClickItem = (balance: TokenBalance) => {
-    setNavigation &&
-      setNavigation({
-        location: 'collectible-details',
-        params: {
-          contractAddress: balance.contractAddress,
-          chainId: balance.chainId,
-          tokenId: balance.tokenID || ''
-        }
-      })
+    setNavigation({
+      location: 'collectible-details',
+      params: {
+        contractAddress: balance.contractAddress,
+        chainId: balance.chainId,
+        tokenId: balance.tokenID || ''
+      }
+    })
   }
 
   return (

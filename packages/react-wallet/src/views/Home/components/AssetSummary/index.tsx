@@ -82,24 +82,22 @@ export const AssetSummary = () => {
 
   const onClickItem = (balance: TokenBalance) => {
     if (balance.contractType === 'ERC1155' || balance.contractType === 'ERC721') {
-      setNavigation &&
-        setNavigation({
-          location: 'collectible-details',
-          params: {
-            contractAddress: balance.contractAddress,
-            chainId: balance.chainId,
-            tokenId: balance.tokenID || ''
-          }
-        })
+      setNavigation({
+        location: 'collectible-details',
+        params: {
+          contractAddress: balance.contractAddress,
+          chainId: balance.chainId,
+          tokenId: balance.tokenID || ''
+        }
+      })
     } else {
-      setNavigation &&
-        setNavigation({
-          location: 'coin-details',
-          params: {
-            contractAddress: balance.contractAddress,
-            chainId: balance.chainId
-          }
-        })
+      setNavigation({
+        location: 'coin-details',
+        params: {
+          contractAddress: balance.contractAddress,
+          chainId: balance.chainId
+        }
+      })
     }
   }
 

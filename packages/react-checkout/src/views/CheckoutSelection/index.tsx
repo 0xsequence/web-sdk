@@ -90,8 +90,7 @@ export const CheckoutSelection = () => {
 
   const onClickPayWithCrypto = () => {
     console.log('trigger transaction')
-    const transaction = settings?.cryptoCheckout?.triggerTransaction
-    transaction && transaction()
+    settings?.cryptoCheckout?.triggerTransaction?.()
     closeCheckout()
   }
 

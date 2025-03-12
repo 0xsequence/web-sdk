@@ -39,9 +39,6 @@ export const signEthAuthProof = async (
   proof.setExpiryIn(proofSettings.expiry ? Math.max(proofSettings.expiry, 200) : DEFAULT_SESSION_EXPIRATION)
 
   const typedData = proof.messageTypedData()
-
-  typedData.domain.verifyingContract
-
   const signer = await walletClientToSigner(walletClient)
   const signature = await signer.signTypedData(typedData.domain, typedData.types, typedData.message)
 

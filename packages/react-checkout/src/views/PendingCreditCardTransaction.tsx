@@ -352,24 +352,22 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         return
       }
       if (status === 'Declined' || status === 'Cancelled') {
-        setNavigation &&
-          setNavigation({
-            location: 'transaction-error',
-            params: {
-              error: new Error('Failed to transfer collectible')
-            }
-          })
+        setNavigation({
+          location: 'transaction-error',
+          params: {
+            error: new Error('Failed to transfer collectible')
+          }
+        })
         return
       }
     } catch (e) {
       console.error('An error occurred while fetching the transaction status')
-      setNavigation &&
-        setNavigation({
-          location: 'transaction-error',
-          params: {
-            error: e as Error
-          }
-        })
+      setNavigation({
+        location: 'transaction-error',
+        params: {
+          error: e as Error
+        }
+      })
     }
   }
 

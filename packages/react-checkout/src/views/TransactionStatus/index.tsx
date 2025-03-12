@@ -120,11 +120,11 @@ export const TransactionStatus = () => {
       }
 
       setStatus('success')
-      onSuccess && onSuccess(txnHash)
+      onSuccess?.(txnHash)
     } catch (e) {
       console.error('An error occurred while waiting for transaction confirmation', e)
       setStatus('error')
-      onError && onError(e as Error)
+      onError?.(e as Error)
     }
   }
 

@@ -19,6 +19,7 @@ export default tseslint.config(eslint.configs.recommended, tseslint.configs.reco
     'no-empty': 'off',
     'no-fallthrough': 'off',
     'no-async-promise-executor': 'off',
+    'no-useless-catch': 'off',
 
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-wrapper-object-types': 'off',

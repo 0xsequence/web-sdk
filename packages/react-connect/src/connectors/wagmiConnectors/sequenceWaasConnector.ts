@@ -295,7 +295,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
         } else {
           const message =
             typeof error === 'object' && error !== null && 'cause' in error
-              ? (String(error.cause) ?? 'Failed to check transaction fee options')
+              ? String(error.cause) || 'Failed to check transaction fee options'
               : 'Failed to check transaction fee options'
           throw new InternalRpcError(new Error(message))
         }
@@ -360,7 +360,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
         } else {
           const message =
             typeof error === 'object' && error !== null && 'cause' in error
-              ? (String(error.cause) ?? 'Failed to send transaction')
+              ? String(error.cause) || 'Failed to send transaction'
               : 'Failed to send transaction'
           throw new InternalRpcError(new Error(message))
         }
@@ -407,7 +407,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
         } else {
           const message =
             typeof error === 'object' && error !== null && 'cause' in error
-              ? (String(error.cause) ?? 'Failed to sign message')
+              ? String(error.cause) || 'Failed to sign message'
               : 'Failed to sign message'
           throw new InternalRpcError(new Error(message))
         }
@@ -448,7 +448,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
         } else {
           const message =
             typeof error === 'object' && error !== null && 'cause' in error
-              ? (String(error.cause) ?? 'Failed to sign typed data')
+              ? String(error.cause) || 'Failed to sign typed data'
               : 'Failed to sign typed data'
           throw new InternalRpcError(new Error(message))
         }

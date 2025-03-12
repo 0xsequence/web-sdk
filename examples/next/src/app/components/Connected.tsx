@@ -413,8 +413,8 @@ export const Connected = () => {
                   }
                 }}
                 value={selectedFeeOptionTokenName}
-                options={[
-                  ...pendingFeeOptionConfirmation?.options?.map(option => ({
+                options={
+                  pendingFeeOptionConfirmation?.options?.map(option => ({
                     label: (
                       <div className="flex items-start flex-col">
                         <div className="flex flex-row">
@@ -433,8 +433,8 @@ export const Connected = () => {
                       </div>
                     ),
                     value: option.token.name
-                  }))
-                ]}
+                  })) || []
+                }
               />
 
               <div className="flex my-2 items-center justify-center flex-col">
