@@ -11,7 +11,11 @@ import { computeBalanceFiat } from '../../utils'
 
 import { CoinsTab } from './components/CoinsTab'
 import { CollectionsTab } from './components/CollectionsTab'
-import { IndexedData } from './SearchTokens'
+
+interface IndexedData {
+  index: number
+  name: string
+}
 
 interface SearchWalletViewAllProps {
   defaultTab: 'coins' | 'collections'

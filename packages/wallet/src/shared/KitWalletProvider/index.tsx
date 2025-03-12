@@ -57,13 +57,13 @@ export const KitWalletContent = ({ children }: KitWalletProviderProps) => {
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
+    navigation.location === 'settings' ||
     navigation.location === 'settings-wallets' ||
     navigation.location === 'settings-profiles' ||
     navigation.location === 'settings-apps' ||
     navigation.location === 'legacy-settings-currency' ||
     navigation.location === 'search-tokens' ||
-    navigation.location === 'search-collectibles' ||
-    navigation.location === 'settings'
+    navigation.location === 'search-collectibles'
 
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>

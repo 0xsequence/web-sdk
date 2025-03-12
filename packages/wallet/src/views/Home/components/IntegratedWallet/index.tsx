@@ -4,7 +4,6 @@ import {
   SwapIcon,
   ScanIcon,
   AddIcon,
-  GoogleIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   Text,

@@ -17,11 +17,11 @@ import {
   TransactionDetails,
   SwapCoin,
   SwapList,
+  SearchTokens,
   SearchCollectibles
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
-import { SearchTokens } from '../../../views/Search/SearchTokens'
 import { SettingsMenu } from '../../../views/Settings/Menu'
 import { SettingsProfiles } from '../../../views/Settings/Profiles'
 import { SettingsApps } from '../../../views/Settings/Apps'
@@ -66,6 +66,12 @@ export const getContent = (navigation: Navigation) => {
       return <SettingsProfiles />
     case 'settings-apps':
       return <SettingsApps />
+    // case 'filter-collectibles':
+    //   return <FilterCollectibles />
+    // case 'filter-tokens':
+    //   return <FilterTokens />
+    // case 'filter-transactions':
+    //   return <FilterTransactions />
     case 'legacy-settings':
       return <LegacySettingsMenu />
     case 'legacy-settings-general':
@@ -115,6 +121,12 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader primaryText="Search tokens" />
     case 'search-collectibles':
       return <NavigationHeader primaryText="Search collectibles" />
+    case 'filter-collectibles':
+      return <NavigationHeader primaryText="Collectibles filter" />
+    case 'filter-tokens':
+      return <NavigationHeader primaryText="Tokens filter" />
+    case 'filter-transactions':
+      return <NavigationHeader primaryText="Transactions filter" />
     case 'legacy-settings':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Settings" />
     case 'legacy-settings-general':

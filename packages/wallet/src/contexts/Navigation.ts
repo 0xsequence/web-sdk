@@ -115,6 +115,9 @@ export interface BasicNavigation {
     | 'search'
     | 'search-tokens'
     | 'search-collectibles'
+    | 'filter-tokens'
+    | 'filter-collectibles'
+    | 'filter-transactions'
 }
 
 export type Navigation =
