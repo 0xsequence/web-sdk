@@ -97,6 +97,8 @@ export { useChain } from './hooks/useChain'
 export { useKitWallets } from './hooks/useKitWallets'
 export type { KitWallet } from './hooks/useKitWallets'
 export type { LinkedWallet } from '@0xsequence/api'
+export { useEnvironment } from './hooks/useEnvironment'
+export { Environment } from './hooks/useEnvironment'
 export {
   getNativeTokenBalance,
   getCollectionBalance,
