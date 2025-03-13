@@ -73,7 +73,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
 
     if (sequenceAnalytics) {
       type TrackArgs = Parameters<typeof sequenceAnalytics.track>
-      const originalTrack = sequenceAnalytics.track
+      const originalTrack = sequenceAnalytics.track.bind(sequenceAnalytics)
+
       sequenceAnalytics.track = (...args: TrackArgs) => {
         const [event] = args
         if (event && typeof event === 'object' && 'props' in event) {
