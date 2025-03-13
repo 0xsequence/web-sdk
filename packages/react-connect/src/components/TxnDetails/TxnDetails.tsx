@@ -1,12 +1,11 @@
 import { commons } from '@0xsequence/core'
 import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/react-hooks'
+import { useAPIClient, useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useAPIClient } from '../../hooks/useAPIClient'
 import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helpers'
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
 import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'

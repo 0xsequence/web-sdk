@@ -5,8 +5,7 @@ import {
   compareAddress,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   sendTransactions,
-  ContractVerificationStatus,
-  useIndexerClient
+  ContractVerificationStatus
 } from '@0xsequence/react-connect'
 import {
   useClearCachedBalances,
@@ -14,7 +13,8 @@ import {
   useGetContractInfo,
   SwapPricesWithCurrencyInfo,
   useGetSwapPrices,
-  useGetSwapQuote
+  useGetSwapQuote,
+  useIndexerClient
 } from '@0xsequence/react-hooks'
 import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'

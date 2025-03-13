@@ -15,10 +15,9 @@ import {
   CollectibleTileImage,
   formatDisplay,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
-  waitForTransactionReceipt,
-  useIndexerClient
+  waitForTransactionReceipt
 } from '@0xsequence/react-connect'
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetTokenMetadata, useGetContractInfo, useIndexerClient } from '@0xsequence/react-hooks'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
 import { formatUnits, Hex, PublicClient } from 'viem'

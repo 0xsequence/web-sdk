@@ -1,6 +1,7 @@
 'use client'
 
 import { ContractVerificationStatus } from '@0xsequence/indexer'
+import { useIndexerClient } from '@0xsequence/react-hooks'
 import type { FeeOption } from '@0xsequence/waas'
 import { formatUnits, type ethers } from 'ethers'
 import { useState, useEffect, useRef } from 'react'
@@ -8,8 +9,6 @@ import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
 
 import { Deferred } from '../utils/deferred'
-
-import { useIndexerClient } from './useIndexerClient'
 
 /**
  * Extended FeeOption type that includes balance information
@@ -49,7 +48,7 @@ export type UseWaasFeeOptionsReturn = [
  */
 export interface WaasFeeOptionsConfig {
   /** Whether to skip checking token balances (default: false) */
-  skipFeeBalanceCheck?: boolean;
+  skipFeeBalanceCheck?: boolean
 }
 
 /**
@@ -73,7 +72,7 @@ export interface WaasFeeOptionsConfig {
  *   ] = useWaasFeeOptions();
  *
  *   // Or skip balance checking if needed
- *   // const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = 
+ *   // const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] =
  *   //   useWaasFeeOptions({ skipFeeBalanceCheck: true });
  *
  *   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = useState<string>();

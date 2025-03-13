@@ -4,11 +4,16 @@ import {
   compareAddress,
   formatDisplay,
   sendTransactions,
-  useIndexerClient,
   useAnalyticsContext,
   ExtendedConnector
 } from '@0xsequence/react-connect'
-import { useGetSwapPrices, useGetSwapQuote, useClearCachedBalances, useGetContractInfo } from '@0xsequence/react-hooks'
+import {
+  useGetSwapPrices,
+  useGetSwapQuote,
+  useClearCachedBalances,
+  useGetContractInfo,
+  useIndexerClient
+} from '@0xsequence/react-hooks'
 import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'

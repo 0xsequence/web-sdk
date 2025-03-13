@@ -1,12 +1,11 @@
 'use client'
 
+import { useAPIClient } from '@0xsequence/react-hooks'
 import { SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 import { Connector } from 'wagmi'
 
 import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
-
-import { useAPIClient } from './useAPIClient'
 
 interface LinkWalletParams {
   signatureChainId: number
