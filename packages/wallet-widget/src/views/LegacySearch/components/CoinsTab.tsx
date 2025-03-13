@@ -2,9 +2,12 @@ import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { IndexedData } from '../SearchTokens'
-
 import { BalanceItem } from './BalanceItem'
+
+interface IndexedData {
+  index: number
+  name: string
+}
 
 interface CoinsTabProps {
   displayedCoinBalances: IndexedData[]
