@@ -27,7 +27,7 @@ export const Header = () => {
             // filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
           }}
           src="images/kit-logo-text.svg"
-          alt="Sequence Kit Text Logo"
+          alt="Sequence Web SDK Text Logo"
           disableAnimation
         />
       </div>

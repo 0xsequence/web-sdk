@@ -1,8 +1,7 @@
-import { Button, Card, Text, Image, useTheme, CheckmarkIcon, TextInput, Switch } from '@0xsequence/design-system'
-import { useKitWallets, useOpenConnectModal, WalletType, useDirectEcosystemConnect } from '@0xsequence/kit'
-import { Footer } from '@0xsequence/kit-example-shared-components'
+import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
+import { useWallets, useOpenConnectModal, WalletType } from '@0xsequence/react-connect'
 import { clsx } from 'clsx'
-import { useState } from 'react'
+import { Footer } from 'example-shared-components'
 
 import { Connected } from './Connected'
 
@@ -13,7 +12,7 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 export const Homepage = () => {
   const { theme } = useTheme()
 
-  const { wallets } = useKitWallets()
+  const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
   const triggerEcosystemConnect = useDirectEcosystemConnect()
   const [useEcosystem, setUseEcosystem] = useState(false)

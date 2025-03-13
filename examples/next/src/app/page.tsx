@@ -1,14 +1,13 @@
 'use client'
 
 import { Image, Button } from '@0xsequence/design-system'
-import { useKitWallets, useOpenConnectModal } from '@0xsequence/kit'
-import { Footer } from '@0xsequence/kit-example-shared-components'
-import { useAccount } from 'wagmi'
+import { useWallets, useOpenConnectModal } from '@0xsequence/react-connect'
+import { Footer } from 'example-shared-components'
 
 import { Connected } from './components/Connected'
 
 export default function Home() {
-  const { wallets } = useKitWallets()
+  const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
   return (
@@ -19,9 +18,9 @@ export default function Home() {
             <Image className="h-3" alt="Next" src="images/next.svg" disableAnimation />
           </div>
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image alt="Sequence Kit Logo" style={{ width: '48px' }} src="images/kit-logo.svg" disableAnimation />
+            <Image alt="Sequence Web SDK Logo" style={{ width: '48px' }} src="images/kit-logo.svg" disableAnimation />
             <Image
-              alt="Sequence Kit Text Logo"
+              alt="Sequence Web SDK Text Logo"
               style={{
                 width: '32px'
                 // filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'

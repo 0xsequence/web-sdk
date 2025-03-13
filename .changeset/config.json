@@ -1,11 +1,11 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "0xsequence/kit" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "0xsequence/web-sdk" }],
   "commit": false,
   "linked": [],
-  "fixed": [["@0xsequence/kit", "@0xsequence/kit-checkout", "@0xsequence/kit-wallet"]],
+  "fixed": [["@0xsequence/react-connect", "@0xsequence/react-checkout", "@0xsequence/react-wallet", "@0xsequence/react-hooks"]],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["@0xsequence/kit-example-react", "@0xsequence/kit-example-next", "@0xsequence/kit-example-shared-components"]
+  "ignore": ["example-react", "example-next", "example-shared-components"]
 }

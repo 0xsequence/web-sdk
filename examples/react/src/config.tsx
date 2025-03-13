@@ -1,6 +1,5 @@
-import { KitConfig, createConfig, WalletType } from '@0xsequence/kit'
-import { type FC, createElement } from 'react'
 import { ChainId } from '@0xsequence/network'
+import { ConnectConfig, createConfig, WalletType } from '@0xsequence/react-connect'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
@@ -17,11 +16,11 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
   [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470'
 }
 
-export const kitConfig: KitConfig = {
+export const connectConfig: ConnectConfig = {
   projectAccessKey,
   defaultTheme: 'dark',
   signIn: {
-    projectName: 'Kit Demo',
+    projectName: 'Sequence Web SDK Demo',
     useMock: isDebugMode
   },
   displayedAssets: [
@@ -57,8 +56,8 @@ export const kitConfig: KitConfig = {
 export const config =
   walletType === 'waas'
     ? createConfig('waas', {
-        ...kitConfig,
-        appName: 'Kit Demo',
+        ...connectConfig,
+        appName: 'Sequence Web SDK Demo',
         chainIds: [
           ChainId.ARBITRUM_NOVA,
           ChainId.ARBITRUM_SEPOLIA,
@@ -111,8 +110,8 @@ export const config =
         }
       })
     : createConfig('universal', {
-        ...kitConfig,
-        appName: 'Kit Demo',
+        ...connectConfig,
+        appName: 'Sequence Web SDK Demo',
         chainIds: [
           ChainId.ARBITRUM_NOVA,
           ChainId.ARBITRUM,

@@ -1,8 +1,8 @@
-# Sequence Kit Next Example
+# Sequence Web SDK Next Example
 
-This demo showcases the sign in flow, the embedded wallet and the checkout component of Sequence Kit.
+This demo showcases the sign in flow, the embedded wallet and the checkout component of Sequence Web SDK.
 
-View the [demo here](https://0xsequence.github.io/kit)! 👀
+View the [demo here](https://0xsequence.github.io/web-sdk)! 👀
 
 ## Run Demo Locally
 

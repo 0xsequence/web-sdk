@@ -1,7 +1,7 @@
 import { ThemeProvider } from '@0xsequence/design-system'
-import { SequenceKit } from '@0xsequence/kit'
-import { KitCheckoutProvider } from '@0xsequence/kit-checkout'
-import { KitWalletProvider } from '@0xsequence/kit-wallet'
+import { SequenceCheckoutProvider } from '@0xsequence/react-checkout'
+import { SequenceConnect } from '@0xsequence/react-connect'
+import { SequenceWalletProvider } from '@0xsequence/react-wallet'
 
 import { Homepage } from './components/Homepage'
 import { config } from './config'
@@ -9,13 +9,13 @@ import { config } from './config'
 export const App = () => {
   return (
     <ThemeProvider theme="dark">
-      <SequenceKit config={config}>
-        <KitWalletProvider>
-          <KitCheckoutProvider>
+      <SequenceConnect config={config}>
+        <SequenceWalletProvider>
+          <SequenceCheckoutProvider>
             <Homepage />
-          </KitCheckoutProvider>
-        </KitWalletProvider>
-      </SequenceKit>
+          </SequenceCheckoutProvider>
+        </SequenceWalletProvider>
+      </SequenceConnect>
     </ThemeProvider>
   )
 }

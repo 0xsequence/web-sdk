@@ -12,7 +12,7 @@ export const bottomPageLinks: BottomPageLink[] = [
   },
   {
     label: 'About',
-    url: 'https://github.com/0xsequence/kit'
+    url: 'https://github.com/0xsequence/web-sdk'
   },
   {
     label: 'Blog',
@@ -24,7 +24,7 @@ export const bottomPageLinks: BottomPageLink[] = [
   },
   {
     label: 'Docs',
-    url: 'https://docs.sequence.xyz/wallet/connectors/kit/kit/overview'
+    url: 'https://docs.sequence.xyz/solutions/wallets/sequence-kit/overview'
   }
 ]
 

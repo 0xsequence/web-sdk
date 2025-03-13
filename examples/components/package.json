@@ -1,11 +1,11 @@
 {
-  "name": "@0xsequence/kit-example-shared-components",
+  "name": "example-shared-components",
   "exports": {
     ".": "./src/index.ts"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.0.7",
-    "typescript": "latest"
+    "typescript": "^5.8.2"
   },
   "peerDependencies": {
     "@0xsequence/design-system": "^2.0.9",

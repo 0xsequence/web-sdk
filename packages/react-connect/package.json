@@ -1,0 +1,79 @@
+{
+  "name": "@0xsequence/react-connect",
+  "version": "4.6.5",
+  "description": "Connect package for Sequence Web SDK",
+  "keywords": [
+    "sequence",
+    "web-sdk",
+    "wallet"
+  ],
+  "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/react-connect",
+  "author": "Horizon Blockchain Games",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:types && pnpm build:esm && pnpm build:cjs",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
+    "build:esm": "tsc --module es2022 --outDir dist/esm/",
+    "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
+    "build:css": "tailwindcss --minify -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`;\" > ./src/styles.ts",
+    "build:clean": "rimraf -g ./dist",
+    "dev": "pnpm run writeVersion && pnpm pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "writeVersion": "node scripts/writeVersion.js",
+    "test": "echo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@0xsequence/api": ">= 2.2.13",
+    "@0xsequence/auth": ">= 2.2.13",
+    "@0xsequence/core": ">= 2.2.13",
+    "@0xsequence/design-system": "^2.0.9",
+    "@0xsequence/ethauth": "^1.0.0",
+    "@0xsequence/indexer": ">= 2.2.13",
+    "@0xsequence/metadata": ">= 2.2.13",
+    "@0xsequence/network": ">= 2.2.13",
+    "@0xsequence/provider": ">= 2.2.13",
+    "@0xsequence/utils": ">= 2.2.13",
+    "@0xsequence/waas": ">= 2.2.13",
+    "clsx": "^2.1.1",
+    "fuse.js": "^6.6.2",
+    "motion": "^12.3.1",
+    "uuid": "^10.0.0"
+  },
+  "peerDependencies": {
+    "@0xsequence/react-hooks": "workspace:*",
+    "0xsequence": "^2.2.13",
+    "@databeat/tracker": "^0.9.3",
+    "@react-oauth/google": "^0.11.1",
+    "@tanstack/react-query": "^5.0.0",
+    "ethers": "^6.13.0",
+    "react": ">= 17 < 19",
+    "react-apple-signin-auth": "^1.1.0",
+    "react-dom": ">= 17 < 19",
+    "viem": "^2.0.0",
+    "wagmi": "^2.14.11"
+  },
+  "devDependencies": {
+    "@0xsequence/react-hooks": "workspace:*",
+    "0xsequence": "^2.2.13",
+    "@tanstack/react-query": "^5.37.1",
+    "@types/uuid": "^9.0.8",
+    "ethers": "6.13.0",
+    "viem": "^2.12.0",
+    "wagmi": "^2.14.11"
+  }
+}

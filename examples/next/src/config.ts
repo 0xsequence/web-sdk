@@ -1,5 +1,5 @@
-import { KitConfig, createConfig } from '@0xsequence/kit'
 import { ChainId } from '@0xsequence/network'
+import { ConnectConfig, createConfig } from '@0xsequence/react-connect'
 import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'
 
@@ -11,11 +11,11 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
   [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470'
 }
 
-export const kitConfig: KitConfig = {
+export const connectConfig: ConnectConfig = {
   projectAccessKey,
   defaultTheme: 'dark',
   signIn: {
-    projectName: 'Kit Demo',
+    projectName: 'Sequence Web SDK Demo',
     useMock: isDebugMode
   },
   displayedAssets: [
@@ -44,12 +44,13 @@ export const kitConfig: KitConfig = {
       contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
       chainId: ChainId.POLYGON
     }
-  ]
+  ],
+  readOnlyNetworks: [ChainId.OPTIMISM]
 }
 
 export const config = createConfig('waas', {
-  ...kitConfig,
-  appName: 'Kit Demo',
+  ...connectConfig,
+  appName: 'Sequence Web SDK Demo',
   chainIds: [
     ChainId.ARBITRUM_NOVA,
     ChainId.ARBITRUM_SEPOLIA,

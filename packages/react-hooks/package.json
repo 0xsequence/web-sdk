@@ -1,0 +1,62 @@
+{
+  "name": "@0xsequence/react-hooks",
+  "version": "4.6.5",
+  "description": "React hooks for Sequence Web SDK",
+  "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/react-hooks",
+  "author": "Horizon Blockchain Games",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
+    "build:esm": "tsc --module es2022 --outDir dist/esm/",
+    "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
+    "build:clean": "rimraf -g ./dist",
+    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "@0xsequence/api": ">=2.2.13",
+    "@0xsequence/indexer": ">=2.2.13",
+    "@0xsequence/metadata": ">=2.2.13",
+    "@0xsequence/network": ">=2.2.13",
+    "@tanstack/react-query": ">= 5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@0xsequence/api": ">=2.2.13",
+    "@0xsequence/indexer": ">=2.2.13",
+    "@0xsequence/metadata": ">=2.2.13",
+    "@0xsequence/network": ">=2.2.13",
+    "@tanstack/react-query": "^5.62.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.1",
+    "msw": "^2.6.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.8.2",
+    "vite": "^6.0.2",
+    "vitest": "^2.1.8"
+  }
+}

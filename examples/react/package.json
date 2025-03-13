@@ -1,8 +1,8 @@
 {
-  "name": "@0xsequence/kit-example-react",
+  "name": "example-react",
   "version": "1.0.4",
   "private": true,
-  "homepage": "kit",
+  "homepage": "web-sdk",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "@0xsequence/design-system": "^2.0.9",
-    "@0xsequence/kit": "workspace:*",
-    "@0xsequence/kit-checkout": "workspace:*",
-    "@0xsequence/kit-example-shared-components": "workspace:*",
-    "@0xsequence/kit-wallet": "workspace:*",
+    "@0xsequence/react-connect": "workspace:*",
+    "@0xsequence/react-checkout": "workspace:*",
+    "example-shared-components": "workspace:*",
+    "@0xsequence/react-wallet": "workspace:*",
     "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/waas": ">= 2.2.13",
     "@tanstack/react-query": "^5.37.1",
@@ -24,7 +24,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^4.0.6",
-    "typescript": "^5.4.5",
+    "typescript": "^5.8.2",
     "viem": "^2.12.0",
     "wagmi": "^2.14.11"
   },
