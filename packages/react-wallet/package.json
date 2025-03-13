@@ -38,28 +38,30 @@
     "react-copy-to-clipboard": "^5.1.0"
   },
   "peerDependencies": {
-    "@0xsequence/react-connect": "workspace:*",
-    "@0xsequence/react-hooks": "workspace:*",
-    "@0xsequence/design-system": ">= 2.0.4",
     "@0xsequence/api": ">= 2.2.13",
+    "@0xsequence/design-system": ">= 2.0.4",
     "@0xsequence/indexer": ">= 2.2.13",
     "@0xsequence/metadata": ">= 2.2.13",
     "@0xsequence/network": ">= 2.2.13",
-    "@tanstack/react-query": ">= 5.0.0",
+    "@0xsequence/react-connect": "workspace:*",
+    "@0xsequence/react-hooks": "workspace:*",
+    "@tanstack/react-query": ">= 5",
     "ethers": ">= 6.13.0",
     "motion": ">= 12",
-    "wagmi": "^2.13.3",
-    "viem": ">= 2.0.0"
+    "viem": ">= 2.0.0",
+    "wagmi": ">= ^2.14.13"
   },
   "devDependencies": {
     "@0xsequence/design-system": "^2.0.9",
     "@0xsequence/react-connect": "workspace:*",
     "@0xsequence/react-hooks": "workspace:*",
+    "@tanstack/react-query": "^5.62.0",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",
     "motion": "^12.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "wagmi": "^2.14.11"
+    "viem": "^2.23.10",
+    "wagmi": "^2.14.13"
   }
 }
