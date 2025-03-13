@@ -1,59 +1,34 @@
-import { Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon } from '@0xsequence/design-system'
-import React from 'react'
-
-import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation } from '../../hooks'
+
+import { SettingsItem } from './SettingsItem'
 
 export const SettingsMenu = () => {
   const { setNavigation } = useNavigation()
 
-  const onClickGeneral = () => {
+  const onClickWallets = () => {
     setNavigation({
-      location: 'settings-general'
+      location: 'settings-wallets'
     })
   }
 
-  const onClickCurrency = () => {
+  const onClickProfiles = () => {
     setNavigation({
-      location: 'settings-currency'
+      location: 'settings-profiles'
     })
   }
 
-  const onClickNetworks = () => {
+  const onClickApps = () => {
     setNavigation({
-      location: 'settings-networks'
+      location: 'settings-apps'
     })
   }
 
   return (
-    <div style={{ paddingTop: HEADER_HEIGHT }}>
-      <div className="p-5 pt-3">
-        <div className="flex flex-col gap-2">
-          <Button
-            className="w-full rounded-xl"
-            size="lg"
-            onClick={onClickGeneral}
-            leftIcon={SettingsIcon}
-            rightIcon={ChevronRightIcon}
-            label="General"
-          />
-          <Button
-            className="w-full rounded-xl"
-            size="lg"
-            onClick={onClickCurrency}
-            leftIcon={CurrencyIcon}
-            rightIcon={ChevronRightIcon}
-            label="Currency"
-          />
-          <Button
-            className="w-full rounded-xl"
-            size="lg"
-            onClick={onClickNetworks}
-            leftIcon={NetworkIcon}
-            rightIcon={ChevronRightIcon}
-            label="Networks"
-          />
-        </div>
+    <div className="p-4 pt-2">
+      <div className="flex flex-col gap-2">
+        <SettingsItem label="Manage Wallets" onClick={onClickWallets} />
+        <SettingsItem label="Manage Profiles" onClick={onClickProfiles} />
+        <SettingsItem label="Manage Apps" onClick={onClickApps} />
       </div>
     </div>
   )

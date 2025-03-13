@@ -10,6 +10,8 @@ import { History, Navigation, NavigationContextProvider, WalletModalContextProvi
 
 import { getHeader, getContent } from './utils'
 
+export const WALLET_WIDTH = 400
+
 export type SequenceWalletProviderProps = {
   children: React.ReactNode
 }
@@ -44,7 +46,13 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
-    navigation.location === 'settings-currency'
+    navigation.location === 'settings' ||
+    navigation.location === 'settings-wallets' ||
+    navigation.location === 'settings-profiles' ||
+    navigation.location === 'settings-apps' ||
+    navigation.location === 'legacy-settings-currency' ||
+    navigation.location === 'search-tokens' ||
+    navigation.location === 'search-collectibles'
 
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
@@ -55,7 +63,7 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
               <Modal
                 contentProps={{
                   style: {
-                    maxWidth: '400px',
+                    maxWidth: WALLET_WIDTH,
                     height: 'fit-content',
                     ...getModalPositionCss(position),
                     scrollbarColor: 'gray black',
