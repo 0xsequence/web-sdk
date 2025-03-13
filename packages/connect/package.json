@@ -32,6 +32,7 @@
     "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
     "build:css": "tailwindcss -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`\" > ./src/styles.ts",
     "build:clean": "rimraf -g ./dist",
+    "build:check": "attw --pack .",
     "dev": "pnpm run writeVersion && pnpm pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
     "writeVersion": "node scripts/writeVersion.js",
     "test": "echo",
