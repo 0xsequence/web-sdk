@@ -44,7 +44,7 @@ export const WalletDropdownContent = forwardRef(({ setOpenWalletDropdown }: Wall
   const onClickSettings = () => {
     setOpenWalletDropdown(false)
     setNavigation({
-      location: 'settings'
+      location: 'legacy-settings'
     })
   }
 

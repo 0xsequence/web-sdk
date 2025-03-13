@@ -4,7 +4,7 @@ import { SelectButton } from '../../components/SelectButton'
 import { supportedFiatCurrencies } from '../../constants'
 import { useSettings } from '../../hooks'
 
-export const LegacySettingsCurrency = () => {
+export const SettingsApps = () => {
   const { fiatCurrency, setFiatCurrency } = useSettings()
 
   return (
