@@ -21,7 +21,7 @@
     "changeset:version": "changeset version",
     "changeset:publish": "pnpm build && changeset publish",
     "dev:react": "pnpm --filter example-react dev",
-    "debug:react": "DEBUG=true pnpm dev:react",
+    "debug:react": "DEV_GLOBAL=true pnpm dev:react",
     "serve:react": "pnpm --filter example-react serve",
     "build:react": "pnpm --filter example-react build",
     "dev:react-boilerplate": "pnpm --filter example-react-boilerplate dev",

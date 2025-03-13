@@ -1,6 +1,6 @@
 import { ChainId, networks } from '@0xsequence/network'
-import { DEBUG } from '@0xsequence/react-connect'
 import { zeroAddress } from 'viem'
+import { isDevSardine, getDevSardineProjectAccessKey } from '@0xsequence/react-connect'
 
 export interface CheckSardineWhitelistStatusArgs {
   chainId: number
@@ -13,9 +13,8 @@ export const checkSardineWhitelistStatus = async (
 ) => {
   const referenceId = `sequence-kit-sardine-whitelist-check`
 
-  const accessKey = DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-
-  const url = DEBUG
+  const accessKey = isDevSardine() ? getDevSardineProjectAccessKey(projectAccessKey) : projectAccessKey
+  const url = isDevSardine()
     ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
     : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
 

@@ -104,5 +104,5 @@ export { ShadowRoot } from './components/ShadowRoot'
 // Indexer
 export { ContractVerificationStatus } from '@0xsequence/indexer'
 
-// XXX
-export { DEBUG } from './env'
+// Environment
+export { isDev, isDevSardine, isDevTransak, isDevSequenceApis, getDevSardineProjectAccessKey } from './env'

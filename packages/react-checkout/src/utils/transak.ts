@@ -1,4 +1,4 @@
-import { DEBUG } from '@0xsequence/react-connect'
+import { isDevTransak } from '@0xsequence/react-connect'
 
 import { AddFundsSettings } from '../contexts'
 
@@ -17,8 +17,8 @@ export const getTransakLink = (addFundsSettings: AddFundsSettings) => {
     [index: string]: string | undefined
   }
 
-  const url = new URL(DEBUG ? TransakUrlSandbox : TransakUrlProd)
-  const apiKey = DEBUG ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY
+  const url = new URL(isDevTransak() ? TransakUrlSandbox : TransakUrlProd)
+  const apiKey = isDevTransak() ? TRANSAK_API_KEY_STAGING : TRANSAK_API_KEY
 
   const options: Options = {
     apiKey: apiKey,
