@@ -9,6 +9,7 @@ import './globals.css'
 import { config } from '../config'
 
 import { Providers } from './Providers'
+import { EnvironmentSetter } from './components/EnvironmentSetter'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <EnvironmentSetter />
         <ThemeProvider theme="dark">
           <Providers initialState={initialState}>{children}</Providers>
         </ThemeProvider>
