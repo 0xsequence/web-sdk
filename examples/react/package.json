@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@0xsequence/design-system": "^2.0.9",
+    "@0xsequence/react-hooks": "workspace:*",
     "@0xsequence/react-connect": "workspace:*",
     "@0xsequence/react-checkout": "workspace:*",
     "example-shared-components": "workspace:*",

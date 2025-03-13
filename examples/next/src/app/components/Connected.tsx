@@ -3,7 +3,6 @@ import { ChainId, allNetworks } from '@0xsequence/network'
 import type { CheckoutSettings } from '@0xsequence/react-checkout'
 import {
   signEthAuthProof,
-  useIndexerClient,
   useWallets,
   useStorage,
   useWaasFeeOptions,
@@ -11,6 +10,7 @@ import {
   ContractVerificationStatus,
   useOpenConnectModal
 } from '@0xsequence/react-connect'
+import { useIndexerClient } from '@0xsequence/react-hooks'
 import { useOpenWalletModal } from '@0xsequence/react-wallet'
 import { ethers } from 'ethers'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'

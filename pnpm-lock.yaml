@@ -113,6 +113,9 @@ importers:
       '@0xsequence/react-connect':
         specifier: workspace:*
         version: link:../../packages/react-connect
+      '@0xsequence/react-hooks':
+        specifier: workspace:*
+        version: link:../../packages/react-hooks
       '@0xsequence/react-wallet':
         specifier: workspace:*
         version: link:../../packages/react-wallet
@@ -183,6 +186,9 @@ importers:
       '@0xsequence/react-connect':
         specifier: workspace:*
         version: link:../../packages/react-connect
+      '@0xsequence/react-hooks':
+        specifier: workspace:*
+        version: link:../../packages/react-hooks
       '@0xsequence/react-wallet':
         specifier: workspace:*
         version: link:../../packages/react-wallet
