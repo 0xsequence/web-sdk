@@ -16,11 +16,11 @@ interface SequenceConnectProps {
 }
 
 export const SequenceConnect = (props: SequenceConnectProps) => {
-  const { config, queryClient, children } = props
+  const { config, queryClient, initialState, children } = props
   const { connectConfig, wagmiConfig } = config
 
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider config={wagmiConfig} initialState={initialState}>
       <QueryClientProvider client={queryClient || defaultQueryClient}>
         <SequenceHooksProvider
           value={{
