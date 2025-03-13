@@ -45,24 +45,36 @@ export type UseWaasFeeOptionsReturn = [
 ]
 
 /**
+ * Options for the useWaasFeeOptions hook
+ */
+export interface WaasFeeOptionsConfig {
+  /** Whether to skip checking token balances (default: false) */
+  skipFeeBalanceCheck?: boolean;
+}
+
+/**
  * Hook for handling WaaS (Wallet as a Service) fee options for unsponsored transactions
  *
  * This hook provides functionality to:
  * - Get available fee options for a transaction in Native Token and ERC20's
- * - Check wallet balances for each fee option
+ * - Provide user wallet balances for each fee option
  * - Confirm or reject fee selections
  *
- * @param chainId - The chain ID for which to get fee options
+ * @param options - Configuration options for the hook
  * @returns {UseWaasFeeOptionsReturn} Array containing the confirmation state and control functions
  *
  * @example
  * ```tsx
- *   const chainId = 137 // Polygon mainnet
+ *   // Use the hook with default balance checking, this will fetch the user's wallet balances for each fee option and provide them in the UseWaasFeeOptionsReturn
  *   const [
  *     pendingFeeOptionConfirmation,
  *     confirmPendingFeeOption,
  *     rejectPendingFeeOption
- *   ] = useWaasFeeOptions(chainId);
+ *   ] = useWaasFeeOptions();
+ *
+ *   // Or skip balance checking if needed
+ *   // const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = 
+ *   //   useWaasFeeOptions({ skipFeeBalanceCheck: true });
  *
  *   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = useState<string>();
  *   const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps>();
@@ -76,9 +88,10 @@ export type UseWaasFeeOptionsReturn = [
  *
  * ```
  */
-export function useWaasFeeOptions(skipFeeBalanceCheck = false): UseWaasFeeOptionsReturn {
+export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOptionsReturn {
+  const { skipFeeBalanceCheck = false } = options || {}
   const connections = useConnections()
-  const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
+  const waasConnector: Connector | undefined = connections.find((c: any) => c.connector.id.includes('waas'))?.connector
   const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>()
   const pendingConfirmationRef = useRef<
     Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | undefined
