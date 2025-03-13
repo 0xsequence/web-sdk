@@ -1,10 +1,13 @@
-import { Card, cardVariants, ChevronRightIcon, cn, GradientAvatar, Text } from '@0xsequence/design-system'
+import { cardVariants, ChevronRightIcon, cn, GradientAvatar, Text } from '@0xsequence/design-system'
 import { SlideupDrawer } from '../shared/SlideupDrawer'
 import { useSettings } from '../hooks'
 import { useState } from 'react'
-import { formatAddress } from '@0xsequence/kit'
+import { formatAddress, useKitWallets } from '@0xsequence/kit'
+import { SelectRow } from '../shared/SelectRow/SelectRow'
+import { WalletAccountGradient } from '../shared/WalletAccountGradient'
+import { GradientAvatarList } from '../shared/GradientAvatarList'
 
-export enum FilterType {
+enum FilterType {
   menu = 'Filters',
   wallets = 'Select a Wallet',
   networks = 'Select a Network',
@@ -24,13 +27,17 @@ export const FilterMenu = ({
   onClose: () => void
   handleButtonPress: () => void
 }) => {
-  const { selectedWallets, selectedNetworks, selectedCollections } = useSettings()
+  const { wallets } = useKitWallets()
+  const {
+    selectedWallets,
+    selectedNetworks,
+    selectedCollections,
+    setSelectedWallets,
+    setSelectedNetworks,
+    setSelectedCollections
+  } = useSettings()
 
   const [selectedFilter, setSelectedFilter] = useState<FilterType>(FilterType.menu)
-
-  const handleFilterChange = (filter: FilterType) => {
-    setSelectedFilter(filter)
-  }
 
   const walletsCount =
     selectedWallets.length > 1 ? (
@@ -38,7 +45,7 @@ export const FilterMenu = ({
         All
       </Text>
     ) : (
-      <GradientAvatar address={selectedWallets[0]} size="sm" />
+      <GradientAvatar address={selectedWallets[0].address} size="sm" />
     )
 
   const networksCount =
@@ -53,6 +60,18 @@ export const FilterMenu = ({
     )
 
   const collectionsCount = selectedCollections.length === 0 ? 'All' : selectedCollections.length
+
+  const handleFilterChange = (filter: FilterType) => {
+    setSelectedFilter(filter)
+  }
+
+  const handleWalletChange = (wallet: string) => {
+    if (wallet === 'All') {
+      setSelectedWallets(wallets)
+    } else {
+      setSelectedWallets([wallets.find(w => w.address === wallet) || wallets[0]])
+    }
+  }
 
   return (
     <SlideupDrawer
@@ -114,17 +133,23 @@ export const FilterMenu = ({
         </div>
       ) : selectedFilter === FilterType.wallets ? (
         <div className="flex flex-col gap-3">
-          {selectedWallets.map(wallet => (
-            <div
-              key={wallet}
-              className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
-              style={{ height: '60px' }}
-              onClick={() => handleFilterChange(FilterType.wallets)}
+          <SelectRow key="all" isSelected={selectedWallets.length > 1} onClick={() => handleWalletChange('All')}>
+            <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
+            <Text color="primary" fontWeight="medium" variant="normal">
+              All
+            </Text>
+          </SelectRow>
+          {wallets.map(wallet => (
+            <SelectRow
+              key={wallet.address}
+              isSelected={selectedWallets.length === 1 && selectedWallets.find(w => w.address === wallet.address) !== undefined}
+              onClick={() => handleWalletChange(wallet.address)}
             >
+              <WalletAccountGradient accountAddress={wallet.address} loginIcon={wallet.logoDark} size={'small'} />
               <Text color="primary" fontWeight="medium" variant="normal">
-                {formatAddress(wallet)}
+                {formatAddress(wallet.address)}
               </Text>
-            </div>
+            </SelectRow>
           ))}
         </div>
       ) : selectedFilter === FilterType.networks ? (

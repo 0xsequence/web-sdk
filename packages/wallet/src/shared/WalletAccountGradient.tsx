@@ -12,7 +12,7 @@ export const WalletAccountGradient = ({
 }) => {
   const remSize = size === 'small' ? 8 : 16
   return (
-    <div className="relative">
+    <div className="flex relative">
       <div className="relative inline-block">
         <GradientAvatar className={`w-${remSize} h-${remSize}`} size="xl" address={accountAddress || ''} />
         <div
@@ -29,9 +29,7 @@ export const WalletAccountGradient = ({
             padding: `${remSize / 4}px`
           }}
         >
-          <div style={{ width: remSize * 1, height: remSize * 1 }}>
-            <LoginIcon />
-          </div>
+        <LoginIcon style={{ width: remSize, height: remSize }} />
         </div>
       </div>
     </div>

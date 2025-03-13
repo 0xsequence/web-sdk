@@ -1,4 +1,4 @@
-import { LocalStorageKey, useKitWallets, useWalletSettings } from '@0xsequence/kit'
+import { KitWallet, LocalStorageKey, useKitWallets, useWalletSettings } from '@0xsequence/kit'
 import { useState } from 'react'
 import { useConfig } from 'wagmi'
 
@@ -9,13 +9,13 @@ interface Settings {
   hideUnlistedTokens: boolean
   fiatCurrency: FiatCurrency
   selectedNetworks: number[]
-  selectedWallets: string[]
+  selectedWallets: KitWallet[]
   selectedCollections: string[]
   setFiatCurrency: (newFiatCurrency: FiatCurrency) => void
   setHideCollectibles: (newState: boolean) => void
   setHideUnlistedTokens: (newState: boolean) => void
   setSelectedNetworks: (newNetworks: number[]) => void
-  setSelectedWallets: (newWallets: string[]) => void
+  setSelectedWallets: (newWallets: KitWallet[]) => void
   setSelectedCollections: (newCollections: string[]) => void
 }
 
@@ -37,7 +37,7 @@ export const useSettings = (): Settings => {
     let hideUnlistedTokens = true
     let hideCollectibles = false
     let fiatCurrency = defaultFiatCurrency
-    let selectedWallets: string[] = allWallets.map(wallet => wallet.address)
+    let selectedWallets: KitWallet[] = allWallets
     let selectedNetworks: number[] = allChains
     let selectedCollections: string[] = []
 
@@ -114,7 +114,7 @@ export const useSettings = (): Settings => {
     setSettings(newSettings)
   }
 
-  const setSelectedWallets = (newSelectedWallets: string[]) => {
+  const setSelectedWallets = (newSelectedWallets: KitWallet[]) => {
     const oldSettings = getSettingsFromStorage()
     const newSettings = {
       ...oldSettings,

@@ -219,7 +219,8 @@ export const IntegratedWallet = () => {
           </Text>
           <div className="flex flex-row gap-1 items-center">
             <Text color="primary" fontWeight="medium" variant="small">
-              {fiatCurrency.sign}{totalCoinPrices}
+              {fiatCurrency.sign}
+              {totalCoinPrices}
             </Text>
             <Text color="primary" fontWeight="medium" variant="small">
               {coinBalancesAmount}
