@@ -1,5 +1,6 @@
 import { ChainId } from '@0xsequence/network'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/react-connect'
+import { createElement, FC } from 'react'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
@@ -81,7 +82,7 @@ export const config =
           redirectURI: window.location.origin + window.location.pathname
         },
         ecosystem: {
-          walletUrl: 'http://localhost:4444/',
+          walletUrl: 'https://acme.ecosystem-demo.xyz/',
           name: 'ACME',
           projectAccessKey,
           logoLight: (() => {
