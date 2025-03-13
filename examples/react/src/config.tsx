@@ -54,6 +54,12 @@ export const connectConfig: ConnectConfig = {
   readOnlyNetworks: [ChainId.OPTIMISM]
 }
 
+const EcosystemLogo: FC<{ className?: string; style?: React.CSSProperties }> = props =>
+  createElement('img', {
+    src: 'https://sequence.tor1.digitaloceanspaces.com/acme/acme-logo-dark.svg',
+    ...props
+  })
+
 export const config =
   walletType === 'waas'
     ? createConfig('waas', {
@@ -85,26 +91,9 @@ export const config =
           walletUrl: 'https://acme.ecosystem-demo.xyz/',
           name: 'ACME',
           projectAccessKey,
-          logoLight: (() => {
-            const LogoLight: FC<{ className?: string; style?: React.CSSProperties }> = props =>
-              createElement('img', {
-                src: 'https://sequence.tor1.digitaloceanspaces.com/acme/acme-logo-dark.svg',
-                alt: 'Logo Light',
-                ...props
-              })
-            return LogoLight
-          })(),
-          logoDark: (() => {
-            const LogoDark: FC<{ className?: string; style?: React.CSSProperties }> = props =>
-              createElement('img', {
-                src: 'https://sequence.tor1.digitaloceanspaces.com/acme/acme-logo-dark.svg',
-                alt: 'Logo Dark',
-                ...props
-              })
-            return LogoDark
-          })(),
-          defaultNetwork: ChainId.ARBITRUM_NOVA,
-          isDev: isDebugMode
+          logoLight: EcosystemLogo,
+          logoDark: EcosystemLogo,
+          defaultNetwork: ChainId.ARBITRUM_NOVA
         },
         walletConnect: {
           projectId: walletConnectProjectId
