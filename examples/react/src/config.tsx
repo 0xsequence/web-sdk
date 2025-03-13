@@ -82,13 +82,13 @@ export const config =
           redirectURI: window.location.origin + window.location.pathname
         },
         ecosystem: {
-          walletUrl: 'https://wallet.edenonline.xyz',
-          name: 'Eden Online',
+          walletUrl: 'http://localhost:4444/',
+          name: 'ACME',
           projectAccessKey,
           logoLight: (() => {
             const LogoLight: FC<{ className?: string; style?: React.CSSProperties }> = props =>
               createElement('img', {
-                src: 'https://ubi-static-website-hosting-prod.akamaized.net/whp-prod-bdf/prod/_next/static/media/eden-online-logo.6790e9f7.svg',
+                src: 'https://sequence.tor1.digitaloceanspaces.com/acme/acme-logo-dark.svg',
                 alt: 'Logo Light',
                 ...props
               })
@@ -97,7 +97,7 @@ export const config =
           logoDark: (() => {
             const LogoDark: FC<{ className?: string; style?: React.CSSProperties }> = props =>
               createElement('img', {
-                src: 'https://ubi-static-website-hosting-prod.akamaized.net/whp-prod-bdf/prod/_next/static/media/eden-online-logo.6790e9f7.svg',
+                src: 'https://sequence.tor1.digitaloceanspaces.com/acme/acme-logo-dark.svg',
                 alt: 'Logo Dark',
                 ...props
               })
