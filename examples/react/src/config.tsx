@@ -1,5 +1,6 @@
 import { ChainId } from '@0xsequence/network'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/react-connect'
+import { createElement, FC } from 'react'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
@@ -53,6 +54,12 @@ export const connectConfig: ConnectConfig = {
   readOnlyNetworks: [ChainId.OPTIMISM]
 }
 
+const EcosystemLogo: FC<{ className?: string; style?: React.CSSProperties }> = props =>
+  createElement('img', {
+    src: 'https://sequence.tor1.digitaloceanspaces.com/acme/acme-logo-dark.svg',
+    ...props
+  })
+
 export const config =
   walletType === 'waas'
     ? createConfig('waas', {
@@ -79,6 +86,14 @@ export const config =
         apple: {
           clientId: 'com.horizon.sequence.waas',
           redirectURI: window.location.origin + window.location.pathname
+        },
+        ecosystem: {
+          walletUrl: 'https://acme.ecosystem-demo.xyz/',
+          name: 'ACME',
+          projectAccessKey,
+          logoLight: EcosystemLogo,
+          logoDark: EcosystemLogo,
+          defaultNetwork: ChainId.ARBITRUM_NOVA
         },
         walletConnect: {
           projectId: walletConnectProjectId

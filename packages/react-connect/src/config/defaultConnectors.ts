@@ -3,6 +3,7 @@ import { CreateConnectorFn } from 'wagmi'
 import { apple } from '../connectors/apple'
 import { appleWaas } from '../connectors/apple/appleWaas'
 import { coinbaseWallet } from '../connectors/coinbaseWallet'
+import { ecosystemWallet, type EcosystemWalletOptions } from '../connectors/ecosystem'
 import { email } from '../connectors/email'
 import { emailWaas } from '../connectors/email/emailWaas'
 import { facebook } from '../connectors/facebook'
@@ -38,6 +39,7 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
         clientId: string
         redirectURI: string
       }
+  ecosystem?: false | EcosystemWalletOptions
   coinbase?: boolean
   metaMask?: boolean
   walletConnect?:
@@ -76,6 +78,7 @@ export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions
   apple?: boolean
   coinbase?: boolean
   metaMask?: boolean
+  ecosystem?: false | EcosystemWalletOptions
   walletConnect?:
     | false
     | {
@@ -142,6 +145,17 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         appleRedirectURI,
         enableConfirmationModal,
         network: defaultChainId
+      })
+    )
+  }
+
+  if (options.ecosystem) {
+    wallets.push(
+      ecosystemWallet({
+        ...options.ecosystem,
+        projectAccessKey,
+        defaultNetwork: defaultChainId ?? 1,
+        isDev: false
       })
     )
   }
@@ -249,6 +263,17 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
         connect: {
           app: appName
         }
+      })
+    )
+  }
+
+  if (options.ecosystem) {
+    wallets.push(
+      ecosystemWallet({
+        ...options.ecosystem,
+        projectAccessKey,
+        defaultNetwork: defaultChainId ?? 1,
+        isDev: false
       })
     )
   }

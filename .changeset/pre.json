@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@0xsequence/kit-example-next": "1.0.4",
+    "@0xsequence/kit-example-react": "1.0.4",
+    "@0xsequence/kit-checkout": "4.6.5",
+    "@0xsequence/kit": "4.6.5",
+    "@0xsequence/kit-wallet": "4.6.5"
+  },
+  "changesets": []
+}

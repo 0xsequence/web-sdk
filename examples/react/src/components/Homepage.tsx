@@ -1,7 +1,8 @@
-import { Button, Card, Text, Image, useTheme, CheckmarkIcon } from '@0xsequence/design-system'
-import { useWallets, useOpenConnectModal, WalletType } from '@0xsequence/react-connect'
+import { Button, Card, Text, Image, useTheme, CheckmarkIcon, Switch, TextInput } from '@0xsequence/design-system'
+import { useWallets, useOpenConnectModal, WalletType, useDirectEcosystemConnect } from '@0xsequence/react-connect'
 import { clsx } from 'clsx'
 import { Footer } from 'example-shared-components'
+import { useState } from 'react'
 
 import { Connected } from './Connected'
 
@@ -14,6 +15,9 @@ export const Homepage = () => {
 
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
+  const triggerEcosystemConnect = useDirectEcosystemConnect()
+  const [useEcosystem, setUseEcosystem] = useState(false)
+  const [email, setEmail] = useState('')
 
   const handleSwitchWalletType = (type: WalletType) => {
     const searchParams = new URLSearchParams()
@@ -22,8 +26,12 @@ export const Homepage = () => {
     window.location.search = searchParams.toString()
   }
 
-  const onClickConnect = () => {
-    setOpenConnectModal(true)
+  const onClickConnect = async () => {
+    if (useEcosystem && email) {
+      await triggerEcosystemConnect({ email })
+    } else {
+      setOpenConnectModal(true)
+    }
   }
 
   return (
@@ -39,7 +47,24 @@ export const Homepage = () => {
             />
           </div>
 
-          <div className="flex gap-2 flex-row items-center">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Switch checked={useEcosystem} onCheckedChange={checked => setUseEcosystem(checked)} />
+              <Text variant="normal" color="primary">
+                Use ecosystem connector email trigger
+              </Text>
+            </div>
+            {useEcosystem && (
+              <div className="mb-2">
+                <TextInput
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                />
+              </div>
+            )}
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
           </div>
 

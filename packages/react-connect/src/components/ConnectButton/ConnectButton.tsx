@@ -34,7 +34,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
 
   if (isDescriptive) {
     return (
-      <Tooltip message={label || walletProps.name}>
+      <Tooltip message={label || walletProps.name} side="bottom">
         <Card
           className="flex gap-1 justify-center items-center w-full"
           clickable
@@ -51,7 +51,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
   }
 
   return (
-    <Tooltip message={label || walletProps.name}>
+    <Tooltip message={label || walletProps.name} side="bottom">
       <Card
         className="flex justify-center items-center w-full"
         clickable
@@ -125,7 +125,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
 
   return (
-    <Tooltip message="Google" disabled={!enableGoogleTooltip}>
+    <Tooltip message="Google" disabled={!enableGoogleTooltip} side="bottom">
       <Card
         className="bg-transparent p-0 w-full relative"
         clickable

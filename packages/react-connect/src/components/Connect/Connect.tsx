@@ -220,7 +220,7 @@ export const Connect = (props: ConnectProps) => {
   const walletConnectors = [...baseWalletConnectors, ...injectedConnectors].filter(c =>
     hasConnectedSequenceUniversal ? c.name !== SEQUENCE_UNIVERSAL_CONNECTOR_NAME : true
   )
-  const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet.id.includes('email'))
+  const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet?.id.includes('email'))
 
   const onChangeEmail: React.ChangeEventHandler<HTMLInputElement> = ev => {
     setEmail(ev.target.value)
@@ -353,7 +353,7 @@ export const Connect = (props: ConnectProps) => {
       <div
         className="flex flex-col justify-center text-primary items-center font-medium"
         style={{
-          marginTop: '4px'
+          marginTop: '2px'
         }}
       >
         <TitleWrapper isPreview={isPreview}>
@@ -362,7 +362,7 @@ export const Connect = (props: ConnectProps) => {
               ? `Connecting...`
               : hasConnectedSocialOrSequenceUniversal
                 ? 'Wallets'
-                : `Sign in ${projectName ? `to ${projectName}` : ''}`}
+                : `Connect ${projectName ? `to ${projectName}` : ''}`}
           </Text>
         </TitleWrapper>
 
