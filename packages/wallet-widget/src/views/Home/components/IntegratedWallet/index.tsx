@@ -26,19 +26,21 @@ import { SlideupDrawer } from '../../../../components/SlideupDrawer'
 import { WalletAccountGradient } from '../../../../components/WalletAccountGradient'
 import { useNavigation, useSettings } from '../../../../hooks'
 import { computeBalanceFiat } from '../../../../utils'
+import { FilterMenu } from '../../../FilterMenu'
 
 import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 
 export const IntegratedWallet = () => {
   const { setNavigation } = useNavigation()
-  const { selectedNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
+  const { selectedWallets, selectedNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
   const { address: accountAddress } = useAccount()
   const { wallets, setActiveWallet } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
   const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState(false)
+  const [walletFilterOpen, setWalletFilterOpen] = useState(false)
 
-  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
+  const { data: tokenBalancesData } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: accountAddress ? [accountAddress] : [],
@@ -53,14 +55,14 @@ export const IntegratedWallet = () => {
   const collectionBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC721' || b.contractType === 'ERC1155') || []
 
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
+  const { data: coinPrices = [] } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1 } = useGetExchangeRate(fiatCurrency.symbol)
 
   const totalCoinPrices = coinBalancesUnordered
     .reduce(
@@ -77,8 +79,6 @@ export const IntegratedWallet = () => {
       0
     )
     .toFixed(2)
-
-  const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
     const isHigherFiat =
@@ -135,7 +135,9 @@ export const IntegratedWallet = () => {
       location: 'buy'
     })
   }
-  const onClickWalletSelector = () => {}
+  const onClickWalletSelector = () => {
+    setWalletFilterOpen(true)
+  }
   const onClickTokens = () => {
     setNavigation({
       location: 'search-tokens'
@@ -199,7 +201,7 @@ export const IntegratedWallet = () => {
             <Text color="primary" fontWeight="bold" variant="xsmall">
               All wallets
             </Text>
-            <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} />
+            <GradientAvatarList accountAddressList={selectedWallets.map(wallet => wallet.address)} />
             <EllipsisIcon color="white" />
           </div>
         </div>
@@ -283,6 +285,15 @@ export const IntegratedWallet = () => {
               ))}
             </div>
           </SlideupDrawer>
+        )}
+        {walletFilterOpen && (
+          <FilterMenu
+            onClose={() => setWalletFilterOpen(false)}
+            label="Select active wallet"
+            buttonLabel="Close"
+            type="bypassMenuWallets"
+            handleButtonPress={() => {}}
+          />
         )}
       </AnimatePresence>
     </div>

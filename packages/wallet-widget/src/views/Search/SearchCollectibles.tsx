@@ -1,34 +1,26 @@
 import { SearchIcon, TextInput, GearIcon, cn, cardVariants } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
 import { ContractVerificationStatus } from '@0xsequence/react-connect'
 import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import Fuse from 'fuse.js'
 import { AnimatePresence } from 'motion/react'
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 
 import { useSettings } from '../../hooks'
+import { getMoreBalances } from '../../utils'
 import { FilterMenu } from '../FilterMenu'
 
 import { CollectiblesTab } from './components/CollectiblesTab'
-import { IndexedData } from './SearchTokens'
 
 export const SearchCollectibles = () => {
-  const { hideUnlistedTokens, selectedNetworks } = useSettings()
-  const [search, setSearch] = useState('')
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-
-  const pageSize = 20
-  const [displayedCollectibleBalances, setDisplayedCollectibleBalances] = useState<IndexedData[]>([])
-
-  const [displayedSearchCollectibleBalances, setDisplayedSearchCollectibleBalances] = useState<IndexedData[]>([])
-
-  const [initCollectiblesFlag, setInitCollectiblesFlag] = useState(false)
-
-  const [hasMoreCollectibles, sethasMoreCollectibles] = useState(false)
-
-  const [hasMoreSearchCollectibles, sethasMoreSearchCollectibles] = useState(false)
+  const pageSize = 8
 
   const { address: accountAddress } = useAccount()
+  const { hideUnlistedTokens, selectedNetworks } = useSettings()
+
+  const [search, setSearch] = useState('')
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesDetails({
     chainIds: selectedNetworks,
@@ -46,55 +38,50 @@ export const SearchCollectibles = () => {
     return Number(b.balance) - Number(a.balance)
   })
 
-  const indexedCollectibleBalances: IndexedData[] = collectibleBalances.map((balance, index) => ({
-    index,
-    name: balance.tokenMetadata?.name || 'Unknown'
-  }))
+  const isPending = isPendingTokenBalances
 
-  useEffect(() => {
-    if (!initCollectiblesFlag && indexedCollectibleBalances.length > 0) {
-      setDisplayedCollectibleBalances(indexedCollectibleBalances.slice(0, pageSize))
-      sethasMoreCollectibles(indexedCollectibleBalances.length > pageSize)
-      setInitCollectiblesFlag(true)
-    }
-  }, [initCollectiblesFlag, isPendingTokenBalances])
-
-  useEffect(() => {
-    if (search !== '') {
-      setDisplayedSearchCollectibleBalances(
-        fuzzySearchCollectibles
-          .search(search)
-          .map(result => result.item)
-          .slice(0, pageSize)
-      )
-      sethasMoreSearchCollectibles(fuzzySearchCollectibles.search(search).length > pageSize)
-    }
-  }, [search])
-
-  const fetchMoreCollectibleBalances = () => {
-    if (displayedCollectibleBalances.length >= indexedCollectibleBalances.length) {
-      sethasMoreCollectibles(false)
-      return
-    }
-    setDisplayedCollectibleBalances(indexedCollectibleBalances.slice(0, displayedCollectibleBalances.length + pageSize))
+  const fuseOptions = {
+    keys: [
+      {
+        name: 'name',
+        getFn: (token: TokenBalance) => {
+          return token.tokenMetadata?.name || ''
+        }
+      },
+      {
+        name: 'collectionName',
+        getFn: (token: TokenBalance) => {
+          return token.contractInfo?.name || ''
+        }
+      }
+    ],
+    ignoreLocation: true
   }
 
-  const fetchMoreSearchCollectibleBalances = () => {
-    if (displayedSearchCollectibleBalances.length >= fuzzySearchCollectibles.search(search).length) {
-      sethasMoreSearchCollectibles(false)
-      return
-    }
-    setDisplayedSearchCollectibleBalances(
-      fuzzySearchCollectibles
-        .search(search)
-        .map(result => result.item)
-        .slice(0, displayedSearchCollectibleBalances.length + pageSize)
-    )
-  }
+  const fuse = useMemo(() => {
+    return new Fuse(collectibleBalances, fuseOptions)
+  }, [collectibleBalances])
 
-  const fuzzySearchCollectibles = new Fuse(indexedCollectibleBalances, {
-    keys: ['name']
-  })
+  const searchResults = useMemo(() => {
+    if (!search.trimStart()) {
+      return []
+    }
+    return fuse.search(search).map(result => result.item)
+  }, [search, fuse])
+
+  const {
+    data: infiniteBalances,
+    fetchNextPage: fetchMoreBalances,
+    hasNextPage: hasMoreBalances,
+    isFetching: isFetchingMoreBalances
+  } = getMoreBalances(collectibleBalances, pageSize, { enabled: search.trim() === '' })
+
+  const {
+    data: infiniteSearchBalances,
+    fetchNextPage: fetchMoreSearchBalances,
+    hasNextPage: hasMoreSearchBalances,
+    isFetching: isFetchingMoreSearchBalances
+  } = getMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
 
   const onFilterClick = () => {
     setIsFilterOpen(true)
@@ -120,14 +107,11 @@ export const SearchCollectibles = () => {
       </div>
       <div className="w-full">
         <CollectiblesTab
-          displayedCollectibleBalances={search ? displayedSearchCollectibleBalances : displayedCollectibleBalances}
-          fetchMoreCollectibleBalances={fetchMoreCollectibleBalances}
-          fetchMoreSearchCollectibleBalances={fetchMoreSearchCollectibleBalances}
-          hasMoreCollectibles={hasMoreCollectibles}
-          hasMoreSearchCollectibles={hasMoreSearchCollectibles}
-          isSearching={search !== ''}
-          isPending={isPendingTokenBalances}
-          collectibleBalances={collectibleBalances}
+          displayedCollectibleBalances={search ? infiniteSearchBalances?.pages.flat() : infiniteBalances?.pages.flat()}
+          fetchMoreCollectibleBalances={search ? fetchMoreSearchBalances : fetchMoreBalances}
+          hasMoreCollectibleBalances={search ? hasMoreSearchBalances : hasMoreBalances}
+          isFetchingMoreCollectibleBalances={search ? isFetchingMoreSearchBalances : isFetchingMoreBalances}
+          isFetchingInitialBalances={isPending}
         />
       </div>
 
