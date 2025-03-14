@@ -1,38 +1,29 @@
-import { SearchIcon, TextInput } from '@0xsequence/design-system'
-import { getNativeTokenInfoByChainId, ContractVerificationStatus, compareAddress } from '@0xsequence/react-connect'
+import { cardVariants, cn, GearIcon, SearchIcon, TextInput } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
-import { useState, useEffect } from 'react'
+import { AnimatePresence } from 'motion/react'
+import { useState, useMemo } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
+import { getMoreBalances } from '../../utils'
+import { FilterMenu } from '../FilterMenu'
 
 import { CoinsTab } from './components/CoinsTab'
 
-export interface IndexedData {
-  index: number
-  name: string
-}
-
 export const SearchTokens = () => {
+  const pageSize = 15
+
   const { chains } = useConfig()
-  const { fiatCurrency, hideUnlistedTokens, selectedNetworks } = useSettings()
-  const [search, setSearch] = useState('')
-
-  const pageSize = 20
-  const [displayedCoinBalances, setDisplayedCoinBalances] = useState<IndexedData[]>([])
-
-  const [displayedSearchCoinBalances, setDisplayedSearchCoinBalances] = useState<IndexedData[]>([])
-
-  const [initCoinsFlag, setInitCoinsFlag] = useState(false)
-
-  const [hasMoreCoins, sethasMoreCoins] = useState(false)
-
-  const [hasMoreSearchCoins, sethasMoreSearchCoins] = useState(false)
-
   const { address: accountAddress } = useAccount()
+  const { fiatCurrency, hideUnlistedTokens, selectedNetworks } = useSettings()
+
+  const [search, setSearch] = useState('')
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
@@ -73,92 +64,89 @@ export const SearchTokens = () => {
 
   const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
-  const indexedCoinBalances: IndexedData[] = coinBalances.map((balance, index) => {
-    if (compareAddress(balance.contractAddress, ethers.ZeroAddress)) {
-      const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
-
-      return {
-        index,
-        name: nativeTokenInfo.name
+  const fuseOptions = {
+    keys: [
+      {
+        name: 'name',
+        getFn: (token: TokenBalance) => {
+          if (compareAddress(token.contractAddress, ethers.ZeroAddress)) {
+            const nativeTokenInfo = getNativeTokenInfoByChainId(token.chainId, chains)
+            return nativeTokenInfo.name
+          }
+          return token.contractInfo?.name || 'Unknown'
+        }
       }
-    } else {
-      return {
-        index,
-        name: balance.contractInfo?.name || 'Unknown'
-      }
-    }
-  })
-
-  useEffect(() => {
-    if (!initCoinsFlag && indexedCoinBalances.length > 0) {
-      setDisplayedCoinBalances(indexedCoinBalances.slice(0, pageSize))
-      sethasMoreCoins(indexedCoinBalances.length > pageSize)
-      setInitCoinsFlag(true)
-    }
-  }, [initCoinsFlag])
-
-  useEffect(() => {
-    if (search !== '') {
-      setDisplayedSearchCoinBalances(
-        fuzzySearchCoinBalances
-          .search(search)
-          .map(result => result.item)
-          .slice(0, pageSize)
-      )
-      sethasMoreSearchCoins(fuzzySearchCoinBalances.search(search).length > pageSize)
-    }
-  }, [search])
-
-  const fetchMoreCoinBalances = () => {
-    if (displayedCoinBalances.length >= indexedCoinBalances.length) {
-      sethasMoreCoins(false)
-      return
-    }
-    setDisplayedCoinBalances(indexedCoinBalances.slice(0, displayedCoinBalances.length + pageSize))
+    ],
+    ignoreLocation: true
   }
 
-  const fetchMoreSearchCoinBalances = () => {
-    if (displayedSearchCoinBalances.length >= fuzzySearchCoinBalances.search(search).length) {
-      sethasMoreSearchCoins(false)
-      return
-    }
-    setDisplayedSearchCoinBalances(
-      fuzzySearchCoinBalances
-        .search(search)
-        .map(result => result.item)
-        .slice(0, displayedSearchCoinBalances.length + pageSize)
-    )
-  }
+  const fuse = useMemo(() => {
+    return new Fuse(coinBalances, fuseOptions)
+  }, [coinBalances])
 
-  const fuzzySearchCoinBalances = new Fuse(indexedCoinBalances, {
-    keys: ['name']
-  })
+  const searchResults = useMemo(() => {
+    if (!search.trimStart()) {
+      return []
+    }
+    return fuse.search(search).map(result => result.item)
+  }, [search, fuse])
+
+  const {
+    data: infiniteBalances,
+    fetchNextPage: fetchMoreBalances,
+    hasNextPage: hasMoreBalances,
+    isFetching: isFetchingMoreBalances
+  } = getMoreBalances(coinBalances, pageSize, { enabled: search.trim() === '' })
+
+  const {
+    data: infiniteSearchBalances,
+    fetchNextPage: fetchMoreSearchBalances,
+    hasNextPage: hasMoreSearchBalances,
+    isFetching: isFetchingMoreSearchBalances
+  } = getMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
+
+  const onFilterClick = () => {
+    setIsFilterOpen(true)
+  }
 
   return (
     <div className="flex px-4 pb-5 pt-3 flex-col gap-5 items-center justify-center">
-      <div className="w-full">
-        <TextInput
-          autoFocus
-          name="search wallet"
-          leftIcon={SearchIcon}
-          value={search}
-          onChange={ev => setSearch(ev.target.value)}
-          placeholder="Search your wallet"
-          data-1p-ignore
-        />
+      <div className="flex flex-row justify-between items-center w-full gap-2">
+        <div className="grow">
+          <TextInput
+            autoFocus
+            name="search wallet"
+            leftIcon={SearchIcon}
+            value={search}
+            onChange={ev => setSearch(ev.target.value)}
+            placeholder="Search your wallet"
+            data-1p-ignore
+          />
+        </div>
+        <div className={cn(cardVariants({ clickable: true }), 'bg-background-primary p-0 w-fit')} onClick={onFilterClick}>
+          <GearIcon size="lg" color="white" />
+        </div>
       </div>
       <div className="w-full">
         <CoinsTab
-          displayedCoinBalances={search ? displayedSearchCoinBalances : displayedCoinBalances}
-          fetchMoreCoinBalances={fetchMoreCoinBalances}
-          fetchMoreSearchCoinBalances={fetchMoreSearchCoinBalances}
-          hasMoreCoins={hasMoreCoins}
-          hasMoreSearchCoins={hasMoreSearchCoins}
-          isSearching={search !== ''}
-          isPending={isPending}
-          coinBalances={coinBalances}
+          displayedCoinBalances={search ? infiniteSearchBalances?.pages.flat() : infiniteBalances?.pages.flat()}
+          fetchMoreCoinBalances={search ? fetchMoreSearchBalances : fetchMoreBalances}
+          hasMoreCoinBalances={search ? hasMoreSearchBalances : hasMoreBalances}
+          isFetchingMoreCoinBalances={search ? isFetchingMoreSearchBalances : isFetchingMoreBalances}
+          isFetchingInitialBalances={isPending}
         />
       </div>
+      <AnimatePresence>
+        {isFilterOpen && (
+          <FilterMenu
+            onClose={() => setIsFilterOpen(false)}
+            label="Token Filters"
+            buttonLabel="Show Tokens"
+            type="tokens"
+            handleButtonPress={() => {}}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

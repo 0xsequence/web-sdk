@@ -49,11 +49,14 @@ export const SlideupDrawer = ({
           position: 'absolute',
           bottom: 0,
           left: 0,
-          width: '100%'
+          width: '100%',
+          height: '80%',
+          display: 'flex',
+          flexDirection: 'column'
         }}
         onClick={e => e.stopPropagation()}
       >
-        <Card className="p-0 bg-background-primary">
+        <Card className="bg-background-primary p-0" style={{ flex: 1 }}>
           <Card className={cn('flex flex-row rounded-none pt-2', onBackPress ? 'justify-between' : 'justify-center')}>
             {onBackPress && (
               <Button variant="text" className="pt-2" onClick={onBackPress}>
@@ -72,7 +75,9 @@ export const SlideupDrawer = ({
             </div>
             {onBackPress && <div style={{ width: '20px' }}></div>}
           </Card>
-          <Card className="rounded-none bg-background-raised">{children}</Card>
+          <Card className="rounded-none bg-background-raised" style={{ height: '80%', overflowY: 'auto' }}>
+            {children}
+          </Card>
           <Divider className="my-0" />
           <Card className="rounded-none">
             <div

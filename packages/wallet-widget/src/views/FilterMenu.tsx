@@ -1,5 +1,7 @@
-import { cardVariants, ChevronRightIcon, cn, GradientAvatar, Text } from '@0xsequence/design-system'
+import { cardVariants, ChevronRightIcon, cn, GradientAvatar, Text, TokenImage } from '@0xsequence/design-system'
+import { ChainId } from '@0xsequence/network'
 import { formatAddress, useWallets } from '@0xsequence/react-connect'
+import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
 import { GradientAvatarList } from '../components/GradientAvatarList'
@@ -24,21 +26,28 @@ export const FilterMenu = ({
 }: {
   label: string
   buttonLabel: string
-  type: 'tokens' | 'collectibles' | 'transactions'
+  type: 'tokens' | 'collectibles' | 'transactions' | 'bypassMenuWallets'
   onClose: () => void
   handleButtonPress: () => void
 }) => {
   const { wallets } = useWallets()
   const {
-    selectedWallets,
-    selectedNetworks,
-    selectedCollections,
+    allNetworks,
+    selectedWalletsObservable,
+    selectedNetworksObservable,
+    selectedCollectionsObservable,
     setSelectedWallets,
     setSelectedNetworks,
     setSelectedCollections
   } = useSettings()
 
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>(FilterType.menu)
+  const selectedWallets = useObservable(selectedWalletsObservable)
+  const selectedNetworks = useObservable(selectedNetworksObservable)
+  const selectedCollections = useObservable(selectedCollectionsObservable)
+
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>(
+    type === 'bypassMenuWallets' ? FilterType.wallets : FilterType.menu
+  )
 
   const walletsCount =
     selectedWallets.length > 1 ? (
@@ -67,10 +76,18 @@ export const FilterMenu = ({
   }
 
   const handleWalletChange = (wallet: string) => {
-    if (wallet === 'All') {
+    if (wallet === '') {
       setSelectedWallets(wallets)
     } else {
       setSelectedWallets([wallets.find(w => w.address === wallet) || wallets[0]])
+    }
+  }
+
+  const handleNetworkChange = (chainId: number[]) => {
+    if (chainId.length === 0) {
+      setSelectedNetworks(allNetworks)
+    } else {
+      setSelectedNetworks(chainId)
     }
   }
 
@@ -80,7 +97,9 @@ export const FilterMenu = ({
       label={selectedFilter === FilterType.menu ? label : selectedFilter}
       buttonLabel={buttonLabel}
       handleButtonPress={handleButtonPress}
-      onBackPress={selectedFilter !== FilterType.menu ? () => handleFilterChange(FilterType.menu) : undefined}
+      onBackPress={
+        type !== 'bypassMenuWallets' && selectedFilter !== FilterType.menu ? () => handleFilterChange(FilterType.menu) : undefined
+      }
     >
       {selectedFilter === FilterType.menu ? (
         <div className="flex flex-col gap-3">
@@ -134,16 +153,21 @@ export const FilterMenu = ({
         </div>
       ) : selectedFilter === FilterType.wallets ? (
         <div className="flex flex-col gap-3">
-          <SelectRow key="all" isSelected={selectedWallets.length > 1} onClick={() => handleWalletChange('All')}>
-            <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
-            <Text color="primary" fontWeight="medium" variant="normal">
-              All
-            </Text>
-          </SelectRow>
+          {wallets.length > 1 && (
+            <SelectRow key="all" isSelected={selectedWalletsObservable.get().length > 1} onClick={() => handleWalletChange('')}>
+              <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
+              <Text color="primary" fontWeight="medium" variant="normal">
+                All
+              </Text>
+            </SelectRow>
+          )}
           {wallets.map(wallet => (
             <SelectRow
               key={wallet.address}
-              isSelected={selectedWallets.length === 1 && selectedWallets.find(w => w.address === wallet.address) !== undefined}
+              isSelected={
+                selectedWalletsObservable.get().length === 1 &&
+                selectedWalletsObservable.get().find(w => w.address === wallet.address) !== undefined
+              }
               onClick={() => handleWalletChange(wallet.address)}
             >
               <WalletAccountGradient accountAddress={wallet.address} loginIcon={wallet.logoDark} size={'small'} />
@@ -155,9 +179,27 @@ export const FilterMenu = ({
         </div>
       ) : selectedFilter === FilterType.networks ? (
         <div className="flex flex-col gap-3">
-          <Text color="primary" fontWeight="medium" variant="normal">
-            Networks
-          </Text>
+          {allNetworks.length > 1 && (
+            <SelectRow key="all" isSelected={selectedNetworksObservable.get().length > 1} onClick={() => handleNetworkChange([])}>
+              <Text color="primary" fontWeight="medium" variant="normal">
+                All
+              </Text>
+            </SelectRow>
+          )}
+          {allNetworks.map(chainId => (
+            <SelectRow
+              key={chainId}
+              isSelected={selectedNetworksObservable.get().length === 1 && selectedNetworksObservable.get().includes(chainId)}
+              onClick={() => handleNetworkChange([chainId])}
+            >
+              <div className="flex gap-2 justify-center items-center">
+                <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chainId}.webp`} />
+                <Text color="primary" variant="normal" fontWeight="bold">
+                  {ChainId[chainId]}
+                </Text>
+              </div>
+            </SelectRow>
+          ))}
         </div>
       ) : selectedFilter === FilterType.collections ? (
         <div className="flex flex-col gap-3">

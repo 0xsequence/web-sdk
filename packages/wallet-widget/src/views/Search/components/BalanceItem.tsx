@@ -54,13 +54,9 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
   }
 
   return (
-    <div
-      className="flex w-full flex-row justify-between items-center select-none cursor-pointer"
-      key={balance.contractAddress}
-      onClick={onClick}
-    >
+    <div className="flex w-full flex-row justify-between items-center select-none cursor-pointer" onClick={onClick}>
       <div className="flex gap-3 flex-row items-center justify-center min-w-0">
-        <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} />
+        <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} style={{ zIndex: '0' }} />
         <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="primary" fontWeight="bold" ellipsis>
           {tokenName}
         </Text>
