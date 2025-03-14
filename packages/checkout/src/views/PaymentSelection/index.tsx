@@ -26,6 +26,7 @@ import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
 import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 
 import { Footer } from './Footer'
+import { FundWithFiat } from './FundWithFiat'
 import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
@@ -68,6 +69,7 @@ export const PaymentSelectionContent = () => {
     enableSwapPayments = true,
     creditCardProviders = [],
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onRampProvider,
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
@@ -433,6 +435,12 @@ export const PaymentSelectionContent = () => {
               disableButtons={disableButtons}
               skipOnCloseCallback={skipOnCloseCallback}
             />
+          </>
+        )}
+        {onRampProvider && (
+          <>
+            <Divider className="w-full my-3" />
+            <FundWithFiat walletAddress={userAddress || ''} provider={onRampProvider} chainId={chainId} />
           </>
         )}
         {enableTransferFunds && (

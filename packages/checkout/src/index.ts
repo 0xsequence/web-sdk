@@ -17,3 +17,6 @@ export { type SwapModalSettings } from './contexts/SwapModal'
 
 // utils
 export { fetchTransakSupportedCountries, getTransakLink } from './utils/transak'
+
+// OnRampProvider
+export { TransactionOnRampProvider } from '@0xsequence/marketplace'
