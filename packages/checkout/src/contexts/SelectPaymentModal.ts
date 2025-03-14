@@ -1,4 +1,5 @@
 import { Hex } from 'viem'
+import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 
 import type { TransakConfig } from '../contexts/CheckoutModal'
 
@@ -31,6 +32,7 @@ export interface SelectPaymentSettings {
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
   onClose?: () => void
+  onRampProvider?: TransactionOnRampProvider
   enableMainCurrencyPayment?: boolean
   enableSwapPayments?: boolean
   enableTransferFunds?: boolean
