@@ -1,6 +1,6 @@
 import { MarketplaceIndexer } from '@0xsequence/marketplace'
 import { networks, stringTemplate } from '@0xsequence/network'
-import { DEBUG, useProjectAccessKey } from '@0xsequence/react-connect'
+import { isDevSequenceApis, useProjectAccessKey } from '@0xsequence/react-connect'
 import { useMemo } from 'react'
 
 export interface UseMarketplaceClientArgs {
@@ -11,7 +11,7 @@ export const useMarketplaceClient = ({ chain }: UseMarketplaceClientArgs) => {
   const projectAccessKey = useProjectAccessKey()
 
   const marketplaceClient = useMemo(() => {
-    const env = DEBUG ? 'development' : 'production'
+    const env = isDevSequenceApis() ? 'development' : 'production'
     const clientUrl = marketplaceApiURL(chain, env)
     return new MarketplaceIndexer(clientUrl, projectAccessKey)
   }, [projectAccessKey])

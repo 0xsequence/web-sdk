@@ -1,6 +1,6 @@
 import { Spinner, Text } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useAnalyticsContext, useProjectAccessKey, DEBUG } from '@0xsequence/react-connect'
+import { useAnalyticsContext, useProjectAccessKey, isDevSardine, isDevTransak } from '@0xsequence/react-connect'
 import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
 import pako from 'pako'
 import { useEffect } from 'react'
@@ -79,7 +79,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
 
-  const baseUrl = DEBUG ? 'https://global-stg.transak.com' : 'https://global.transak.com'
+  const baseUrl = isDevTransak() ? 'https://global-stg.transak.com' : 'https://global.transak.com'
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -284,7 +284,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
   const authToken = data?.token
 
-  const url = DEBUG
+  const url = isDevSardine()
     ? `https://sardine-checkout-sandbox.sequence.info?api_url=https://sardine-api-sandbox.sequence.info&client_token=${authToken}&show_features=true`
     : `https://sardine-checkout.sequence.info?api_url=https://sardine-api.sequence.info&client_token=${authToken}&show_features=true`
 

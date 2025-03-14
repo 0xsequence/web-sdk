@@ -279,6 +279,18 @@ The React example can be used to test the library locally.
 2. From the root folder, run `pnpm build` to build the packages.
 3. From the root folder, run `pnpm dev:react` or `pnpm dev:next` to run the examples.
 
+# Setting specific functionalities to dev
+
+Specific functionalities such as the APIs, credit card processors can be set to use the dev environments through the variables in `globalThis`
+
+```
+__WEB_SDK_DEV_GLOBAL__ : sets everything to dev
+__WEB_SDK_DEV_SARDINE__ : sets only sardine to dev
+__WEB_SDK_DEV_TRANSAK__ : sets only transak to dev
+__WEB_SDK_DEV_SEQUENCE_APIS__ : sets only the sequence apis to dev
+__WEB_SDK_DEV_SARDINE_PROJECT_ACCESS_KEY__ : the project access key used to query the client token for sardine. Must use a dev access key if the everything is using prod, but if sardine is using dev
+```
+
 ## What to do next?
 
 Now that the core package is installed, you can install the [embedded wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/react-wallet) or take a look at the [checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/react-checkout).
