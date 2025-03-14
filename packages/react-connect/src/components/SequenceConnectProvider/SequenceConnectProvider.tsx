@@ -23,7 +23,7 @@ import { ExtendedConnector, DisplayedAsset, EthAuthSettings, ConnectConfig, Moda
 import { isJSON } from '../../utils/helpers'
 import { getModalPositionCss } from '../../utils/styling'
 import { Connect } from '../Connect/Connect'
-import JsonTreeViewer from '../JsonTreeViewer'
+import { JsonTreeViewer } from '../JsonTreeViewer'
 import { NetworkBadge } from '../NetworkBadge'
 import { PageHeading } from '../PageHeading'
 import { PoweredBySequence } from '../SequenceLogo'

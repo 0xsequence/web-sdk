@@ -54,12 +54,10 @@ interface JsonTreeViewerProps {
   className?: string
 }
 
-const JsonTreeViewer = ({ data }: JsonTreeViewerProps) => {
+export const JsonTreeViewer = ({ data }: JsonTreeViewerProps) => {
   return (
     <div className={'font-mono text-sm overflow-x-auto'}>
       <TreeNode data={data} />
     </div>
   )
 }
-
-export default JsonTreeViewer
