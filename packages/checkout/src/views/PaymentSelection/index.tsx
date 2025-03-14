@@ -1,3 +1,5 @@
+import { Button, Divider, Text, Spinner } from '@0xsequence/design-system'
+import { findSupportedNetwork } from '@0xsequence/network'
 import {
   useAnalyticsContext,
   compareAddress,
@@ -5,8 +7,6 @@ import {
   sendTransactions,
   ContractVerificationStatus
 } from '@0xsequence/connect'
-import { Button, Divider, Text } from '@0xsequence/design-system'
-import { findSupportedNetwork } from '@0xsequence/network'
 import {
   useClearCachedBalances,
   useGetTokenBalancesSummary,
@@ -404,6 +404,8 @@ export const PaymentSelectionContent = () => {
     }
   }
 
+  const cryptoSymbol = isNativeToken ? network?.nativeToken.symbol : _currencyInfoData?.symbol
+
   return (
     <>
       <div
@@ -440,7 +442,18 @@ export const PaymentSelectionContent = () => {
         {onRampProvider && (
           <>
             <Divider className="w-full my-3" />
-            <FundWithFiat walletAddress={userAddress || ''} provider={onRampProvider} chainId={chainId} />
+            {isLoadingCurrencyInfo && !isNativeToken ? (
+              <div className="w-full h-full flex justify-center items-center">
+                <Spinner />
+              </div>
+            ) : (
+              <FundWithFiat
+                cryptoSymbol={cryptoSymbol}
+                walletAddress={userAddress || ''}
+                provider={onRampProvider}
+                chainId={chainId}
+              />
+            )}
           </>
         )}
         {enableTransferFunds && (

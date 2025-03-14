@@ -5,12 +5,13 @@ import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { useSelectPaymentModal, useAddFundsModal } from '../../hooks'
 
 interface FundWithFiatProps {
+  cryptoSymbol?: string
   walletAddress: string
   provider: TransactionOnRampProvider
   chainId?: number
 }
 
-export const FundWithFiat = ({ walletAddress, provider, chainId }: FundWithFiatProps) => {
+export const FundWithFiat = ({ cryptoSymbol, walletAddress, provider, chainId }: FundWithFiatProps) => {
   const { triggerAddFunds } = useAddFundsModal()
   const { closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
 
@@ -27,7 +28,8 @@ export const FundWithFiat = ({ walletAddress, provider, chainId }: FundWithFiatP
     triggerAddFunds({
       walletAddress,
       provider,
-      networks: getNetworks()
+      networks: getNetworks(),
+      defaultCryptoCurrency: cryptoSymbol
     })
   }
 
