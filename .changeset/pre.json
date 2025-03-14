@@ -2,11 +2,12 @@
   "mode": "pre",
   "tag": "beta",
   "initialVersions": {
-    "@0xsequence/kit-example-next": "1.0.4",
-    "@0xsequence/kit-example-react": "1.0.4",
-    "@0xsequence/kit-checkout": "4.6.5",
-    "@0xsequence/kit": "4.6.5",
-    "@0xsequence/kit-wallet": "4.6.5"
+    "example-next": "1.0.4",
+    "example-react": "1.0.4",
+    "@0xsequence/react-checkout": "5.0.0-ecosystem-beta",
+    "@0xsequence/react-connect": "5.0.0-ecosystem-beta",
+    "@0xsequence/react-hooks": "5.0.0-ecosystem-beta",
+    "@0xsequence/react-wallet": "5.0.0-ecosystem-beta"
   },
   "changesets": []
 }
