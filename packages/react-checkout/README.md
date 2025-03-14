@@ -197,10 +197,7 @@ const MyComponent = () => {
     const chainId = 137
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const currencyAmount = '20000'
-
-    const contractAbiInterface = new ethers.Interface(['function demo()'])
-
-    const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+    const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: []})
 
     const swapModalSettings: SwapModalSettings = {
       onSuccess: () => {

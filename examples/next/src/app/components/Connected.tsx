@@ -12,10 +12,9 @@ import {
 } from '@0xsequence/react-connect'
 import { useIndexerClient } from '@0xsequence/react-hooks'
 import { useOpenWalletModal } from '@0xsequence/react-wallet'
-import { ethers } from 'ethers'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { type ComponentProps, useEffect, useState } from 'react'
-import { formatUnits, parseUnits } from 'viem'
+import { encodeFunctionData, formatUnits, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode, sponsoredContractAddresses } from '../../config'
@@ -216,9 +215,7 @@ export const Connected = () => {
       sendTransaction({ to: account, value: BigInt(0), gas: null })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-
-      const contractAbiInterface = new ethers.Interface(['function demo()'])
-      const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+      const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: [] })
 
       sendTransaction({
         to: sponsoredContractAddress,

@@ -2,6 +2,7 @@ import { ContractCall, SequenceAPIClient } from '@0xsequence/api'
 import { commons } from '@0xsequence/core'
 import { ContractType, TxnTransferType } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
+import { getAddress, encodeFunctionData, zeroAddress } from 'viem'
 
 interface TransactionEncodedWithCall extends commons.transaction.TransactionEncoded {
   call?: ContractCall
@@ -241,8 +242,7 @@ type DecodedTxnData =
   | AwardItemTxnData
 
 const decodeTxnData = async (apiClient: SequenceAPIClient, txns: commons.transaction.TransactionEncoded[]): Promise<TxnData> => {
-  const mainModule = new ethers.Interface(mainModuleAbi)
-  const callData = mainModule.encodeFunctionData('selfExecute', [txns])
+  const callData = encodeFunctionData({ abi: mainModuleAbi, functionName: 'selfExecute', args: [txns] })
 
   try {
     const { call } = await apiClient.decodeContractCall({ callData })
@@ -261,7 +261,7 @@ export const decodeTransactions = async (
   const encodedTxns = encodeTransactions(txns)
   const decodedTxnDatas = (await decodeTxnData(apiClient, encodedTxns)).objs as DecodedTxnData[]
 
-  const from = ethers.getAddress(accountAddress)
+  const from = getAddress(accountAddress)
 
   const txnProps = encodedTxns.map((txn, i): TxnProps | undefined => {
     const decodedTxnData = decodedTxnDatas[i] as DecodedTxnData
@@ -277,10 +277,10 @@ export const decodeTransactions = async (
         type: DecodingType.TRANSFER,
         methodName: 'nativeTokenTransfer',
         transferType: TxnTransferType.SEND,
-        contractAddress: ethers.ZeroAddress,
+        contractAddress: zeroAddress,
         contractType: ContractType.UNKNOWN,
         from,
-        to: ethers.getAddress(txn.target),
+        to: getAddress(txn.target),
         tokenIds: ['0'],
         amounts: [value],
         target,
@@ -292,7 +292,7 @@ export const decodeTransactions = async (
       return undefined
     }
 
-    const contractAddress = ethers.getAddress(txn.target)
+    const contractAddress = getAddress(txn.target)
 
     const baseDecoding: BaseDecoding = {
       type: DecodingType.UNIMPLEMENTED,
@@ -314,7 +314,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC20,
           from,
-          to: ethers.getAddress(args.recipient),
+          to: getAddress(args.recipient),
           tokenIds: ['0'],
           amounts: [String(args.amount)]
         }
@@ -330,7 +330,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC721,
           from,
-          to: ethers.getAddress(args.to),
+          to: getAddress(args.to),
           tokenIds: [args.tokenId],
           amounts: ['1']
         }
@@ -346,7 +346,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC1155,
           from,
-          to: ethers.getAddress(args._to),
+          to: getAddress(args._to),
           tokenIds: [args._id],
           amounts: [args._amount]
         }
@@ -362,7 +362,7 @@ export const decodeTransactions = async (
           contractAddress,
           contractType: ContractType.ERC1155,
           from,
-          to: ethers.getAddress(args._to),
+          to: getAddress(args._to),
           tokenIds: args._ids,
           amounts: args._amounts
         }
@@ -375,7 +375,7 @@ export const decodeTransactions = async (
           ...baseDecoding,
           type: DecodingType.AWARD_ITEM,
           contractAddress,
-          to: ethers.getAddress((args as any)._0),
+          to: getAddress((args as any)._0),
           amount: '1'
         }
       }

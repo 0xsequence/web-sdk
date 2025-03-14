@@ -22,9 +22,8 @@ import {
   useWaasFeeOptions
 } from '@0xsequence/react-connect'
 import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent, useEffect } from 'react'
-import { formatUnits, parseUnits, toHex } from 'viem'
+import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { SendItemInfo } from '../components/SendItemInfo'
@@ -183,24 +182,22 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       case 'ERC721':
         transaction = {
           to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-          data: new ethers.Interface(ERC_721_ABI).encodeFunctionData('safeTransferFrom', [
-            accountAddress,
-            toAddress,
-            tokenId
-          ]) as `0x${string}`
+          data: encodeFunctionData({
+            abi: ERC_721_ABI,
+            functionName: 'safeTransferFrom',
+            args: [accountAddress, toAddress, tokenId]
+          })
         }
         break
       case 'ERC1155':
       default:
         transaction = {
           to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-          data: new ethers.Interface(ERC_1155_ABI).encodeFunctionData('safeBatchTransferFrom', [
-            accountAddress,
-            toAddress,
-            [tokenId],
-            [toHex(sendAmount)],
-            new Uint8Array()
-          ]) as `0x${string}`
+          data: encodeFunctionData({
+            abi: ERC_1155_ABI,
+            functionName: 'safeBatchTransferFrom',
+            args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], new Uint8Array()]
+          })
         }
     }
 
@@ -258,11 +255,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         sendTransaction(
           {
             to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: new ethers.Interface(ERC_721_ABI).encodeFunctionData('safeTransferFrom', [
-              accountAddress,
-              toAddress,
-              tokenId
-            ]) as `0x${string}`,
+            data: encodeFunctionData({
+              abi: ERC_721_ABI,
+              functionName: 'safeTransferFrom',
+              args: [accountAddress, toAddress, tokenId]
+            }),
             gas: null
           },
           txOptions
@@ -282,13 +279,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         sendTransaction(
           {
             to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: new ethers.Interface(ERC_1155_ABI).encodeFunctionData('safeBatchTransferFrom', [
-              accountAddress,
-              toAddress,
-              [tokenId],
-              [toHex(sendAmount)],
-              new Uint8Array()
-            ]) as `0x${string}`,
+            data: encodeFunctionData({
+              abi: ERC_1155_ABI,
+              functionName: 'safeBatchTransferFrom',
+              args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], new Uint8Array()]
+            }),
             gas: null
           },
           txOptions

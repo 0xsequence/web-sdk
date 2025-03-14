@@ -21,9 +21,8 @@ import {
   useWaasFeeOptions
 } from '@0xsequence/react-connect'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
-import { formatUnits, parseUnits, toHex, zeroAddress } from 'viem'
+import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { SendItemInfo } from '../components/SendItemInfo'
@@ -168,7 +167,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     } else {
       transaction = {
         to: tokenBalance?.contractAddress as `0x${string}`,
-        data: new ethers.Interface(ERC_20_ABI).encodeFunctionData('transfer', [toAddress, toHex(sendAmount)]) as `0x${string}`
+        data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] })
       }
     }
 
@@ -235,7 +234,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       sendTransaction(
         {
           to: tokenBalance?.contractAddress as `0x${string}`,
-          data: new ethers.Interface(ERC_20_ABI).encodeFunctionData('transfer', [toAddress, toHex(sendAmount)]) as `0x${string}`,
+          data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] }),
           gas: null
         },
         txOptions

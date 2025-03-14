@@ -12,7 +12,6 @@ import {
   useWallets
 } from '@0xsequence/react-connect'
 import { useOpenWalletModal } from '@0xsequence/react-wallet'
-import { ethers } from 'ethers'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { type ComponentProps, useEffect } from 'react'
@@ -270,9 +269,7 @@ export const Connected = () => {
       })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-
-      const contractAbiInterface = new ethers.Interface(['function demo()'])
-      const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+      const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: [] })
 
       sendTransaction({
         to: sponsoredContractAddress,
@@ -315,10 +312,7 @@ export const Connected = () => {
     const chainId = 137
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const currencyAmount = '20000'
-
-    const contractAbiInterface = new ethers.Interface(['function demo()'])
-
-    const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+    const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: [] })
 
     const swapModalSettings: SwapModalSettings = {
       onSuccess: () => {

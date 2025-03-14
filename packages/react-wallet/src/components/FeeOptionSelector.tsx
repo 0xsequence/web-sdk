@@ -1,6 +1,6 @@
 import { cn, Text, TokenImage } from '@0xsequence/design-system'
-import { ZeroAddress, formatUnits, parseUnits } from 'ethers'
 import React from 'react'
+import { formatUnits, parseUnits, zeroAddress } from 'viem'
 
 import { Alert, AlertProps } from './Alert'
 
@@ -62,7 +62,7 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
       </Text>
       <div className="flex flex-col mt-2 gap-2">
         {sortedOptions.map((option, index) => {
-          const isSelected = selectedFeeOptionAddress === (option.token.contractAddress ?? ZeroAddress)
+          const isSelected = selectedFeeOptionAddress === (option.token.contractAddress ?? zeroAddress)
           const balance = feeOptionBalances.find(b => b.tokenName === option.token.name)
           const isSufficient = isBalanceSufficient(balance?.balance || '0', option.value, option.token.decimals || 0)
           return (
@@ -74,7 +74,7 @@ export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
               key={index}
               onClick={() => {
                 if (isSufficient) {
-                  setSelectedFeeOptionAddress(option.token.contractAddress ?? ZeroAddress)
+                  setSelectedFeeOptionAddress(option.token.contractAddress ?? zeroAddress)
                   setFeeOptionAlert(undefined)
                 } else {
                   setFeeOptionAlert({

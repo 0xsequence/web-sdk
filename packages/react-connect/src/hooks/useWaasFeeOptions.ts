@@ -3,8 +3,9 @@
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useIndexerClient } from '@0xsequence/react-hooks'
 import type { FeeOption } from '@0xsequence/waas'
-import { formatUnits, type ethers } from 'ethers'
+import { type ethers } from 'ethers'
 import { useState, useEffect, useRef } from 'react'
+import { formatUnits } from 'viem'
 import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
 
@@ -170,7 +171,7 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
                 return {
                   ...option,
                   balanceFormatted: option.token.decimals
-                    ? formatUnits(tokenBalances.balances[0]?.balance ?? '0', option.token.decimals)
+                    ? formatUnits(BigInt(tokenBalances.balances[0]?.balance ?? '0'), option.token.decimals)
                     : (tokenBalances.balances[0]?.balance ?? '0'),
                   balance: tokenBalances.balances[0]?.balance ?? '0',
                   hasEnoughBalanceForFee: tokenBalance ? BigInt(option.value) <= BigInt(tokenBalance) : false
@@ -179,7 +180,7 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
               const nativeBalance = await indexerClient.getNativeTokenBalance({ accountAddress })
               return {
                 ...option,
-                balanceFormatted: formatUnits(nativeBalance.balance.balance, 18),
+                balanceFormatted: formatUnits(BigInt(nativeBalance.balance.balance), 18),
                 balance: nativeBalance.balance.balance,
                 hasEnoughBalanceForFee: BigInt(option.value) <= BigInt(nativeBalance.balance.balance)
               }
