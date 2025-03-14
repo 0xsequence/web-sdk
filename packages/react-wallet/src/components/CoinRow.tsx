@@ -1,7 +1,7 @@
 import { Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { formatDisplay } from '@0xsequence/react-connect'
-import { ethers } from 'ethers'
 import React from 'react'
+import { formatUnits } from 'viem'
 
 import { getPercentageColor } from '../utils'
 
@@ -34,7 +34,7 @@ export const CoinRowSkeleton = () => {
 }
 
 export const CoinRow = ({ imageUrl, name, decimals, balance, symbol, fiatValue, priceChangePercentage }: CoinRowProps) => {
-  const formattedBalance = ethers.formatUnits(balance, decimals)
+  const formattedBalance = formatUnits(BigInt(balance), decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   return (

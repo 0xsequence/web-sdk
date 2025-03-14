@@ -4,8 +4,8 @@ import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import dayjs from 'dayjs'
-import { ethers } from 'ethers'
 import React from 'react'
+import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { useSettings, useNavigation } from '../../hooks'
@@ -134,7 +134,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
         </div>
         {amounts.map((amount, index) => {
           const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
-          const isNativeToken = compareAddress(transfer.contractAddress, ethers.ZeroAddress)
+          const isNativeToken = compareAddress(transfer.contractAddress, zeroAddress)
           const isCollectible = transfer.contractInfo?.type === 'ERC721' || transfer.contractInfo?.type === 'ERC1155'
           let decimals
           const tokenId = transfer.tokenIds?.[index]
@@ -143,7 +143,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
           } else {
             decimals = isNativeToken ? nativeTokenInfo.decimals : transfer.contractInfo?.decimals
           }
-          const amountValue = ethers.formatUnits(amount, decimals)
+          const amountValue = formatUnits(BigInt(amount), decimals || 18)
           const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer.contractInfo?.symbol || ''
           const tokenLogoUri = isNativeToken ? nativeTokenInfo.logoURI : transfer.contractInfo?.logoURI
 

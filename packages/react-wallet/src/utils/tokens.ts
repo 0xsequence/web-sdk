@@ -2,7 +2,7 @@ import { TokenPrice } from '@0xsequence/api'
 import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
 import { compareAddress } from '@0xsequence/react-connect'
 import { InfiniteData } from '@tanstack/react-query'
-import { ethers } from 'ethers'
+import { formatUnits, zeroAddress } from 'viem'
 
 export const getPercentageColor = (value: number) => {
   if (value > 0) {
@@ -39,7 +39,7 @@ export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }
     return '0.00'
   }
   const priceFiat = priceForToken.price?.value || 0
-  const valueFormatted = ethers.formatUnits(balance.balance, decimals)
+  const valueFormatted = formatUnits(BigInt(balance.balance), decimals)
   const usdValue = parseFloat(valueFormatted) * priceFiat
   totalUsd += usdValue
 
@@ -65,7 +65,7 @@ export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByType
 
   balances.forEach(balance => {
     // Note: contractType for the native token should be "UNKNOWN"
-    if (balance.contractAddress === ethers.ZeroAddress) {
+    if (balance.contractAddress === zeroAddress) {
       nativeTokens.push(balance)
     } else if (balance.contractType === 'ERC20') {
       erc20Tokens.push(balance)

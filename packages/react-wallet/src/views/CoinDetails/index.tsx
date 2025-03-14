@@ -6,7 +6,7 @@ import {
   useGetExchangeRate,
   useGetTransactionHistory
 } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
+import { formatUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
 import { InfiniteScroll } from '../../components/InfiniteScroll'
@@ -57,7 +57,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
 
   const dataCoinBalance =
     tokenBalance && tokenBalance.length > 0
-      ? compareAddress(contractAddress, ethers.ZeroAddress)
+      ? compareAddress(contractAddress, zeroAddress)
         ? tokenBalance?.[0]
         : tokenBalance?.[1]
       : undefined
@@ -77,12 +77,12 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
     return <CoinDetailsSkeleton chainId={chainId} isReadOnly={isReadOnly} />
   }
 
-  const isNativeToken = compareAddress(contractAddress, ethers.ZeroAddress)
+  const isNativeToken = compareAddress(contractAddress, zeroAddress)
   const logo = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).logoURI : dataCoinBalance?.contractInfo?.logoURI
   const symbol = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).symbol : dataCoinBalance?.contractInfo?.symbol
   const name = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).name : dataCoinBalance?.contractInfo?.name
   const decimals = isNativeToken ? getNativeTokenInfoByChainId(chainId, chains).decimals : dataCoinBalance?.contractInfo?.decimals
-  const formattedBalance = ethers.formatUnits(dataCoinBalance?.balance || '0', decimals)
+  const formattedBalance = formatUnits(BigInt(dataCoinBalance?.balance || '0'), decimals || 18)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   const coinBalanceFiat = dataCoinBalance

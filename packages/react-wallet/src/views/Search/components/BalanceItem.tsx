@@ -1,8 +1,8 @@
 import { Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
-import { ethers } from 'ethers'
 import React from 'react'
+import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
@@ -14,7 +14,7 @@ interface BalanceItemProps {
 export const BalanceItem = ({ balance }: BalanceItemProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
-  const isNativeToken = compareAddress(balance.contractAddress, ethers.ZeroAddress)
+  const isNativeToken = compareAddress(balance.contractAddress, zeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
   const logoURI = isNativeToken ? nativeTokenInfo.logoURI : balance?.contractInfo?.logoURI
   const tokenName = isNativeToken ? nativeTokenInfo.name : balance?.contractInfo?.name || 'Unknown'
@@ -25,7 +25,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
       return balance.uniqueCollectibles
     }
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
-    const bal = ethers.formatUnits(balance.balance, decimals || 0)
+    const bal = formatUnits(BigInt(balance.balance), decimals || 0)
     const displayBalance = formatDisplay(bal)
     const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 

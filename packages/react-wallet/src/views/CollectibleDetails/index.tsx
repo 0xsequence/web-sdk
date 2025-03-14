@@ -6,7 +6,7 @@ import {
   useGetCollectiblePrices,
   useGetExchangeRate
 } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
+import { formatUnits } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
 import { CollectibleTileImage } from '../../components/CollectibleTileImage'
@@ -93,7 +93,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: Collec
 
   const decimals = dataCollectibleBalance?.tokenMetadata?.decimals || 0
   const rawBalance = dataCollectibleBalance?.balance || '0'
-  const balance = ethers.formatUnits(rawBalance, decimals)
+  const balance = formatUnits(BigInt(rawBalance), decimals)
   const formattedBalance = formatDisplay(Number(balance))
 
   const valueFiat = dataCollectibleBalance

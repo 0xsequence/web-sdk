@@ -2,8 +2,8 @@ import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent } from 'react'
+import { parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
 import { SendItemInfo } from '../../components/SendItemInfo'
@@ -73,13 +73,13 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
     return null
   }
 
-  const isNativeCoin = compareAddress(contractAddress, ethers.ZeroAddress)
+  const isNativeCoin = compareAddress(contractAddress, zeroAddress)
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
   const name = isNativeCoin ? nativeTokenInfo.name : tokenBalance?.contractInfo?.name || ''
   const imageUrl = isNativeCoin ? nativeTokenInfo.logoURI : tokenBalance?.contractInfo?.logoURI
   const symbol = isNativeCoin ? nativeTokenInfo.symbol : tokenBalance?.contractInfo?.symbol || ''
   const amountToSendFormatted = amount === '' ? '0' : amount
-  const amountRaw = ethers.parseUnits(amountToSendFormatted, decimals)
+  const amountRaw = parseUnits(amountToSendFormatted, decimals)
 
   const amountToSendFiat = computeBalanceFiat({
     balance: {

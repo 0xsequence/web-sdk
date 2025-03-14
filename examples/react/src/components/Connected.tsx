@@ -346,7 +346,7 @@ export const Connected = () => {
     }
 
     // NATIVE token sale
-    // const currencyAddress = ethers.ZeroAddress
+    // const currencyAddress = zeroAddress
     // const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
     // const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
     // const price = '200000000000000'

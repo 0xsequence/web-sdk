@@ -2,8 +2,8 @@ import { commons } from '@0xsequence/core'
 import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
 import { useAPIClient, useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
+import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helpers'
@@ -88,7 +88,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const { chains } = useConfig()
   const contractAddress = transferProps.contractAddress
   const toAddress: string | undefined = transferProps.to
-  const isNativeCoin = contractAddress ? compareAddress(contractAddress, ethers.ZeroAddress) : true
+  const isNativeCoin = contractAddress ? compareAddress(contractAddress, zeroAddress) : true
   const is1155 = transferProps.contractType === ContractType.ERC1155
   const isNFT = transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
@@ -147,7 +147,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
             </div>
 
             <Text color="muted" variant="normal">
-              {`${ethers.formatUnits(amountSending, is1155 ? tokenMetadata?.[0]?.decimals : isNFT ? 0 : decimals)} ${symbol} `}
+              {`${formatUnits(BigInt(amountSending), is1155 ? tokenMetadata?.[0]?.decimals || 0 : isNFT ? 0 : decimals)} ${symbol} `}
             </Text>
           </div>
         </div>

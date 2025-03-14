@@ -23,6 +23,7 @@ import {
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
+import { formatUnits, parseUnits, toHex, zeroAddress } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { SendItemInfo } from '../components/SendItemInfo'
@@ -105,13 +106,13 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     return null
   }
 
-  const isNativeCoin = compareAddress(contractAddress, ethers.ZeroAddress)
+  const isNativeCoin = compareAddress(contractAddress, zeroAddress)
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
   const name = isNativeCoin ? nativeTokenInfo.name : tokenBalance?.contractInfo?.name || ''
   const imageUrl = isNativeCoin ? nativeTokenInfo.logoURI : tokenBalance?.contractInfo?.logoURI
   const symbol = isNativeCoin ? nativeTokenInfo.symbol : tokenBalance?.contractInfo?.symbol || ''
   const amountToSendFormatted = amount === '' ? '0' : amount
-  const amountRaw = ethers.parseUnits(amountToSendFormatted, decimals)
+  const amountRaw = parseUnits(amountToSendFormatted, decimals)
 
   const amountToSendFiat = computeBalanceFiat({
     balance: {
@@ -137,7 +138,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
   const handleMax = () => {
     amountInputRef.current?.focus()
-    const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
+    const maxAmount = formatUnits(BigInt(tokenBalance?.balance || 0), decimals).toString()
 
     setAmount(maxAmount)
   }
@@ -156,7 +157,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     setIsCheckingFeeOptions(true)
 
-    const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
+    const sendAmount = parseUnits(amountToSendFormatted, decimals)
     let transaction
 
     if (isNativeCoin) {
@@ -167,10 +168,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     } else {
       transaction = {
         to: tokenBalance?.contractAddress as `0x${string}`,
-        data: new ethers.Interface(ERC_20_ABI).encodeFunctionData('transfer', [
-          toAddress,
-          ethers.toQuantity(sendAmount)
-        ]) as `0x${string}`
+        data: new ethers.Interface(ERC_20_ABI).encodeFunctionData('transfer', [toAddress, toHex(sendAmount)]) as `0x${string}`
       }
     }
 
@@ -209,7 +207,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     setIsSendTxnPending(true)
 
-    const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
+    const sendAmount = parseUnits(amountToSendFormatted, decimals)
 
     const txOptions = {
       onSettled: (result: any) => {
@@ -237,10 +235,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       sendTransaction(
         {
           to: tokenBalance?.contractAddress as `0x${string}`,
-          data: new ethers.Interface(ERC_20_ABI).encodeFunctionData('transfer', [
-            toAddress,
-            ethers.toQuantity(sendAmount)
-          ]) as `0x${string}`,
+          data: new ethers.Interface(ERC_20_ABI).encodeFunctionData('transfer', [toAddress, toHex(sendAmount)]) as `0x${string}`,
           gas: null
         },
         txOptions

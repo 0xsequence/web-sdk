@@ -11,7 +11,7 @@ import {
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus, getNativeTokenInfoByChainId, compareAddress, formatDisplay } from '@0xsequence/react-connect'
 import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
+import { zeroAddress, formatUnits } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'
@@ -46,7 +46,7 @@ export const CheckoutSelection = () => {
 
   const isPending = (isPendingContractInfo || isPendingBalances) && cryptoCheckoutSettings
 
-  const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', ethers.ZeroAddress)
+  const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', zeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(cryptoCheckoutSettings?.chainId || 1, chains)
 
   const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : contractInfoData?.decimals || 0
@@ -57,8 +57,8 @@ export const CheckoutSelection = () => {
   )
   const userBalanceRaw = coinBalance ? coinBalance.balance : '0'
   const requestedAmountRaw = cryptoCheckoutSettings?.coinQuantity?.amountRequiredRaw || '0'
-  const userBalance = ethers.formatUnits(userBalanceRaw, coinDecimals)
-  const requestAmount = ethers.formatUnits(requestedAmountRaw, coinDecimals)
+  const userBalance = formatUnits(BigInt(userBalanceRaw), coinDecimals)
+  const requestAmount = formatUnits(BigInt(requestedAmountRaw), coinDecimals)
   const isInsufficientBalance = BigInt(userBalanceRaw) < BigInt(requestedAmountRaw)
 
   const orderSummaryItems = settings?.orderSummaryItems || []

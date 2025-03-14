@@ -1,7 +1,7 @@
 import { NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { formatDisplay } from '@0xsequence/react-connect'
-import { ethers } from 'ethers'
 import React from 'react'
+import { formatUnits } from 'viem'
 
 import { useSettings } from '../hooks'
 
@@ -49,7 +49,7 @@ export const SendItemInfo = ({
   balanceSuffix = 'available'
 }: SendItemInfoProps) => {
   const { fiatCurrency } = useSettings()
-  const formattedBalance = ethers.formatUnits(balance, decimals)
+  const formattedBalance = formatUnits(BigInt(balance), decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   return (

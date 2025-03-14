@@ -314,7 +314,7 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
     // limits the digital assets displayed on the assets summary screen
     displayedAssets: [
       {
-        contractAddress: ethers.ZeroAddress,
+        contractAddress: zeroAddress,
         chainId: 137,
       },
       {

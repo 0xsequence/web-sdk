@@ -1,7 +1,8 @@
 import { Card, Image, Text, Skeleton, TokenImage, NetworkImage } from '@0xsequence/design-system'
 import { formatDisplay } from '@0xsequence/react-connect'
 import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
+import { formatUnits } from 'viem'
+
 interface OrderSummaryItem {
   contractAddress: string
   tokenId: string
@@ -29,7 +30,7 @@ export const OrderSummaryItem = ({ contractAddress, tokenId, quantityRaw, chainI
 
   const { logoURI: collectionLogoURI, name: collectionName = 'Unknown Collection' } = contractInfo || {}
 
-  const balanceFormatted = ethers.formatUnits(quantityRaw, decimals)
+  const balanceFormatted = formatUnits(BigInt(quantityRaw), decimals)
 
   return (
     <Card className="flex flex-row items-start justify-between">

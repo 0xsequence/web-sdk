@@ -2,7 +2,7 @@ import { Image, Text, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import { formatDisplay, ContractVerificationStatus } from '@0xsequence/react-connect'
 import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
+import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { NetworkBadge } from '../../components/NetworkBadge'
@@ -71,7 +71,7 @@ export const CollectionDetails = ({ chainId, contractAddress }: CollectionDetail
           {collectionBalanceData?.map((balance, index) => {
             const unformattedBalance = balance.balance
             const decimals = balance?.tokenMetadata?.decimals || 0
-            const formattedBalance = formatDisplay(ethers.formatUnits(unformattedBalance, decimals))
+            const formattedBalance = formatDisplay(formatUnits(BigInt(unformattedBalance), decimals))
 
             return (
               <div className="select-none cursor-pointer" key={index} onClick={() => onClickItem(balance)}>

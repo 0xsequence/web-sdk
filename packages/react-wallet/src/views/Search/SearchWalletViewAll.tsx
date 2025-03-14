@@ -1,9 +1,9 @@
 import { SearchIcon, Skeleton, TabsContent, TabsHeader, TabsRoot, TextInput } from '@0xsequence/design-system'
 import { getNativeTokenInfoByChainId, ContractVerificationStatus, compareAddress } from '@0xsequence/react-connect'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useState, useEffect } from 'react'
+import { zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
@@ -55,7 +55,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   })
 
   const coinBalancesUnordered =
-    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
+    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, zeroAddress)) || []
 
   const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
@@ -95,7 +95,7 @@ export const SearchWalletViewAll = ({ defaultTab }: SearchWalletViewAllProps) =>
   const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
   const indexedCoinBalances: IndexedData[] = coinBalances.map((balance, index) => {
-    if (compareAddress(balance.contractAddress, ethers.ZeroAddress)) {
+    if (compareAddress(balance.contractAddress, zeroAddress)) {
       const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
       return {

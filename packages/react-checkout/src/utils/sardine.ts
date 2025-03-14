@@ -1,6 +1,6 @@
 import { ChainId, networks } from '@0xsequence/network'
 import { DEBUG } from '@0xsequence/react-connect'
-import { ethers } from 'ethers'
+import { zeroAddress } from 'viem'
 
 export interface CheckSardineWhitelistStatusArgs {
   chainId: number
@@ -36,7 +36,7 @@ export const checkSardineWhitelistStatus = async (
         name: 'whitelist-check',
         imageUrl: 'https://www.sequence.market/images/placeholder.png',
         network: networks[chainId as ChainId].name,
-        recipientAddress: ethers.ZeroAddress,
+        recipientAddress: zeroAddress,
         contractAddress: marketplaceAddress,
         platform: 'calldata_execution',
         executionType: 'smart_contract',

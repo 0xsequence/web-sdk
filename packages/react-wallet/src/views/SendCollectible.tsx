@@ -24,6 +24,7 @@ import {
 import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import { useRef, useState, ChangeEvent, useEffect } from 'react'
+import { formatUnits, parseUnits, toHex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
 import { SendItemInfo } from '../components/SendItemInfo'
@@ -92,7 +93,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
         setAmount('1')
         setShowAmountControls(false)
       } else if (contractType === 'ERC1155') {
-        if (Number(ethers.formatUnits(tokenBalance?.balance || 0, decimals)) >= 1) {
+        if (Number(formatUnits(BigInt(tokenBalance?.balance || 0), decimals)) >= 1) {
           setAmount('1')
         }
         setShowAmountControls(true)
@@ -122,7 +123,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const name = tokenBalance?.tokenMetadata?.name || 'Unknown'
   const imageUrl = tokenBalance?.tokenMetadata?.image || tokenBalance?.contractInfo?.logoURI || ''
   const amountToSendFormatted = amount === '' ? '0' : amount
-  const amountRaw = ethers.parseUnits(amountToSendFormatted, decimals)
+  const amountRaw = parseUnits(amountToSendFormatted, decimals)
 
   const insufficientFunds = amountRaw > BigInt(tokenBalance?.balance || '0')
   const isNonZeroAmount = amountRaw > 0n
@@ -147,7 +148,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const handleAddOne = () => {
     amountInputRef.current?.focus()
     const incrementedAmount = Number(amount) + 1
-    const maxAmount = Number(ethers.formatUnits(tokenBalance?.balance || 0, decimals))
+    const maxAmount = Number(formatUnits(BigInt(tokenBalance?.balance || 0), decimals))
 
     const newAmount = Math.min(incrementedAmount, maxAmount).toString()
 
@@ -156,7 +157,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   const handleMax = () => {
     amountInputRef.current?.focus()
-    const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
+    const maxAmount = formatUnits(BigInt(tokenBalance?.balance || 0), decimals).toString()
 
     setAmount(maxAmount)
   }
@@ -175,7 +176,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
     setIsCheckingFeeOptions(true)
 
-    const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
+    const sendAmount = parseUnits(amountToSendFormatted, decimals)
     let transaction
 
     switch (contractType) {
@@ -197,7 +198,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             accountAddress,
             toAddress,
             [tokenId],
-            [ethers.toQuantity(sendAmount)],
+            [toHex(sendAmount)],
             new Uint8Array()
           ]) as `0x${string}`
         }
@@ -228,7 +229,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       switchChain({ chainId })
     }
 
-    const sendAmount = ethers.parseUnits(amountToSendFormatted, decimals)
+    const sendAmount = parseUnits(amountToSendFormatted, decimals)
 
     const txOptions = {
       onSettled: (result: any) => {
@@ -285,7 +286,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               accountAddress,
               toAddress,
               [tokenId],
-              [ethers.toQuantity(sendAmount)],
+              [toHex(sendAmount)],
               new Uint8Array()
             ]) as `0x${string}`,
             gas: null
@@ -295,7 +296,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     }
   }
 
-  const maxAmount = ethers.formatUnits(tokenBalance?.balance || 0, decimals).toString()
+  const maxAmount = formatUnits(BigInt(tokenBalance?.balance || 0), decimals).toString()
 
   const isMinimum = Number(amount) === 0
   const isMaximum = Number(amount) >= Number(maxAmount)

@@ -15,7 +15,8 @@ import {
   TransactionRejectedRpcError,
   UserRejectedRequestError,
   getAddress,
-  zeroAddress
+  zeroAddress,
+  toHex
 } from 'viem'
 import { createConnector } from 'wagmi'
 
@@ -202,7 +203,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
 
       await provider.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: ethers.toQuantity(chainId) }]
+        params: [{ chainId: toHex(chainId) }]
       })
 
       config.emitter.emit('change', { chainId })
@@ -270,7 +271,7 @@ export class SequenceWaasProvider extends ethers.AbstractProvider implements EIP
     }
 
     if (method === 'eth_chainId') {
-      return ethers.toQuantity(this.currentNetwork.chainId)
+      return toHex(this.currentNetwork.chainId)
     }
 
     if (method === 'eth_accounts') {

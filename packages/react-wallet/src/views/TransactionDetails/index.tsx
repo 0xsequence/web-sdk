@@ -14,7 +14,7 @@ import { Transaction, TxnTransfer } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
 import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import dayjs from 'dayjs'
-import { ethers } from 'ethers'
+import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { CopyButton } from '../../components/CopyButton'
@@ -49,7 +49,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
         }
       })
     } else {
-      const contractAddress = transfer?.contractInfo?.address || ethers.ZeroAddress
+      const contractAddress = transfer?.contractInfo?.address || zeroAddress
       const foundCoin = coins.find(
         coin => coin.chainId === transaction.chainId && compareAddress(coin.contractAddress, contractAddress)
       )
@@ -90,7 +90,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     const recipientAddress = transfer.to
     const recipientAddressFormatted =
       recipientAddress.substring(0, 10) + '...' + recipientAddress.substring(transfer.to.length - 4, transfer.to.length)
-    const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', ethers.ZeroAddress)
+    const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', zeroAddress)
     const logoURI = isNativeToken ? nativeTokenInfo.logoURI : transfer?.contractInfo?.logoURI
     const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer?.contractInfo?.symbol || ''
 
@@ -102,7 +102,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           const collectibleDecimals = transfer?.tokenMetadata?.[tokenId]?.decimals || 0
           const coinDecimals = isNativeToken ? nativeTokenInfo.decimals : transfer?.contractInfo?.decimals || 0
           const decimals = isCollectible ? collectibleDecimals : coinDecimals
-          const formattedBalance = ethers.formatUnits(amount, decimals)
+          const formattedBalance = formatUnits(BigInt(amount), decimals)
           const balanceDisplayed = formatDisplay(formattedBalance)
           const fiatPrice = isCollectible
             ? collectiblePricesData?.find(
@@ -113,7 +113,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
               )?.price?.value
             : coinPricesData?.find(
                 coin =>
-                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || ethers.ZeroAddress) &&
+                  compareAddress(coin.token.contractAddress, transfer.contractInfo?.address || zeroAddress) &&
                   coin.token.chainId === transaction.chainId
               )?.price?.value
 

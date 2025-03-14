@@ -1,7 +1,6 @@
 import { CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { ethers } from 'ethers'
-import { Abi, Hex, encodeFunctionData, toHex } from 'viem'
+import { Abi, Hex, encodeFunctionData, toHex, zeroAddress } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi'
@@ -26,7 +25,7 @@ type SaleContractSettings = Omit<
 export const getERC1155SaleContractConfig = ({
   chain,
   price,
-  currencyAddress = ethers.ZeroAddress,
+  currencyAddress = zeroAddress,
   recipientAddress,
   collectibles,
   collectionAddress,

@@ -1,13 +1,14 @@
 import { TokenBalance } from '@0xsequence/indexer'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
 import { useGetContractInfo, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
-import { ethers } from 'ethers'
+import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../../../../hooks'
 import { computeBalanceFiat, getPercentagePriceChange } from '../../../../../utils'
 
 import { CoinTileContent } from './CoinTileContent'
+
 interface CoinTileProps {
   balance: TokenBalance
 }
@@ -15,7 +16,7 @@ interface CoinTileProps {
 export const CoinTile = ({ balance }: CoinTileProps) => {
   const { chains } = useConfig()
   const { fiatCurrency } = useSettings()
-  const isNativeToken = compareAddress(balance.contractAddress, ethers.ZeroAddress)
+  const isNativeToken = compareAddress(balance.contractAddress, zeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
 
   const { data: dataCoinPrices = [], isPending: isPendingCoinPrice } = useGetCoinPrices([
@@ -45,7 +46,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
       decimals: nativeTokenInfo.decimals
     })
     const priceChangePercentage = getPercentagePriceChange(balance, dataCoinPrices)
-    const formattedBalance = ethers.formatUnits(balance.balance, nativeTokenInfo.decimals)
+    const formattedBalance = formatUnits(BigInt(balance.balance), nativeTokenInfo.decimals)
     const balanceDisplayed = formatDisplay(formattedBalance)
 
     return (
@@ -71,7 +72,7 @@ export const CoinTile = ({ balance }: CoinTileProps) => {
   })
   const priceChangePercentage = getPercentagePriceChange(balance, dataCoinPrices)
 
-  const formattedBalance = ethers.formatUnits(balance.balance, decimals)
+  const formattedBalance = formatUnits(BigInt(balance.balance), decimals)
   const balanceDisplayed = formatDisplay(formattedBalance)
 
   const name = contractInfo?.name || 'Unknown'
