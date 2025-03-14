@@ -1,6 +1,6 @@
-import { findSupportedNetwork } from '@0xsequence/network'
 import { ArrowRightIcon, Card, CurrencyIcon, Text } from '@0xsequence/design-system'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
+import { findSupportedNetwork } from '@0xsequence/network'
 
 import { useSelectPaymentModal, useAddFundsModal } from '../../hooks'
 
@@ -8,18 +8,15 @@ interface FundWithFiatProps {
   cryptoSymbol?: string
   walletAddress: string
   provider: TransactionOnRampProvider
-  chainId?: number
+  chainId: number
 }
 
 export const FundWithFiat = ({ cryptoSymbol, walletAddress, provider, chainId }: FundWithFiatProps) => {
   const { triggerAddFunds } = useAddFundsModal()
-  const { closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
+  const { closeSelectPaymentModal } = useSelectPaymentModal()
 
   const getNetworks = (): string | undefined => {
-    const chain = selectPaymentSettings?.chain
-    if (!chain) return
-
-    const network = findSupportedNetwork(chain)
+    const network = findSupportedNetwork(chainId)
     return network?.name?.toLowerCase()
   }
 

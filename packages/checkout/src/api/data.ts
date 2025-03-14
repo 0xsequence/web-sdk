@@ -1,5 +1,5 @@
-import { DEBUG } from '@0xsequence/connect'
 import { SequenceAPIClient } from '@0xsequence/api'
+import { DEBUG } from '@0xsequence/connect'
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
 
