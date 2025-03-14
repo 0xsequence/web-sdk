@@ -1,4 +1,10 @@
-import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/checkout'
+import {
+  useCheckoutModal,
+  useAddFundsModal,
+  useSelectPaymentModal,
+  useSwapModal,
+  TransactionOnRampProvider
+} from '@0xsequence/checkout'
 import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   useStorage,
@@ -386,6 +392,7 @@ export const Connected = () => {
       currencyAddress,
       collectionAddress,
       creditCardProviders: ['sardine', 'transak'],
+      onRampProvider: TransactionOnRampProvider.sardine,
       transakConfig: {
         contractId,
         apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
@@ -436,7 +443,8 @@ export const Connected = () => {
 
   const onClickAddFunds = () => {
     triggerAddFunds({
-      walletAddress: address || ''
+      walletAddress: address || '',
+      provider: TransactionOnRampProvider.transak
     })
   }
 

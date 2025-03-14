@@ -5,7 +5,7 @@ import {
   sendTransactions,
   ContractVerificationStatus
 } from '@0xsequence/connect'
-import { Button, Divider, Text } from '@0xsequence/design-system'
+import { Button, Divider, Text, Spinner } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
 import {
   useClearCachedBalances,
@@ -26,6 +26,7 @@ import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
 import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 
 import { Footer } from './Footer'
+import { FundWithFiat } from './FundWithFiat'
 import { OrderSummary } from './OrderSummary'
 import { PayWithCreditCard } from './PayWithCreditCard'
 import { PayWithCrypto } from './PayWithCrypto/index'
@@ -68,6 +69,7 @@ export const PaymentSelectionContent = () => {
     enableSwapPayments = true,
     creditCardProviders = [],
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onRampProvider,
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
@@ -402,6 +404,8 @@ export const PaymentSelectionContent = () => {
     }
   }
 
+  const cryptoSymbol = isNativeToken ? network?.nativeToken.symbol : _currencyInfoData?.symbol
+
   return (
     <>
       <div
@@ -433,6 +437,23 @@ export const PaymentSelectionContent = () => {
               disableButtons={disableButtons}
               skipOnCloseCallback={skipOnCloseCallback}
             />
+          </>
+        )}
+        {onRampProvider && (
+          <>
+            <Divider className="w-full my-3" />
+            {isLoadingCurrencyInfo && !isNativeToken ? (
+              <div className="w-full h-full flex justify-center items-center">
+                <Spinner />
+              </div>
+            ) : (
+              <FundWithFiat
+                cryptoSymbol={cryptoSymbol}
+                walletAddress={userAddress || ''}
+                provider={onRampProvider}
+                chainId={chainId}
+              />
+            )}
           </>
         )}
         {enableTransferFunds && (

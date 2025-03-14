@@ -1,3 +1,4 @@
+import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { Hex } from 'viem'
 
 import { createGenericContext } from './genericContext'
@@ -14,6 +15,8 @@ export interface AddFundsSettings {
   onOrderCreated?: (data: any) => void
   onOrderSuccessful?: (data: any) => void
   onOrderFailed?: (data: any) => void
+  provider?: TransactionOnRampProvider
+  cryptoAmount?: string
 }
 
 type AddFundsModalContext = {
