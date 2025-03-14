@@ -18,7 +18,7 @@ const TreeNode = ({ data, keyName, depth = 0 }: TreeNodeProps) => {
       {/* Key and Value */}
       <div
         onClick={isObject ? toggle : undefined}
-        className={`flex items-center gap-1 rounded px-1 py-1 ${isObject ? 'cursor-pointer' : ''}`}
+        className={`flex items-center gap-1 px-1 py-1 ${isObject ? 'cursor-pointer' : ''}`}
       >
         {isObject && <span className="w-4 h-4 flex items-center justify-center">{isExpanded ? '▼' : '▶'}</span>}
 
@@ -56,7 +56,7 @@ interface JsonTreeViewerProps {
 
 const JsonTreeViewer = ({ data }: JsonTreeViewerProps) => {
   return (
-    <div className={'font-mono text-sm rounded-lg overflow-x-auto'}>
+    <div className={'font-mono text-sm overflow-x-auto'}>
       <TreeNode data={data} />
     </div>
   )
