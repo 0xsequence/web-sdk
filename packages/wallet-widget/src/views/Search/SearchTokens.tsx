@@ -1,6 +1,6 @@
+import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { cardVariants, cn, GearIcon, SearchIcon, TextInput } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'

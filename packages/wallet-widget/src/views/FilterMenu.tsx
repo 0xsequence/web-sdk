@@ -1,6 +1,6 @@
+import { formatAddress, useWallets } from '@0xsequence/connect'
 import { cardVariants, ChevronRightIcon, cn, GradientAvatar, Text, TokenImage } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
-import { formatAddress, useWallets } from '@0xsequence/react-connect'
 import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 

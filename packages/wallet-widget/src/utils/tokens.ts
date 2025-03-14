@@ -2,8 +2,8 @@ import { TokenPrice } from '@0xsequence/api'
 import { compareAddress } from '@0xsequence/connect'
 import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
 import { InfiniteData } from '@tanstack/react-query'
-import { formatUnits, zeroAddress } from 'viem'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { formatUnits, zeroAddress } from 'viem'
 
 export const getPercentageColor = (value: number) => {
   if (value > 0) {

@@ -551,7 +551,7 @@ importers:
         version: 12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       micro-observables:
         specifier: 1.7.2
-        version: 1.7.2(react@18.3.1)
+        version: 1.7.2(react@19.0.0)
       qrcode.react:
         specifier: ^4.0.1
         version: 4.2.0(react@19.0.0)
@@ -15095,10 +15095,10 @@ snapshots:
 
   micro-ftch@0.3.1: {}
 
-  micro-observables@1.7.2(react@18.3.1):
+  micro-observables@1.7.2(react@19.0.0):
     dependencies:
       hoist-non-react-statics: 3.3.2
-      react: 18.3.1
+      react: 19.0.0
 
   micromatch@4.0.8:
     dependencies:

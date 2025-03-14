@@ -1,6 +1,6 @@
+import { ContractVerificationStatus } from '@0xsequence/connect'
 import { SearchIcon, TextInput, GearIcon, cn, cardVariants } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import { ContractVerificationStatus } from '@0xsequence/react-connect'
 import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import Fuse from 'fuse.js'
 import { AnimatePresence } from 'motion/react'

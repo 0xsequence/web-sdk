@@ -1,4 +1,4 @@
-import { ConnectedWallet, useWallets, LocalStorageKey, useWalletSettings } from '@0xsequence/react-connect'
+import { ConnectedWallet, useWallets, LocalStorageKey, useWalletSettings } from '@0xsequence/connect'
 import { Observable, observable } from 'micro-observables'
 import { useConfig } from 'wagmi'
 
@@ -141,8 +141,6 @@ export const useSettings = (): Settings => {
     } catch (e) {
       console.error(e, 'Failed to fetch settings')
     }
-
-    console.log('Creating observable instance', Math.random())
 
     return {
       hideUnlistedTokensObservable: observable(hideUnlistedTokens),

@@ -1,3 +1,4 @@
+import { compareAddress, formatAddress, useWallets, useOpenConnectModal } from '@0xsequence/connect'
 import {
   Button,
   SendIcon,
@@ -13,7 +14,6 @@ import {
   EllipsisIcon
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { compareAddress, formatAddress, useWallets, useOpenConnectModal } from '@0xsequence/react-connect'
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'

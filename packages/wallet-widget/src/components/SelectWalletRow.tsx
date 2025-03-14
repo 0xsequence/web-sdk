@@ -1,7 +1,6 @@
+import { formatAddress, ConnectedWallet } from '@0xsequence/connect'
 import { ChevronRightIcon, Text } from '@0xsequence/design-system'
-import { cardVariants } from '@0xsequence/design-system'
-import { cn } from '@0xsequence/design-system'
-import { formatAddress, ConnectedWallet } from '@0xsequence/react-connect'
+import { cn, cardVariants } from '@0xsequence/design-system'
 
 import { WalletAccountGradient } from './WalletAccountGradient'
 

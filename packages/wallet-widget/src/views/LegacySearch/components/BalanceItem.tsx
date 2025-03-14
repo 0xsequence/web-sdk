@@ -1,6 +1,6 @@
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/react-connect'
 import { ethers } from 'ethers'
 import React from 'react'
 import { useConfig } from 'wagmi'
