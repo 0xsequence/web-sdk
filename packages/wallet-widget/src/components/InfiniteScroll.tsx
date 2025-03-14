@@ -22,15 +22,20 @@ export const useIntersectionObserver = (ref: RefObject<Element | null>, options?
 interface InfiniteScrollProps {
   onLoad: (pageNumber: number) => Promise<any>
   hasMore?: boolean
+  resetTrigger?: boolean
 }
 
 export const InfiniteScroll = (props: PropsWithChildren<InfiniteScrollProps>) => {
-  const { onLoad, hasMore = true, children } = props
+  const { onLoad, hasMore = true, children, resetTrigger } = props
 
   const [pageNumber, setPageNumber] = useState(0)
   const [isLoading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const isBottom = useIntersectionObserver(bottomRef)
+
+  useEffect(() => {
+    setPageNumber(0)
+  }, [resetTrigger])
 
   useEffect(() => {
     if (isBottom && hasMore && !isLoading) {
