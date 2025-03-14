@@ -1,8 +1,7 @@
 import { ContractCall, SequenceAPIClient } from '@0xsequence/api'
 import { commons } from '@0xsequence/core'
 import { ContractType, TxnTransferType } from '@0xsequence/indexer'
-import { ethers } from 'ethers'
-import { getAddress, encodeFunctionData, zeroAddress } from 'viem'
+import { getAddress, encodeFunctionData, zeroAddress, Hex, slice, toHex } from 'viem'
 
 interface TransactionEncodedWithCall extends commons.transaction.TransactionEncoded {
   call?: ContractCall
@@ -84,29 +83,32 @@ const transformArgs = (args: ContractCallArg[]): any => {
   )
 }
 
-const createTxnData = (to: string, call: ContractCall, value: ethers.BigNumberish, data: ethers.BytesLike): TxnData => {
+const createTxnData = (to: string, call: ContractCall, value: string | number | bigint, data: Hex): TxnData => {
   const args = transformArgs(call.args)
-  const byteSignature = ethers.dataSlice(data, 0, 4)
+  const byteSignature = slice(data, 0, 4)
 
   let objs: TxnData['objs'] = []
   switch (call.signature) {
     case 'execute((bool,bool,uint256,address,uint256,bytes)[],uint256,bytes)':
     case 'selfExecute((bool,bool,uint256,address,uint256,bytes)[])': {
       const txns: TransactionEncodedWithCall[] = call.args[0].value
-      objs = txns.map(txn =>
-        txn.call
-          ? createTxnData(txn.target, txn.call, txn.value, txn.data)
+      objs = txns.map(txn => {
+        const data = toHex(txn.data) as Hex
+        const value = toHex(BigInt(txn.value))
+
+        return txn.call
+          ? createTxnData(txn.target, txn.call, value, data)
           : {
               to: txn.target,
               signature: '',
-              byteSignature: ethers.dataSlice(txn.data, 0, 4),
+              byteSignature: slice(data, 0, 4),
               methodName: '',
               args: {},
               objs: [],
-              value: BigInt(txn.value).toString(),
-              data: ethers.hexlify(txn.data)
+              value,
+              data
             }
-      )
+      })
     }
   }
 
@@ -117,8 +119,8 @@ const createTxnData = (to: string, call: ContractCall, value: ethers.BigNumberis
     methodName: call.function,
     args,
     objs,
-    value: BigInt(value).toString(),
-    data: ethers.hexlify(data)
+    value: toHex(BigInt(value)),
+    data: data
   }
 }
 
