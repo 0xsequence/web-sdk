@@ -12,10 +12,10 @@
   "dependencies": {
     "@0xsequence/design-system": "^2.0.9",
     "@0xsequence/network": ">= 2.2.13",
-    "@0xsequence/react-checkout": "workspace:*",
-    "@0xsequence/react-connect": "workspace:*",
+    "@0xsequence/checkout": "workspace:*",
+    "@0xsequence/connect": "workspace:*",
     "@0xsequence/react-hooks": "workspace:*",
-    "@0xsequence/react-wallet": "workspace:*",
+    "@0xsequence/wallet-widget": "workspace:*",
     "@0xsequence/waas": ">= 2.2.13",
     "@tailwindcss/postcss": "^4.0.6",
     "@tanstack/react-query": "^5.62.0",

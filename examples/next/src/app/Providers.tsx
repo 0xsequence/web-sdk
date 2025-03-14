@@ -1,8 +1,8 @@
 'use client'
 
-import { SequenceCheckoutProvider } from '@0xsequence/react-checkout'
-import { SequenceConnect } from '@0xsequence/react-connect'
-import { SequenceWalletProvider } from '@0xsequence/react-wallet'
+import { SequenceCheckoutProvider } from '@0xsequence/checkout'
+import { SequenceConnect } from '@0xsequence/connect'
+import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
 import { State } from 'wagmi'
 
 import { config } from '../config'

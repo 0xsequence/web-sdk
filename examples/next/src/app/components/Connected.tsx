@@ -1,6 +1,4 @@
-import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
-import { ChainId, allNetworks } from '@0xsequence/network'
-import type { CheckoutSettings } from '@0xsequence/react-checkout'
+import type { CheckoutSettings } from '@0xsequence/checkout'
 import {
   signEthAuthProof,
   useWallets,
@@ -9,9 +7,11 @@ import {
   validateEthProof,
   ContractVerificationStatus,
   useOpenConnectModal
-} from '@0xsequence/react-connect'
+} from '@0xsequence/connect'
+import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
+import { ChainId, allNetworks } from '@0xsequence/network'
 import { useIndexerClient } from '@0xsequence/react-hooks'
-import { useOpenWalletModal } from '@0xsequence/react-wallet'
+import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { type ComponentProps, useEffect, useState } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, parseUnits } from 'viem'

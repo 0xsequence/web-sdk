@@ -8,9 +8,9 @@ importers:
 
   .:
     devDependencies:
-      '@0xsequence/react-connect':
+      '@0xsequence/connect':
         specifier: workspace:*
-        version: link:packages/react-connect
+        version: link:packages/connect
       '@changesets/changelog-github':
         specifier: ^0.5.0
         version: 0.5.0
@@ -104,27 +104,27 @@ importers:
 
   examples/next:
     dependencies:
+      '@0xsequence/checkout':
+        specifier: workspace:*
+        version: link:../../packages/checkout
+      '@0xsequence/connect':
+        specifier: workspace:*
+        version: link:../../packages/connect
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/react-checkout':
-        specifier: workspace:*
-        version: link:../../packages/react-checkout
-      '@0xsequence/react-connect':
-        specifier: workspace:*
-        version: link:../../packages/react-connect
       '@0xsequence/react-hooks':
         specifier: workspace:*
         version: link:../../packages/react-hooks
-      '@0xsequence/react-wallet':
-        specifier: workspace:*
-        version: link:../../packages/react-wallet
       '@0xsequence/waas':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/wallet-widget':
+        specifier: workspace:*
+        version: link:../../packages/wallet-widget
       '@tailwindcss/postcss':
         specifier: ^4.0.6
         version: 4.0.12
@@ -177,27 +177,27 @@ importers:
 
   examples/react:
     dependencies:
+      '@0xsequence/checkout':
+        specifier: workspace:*
+        version: link:../../packages/checkout
+      '@0xsequence/connect':
+        specifier: workspace:*
+        version: link:../../packages/connect
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/react-checkout':
-        specifier: workspace:*
-        version: link:../../packages/react-checkout
-      '@0xsequence/react-connect':
-        specifier: workspace:*
-        version: link:../../packages/react-connect
       '@0xsequence/react-hooks':
         specifier: workspace:*
         version: link:../../packages/react-hooks
-      '@0xsequence/react-wallet':
-        specifier: workspace:*
-        version: link:../../packages/react-wallet
       '@0xsequence/waas':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/wallet-widget':
+        specifier: workspace:*
+        version: link:../../packages/wallet-widget
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.64.2(react@19.0.0)
@@ -254,7 +254,7 @@ importers:
         specifier: ^4.3.2
         version: 4.3.2(typescript@5.8.2)(vite@5.4.14(@types/node@20.17.14)(lightningcss@1.29.2))
 
-  packages/react-checkout:
+  packages/checkout:
     dependencies:
       0xsequence:
         specifier: '>= 2.2.13'
@@ -290,12 +290,12 @@ importers:
         specifier: ^3.0.6
         version: 3.0.6(react@19.0.0)
     devDependencies:
+      '@0xsequence/connect':
+        specifier: workspace:*
+        version: link:../connect
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@0xsequence/react-connect':
-        specifier: workspace:*
-        version: link:../react-connect
       '@0xsequence/react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
@@ -330,7 +330,7 @@ importers:
         specifier: ^2.14.13
         version: 2.14.13(@tanstack/query-core@5.64.2)(@tanstack/react-query@5.64.2(react@19.0.0))(@types/react@19.0.10)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.23.10(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10))
 
-  packages/react-connect:
+  packages/connect:
     dependencies:
       '@0xsequence/api':
         specifier: '>= 2.2.13'
@@ -466,7 +466,7 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.17.14)(jsdom@25.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(lightningcss@1.29.2)(msw@2.7.3(@types/node@20.17.14)(typescript@5.8.2))
 
-  packages/react-wallet:
+  packages/wallet-widget:
     dependencies:
       '@0xsequence/api':
         specifier: '>= 2.2.13'
@@ -496,12 +496,12 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(react@19.0.0)
     devDependencies:
+      '@0xsequence/connect':
+        specifier: workspace:*
+        version: link:../connect
       '@0xsequence/design-system':
         specifier: ^2.0.9
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@0xsequence/react-connect':
-        specifier: workspace:*
-        version: link:../react-connect
       '@0xsequence/react-hooks':
         specifier: workspace:*
         version: link:../react-hooks

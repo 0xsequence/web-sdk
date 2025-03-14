@@ -20,11 +20,11 @@ View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 
 ### Installing the Library
 
-`@0xsequence/react-connect` is the core package. Any extra modules require this package to be installed first.
+`@0xsequence/connect` is the core package. Any extra modules require this package to be installed first.
 To install this package:
 
 ```bash
-npm install @0xsequence/react-connect @0xsequence/react-hooks wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
+npm install @0xsequence/connect @0xsequence/react-hooks wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library
@@ -88,7 +88,7 @@ interface CreateConfigOptions {
 ```
 
 ```js
-import { SequenceConnect, createConfig } from '@0xsequence/react-connect'
+import { SequenceConnect, createConfig } from '@0xsequence/connect'
 
 import Content from './components/Content'
 
@@ -128,9 +128,9 @@ React apps must be wrapped by a WagmiProvider and the SequenceConnectProvider co
 
 ```js
 import Content from './components/Content'
-import { SequenceConnectProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/react-connect'
-import { SequenceWalletProvider } from '@0xsequence/react-wallet'
-import { SequenceCheckoutProvider } from '@0xsequence/react-checkout'
+import { SequenceConnectProvider, getDefaultConnectors, getDefaultChains } from '@0xsequence/connect'
+import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
+import { SequenceCheckoutProvider } from '@0xsequence/checkout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet, polygon, Chain } from 'wagmi/chains'
@@ -219,7 +219,7 @@ function App() {
 Wallet selection is done through a modal which can be called programmatically. Kit allows multiple connection, so it can be called again to connect more wallets.
 
 ```js
-import { useOpenConnectModal } from '@0xsequence/react-connect'
+import { useOpenConnectModal } from '@0xsequence/connect'
 import { useDisconnect, useAccount } from 'wagmi'
 
 const MyReactComponent = () => {
@@ -242,7 +242,7 @@ const MyReactComponent = () => {
 Use the `useOpenConnectModal` to change to open or close the connection modal.
 
 ```js
-import { useOpenConnectModal } from '@0xsequence/react-connect'
+import { useOpenConnectModal } from '@0xsequence/connect'
 // ...
 const { setOpenConnectModal } = useOpenConnectModal()
 setOpenConnectModal(true)
@@ -253,7 +253,7 @@ setOpenConnectModal(true)
 Use the `useWallets` hook to manage multiple connected wallets in your application and see linked wallets of the connected embedded wallet. This hook is particularly useful when working with a combination of embedded and external wallets.
 
 ```js
-import { useWallets } from '@0xsequence/react-connect'
+import { useWallets } from '@0xsequence/connect'
 
 const {
   wallets, // Array of connected wallets
@@ -290,7 +290,7 @@ await disconnectWallet(walletAddress)
 Use the `useTheme` hook to get information about the current theme, such as light or dark.
 
 ```js
-import { useTheme } from '@0xsequence/react-connect'
+import { useTheme } from '@0xsequence/connect'
 const { theme, setTheme } = useTheme()
 
 setTheme('light')
@@ -332,11 +332,11 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
 
 ## Packages
 
-| Package                                                                                                 | Description                                                     | Docs                                                                                             |
-| ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [@0xsequence/react-connect](https://github.com/0xsequence/web-sdk/tree/master/packages/react-connect)   | Core package for Sequence Web SDK                               | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/react-connect/README.md)  |
-| [@0xsequence/react-wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/react-wallet)     | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/react-wallet/README.md)   |
-| [@0xsequence/react-checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/react-checkout) | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/react-checkout/README.md) |
+| Package                                                                                               | Description                                                     | Docs                                                                                            |
+| ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| [@0xsequence/connect](https://github.com/0xsequence/web-sdk/tree/master/packages/connect)             | Core package for Sequence Web SDK                               | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/connect/README.md)       |
+| [@0xsequence/wallet-widget](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet-widget) | Embedded wallets for viewing and sending coins and collectibles | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/wallet-widget/README.md) |
+| [@0xsequence/checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout)           | Checkout modal with fiat onramp                                 | [Read more](https://github.com/0xsequence/web-sdk/blob/master/packages/checkout/README.md)      |
 
 ## Examples
 
@@ -356,9 +356,9 @@ The React example can be used to test the library locally.
 1. Replace the web-sdk dependencies to the ones of the workspace in order to use hot reload.:
 
 ```js
-"@0xsequence/react-connect": "workspace:*",
-"@0xsequence/react-checkout": "workspace:*",
-"@0xsequence/react-wallet": "workspace:*",
+"@0xsequence/connect": "workspace:*",
+"@0xsequence/checkout": "workspace:*",
+"@0xsequence/wallet-widget": "workspace:*",
 ```
 
 2. `pnpm install`
@@ -367,7 +367,7 @@ The React example can be used to test the library locally.
 
 ## What to do next?
 
-Now that the core package is installed, you can install the [embedded wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/react-wallet) or take a look at the [checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/react-checkout).
+Now that the core package is installed, you can install the [embedded wallet](https://github.com/0xsequence/web-sdk/tree/master/packages/wallet-widget) or take a look at the [checkout](https://github.com/0xsequence/web-sdk/tree/master/packages/checkout).
 
 ## LICENSE
 

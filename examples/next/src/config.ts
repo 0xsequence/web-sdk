@@ -1,5 +1,5 @@
+import { ConnectConfig, createConfig } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
-import { ConnectConfig, createConfig } from '@0xsequence/react-connect'
 import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'
 
