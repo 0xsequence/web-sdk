@@ -15,7 +15,7 @@ import { useOpenWalletModal } from '@0xsequence/react-wallet'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { type ComponentProps, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, toHex } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
@@ -269,7 +269,7 @@ export const Connected = () => {
       })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-      const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: [] })
+      const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
       sendTransaction({
         to: sponsoredContractAddress,
@@ -312,7 +312,7 @@ export const Connected = () => {
     const chainId = 137
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const currencyAmount = '20000'
-    const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: [] })
+    const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
     const swapModalSettings: SwapModalSettings = {
       onSuccess: () => {

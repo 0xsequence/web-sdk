@@ -14,7 +14,7 @@ import { useIndexerClient } from '@0xsequence/react-hooks'
 import { useOpenWalletModal } from '@0xsequence/react-wallet'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { type ComponentProps, useEffect, useState } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode, sponsoredContractAddresses } from '../../config'
@@ -215,7 +215,7 @@ export const Connected = () => {
       sendTransaction({ to: account, value: BigInt(0), gas: null })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-      const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: [] })
+      const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
       sendTransaction({
         to: sponsoredContractAddress,

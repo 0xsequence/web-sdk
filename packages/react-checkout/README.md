@@ -197,7 +197,7 @@ const MyComponent = () => {
     const chainId = 137
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const currencyAmount = '20000'
-    const data = encodeFunctionData({ abi: ['function demo()'], functionName: 'demo', args: []})
+    const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: []})
 
     const swapModalSettings: SwapModalSettings = {
       onSuccess: () => {
