@@ -489,6 +489,9 @@ export const styles = String.raw`
   .h-px {
     height: 1px;
   }
+  .max-h-\[200px\] {
+    max-height: 200px;
+  }
   .max-h-\[calc\(100dvh-80px\)\] {
     max-height: calc(100dvh - 80px);
   }
@@ -730,6 +733,9 @@ export const styles = String.raw`
   .overflow-hidden {
     overflow: hidden;
   }
+  .overflow-scroll {
+    overflow: scroll;
+  }
   .overflow-x-auto {
     overflow-x: auto;
   }
@@ -744,6 +750,9 @@ export const styles = String.raw`
   }
   .overscroll-y-contain {
     overscroll-behavior-y: contain;
+  }
+  .rounded {
+    border-radius: 0.25rem;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -917,6 +926,9 @@ export const styles = String.raw`
   .px-0 {
     padding-inline: calc(var(--spacing) * 0);
   }
+  .px-1 {
+    padding-inline: calc(var(--spacing) * 1);
+  }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
   }
@@ -931,6 +943,9 @@ export const styles = String.raw`
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
+  }
+  .py-0\.5 {
+    padding-block: calc(var(--spacing) * 0.5);
   }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);

@@ -110,3 +110,15 @@ export const truncateAtMiddle = (text: string, truncateAt: number) => {
 export const formatAddress = (text: string) => {
   return `0x${truncateAtMiddle(text?.substring(2) || '', 8)}`
 }
+
+export const isJSON = (str?: string) => {
+  if (!str) {
+    return false
+  }
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}

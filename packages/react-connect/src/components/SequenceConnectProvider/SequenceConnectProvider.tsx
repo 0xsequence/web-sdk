@@ -5,9 +5,9 @@ import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, Theme } from '@
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
+import { Hex, hexToString } from 'viem'
 import { Connector, useAccount, useConfig, useConnections } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, WEB_SDK_VERSION, LocalStorageKey } from '../../constants'
@@ -20,8 +20,10 @@ import { useStorage } from '../../hooks/useStorage'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import { ExtendedConnector, DisplayedAsset, EthAuthSettings, ConnectConfig, ModalPosition } from '../../types'
+import { isJSON } from '../../utils/helpers'
 import { getModalPositionCss } from '../../utils/styling'
 import { Connect } from '../Connect/Connect'
+import JsonTreeViewer from '../JsonTreeViewer'
 import { NetworkBadge } from '../NetworkBadge'
 import { PageHeading } from '../PageHeading'
 import { PoweredBySequence } from '../SequenceLogo'
@@ -208,14 +210,18 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               </Text>
                             </ModalPrimitive.Title>
 
-                            {pendingRequestConfirmation.type === 'signMessage' && (
+                            {pendingRequestConfirmation.type === 'signMessage' && pendingRequestConfirmation.message && (
                               <div className="flex flex-col w-full">
                                 <Text variant="normal" color="muted" fontWeight="medium">
                                   Message
                                 </Text>
-                                <Card className="mt-2 py-6">
+                                <Card className="mt-2 py-2 overflow-scroll max-h-[200px]">
                                   <Text className="mb-4" variant="normal">
-                                    {ethers.toUtf8String(pendingRequestConfirmation.message ?? '')}
+                                    {isJSON(pendingRequestConfirmation.message) ? (
+                                      <JsonTreeViewer data={JSON.parse(pendingRequestConfirmation.message)} />
+                                    ) : (
+                                      hexToString(pendingRequestConfirmation.message as unknown as Hex)
+                                    )}
                                   </Text>
                                 </Card>
                               </div>
@@ -275,7 +281,9 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                             </div>
                           </div>
 
-                          <PoweredBySequence />
+                          <div className="mt-4">
+                            <PoweredBySequence />
+                          </div>
                         </div>
                       </Modal>
                     )}
