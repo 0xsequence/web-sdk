@@ -1,5 +1,3 @@
-import { Button, Divider, Text, Spinner } from '@0xsequence/design-system'
-import { findSupportedNetwork } from '@0xsequence/network'
 import {
   useAnalyticsContext,
   compareAddress,
@@ -7,6 +5,8 @@ import {
   sendTransactions,
   ContractVerificationStatus
 } from '@0xsequence/connect'
+import { Button, Divider, Text, Spinner } from '@0xsequence/design-system'
+import { findSupportedNetwork } from '@0xsequence/network'
 import {
   useClearCachedBalances,
   useGetTokenBalancesSummary,

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import { useAPIClient } from '@0xsequence/react-hooks'
 import { Spinner, Text } from '@0xsequence/design-system'
+import { useAPIClient } from '@0xsequence/react-hooks'
+import React, { useEffect } from 'react'
 
 import { HEADER_HEIGHT } from '../constants'
 import { useEnvironmentContext } from '../contexts'
