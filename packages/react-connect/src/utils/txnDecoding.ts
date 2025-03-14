@@ -93,7 +93,7 @@ const createTxnData = (to: string, call: ContractCall, value: string | number | 
     case 'selfExecute((bool,bool,uint256,address,uint256,bytes)[])': {
       const txns: TransactionEncodedWithCall[] = call.args[0].value
       objs = txns.map(txn => {
-        const data = toHex(txn.data) as Hex
+        const data = toHex(txn.data)
         const value = toHex(BigInt(txn.value))
 
         return txn.call
