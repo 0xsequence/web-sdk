@@ -4,8 +4,8 @@ import {
   useSelectPaymentModal,
   useSwapModal,
   TransactionOnRampProvider
-} from '@0xsequence/react-checkout'
-import type { SwapModalSettings } from '@0xsequence/react-checkout'
+} from '@0xsequence/checkout'
+import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   useStorage,
   useWaasFeeOptions,
