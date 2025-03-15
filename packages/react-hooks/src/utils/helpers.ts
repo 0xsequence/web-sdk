@@ -1,6 +1,6 @@
 import { ContractType, TokenBalance } from '@0xsequence/indexer'
 
-import { ZERO_ADDRESS } from '../constants/hooks'
+import { ZERO_ADDRESS } from '../constants'
 
 export const compareAddress = (a: string, b: string) => {
   return a.toLowerCase() === b.toLowerCase()
