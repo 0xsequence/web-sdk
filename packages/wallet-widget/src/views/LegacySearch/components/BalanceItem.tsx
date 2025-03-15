@@ -1,8 +1,8 @@
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
+import { ethers } from 'ethers'
 import React from 'react'
-import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { useNavigation } from '../../../hooks'
@@ -14,7 +14,7 @@ interface BalanceItemProps {
 export const BalanceItem = ({ balance }: BalanceItemProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
-  const isNativeToken = compareAddress(balance.contractAddress, zeroAddress)
+  const isNativeToken = compareAddress(balance.contractAddress, ethers.ZeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
   const logoURI = isNativeToken ? nativeTokenInfo.logoURI : balance?.contractInfo?.logoURI
   const tokenName = isNativeToken ? nativeTokenInfo.name : balance?.contractInfo?.name || 'Unknown'
@@ -25,7 +25,7 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
       return balance.uniqueCollectibles
     }
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
-    const bal = formatUnits(BigInt(balance.balance), decimals || 0)
+    const bal = ethers.formatUnits(balance.balance, decimals || 0)
     const displayBalance = formatDisplay(bal)
     const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 
@@ -54,9 +54,13 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
   }
 
   return (
-    <div className="flex w-full flex-row justify-between items-center select-none cursor-pointer" onClick={onClick}>
+    <div
+      className="flex w-full flex-row justify-between items-center select-none cursor-pointer"
+      key={balance.contractAddress}
+      onClick={onClick}
+    >
       <div className="flex gap-3 flex-row items-center justify-center min-w-0">
-        <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} style={{ zIndex: '0' }} />
+        <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} />
         <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="primary" fontWeight="bold" ellipsis>
           {tokenName}
         </Text>

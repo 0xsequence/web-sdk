@@ -2,6 +2,7 @@ import { TokenPrice } from '@0xsequence/api'
 import { compareAddress } from '@0xsequence/connect'
 import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
 import { InfiniteData } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { formatUnits, zeroAddress } from 'viem'
 
 export const getPercentageColor = (value: number) => {
@@ -95,4 +96,22 @@ export const flattenPaginatedTransactionHistory = (
   })
 
   return transactionHistory
+}
+
+export const getMoreBalances = (balances: TokenBalance[], pageSize: number, options?: { enabled: boolean }) => {
+  return useInfiniteQuery({
+    queryKey: ['infiniteBalances', balances],
+    queryFn: ({ pageParam }) => {
+      const startIndex = pageParam * pageSize
+      return balances.slice(startIndex, startIndex + pageSize)
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < pageSize) {
+        return undefined
+      }
+      return allPages.length
+    },
+    initialPageParam: 0,
+    enabled: !!balances.length && (options?.enabled ?? true)
+  })
 }

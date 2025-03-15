@@ -5,7 +5,7 @@ import React from 'react'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 
-export const SettingsGeneral = () => {
+export const LegacySettingsGeneral = () => {
   // const { theme, setTheme } = useTheme()
   const { hideUnlistedTokens, setHideUnlistedTokens, hideCollectibles, setHideCollectibles } = useSettings()
 
