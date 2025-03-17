@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { AnimatePresence } from 'motion/react'
 import { useState, useMemo } from 'react'
-import { useAccount, useConfig } from 'wagmi'
+import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
@@ -19,8 +19,7 @@ export const SearchTokens = () => {
   const pageSize = 15
 
   const { chains } = useConfig()
-  const { address: accountAddress } = useAccount()
-  const { fiatCurrency, hideUnlistedTokens, selectedNetworks } = useSettings()
+  const { selectedWallets, selectedNetworks, fiatCurrency, hideUnlistedTokens, selectedCollections } = useSettings()
 
   const [search, setSearch] = useState('')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -28,8 +27,9 @@ export const SearchTokens = () => {
   const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
     filter: {
-      accountAddresses: accountAddress ? [accountAddress] : [],
+      accountAddresses: selectedWallets.map(wallet => wallet.address),
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
       omitNativeBalances: false
     }
   })
