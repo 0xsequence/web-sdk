@@ -1,1 +1,1 @@
-export { immutable, type ImmutableOptions } from './kitConnector/immutable'
+export { immutable, type ImmutableOptions } from './connectConnector/immutable'

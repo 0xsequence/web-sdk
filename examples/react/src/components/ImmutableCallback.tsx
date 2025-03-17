@@ -1,6 +1,6 @@
+import { Spinner, Text } from '@0xsequence/design-system'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, Spinner, Text } from '@0xsequence/design-system'
 
 import { passportInstance } from '../config'
 
@@ -22,9 +22,9 @@ export function ImmutableCallback() {
   }, [navigate])
 
   return (
-    <Box flexDirection="column" alignItems="center" justifyContent="center" style={{ minHeight: '100vh' }}>
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <Spinner size="lg" />
       <Text marginTop="4">Processing Immutable login...</Text>
-    </Box>
+    </div>
   )
 }
