@@ -11,7 +11,8 @@ import {
   Card,
   cn,
   cardVariants,
-  EllipsisIcon
+  EllipsisIcon,
+  Skeleton
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
@@ -26,6 +27,7 @@ import { SlideupDrawer } from '../../../../components/SlideupDrawer'
 import { WalletAccountGradient } from '../../../../components/WalletAccountGradient'
 import { useNavigation, useSettings } from '../../../../hooks'
 import { computeBalanceFiat } from '../../../../utils'
+import { getConnectorLogo } from '../../../../utils/wallets'
 import { FilterMenu } from '../../../FilterMenu'
 
 import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
@@ -40,7 +42,7 @@ export const IntegratedWallet = () => {
   const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState(false)
   const [walletFilterOpen, setWalletFilterOpen] = useState(false)
 
-  const { data: tokenBalancesData } = useGetTokenBalancesDetails({
+  const { data: tokenBalancesData, isPending: isTokenBalancesPending } = useGetTokenBalancesDetails({
     chainIds: selectedNetworks,
     filter: {
       accountAddresses: selectedWallets.map(wallet => wallet.address),
@@ -56,14 +58,16 @@ export const IntegratedWallet = () => {
   const collectibleBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC721' || b.contractType === 'ERC1155') || []
 
-  const { data: coinPrices = [] } = useGetCoinPrices(
+  const { data: coinPrices = [], isPending: isCoinPricesPending } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate = 1 } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isPending: isConversionRatePending } = useGetExchangeRate(fiatCurrency.symbol)
+
+  const isPending = isTokenBalancesPending || isCoinPricesPending || isConversionRatePending
 
   const totalCoinPrices = coinBalancesUnordered
     .reduce(
@@ -159,13 +163,14 @@ export const IntegratedWallet = () => {
       location: 'settings'
     })
   }
+
+  const activeWallet = wallets.find(wallet => wallet.isActive)
+  const LoginIconComponent = getConnectorLogo(activeWallet?.signInMethod || '')
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row gap-2 items-center">
-        <WalletAccountGradient
-          accountAddress={accountAddress || ''}
-          loginIcon={wallets.find(wallet => wallet.isActive)?.logoDark || wallets[0].logoDark}
-        />
+        <WalletAccountGradient accountAddress={accountAddress || ''} loginIcon={LoginIconComponent} />
         <div className="flex flex-col">
           <Button variant="text" onClick={onClickAccountSelector}>
             <Text color="primary" fontWeight="medium" variant="normal">
@@ -178,9 +183,7 @@ export const IntegratedWallet = () => {
           </Text>
         </div>
         {wallets.map(wallet => (
-          <div key={wallet.id}>
-            <wallet.logoDark />
-          </div>
+          <div key={wallet.signInMethod}>{getConnectorLogo(wallet.signInMethod)}</div>
         ))}
       </div>
       <div className="flex flex-row gap-1">
@@ -215,9 +218,9 @@ export const IntegratedWallet = () => {
             Tokens
           </Text>
           <div className="flex flex-row gap-1 items-center">
-            <Text color="primary" fontWeight="medium" variant="small">
+            <Text className="flex flex-row items-center" color="primary" fontWeight="medium" variant="small">
               {fiatCurrency.sign}
-              {totalCoinPrices}
+              {isPending ? <Skeleton className="w-4 h-4" /> : `${totalCoinPrices}`}
             </Text>
             <Text color="primary" fontWeight="medium" variant="small">
               {coinBalancesAmount}
