@@ -8,6 +8,14 @@ interface MutableObservable<T> extends Observable<T> {
   set(value: T): void
 }
 
+export interface SettingsCollection {
+  contractAddress: string
+  contractInfo: {
+    name: string
+    logoURI: string
+  }
+}
+
 interface Settings {
   hideCollectibles: boolean
   hideUnlistedTokens: boolean
@@ -15,19 +23,19 @@ interface Settings {
   selectedNetworks: number[]
   allNetworks: number[]
   selectedWallets: ConnectedWallet[]
-  selectedCollections: string[]
+  selectedCollections: SettingsCollection[]
   hideCollectiblesObservable: Observable<boolean>
   hideUnlistedTokensObservable: Observable<boolean>
   fiatCurrencyObservable: Observable<FiatCurrency>
   selectedNetworksObservable: Observable<number[]>
   selectedWalletsObservable: Observable<ConnectedWallet[]>
-  selectedCollectionsObservable: Observable<string[]>
+  selectedCollectionsObservable: Observable<SettingsCollection[]>
   setFiatCurrency: (newFiatCurrency: FiatCurrency) => void
   setHideCollectibles: (newState: boolean) => void
   setHideUnlistedTokens: (newState: boolean) => void
-  setSelectedNetworks: (newNetworks: number[]) => void
   setSelectedWallets: (newWallets: ConnectedWallet[]) => void
-  setSelectedCollections: (newCollections: string[]) => void
+  setSelectedNetworks: (newNetworks: number[]) => void
+  setSelectedCollections: (newCollections: SettingsCollection[]) => void
 }
 
 type SettingsItems = {
@@ -36,7 +44,7 @@ type SettingsItems = {
   fiatCurrencyObservable: MutableObservable<FiatCurrency>
   selectedWalletsObservable: MutableObservable<ConnectedWallet[]>
   selectedNetworksObservable: MutableObservable<number[]>
-  selectedCollectionsObservable: MutableObservable<string[]>
+  selectedCollectionsObservable: MutableObservable<SettingsCollection[]>
 }
 
 let settingsObservables: SettingsItems | null = null
@@ -96,7 +104,7 @@ export const useSettings = (): Settings => {
     let fiatCurrency = defaultFiatCurrency
     let selectedWallets: ConnectedWallet[] = allWallets
     let selectedNetworks: number[] = allNetworks
-    let selectedCollections: string[] = []
+    let selectedCollections: SettingsCollection[] = []
 
     try {
       const settingsStorage = localStorage.getItem(LocalStorageKey.Settings)
@@ -136,7 +144,7 @@ export const useSettings = (): Settings => {
         }
       }
       if (settings?.selectedCollections !== undefined) {
-        selectedCollections = settings?.selectedCollections as string[]
+        selectedCollections = settings?.selectedCollections
       }
     } catch (e) {
       console.error(e, 'Failed to fetch settings')
@@ -152,7 +160,24 @@ export const useSettings = (): Settings => {
     }
   }
 
-  if (!settingsObservables) {
+  const resetSettings = () => {
+    if (settingsObservables) {
+      const selectedWallets = settingsObservables.selectedWalletsObservable.get()
+
+      const hasInvalidWallets = selectedWallets.some(
+        wallet => !allWallets.some((w: ConnectedWallet) => w.address === wallet.address)
+      )
+
+      const isPartialSelection = selectedWallets.length > 1 && selectedWallets.length !== allWallets.length
+
+      if (hasInvalidWallets || isPartialSelection) {
+        return true
+      }
+    }
+    return false
+  }
+
+  if (!settingsObservables || resetSettings()) {
     settingsObservables = getSettingsFromStorage()
   }
 
@@ -190,7 +215,7 @@ export const useSettings = (): Settings => {
     updateLocalStorage()
   }
 
-  const setSelectedCollections = (newSelectedCollections: string[]) => {
+  const setSelectedCollections = (newSelectedCollections: SettingsCollection[]) => {
     selectedCollectionsObservable.set(newSelectedCollections)
     updateLocalStorage()
   }

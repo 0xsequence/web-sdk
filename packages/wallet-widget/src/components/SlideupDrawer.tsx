@@ -50,7 +50,6 @@ export const SlideupDrawer = ({
           bottom: 0,
           left: 0,
           width: '100%',
-          height: '80%',
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -75,7 +74,7 @@ export const SlideupDrawer = ({
             </div>
             {onBackPress && <div style={{ width: '20px' }}></div>}
           </Card>
-          <Card className="rounded-none bg-background-raised" style={{ height: '80%', overflowY: 'auto' }}>
+          <Card className="rounded-none bg-background-raised" style={{ height: '50vh', overflowY: 'auto' }}>
             {children}
           </Card>
           <Divider className="my-0" />

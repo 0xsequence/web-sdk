@@ -77,7 +77,7 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
                   {getHeader(navigation)}
 
                   {displayScrollbar ? (
-                    <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 80vh)' }}>{getContent(navigation)}</Scroll>
+                    <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
                   ) : (
                     getContent(navigation)
                   )}

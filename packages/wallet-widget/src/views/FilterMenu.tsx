@@ -1,6 +1,8 @@
 import { formatAddress, useWallets } from '@0xsequence/connect'
 import { cardVariants, ChevronRightIcon, cn, GradientAvatar, Text, TokenImage } from '@0xsequence/design-system'
+import { ContractType } from '@0xsequence/indexer'
 import { ChainId } from '@0xsequence/network'
+import { useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
 import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
@@ -8,7 +10,7 @@ import { GradientAvatarList } from '../components/GradientAvatarList'
 import { SelectRow } from '../components/SelectRow/SelectRow'
 import { SlideupDrawer } from '../components/SlideupDrawer'
 import { WalletAccountGradient } from '../components/WalletAccountGradient'
-import { useSettings } from '../hooks'
+import { useSettings, SettingsCollection } from '../hooks'
 
 enum FilterType {
   menu = 'Filters',
@@ -45,31 +47,47 @@ export const FilterMenu = ({
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
 
+  const { data: tokens } = useGetTokenBalancesSummary({
+    chainIds: selectedNetworks,
+    filter: {
+      accountAddresses: selectedWallets.map(wallet => wallet.address),
+      omitNativeBalances: true
+    }
+  })
+
+  const collections = tokens
+    ?.filter(token => token.contractType === ContractType.ERC721 || token.contractType === ContractType.ERC1155)
+    .map(collection => {
+      return {
+        contractAddress: collection.contractAddress,
+        contractInfo: {
+          name: collection.contractInfo?.name || '',
+          logoURI: collection.contractInfo?.logoURI || ''
+        }
+      }
+    })
+
   const [selectedFilter, setSelectedFilter] = useState<FilterType>(
     type === 'bypassMenuWallets' ? FilterType.wallets : FilterType.menu
   )
 
-  const walletsCount =
-    selectedWallets.length > 1 ? (
-      <Text color="primary" fontWeight="medium" variant="normal">
-        All
-      </Text>
-    ) : (
-      <GradientAvatar address={selectedWallets[0].address} size="sm" />
-    )
+  const walletsPreview = selectedWallets.length > 1 ? 'All' : <GradientAvatar address={selectedWallets[0].address} size="sm" />
 
-  const networksCount =
+  const networksPreview =
     selectedNetworks.length > 1 ? (
-      <Text color="primary" fontWeight="medium" variant="normal">
-        All
-      </Text>
+      'All'
     ) : (
-      <Text color="primary" fontWeight="medium" variant="normal">
-        {selectedNetworks[0]}
-      </Text>
+      <TokenImage src={`https://assets.sequence.info/images/networks/medium/${selectedNetworks[0]}.webp`} />
     )
 
-  const collectionsCount = selectedCollections.length === 0 ? 'All' : selectedCollections.length
+  const collectionsPreview =
+    collections?.length === 0 ? (
+      'N/A'
+    ) : selectedCollections.length === 0 ? (
+      'All'
+    ) : (
+      <TokenImage src={selectedCollections[0].contractInfo?.logoURI} />
+    )
 
   const handleFilterChange = (filter: FilterType) => {
     setSelectedFilter(filter)
@@ -88,6 +106,15 @@ export const FilterMenu = ({
       setSelectedNetworks(allNetworks)
     } else {
       setSelectedNetworks(chainId)
+      setSelectedCollections([])
+    }
+  }
+
+  const handleCollectionChange = (collection: SettingsCollection | undefined) => {
+    if (!collection) {
+      setSelectedCollections([])
+    } else {
+      setSelectedCollections([collection])
     }
   }
 
@@ -113,7 +140,7 @@ export const FilterMenu = ({
             </Text>
             <div className="flex flex-row items-center gap-2">
               <Text color="primary" fontWeight="medium" variant="normal">
-                {walletsCount}
+                {walletsPreview}
               </Text>
               <ChevronRightIcon color="white" />
             </div>
@@ -128,7 +155,7 @@ export const FilterMenu = ({
             </Text>
             <div className="flex flex-row items-center gap-2">
               <Text color="primary" fontWeight="medium" variant="normal">
-                {networksCount}
+                {networksPreview}
               </Text>
               <ChevronRightIcon color="white" />
             </div>
@@ -137,14 +164,14 @@ export const FilterMenu = ({
             <div
               className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
               style={{ height: '60px' }}
-              onClick={() => handleFilterChange(FilterType.collections)}
+              onClick={collections?.length ? () => handleFilterChange(FilterType.collections) : undefined}
             >
               <Text color="primary" fontWeight="medium" variant="normal">
                 Collections
               </Text>
               <div className="flex flex-row items-center gap-2">
                 <Text color="primary" fontWeight="medium" variant="normal">
-                  {collectionsCount}
+                  {collectionsPreview}
                 </Text>
                 <ChevronRightIcon color="white" />
               </div>
@@ -203,14 +230,37 @@ export const FilterMenu = ({
         </div>
       ) : selectedFilter === FilterType.collections ? (
         <div className="flex flex-col gap-3">
-          <Text color="primary" fontWeight="medium" variant="normal">
-            Collections
-          </Text>
+          {collections?.length && collections.length > 1 && (
+            <SelectRow
+              key="all"
+              isSelected={selectedCollectionsObservable.get().length === 0}
+              onClick={() => handleCollectionChange(undefined)}
+            >
+              <Text color="primary" fontWeight="medium" variant="normal">
+                All
+              </Text>
+            </SelectRow>
+          )}
+          {collections?.map(collection => (
+            <SelectRow
+              key={collection.contractAddress}
+              isSelected={
+                selectedCollectionsObservable.get().find(c => c.contractAddress === collection.contractAddress) !== undefined ||
+                collections.length === 1
+              }
+              onClick={() => handleCollectionChange(collection)}
+            >
+              <TokenImage src={collection.contractInfo?.logoURI} />
+              <Text color="primary" fontWeight="medium" variant="normal">
+                {collection.contractInfo?.name}
+              </Text>
+            </SelectRow>
+          ))}
         </div>
       ) : null}
     </SlideupDrawer>
   )
 }
 
-// TODO: swap out collectionsCount with home screen icons later
+// TODO: swap out collectionsPreview with home screen icons later
 // TODO: add icons to networks

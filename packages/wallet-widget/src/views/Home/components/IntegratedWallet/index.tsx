@@ -14,7 +14,7 @@ import {
   EllipsisIcon
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/react-hooks'
+import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
@@ -32,7 +32,7 @@ import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 
 export const IntegratedWallet = () => {
   const { setNavigation } = useNavigation()
-  const { selectedWallets, selectedNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
+  const { selectedWallets, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
   const { address: accountAddress } = useAccount()
   const { wallets, setActiveWallet } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
@@ -40,11 +40,12 @@ export const IntegratedWallet = () => {
   const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState(false)
   const [walletFilterOpen, setWalletFilterOpen] = useState(false)
 
-  const { data: tokenBalancesData } = useGetTokenBalancesSummary({
+  const { data: tokenBalancesData } = useGetTokenBalancesDetails({
     chainIds: selectedNetworks,
     filter: {
-      accountAddresses: accountAddress ? [accountAddress] : [],
+      accountAddresses: selectedWallets.map(wallet => wallet.address),
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
       omitNativeBalances: false
     }
   })
@@ -52,7 +53,7 @@ export const IntegratedWallet = () => {
   const coinBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
 
-  const collectionBalancesUnordered =
+  const collectibleBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC721' || b.contractType === 'ERC1155') || []
 
   const { data: coinPrices = [] } = useGetCoinPrices(
@@ -101,12 +102,12 @@ export const IntegratedWallet = () => {
     return isHigherFiat
   })
 
-  const collectionBalances = collectionBalancesUnordered.sort((a, b) => {
+  const collectibleBalances = collectibleBalancesUnordered.sort((a, b) => {
     return Number(b.balance) - Number(a.balance)
   })
 
   const coinBalancesAmount = coinBalances.length
-  const collectionBalancesAmount = collectionBalances.length
+  const collectibleBalancesAmount = collectibleBalances.length
 
   const onClickAccountSelector = () => {
     setAccountSelectorModalOpen(true)
@@ -143,7 +144,7 @@ export const IntegratedWallet = () => {
       location: 'search-tokens'
     })
   }
-  const onClickCollections = () => {
+  const onClickCollectibles = () => {
     setNavigation({
       location: 'search-collectibles'
     })
@@ -226,15 +227,15 @@ export const IntegratedWallet = () => {
         </div>
         <div
           className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
-          onClick={onClickCollections}
+          onClick={onClickCollectibles}
           style={{ borderRadius: '0px', height: '60px' }}
         >
           <Text color="primary" fontWeight="medium" variant="normal">
-            Collections
+            Collectibles
           </Text>
           <div className="flex flex-row gap-1 items-center">
             <Text color="primary" fontWeight="medium" variant="small">
-              {collectionBalancesAmount}
+              {collectibleBalancesAmount}
             </Text>
             <ChevronRightIcon color="white" />
           </div>

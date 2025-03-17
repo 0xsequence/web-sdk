@@ -5,7 +5,6 @@ import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import Fuse from 'fuse.js'
 import { AnimatePresence } from 'motion/react'
 import { useState, useMemo } from 'react'
-import { useAccount } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { getMoreBalances } from '../../utils'
@@ -16,8 +15,7 @@ import { CollectiblesTab } from './components/CollectiblesTab'
 export const SearchCollectibles = () => {
   const pageSize = 8
 
-  const { address: accountAddress } = useAccount()
-  const { hideUnlistedTokens, selectedNetworks } = useSettings()
+  const { selectedWallets, selectedNetworks, hideUnlistedTokens, selectedCollections } = useSettings()
 
   const [search, setSearch] = useState('')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -25,8 +23,9 @@ export const SearchCollectibles = () => {
   const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetTokenBalancesDetails({
     chainIds: selectedNetworks,
     filter: {
-      accountAddresses: accountAddress ? [accountAddress] : [],
+      accountAddresses: selectedWallets.map(wallet => wallet.address),
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
+      contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
       omitNativeBalances: false
     }
   })
