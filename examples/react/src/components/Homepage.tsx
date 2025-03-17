@@ -1,5 +1,5 @@
+import { useWallets, useOpenConnectModal, WalletType, useDirectEcosystemConnect } from '@0xsequence/connect'
 import { Button, Card, Text, Image, useTheme, CheckmarkIcon, Switch, TextInput } from '@0xsequence/design-system'
-import { useWallets, useOpenConnectModal, WalletType, useDirectEcosystemConnect } from '@0xsequence/react-connect'
 import { clsx } from 'clsx'
 import { Footer } from 'example-shared-components'
 import { useState } from 'react'

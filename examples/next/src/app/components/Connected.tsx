@@ -1,21 +1,20 @@
-import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
-import { ChainId, allNetworks } from '@0xsequence/network'
-import type { CheckoutSettings } from '@0xsequence/react-checkout'
+import type { CheckoutSettings } from '@0xsequence/checkout'
 import {
   signEthAuthProof,
-  useIndexerClient,
   useWallets,
   useStorage,
   useWaasFeeOptions,
   validateEthProof,
   ContractVerificationStatus,
   useOpenConnectModal
-} from '@0xsequence/react-connect'
-import { useOpenWalletModal } from '@0xsequence/react-wallet'
-import { ethers } from 'ethers'
+} from '@0xsequence/connect'
+import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
+import { ChainId, allNetworks } from '@0xsequence/network'
+import { useIndexerClient } from '@0xsequence/react-hooks'
+import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { type ComponentProps, useEffect, useState } from 'react'
-import { formatUnits, parseUnits } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode, sponsoredContractAddresses } from '../../config'
@@ -216,9 +215,7 @@ export const Connected = () => {
       sendTransaction({ to: account, value: BigInt(0), gas: null })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-
-      const contractAbiInterface = new ethers.Interface(['function demo()'])
-      const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+      const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
       sendTransaction({
         to: sponsoredContractAddress,
@@ -274,8 +271,12 @@ export const Connected = () => {
               {[...wallets]
                 .sort((a, b) => {
                   // Sort embedded wallet to the top
-                  if (a.isEmbedded && !b.isEmbedded) return -1
-                  if (!a.isEmbedded && b.isEmbedded) return 1
+                  if (a.isEmbedded && !b.isEmbedded) {
+                    return -1
+                  }
+                  if (!a.isEmbedded && b.isEmbedded) {
+                    return 1
+                  }
                   return 0
                 })
                 .map(wallet => (
@@ -409,8 +410,8 @@ export const Connected = () => {
                   }
                 }}
                 value={selectedFeeOptionTokenName}
-                options={[
-                  ...pendingFeeOptionConfirmation?.options?.map(option => ({
+                options={
+                  pendingFeeOptionConfirmation?.options?.map(option => ({
                     label: (
                       <div className="flex items-start flex-col">
                         <div className="flex flex-row">
@@ -429,8 +430,8 @@ export const Connected = () => {
                       </div>
                     ),
                     value: option.token.name
-                  }))
-                ]}
+                  })) || []
+                }
               />
 
               <div className="flex my-2 items-center justify-center flex-col">

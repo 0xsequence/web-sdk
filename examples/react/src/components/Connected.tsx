@@ -1,7 +1,5 @@
-import { Button, Card, Modal, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
-import { allNetworks, ChainId } from '@0xsequence/network'
-import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/react-checkout'
-import type { SwapModalSettings } from '@0xsequence/react-checkout'
+import { useCheckoutModal, useAddFundsModal, useSelectPaymentModal, useSwapModal } from '@0xsequence/checkout'
+import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   useStorage,
   useWaasFeeOptions,
@@ -10,13 +8,14 @@ import {
   getModalPositionCss,
   useOpenConnectModal,
   useWallets
-} from '@0xsequence/react-connect'
-import { useOpenWalletModal } from '@0xsequence/react-wallet'
-import { ethers } from 'ethers'
+} from '@0xsequence/connect'
+import { Button, Card, Modal, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
+import { allNetworks, ChainId } from '@0xsequence/network'
+import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { type ComponentProps, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, toHex } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
@@ -270,9 +269,7 @@ export const Connected = () => {
       })
     } else {
       const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-
-      const contractAbiInterface = new ethers.Interface(['function demo()'])
-      const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+      const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
       sendTransaction({
         to: sponsoredContractAddress,
@@ -315,10 +312,7 @@ export const Connected = () => {
     const chainId = 137
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const currencyAmount = '20000'
-
-    const contractAbiInterface = new ethers.Interface(['function demo()'])
-
-    const data = contractAbiInterface.encodeFunctionData('demo', []) as `0x${string}`
+    const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
     const swapModalSettings: SwapModalSettings = {
       onSuccess: () => {
@@ -346,7 +340,7 @@ export const Connected = () => {
     }
 
     // NATIVE token sale
-    // const currencyAddress = ethers.ZeroAddress
+    // const currencyAddress = zeroAddress
     // const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
     // const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
     // const price = '200000000000000'
@@ -475,8 +469,12 @@ export const Connected = () => {
                 {[...wallets]
                   .sort((a, b) => {
                     // Sort embedded wallet to the top
-                    if (a.isEmbedded && !b.isEmbedded) return -1
-                    if (!a.isEmbedded && b.isEmbedded) return 1
+                    if (a.isEmbedded && !b.isEmbedded) {
+                      return -1
+                    }
+                    if (!a.isEmbedded && b.isEmbedded) {
+                      return 1
+                    }
                     return 0
                   })
                   .map(wallet => (

@@ -12,9 +12,9 @@ Make sure to update your dependencies:
 
 are now:
 
-- @0xsequence/react-connect
-- @0xsequence/react-wallet
-- @0xsequence/react-checkout
+- @0xsequence/connect
+- @0xsequence/wallet-widget
+- @0xsequence/checkout
 - @0xsequence/react-hooks
 
 ### Common hooks

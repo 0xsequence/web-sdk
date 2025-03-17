@@ -3,7 +3,7 @@
   "changelog": ["@changesets/changelog-github", { "repo": "0xsequence/web-sdk" }],
   "commit": false,
   "linked": [],
-  "fixed": [["@0xsequence/react-connect", "@0xsequence/react-checkout", "@0xsequence/react-wallet", "@0xsequence/react-hooks"]],
+  "fixed": [["@0xsequence/connect", "@0xsequence/checkout", "@0xsequence/wallet-widget", "@0xsequence/react-hooks"]],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",

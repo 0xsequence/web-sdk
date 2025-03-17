@@ -1,4 +1,4 @@
-import { CheckoutSettings } from '@0xsequence/react-checkout'
+import { CheckoutSettings } from '@0xsequence/checkout'
 import { Hex, encodeFunctionData } from 'viem'
 
 import { orderbookAbi } from '../constants/orderbook-abi'

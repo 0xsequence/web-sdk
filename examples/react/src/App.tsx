@@ -1,7 +1,7 @@
+import { SequenceCheckoutProvider } from '@0xsequence/checkout'
+import { SequenceConnect } from '@0xsequence/connect'
 import { ThemeProvider } from '@0xsequence/design-system'
-import { SequenceCheckoutProvider } from '@0xsequence/react-checkout'
-import { SequenceConnect } from '@0xsequence/react-connect'
-import { SequenceWalletProvider } from '@0xsequence/react-wallet'
+import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
 
 import { Homepage } from './components/Homepage'
 import { config } from './config'

@@ -1,5 +1,5 @@
+import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
-import { ConnectConfig, createConfig, WalletType } from '@0xsequence/react-connect'
 import { createElement, FC } from 'react'
 import { zeroAddress } from 'viem'
 
