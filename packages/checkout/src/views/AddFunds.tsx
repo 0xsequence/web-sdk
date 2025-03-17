@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import { useEnvironmentContext } from '../contexts'
 import { HEADER_HEIGHT } from '../constants'
 import { useAddFundsModal } from '../hooks'
 import { getTransakLink } from '../utils/transak'
@@ -11,7 +12,7 @@ const EventTypeOrderFailed = 'TRANSAK_ORDER_FAILED'
 
 export const AddFundsContent = () => {
   const { addFundsSettings } = useAddFundsModal()
-
+  const { transakApiUrl, transakApiKey } = useEnvironmentContext()
   if (!addFundsSettings) {
     return
   }
@@ -43,7 +44,10 @@ export const AddFundsContent = () => {
     }
   }
 
-  const link = getTransakLink(addFundsSettings)
+  const link = getTransakLink(addFundsSettings, {
+    transakApiUrl,
+    transakApiKey
+  })
 
   return (
     <div

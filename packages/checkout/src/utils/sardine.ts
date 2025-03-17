@@ -1,4 +1,3 @@
-import { DEBUG } from '@0xsequence/connect'
 import { ChainId, networks } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
@@ -9,21 +8,18 @@ export interface CheckSardineWhitelistStatusArgs {
 
 export const checkSardineWhitelistStatus = async (
   { chainId, marketplaceAddress }: CheckSardineWhitelistStatusArgs,
-  projectAccessKey: string
+  projectAccessKey: string,
+  apiClientBaseUrl: string
 ) => {
   const referenceId = `sequence-kit-sardine-whitelist-check`
 
-  const accessKey = DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-
-  const url = DEBUG
-    ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
-    : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
+  const url = `${apiClientBaseUrl}/rpc/API/SardineGetNFTCheckoutToken`
 
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Access-Key': `${accessKey || ''}`
+      'X-Access-Key': `${projectAccessKey}`
     },
     body: JSON.stringify({
       params: {

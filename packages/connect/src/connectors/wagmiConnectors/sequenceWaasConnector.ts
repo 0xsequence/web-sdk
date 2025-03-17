@@ -21,13 +21,13 @@ import {
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
-import { DEBUG } from '../../env'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
   appleClientId?: string
   appleRedirectURI?: string
   enableConfirmationModal?: boolean
+  nodesUrl?: string
   loginType: 'email' | 'google' | 'apple'
 }
 
@@ -53,7 +53,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasSignInEmail]: string
   }
 
-  const nodesUrl = DEBUG ? 'https://dev-nodes.sequence.app' : 'https://nodes.sequence.app'
+  const nodesUrl = params.nodesUrl ?? 'https://nodes.sequence.app'
 
   const showConfirmationModal = params.enableConfirmationModal ?? false
 

@@ -76,6 +76,11 @@ export interface ConnectConfig {
   displayedAssets?: DisplayedAsset[]
   readOnlyNetworks?: number[]
   ethAuth?: EthAuthSettings
+  envOverrides?: {
+    metadataUrl?: string
+    apiUrl?: string
+    indexerUrl?: string
+  }
 }
 
 export type StorageItem = {

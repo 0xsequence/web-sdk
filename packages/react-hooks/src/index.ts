@@ -2,7 +2,13 @@
 export { QUERY_KEYS } from './constants'
 
 // Contexts
-export { SequenceHooksContext, SequenceHooksProvider, type SequenceHooksConfig } from './contexts/ConfigContext'
+export {
+  SequenceHooksContext,
+  SequenceHooksProvider,
+  type SequenceHooksConfig,
+  type SequenceHooksEnv
+} from './contexts/ConfigContext'
+export { useConfig } from './hooks/useConfig'
 
 // API
 export { useAPIClient } from './hooks/API/useAPIClient'

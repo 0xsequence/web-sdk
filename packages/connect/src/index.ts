@@ -103,6 +103,3 @@ export { ShadowRoot } from './components/ShadowRoot'
 
 // Indexer
 export { ContractVerificationStatus } from '@0xsequence/indexer'
-
-// XXX
-export { DEBUG } from './env'
