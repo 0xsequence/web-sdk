@@ -131,6 +131,7 @@ export interface ConnectedWallet {
   address: string
   isActive: boolean
   isEmbedded: boolean
+  signInMethod: string
 }
 
 export const useWallets = () => {
@@ -172,7 +173,8 @@ export const useWallets = () => {
     name: getConnectorName(connection.connector),
     address: connection.accounts[0],
     isActive: connection.accounts[0] === address,
-    isEmbedded: connection.connector.id.includes('waas')
+    isEmbedded: connection.connector.id.includes('waas'),
+    signInMethod: (connection.connector._wallet as any)?.id
   }))
 
   const setActiveWallet = async (walletAddress: string) => {
