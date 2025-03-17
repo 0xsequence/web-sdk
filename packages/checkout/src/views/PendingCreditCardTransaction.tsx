@@ -127,7 +127,9 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   useEffect(() => {
     const transakIframeElement = document.getElementById('transakIframe') as HTMLIFrameElement
-    if (!transakIframeElement) return
+    if (!transakIframeElement) {
+      return
+    }
     const transakIframe = transakIframeElement.contentWindow
 
     const readMessage = (message: any) => {

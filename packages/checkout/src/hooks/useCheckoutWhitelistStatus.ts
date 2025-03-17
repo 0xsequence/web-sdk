@@ -1,5 +1,5 @@
-import { useConfig } from '@0xsequence/react-hooks'
 import { useProjectAccessKey } from '@0xsequence/connect'
+import { useConfig } from '@0xsequence/react-hooks'
 import { useQuery } from '@tanstack/react-query'
 
 import { checkSardineWhitelistStatus, CheckSardineWhitelistStatusArgs } from '../utils'

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
-import { useEnvironmentContext } from '../contexts'
 import { HEADER_HEIGHT } from '../constants'
+import { useEnvironmentContext } from '../contexts'
 import { useAddFundsModal } from '../hooks'
 import { getTransakLink } from '../utils/transak'
 
