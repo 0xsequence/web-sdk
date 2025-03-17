@@ -1,9 +1,8 @@
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
 import { immutable } from '@0xsequence/immutable-connector'
 import { ChainId } from '@0xsequence/network'
-import { passport } from '@imtbl/sdk'
 import { Environment } from '@imtbl/config'
-
+import { passport } from '@imtbl/sdk'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)

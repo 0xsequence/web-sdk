@@ -1,5 +1,5 @@
 {
-  "name": "@0xsequence/kit-immutable-connector",
+  "name": "@0xsequence/immutable-connector",
   "version": "4.4.6",
   "description": "Immutable connector for Sequence Kit",
   "keywords": [
@@ -43,7 +43,7 @@
     "@imtbl/x-provider": "^2.1.2"
   },
   "peerDependencies": {
-    "@0xsequence/kit": "workspace:*",
+    "@0xsequence/connect": "workspace:*",
     "0xsequence": "^2.2.13",
     "ethers": "^6.13.0",
     "react": ">= 17 < 19",
