@@ -49,7 +49,6 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
       }
   additionalWallets?: Wallet[]
 
-
   /**
    * @deprecated use connectors.walletConnect.projectId instead
    */

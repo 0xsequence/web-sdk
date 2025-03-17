@@ -1,5 +1,5 @@
+import { LogoProps } from '@0xsequence/connect'
 import React from 'react'
-import { LogoProps } from '@0xsequence/kit'
 
 export const ImmutableLogo: React.FunctionComponent = (props: LogoProps) => {
   return (
