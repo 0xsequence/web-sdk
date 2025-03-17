@@ -2,6 +2,8 @@ import { formatAddress, ConnectedWallet } from '@0xsequence/connect'
 import { ChevronRightIcon, Text } from '@0xsequence/design-system'
 import { cn, cardVariants } from '@0xsequence/design-system'
 
+import { getConnectorLogo } from '../utils/wallets'
+
 import { WalletAccountGradient } from './WalletAccountGradient'
 
 export const SelectWalletRow = ({
@@ -29,7 +31,7 @@ export const SelectWalletRow = ({
       onClick={onSelectWallet}
     >
       <div className="flex flex-row gap-2 items-center">
-        <WalletAccountGradient accountAddress={wallet.address} loginIcon={wallet.logoDark} size={'small'} />
+        <WalletAccountGradient accountAddress={wallet.address} loginIcon={getConnectorLogo(wallet.signInMethod)} size={'small'} />
         <div className="flex flex-col">
           <Text color="primary" fontWeight="medium" variant="normal">
             {formatAddress(wallet.address)}

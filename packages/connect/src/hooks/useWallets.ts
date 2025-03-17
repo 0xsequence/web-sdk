@@ -1,7 +1,6 @@
 'use client'
 
 import { SequenceAPIClient, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
-import { IconProps } from '@0xsequence/design-system'
 import { useAPIClient } from '@0xsequence/react-hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Connector, type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
@@ -161,8 +160,6 @@ export interface ConnectedWallet {
   isActive: boolean
   isEmbedded: boolean
   signInMethod: string
-  logoDark: React.ComponentType<IconProps>
-  logoLight: React.ComponentType<IconProps>
 }
 
 /**
@@ -266,9 +263,7 @@ export const useWallets = (): UseWalletsReturnType => {
     address: connection.accounts[0],
     isActive: connection.accounts[0] === address,
     isEmbedded: connection.connector.id.includes('waas'),
-    signInMethod: (connection.connector._wallet as any)?.id,
-    logoDark: (connection.connector._wallet as any)?.logoDark,
-    logoLight: (connection.connector._wallet as any)?.logoLight
+    signInMethod: (connection.connector._wallet as any)?.id
   }))
 
   const setActiveWallet = async (walletAddress: string) => {

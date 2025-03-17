@@ -26,7 +26,7 @@ export const CoinsTab: React.FC<CoinsTabProps> = ({
       <div className="flex flex-col items-center gap-3">
         {isFetchingInitialBalances ? (
           <>
-            {Array(8)
+            {Array(12)
               .fill(null)
               .map((_, i) => (
                 <Skeleton className="w-full h-8" key={i} />

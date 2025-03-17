@@ -11,6 +11,7 @@ import { SelectRow } from '../components/SelectRow/SelectRow'
 import { SlideupDrawer } from '../components/SlideupDrawer'
 import { WalletAccountGradient } from '../components/WalletAccountGradient'
 import { useSettings, SettingsCollection } from '../hooks'
+import { getConnectorLogo } from '../utils/wallets'
 
 enum FilterType {
   menu = 'Filters',
@@ -197,7 +198,11 @@ export const FilterMenu = ({
               }
               onClick={() => handleWalletChange(wallet.address)}
             >
-              <WalletAccountGradient accountAddress={wallet.address} loginIcon={wallet.logoDark} size={'small'} />
+              <WalletAccountGradient
+                accountAddress={wallet.address}
+                loginIcon={getConnectorLogo(wallet.signInMethod)}
+                size={'small'}
+              />
               <Text color="primary" fontWeight="medium" variant="normal">
                 {formatAddress(wallet.address)}
               </Text>

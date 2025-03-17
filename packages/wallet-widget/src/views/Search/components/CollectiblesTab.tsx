@@ -26,10 +26,10 @@ export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
       <div className="grid gap-2" style={{ gridTemplateColumns: `calc(50% - 4px) calc(50% - 4px)` }}>
         {isFetchingInitialBalances ? (
           <>
-            {Array(8)
+            {Array(6)
               .fill(null)
               .map((_, i) => (
-                <Skeleton className="w-full h-8" key={i} />
+                <Skeleton className="w-full" key={i} style={{ height: '180px' }} />
               ))}
           </>
         ) : (

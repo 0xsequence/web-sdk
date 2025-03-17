@@ -1,5 +1,5 @@
-import { GradientAvatar, IconProps } from '@0xsequence/design-system'
-import { ComponentType } from 'react'
+import { GradientAvatar } from '@0xsequence/design-system'
+import { ReactNode } from 'react'
 
 export const WalletAccountGradient = ({
   accountAddress,
@@ -7,7 +7,7 @@ export const WalletAccountGradient = ({
   size = 'large'
 }: {
   accountAddress: string
-  loginIcon: ComponentType<IconProps>
+  loginIcon: ReactNode
   size?: 'small' | 'large'
 }) => {
   const remSize = size === 'small' ? 8 : 16
@@ -29,7 +29,7 @@ export const WalletAccountGradient = ({
             padding: `${remSize / 4}px`
           }}
         >
-          <LoginIcon style={{ width: remSize, height: remSize }} />
+          <div style={{ width: remSize, height: remSize }}>{LoginIcon}</div>
         </div>
       </div>
     </div>
