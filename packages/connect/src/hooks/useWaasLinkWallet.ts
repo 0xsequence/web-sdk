@@ -1,6 +1,6 @@
 'use client'
 
-import { useAPIClient } from '@0xsequence/react-hooks'
+import { useAPIClient } from '@0xsequence/hooks'
 import { SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 import { Connector } from 'wagmi'

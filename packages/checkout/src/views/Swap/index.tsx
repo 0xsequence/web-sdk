@@ -1,7 +1,7 @@
 import { CryptoOption, compareAddress, formatDisplay, sendTransactions } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
+import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote, useIndexerClient } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useGetContractInfo, useGetSwapPrices, useGetSwapQuote, useIndexerClient } from '@0xsequence/react-hooks'
 import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'

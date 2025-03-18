@@ -1,7 +1,7 @@
 import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import { useRef, useState, ChangeEvent } from 'react'
 import { parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'

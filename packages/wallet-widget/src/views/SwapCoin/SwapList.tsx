@@ -13,7 +13,7 @@ import {
   useClearCachedBalances,
   useGetContractInfo,
   useIndexerClient
-} from '@0xsequence/react-hooks'
+} from '@0xsequence/hooks'
 import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'

@@ -5,7 +5,7 @@ import {
   useGetTransactionHistory,
   useGetCollectiblePrices,
   useGetExchangeRate
-} from '@0xsequence/react-hooks'
+} from '@0xsequence/hooks'
 import { formatUnits } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 

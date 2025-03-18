@@ -1,7 +1,7 @@
 import { formatDisplay, ContractVerificationStatus } from '@0xsequence/connect'
 import { Image, Text, TokenImage } from '@0xsequence/design-system'
+import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
-import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
 

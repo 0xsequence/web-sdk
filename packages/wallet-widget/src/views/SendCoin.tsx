@@ -19,8 +19,8 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'

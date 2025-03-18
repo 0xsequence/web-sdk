@@ -9,8 +9,8 @@ import {
   useOpenConnectModal
 } from '@0xsequence/connect'
 import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
+import { useIndexerClient } from '@0xsequence/hooks'
 import { ChainId, allNetworks } from '@0xsequence/network'
-import { useIndexerClient } from '@0xsequence/react-hooks'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { type ComponentProps, useEffect, useState } from 'react'

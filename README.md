@@ -24,7 +24,7 @@ View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/connect @0xsequence/react-hooks wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
+npm install @0xsequence/connect @0xsequence/hooks wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library

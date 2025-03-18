@@ -44,7 +44,7 @@
     "@0xsequence/metadata": ">= 2.2.13",
     "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/connect": "workspace:*",
-    "@0xsequence/react-hooks": "workspace:*",
+    "@0xsequence/hooks": "workspace:*",
     "@tanstack/react-query": ">= 5",
     "ethers": ">= 6.13.0",
     "motion": ">= 12",
@@ -56,7 +56,7 @@
   "devDependencies": {
     "@0xsequence/design-system": "^2.0.9",
     "@0xsequence/connect": "workspace:*",
-    "@0xsequence/react-hooks": "workspace:*",
+    "@0xsequence/hooks": "workspace:*",
     "@tanstack/react-query": "^5.62.0",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "ethers": "^6.13.0",

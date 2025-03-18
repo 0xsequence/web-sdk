@@ -1,11 +1,6 @@
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, ContractVerificationStatus } from '@0xsequence/connect'
 import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
-import {
-  useGetTokenBalancesSummary,
-  useGetCoinPrices,
-  useGetExchangeRate,
-  useGetTransactionHistory
-} from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate, useGetTransactionHistory } from '@0xsequence/hooks'
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 

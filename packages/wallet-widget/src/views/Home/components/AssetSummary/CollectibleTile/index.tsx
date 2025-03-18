@@ -1,5 +1,5 @@
+import { useGetTokenMetadata } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
-import { useGetTokenMetadata } from '@0xsequence/react-hooks'
 
 import { CollectibleTileImage } from '../../../../../components/CollectibleTileImage'
 

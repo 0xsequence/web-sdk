@@ -1,7 +1,7 @@
 import { commons } from '@0xsequence/core'
 import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { useAPIClient, useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/hooks'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
-import { useAPIClient, useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/react-hooks'
 import { useEffect, useState } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'

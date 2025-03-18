@@ -1,6 +1,6 @@
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { useGetContractInfo, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
-import { useGetContractInfo, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 

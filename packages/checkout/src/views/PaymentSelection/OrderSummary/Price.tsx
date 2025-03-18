@@ -1,6 +1,6 @@
 import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
+import { useGetCoinPrices, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useGetCoinPrices, useGetContractInfo } from '@0xsequence/react-hooks'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'

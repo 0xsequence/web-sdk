@@ -1,7 +1,7 @@
 import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
+import { useConfig, useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useConfig, useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
 import pako from 'pako'
 import { useEffect } from 'react'
 import { formatUnits } from 'viem'

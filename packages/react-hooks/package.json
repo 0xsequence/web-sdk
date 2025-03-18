@@ -1,8 +1,8 @@
 {
-  "name": "@0xsequence/react-hooks",
+  "name": "@0xsequence/hooks",
   "version": "4.6.5",
   "description": "React hooks for Sequence Web SDK",
-  "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/react-hooks",
+  "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/hooks",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
