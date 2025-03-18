@@ -49,7 +49,7 @@ export const TransferFunds = () => {
     <div className="w-full">
       <div className="mb-3">
         <Text variant="small" fontWeight="medium" color="white">
-          Transfer funds to your connected wallet
+          Receive funds to your connected wallet
         </Text>
       </div>
       <Card className="flex cursor-pointer w-full justify-between p-4" onClick={onClickQrCode}>
@@ -67,7 +67,7 @@ export const TransferFunds = () => {
           <div className="flex flex-col justify-center items-start">
             <div>
               <Text variant="normal" fontWeight="bold" color="secondary">
-                Transfer Funds
+                Receive Funds
               </Text>
             </div>
             <div>
