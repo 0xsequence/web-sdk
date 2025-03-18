@@ -50,7 +50,7 @@
     "react": ">= 17",
     "react-dom": ">= 17",
     "viem": ">= 2.0.0",
-    "wagmi": ">= ^2.14.13"
+    "wagmi": ">= 2.14.13"
   },
   "devDependencies": {
     "@0xsequence/design-system": "^2.0.9",

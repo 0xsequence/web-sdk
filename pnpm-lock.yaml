@@ -118,7 +118,7 @@ importers:
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
-        version: link:../../packages/react-hooks
+        version: link:../../packages/hooks
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -191,7 +191,7 @@ importers:
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
-        version: link:../../packages/react-hooks
+        version: link:../../packages/hooks
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -301,7 +301,7 @@ importers:
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
-        version: link:../react-hooks
+        version: link:../hooks
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.64.2(react@19.0.0)
@@ -395,7 +395,7 @@ importers:
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/hooks':
         specifier: workspace:*
-        version: link:../react-hooks
+        version: link:../hooks
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.64.2(react@19.0.0)
@@ -418,7 +418,7 @@ importers:
         specifier: ^2.14.13
         version: 2.14.13(@tanstack/query-core@5.64.2)(@tanstack/react-query@5.64.2(react@19.0.0))(@types/react@19.0.10)(bufferutil@4.0.9)(react@19.0.0)(typescript@5.8.2)(utf-8-validate@5.0.10)(viem@2.23.10(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10))
 
-  packages/react-hooks:
+  packages/hooks:
     devDependencies:
       '@0xsequence/api':
         specifier: ^2.2.13
@@ -507,7 +507,7 @@ importers:
         version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
-        version: link:../react-hooks
+        version: link:../hooks
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.64.2(react@19.0.0)
@@ -11655,7 +11655,7 @@ snapshots:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.1.1
-      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      ws: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
