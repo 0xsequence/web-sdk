@@ -1,3 +1,4 @@
+import { SwapModalSettings, useAddFundsModal, useSwapModal } from '@0xsequence/checkout'
 import { compareAddress, formatAddress, useWallets, useOpenConnectModal } from '@0xsequence/connect'
 import {
   Button,
@@ -19,6 +20,8 @@ import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
+import { parseAbi } from 'viem'
+import { encodeFunctionData } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { GradientAvatarList } from '../../../../components/GradientAvatarList'
@@ -38,6 +41,9 @@ export const IntegratedWallet = () => {
   const { address: accountAddress } = useAccount()
   const { wallets, setActiveWallet } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
+
+  const { triggerAddFunds } = useAddFundsModal()
+  const { openSwapModal } = useSwapModal()
 
   const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState(false)
   const [walletFilterOpen, setWalletFilterOpen] = useState(false)
@@ -70,19 +76,21 @@ export const IntegratedWallet = () => {
   const isPending = isTokenBalancesPending || isCoinPricesPending || isConversionRatePending
 
   const totalCoinPrices = coinBalancesUnordered
-    .reduce(
-      (acc, curr) =>
+    .reduce((acc, coin) => {
+      console.log('acc', acc)
+      console.log('coin', coin)
+      return (
         acc +
         Number(
           computeBalanceFiat({
-            balance: curr,
+            balance: coin,
             prices: coinPrices,
             conversionRate,
-            decimals: curr.contractInfo?.decimals || 18
+            decimals: coin.contractInfo?.decimals || 18
           })
-        ),
-      0
-    )
+        )
+      )
+    }, 0)
     .toFixed(2)
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
@@ -129,6 +137,29 @@ export const IntegratedWallet = () => {
     setNavigation({
       location: 'swap'
     })
+    // const chainId = 137
+    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+    // const currencyAmount = '20000'
+    // const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
+
+    // const swapModalSettings: SwapModalSettings = {
+    //   onSuccess: () => {
+    //     console.log('swap successful!')
+    //   },
+    //   chainId,
+    //   currencyAddress,
+    //   currencyAmount,
+    //   postSwapTransactions: [
+    //     {
+    //       to: '0x37470dac8a0255141745906c972e414b1409b470',
+    //       data
+    //     }
+    //   ],
+    //   title: 'Swap and Pay',
+    //   description: 'Select a token in your wallet to swap to 0.2 USDC.'
+    // }
+
+    // openSwapModal(swapModalSettings)
   }
   const onClickReceive = () => {
     setNavigation({
@@ -136,8 +167,11 @@ export const IntegratedWallet = () => {
     })
   }
   const onClickAddFunds = () => {
-    setNavigation({
-      location: 'buy'
+    // setNavigation({
+    //   location: 'buy'
+    // })
+    triggerAddFunds({
+      walletAddress: accountAddress || ''
     })
   }
   const onClickWalletSelector = () => {
