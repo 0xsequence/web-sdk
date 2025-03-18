@@ -2,7 +2,6 @@
 
 import { getModalPositionCss, ShadowRoot, useTheme } from '@0xsequence/connect'
 import { Modal } from '@0xsequence/design-system'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
 
@@ -47,17 +46,7 @@ export type SequenceCheckoutProviderProps = {
   config?: SequenceCheckoutConfig
 }
 
-export const SequenceCheckoutProvider = (props: SequenceCheckoutProviderProps) => {
-  const queryClient = new QueryClient()
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <SequenceCheckoutContent {...props} />
-    </QueryClientProvider>
-  )
-}
-
-export const SequenceCheckoutContent = ({ children, config }: SequenceCheckoutProviderProps) => {
+export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutProviderProps) => {
   const { theme, position } = useTheme()
   const [openCheckoutModal, setOpenCheckoutModal] = useState<boolean>(false)
   const [openAddFundsModal, setOpenAddFundsModal] = useState<boolean>(false)
