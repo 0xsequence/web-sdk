@@ -129,4 +129,6 @@ type NavigationContext = {
   setIsBackButtonEnabled: (enabled: boolean) => void
 }
 
-export const [useNavigationContext, NavigationContextProvider] = createGenericContext<NavigationContext>()
+const [useNavigationContext, NavigationContextProvider] = createGenericContext<NavigationContext>()
+
+export { useNavigationContext, NavigationContextProvider }

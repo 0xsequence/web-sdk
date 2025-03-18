@@ -9,4 +9,6 @@ export interface EnvironmentOverrides {
   sardineApiUrl: string
 }
 
-export const [useEnvironmentContext, EnvironmentContextProvider] = createGenericContext<EnvironmentOverrides>()
+const [useEnvironmentContext, EnvironmentContextProvider] = createGenericContext<EnvironmentOverrides>()
+
+export { useEnvironmentContext, EnvironmentContextProvider }

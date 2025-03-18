@@ -22,4 +22,6 @@ type AddFundsModalContext = {
   addFundsSettings?: AddFundsSettings
 }
 
-export const [useAddFundsModalContext, AddFundsContextProvider] = createGenericContext<AddFundsModalContext>()
+const [useAddFundsModalContext, AddFundsContextProvider] = createGenericContext<AddFundsModalContext>()
+
+export { useAddFundsModalContext, AddFundsContextProvider }

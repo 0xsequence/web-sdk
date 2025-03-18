@@ -1,4 +1,4 @@
-import { useConnectConfigContext } from '../contexts/ConnectConfig'
+import { useConnectConfigContext } from '../contexts/ConnectConfig.js'
 
 export const useProjectAccessKey = () => {
   const { projectAccessKey } = useConnectConfigContext()

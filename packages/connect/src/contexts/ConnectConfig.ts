@@ -4,4 +4,6 @@ import { ConnectConfig } from '../types'
 
 import { createGenericContext } from './genericContext'
 
-export const [useConnectConfigContext, ConnectConfigContextProvider] = createGenericContext<ConnectConfig>()
+const [useConnectConfigContext, ConnectConfigContextProvider] = createGenericContext<ConnectConfig>()
+
+export { useConnectConfigContext, ConnectConfigContextProvider }
