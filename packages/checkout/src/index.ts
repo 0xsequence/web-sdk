@@ -1,5 +1,5 @@
 // Provider
-export { SequenceCheckoutProvider } from './components/SequenceCheckoutProvider'
+export { SequenceCheckoutProvider, type SequenceCheckoutConfig } from './components/SequenceCheckoutProvider'
 
 // Hooks
 export { useCheckoutModal } from './hooks/useCheckoutModal'

@@ -20,7 +20,7 @@ export interface SequenceHooksConfig {
   env: Required<SequenceHooksEnv>
 }
 
-const defaultEnv: Required<SequenceHooksConfig['env']> = {
+const defaultEnv: Required<SequenceHooksEnv> = {
   indexerGatewayUrl: 'https://indexer.sequence.app',
   metadataUrl: 'https://metadata.sequence.app',
   apiUrl: 'https://api.sequence.app',
@@ -30,14 +30,19 @@ const defaultEnv: Required<SequenceHooksConfig['env']> = {
 
 export const SequenceHooksContext = createContext<SequenceHooksConfig | null>(null)
 
-export const SequenceHooksProvider = ({
-  children,
-  value
-}: {
+interface SequenceHooksProviderProps {
   children: React.ReactNode
-  value: SequenceHooksConfigProviderValue
-}) => {
-  const env = { ...defaultEnv, ...value.env }
+  config: SequenceHooksConfigProviderValue
+}
 
-  return <SequenceHooksContext.Provider value={{ ...value, env }}>{children}</SequenceHooksContext.Provider>
+export const SequenceHooksProvider = (props: SequenceHooksProviderProps) => {
+  const config = {
+    ...props.config,
+    env: {
+      ...defaultEnv,
+      ...props.config.env
+    }
+  }
+
+  return <SequenceHooksContext.Provider value={config}>{props.children}</SequenceHooksContext.Provider>
 }

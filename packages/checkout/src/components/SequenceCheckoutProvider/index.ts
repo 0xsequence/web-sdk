@@ -1,1 +1,1 @@
-export * from './SequenceCheckoutProvider'
+export { SequenceCheckoutProvider, type SequenceCheckoutConfig } from './SequenceCheckoutProvider'

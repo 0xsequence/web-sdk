@@ -1,5 +1,6 @@
 import { ETHAuthProof } from '@0xsequence/auth'
 import { Theme } from '@0xsequence/design-system'
+import { SequenceHooksEnv } from '@0xsequence/hooks'
 import { FunctionComponent } from 'react'
 import { Connector, CreateConnectorFn } from 'wagmi'
 
@@ -76,11 +77,7 @@ export interface ConnectConfig {
   displayedAssets?: DisplayedAsset[]
   readOnlyNetworks?: number[]
   ethAuth?: EthAuthSettings
-  envOverrides?: {
-    metadataUrl?: string
-    apiUrl?: string
-    indexerUrl?: string
-  }
+  env?: Partial<SequenceHooksEnv>
 }
 
 export type StorageItem = {

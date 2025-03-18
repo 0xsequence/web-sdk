@@ -1,3 +1,4 @@
+import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
@@ -52,7 +53,15 @@ export const connectConfig: ConnectConfig = {
       chainId: ChainId.POLYGON
     }
   ],
-  readOnlyNetworks: [ChainId.OPTIMISM]
+  readOnlyNetworks: [ChainId.OPTIMISM],
+  env: isDev
+    ? {
+        indexerGatewayUrl: 'https://dev-indexer.sequence.app',
+        metadataUrl: 'https://dev-metadata.sequence.app',
+        apiUrl: 'https://dev-api.sequence.app',
+        indexerUrl: 'https://dev-indexer.sequence.app'
+      }
+    : undefined
 }
 
 export const config =
@@ -123,3 +132,13 @@ export const getErc1155SaleContractConfig = (walletAddress: string) => ({
     console.log('success')
   }
 })
+
+export const checkoutConfig: SequenceCheckoutConfig = {
+  env: isDev
+    ? {
+        sardineApiUrl: 'https://sardine-checkout-sandbox.sequence.info',
+        transakApiUrl: 'https://global-stg.transak.com',
+        transakApiKey: 'c20f2a0e-fe6a-4133-8fa7-77e9f84edf98'
+      }
+    : undefined
+}
