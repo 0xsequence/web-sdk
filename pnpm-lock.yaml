@@ -559,6 +559,9 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(react@19.0.0)
     devDependencies:
+      '@0xsequence/checkout':
+        specifier: workspace:*
+        version: link:../checkout
       '@0xsequence/connect':
         specifier: workspace:*
         version: link:../connect

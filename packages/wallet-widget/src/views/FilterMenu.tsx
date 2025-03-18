@@ -10,7 +10,7 @@ import { GradientAvatarList } from '../components/GradientAvatarList'
 import { SelectRow } from '../components/SelectRow/SelectRow'
 import { SlideupDrawer } from '../components/SlideupDrawer'
 import { WalletAccountGradient } from '../components/WalletAccountGradient'
-import { useSettings, SettingsCollection } from '../hooks'
+import { useSettings } from '../hooks'
 import { getConnectorLogo } from '../utils/wallets'
 
 enum FilterType {
@@ -94,31 +94,6 @@ export const FilterMenu = ({
     setSelectedFilter(filter)
   }
 
-  const handleWalletChange = (wallet: string) => {
-    if (wallet === '') {
-      setSelectedWallets(wallets)
-    } else {
-      setSelectedWallets([wallets.find(w => w.address === wallet) || wallets[0]])
-    }
-  }
-
-  const handleNetworkChange = (chainId: number[]) => {
-    if (chainId.length === 0) {
-      setSelectedNetworks(allNetworks)
-    } else {
-      setSelectedNetworks(chainId)
-      setSelectedCollections([])
-    }
-  }
-
-  const handleCollectionChange = (collection: SettingsCollection | undefined) => {
-    if (!collection) {
-      setSelectedCollections([])
-    } else {
-      setSelectedCollections([collection])
-    }
-  }
-
   return (
     <SlideupDrawer
       onClose={onClose}
@@ -182,7 +157,7 @@ export const FilterMenu = ({
       ) : selectedFilter === FilterType.wallets ? (
         <div className="flex flex-col gap-3">
           {wallets.length > 1 && (
-            <SelectRow key="all" isSelected={selectedWalletsObservable.get().length > 1} onClick={() => handleWalletChange('')}>
+            <SelectRow key="all" isSelected={selectedWalletsObservable.get().length > 1} onClick={() => setSelectedWallets([])}>
               <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
@@ -196,7 +171,7 @@ export const FilterMenu = ({
                 selectedWalletsObservable.get().length === 1 &&
                 selectedWalletsObservable.get().find(w => w.address === wallet.address) !== undefined
               }
-              onClick={() => handleWalletChange(wallet.address)}
+              onClick={() => setSelectedWallets([wallet])}
             >
               <WalletAccountGradient
                 accountAddress={wallet.address}
@@ -212,7 +187,7 @@ export const FilterMenu = ({
       ) : selectedFilter === FilterType.networks ? (
         <div className="flex flex-col gap-3">
           {allNetworks.length > 1 && (
-            <SelectRow key="all" isSelected={selectedNetworksObservable.get().length > 1} onClick={() => handleNetworkChange([])}>
+            <SelectRow key="all" isSelected={selectedNetworksObservable.get().length > 1} onClick={() => setSelectedNetworks([])}>
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>
@@ -222,7 +197,7 @@ export const FilterMenu = ({
             <SelectRow
               key={chainId}
               isSelected={selectedNetworksObservable.get().length === 1 && selectedNetworksObservable.get().includes(chainId)}
-              onClick={() => handleNetworkChange([chainId])}
+              onClick={() => setSelectedNetworks([chainId])}
             >
               <div className="flex gap-2 justify-center items-center">
                 <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chainId}.webp`} />
@@ -239,7 +214,7 @@ export const FilterMenu = ({
             <SelectRow
               key="all"
               isSelected={selectedCollectionsObservable.get().length === 0}
-              onClick={() => handleCollectionChange(undefined)}
+              onClick={() => setSelectedCollections([])}
             >
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
@@ -253,7 +228,7 @@ export const FilterMenu = ({
                 selectedCollectionsObservable.get().find(c => c.contractAddress === collection.contractAddress) !== undefined ||
                 collections.length === 1
               }
-              onClick={() => handleCollectionChange(collection)}
+              onClick={() => setSelectedCollections([collection])}
             >
               <TokenImage src={collection.contractInfo?.logoURI} />
               <Text color="primary" fontWeight="medium" variant="normal">

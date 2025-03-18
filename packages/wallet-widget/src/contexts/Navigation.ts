@@ -110,6 +110,8 @@ export interface BasicNavigation {
     | 'legacy-settings-networks'
     | 'settings'
     | 'settings-wallets'
+    | 'settings-networks'
+    | 'settings-currency'
     | 'settings-profiles'
     | 'settings-apps'
     | 'search'

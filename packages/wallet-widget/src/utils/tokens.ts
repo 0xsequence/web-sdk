@@ -46,6 +46,8 @@ export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }
 
   const fiatValue = totalUsd * conversionRate
 
+  console.log('fiatValue', fiatValue)
+
   return `${fiatValue.toFixed(2)}`
 }
 

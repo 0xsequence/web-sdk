@@ -22,7 +22,9 @@ import {
 } from '../../../views'
 import { SettingsWallets } from '../../../views/Settings'
 import { SettingsApps } from '../../../views/Settings/Apps'
+import { SettingsCurrency } from '../../../views/Settings/Currency'
 import { SettingsMenu } from '../../../views/Settings/Menu'
+import { SettingsNetworks } from '../../../views/Settings/Networks'
 import { SettingsProfiles } from '../../../views/Settings/Profiles'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
@@ -63,6 +65,10 @@ export const getContent = (navigation: Navigation) => {
       return <SettingsMenu />
     case 'settings-wallets':
       return <SettingsWallets />
+    case 'settings-networks':
+      return <SettingsNetworks />
+    case 'settings-currency':
+      return <SettingsCurrency />
     case 'settings-profiles':
       return <SettingsProfiles />
     case 'settings-apps':
@@ -113,9 +119,9 @@ export const getHeader = (navigation: Navigation) => {
     case 'search-view-all':
       return <NavigationHeader secondaryText="Search wallet / " primaryText="View all" />
     case 'search-tokens':
-      return <NavigationHeader primaryText="Search tokens" />
+      return <NavigationHeader primaryText="Tokens" />
     case 'search-collectibles':
-      return <NavigationHeader primaryText="Search collectibles" />
+      return <NavigationHeader primaryText="Collectibles" />
     case 'legacy-settings':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Settings" />
     case 'legacy-settings-general':
@@ -124,8 +130,20 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Currency" />
     case 'legacy-settings-networks':
       return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Networks" />
+    case 'settings':
+      return <NavigationHeader primaryText="Settings" />
+    case 'settings-wallets':
+      return <NavigationHeader primaryText="Wallets" />
+    case 'settings-networks':
+      return <NavigationHeader primaryText="Networks" />
+    case 'settings-currency':
+      return <NavigationHeader primaryText="Currency" />
+    case 'settings-profiles':
+      return <NavigationHeader primaryText="Profiles" />
+    case 'settings-apps':
+      return <NavigationHeader primaryText="Apps" />
     case 'history':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="History" />
+      return <NavigationHeader primaryText="Transaction History" />
     case 'coin-details':
       return <WalletHeader />
     case 'collectible-details':

@@ -1,12 +1,13 @@
-import { IntegratedWallet } from './components/IntegratedWallet'
+import { SequenceCheckoutProvider } from '@0xsequence/checkout'
 
-export { SearchTokens } from '../Search/SearchTokens'
-export { SearchCollectibles } from '../Search/SearchCollectibles'
+import { IntegratedWallet } from './components/IntegratedWallet'
 
 export const Home = () => {
   return (
-    <div className="flex px-4 pb-5 gap-4 flex-col">
-      <IntegratedWallet />
-    </div>
+    <SequenceCheckoutProvider>
+      <div className="flex px-4 pb-5 gap-4 flex-col">
+        <IntegratedWallet />
+      </div>
+    </SequenceCheckoutProvider>
   )
 }

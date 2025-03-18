@@ -206,18 +206,31 @@ export const useSettings = (): Settings => {
   }
 
   const setSelectedWallets = (newSelectedWallets: ConnectedWallet[]) => {
-    selectedWalletsObservable.set(newSelectedWallets)
-    updateLocalStorage()
+    if (newSelectedWallets.length === 0) {
+      selectedWalletsObservable.set(allWallets)
+    } else {
+      selectedWalletsObservable.set(newSelectedWallets)
+      updateLocalStorage()
+    }
   }
 
   const setSelectedNetworks = (newSelectedNetworks: number[]) => {
-    selectedNetworksObservable.set(newSelectedNetworks)
-    updateLocalStorage()
+    if (newSelectedNetworks.length === 0) {
+      selectedNetworksObservable.set(allNetworks)
+    } else {
+      selectedNetworksObservable.set(newSelectedNetworks)
+      selectedCollectionsObservable.set([])
+      updateLocalStorage()
+    }
   }
 
   const setSelectedCollections = (newSelectedCollections: SettingsCollection[]) => {
-    selectedCollectionsObservable.set(newSelectedCollections)
-    updateLocalStorage()
+    if (newSelectedCollections.length === 0) {
+      selectedCollectionsObservable.set([])
+    } else {
+      selectedCollectionsObservable.set(newSelectedCollections)
+      updateLocalStorage()
+    }
   }
 
   const updateLocalStorage = () => {
