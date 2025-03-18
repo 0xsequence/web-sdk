@@ -44,7 +44,7 @@ export interface SequenceCheckoutConfig {
 
 export type SequenceCheckoutProviderProps = {
   children: React.ReactNode
-  config: SequenceCheckoutConfig
+  config?: SequenceCheckoutConfig
 }
 
 export const SequenceCheckoutProvider = (props: SequenceCheckoutProviderProps) => {
@@ -72,7 +72,6 @@ export const SequenceCheckoutContent = ({ children, config }: SequenceCheckoutPr
   const [transactionStatusSettings, setTransactionStatusSettings] = useState<TransactionStatusSettings>()
   const [swapModalSettings, setSwapModalSettings] = useState<SwapModalSettings>()
   const [history, setHistory] = useState<History>([])
-  const { env } = config
 
   const getDefaultLocation = (): Navigation => {
     // skip the order summary for credit card checkout if no items provided
@@ -212,10 +211,10 @@ export const SequenceCheckoutContent = ({ children, config }: SequenceCheckoutPr
   return (
     <EnvironmentContextProvider
       value={{
-        marketplaceApiUrl: env?.marketplaceApiUrl ?? 'https://marketplace.sequence.app',
-        sardineApiUrl: env?.sardineApiUrl ?? 'https://sardine-checkout.sequence.info',
-        transakApiUrl: env?.transakApiUrl ?? 'https://global.transak.com',
-        transakApiKey: env?.transakApiKey ?? '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
+        marketplaceApiUrl: config?.env?.marketplaceApiUrl ?? 'https://marketplace.sequence.app',
+        sardineApiUrl: config?.env?.sardineApiUrl ?? 'https://sardine-checkout.sequence.info',
+        transakApiUrl: config?.env?.transakApiUrl ?? 'https://global.transak.com',
+        transakApiKey: config?.env?.transakApiKey ?? '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
       }}
     >
       <SwapModalContextProvider
