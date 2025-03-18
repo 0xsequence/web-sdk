@@ -48,6 +48,8 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
     navigation.location === 'search-view-all' ||
     navigation.location === 'settings' ||
     navigation.location === 'settings-wallets' ||
+    navigation.location === 'settings-networks' ||
+    navigation.location === 'settings-currency' ||
     navigation.location === 'settings-profiles' ||
     navigation.location === 'settings-apps' ||
     navigation.location === 'legacy-settings-currency' ||

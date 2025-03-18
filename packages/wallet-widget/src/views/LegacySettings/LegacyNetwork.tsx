@@ -1,15 +1,18 @@
 import { useWalletSettings } from '@0xsequence/connect'
 import { Text, TokenImage } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
+import { useObservable } from 'micro-observables'
 import { useConfig } from 'wagmi'
 
-import { SelectButton } from '../../components/SelectButton'
+// import { SelectButton } from '../../components/SelectButton'
+import { SelectRow } from '../../components/SelectRow/SelectRow'
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 
 export const LegacySettingsNetwork = () => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()
-  const { selectedNetworks, setSelectedNetworks } = useSettings()
+  const { selectedNetworksObservable, setSelectedNetworks } = useSettings()
+  const selectedNetworks = useObservable(selectedNetworksObservable)
   const { chains } = useConfig()
 
   const allChains = [
@@ -36,21 +39,27 @@ export const LegacySettingsNetwork = () => {
         <div className="flex flex-col gap-2 mt-4">
           {allChains.map(chain => {
             return (
-              <SelectButton
-                disabled={selectedNetworks.length === 1 && selectedNetworks.includes(chain)}
-                key={chain}
-                selected={selectedNetworks.includes(chain)}
-                onClick={() => onClickNetwork(chain)}
-                value={chain}
-                squareIndicator
-              >
-                <div className="flex gap-2 justify-center items-center">
-                  <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chain}.webp`} />
-                  <Text color="primary" variant="normal" fontWeight="bold">
-                    {ChainId[chain]}
-                  </Text>
-                </div>
-              </SelectButton>
+              // <SelectButton
+              //   disabled={selectedNetworks.length === 1 && selectedNetworks.includes(chain)}
+              //   key={chain}
+              //   selected={selectedNetworks.includes(chain)}
+              //   onClick={() => onClickNetwork(chain)}
+              //   value={chain}
+              //   squareIndicator
+              // >
+              //   <div className="flex gap-2 justify-center items-center">
+              //     <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chain}.webp`} />
+              //     <Text color="primary" variant="normal" fontWeight="bold">
+              //       {ChainId[chain]}
+              //     </Text>
+              //   </div>
+              // </SelectButton>
+              <SelectRow isSelected={selectedNetworks.includes(chain)} onClick={() => onClickNetwork(chain)}>
+                <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chain}.webp`} />
+                <Text color="primary" variant="normal" fontWeight="bold">
+                  {ChainId[chain]}
+                </Text>
+              </SelectRow>
             )
           })}
         </div>
