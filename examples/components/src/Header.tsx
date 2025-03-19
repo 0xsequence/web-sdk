@@ -20,16 +20,7 @@ export const Header = () => {
       style={{ borderBottom: '1px solid #222' }}
     >
       <div className="flex flex-row items-center justify-center gap-3">
-        <Image style={{ width: '36px' }} src="images/kit-logo.svg" alt="Sequence kit" disableAnimation />
-        <Image
-          style={{
-            width: '24px'
-            // filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
-          }}
-          src="images/kit-logo-text.svg"
-          alt="Sequence Web SDK Text Logo"
-          disableAnimation
-        />
+        <Image src="images/sequence-websdk-dark.svg" alt="Sequence Web SDK Logo" disableAnimation />
       </div>
       <div className="flex gap-2 items-center">
         <NetworkSelect />

@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/0xsequence/web-sdk/master/public/docs/kit-logo-in-one.png">
-</div>
-
 # Sequence Web SDK 🧰
 
 Sequence Web SDK 🧰 is a library enabling developers to easily integrate web3 wallets in their app. It is based on [wagmi](https://wagmi.sh/) and supports all wagmi features.
@@ -270,7 +266,7 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
 ## Local Development
 
 <div align="center">
-  <img src="public/docs/kit-demo.png">
+  <img src="public/docs/web-sdk-demo.png">
 </div>
 
 The React example can be used to test the library locally.

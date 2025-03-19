@@ -7,7 +7,7 @@ View the [demo here](https://0xsequence.github.io/web-sdk)! 👀
 ## Run Demo Locally
 
 <div align="center">
-  <img src="../../public/docs/kit-demo.png">
+  <img src="../../public/docs/web-sdk-demo.png">
 </div>
 
 The React example can be used to test the library locally.
