@@ -1,6 +1,5 @@
 import { Card, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
-import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { LocalStorageKey } from '../../constants'
@@ -22,10 +21,11 @@ interface ConnectButtonProps {
   label?: string
   onConnect: (connector: ExtendedConnector) => void
   isDescriptive?: boolean
+  disableTooltip?: boolean
 }
 
 export const ConnectButton = (props: ConnectButtonProps) => {
-  const { connector, label, onConnect } = props
+  const { connector, label, disableTooltip, onConnect } = props
   const { theme } = useTheme()
   const walletProps = connector._wallet
   const isDescriptive = props.isDescriptive || false
@@ -51,7 +51,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
   }
 
   return (
-    <Tooltip message={label || walletProps.name}>
+    <Tooltip message={label || walletProps.name} disabled={disableTooltip}>
       <Card
         className="flex justify-center items-center w-full"
         clickable
@@ -91,17 +91,10 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const { connector, onConnect, isDescriptive = false } = props
   const storage = useStorage()
 
-  const [enableGoogleTooltip, setEnableGoogleTooltip] = useState(false)
   const { theme } = useTheme()
   const walletProps = connector._wallet
 
   const Logo = getLogo(theme, walletProps)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setEnableGoogleTooltip(true)
-    }, 300)
-  })
 
   const WaasLoginContent = () => {
     if (isDescriptive) {
@@ -125,7 +118,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
 
   return (
-    <Tooltip message="Google" disabled={!enableGoogleTooltip}>
+    <Tooltip message="Google" disabled>
       <Card
         className="bg-transparent p-0 w-full relative"
         clickable
@@ -192,6 +185,7 @@ export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
           onError: (error: any) => console.error(error)
         })
       }}
+      disableTooltip
     />
   ) : null
 }
