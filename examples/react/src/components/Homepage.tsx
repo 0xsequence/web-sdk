@@ -10,8 +10,6 @@ const searchParams = new URLSearchParams(location.search)
 const walletType: WalletType = searchParams.get('type') === 'universal' ? 'universal' : 'waas'
 
 export const Homepage = () => {
-  const { theme } = useTheme()
-
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
