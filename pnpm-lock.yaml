@@ -262,6 +262,9 @@ importers:
       '@0xsequence/api':
         specifier: '>= 2.2.13'
         version: 2.2.13
+      '@0xsequence/design-system':
+        specifier: ^2.0.9
+        version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -296,9 +299,6 @@ importers:
       '@0xsequence/connect':
         specifier: workspace:*
         version: link:../connect
-      '@0xsequence/design-system':
-        specifier: ^2.0.9
-        version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.64.2(react@19.0.0)
@@ -471,6 +471,9 @@ importers:
       '@0xsequence/api':
         specifier: '>= 2.2.13'
         version: 2.2.13
+      '@0xsequence/design-system':
+        specifier: ^2.0.9
+        version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -502,9 +505,6 @@ importers:
       '@0xsequence/connect':
         specifier: workspace:*
         version: link:../connect
-      '@0xsequence/design-system':
-        specifier: ^2.0.9
-        version: 2.0.9(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.64.2(react@19.0.0)
