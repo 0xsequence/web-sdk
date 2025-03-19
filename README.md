@@ -1,6 +1,6 @@
 # Sequence Web SDK 🧰
 
-[![npm version](https://badge.fury.io/js/@0xsequence%2Fweb-sdk.svg)](https://badge.fury.io/js/@0xsequence%2Fweb-sdk)
+[![npm version](https://badge.fury.io/js/@0xsequence%2Fconnect.svg)](https://badge.fury.io/js/@0xsequence%2Fconnect)
 
 Easily integrate web3 wallets in your app with Sequence Web SDK 🧰. Based on [wagmi](https://wagmi.sh/), and supporting all wagmi features.
 
