@@ -6,7 +6,8 @@ export interface EnvironmentOverrides {
   marketplaceApiUrl: string
   transakApiUrl: string
   transakApiKey: string
-  sardineApiUrl: string
+  sardineCheckoutUrl: string
+  sardineOnRampUrl: string
 }
 
 const [useEnvironmentContext, EnvironmentContextProvider] = createGenericContext<EnvironmentOverrides>()

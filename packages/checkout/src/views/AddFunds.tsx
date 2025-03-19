@@ -1,5 +1,5 @@
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useAPIClient } from '@0xsequence/react-hooks'
+import { useAPIClient } from '@0xsequence/hooks'
 import React, { useEffect } from 'react'
 
 import { HEADER_HEIGHT } from '../constants'
@@ -14,7 +14,6 @@ const EventTypeOrderFailed = 'TRANSAK_ORDER_FAILED'
 
 export const AddFundsContent = () => {
   const { addFundsSettings } = useAddFundsModal()
-  const { transakApiUrl, transakApiKey } = useEnvironmentContext()
   if (!addFundsSettings) {
     return
   }
@@ -30,7 +29,7 @@ export const AddFundsContent = () => {
 
 export const AddFundsContentSardine = () => {
   const { addFundsSettings } = useAddFundsModal()
-
+  const { sardineOnRampUrl } = useEnvironmentContext()
   const network = addFundsSettings?.networks?.split(',')?.[0]
   const apiClient = useAPIClient()
 
@@ -39,6 +38,7 @@ export const AddFundsContentSardine = () => {
     isLoading: isLoadingSardineLinkOnRamp,
     isError: isErrorSardineLinkOnRamp
   } = useSardineOnRampLink({
+    sardineOnRampUrl,
     apiClient: apiClient,
     walletAddress: addFundsSettings!.walletAddress,
     fundingAmount: addFundsSettings?.fiatAmount,
@@ -112,7 +112,7 @@ export const AddFundsContentSardine = () => {
 
 export const AddFundsContentTransak = () => {
   const { addFundsSettings } = useAddFundsModal()
-
+  const { transakApiUrl, transakApiKey } = useEnvironmentContext()
   if (!addFundsSettings) {
     return
   }

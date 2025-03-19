@@ -259,7 +259,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
   const { closeCheckout } = useCheckoutModal()
-  const { sardineApiUrl: sardineProxyUrl } = useEnvironmentContext()
+  const { sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
   const { env } = useConfig()
   const {
     params: { creditCardCheckout }
@@ -288,9 +288,9 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
   const authToken = data?.token
 
-  const sardineApiUrl = sardineProxyUrl.replace('checkout', 'api')
+  const sardineCheckoutUrl = sardineProxyUrl.replace('checkout', 'api')
 
-  const url = `${sardineProxyUrl}?api_url=${sardineApiUrl}&client_token=${authToken}&show_features=true`
+  const url = `${sardineProxyUrl}?api_url=${sardineCheckoutUrl}&client_token=${authToken}&show_features=true`
 
   const pollForOrderStatus = async () => {
     try {

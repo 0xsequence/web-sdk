@@ -1,5 +1,4 @@
 import { SequenceAPIClient } from '@0xsequence/api'
-import { DEBUG } from '@0xsequence/connect'
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
 
@@ -191,6 +190,7 @@ export const fetchSupportedCountryCodes = async (): Promise<Country[]> => {
 }
 
 export interface SardineLinkOnRampArgs {
+  sardineOnRampUrl: string
   apiClient: SequenceAPIClient
   walletAddress: string
   currencyCode?: string
@@ -199,6 +199,7 @@ export interface SardineLinkOnRampArgs {
 }
 
 export const fetchSardineOnRampLink = async ({
+  sardineOnRampUrl,
   apiClient,
   walletAddress,
   currencyCode,
@@ -223,9 +224,7 @@ export const fetchSardineOnRampLink = async ({
     network
   }
 
-  const sardineUrl = DEBUG ? 'https://crypto.sandbox.sardine.ai/' : 'https://crypto.sardine.ai/'
-
-  const url = new URL(sardineUrl)
+  const url = new URL(sardineOnRampUrl)
   Object.keys(options).forEach(k => {
     if (options[k as keyof SardineOptions] !== undefined) {
       url.searchParams.append(k, options[k as keyof SardineOptions] as string)
