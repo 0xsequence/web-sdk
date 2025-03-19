@@ -11,12 +11,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "^2.0.9",
-    "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
-    "@0xsequence/wallet-widget": "workspace:*",
+    "@0xsequence/design-system": "^2.0.9",
+    "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/waas": ">= 2.2.13",
+    "@0xsequence/wallet-widget": "workspace:*",
     "@tanstack/react-query": "^5.62.0",
     "clsx": "^2.1.1",
     "example-shared-components": "workspace:*",
@@ -29,10 +29,12 @@
     "wagmi": "^2.14.13"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.6",
     "@types/node": "^20.12.12",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.0",
+    "postcss": "^8.5.3",
     "vite": "^5.2.11",
     "vite-plugin-node-polyfills": "^0.21.0",
     "vite-plugin-svgr": "^4.2.0",
