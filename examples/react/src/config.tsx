@@ -94,10 +94,8 @@ export const config =
         ecosystem: {
           walletUrl: 'https://acme.ecosystem-demo.xyz/',
           name: 'ACME',
-          projectAccessKey,
           logoLight: EcosystemLogo,
-          logoDark: EcosystemLogo,
-          defaultNetwork: ChainId.ARBITRUM_NOVA
+          logoDark: EcosystemLogo
         },
         walletConnect: {
           projectId: walletConnectProjectId

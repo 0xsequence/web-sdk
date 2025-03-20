@@ -39,7 +39,7 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
         clientId: string
         redirectURI: string
       }
-  ecosystem?: false | EcosystemWalletOptions
+  ecosystem?: false | Omit<EcosystemWalletOptions, 'isDev' | 'projectAccessKey' | 'defaultNetwork'>
   coinbase?: boolean
   metaMask?: boolean
   walletConnect?:
@@ -78,7 +78,7 @@ export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions
   apple?: boolean
   coinbase?: boolean
   metaMask?: boolean
-  ecosystem?: false | EcosystemWalletOptions
+  ecosystem?: false | Omit<EcosystemWalletOptions, 'isDev' | 'projectAccessKey' | 'defaultNetwork'>
   walletConnect?:
     | false
     | {
