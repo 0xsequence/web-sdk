@@ -1,17 +1,18 @@
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { networkImageUrl } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { formatDisplay, NetworkBadge } from '@0xsequence/connect'
+import { compareAddress, formatDisplay, NetworkBadge } from '@0xsequence/connect'
 import { useGetCoinPrices } from '@0xsequence/hooks'
 import { ReactNode } from 'react'
-import { formatUnits } from 'viem'
+import { formatUnits, zeroAddress } from 'viem'
+
 import { Collectible } from '../../contexts/SelectPaymentModal'
 
 export interface UseOrderSummaryArgs {
   chain: string | number
   currencyAddress: string
   totalPriceRaw: string
-  collectibles: Collectible[]
+  collectible: Collectible
   collectionAddress: string
   currencyInfo: ContractInfo | undefined
   tokenMetadatas: TokenMetadata[] | undefined
@@ -41,7 +42,7 @@ export interface UseOrderSummaryData {
   networkName: string
   networkImageUrl: string
   networkBadge: ReactNode
-  collectibleItems: CollectibleItem[]
+  collectibleItem: CollectibleItem
 }
 
 export interface UseOrderSummaryReturn {
@@ -55,7 +56,7 @@ export const useOrderSummary =
     chain,
     currencyAddress,
     totalPriceRaw,
-    collectibles,
+    collectible,
     collectionAddress,
     currencyInfo,
     tokenMetadatas,
@@ -67,9 +68,12 @@ export const useOrderSummary =
     isLoadingCurrencyInfo,
     errorCurrencyInfo
   }: UseOrderSummaryArgs): (() => UseOrderSummaryReturn) =>
-  () => {
+  (): UseOrderSummaryReturn => {
     const network = findSupportedNetwork(chain)
     const chainId = network?.chainId || 137
+    const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
+    const currencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfo?.symbol
+    const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals
 
     const {
       data: dataCoinPrices,
@@ -88,7 +92,7 @@ export const useOrderSummary =
     let data = null
 
     if (!isLoading && !error) {
-      const formattedPrice = formatUnits(BigInt(totalPriceRaw), currencyInfo?.decimals || 0)
+      const formattedPrice = formatUnits(BigInt(totalPriceRaw), currencyDecimals || 18)
       const displayPrice = formatDisplay(formattedPrice, {
         disableScientificNotation: true,
         disableCompactNotation: true,
@@ -97,25 +101,23 @@ export const useOrderSummary =
 
       const fiatExchangeRate = dataCoinPrices?.[0].price?.value || 0
       const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
+      const tokenMetadata = tokenMetadatas?.find(t => t.tokenId === collectible.tokenId)
+      const formattedQuantity = formatUnits(BigInt(collectible.quantity), tokenMetadata?.decimals || 0)
 
       data = {
         formattedCryptoPrice: displayPrice,
-        cryptoSymbol: currencyInfo?.symbol || 'POL',
+        cryptoSymbol: currencySymbol || 'POL',
         networkName: network?.name || 'Polygon',
         networkImageUrl: networkImageUrl(network?.chainId || 137),
         networkBadge: <NetworkBadge chainId={chainId} />,
         totalPriceFiat: priceFiat,
-        collectibleItems: collectibles.map(c => {
-          const tokenMetadata = tokenMetadatas?.find(t => t.tokenId === c.tokenId)
-          const formattedQuantity = formatUnits(BigInt(c.quantity), tokenMetadata?.decimals || 0)
-          return {
-            quantityRaw: c.quantity,
-            quantityFormatted: formattedQuantity,
-            collectionName: dataCollectionInfo?.name || 'Unknown Collection',
-            collectibleName: tokenMetadata?.name || 'Unknown Item',
-            collectibleImageUrl: tokenMetadata?.image || ''
-          }
-        })
+        collectibleItem: {
+          quantityRaw: collectible.quantity,
+          quantityFormatted: formattedQuantity,
+          collectionName: dataCollectionInfo?.name || 'Unknown Collection',
+          collectibleName: tokenMetadata?.name || 'Unknown Item',
+          collectibleImageUrl: tokenMetadata?.image || ''
+        }
       }
     }
 
