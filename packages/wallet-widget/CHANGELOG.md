@@ -1,5 +1,15 @@
 # @0xsequence/kit-wallet
 
+## 5.0.2
+
+### Patch Changes
+
+- Fixing hex encoding of encodeFunctionData while sending collectibles
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.0.2
+  - @0xsequence/hooks@5.0.2
+
 ## 5.0.1
 
 ### Patch Changes

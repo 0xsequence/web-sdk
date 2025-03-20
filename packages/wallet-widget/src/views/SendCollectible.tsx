@@ -196,7 +196,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           data: encodeFunctionData({
             abi: ERC_1155_ABI,
             functionName: 'safeBatchTransferFrom',
-            args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], new Uint8Array()]
+            args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
           })
         }
     }
@@ -282,7 +282,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             data: encodeFunctionData({
               abi: ERC_1155_ABI,
               functionName: 'safeBatchTransferFrom',
-              args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], new Uint8Array()]
+              args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
             }),
             gas: null
           },

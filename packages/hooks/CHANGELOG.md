@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.0.2
+
+### Patch Changes
+
+- Fixing hex encoding of encodeFunctionData while sending collectibles
+
 ## 5.0.1
 
 ### Patch Changes
