@@ -220,6 +220,9 @@ export const styles = String.raw`
   }
 }
 @layer utilities {
+  .pointer-events-auto {
+    pointer-events: auto;
+  }
   .pointer-events-none {
     pointer-events: none;
   }
@@ -304,6 +307,9 @@ export const styles = String.raw`
   .-m-\[1px\] {
     margin: calc(1px * -1);
   }
+  .m-4 {
+    margin: calc(var(--spacing) * 4);
+  }
   .mx-0 {
     margin-inline: calc(var(--spacing) * 0);
   }
@@ -346,11 +352,17 @@ export const styles = String.raw`
   .mt-6 {
     margin-top: calc(var(--spacing) * 6);
   }
+  .mt-8 {
+    margin-top: calc(var(--spacing) * 8);
+  }
   .mt-10 {
     margin-top: calc(var(--spacing) * 10);
   }
   .mr-4 {
     margin-right: calc(var(--spacing) * 4);
+  }
+  .mb-1 {
+    margin-bottom: calc(var(--spacing) * 1);
   }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
@@ -367,11 +379,17 @@ export const styles = String.raw`
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
   }
+  .mb-10 {
+    margin-bottom: calc(var(--spacing) * 10);
+  }
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
   }
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
+  }
+  .ml-\[-16px\] {
+    margin-left: -16px;
   }
   .block {
     display: block;
@@ -445,6 +463,9 @@ export const styles = String.raw`
   .h-\[1px\] {
     height: 1px;
   }
+  .h-\[14px\] {
+    height: 14px;
+  }
   .h-\[52px\] {
     height: 52px;
   }
@@ -462,6 +483,9 @@ export const styles = String.raw`
   }
   .h-full {
     height: 100%;
+  }
+  .h-min {
+    height: min-content;
   }
   .h-px {
     height: 1px;
@@ -535,6 +559,9 @@ export const styles = String.raw`
   .w-\[1px\] {
     width: 1px;
   }
+  .w-\[14px\] {
+    width: 14px;
+  }
   .w-\[52px\] {
     width: 52px;
   }
@@ -553,8 +580,14 @@ export const styles = String.raw`
   .w-full {
     width: 100%;
   }
+  .w-min {
+    width: min-content;
+  }
   .w-screen {
     width: 100vw;
+  }
+  .max-w-1\/2 {
+    max-width: calc(1/2 * 100%);
   }
   .max-w-\[532px\] {
     max-width: 532px;
@@ -692,6 +725,15 @@ export const styles = String.raw`
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
+  .gap-10 {
+    gap: calc(var(--spacing) * 10);
+  }
+  .self-center {
+    align-self: center;
+  }
+  .justify-self-center {
+    justify-self: center;
+  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -747,6 +789,10 @@ export const styles = String.raw`
     border-style: var(--tw-border-style);
     border-width: 0px;
   }
+  .border-1 {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
   .border-2 {
     border-style: var(--tw-border-style);
     border-width: 2px;
@@ -767,8 +813,14 @@ export const styles = String.raw`
     --tw-border-style: solid;
     border-style: solid;
   }
+  .border-border-focus {
+    border-color: var(--color-border-focus);
+  }
   .border-border-normal {
     border-color: var(--color-border-normal);
+  }
+  .border-transparent {
+    border-color: transparent;
   }
   .border-t-primary {
     border-top-color: var(--color-primary);
@@ -860,8 +912,14 @@ export const styles = String.raw`
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
+  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
+  }
+  .p-5 {
+    padding: calc(var(--spacing) * 5);
   }
   .p-\[10px\] {
     padding: 10px;
@@ -917,6 +975,9 @@ export const styles = String.raw`
   .pt-2 {
     padding-top: calc(var(--spacing) * 2);
   }
+  .pt-3 {
+    padding-top: calc(var(--spacing) * 3);
+  }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
   }
@@ -967,6 +1028,12 @@ export const styles = String.raw`
   }
   .text-center {
     text-align: center;
+  }
+  .text-left {
+    text-align: left;
+  }
+  .text-right {
+    text-align: right;
   }
   .font-body {
     font-family: var(--font-body);
@@ -1039,6 +1106,10 @@ export const styles = String.raw`
   .leading-9 {
     --tw-leading: calc(var(--spacing) * 9);
     line-height: calc(var(--spacing) * 9);
+  }
+  .leading-\[inherit\] {
+    --tw-leading: inherit;
+    line-height: inherit;
   }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
