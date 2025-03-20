@@ -10,4 +10,6 @@ type WalletConfigContext = {
   readOnlyNetworks?: number[]
 }
 
-export const [useWalletConfigContext, WalletConfigContextProvider] = createGenericContext<WalletConfigContext>()
+const [useWalletConfigContext, WalletConfigContextProvider] = createGenericContext<WalletConfigContext>()
+
+export { useWalletConfigContext, WalletConfigContextProvider }

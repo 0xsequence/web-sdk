@@ -10,7 +10,7 @@ import {
   Skeleton,
   TokenImage
 } from '@0xsequence/design-system'
-import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary, useGetContractInfo } from '@0xsequence/hooks'
 import { zeroAddress, formatUnits } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 

@@ -11,8 +11,6 @@ const searchParams = new URLSearchParams(location.search)
 const walletType: WalletType = searchParams.get('type') === 'universal' ? 'universal' : 'waas'
 
 export const Homepage = () => {
-  const { theme } = useTheme()
-
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
   const triggerEcosystemConnect = useDirectEcosystemConnect()
@@ -39,12 +37,7 @@ export const Homepage = () => {
       {wallets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-5 h-screen">
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image className="w-12" src="images/kit-logo.svg" />
-            <Image
-              className="w-8"
-              src="images/kit-logo-text.svg"
-              style={{ filter: theme === 'dark' ? 'invert(0)' : 'invert(1)' }}
-            />
+            <Image className="w-[300px]" src="images/sequence-websdk-dark.svg" />
           </div>
 
           <div className="flex flex-col gap-3">

@@ -20,7 +20,7 @@ export const createWrapper = () => {
   return ({ children }: CreateWrapperProps) => (
     <QueryClientProvider client={queryClient}>
       <SequenceHooksProvider
-        value={{
+        config={{
           projectAccessKey: 'test-access',
           env: {
             indexerGatewayUrl: 'https://indexer-gateway.sequence.app',

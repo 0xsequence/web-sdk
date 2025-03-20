@@ -2,7 +2,6 @@
 
 import { getModalPositionCss, useTheme, ShadowRoot } from '@0xsequence/connect'
 import { Modal, Scroll } from '@0xsequence/design-system'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AnimatePresence } from 'motion/react'
 import React, { useState } from 'react'
 
@@ -19,17 +18,7 @@ const DEFAULT_LOCATION: Navigation = {
   location: 'home'
 }
 
-export const SequenceWalletProvider = (props: SequenceWalletProviderProps) => {
-  const queryClient = new QueryClient()
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <WalletContent {...props} />
-    </QueryClientProvider>
-  )
-}
-
-export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
+export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
 
   // Wallet Modal Context

@@ -1,10 +1,6 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/0xsequence/web-sdk/master/public/docs/kit-logo-in-one.png">
-</div>
-
 # Sequence Web SDK 🧰
 
-[![npm version](https://badge.fury.io/js/@0xsequence%2Fkit.svg)](https://badge.fury.io/js/@0xsequence%2Fkit)
+[![npm version](https://badge.fury.io/js/@0xsequence%2Fconnect.svg)](https://badge.fury.io/js/@0xsequence%2Fconnect)
 
 Easily integrate web3 wallets in your app with Sequence Web SDK 🧰. Based on [wagmi](https://wagmi.sh/), and supporting all wagmi features.
 
@@ -24,7 +20,7 @@ View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 To install this package:
 
 ```bash
-npm install @0xsequence/connect @0xsequence/react-hooks wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
+npm install @0xsequence/connect wagmi ethers@6.13.0 viem 0xsequence @tanstack/react-query
 ```
 
 ### Setting up the Library
@@ -94,8 +90,8 @@ import Content from './components/Content'
 
 const config = createConfig('waas', {
   projectAccessKey: '<your-project-access-key>',
-  chainIds: [1, 137]
-  defaultChainId: 1
+  chainIds: [1, 137],
+  defaultChainId: 1,
   appName: 'Demo Dapp',
   waasConfigKey: '<your-waas-config-key>',
 
@@ -105,7 +101,7 @@ const config = createConfig('waas', {
 
   apple: {
     clientId: '<your-apple-client-id>',
-    redirectUrl: '...'
+    redirectURI: '...'
   },
 
   walletConnect: {
@@ -156,14 +152,14 @@ const connectors = getDefaultConnectors('universal', {
   }
 })
 
-/* 
+/*
   const connectors = getDefaultWaasConnectors('{
     projectAccessKey,
     defaultChainId: 137,
     appName: 'Demo Dapp',
 
     waasConfigKey: '<your-waas-config-key>',
-    
+
     google: {
       clientId
     },
@@ -348,7 +344,7 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
 ## Local Development
 
 <div align="center">
-  <img src="public/docs/kit-demo.png">
+  <img src="public/docs/web-sdk-demo.png">
 </div>
 
 The React example can be used to test the library locally.

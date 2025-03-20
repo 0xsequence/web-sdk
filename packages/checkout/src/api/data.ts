@@ -1,4 +1,3 @@
-import { DEBUG } from '@0xsequence/connect'
 import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks } from '@0xsequence/network'
 
@@ -16,25 +15,24 @@ export interface MethodArguments {
 export interface FetchSardineClientTokenArgs {
   order: CreditCardCheckout
   projectAccessKey: string
+  apiClientUrl: string
   tokenMetadata?: TokenMetadata
 }
 
 export const fetchSardineClientToken = async ({
   order,
   projectAccessKey,
-  tokenMetadata
+  tokenMetadata,
+  apiClientUrl
 }: FetchSardineClientTokenArgs): Promise<FetchSardineClientTokenReturn> => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
-  const accessKey = DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-  const url = DEBUG
-    ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
-    : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutToken'
+  const url = `${apiClientUrl}/rpc/API/SardineGetNFTCheckoutToken`
 
   const res = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Access-Key': `${accessKey || ''}`
+      'X-Access-Key': projectAccessKey
     },
     body: JSON.stringify({
       params: {
@@ -67,17 +65,14 @@ export const fetchSardineClientToken = async ({
   }
 }
 
-export const fetchSardineOrderStatus = async (orderId: string, projectAccessKey: string) => {
+export const fetchSardineOrderStatus = async (orderId: string, projectAccessKey: string, apiClientBaseUrl: string) => {
   // Test credentials: https://docs.sardine.ai/docs/integrate-payments/nft-checkout-testing-credentials
-  const accessKey = DEBUG ? '17xhjK4yjRf1fr0am8kgKfICAAAAAAAAA' : projectAccessKey
-  const url = DEBUG
-    ? 'https://dev-api.sequence.app/rpc/API/SardineGetNFTCheckoutOrderStatus'
-    : 'https://api.sequence.app/rpc/API/SardineGetNFTCheckoutOrderStatus'
+  const url = `${apiClientBaseUrl}/rpc/API/SardineGetNFTCheckoutOrderStatus`
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Access-Key': `${accessKey}`
+      'X-Access-Key': `${projectAccessKey}`
     },
     body: JSON.stringify({
       orderId

@@ -15,9 +15,9 @@ import {
   CloseIcon,
   truncateAddress
 } from '@0xsequence/design-system'
+import { useGetTokenMetadata, useGetContractInfo, useIndexerClient } from '@0xsequence/hooks'
 import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useGetTokenMetadata, useGetContractInfo, useIndexerClient } from '@0xsequence/react-hooks'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
 import { formatUnits, Hex, PublicClient } from 'viem'

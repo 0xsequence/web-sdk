@@ -1,5 +1,17 @@
 # @0xsequence/kit-connectors
 
+## 5.0.0
+
+### Major Changes
+
+- Web SDK - Initial release
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.0.0
+  - @0xsequence/hooks@5.0.0
+
 ## 4.6.5
 
 ### Patch Changes

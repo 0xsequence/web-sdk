@@ -1,7 +1,7 @@
 import { formatDisplay, NetworkBadge, CollectibleTileImage } from '@0xsequence/connect'
 import { Spinner, NetworkImage, Text } from '@0xsequence/design-system'
+import { useGetTokenMetadata, useGetContractInfo, useGetCoinPrices } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useGetTokenMetadata, useGetContractInfo, useGetCoinPrices } from '@0xsequence/react-hooks'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../hooks'

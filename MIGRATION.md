@@ -15,13 +15,13 @@ are now:
 - @0xsequence/connect
 - @0xsequence/wallet-widget
 - @0xsequence/checkout
-- @0xsequence/react-hooks
+- @0xsequence/hooks
 
 ### Common hooks
 
-Common hooks have now been moved to their own package `@0xsequence/react-hooks`. These hooks can be used to interface with various sequence services like Sequence API, Sequence Indexer, Sequence Metadata.
+Common hooks have now been moved to their own package `@0xsequence/hooks`. These hooks can be used to interface with various sequence services like Sequence API, Sequence Indexer, Sequence Metadata.
 
-**Deprecated data hooks have been removed and you are required to use hooks from react-hooks instead**
+**Deprecated data hooks have been removed and you are required to use hooks from @0xsequence/hooks instead**
 
 ### Providers
 

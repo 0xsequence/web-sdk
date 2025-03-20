@@ -1,5 +1,5 @@
 export const styles = String.raw`
-/*! tailwindcss v4.0.12 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.0.14 | MIT License | https://tailwindcss.com */
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -26,8 +26,6 @@ export const styles = String.raw`
     --font-weight-bold: 700;
     --tracking-normal: 0em;
     --tracking-wide: 0.025em;
-    --tracking-wider: 0.05em;
-    --tracking-widest: 0.1em;
     --radius-xs: 0.125rem;
     --radius-sm: 0.25rem;
     --radius-md: 0.375rem;
@@ -222,14 +220,8 @@ export const styles = String.raw`
   }
 }
 @layer utilities {
-  .pointer-events-auto {
-    pointer-events: auto;
-  }
   .pointer-events-none {
     pointer-events: none;
-  }
-  .collapse {
-    visibility: collapse;
   }
   .visible {
     visibility: visible;
@@ -312,9 +304,6 @@ export const styles = String.raw`
   .-m-\[1px\] {
     margin: calc(1px * -1);
   }
-  .m-4 {
-    margin: calc(var(--spacing) * 4);
-  }
   .mx-0 {
     margin-inline: calc(var(--spacing) * 0);
   }
@@ -357,17 +346,11 @@ export const styles = String.raw`
   .mt-6 {
     margin-top: calc(var(--spacing) * 6);
   }
-  .mt-8 {
-    margin-top: calc(var(--spacing) * 8);
-  }
   .mt-10 {
     margin-top: calc(var(--spacing) * 10);
   }
   .mr-4 {
     margin-right: calc(var(--spacing) * 4);
-  }
-  .mb-1 {
-    margin-bottom: calc(var(--spacing) * 1);
   }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
@@ -383,9 +366,6 @@ export const styles = String.raw`
   }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
-  }
-  .mb-10 {
-    margin-bottom: calc(var(--spacing) * 10);
   }
   .ml-1 {
     margin-left: calc(var(--spacing) * 1);
@@ -413,9 +393,6 @@ export const styles = String.raw`
   }
   .inline-flex {
     display: inline-flex;
-  }
-  .list-item {
-    display: list-item;
   }
   .table {
     display: table;
@@ -485,9 +462,6 @@ export const styles = String.raw`
   }
   .h-full {
     height: 100%;
-  }
-  .h-min {
-    height: min-content;
   }
   .h-px {
     height: 1px;
@@ -579,14 +553,8 @@ export const styles = String.raw`
   .w-full {
     width: 100%;
   }
-  .w-min {
-    width: min-content;
-  }
   .w-screen {
     width: 100vw;
-  }
-  .max-w-1 {
-    max-width: calc(var(--spacing) * 1);
   }
   .max-w-\[532px\] {
     max-width: 532px;
@@ -724,15 +692,6 @@ export const styles = String.raw`
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
-  .gap-10 {
-    gap: calc(var(--spacing) * 10);
-  }
-  .self-center {
-    align-self: center;
-  }
-  .justify-self-center {
-    justify-self: center;
-  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -753,9 +712,6 @@ export const styles = String.raw`
   }
   .overscroll-y-contain {
     overscroll-behavior-y: contain;
-  }
-  .rounded {
-    border-radius: 0.25rem;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -791,10 +747,6 @@ export const styles = String.raw`
     border-style: var(--tw-border-style);
     border-width: 0px;
   }
-  .border-1 {
-    border-style: var(--tw-border-style);
-    border-width: 1px;
-  }
   .border-2 {
     border-style: var(--tw-border-style);
     border-width: 2px;
@@ -815,14 +767,8 @@ export const styles = String.raw`
     --tw-border-style: solid;
     border-style: solid;
   }
-  .border-border-focus {
-    border-color: var(--color-border-focus);
-  }
   .border-border-normal {
     border-color: var(--color-border-normal);
-  }
-  .border-transparent {
-    border-color: transparent;
   }
   .border-t-primary {
     border-top-color: var(--color-primary);
@@ -914,14 +860,8 @@ export const styles = String.raw`
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
-  .p-3 {
-    padding: calc(var(--spacing) * 3);
-  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
-  }
-  .p-5 {
-    padding: calc(var(--spacing) * 5);
   }
   .p-\[10px\] {
     padding: 10px;
@@ -946,9 +886,6 @@ export const styles = String.raw`
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
-  }
-  .py-0 {
-    padding-block: calc(var(--spacing) * 0);
   }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
@@ -979,9 +916,6 @@ export const styles = String.raw`
   }
   .pt-2 {
     padding-top: calc(var(--spacing) * 2);
-  }
-  .pt-3 {
-    padding-top: calc(var(--spacing) * 3);
   }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
@@ -1033,12 +967,6 @@ export const styles = String.raw`
   }
   .text-center {
     text-align: center;
-  }
-  .text-left {
-    text-align: left;
-  }
-  .text-right {
-    text-align: right;
   }
   .font-body {
     font-family: var(--font-body);
@@ -1262,10 +1190,6 @@ export const styles = String.raw`
   }
   .blur {
     --tw-blur: blur(8px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .blur-xs {
-    --tw-blur: blur(var(--blur-xs));
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .filter {

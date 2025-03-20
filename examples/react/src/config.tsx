@@ -1,3 +1,4 @@
+import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
 import { createElement, FC } from 'react'
@@ -10,7 +11,9 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 
 // append ?debug to url to enable debug mode
 const isDebugMode = searchParams.has('debug')
-const projectAccessKey = isDebugMode ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+// @ts-ignore
+const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
+const projectAccessKey = isDev ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
@@ -51,7 +54,15 @@ export const connectConfig: ConnectConfig = {
       chainId: ChainId.POLYGON
     }
   ],
-  readOnlyNetworks: [ChainId.OPTIMISM]
+  readOnlyNetworks: [ChainId.OPTIMISM],
+  env: isDev
+    ? {
+        indexerGatewayUrl: 'https://dev-indexer.sequence.app',
+        metadataUrl: 'https://dev-metadata.sequence.app',
+        apiUrl: 'https://dev-api.sequence.app',
+        indexerUrl: 'https://dev-indexer.sequence.app'
+      }
+    : undefined
 }
 
 const EcosystemLogo: FC<{ className?: string; style?: React.CSSProperties }> = props =>
@@ -129,3 +140,13 @@ export const getErc1155SaleContractConfig = (walletAddress: string) => ({
     console.log('success')
   }
 })
+
+export const checkoutConfig: SequenceCheckoutConfig = {
+  env: isDev
+    ? {
+        sardineApiUrl: 'https://sardine-checkout-sandbox.sequence.info',
+        transakApiUrl: 'https://global-stg.transak.com',
+        transakApiKey: 'c20f2a0e-fe6a-4133-8fa7-77e9f84edf98'
+      }
+    : undefined
+}

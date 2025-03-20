@@ -1,6 +1,6 @@
 import { truncateAtMiddle } from '@0xsequence/connect'
 import { Button, ChevronRightIcon, Text, Card, GradientAvatar, Spinner } from '@0xsequence/design-system'
-import { useIndexerClient } from '@0xsequence/react-hooks'
+import { useIndexerClient } from '@0xsequence/hooks'
 import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { useAccount } from 'wagmi'

@@ -12,4 +12,6 @@ type WalletModalContext = {
   openWalletModalState: boolean
 }
 
-export const [useWalletModalContext, WalletModalContextProvider] = createGenericContext<WalletModalContext>()
+const [useWalletModalContext, WalletModalContextProvider] = createGenericContext<WalletModalContext>()
+
+export { useWalletModalContext, WalletModalContextProvider }

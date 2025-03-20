@@ -1,7 +1,7 @@
 'use client'
 
+import { useIndexerClient } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useIndexerClient } from '@0xsequence/react-hooks'
 import type { FeeOption } from '@0xsequence/waas'
 import { type ethers } from 'ethers'
 import { useState, useEffect, useRef } from 'react'

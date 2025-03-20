@@ -1,7 +1,7 @@
 import { CryptoOption, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/connect'
 import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
+import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapPrices } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapPrices } from '@0xsequence/react-hooks'
 import { motion } from 'motion/react'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
 import { formatUnits } from 'viem'

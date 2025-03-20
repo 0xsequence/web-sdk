@@ -14,4 +14,6 @@ type ThemeContext = {
   setPosition: React.Dispatch<React.SetStateAction<ModalPosition>>
 }
 
-export const [useThemeContext, ThemeContextProvider] = createGenericContext<ThemeContext>()
+const [useThemeContext, ThemeContextProvider] = createGenericContext<ThemeContext>()
+
+export { useThemeContext, ThemeContextProvider }

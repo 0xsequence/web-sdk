@@ -11,4 +11,5 @@ type AnalyticsContext = {
 }
 
 const [useAnalyticsContext, AnalyticsContextProvider] = createGenericContext<AnalyticsContext>()
+
 export { useAnalyticsContext, AnalyticsContextProvider }

@@ -11,8 +11,8 @@ import {
   Text,
   TokenImage
 } from '@0xsequence/design-system'
+import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { Transaction, TxnTransfer } from '@0xsequence/indexer'
-import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import dayjs from 'dayjs'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'

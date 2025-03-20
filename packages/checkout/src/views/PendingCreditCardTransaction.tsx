@@ -1,14 +1,14 @@
-import { useAnalyticsContext, useProjectAccessKey, DEBUG } from '@0xsequence/connect'
+import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
+import { useConfig, useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/react-hooks'
 import pako from 'pako'
 import { useEffect } from 'react'
 import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
 import { NFT_CHECKOUT_SOURCE } from '../constants'
-import { TransactionPendingNavigation } from '../contexts'
+import { TransactionPendingNavigation, useEnvironmentContext } from '../contexts'
 import {
   useNavigation,
   useCheckoutModal,
@@ -44,6 +44,7 @@ export const PendingCreditCardTransaction = () => {
 }
 
 export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+  const { transakApiUrl } = useEnvironmentContext()
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -78,8 +79,6 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
-
-  const baseUrl = DEBUG ? 'https://global-stg.transak.com' : 'https://global.transak.com'
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -121,13 +120,16 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   // Note: the network name might not always line up with Transak. A conversion function might be necessary
   const networkName = network?.name.toLowerCase()
 
-  const transakLink = `${baseUrl}?apiKey=${transakConfig?.apiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+  const transakLink = `${transakApiUrl}?apiKey=${transakConfig?.apiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
 
   const isLoading = isLoadingTokenMetadata || isLoadingCollectionInfo
   const isError = isErrorTokenMetadata || isErrorCollectionInfo
 
   useEffect(() => {
     const transakIframeElement = document.getElementById('transakIframe') as HTMLIFrameElement
+    if (!transakIframeElement) {
+      return
+    }
     const transakIframe = transakIframeElement.contentWindow
 
     const readMessage = (message: any) => {
@@ -257,7 +259,8 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
   const { closeCheckout } = useCheckoutModal()
-
+  const { sardineApiUrl: sardineProxyUrl } = useEnvironmentContext()
+  const { env } = useConfig()
   const {
     params: { creditCardCheckout }
   } = nav.navigation as TransactionPendingNavigation
@@ -277,6 +280,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
     {
       order: creditCardCheckout,
       projectAccessKey: projectAccessKey,
+      apiClientUrl: env.apiUrl,
       tokenMetadata: tokenMetadata
     },
     disableSardineClientTokenFetch
@@ -284,9 +288,9 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
   const authToken = data?.token
 
-  const url = DEBUG
-    ? `https://sardine-checkout-sandbox.sequence.info?api_url=https://sardine-api-sandbox.sequence.info&client_token=${authToken}&show_features=true`
-    : `https://sardine-checkout.sequence.info?api_url=https://sardine-api.sequence.info&client_token=${authToken}&show_features=true`
+  const sardineApiUrl = sardineProxyUrl.replace('checkout', 'api')
+
+  const url = `${sardineProxyUrl}?api_url=${sardineApiUrl}&client_token=${authToken}&show_features=true`
 
   const pollForOrderStatus = async () => {
     try {
@@ -297,7 +301,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
       const { orderId } = data
 
       console.log('Polling for transaction status')
-      const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey)
+      const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey, env.apiUrl)
       const status = pollResponse.resp.status
       const transactionHash = pollResponse.resp?.transactionHash
 
