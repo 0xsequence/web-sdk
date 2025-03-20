@@ -11,11 +11,15 @@ export const OperationButtonTemplate = ({
   icon: ComponentType<IconProps>
 }) => {
   return (
-    <div className={cn(cardVariants({ clickable: true }), 'flex flex-col items-center w-full gap-1')} onClick={onClick}>
-      {Icon && <Icon size="lg" color="white" />}
+    <div
+      className={cn(cardVariants({ clickable: true }), 'flex flex-col justify-center items-center w-full gap-1')}
+      onClick={onClick}
+      style={{ height: '68px' }}
+    >
+      {Icon && <Icon size="md" color="white" />}
       <Text
-        variant="normal"
-        fontWeight="semibold"
+        variant="small"
+        fontWeight="bold"
         color="primary"
         style={{ display: 'flex', width: '100%', justifyContent: 'center' }}
       >

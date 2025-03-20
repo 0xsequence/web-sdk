@@ -13,7 +13,8 @@ import {
   cn,
   cardVariants,
   EllipsisIcon,
-  Skeleton
+  Skeleton,
+  Divider
 } from '@0xsequence/design-system'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
@@ -77,8 +78,6 @@ export const IntegratedWallet = () => {
 
   const totalCoinPrices = coinBalancesUnordered
     .reduce((acc, coin) => {
-      console.log('acc', acc)
-      console.log('coin', coin)
       return (
         acc +
         Number(
@@ -202,70 +201,73 @@ export const IntegratedWallet = () => {
   const LoginIconComponent = getConnectorLogo(activeWallet?.signInMethod || '')
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col items-center pt-4">
       <div className="flex flex-row gap-2 items-center">
         <WalletAccountGradient accountAddress={accountAddress || ''} loginIcon={LoginIconComponent} />
         <div className="flex flex-col">
-          <Button variant="text" onClick={onClickAccountSelector}>
-            <Text color="primary" fontWeight="medium" variant="normal">
-              {formatAddress(accountAddress || '')}
-            </Text>
-            <ChevronDownIcon color="white" />
-          </Button>
-          <Text color="primary" fontWeight="medium" variant="small">
+          <Text color="primary" fontWeight="medium" variant="normal">
+            {formatAddress(accountAddress || '')}
+          </Text>
+
+          <Text color="muted" fontWeight="medium" variant="small">
             placeholder@gmail.com
           </Text>
         </div>
-        {wallets.map(wallet => (
-          <div key={wallet.signInMethod}>{getConnectorLogo(wallet.signInMethod)}</div>
-        ))}
+        <Button variant="text" onClick={onClickAccountSelector}>
+          <ChevronDownIcon color="white" />
+        </Button>
       </div>
-      <div className="flex flex-row gap-1">
+      <div className="flex flex-row gap-2 w-full mt-3">
         <OperationButtonTemplate label="Send" onClick={onClickSend} icon={SendIcon} />
         <OperationButtonTemplate label="Swap" onClick={onClickSwap} icon={SwapIcon} />
         <OperationButtonTemplate label="Receive" onClick={onClickReceive} icon={ScanIcon} />
         <OperationButtonTemplate label="Buy" onClick={onClickAddFunds} icon={AddIcon} />
       </div>
-      <Card className="p-0 mt-4">
-        <div
-          className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
-          onClick={onClickWalletSelector}
-          style={{ borderRadius: '0px', background: 'rgba(255, 255, 255, 0.2)' }}
+      <div className="flex flex-col mt-4 w-full overflow-hidden" style={{ borderRadius: '8px' }}>
+        <Card
+          className="flex flex-row justify-between items-center rounded-none bg-background-raised "
+          style={{ height: '52px', paddingRight: '12px' }}
         >
           <Text color="primary" fontWeight="bold" variant="normal">
-            Assets
+            Items
           </Text>
-          <div className="flex flex-row gap-1 items-center">
-            <Text color="primary" fontWeight="bold" variant="xsmall">
-              All wallets
-            </Text>
+          <div
+            className="flex flex-row items-center rounded-full bg-background-secondary hover:opacity-80 cursor-pointer focus:ring-2 focus:ring-focus focus:outline-hidden px-2 py-1"
+            style={{ height: '28px', gap: '3px' }}
+            onClick={onClickWalletSelector}
+          >
             <GradientAvatarList accountAddressList={selectedWallets.map(wallet => wallet.address)} />
+            <Text color="primary" variant="normal" fontWeight="medium">
+              {selectedWallets.length} Wallet{selectedWallets.length === 1 ? '' : 's'}
+            </Text>
             <EllipsisIcon color="white" />
           </div>
-        </div>
+        </Card>
+        <Divider className="m-0" />
         <div
           className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
           onClick={onClickTokens}
-          style={{ borderRadius: '0px', height: '60px' }}
+          style={{ borderRadius: '0px', height: '52px' }}
         >
           <Text color="primary" fontWeight="medium" variant="normal">
             Tokens
           </Text>
           <div className="flex flex-row gap-1 items-center">
-            <Text className="flex flex-row items-center" color="primary" fontWeight="medium" variant="small">
+            <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
               {fiatCurrency.sign}
               {isPending ? <Skeleton className="w-4 h-4" /> : `${totalCoinPrices}`}
             </Text>
             <Text color="primary" fontWeight="medium" variant="small">
               {coinBalancesAmount}
             </Text>
-            <ChevronRightIcon color="white" />
+            <ChevronRightIcon color="white" size="lg" />
           </div>
         </div>
+        <Divider className="m-0" />
         <div
           className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
           onClick={onClickCollectibles}
-          style={{ borderRadius: '0px', height: '60px' }}
+          style={{ borderRadius: '0px', height: '52px' }}
         >
           <Text color="primary" fontWeight="medium" variant="normal">
             Collectibles
@@ -274,34 +276,30 @@ export const IntegratedWallet = () => {
             <Text color="primary" fontWeight="medium" variant="small">
               {collectibleBalancesAmount}
             </Text>
-            <ChevronRightIcon color="white" />
+            <ChevronRightIcon color="white" size="lg" />
           </div>
         </div>
-      </Card>
-      <Card className="p-0">
-        <div
-          className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
-          onClick={onClickTransactions}
-          style={{ height: '60px' }}
-        >
-          <Text color="primary" fontWeight="medium" variant="normal">
-            Transactions
-          </Text>
-          <ChevronRightIcon color="white" />
-        </div>
-      </Card>
-      <Card className="p-0">
-        <div
-          className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
-          onClick={onClickSettings}
-          style={{ height: '60px' }}
-        >
-          <Text color="primary" fontWeight="medium" variant="normal">
-            Settings
-          </Text>
-          <ChevronRightIcon color="white" />
-        </div>
-      </Card>
+      </div>
+      <div
+        className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center mt-2')}
+        onClick={onClickTransactions}
+        style={{ height: '52px' }}
+      >
+        <Text color="primary" fontWeight="medium" variant="normal">
+          Transactions
+        </Text>
+        <ChevronRightIcon color="white" size="lg" />
+      </div>
+      <div
+        className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center mt-2')}
+        onClick={onClickSettings}
+        style={{ height: '52px' }}
+      >
+        <Text color="primary" fontWeight="medium" variant="normal">
+          Settings
+        </Text>
+        <ChevronRightIcon color="white" size="lg" />
+      </div>
 
       <AnimatePresence>
         {accountSelectorModalOpen && (

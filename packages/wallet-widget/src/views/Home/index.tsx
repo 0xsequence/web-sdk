@@ -5,7 +5,7 @@ import { IntegratedWallet } from './components/IntegratedWallet'
 export const Home = () => {
   return (
     <SequenceCheckoutProvider>
-      <div className="flex px-4 pb-5 gap-4 flex-col">
+      <div className="flex flex-col px-4 pb-4 gap-4">
         <IntegratedWallet />
       </div>
     </SequenceCheckoutProvider>
