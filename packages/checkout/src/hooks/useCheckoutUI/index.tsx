@@ -6,7 +6,7 @@ import { Hex } from 'viem'
 
 import { useOrderSummary, type UseOrderSummaryArgs, type UseOrderSummaryReturn } from './useOrderSummary'
 import { useCreditCardPayment, type UseCreditCardPaymentArgs, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
-import { Collectible } from '../../contexts/SelectPaymentModal'
+import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
 import { TransakConfig } from '../../contexts/CheckoutModal'
 // crypto payment
 
@@ -16,13 +16,13 @@ interface UseCheckoutUIArgs {
   chain: string | number
   currencyAddress: string
   totalPriceRaw: string
-  collectibles: Collectible[]
+  collectible: Collectible
   collectionAddress: string
   recipientAddress: string
   targetContractAddress: string
   txData: Hex
   transactionConfirmations?: number
-  creditCardProvider?: 'sardine' | 'transak'
+  creditCardProvider?: CreditCardProviders
   transakConfig?: TransakConfig
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
@@ -37,7 +37,7 @@ export const useCheckoutUI = ({
   chain,
   currencyAddress,
   totalPriceRaw,
-  collectibles,
+  collectible,
   collectionAddress,
   recipientAddress,
   transactionConfirmations
@@ -52,7 +52,7 @@ export const useCheckoutUI = ({
   } = useGetTokenMetadata({
     chainID: String(chainId),
     contractAddress: collectionAddress,
-    tokenIDs: collectibles.map(c => c.tokenId)
+    tokenIDs: [collectible.tokenId]
   })
 
   const {
@@ -78,7 +78,7 @@ export const useCheckoutUI = ({
       chain,
       currencyAddress,
       totalPriceRaw,
-      collectibles,
+      collectible,
       collectionAddress,
       currencyInfo,
       tokenMetadatas,
