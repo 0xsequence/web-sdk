@@ -1,7 +1,8 @@
+import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { networkImageUrl } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatDisplay, NetworkBadge } from '@0xsequence/connect'
-import { useGetContractInfo, useGetTokenMetadata, useGetCoinPrices } from '@0xsequence/hooks'
+import { useGetCoinPrices } from '@0xsequence/hooks'
 import { ReactNode } from 'react'
 import { formatUnits } from 'viem'
 import { Collectible } from '../../contexts/SelectPaymentModal'
@@ -12,6 +13,15 @@ export interface UseOrderSummaryArgs {
   totalPriceRaw: string
   collectibles: Collectible[]
   collectionAddress: string
+  currencyInfo: ContractInfo | undefined
+  tokenMetadatas: TokenMetadata[] | undefined
+  dataCollectionInfo: ContractInfo | undefined
+  isLoadingCollectionInfo: boolean
+  errorCollectionInfo: Error | null
+  isLoadingTokenMetadatas: boolean
+  errorTokenMetadata: Error | null
+  isLoadingCurrencyInfo: boolean
+  errorCurrencyInfo: Error | null
 }
 
 export interface UseOrderSummaryConfig {}
@@ -46,21 +56,20 @@ export const useOrderSummary =
     currencyAddress,
     totalPriceRaw,
     collectibles,
-    collectionAddress
+    collectionAddress,
+    currencyInfo,
+    tokenMetadatas,
+    dataCollectionInfo,
+    isLoadingCollectionInfo,
+    errorCollectionInfo,
+    isLoadingTokenMetadatas,
+    errorTokenMetadata,
+    isLoadingCurrencyInfo,
+    errorCurrencyInfo
   }: UseOrderSummaryArgs): (() => UseOrderSummaryReturn) =>
   () => {
     const network = findSupportedNetwork(chain)
     const chainId = network?.chainId || 137
-
-    const {
-      data: tokenMetadatas,
-      isLoading: isLoadingTokenMetadatas,
-      error: errorTokenMetadata
-    } = useGetTokenMetadata({
-      chainID: String(chainId),
-      contractAddress: collectionAddress,
-      tokenIDs: collectibles.map(c => c.tokenId)
-    })
 
     const {
       data: dataCoinPrices,
@@ -72,24 +81,6 @@ export const useOrderSummary =
         contractAddress: currencyAddress
       }
     ])
-
-    const {
-      data: dataCollectionInfo,
-      isLoading: isLoadingCollectionInfo,
-      error: errorCollectionInfo
-    } = useGetContractInfo({
-      chainID: String(chainId),
-      contractAddress: collectionAddress
-    })
-
-    const {
-      data: currencyInfo,
-      isLoading: isLoadingCurrencyInfo,
-      error: errorCurrencyInfo
-    } = useGetContractInfo({
-      chainID: String(chainId),
-      contractAddress: currencyAddress
-    })
 
     const isLoading = isLoadingCurrencyInfo || isLoadingTokenMetadatas || isLoadingCoinPrices || isLoadingCollectionInfo
     const error = errorTokenMetadata || errorCurrencyInfo || errorCoinPrices || errorCollectionInfo
