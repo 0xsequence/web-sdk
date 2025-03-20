@@ -1,5 +1,15 @@
 # @0xsequence/kit-connectors
 
+## 5.0.1
+
+### Patch Changes
+
+- Wallet widget styles were not being included in the css build
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.0.1
+  - @0xsequence/hooks@5.0.1
+
 ## 5.0.0
 
 ### Major Changes
