@@ -165,8 +165,5 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader secondaryText="Wallet / " primaryText="Receive" />
     case 'buy':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Add Funds" />
-    case 'home':
-    default:
-      return <WalletHeader />
   }
 }

@@ -10,7 +10,7 @@ import { History, Navigation, NavigationContextProvider, WalletModalContextProvi
 
 import { getHeader, getContent } from './utils'
 
-export const WALLET_WIDTH = 400
+export const WALLET_WIDTH = 460
 
 export type SequenceWalletProviderProps = {
   children: React.ReactNode
@@ -39,7 +39,6 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
 
   const displayScrollbar =
-    navigation.location === 'home' ||
     navigation.location === 'collection-details' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||

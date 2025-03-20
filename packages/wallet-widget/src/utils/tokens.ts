@@ -35,7 +35,9 @@ interface ComputeBalanceFiat {
 export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }: ComputeBalanceFiat): string => {
   let totalUsd = 0
 
-  const priceForToken = prices.find(p => compareAddress(p.token.contractAddress, balance.contractAddress))
+  const priceForToken = prices.find(
+    p => compareAddress(p.token.contractAddress, balance.contractAddress) && p.token.chainId === balance.chainId
+  )
   if (!priceForToken) {
     return '0.00'
   }
@@ -45,8 +47,6 @@ export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }
   totalUsd += usdValue
 
   const fiatValue = totalUsd * conversionRate
-
-  console.log('fiatValue', fiatValue)
 
   return `${fiatValue.toFixed(2)}`
 }
