@@ -155,7 +155,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
             <div className="flex flex-row justify-between" key={index}>
               <div className="flex flex-row gap-2 justify-center items-center">
                 {tokenLogoUri && <Image className="w-5" src={tokenLogoUri} alt="token logo" />}
-                {getTransferAmountLabel(formatDisplay(amountValue), symbol, transfer.transferType)}
+                {getTransferAmountLabel(decimals === 0 ? amount : formatDisplay(amountValue), symbol, transfer.transferType)}
               </div>
               {isPending && <Skeleton style={{ width: '35px', height: '20px' }} />}
               {fiatConversionRate && (
