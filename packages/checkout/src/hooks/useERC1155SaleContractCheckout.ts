@@ -11,7 +11,7 @@ import { useSelectPaymentModal } from './useSelectPaymentModal'
 
 /**
  * Return type for the useERC1155SaleContractCheckout hook.
- * 
+ *
  * @property Function to open the checkout modal `openCheckoutModal`
  * @property Function to close the checkout modal `closeCheckoutModal`
  * @property Current payment settings for the modal `selectPaymentSettings`
@@ -69,15 +69,15 @@ export const getERC1155SaleContractConfig = ({
 
 /**
  * Hook for enabling ERC-1155 NFT purchases using a standard sale contract.
- * 
+ *
  * This hook simplifies the process of purchasing ERC-1155 tokens by automatically:
  * - Fetching price information from the sale contract
  * - Determining payment options (crypto, credit card, etc.)
  * - Generating the proper transaction data
  * - Opening and managing the checkout modal
- * 
+ *
  * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useERC1155SaleContractCheckout} for more detailed documentation.
- * 
+ *
  * @param {object} params - Configuration options for the ERC-1155 sale contract checkout
  * @param {number} params.chain - Chain ID where the sale contract is deployed
  * @param {string} params.contractAddress - Address of the ERC-1155 sale contract
@@ -87,14 +87,14 @@ export const getERC1155SaleContractConfig = ({
  * @param {function} [params.onSuccess] - Callback function when the transaction is successful
  * @param {function} [params.onError] - Callback function when an error occurs
  * @param {function} [params.onClose] - Callback function when the modal is closed
- * 
- * @returns Object containing functions to control the checkout modal and state {@link UseERC1155SaleContractCheckoutReturnType} 
- * 
+ *
+ * @returns Object containing functions to control the checkout modal and state {@link UseERC1155SaleContractCheckoutReturnType}
+ *
  * @example
  * ```tsx
  * import { useERC1155SaleContractCheckout } from "@0xsequence/checkout";
  * import { useAccount } from "wagmi";
- * 
+ *
  * const MyComponent = () => {
  *   const { address: userAddress } = useAccount();
  *   const { openCheckoutModal } = useERC1155SaleContractCheckout({
@@ -116,14 +116,14 @@ export const getERC1155SaleContractConfig = ({
  *       console.error(error);
  *     },
  *   });
- * 
+ *
  *   const onClick = () => {
  *     if (!userAddress) {
  *       return;
  *     }
  *     openCheckoutModal();
  *   };
- * 
+ *
  *   return <button onClick={onClick}>Buy ERC-1155 collectible!</button>;
  * };
  * ```

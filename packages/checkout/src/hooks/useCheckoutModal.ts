@@ -2,7 +2,7 @@ import { CheckoutSettings, useCheckoutModalContext } from '../contexts/CheckoutM
 
 /**
  * Return type for the useCheckoutModal hook.
- * 
+ *
  * @property {function(settings: CheckoutSettings): void} triggerCheckout - Function to open the Checkout modal
  * @property {function(): void} closeCheckout - Function to close the Checkout modal
  * @property {CheckoutSettings|undefined} settings - Current settings for the Checkout modal
@@ -15,24 +15,24 @@ type UseCheckoutModalReturnType = {
 
 /**
  * Hook to manage the Checkout modal that allows users to complete purchases using various payment methods.
- * 
+ *
  * This hook provides methods to open and close the checkout modal, and access its current settings.
  * Checkout supports credit card payments and crypto payments for purchasing digital assets.
- * 
+ *
  * Go to {@link https://docs.sequence.xyz/sdk/web/hooks/useCheckoutModal} for more detailed documentation.
- * 
+ *
  * @returns An object containing functions and settings for the Checkout modal {@link UseCheckoutModalReturnType}
- * 
+ *
  * @example
  * ```tsx
  * import { useCheckoutModal } from '@0xsequence/checkout'
  * import { ChainId } from '@0xsequence/network'
  * import { getOrderbookCalldata } from '../utils'
- * 
+ *
  * const YourComponent = () => {
  *   const { address } = useAccount()
  *   const { triggerCheckout } = useCheckoutModal()
- *   
+ *
  *   const handleCheckout = () => {
  *     // NFT purchase settings
  *     const chainId = ChainId.POLYGON
@@ -41,7 +41,7 @@ type UseCheckoutModalReturnType = {
  *     const orderId = 'your-order-id'
  *     const tokenContractAddress = '0xabcdef...' // NFT contract address
  *     const tokenId = '123' // NFT token ID
- *     
+ *
  *     triggerCheckout({
  *       creditCardCheckout: {
  *         chainId,
@@ -71,7 +71,7 @@ type UseCheckoutModalReturnType = {
  *       ]
  *     })
  *   }
- *   
+ *
  *   return (
  *     <button onClick={handleCheckout}>
  *       Checkout

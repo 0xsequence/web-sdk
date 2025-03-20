@@ -46,7 +46,7 @@ export type UseWaasFeeOptionsReturnType = [
 
 /**
  * Options for the useWaasFeeOptions hook
- * 
+ *
  * @property {boolean} skipFeeBalanceCheck - Whether to skip checking token balances (default: false)
  */
 export interface WaasFeeOptionsConfig {

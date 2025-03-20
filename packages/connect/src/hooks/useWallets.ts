@@ -127,7 +127,7 @@ export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedW
 
 /**
  * Information about a connected wallet.
- * 
+ *
  * @property {string} id - Unique identifier for the wallet (connector id)
  * @property {string} name - Display name of the wallet
  * @property {string} address - The wallet's Ethereum address
@@ -144,7 +144,7 @@ export interface ConnectedWallet {
 
 /**
  * Return type for the useWallets hook.
- * 
+ *
  * @property {ConnectedWallet[]} wallets - Array of all connected wallets
  * @property {LinkedWallet[] | undefined} linkedWallets - Array of linked wallets for the active embedded wallet (if any)
  * @property {function(address: string): Promise<void>} setActiveWallet - Function to set a wallet as active
@@ -161,25 +161,25 @@ export interface UseWalletsReturnType {
 
 /**
  * Hook to manage connected wallets.
- * 
+ *
  * This hook provides information about all connected wallets, including both
  * embedded wallets (WaaS) and external wallets. It also allows managing these
  * connections by setting active wallets or disconnecting them.
- * 
+ *
  * For embedded wallets, it also provides access to linked wallets - additional
  * wallets that have been linked to the primary embedded wallet.
- * 
+ *
  * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useWallets} for more detailed documentation.
- * 
+ *
  * @returns An object containing wallet information and management functions {@link UseWalletsReturnType}
- * 
+ *
  * @example
  * ```tsx
  * import { useWallets } from '@0xsequence/connect'
- * 
+ *
  * const YourComponent = () => {
  *   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
- *   
+ *
  *   return (
  *     <div>
  *       <h2>Connected Wallets</h2>
