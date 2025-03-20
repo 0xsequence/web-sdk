@@ -4,10 +4,10 @@
   "initialVersions": {
     "example-next": "1.0.4",
     "example-react": "1.0.4",
-    "@0xsequence/checkout": "5.0.0-ecosystem-beta",
-    "@0xsequence/connect": "5.0.0-ecosystem-beta",
-    "@0xsequence/react-hooks": "5.0.0-ecosystem-beta",
-    "@0xsequence/wallet-widget": "5.0.0-ecosystem-beta"
+    "@0xsequence/checkout": "5.0.0-ecosystem-beta.1",
+    "@0xsequence/connect": "5.0.0-ecosystem-beta.1",
+    "@0xsequence/react-hooks": "5.0.0-ecosystem-beta.1",
+    "@0xsequence/wallet-widget": "5.0.0-ecosystem-beta.1"
   },
   "changesets": []
 }
