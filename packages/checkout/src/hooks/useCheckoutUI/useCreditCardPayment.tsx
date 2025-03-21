@@ -1,4 +1,5 @@
-import { useIndexerClient } from '@0xsequence/hooks'
+import { useProjectAccessKey } from '@0xsequence/connect'
+import { useIndexerClient, useConfig } from '@0xsequence/hooks'
 import { compareAddress, waitForTransactionReceipt, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/connect'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
@@ -8,10 +9,12 @@ import React, { useEffect } from 'react'
 import { Hex, formatUnits, zeroAddress } from 'viem'
 import { usePublicClient } from 'wagmi'
 
+import { fetchSardineOrderStatus } from '../../api'
 import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
 import { TransakConfig } from '../../contexts/CheckoutModal'
 import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak'
 import { useEnvironmentContext } from '../../contexts'
+import { useSardineClientToken } from '../useSardineClientToken'
 
 const POLLING_TIME = 10 * 1000
 const TRANSAK_IFRAME_ID = 'credit-card-payment-transak-iframe'
@@ -81,17 +84,49 @@ export const useCreditCardPayment =
     errorCurrencyInfo
   }: UseCreditCardPaymentArgs) =>
   (): UseCreditCardPaymentReturn => {
-    const missingCreditCardProvider = !creditCardProvider
-    const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
-    const { transakApiUrl } = useEnvironmentContext()
+    const projectAccessKey = useProjectAccessKey()
+    const { env } = useConfig()
+    const disableSardineClientTokenFetch =
+      isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
+    const { transakApiUrl, sardineApiUrl: sardineProxyUrl } = useEnvironmentContext()
+    const network = findSupportedNetwork(chain)
     const error = errorCollectionInfo || errorTokenMetadata || errorCurrencyInfo
     const isLoading = isLoadingCollectionInfo || isLoadingTokenMetadatas || isLoadingCurrencyInfo
-    const network = findSupportedNetwork(chain)
     const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
     const currencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfo?.symbol || 'POL'
     const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals || 18
 
     const tokenMetadata = tokenMetadatas?.[0]
+
+    const {
+      data: dataClientToken,
+      isLoading: isLoadingClientToken,
+      error: errorClientToken
+    } = useSardineClientToken(
+      {
+        order: {
+          chainId: network?.chainId || 137,
+          contractAddress: targetContractAddress,
+          recipientAddress,
+          currencyQuantity: totalPriceRaw,
+          currencySymbol: currencyInfo?.symbol || 'POL',
+          currencyDecimals: String(currencyDecimals || 18),
+          currencyAddress,
+          nftId: collectible.tokenId,
+          nftAddress: collectionAddress,
+          nftQuantity: collectible.quantity,
+          nftDecimals: String(dataCollectionInfo?.decimals || 18),
+          calldata: txData
+        },
+        projectAccessKey: projectAccessKey,
+        apiClientUrl: env.apiUrl,
+        tokenMetadata: tokenMetadata
+      },
+      disableSardineClientTokenFetch
+    )
+
+    const missingCreditCardProvider = !creditCardProvider
+    const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
 
     if (missingCreditCardProvider || missingTransakConfig) {
       return {
@@ -123,7 +158,7 @@ export const useCreditCardPayment =
 
       const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
 
-      const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyInfo?.decimals || 18)))
+      const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyDecimals || 18)))
 
       const transakNftDataJson = JSON.stringify([
         {
@@ -182,22 +217,48 @@ export const useCreditCardPayment =
     }
 
     // Sardine credit card provider
+    const sardineApiUrl = sardineProxyUrl.replace('checkout', 'api')
+    const authToken = dataClientToken?.token
+    const url = `${sardineProxyUrl}?api_url=${sardineApiUrl}&client_token=${authToken}&show_features=true`
+
+    const isLoadingSardine = isLoadingClientToken || isLoading
+    const errorSardine = errorClientToken || error
+
+    const data =
+      !isLoadingSardine && !errorSardine
+        ? {
+            iframeId: SARDINE_IFRAME_ID,
+            paymentUrl: url,
+            CreditCardIframe: (
+              <div className="flex items-center justify-center" style={{ height: '770px' }}>
+                <iframe
+                  id={SARDINE_IFRAME_ID}
+                  src={url}
+                  style={{
+                    maxHeight: '650px',
+                    height: '100%',
+                    maxWidth: '380px',
+                    width: '100%'
+                  }}
+                />
+              </div>
+            ),
+            EventListener: (
+              <SardineEventListener
+                transactionConfirmations={transactionConfirmations}
+                chainId={network?.chainId || 137}
+                onSuccess={onSuccess}
+                onError={onError}
+                orderId={dataClientToken?.orderId || ''}
+              />
+            )
+          }
+        : null
+
     return {
-      error,
-      isLoading,
-      data: {
-        iframeId: SARDINE_IFRAME_ID,
-        paymentUrl: 'https://checkout.transak.com/checkout.html',
-        CreditCardIframe: <iframe id={SARDINE_IFRAME_ID} />,
-        EventListener: (
-          <SardineEventListener
-            transactionConfirmations={transactionConfirmations}
-            chainId={network?.chainId || 137}
-            onSuccess={onSuccess}
-            onError={onError}
-          />
-        )
-      }
+      error: errorSardine,
+      isLoading: isLoadingSardine,
+      data
     }
   }
 
@@ -270,8 +331,43 @@ interface SardineEventListenerProps {
   onError?: (error: Error) => void
   chainId: number
   transactionConfirmations?: number
+  orderId: string
 }
 
-const SardineEventListener = ({ onSuccess, onError, chainId }: SardineEventListenerProps) => {
+const SardineEventListener = ({ onSuccess, onError, chainId, orderId }: SardineEventListenerProps) => {
+  const { env } = useConfig()
+  const projectAccessKey = useProjectAccessKey()
+
+  const pollForOrderStatus = async () => {
+    try {
+      console.log('Polling for transaction status')
+      const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey, env.apiUrl)
+      const status = pollResponse.resp.status
+      const transactionHash = pollResponse.resp?.transactionHash
+
+      console.log('transaction status poll response:', status)
+
+      if (status === 'Complete') {
+        onSuccess?.(transactionHash)
+      }
+      if (status === 'Declined' || status === 'Cancelled') {
+        onError?.(new Error('Failed to transfer collectible'))
+      }
+    } catch (e) {
+      console.error('An error occurred while fetching the transaction status')
+      onError?.(e as Error)
+    }
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      pollForOrderStatus()
+    }, POLLING_TIME)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
   return null
 }
