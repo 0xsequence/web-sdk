@@ -6,7 +6,6 @@ import {
   ContractVerificationStatus
 } from '@0xsequence/connect'
 import { Button, Divider, Text, Spinner } from '@0xsequence/design-system'
-import { findSupportedNetwork } from '@0xsequence/network'
 import {
   useClearCachedBalances,
   useGetTokenBalancesSummary,
@@ -16,6 +15,7 @@ import {
   useGetSwapQuote,
   useIndexerClient
 } from '@0xsequence/hooks'
+import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import { encodeFunctionData, Hex, zeroAddress } from 'viem'
 import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'wagmi'

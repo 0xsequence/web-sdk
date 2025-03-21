@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.0.3
+
+### Patch Changes
+
+- Sardine onramp and design-system theme fix
+
 ## 5.0.2
 
 ### Patch Changes
