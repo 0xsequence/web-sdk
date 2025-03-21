@@ -1,13 +1,13 @@
 import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-
 import React from 'react'
 import { Hex } from 'viem'
 
-import { useOrderSummary, type UseOrderSummaryArgs, type UseOrderSummaryReturn } from './useOrderSummary'
-import { useCreditCardPayment, type UseCreditCardPaymentArgs, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
-import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
 import { TransakConfig } from '../../contexts/CheckoutModal'
+import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
+
+import { useCreditCardPayment, type UseCreditCardPaymentArgs, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
+import { useOrderSummary, type UseOrderSummaryArgs, type UseOrderSummaryReturn } from './useOrderSummary'
 // crypto payment
 
 // credit card payment
