@@ -46,7 +46,7 @@ export const CryptoOption = ({
             ellipsis
             style={{
               overflow: 'hidden',
-              maxWidth: '220px'
+              maxWidth: '215px'
             }}
           >
             {currencyName}
@@ -58,7 +58,7 @@ export const CryptoOption = ({
             ellipsis
             style={{
               overflow: 'hidden',
-              width: '220px'
+              width: '215px'
             }}
           >
             {`${price} ${symbol}`}
@@ -66,9 +66,9 @@ export const CryptoOption = ({
         </div>
       </div>
       <div className="flex flex-row justify-center items-center gap-3">
-        <div className="flex flex-col justify-between items-end">
+        <div className="flex flex-col text-center justify-between items-end">
           {isInsufficientFunds ? (
-            <Text variant="normal" color="negative">
+            <Text variant="small" color="negative">
               Insufficient funds
             </Text>
           ) : null}

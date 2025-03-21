@@ -97,12 +97,16 @@ export const PayWithCrypto = ({
   ]
 
   useEffect(() => {
-    if (enableMainCurrencyPayment) {
+    if (selectedCurrency) {
+      return
+    }
+    if (enableMainCurrencyPayment && !isNotEnoughFunds) {
       setSelectedCurrency(coins[0].currencyAddress)
     } else if (!swapPricesIsLoading) {
       setSelectedCurrency(swapPrices?.[0]?.info?.address)
     }
   }, [swapPricesIsLoading])
+
   const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
   const priceDisplay = formatDisplay(priceFormatted, {
     disableScientificNotation: true,
