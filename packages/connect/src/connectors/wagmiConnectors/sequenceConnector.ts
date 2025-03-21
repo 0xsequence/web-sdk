@@ -7,6 +7,7 @@ import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
 import { EthAuthSettings } from '../../types'
+import { normalizeChainId } from '../../utils/helpers'
 
 export interface BaseSequenceConnectorOptions {
   walletAppURL?: string
@@ -214,17 +215,4 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       config.emitter.emit('disconnect')
     }
   }))
-}
-
-function normalizeChainId(chainId: string | number | bigint | { chainId: string }) {
-  if (typeof chainId === 'object') {
-    return normalizeChainId(chainId.chainId)
-  }
-  if (typeof chainId === 'string') {
-    return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
-  }
-  if (typeof chainId === 'bigint') {
-    return Number(chainId)
-  }
-  return chainId
 }

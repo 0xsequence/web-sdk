@@ -21,6 +21,7 @@ import {
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
+import { normalizeChainId } from '../../utils/helpers'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
@@ -526,19 +527,6 @@ export function randomName() {
   const randomWord2 = words.getWord(Math.floor(Math.random() * wordlistSize))
 
   return `${randomEmoji} ${randomWord1} ${randomWord2}`
-}
-
-function normalizeChainId(chainId: string | number | bigint | { chainId: string }) {
-  if (typeof chainId === 'object') {
-    return normalizeChainId(chainId.chainId)
-  }
-  if (typeof chainId === 'string') {
-    return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
-  }
-  if (typeof chainId === 'bigint') {
-    return Number(chainId)
-  }
-  return chainId
 }
 
 function isSessionInvalidOrNotFoundError(error: unknown) {
