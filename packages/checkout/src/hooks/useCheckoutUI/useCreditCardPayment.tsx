@@ -1,19 +1,19 @@
 import { useProjectAccessKey } from '@0xsequence/connect'
-import { useIndexerClient, useConfig } from '@0xsequence/hooks'
 import { compareAddress, waitForTransactionReceipt, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/connect'
-import { findSupportedNetwork } from '@0xsequence/network'
-import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
+import { useIndexerClient, useConfig } from '@0xsequence/hooks'
 import { TransactionStatus } from '@0xsequence/indexer'
+import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
+import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import React, { useEffect } from 'react'
 import { Hex, formatUnits, zeroAddress } from 'viem'
 import { usePublicClient } from 'wagmi'
 
 import { fetchSardineOrderStatus } from '../../api'
-import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
-import { TransakConfig } from '../../contexts/CheckoutModal'
-import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak'
 import { useEnvironmentContext } from '../../contexts'
+import { TransakConfig } from '../../contexts/CheckoutModal'
+import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
+import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak'
 import { useSardineClientToken } from '../useSardineClientToken'
 
 const POLLING_TIME = 10 * 1000
@@ -88,7 +88,7 @@ export const useCreditCardPayment =
     const { env } = useConfig()
     const disableSardineClientTokenFetch =
       isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
-    const { transakApiUrl, sardineApiUrl: sardineProxyUrl } = useEnvironmentContext()
+    const { transakApiUrl, sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
     const network = findSupportedNetwork(chain)
     const error = errorCollectionInfo || errorTokenMetadata || errorCurrencyInfo
     const isLoading = isLoadingCollectionInfo || isLoadingTokenMetadatas || isLoadingCurrencyInfo
@@ -334,12 +334,18 @@ interface SardineEventListenerProps {
   orderId: string
 }
 
-const SardineEventListener = ({ onSuccess, onError, chainId, orderId }: SardineEventListenerProps) => {
+const SardineEventListener = ({ onSuccess, onError, chainId, orderId, transactionConfirmations }: SardineEventListenerProps) => {
   const { env } = useConfig()
   const projectAccessKey = useProjectAccessKey()
+  const indexerClient = useIndexerClient(chainId)
+  const publicClient = usePublicClient({ chainId })
 
   const pollForOrderStatus = async () => {
     try {
+      if (!indexerClient || !publicClient) {
+        onError?.(new Error('Indexer or public client not available'))
+        return
+      }
       console.log('Polling for transaction status')
       const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey, env.apiUrl)
       const status = pollResponse.resp.status
@@ -348,7 +354,18 @@ const SardineEventListener = ({ onSuccess, onError, chainId, orderId }: SardineE
       console.log('transaction status poll response:', status)
 
       if (status === 'Complete') {
-        onSuccess?.(transactionHash)
+        const { txnStatus } = await waitForTransactionReceipt({
+          txnHash: transactionHash,
+          indexerClient,
+          publicClient,
+          confirmations: transactionConfirmations
+        })
+
+        if (txnStatus === TransactionStatus.FAILED) {
+          onError?.(new Error('Sardine transaction failed'))
+        } else {
+          onSuccess?.(transactionHash)
+        }
       }
       if (status === 'Declined' || status === 'Cancelled') {
         onError?.(new Error('Failed to transfer collectible'))
