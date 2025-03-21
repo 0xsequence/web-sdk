@@ -72,6 +72,7 @@ export { mock } from './connectors/mock'
 export { sequence, type SequenceOptions } from './connectors/sequence'
 export { twitch, type TwitchOptions } from './connectors/twitch'
 export { walletConnect } from './connectors/walletConnect'
+export { ecosystemWallet, type EcosystemWalletOptions } from './connectors/ecosystem'
 export {
   sequenceWallet,
   sequenceWaasWallet,
@@ -93,6 +94,8 @@ export { useChain } from './hooks/useChain'
 export { useWallets } from './hooks/useWallets'
 export type { ConnectedWallet } from './hooks/useWallets'
 export type { LinkedWallet } from '@0xsequence/api'
+
+export { useDirectEcosystemConnect } from './hooks/useDirectEcosystemConnect'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge'
