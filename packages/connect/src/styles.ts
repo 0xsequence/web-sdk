@@ -50,32 +50,6 @@ export const styles = String.raw`
     --default-mono-font-variation-settings: var(
       --font-mono--font-variation-settings
     );
-    --font-body: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --color-primary: var(--seq-color-primary);
-    --color-secondary: var(--seq-color-secondary);
-    --color-muted: var(--seq-color-muted);
-    --color-inverse: var(--seq-color-inverse);
-    --color-positive: var(--seq-color-positive);
-    --color-negative: var(--seq-color-negative);
-    --color-info: var(--seq-color-info);
-    --color-warning: var(--seq-color-warning);
-    --color-background-primary: var(--seq-color-background-primary);
-    --color-background-secondary: var(--seq-color-background-secondary);
-    --color-background-contrast: var(--seq-color-background-contrast);
-    --color-background-muted: var(--seq-color-background-muted);
-    --color-background-control: var(--seq-color-background-control);
-    --color-background-inverse: var(--seq-color-background-inverse);
-    --color-background-backdrop: var(--seq-color-background-backdrop);
-    --color-background-overlay: var(--seq-color-background-overlay);
-    --color-background-raised: var(--seq-color-background-raised);
-    --color-border-normal: var(--seq-color-border-normal);
-    --color-border-focus: var(--seq-color-border-focus);
-    --color-button-glass: var(--seq-color-button-glass);
-    --color-button-emphasis: var(--seq-color-button-emphasis);
-    --color-button-inverse: var(--seq-color-button-inverse);
-    --background-image-gradient-primary: var(--seq-color-gradient-primary);
-    --background-image-gradient-secondary: var(--seq-color-gradient-secondary);
-    --background-image-gradient-skeleton: var(--seq-color-gradient-skeleton);
   }
 }
 @layer base {
@@ -328,9 +302,6 @@ export const styles = String.raw`
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
-  .mt-0 {
-    margin-top: calc(var(--spacing) * 0);
-  }
   .mt-0\.5 {
     margin-top: calc(var(--spacing) * 0.5);
   }
@@ -411,9 +382,6 @@ export const styles = String.raw`
   }
   .inline-flex {
     display: inline-flex;
-  }
-  .table {
-    display: table;
   }
   .aspect-square {
     aspect-ratio: 1 / 1;
@@ -508,9 +476,6 @@ export const styles = String.raw`
   .min-h-full {
     min-height: 100%;
   }
-  .w-1 {
-    width: calc(var(--spacing) * 1);
-  }
   .w-1\/2 {
     width: calc(1/2 * 100%);
   }
@@ -586,9 +551,6 @@ export const styles = String.raw`
   .w-screen {
     width: 100vw;
   }
-  .max-w-1 {
-    max-width: calc(var(--spacing) * 1);
-  }
   .max-w-1\/2 {
     max-width: calc(1/2 * 100%);
   }
@@ -613,20 +575,11 @@ export const styles = String.raw`
   .min-w-full {
     min-width: 100%;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
   }
-  .flex-grow {
-    flex-grow: 1;
-  }
   .grow {
     flex-grow: 1;
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .origin-top {
     transform-origin: top;
@@ -817,82 +770,82 @@ export const styles = String.raw`
     border-style: solid;
   }
   .border-border-focus {
-    border-color: var(--color-border-focus);
+    border-color: var(--seq-color-border-focus);
   }
   .border-border-normal {
-    border-color: var(--color-border-normal);
+    border-color: var(--seq-color-border-normal);
   }
   .border-transparent {
     border-color: transparent;
   }
   .border-t-primary {
-    border-top-color: var(--color-primary);
+    border-top-color: var(--seq-color-primary);
   }
   .border-t-transparent {
     border-top-color: transparent;
   }
   .bg-background-backdrop {
-    background-color: var(--color-background-backdrop);
+    background-color: var(--seq-color-background-backdrop);
   }
   .bg-background-control {
-    background-color: var(--color-background-control);
+    background-color: var(--seq-color-background-control);
   }
   .bg-background-inverse {
-    background-color: var(--color-background-inverse);
+    background-color: var(--seq-color-background-inverse);
   }
   .bg-background-muted {
-    background-color: var(--color-background-muted);
+    background-color: var(--seq-color-background-muted);
   }
   .bg-background-overlay {
-    background-color: var(--color-background-overlay);
+    background-color: var(--seq-color-background-overlay);
   }
   .bg-background-primary {
-    background-color: var(--color-background-primary);
+    background-color: var(--seq-color-background-primary);
   }
   .bg-background-raised {
-    background-color: var(--color-background-raised);
+    background-color: var(--seq-color-background-raised);
   }
   .bg-background-secondary {
-    background-color: var(--color-background-secondary);
+    background-color: var(--seq-color-background-secondary);
   }
   .bg-border-normal {
-    background-color: var(--color-border-normal);
+    background-color: var(--seq-color-border-normal);
   }
   .bg-button-emphasis {
-    background-color: var(--color-button-emphasis);
+    background-color: var(--seq-color-button-emphasis);
   }
   .bg-button-glass {
-    background-color: var(--color-button-glass);
+    background-color: var(--seq-color-button-glass);
   }
   .bg-button-inverse {
-    background-color: var(--color-button-inverse);
+    background-color: var(--seq-color-button-inverse);
   }
   .bg-info {
-    background-color: var(--color-info);
+    background-color: var(--seq-color-info);
   }
   .bg-negative {
-    background-color: var(--color-negative);
+    background-color: var(--seq-color-negative);
   }
   .bg-positive {
-    background-color: var(--color-positive);
+    background-color: var(--seq-color-positive);
   }
   .bg-transparent {
     background-color: transparent;
   }
   .bg-warning {
-    background-color: var(--color-warning);
+    background-color: var(--seq-color-warning);
   }
   .bg-white {
     background-color: var(--color-white);
   }
   .bg-gradient-primary {
-    background-image: var(--background-image-gradient-primary);
+    background-image: var(--seq-color-gradient-primary);
   }
   .bg-gradient-secondary {
-    background-image: var(--background-image-gradient-secondary);
+    background-image: var(--seq-color-gradient-secondary);
   }
   .bg-gradient-skeleton {
-    background-image: var(--background-image-gradient-skeleton);
+    background-image: var(--seq-color-gradient-skeleton);
   }
   .bg-\[length\:400\%_400\%\] {
     background-size: 400% 400%;
@@ -901,7 +854,7 @@ export const styles = String.raw`
     background-repeat: no-repeat;
   }
   .fill-background-raised {
-    fill: var(--color-background-raised);
+    fill: var(--seq-color-background-raised);
   }
   .object-cover {
     object-fit: cover;
@@ -968,9 +921,6 @@ export const styles = String.raw`
   }
   .pt-0 {
     padding-top: calc(var(--spacing) * 0);
-  }
-  .pt-1 {
-    padding-top: calc(var(--spacing) * 1);
   }
   .pt-1\.5 {
     padding-top: calc(var(--spacing) * 1.5);
@@ -1039,7 +989,7 @@ export const styles = String.raw`
     text-align: right;
   }
   .font-body {
-    font-family: var(--font-body);
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
   .font-mono {
     font-family: var(--font-mono);
@@ -1149,40 +1099,40 @@ export const styles = String.raw`
     white-space: nowrap;
   }
   .text-background-raised {
-    color: var(--color-background-raised);
+    color: var(--seq-color-background-raised);
   }
   .text-background-secondary {
-    color: var(--color-background-secondary);
+    color: var(--seq-color-background-secondary);
   }
   .text-black {
     color: var(--color-black);
   }
   .text-info {
-    color: var(--color-info);
+    color: var(--seq-color-info);
   }
   .text-inherit {
     color: inherit;
   }
   .text-inverse {
-    color: var(--color-inverse);
+    color: var(--seq-color-inverse);
   }
   .text-muted {
-    color: var(--color-muted);
+    color: var(--seq-color-muted);
   }
   .text-negative {
-    color: var(--color-negative);
+    color: var(--seq-color-negative);
   }
   .text-positive {
-    color: var(--color-positive);
+    color: var(--seq-color-positive);
   }
   .text-primary {
-    color: var(--color-primary);
+    color: var(--seq-color-primary);
   }
   .text-secondary {
-    color: var(--color-secondary);
+    color: var(--seq-color-secondary);
   }
   .text-warning {
-    color: var(--color-warning);
+    color: var(--seq-color-warning);
   }
   .text-white {
     color: var(--color-white);
@@ -1204,7 +1154,7 @@ export const styles = String.raw`
   }
   .placeholder-muted {
     &::placeholder {
-      color: var(--color-muted);
+      color: var(--seq-color-muted);
     }
   }
   .caret-transparent {
@@ -1236,13 +1186,10 @@ export const styles = String.raw`
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .ring-border-focus {
-    --tw-ring-color: var(--color-border-focus);
+    --tw-ring-color: var(--seq-color-border-focus);
   }
   .ring-border-normal {
-    --tw-ring-color: var(--color-border-normal);
-  }
-  .ring-white {
-    --tw-ring-color: var(--color-white);
+    --tw-ring-color: var(--seq-color-border-normal);
   }
   .ring-white\/10 {
     --tw-ring-color: color-mix(in oklab, var(--color-white) 10%, transparent);
@@ -1276,10 +1223,6 @@ export const styles = String.raw`
   }
   .backdrop-blur-xs {
     --tw-backdrop-blur: blur(var(--blur-xs));
-    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-  }
-  .backdrop-filter {
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }
@@ -1442,14 +1385,14 @@ export const styles = String.raw`
   .before\:to-background-overlay {
     &::before {
       content: var(--tw-content);
-      --tw-gradient-to: var(--color-background-overlay);
+      --tw-gradient-to: var(--seq-color-background-overlay);
       --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
     }
   }
   .before\:to-background-primary {
     &::before {
       content: var(--tw-content);
-      --tw-gradient-to: var(--color-background-primary);
+      --tw-gradient-to: var(--seq-color-background-primary);
       --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
     }
   }
@@ -1591,7 +1534,7 @@ export const styles = String.raw`
   .after\:to-background-primary {
     &::after {
       content: var(--tw-content);
-      --tw-gradient-to: var(--color-background-primary);
+      --tw-gradient-to: var(--seq-color-background-primary);
       --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
     }
   }
@@ -1620,7 +1563,7 @@ export const styles = String.raw`
   }
   .focus-within\:ring-border-focus {
     &:focus-within {
-      --tw-ring-color: var(--color-border-focus);
+      --tw-ring-color: var(--seq-color-border-focus);
     }
   }
   .focus-within\:ring-inset {
@@ -1631,7 +1574,7 @@ export const styles = String.raw`
   .hover\:bg-button-glass {
     &:hover {
       @media (hover: hover) {
-        background-color: var(--color-button-glass);
+        background-color: var(--seq-color-button-glass);
       }
     }
   }
@@ -1652,7 +1595,7 @@ export const styles = String.raw`
   .hover\:ring-border-focus {
     &:hover {
       @media (hover: hover) {
-        --tw-ring-color: var(--color-border-focus);
+        --tw-ring-color: var(--seq-color-border-focus);
       }
     }
   }
@@ -1675,7 +1618,7 @@ export const styles = String.raw`
   }
   .focus\:ring-border-focus {
     &:focus {
-      --tw-ring-color: var(--color-border-focus);
+      --tw-ring-color: var(--seq-color-border-focus);
     }
   }
   .focus\:outline-hidden {
@@ -1696,7 +1639,7 @@ export const styles = String.raw`
   }
   .focus-visible\:ring-border-focus {
     &:focus-visible {
-      --tw-ring-color: var(--color-border-focus);
+      --tw-ring-color: var(--seq-color-border-focus);
     }
   }
   .focus-visible\:outline-hidden {
@@ -1731,7 +1674,7 @@ export const styles = String.raw`
   }
   .data-disabled\:text-muted {
     &[data-disabled] {
-      color: var(--color-muted);
+      color: var(--seq-color-muted);
     }
   }
   .data-disabled\:opacity-50 {
@@ -1746,17 +1689,17 @@ export const styles = String.raw`
   }
   .data-highlighted\:bg-background-contrast {
     &[data-highlighted] {
-      background-color: var(--color-background-contrast);
+      background-color: var(--seq-color-background-contrast);
     }
   }
   .data-highlighted\:bg-background-secondary {
     &[data-highlighted] {
-      background-color: var(--color-background-secondary);
+      background-color: var(--seq-color-background-secondary);
     }
   }
   .data-\[state\=active\]\:text-primary {
     &[data-state="active"] {
-      color: var(--color-primary);
+      color: var(--seq-color-primary);
     }
   }
   .data-\[state\=checked\]\:translate-x-5 {
@@ -1767,12 +1710,12 @@ export const styles = String.raw`
   }
   .data-\[state\=checked\]\:bg-background-control {
     &[data-state="checked"] {
-      background-color: var(--color-background-control);
+      background-color: var(--seq-color-background-control);
     }
   }
   .data-\[state\=checked\]\:bg-gradient-primary {
     &[data-state="checked"] {
-      background-image: var(--background-image-gradient-primary);
+      background-image: var(--seq-color-gradient-primary);
     }
   }
   .data-\[swipe\=cancel\]\:translate-x-0 {
@@ -1886,77 +1829,99 @@ export const styles = String.raw`
     }
   }
 }
-@layer base {
-  .seq-root *, .seq-root *::before, .seq-root *::after {
-    box-sizing: border-box;
-  }
-  :root, [data-theme=dark] {
-    --seq-color-positive: #1fc266;
-    --seq-color-negative: #c2501f;
-    --seq-color-info: #0076cc;
-    --seq-color-warning: #f4b03e;
-    --seq-color-primary: rgba(255, 255, 255, 1);
-    --seq-color-secondary: rgba(255, 255, 255, 0.8);
-    --seq-color-muted: rgba(255, 255, 255, 0.5);
-    --seq-color-inverse: rgba(0, 0, 0, 1);
-    --seq-color-background-primary: rgba(0, 0, 0, 1);
-    --seq-color-background-secondary: rgba(255, 255, 255, 0.1);
-    --seq-color-background-contrast: rgba(255, 255, 255, 0.5);
-    --seq-color-background-muted: rgba(255, 255, 255, 0.05);
-    --seq-color-background-control: rgba(255, 255, 255, 0.25);
-    --seq-color-background-inverse: rgba(255, 255, 255, 1);
-    --seq-color-background-backdrop: rgba(34, 34, 34, 0.9);
-    --seq-color-background-overlay: rgba(0, 0, 0, 0.7);
-    --seq-color-background-raised: rgba(54, 54, 54, 0.7);
-    --seq-color-border-normal: rgba(255, 255, 255, 0.25);
-    --seq-color-border-focus: rgba(255, 255, 255, 0.5);
-    --seq-color-button-glass: rgba(255, 255, 255, 0.15);
-    --seq-color-button-emphasis: rgba(0, 0, 0, 0.5);
-    --seq-color-button-inverse: rgba(255, 255, 255, 0.8);
-    --seq-color-gradient-backdrop: linear-gradient(
-        
-        243.18deg,
-        rgba(86, 52, 189, 0.85) 0%,
-        rgba(49, 41, 223, 0.85) 63.54%,
-        rgba(7, 98, 149, 0.85) 100% );
-    --seq-color-gradient-primary: linear-gradient(
-        
-        89.69deg,
-        #4411e1 0.27%,
-        #7537f9 99.73% );
-    --seq-color-gradient-secondary: linear-gradient(
-        
-        32.51deg,
-        #951990 -15.23%,
-        #3a35b1 48.55%,
-        #20a8b0 100% );
-    --seq-color-gradient-skeleton: linear-gradient(
-        
-        -45deg,
-        transparent,
-        var(--seq-color-background-secondary),
-        transparent );
-  }
-  [data-theme=light] {
-    --seq-color-primary: rgba(0, 0, 0, 1);
-    --seq-color-secondary: rgba(0, 0, 0, 0.8);
-    --seq-color-muted: rgba(0, 0, 0, 0.5);
-    --seq-color-inverse: rgba(255, 255, 255, 1);
-    --seq-color-background-primary: rgba(244, 244, 244, 1);
-    --seq-color-background-secondary: rgba(0, 0, 0, 0.1);
-    --seq-color-background-contrast: rgba(244, 244, 244, 0.5);
-    --seq-color-background-muted: rgba(0, 0, 0, 0.05);
-    --seq-color-background-control: rgba(0, 0, 0, 0.25);
-    --seq-color-background-inverse: #rgba(0, 0, 0, 1);
-    --seq-color-background-backdrop: rgba(221, 221, 221, 0.9);
-    --seq-color-background-overlay: rgba(244, 244, 244, 0.7);
-    --seq-color-background-raised: rgba(192, 192, 192, 0.7);
-    --seq-color-border-normal: rgba(0, 0, 0, 0.25);
-    --seq-color-border-focus: rgba(0, 0, 0, 0.5);
-    --seq-color-button-glass: rgba(0, 0, 0, 0.15);
-    --seq-color-button-emphasis: rgba(255, 255, 255, 0.5);
-    --seq-color-button-inverse: rgba(0, 0, 0, 0.8);
-  }
+:root, [data-theme=dark] {
+  --seq-color-positive: #1fc266;
+  --seq-color-negative: #c2501f;
+  --seq-color-info: #0076cc;
+  --seq-color-warning: #f4b03e;
+  --seq-color-primary: rgba(255, 255, 255, 1);
+  --seq-color-secondary: rgba(255, 255, 255, 0.8);
+  --seq-color-muted: rgba(255, 255, 255, 0.5);
+  --seq-color-inverse: rgba(0, 0, 0, 1);
+  --seq-color-background-primary: rgba(0, 0, 0, 1);
+  --seq-color-background-secondary: rgba(255, 255, 255, 0.1);
+  --seq-color-background-contrast: rgba(255, 255, 255, 0.5);
+  --seq-color-background-muted: rgba(255, 255, 255, 0.05);
+  --seq-color-background-control: rgba(255, 255, 255, 0.25);
+  --seq-color-background-inverse: rgba(255, 255, 255, 1);
+  --seq-color-background-backdrop: rgba(34, 34, 34, 0.9);
+  --seq-color-background-overlay: rgba(0, 0, 0, 0.7);
+  --seq-color-background-raised: rgba(54, 54, 54, 0.7);
+  --seq-color-border-normal: rgba(255, 255, 255, 0.25);
+  --seq-color-border-focus: rgba(255, 255, 255, 0.5);
+  --seq-color-button-glass: rgba(255, 255, 255, 0.15);
+  --seq-color-button-emphasis: rgba(0, 0, 0, 0.5);
+  --seq-color-button-inverse: rgba(255, 255, 255, 0.8);
+  --seq-color-gradient-backdrop: linear-gradient(
+      
+      243.18deg,
+      rgba(86, 52, 189, 0.85) 0%,
+      rgba(49, 41, 223, 0.85) 63.54%,
+      rgba(7, 98, 149, 0.85) 100% );
+  --seq-color-gradient-primary: linear-gradient(
+      
+      89.69deg,
+      #4411e1 0.27%,
+      #7537f9 99.73% );
+  --seq-color-gradient-secondary: linear-gradient(
+      
+      32.51deg,
+      #951990 -15.23%,
+      #3a35b1 48.55%,
+      #20a8b0 100% );
+  --seq-color-gradient-skeleton: linear-gradient(
+      
+      -45deg,
+      transparent,
+      var(--seq-color-background-secondary),
+      transparent );
+}
+[data-theme=light] {
+  --seq-color-positive: #1fc266;
+  --seq-color-negative: #c2501f;
+  --seq-color-info: #0076cc;
+  --seq-color-warning: #f4b03e;
+  --seq-color-primary: rgba(0, 0, 0, 1);
+  --seq-color-secondary: rgba(0, 0, 0, 0.8);
+  --seq-color-muted: rgba(0, 0, 0, 0.5);
+  --seq-color-inverse: rgba(255, 255, 255, 1);
+  --seq-color-background-primary: rgba(244, 244, 244, 1);
+  --seq-color-background-secondary: rgba(0, 0, 0, 0.1);
+  --seq-color-background-contrast: rgba(244, 244, 244, 0.5);
+  --seq-color-background-muted: rgba(0, 0, 0, 0.05);
+  --seq-color-background-control: rgba(0, 0, 0, 0.25);
+  --seq-color-background-inverse: #rgba(0, 0, 0, 1);
+  --seq-color-background-backdrop: rgba(221, 221, 221, 0.9);
+  --seq-color-background-overlay: rgba(244, 244, 244, 0.7);
+  --seq-color-background-raised: rgba(192, 192, 192, 0.7);
+  --seq-color-border-normal: rgba(0, 0, 0, 0.25);
+  --seq-color-border-focus: rgba(0, 0, 0, 0.5);
+  --seq-color-button-glass: rgba(0, 0, 0, 0.15);
+  --seq-color-button-emphasis: rgba(255, 255, 255, 0.5);
+  --seq-color-button-inverse: rgba(0, 0, 0, 0.8);
+  --seq-color-gradient-backdrop: linear-gradient(
+      
+      243.18deg,
+      rgba(86, 52, 189, 0.85) 0%,
+      rgba(49, 41, 223, 0.85) 63.54%,
+      rgba(7, 98, 149, 0.85) 100% );
+  --seq-color-gradient-primary: linear-gradient(
+      
+      89.69deg,
+      #4411e1 0.27%,
+      #7537f9 99.73% );
+  --seq-color-gradient-secondary: linear-gradient(
+      
+      32.51deg,
+      #951990 -15.23%,
+      #3a35b1 48.55%,
+      #20a8b0 100% );
+  --seq-color-gradient-skeleton: linear-gradient(
+      
+      -45deg,
+      transparent,
+      var(--seq-color-background-secondary),
+      transparent );
 }
 @property --tw-translate-x {
   syntax: "*";
