@@ -9,7 +9,16 @@ import { SelectPaymentSettings } from '../contexts/SelectPaymentModal'
 import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
 import { useSelectPaymentModal } from './useSelectPaymentModal'
 
-interface UseERC1155SaleContractCheckoutReturn {
+/**
+ * Return type for the useERC1155SaleContractCheckout hook.
+ *
+ * @property Function to open the checkout modal `openCheckoutModal`
+ * @property Function to close the checkout modal `closeCheckoutModal`
+ * @property Current payment settings for the modal `selectPaymentSettings`
+ * @property Whether the contract data is still loading `isLoading`
+ * @property Whether there was an error loading the contract data `isError`
+ */
+interface UseERC1155SaleContractCheckoutReturnType {
   openCheckoutModal: () => void
   closeCheckoutModal: () => void
   selectPaymentSettings?: SelectPaymentSettings
@@ -58,6 +67,67 @@ export const getERC1155SaleContractConfig = ({
   }
 }
 
+/**
+ * Hook for enabling ERC-1155 NFT purchases using a standard sale contract.
+ *
+ * This hook simplifies the process of purchasing ERC-1155 tokens by automatically:
+ * - Fetching price information from the sale contract
+ * - Determining payment options (crypto, credit card, etc.)
+ * - Generating the proper transaction data
+ * - Opening and managing the checkout modal
+ *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useERC1155SaleContractCheckout} for more detailed documentation.
+ *
+ * @param {object} params - Configuration options for the ERC-1155 sale contract checkout
+ * @param {number} params.chain - Chain ID where the sale contract is deployed
+ * @param {string} params.contractAddress - Address of the ERC-1155 sale contract
+ * @param {string} params.wallet - Address of the wallet that will receive the NFTs
+ * @param {string} params.collectionAddress - Address of the ERC-1155 token contract
+ * @param {Array<{tokenId: string, quantity: string}>} params.items - Array of token IDs and quantities to purchase
+ * @param {function} [params.onSuccess] - Callback function when the transaction is successful
+ * @param {function} [params.onError] - Callback function when an error occurs
+ * @param {function} [params.onClose] - Callback function when the modal is closed
+ *
+ * @returns Object containing functions to control the checkout modal and state {@link UseERC1155SaleContractCheckoutReturnType}
+ *
+ * @example
+ * ```tsx
+ * import { useERC1155SaleContractCheckout } from "@0xsequence/checkout";
+ * import { useAccount } from "wagmi";
+ *
+ * const MyComponent = () => {
+ *   const { address: userAddress } = useAccount();
+ *   const { openCheckoutModal } = useERC1155SaleContractCheckout({
+ *     chain: 80001, // chainId of the chain the collectible is on
+ *     contractAddress: "0x0327b2f274e04d292e74a06809bcd687c63a4ba4", // address of the contract handling the minting function
+ *     wallet: userAddress!, // address of the recipient
+ *     collectionAddress: "0x888a322db4b8033bac3ff84412738c096f87f9d0", // address of the collection contract
+ *     items: [
+ *       // array of collectibles to purchase
+ *       {
+ *         tokenId: "0",
+ *         quantity: "1",
+ *       },
+ *     ],
+ *     onSuccess: (txnHash: string) => {
+ *       console.log("success!", txnHash);
+ *     },
+ *     onError: (error: Error) => {
+ *       console.error(error);
+ *     },
+ *   });
+ *
+ *   const onClick = () => {
+ *     if (!userAddress) {
+ *       return;
+ *     }
+ *     openCheckoutModal();
+ *   };
+ *
+ *   return <button onClick={onClick}>Buy ERC-1155 collectible!</button>;
+ * };
+ * ```
+ */
 export const useERC1155SaleContractCheckout = ({
   chain,
   contractAddress,
@@ -65,7 +135,7 @@ export const useERC1155SaleContractCheckout = ({
   collectionAddress,
   items,
   ...restArgs
-}: CheckoutOptionsSalesContractArgs & SaleContractSettings): UseERC1155SaleContractCheckoutReturn => {
+}: CheckoutOptionsSalesContractArgs & SaleContractSettings): UseERC1155SaleContractCheckoutReturnType => {
   const { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
   const {
     data: checkoutOptions,

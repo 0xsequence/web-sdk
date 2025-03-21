@@ -38,7 +38,7 @@ export type WaasFeeOptionConfirmation = {
 /**
  * Return type for the useWaasFeeOptions hook
  */
-export type UseWaasFeeOptionsReturn = [
+export type UseWaasFeeOptionsReturnType = [
   pendingFeeOptionConfirmation: WaasFeeOptionConfirmation | undefined,
   confirmPendingFeeOption: (id: string, feeTokenAddress: string | null) => void,
   rejectPendingFeeOption: (id: string) => void
@@ -46,6 +46,8 @@ export type UseWaasFeeOptionsReturn = [
 
 /**
  * Options for the useWaasFeeOptions hook
+ *
+ * @property {boolean} skipFeeBalanceCheck - Whether to skip checking token balances (default: false)
  */
 export interface WaasFeeOptionsConfig {
   /** Whether to skip checking token balances (default: false) */
@@ -60,8 +62,8 @@ export interface WaasFeeOptionsConfig {
  * - Provide user wallet balances for each fee option
  * - Confirm or reject fee selections
  *
- * @param options - Configuration options for the hook
- * @returns {UseWaasFeeOptionsReturn} Array containing the confirmation state and control functions
+ * @param options - Configuration options for the hook {@link WaasFeeOptionsConfig}
+ * @returns Array containing the confirmation state and control functions {@link UseWaasFeeOptionsReturnType}
  *
  * @example
  * ```tsx
@@ -88,7 +90,7 @@ export interface WaasFeeOptionsConfig {
  *
  * ```
  */
-export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOptionsReturn {
+export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOptionsReturnType {
   const { skipFeeBalanceCheck = false } = options || {}
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find((c: any) => c.connector.id.includes('waas'))?.connector
