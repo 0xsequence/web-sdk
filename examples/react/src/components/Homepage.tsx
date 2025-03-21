@@ -1,144 +1,95 @@
-import { SequenceCheckoutConfig } from '@0xsequence/checkout'
-import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
-import { ChainId } from '@0xsequence/network'
-import { zeroAddress } from 'viem'
+import { useWallets, useOpenConnectModal, WalletType } from '@0xsequence/connect'
+import { Button, Card, Text, Image, CheckmarkIcon } from '@0xsequence/design-system'
+import { clsx } from 'clsx'
+import { Footer } from 'example-shared-components'
 
-const searchParams = new URLSearchParams(location.search)
-
-// append ?type=waas|universal to url to switch between wallet types
-const walletType: WalletType = searchParams.get('type') === 'universal' ? 'universal' : 'waas'
+import { Connected } from './Connected'
 
 // append ?debug to url to enable debug mode
-const isDebugMode = searchParams.has('debug')
-// @ts-ignore
-const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
-const projectAccessKey = isDev ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
-const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
+const searchParams = new URLSearchParams(location.search)
+const walletType: WalletType = searchParams.get('type') === 'universal' ? 'universal' : 'waas'
 
-export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
-  [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470'
-}
+export const Homepage = () => {
+  const { wallets } = useWallets()
+  const { setOpenConnectModal } = useOpenConnectModal()
 
-export const connectConfig: ConnectConfig = {
-  projectAccessKey,
-  defaultTheme: 'dark',
-  signIn: {
-    projectName: 'Sequence Web SDK Demo',
-    useMock: isDebugMode
-  },
-  displayedAssets: [
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Skyweaver assets
-    {
-      contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-      chainId: ChainId.POLYGON
-    }
-  ],
-  readOnlyNetworks: [ChainId.OPTIMISM],
-  env: isDev
-    ? {
-        indexerGatewayUrl: 'https://dev-indexer.sequence.app',
-        metadataUrl: 'https://dev-metadata.sequence.app',
-        apiUrl: 'https://dev-api.sequence.app',
-        indexerUrl: 'https://dev-indexer.sequence.app'
-      }
-    : undefined
-}
+  const handleSwitchWalletType = (type: WalletType) => {
+    const searchParams = new URLSearchParams()
 
-export const config =
-  walletType === 'waas'
-    ? createConfig('waas', {
-        ...connectConfig,
-        appName: 'Sequence Web SDK Demo',
-        chainIds: [
-          ChainId.ARBITRUM_NOVA,
-          ChainId.ARBITRUM_SEPOLIA,
-          ChainId.POLYGON,
-          ChainId.IMMUTABLE_ZKEVM,
-          ChainId.IMMUTABLE_ZKEVM_TESTNET
-        ],
-        defaultChainId: ChainId.ARBITRUM_NOVA,
-        waasConfigKey: isDebugMode
-          ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
-          : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9',
-        enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
-
-        google: {
-          clientId: isDebugMode
-            ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
-            : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
-        },
-        apple: {
-          clientId: 'com.horizon.sequence.waas',
-          redirectURI: window.location.origin + window.location.pathname
-        },
-        walletConnect: {
-          projectId: walletConnectProjectId
-        }
-      })
-    : createConfig('universal', {
-        ...connectConfig,
-        appName: 'Sequence Web SDK Demo',
-        chainIds: [
-          ChainId.ARBITRUM_NOVA,
-          ChainId.ARBITRUM,
-          ChainId.ARBITRUM_SEPOLIA,
-          ChainId.POLYGON,
-          ChainId.IMMUTABLE_ZKEVM,
-          ChainId.IMMUTABLE_ZKEVM_TESTNET
-        ],
-        defaultChainId: ChainId.ARBITRUM_NOVA,
-
-        walletConnect: {
-          projectId: walletConnectProjectId
-        }
-      })
-
-export const getErc1155SaleContractConfig = (walletAddress: string) => ({
-  chain: 137,
-  // ERC20 token sale
-  contractAddress: '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b',
-  collectionAddress: '0xdeb398f41ccd290ee5114df7e498cf04fac916cb',
-  // Native token sale
-  // contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
-  // collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-  wallet: walletAddress,
-  items: [
-    {
-      tokenId: '1',
-      quantity: '1'
-    }
-  ],
-  onSuccess: () => {
-    console.log('success')
+    searchParams.set('type', type)
+    window.location.search = searchParams.toString()
   }
-})
 
-export const checkoutConfig: SequenceCheckoutConfig = {
-  env: isDev
-    ? {
-        sardineApiUrl: 'https://sardine-checkout-sandbox.sequence.info',
-        transakApiUrl: 'https://global-stg.transak.com',
-        transakApiKey: 'c20f2a0e-fe6a-4133-8fa7-77e9f84edf98'
-      }
-    : undefined
+  const onClickConnect = () => {
+    setOpenConnectModal(true)
+  }
+
+  return (
+    <main>
+      {wallets.length === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-5 h-screen">
+          <div className="flex flex-row items-center justify-center gap-3">
+            <Image className="w-[300px]" src="images/sequence-websdk-dark.svg" />
+          </div>
+
+          <div className="flex gap-2 flex-row items-center">
+            <Button onClick={onClickConnect} variant="feature" label="Connect" />
+          </div>
+
+          <div className="flex gap-2 flex-col px-4 mt-10 w-full max-w-[480px]">
+            <WalletTypeSelect
+              type="waas"
+              title="Embedded Wallet (WaaS)"
+              description="Connect to an embedded wallet for a seamless experience."
+              onClick={handleSwitchWalletType}
+            />
+
+            <WalletTypeSelect
+              type="universal"
+              title="Universal Wallet"
+              description="Connect to the universal sequence wallet or EIP6963 Injected wallet providers (web extension wallets)."
+              onClick={handleSwitchWalletType}
+            />
+          </div>
+        </div>
+      ) : (
+        <Connected />
+      )}
+      <Footer />
+    </main>
+  )
+}
+
+interface WalletTypeSelectProps {
+  type: WalletType
+  title: string
+  description: string
+  onClick: (type: WalletType) => void
+}
+
+const WalletTypeSelect = (props: WalletTypeSelectProps) => {
+  const { type, title, description, onClick } = props
+
+  const isSelected = walletType === type
+
+  return (
+    <Card
+      className={clsx('w-full border-2', isSelected && 'border-[rgb(127,59,200)] shadow-[0_0_24px_rgb(127_59_158_/_0.8)]')}
+      clickable
+      outlined
+      onClick={() => onClick(type)}
+    >
+      <div className="flex gap-2">
+        <div>
+          <Text variant="normal" fontWeight="bold" color={isSelected ? 'primary' : 'secondary'}>
+            {title}
+          </Text>
+          <Text className="mt-2" variant="normal" color="muted" asChild>
+            <div>{description}</div>
+          </Text>
+        </div>
+        <CheckmarkIcon className={clsx('text-[rgb(127_59_200)]', !isSelected && 'hidden')} size="md" />
+      </div>
+    </Card>
+  )
 }

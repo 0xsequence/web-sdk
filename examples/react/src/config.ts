@@ -1,7 +1,6 @@
 import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
-import { createElement, FC } from 'react'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
@@ -65,12 +64,6 @@ export const connectConfig: ConnectConfig = {
     : undefined
 }
 
-const EcosystemLogo: FC<{ className?: string; style?: React.CSSProperties }> = props =>
-  createElement('img', {
-    src: 'https://sequence.tor1.digitaloceanspaces.com/acme/acme-logo-dark.svg',
-    ...props
-  })
-
 export const config =
   walletType === 'waas'
     ? createConfig('waas', {
@@ -89,13 +82,14 @@ export const config =
           : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9',
         enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
 
-        google: false,
-        apple: false,
-        ecosystem: {
-          walletUrl: 'https://acme.ecosystem-demo.xyz/',
-          name: 'ACME',
-          logoLight: EcosystemLogo,
-          logoDark: EcosystemLogo
+        google: {
+          clientId: isDebugMode
+            ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
+            : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
+        },
+        apple: {
+          clientId: 'com.horizon.sequence.waas',
+          redirectURI: window.location.origin + window.location.pathname
         },
         walletConnect: {
           projectId: walletConnectProjectId
