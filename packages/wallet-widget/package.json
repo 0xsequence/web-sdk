@@ -46,6 +46,8 @@
     "@0xsequence/metadata": ">=2.3.7",
     "@0xsequence/network": ">=2.3.7",
     "@0xsequence/connect": "workspace:*",
+    "@0xsequence/react-hooks": "workspace:*",
+    "@0xsequence/checkout": "workspace:*",
     "@tanstack/react-query": ">= 5",
     "ethers": ">= 6.13.0",
     "react": ">= 17",

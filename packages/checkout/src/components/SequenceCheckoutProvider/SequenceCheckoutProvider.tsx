@@ -209,6 +209,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
     >
       <SwapModalContextProvider
         value={{
+          isSwapModalOpen: isOpenSwapModal,
           openSwapModal,
           closeSwapModal,
           swapModalSettings
@@ -230,6 +231,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
           >
             <AddFundsContextProvider
               value={{
+                isAddFundsModalOpen: openAddFundsModal,
                 triggerAddFunds,
                 closeAddFunds,
                 addFundsSettings

@@ -15,7 +15,7 @@ import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { parseAbi } from 'viem'
 import { encodeFunctionData } from 'viem'
 import { useAccount } from 'wagmi'
@@ -39,10 +39,8 @@ export const IntegratedWallet = () => {
   const { address: accountAddress } = useAccount()
   const { wallets, setActiveWallet } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
-
-  const { triggerAddFunds } = useAddFundsModal()
   const { openSwapModal } = useSwapModal()
-
+  const { triggerAddFunds } = useAddFundsModal()
   const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState(false)
   const [walletFilterOpen, setWalletFilterOpen] = useState(false)
 
@@ -163,12 +161,7 @@ export const IntegratedWallet = () => {
     })
   }
   const onClickAddFunds = () => {
-    // setNavigation({
-    //   location: 'buy'
-    // })
-    triggerAddFunds({
-      walletAddress: accountAddress || ''
-    })
+    triggerAddFunds({ walletAddress: accountAddress || '' })
   }
   const onClickWalletSelector = () => {
     setWalletFilterOpen(true)

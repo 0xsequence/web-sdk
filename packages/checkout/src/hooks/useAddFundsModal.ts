@@ -8,6 +8,7 @@ import { AddFundsSettings, useAddFundsModalContext } from '../contexts/AddFundsM
  * @property Current settings for the On-ramp modal `addFundsSettings`
  */
 type UseAddFundsModalReturnType = {
+  isAddFundsModalOpen: boolean
   triggerAddFunds: (settings: AddFundsSettings) => void
   closeAddFunds: () => void
   addFundsSettings: AddFundsSettings | undefined
@@ -52,7 +53,7 @@ type UseAddFundsModalReturnType = {
  * ```
  */
 export const useAddFundsModal = (): UseAddFundsModalReturnType => {
-  const { triggerAddFunds, closeAddFunds, addFundsSettings } = useAddFundsModalContext()
+  const { isAddFundsModalOpen, triggerAddFunds, closeAddFunds, addFundsSettings } = useAddFundsModalContext()
 
-  return { triggerAddFunds, closeAddFunds, addFundsSettings }
+  return { isAddFundsModalOpen, triggerAddFunds, closeAddFunds, addFundsSettings }
 }
