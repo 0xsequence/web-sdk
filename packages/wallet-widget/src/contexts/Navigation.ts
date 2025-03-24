@@ -101,7 +101,6 @@ export interface BasicNavigation {
     | 'send'
     | 'swap'
     | 'receive'
-    | 'buy'
     | 'receive'
     | 'history'
     | 'legacy-settings'

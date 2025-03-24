@@ -49,8 +49,6 @@ export const getContent = (navigation: Navigation) => {
       return <History />
     case 'receive':
       return <Receive />
-    case 'buy':
-      return <History />
     case 'history':
       return <History />
     case 'search':
@@ -163,7 +161,5 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader secondaryText="Wallet / " primaryText="Buy" />
     case 'receive':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Receive" />
-    case 'buy':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Add Funds" />
   }
 }

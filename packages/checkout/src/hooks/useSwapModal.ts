@@ -8,6 +8,7 @@ import { SwapModalSettings, useSwapModalContext } from '../contexts/SwapModal'
  * @property {SwapModalSettings|undefined} swapModalSettings - Current settings for the Swap modal
  */
 type UseSwapModalReturnType = {
+  isSwapModalOpen: boolean
   openSwapModal: (settings: SwapModalSettings) => void
   closeSwapModal: () => void
   swapModalSettings: SwapModalSettings | undefined
@@ -73,7 +74,7 @@ type UseSwapModalReturnType = {
  * ```
  */
 export const useSwapModal = (): UseSwapModalReturnType => {
-  const { openSwapModal, closeSwapModal, swapModalSettings } = useSwapModalContext()
+  const { isSwapModalOpen, openSwapModal, closeSwapModal, swapModalSettings } = useSwapModalContext()
 
-  return { openSwapModal, closeSwapModal, swapModalSettings }
+  return { isSwapModalOpen, openSwapModal, closeSwapModal, swapModalSettings }
 }
