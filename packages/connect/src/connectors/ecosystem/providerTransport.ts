@@ -5,6 +5,8 @@ interface SessionData {
   lastConnected: number
 }
 
+const isBrowser = typeof window !== 'undefined'
+
 export class ProviderTransport {
   private walletOrigin: string
   private walletWindow: Window | null = null
@@ -17,9 +19,11 @@ export class ProviderTransport {
   constructor(walletUrl: string) {
     const url = new URL(walletUrl)
     this.walletOrigin = url.origin
-    window.addEventListener('message', this.handleMessage)
-    this.loadSession()
-    this.observeCallbacks()
+    if (isBrowser) {
+      window.addEventListener('message', this.handleMessage)
+      this.loadSession()
+      this.observeCallbacks()
+    }
   }
 
   private observeCallbacks() {
@@ -48,6 +52,10 @@ export class ProviderTransport {
   }
 
   private ensureWalletCheckActive() {
+    if (!isBrowser) {
+      return
+    }
+
     if (this.walletCheckInterval === undefined) {
       this.walletCheckInterval = window.setInterval(() => {
         if (!this.isWalletOpen()) {
@@ -58,6 +66,10 @@ export class ProviderTransport {
   }
 
   private ensureWalletCheckInactive() {
+    if (!isBrowser) {
+      return
+    }
+
     if (this.walletCheckInterval !== undefined) {
       clearInterval(this.walletCheckInterval)
       this.walletCheckInterval = undefined
@@ -65,16 +77,30 @@ export class ProviderTransport {
   }
 
   private loadSession() {
-    const sessionData = localStorage.getItem('walletSession')
-    if (sessionData) {
-      this.session = JSON.parse(sessionData)
-      this.connectionState = 'connected'
+    if (!isBrowser) {
+      return
+    }
+    try {
+      const sessionData = localStorage.getItem('walletSession')
+      if (sessionData) {
+        this.session = JSON.parse(sessionData)
+        this.connectionState = 'connected'
+      }
+    } catch (error) {
+      console.warn('Failed to load wallet session:', error)
     }
   }
 
   private saveSession(walletAddress: string) {
-    this.session = { walletAddress, lastConnected: Date.now() }
-    localStorage.setItem('walletSession', JSON.stringify(this.session))
+    if (!isBrowser) {
+      return
+    }
+    try {
+      this.session = { walletAddress, lastConnected: Date.now() }
+      localStorage.setItem('walletSession', JSON.stringify(this.session))
+    } catch (error) {
+      console.warn('Failed to save wallet session:', error)
+    }
   }
 
   async connect(auxData?: Record<string, unknown>): Promise<{ walletAddress: string }> {
@@ -83,7 +109,7 @@ export class ProviderTransport {
     }
 
     this.connectionState = 'connecting'
-    const connectionId = crypto.randomUUID()
+    const connectionId = isBrowser && 'randomUUID' in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2)
     const connectionRequest = {
       type: 'connection',
       id: connectionId,
@@ -110,11 +136,15 @@ export class ProviderTransport {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async sendRequest(method: string, params: any[], chainId: number): Promise<any> {
+    if (!isBrowser) {
+      throw new Error('ProviderTransport is only available in browser environment')
+    }
+
     if (this.connectionState !== 'connected') {
       throw new Error('Not connected to wallet. Call connect() first.')
     }
 
-    const id = crypto.randomUUID()
+    const id = isBrowser && 'randomUUID' in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2)
     const request = { type: 'request', id, method, params, chainId }
 
     return new Promise((resolve, reject) => {
@@ -152,6 +182,10 @@ export class ProviderTransport {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private openWalletAndPostMessage(message: any): Promise<void> {
+    if (!isBrowser) {
+      return Promise.reject(new Error('ProviderTransport is only available in browser environment'))
+    }
+
     return new Promise((resolve, reject) => {
       console.log('Opening wallet and posting message:', message)
       if (!this.isWalletOpen()) {
@@ -211,9 +245,11 @@ export class ProviderTransport {
   disconnect() {
     this.connectionState = 'disconnected'
     this.session = undefined
-    localStorage.removeItem('walletSession')
-    if (this.isWalletOpen()) {
-      this.walletWindow!.close()
+    if (isBrowser) {
+      localStorage.removeItem('walletSession')
+      if (this.isWalletOpen()) {
+        this.walletWindow!.close()
+      }
     }
     this.walletWindow = null
     this.handleWalletClosed()
