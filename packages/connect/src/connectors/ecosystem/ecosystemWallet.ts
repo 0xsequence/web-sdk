@@ -15,7 +15,7 @@ export interface BaseEcosystemConnectorOptions {
   projectAccessKey: string
   walletUrl: string
   defaultNetwork: number
-  isDev?: boolean
+  nodesUrl?: string
 }
 
 ecosystemWallet.type = 'ecosystem-wallet' as const
@@ -28,8 +28,7 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
   }
   type StorageItem = {}
 
-  const isDev = !!params?.isDev
-  const nodesUrl = isDev ? 'https://dev-nodes.sequence.app' : 'https://nodes.sequence.app'
+  const nodesUrl = params.nodesUrl ?? 'https://nodes.sequence.app'
 
   const ecosystemProvider = new EcosystemWalletTransportProvider(
     params.projectAccessKey,
