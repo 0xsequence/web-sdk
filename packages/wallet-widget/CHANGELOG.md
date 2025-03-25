@@ -1,5 +1,15 @@
 # @0xsequence/kit-wallet
 
+## 5.0.5
+
+### Patch Changes
+
+- Fixing marketplace api url
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.0.5
+  - @0xsequence/hooks@5.0.5
+
 ## 5.0.4
 
 ### Patch Changes

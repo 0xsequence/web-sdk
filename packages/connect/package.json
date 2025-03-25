@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/connect",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "Connect package for Sequence Web SDK",
   "keywords": [
     "sequence",
