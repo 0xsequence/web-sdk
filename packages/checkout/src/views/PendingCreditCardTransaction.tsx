@@ -245,6 +245,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
           maxWidth: '500px',
           width: '100%'
         }}
+        referrerPolicy="strict-origin-when-cross-origin"
       />
     </div>
   )
