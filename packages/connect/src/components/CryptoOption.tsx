@@ -66,14 +66,15 @@ export const CryptoOption = ({
         </div>
       </div>
       <div className="flex flex-row justify-center items-center gap-3">
-        <div className="flex flex-col text-center justify-between items-end">
-          {showInsufficientFundsWarning ? (
+        {showInsufficientFundsWarning ? (
+          <div className="flex flex-col text-center justify-between items-end">
             <Text variant="small" color="negative">
               Insufficient funds
             </Text>
-          ) : null}
-        </div>
-        <SelectedIndicator selected={isSelected} />
+          </div>
+        ) : (
+          <SelectedIndicator selected={isSelected} />
+        )}
       </div>
     </Card>
   )
