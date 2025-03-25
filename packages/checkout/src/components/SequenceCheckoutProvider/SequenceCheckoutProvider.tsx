@@ -200,7 +200,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   return (
     <EnvironmentContextProvider
       value={{
-        marketplaceApiUrl: config?.env?.marketplaceApiUrl ?? 'https://marketplace.sequence.app',
+        marketplaceApiUrl: config?.env?.marketplaceApiUrl ?? 'https://marketplace-api.sequence.app',
         sardineCheckoutUrl: config?.env?.sardineCheckoutUrl ?? 'https://sardine-checkout.sequence.info',
         sardineOnRampUrl: config?.env?.sardineOnRampUrl ?? 'https://crypto.sardine.ai/',
         transakApiUrl: config?.env?.transakApiUrl ?? 'https://global.transak.com',
