@@ -157,7 +157,13 @@ export const AddFundsContentTransak = () => {
         paddingTop: HEADER_HEIGHT
       }}
     >
-      <iframe className="w-full h-full border-0" id={IframeId} src={link} allow="camera;microphone;payment" />
+      <iframe
+        className="w-full h-full border-0"
+        id={IframeId}
+        src={link}
+        allow="camera;microphone;payment"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
     </div>
   )
 }
