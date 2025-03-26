@@ -24,7 +24,6 @@ const DEFAULT_LOCATION: Navigation = {
 export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
   const { isAddFundsModalOpen } = useAddFundsModal()
-
   // Wallet Modal Context
   const [openWalletModal, setOpenWalletModalState] = useState<boolean>(false)
 
@@ -41,6 +40,7 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
 
   const displayScrollbar =
+    navigation.location === 'home' ||
     navigation.location === 'collection-details' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||

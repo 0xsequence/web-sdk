@@ -61,6 +61,7 @@
     "@0xsequence/checkout": "workspace:*",
     "@tanstack/react-query": "^5.62.0",
     "@types/react-copy-to-clipboard": "^5.0.7",
+    "@yudiel/react-qr-scanner": "2.2.1",
     "ethers": "^6.13.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

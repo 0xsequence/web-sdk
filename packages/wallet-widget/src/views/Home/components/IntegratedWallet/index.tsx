@@ -38,6 +38,7 @@ export const IntegratedWallet = () => {
   const { selectedWallets, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
   const { address: accountAddress } = useAccount()
   const { wallets, setActiveWallet } = useWallets()
+
   const { setOpenConnectModal } = useOpenConnectModal()
   const { openSwapModal } = useSwapModal()
   const { triggerAddFunds } = useAddFundsModal()
@@ -264,12 +265,12 @@ export const IntegratedWallet = () => {
           </div>
         </>
       </ListCardNavTable>
-      <ListCardNav onClick={onClickTransactions} style={{ marginTop: '8px' }}>
+      <ListCardNav onClick={onClickTransactions} rounded style={{ marginTop: '8px' }}>
         <Text color="primary" fontWeight="medium" variant="normal">
           Transactions
         </Text>
       </ListCardNav>
-      <ListCardNav onClick={onClickSettings} style={{ marginTop: '8px' }}>
+      <ListCardNav onClick={onClickSettings} rounded style={{ marginTop: '8px' }}>
         <Text color="primary" fontWeight="medium" variant="normal">
           Settings
         </Text>

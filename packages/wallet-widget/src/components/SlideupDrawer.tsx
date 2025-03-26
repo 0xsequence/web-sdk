@@ -46,7 +46,7 @@ export const SlideupDrawer = ({
         transition={{ duration: 0.2, ease: 'easeOut' }}
         style={{
           maxWidth: WALLET_WIDTH,
-          position: 'absolute',
+          position: 'fixed',
           bottom: 0,
           left: 0,
           width: '100%',
@@ -74,7 +74,10 @@ export const SlideupDrawer = ({
             </div>
             {onBackPress && <div style={{ width: '20px' }}></div>}
           </Card>
-          <Card className="rounded-none bg-background-raised" style={{ height: '50vh', overflowY: 'auto' }}>
+          <Card
+            className="rounded-none bg-background-raised"
+            style={{ height: 'fit-content', maxHeight: '55vh', overflowY: 'auto' }}
+          >
             {children}
           </Card>
           <Divider className="my-0" />

@@ -24,8 +24,7 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
     <div
       className="flex bg-background-primary z-20 fixed w-full flex-row items-center justify-between px-4"
       style={{
-        height: HEADER_HEIGHT,
-        paddingTop: '6px'
+        height: HEADER_HEIGHT
       }}
     >
       {history.length > 0 ? (
