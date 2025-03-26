@@ -203,7 +203,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -223,7 +223,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -242,7 +242,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         style={{
           maxHeight: '650px',
           height: '100%',
-          maxWidth: '380px',
+          maxWidth: '500px',
           width: '100%'
         }}
       />
@@ -389,7 +389,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -405,7 +405,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -423,7 +423,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         style={{
           maxHeight: '650px',
           height: '100%',
-          maxWidth: '380px',
+          maxWidth: '500px',
           width: '100%'
         }}
       />
