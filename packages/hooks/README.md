@@ -6,7 +6,7 @@ Wrap your application with the `SequenceHooksProvider` to provide a config to th
 
 ```tsx
 <SequenceHooksProvider
-  value={{
+  config={{
     projectAccessKey: 'your-project-access-key',
     env: {
       indexerGatewayUrl: 'your-indexer-gateway-url',
