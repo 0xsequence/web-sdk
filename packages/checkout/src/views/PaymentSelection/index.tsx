@@ -452,6 +452,9 @@ export const PaymentSelectionContent = () => {
                 walletAddress={userAddress || ''}
                 provider={onRampProvider}
                 chainId={chainId}
+                onClick={() => {
+                  skipOnCloseCallback()
+                }}
               />
             )}
           </>
