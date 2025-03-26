@@ -22,6 +22,12 @@ export function useEmailAuth({
   connector?: ExtendedConnector
   onSuccess: (result: SuccessResultV1 | SuccessResultV2) => void
 }) {
+  const [_email, setEmail] = useState('')
+  const [error, setError] = useState<Error | undefined>()
+  const [loading, setLoading] = useState(false)
+  const [instance, _setInstance] = useState('')
+  const [respondWithCode, setRespondWithCode] = useState<((code: string) => Promise<void>) | null>()
+
   if (!connector) {
     return {
       inProgress: false,
@@ -32,12 +38,6 @@ export function useEmailAuth({
       resetError: () => {}
     }
   }
-
-  const [_email, setEmail] = useState('')
-  const [error, setError] = useState<Error | undefined>()
-  const [loading, setLoading] = useState(false)
-  const [instance, _setInstance] = useState('')
-  const [respondWithCode, setRespondWithCode] = useState<((code: string) => Promise<void>) | null>()
 
   const getSequenceWaas = () => {
     if (!connector) {

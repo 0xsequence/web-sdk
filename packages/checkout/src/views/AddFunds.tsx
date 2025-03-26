@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 
 import { HEADER_HEIGHT } from '../constants'
 import { useEnvironmentContext } from '../contexts'
+import { AddFundsSettings } from '../contexts/AddFundsModal'
 import { useAddFundsModal, useSardineOnRampLink } from '../hooks'
 import { getTransakLink } from '../utils/transak'
 
@@ -13,7 +14,7 @@ const EventTypeOrderSuccessful = 'TRANSAK_ORDER_SUCCESSFUL'
 const EventTypeOrderFailed = 'TRANSAK_ORDER_FAILED'
 
 export const AddFundsContent = () => {
-  const { addFundsSettings } = useAddFundsModal()
+  const { addFundsSettings = {} as AddFundsSettings } = useAddFundsModal()
   if (!addFundsSettings) {
     return
   }
@@ -111,11 +112,8 @@ export const AddFundsContentSardine = () => {
 }
 
 export const AddFundsContentTransak = () => {
-  const { addFundsSettings } = useAddFundsModal()
+  const { addFundsSettings = {} as AddFundsSettings } = useAddFundsModal()
   const { transakApiUrl, transakApiKey } = useEnvironmentContext()
-  if (!addFundsSettings) {
-    return
-  }
 
   useEffect(() => {
     window.addEventListener('message', messageReceived)

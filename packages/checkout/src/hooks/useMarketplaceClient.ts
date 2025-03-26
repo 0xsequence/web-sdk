@@ -11,9 +11,9 @@ export interface UseMarketplaceClientArgs {
 
 export const useMarketplaceClient = ({ chain }: UseMarketplaceClientArgs) => {
   const projectAccessKey = useProjectAccessKey()
+  const { marketplaceApiUrl } = useEnvironmentContext()
 
   const marketplaceClient = useMemo(() => {
-    const { marketplaceApiUrl } = useEnvironmentContext()
     const network = getNetwork(chain).name
 
     const clientUrl = `${marketplaceApiUrl}/${network}`
