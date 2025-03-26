@@ -23,11 +23,11 @@ export const SettingsMenu = () => {
     })
   }
 
-  const onClickApps = () => {
-    setNavigation({
-      location: 'settings-apps'
-    })
-  }
+  // const onClickApps = () => {
+  //   setNavigation({
+  //     location: 'settings-apps'
+  //   })
+  // }
 
   const onClickCurrency = () => {
     setNavigation({
@@ -42,7 +42,7 @@ export const SettingsMenu = () => {
         <SettingsItem label="Manage Networks" onClick={onClickNetworks} />
         <SettingsItem label="Manage Currency" onClick={onClickCurrency} />
         <SettingsItem label="Manage Profiles" onClick={onClickProfiles} />
-        <SettingsItem label="Manage Apps" onClick={onClickApps} />
+        {/* <SettingsItem label="Manage Apps" onClick={onClickApps} /> */}
       </div>
     </div>
   )

@@ -26,6 +26,7 @@ import { SettingsCurrency } from '../../../views/Settings/Currency'
 import { SettingsMenu } from '../../../views/Settings/Menu'
 import { SettingsNetworks } from '../../../views/Settings/Networks'
 import { SettingsProfiles } from '../../../views/Settings/Profiles'
+import { QrScan } from '../../../views/Settings/QrScan'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
 
@@ -71,6 +72,8 @@ export const getContent = (navigation: Navigation) => {
       return <SettingsProfiles />
     case 'settings-apps':
       return <SettingsApps />
+    case 'connect-dapp':
+      return <QrScan />
     case 'legacy-settings':
       return <LegacySettingsMenu />
     case 'legacy-settings-general':
@@ -140,6 +143,8 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader primaryText="Profiles" />
     case 'settings-apps':
       return <NavigationHeader primaryText="Apps" />
+    case 'connect-dapp':
+      return <NavigationHeader primaryText="Connect an App" />
     case 'history':
       return <NavigationHeader primaryText="Transaction History" />
     case 'coin-details':

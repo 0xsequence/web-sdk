@@ -56,8 +56,7 @@ export const WalletHeader = () => {
         <div
           className="flex bg-background-primary z-20 fixed flex-row items-center justify-between w-full px-4"
           style={{
-            height: HEADER_HEIGHT,
-            paddingTop: '6px'
+            height: HEADER_HEIGHT
           }}
         >
           {history.length > 0 ? (

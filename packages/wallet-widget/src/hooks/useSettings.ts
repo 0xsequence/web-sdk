@@ -110,6 +110,7 @@ export const useSettings = (): Settings => {
       const settingsStorage = localStorage.getItem(LocalStorageKey.Settings)
 
       const settings = JSON.parse(settingsStorage || '{}')
+
       if (settings?.hideUnlistedTokens !== undefined) {
         hideUnlistedTokens = settings?.hideUnlistedTokens
       }
@@ -128,7 +129,7 @@ export const useSettings = (): Settings => {
 
         const isPartialSelection = selectedWallets.length > 1 && selectedWallets.length !== allWallets.length
 
-        if (hasInvalidWallets || isPartialSelection) {
+        if ((hasInvalidWallets || isPartialSelection) && allWallets.length !== 0) {
           selectedWallets = allWallets
         }
       }
@@ -208,6 +209,7 @@ export const useSettings = (): Settings => {
   const setSelectedWallets = (newSelectedWallets: ConnectedWallet[]) => {
     if (newSelectedWallets.length === 0) {
       selectedWalletsObservable.set(allWallets)
+      updateLocalStorage()
     } else {
       selectedWalletsObservable.set(newSelectedWallets)
       updateLocalStorage()
@@ -217,6 +219,7 @@ export const useSettings = (): Settings => {
   const setSelectedNetworks = (newSelectedNetworks: number[]) => {
     if (newSelectedNetworks.length === 0) {
       selectedNetworksObservable.set(allNetworks)
+      updateLocalStorage()
     } else {
       selectedNetworksObservable.set(newSelectedNetworks)
       selectedCollectionsObservable.set([])
@@ -227,6 +230,7 @@ export const useSettings = (): Settings => {
   const setSelectedCollections = (newSelectedCollections: SettingsCollection[]) => {
     if (newSelectedCollections.length === 0) {
       selectedCollectionsObservable.set([])
+      updateLocalStorage()
     } else {
       selectedCollectionsObservable.set(newSelectedCollections)
       updateLocalStorage()
@@ -242,6 +246,7 @@ export const useSettings = (): Settings => {
       selectedNetworks: selectedNetworksObservable.get(),
       selectedCollections: selectedCollectionsObservable.get()
     }
+    console.log('newSettings', newSettings)
     localStorage.setItem(LocalStorageKey.Settings, JSON.stringify(newSettings))
   }
 

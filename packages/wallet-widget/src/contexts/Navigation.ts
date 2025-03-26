@@ -113,6 +113,7 @@ export interface BasicNavigation {
     | 'settings-currency'
     | 'settings-profiles'
     | 'settings-apps'
+    | 'connect-dapp'
     | 'search'
     | 'search-tokens'
     | 'search-collectibles'
