@@ -1,6 +1,6 @@
 import { getNativeTokenInfoByChainId, ContractVerificationStatus, compareAddress } from '@0xsequence/connect'
 import { SearchIcon, Skeleton, Text, TextInput } from '@0xsequence/design-system'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 import { zeroAddress } from 'viem'

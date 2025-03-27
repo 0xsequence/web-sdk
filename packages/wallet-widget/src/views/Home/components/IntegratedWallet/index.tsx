@@ -11,8 +11,8 @@ import {
   EllipsisIcon,
   Skeleton
 } from '@0xsequence/design-system'
+import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
 import { useContext, useState } from 'react'

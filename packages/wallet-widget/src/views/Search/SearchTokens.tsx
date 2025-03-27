@@ -1,7 +1,7 @@
 import { ContractVerificationStatus, compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { cardVariants, cn, GearIcon, SearchIcon, TextInput } from '@0xsequence/design-system'
+import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/react-hooks'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { AnimatePresence } from 'motion/react'
@@ -10,7 +10,7 @@ import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
-import { getMoreBalances } from '../../utils'
+import { useGetMoreBalances } from '../../utils'
 import { FilterMenu } from '../FilterMenu'
 
 import { CoinsTab } from './components/CoinsTab'
@@ -96,14 +96,14 @@ export const SearchTokens = () => {
     fetchNextPage: fetchMoreBalances,
     hasNextPage: hasMoreBalances,
     isFetching: isFetchingMoreBalances
-  } = getMoreBalances(coinBalances, pageSize, { enabled: search.trim() === '' })
+  } = useGetMoreBalances(coinBalances, pageSize, { enabled: search.trim() === '' })
 
   const {
     data: infiniteSearchBalances,
     fetchNextPage: fetchMoreSearchBalances,
     hasNextPage: hasMoreSearchBalances,
     isFetching: isFetchingMoreSearchBalances
-  } = getMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
+  } = useGetMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
 
   const onFilterClick = () => {
     setIsFilterOpen(true)
