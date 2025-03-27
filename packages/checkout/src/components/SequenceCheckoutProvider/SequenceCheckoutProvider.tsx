@@ -257,7 +257,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                           <Modal
                             contentProps={{
                               style: {
-                                maxWidth: '400px',
+                                maxWidth: '540px',
                                 height: 'auto',
                                 ...getModalPositionCss(position)
                               }
@@ -275,7 +275,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                           <Modal
                             contentProps={{
                               style: {
-                                maxWidth: '400px',
+                                maxWidth: '540px',
                                 height: 'auto',
                                 ...getModalPositionCss(position)
                               }

@@ -3,7 +3,7 @@ import { Spinner, Text } from '@0xsequence/design-system'
 import { useConfig, useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
@@ -49,6 +49,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
   const { settings, closeCheckout } = useCheckoutModal()
+  const iframeRef = useRef<HTMLIFrameElement | null>(null)
 
   const {
     params: { creditCardCheckout }
@@ -126,14 +127,9 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   const isError = isErrorTokenMetadata || isErrorCollectionInfo
 
   useEffect(() => {
-    const transakIframeElement = document.getElementById('transakIframe') as HTMLIFrameElement
-    if (!transakIframeElement) {
-      return
-    }
-    const transakIframe = transakIframeElement.contentWindow
-
     const readMessage = (message: any) => {
-      if (message.source !== transakIframe) {
+      const transakIframe = iframeRef.current?.contentWindow
+      if (!transakIframe || message.source !== transakIframe) {
         return
       }
 
@@ -207,7 +203,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -227,7 +223,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -240,13 +236,13 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   return (
     <div className="flex items-center justify-center" style={{ height: '770px' }}>
       <iframe
-        id="transakIframe"
+        ref={iframeRef}
         allow="camera;microphone;payment"
         src={transakLink}
         style={{
           maxHeight: '650px',
           height: '100%',
-          maxWidth: '380px',
+          maxWidth: '500px',
           width: '100%'
         }}
       />
@@ -261,6 +257,8 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   const { closeCheckout } = useCheckoutModal()
   const { sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
   const { env } = useConfig()
+  const iframeRef = useRef<HTMLIFrameElement | null>(null)
+
   const {
     params: { creditCardCheckout }
   } = nav.navigation as TransactionPendingNavigation
@@ -391,7 +389,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -407,7 +405,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
         className="flex flex-col justify-center items-center gap-6"
         style={{
           height: '650px',
-          width: '380px'
+          width: '500px'
         }}
       >
         <div>
@@ -420,11 +418,12 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   return (
     <div className="flex items-center justify-center" style={{ height: '770px' }}>
       <iframe
+        ref={iframeRef}
         src={url}
         style={{
           maxHeight: '650px',
           height: '100%',
-          maxWidth: '380px',
+          maxWidth: '500px',
           width: '100%'
         }}
       />

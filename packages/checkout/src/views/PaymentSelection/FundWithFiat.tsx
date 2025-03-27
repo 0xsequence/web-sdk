@@ -9,11 +9,12 @@ interface FundWithFiatProps {
   walletAddress: string
   provider: TransactionOnRampProvider
   chainId: number
+  onClick: () => void
 }
 
-export const FundWithFiat = ({ cryptoSymbol, walletAddress, provider, chainId }: FundWithFiatProps) => {
+export const FundWithFiat = ({ cryptoSymbol, walletAddress, provider, chainId, onClick: onClickCallback }: FundWithFiatProps) => {
   const { triggerAddFunds } = useAddFundsModal()
-  const { closeSelectPaymentModal } = useSelectPaymentModal()
+  const { closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
 
   const getNetworks = (): string | undefined => {
     const network = findSupportedNetwork(chainId)
@@ -21,12 +22,14 @@ export const FundWithFiat = ({ cryptoSymbol, walletAddress, provider, chainId }:
   }
 
   const onClick = () => {
+    onClickCallback()
     closeSelectPaymentModal()
     triggerAddFunds({
       walletAddress,
       provider,
       networks: getNetworks(),
-      defaultCryptoCurrency: cryptoSymbol
+      defaultCryptoCurrency: cryptoSymbol,
+      onClose: selectPaymentSettings?.onClose
     })
   }
 
