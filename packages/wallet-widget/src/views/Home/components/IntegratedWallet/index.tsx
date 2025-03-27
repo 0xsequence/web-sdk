@@ -238,6 +238,7 @@ export const IntegratedWallet = () => {
           <StackedIconTag iconList={coinBalancesIcons} onClick={onClickWalletSelector} />
         </div>
       }
+      shape="square"
     >
       <Text color="primary" fontWeight="medium" variant="normal">
         Tokens
@@ -256,6 +257,7 @@ export const IntegratedWallet = () => {
           }
         />
       }
+      shape="square"
     >
       <Text color="primary" fontWeight="medium" variant="normal">
         Collectibles
@@ -306,12 +308,12 @@ export const IntegratedWallet = () => {
           />
         </>
       </ListCardNavTable>
-      <ListCardNav onClick={onClickTransactions} rounded style={{ marginTop: '8px' }}>
+      <ListCardNav onClick={onClickTransactions} style={{ marginTop: '8px' }}>
         <Text color="primary" fontWeight="medium" variant="normal">
           Transactions
         </Text>
       </ListCardNav>
-      <ListCardNav onClick={onClickSettings} rounded style={{ marginTop: '8px' }}>
+      <ListCardNav onClick={onClickSettings} style={{ marginTop: '8px' }}>
         <Text color="primary" fontWeight="medium" variant="normal">
           Settings
         </Text>

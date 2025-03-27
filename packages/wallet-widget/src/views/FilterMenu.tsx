@@ -7,7 +7,7 @@ import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
 import { GradientAvatarList } from '../components/GradientAvatarList'
-import { SelectRow } from '../components/SelectRow/SelectRow'
+import { ListCardSelect } from '../components/ListCard/ListCardSelect'
 import { SlideupDrawer } from '../components/SlideupDrawer'
 import { WalletAccountGradient } from '../components/WalletAccountGradient'
 import { useSettings } from '../hooks'
@@ -157,15 +157,19 @@ export const FilterMenu = ({
       ) : selectedFilter === FilterType.wallets ? (
         <div className="flex flex-col gap-3">
           {wallets.length > 1 && (
-            <SelectRow key="all" isSelected={selectedWalletsObservable.get().length > 1} onClick={() => setSelectedWallets([])}>
+            <ListCardSelect
+              key="all"
+              isSelected={selectedWalletsObservable.get().length > 1}
+              onClick={() => setSelectedWallets([])}
+            >
               <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>
-            </SelectRow>
+            </ListCardSelect>
           )}
           {wallets.map(wallet => (
-            <SelectRow
+            <ListCardSelect
               key={wallet.address}
               isSelected={
                 selectedWalletsObservable.get().length === 1 &&
@@ -181,20 +185,24 @@ export const FilterMenu = ({
               <Text color="primary" fontWeight="medium" variant="normal">
                 {formatAddress(wallet.address)}
               </Text>
-            </SelectRow>
+            </ListCardSelect>
           ))}
         </div>
       ) : selectedFilter === FilterType.networks ? (
         <div className="flex flex-col gap-3">
           {allNetworks.length > 1 && (
-            <SelectRow key="all" isSelected={selectedNetworksObservable.get().length > 1} onClick={() => setSelectedNetworks([])}>
+            <ListCardSelect
+              key="all"
+              isSelected={selectedNetworksObservable.get().length > 1}
+              onClick={() => setSelectedNetworks([])}
+            >
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>
-            </SelectRow>
+            </ListCardSelect>
           )}
           {allNetworks.map(chainId => (
-            <SelectRow
+            <ListCardSelect
               key={chainId}
               isSelected={selectedNetworksObservable.get().length === 1 && selectedNetworksObservable.get().includes(chainId)}
               onClick={() => setSelectedNetworks([chainId])}
@@ -205,13 +213,13 @@ export const FilterMenu = ({
                   {ChainId[chainId]}
                 </Text>
               </div>
-            </SelectRow>
+            </ListCardSelect>
           ))}
         </div>
       ) : selectedFilter === FilterType.collections ? (
         <div className="flex flex-col gap-3">
           {collections?.length && collections.length > 1 && (
-            <SelectRow
+            <ListCardSelect
               key="all"
               isSelected={selectedCollectionsObservable.get().length === 0}
               onClick={() => setSelectedCollections([])}
@@ -219,10 +227,10 @@ export const FilterMenu = ({
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>
-            </SelectRow>
+            </ListCardSelect>
           )}
           {collections?.map(collection => (
-            <SelectRow
+            <ListCardSelect
               key={collection.contractAddress}
               isSelected={
                 selectedCollectionsObservable.get().find(c => c.contractAddress === collection.contractAddress) !== undefined ||
@@ -234,7 +242,7 @@ export const FilterMenu = ({
               <Text color="primary" fontWeight="medium" variant="normal">
                 {collection.contractInfo?.name}
               </Text>
-            </SelectRow>
+            </ListCardSelect>
           ))}
         </div>
       ) : null}
