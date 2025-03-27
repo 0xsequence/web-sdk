@@ -68,18 +68,16 @@ const getSwapPrices = async (
         currencyInfoMap.set(
           currencyAddress,
           isNativeToken
-            ? getNativeTokenInfo().then(data => {
-                return data
-              })
+            ? getNativeTokenInfo()
             : metadataClient
                 .getContractInfo({
                   chainID: String(args.chainId),
                   contractAddress: currencyAddress
                 })
-                .then(data => {
-                  return {
-                    ...data.contractInfo
-                  }
+                .then(data => ({ ...data.contractInfo }))
+                .catch(error => {
+                  console.error(`Failed to fetch contract info for ${currencyAddress}:`, error)
+                  return undefined
                 })
         )
       }
@@ -113,6 +111,10 @@ const getSwapPrices = async (
             }
           }
         })
+        .catch(error => {
+          console.error(`Failed to fetch balance for ${currencyAddress}:`, error)
+          return { balance: '0' }
+        })
 
       currencyBalanceInfoMap.set(currencyAddress, tokenBalance)
     }
@@ -128,7 +130,7 @@ const getSwapPrices = async (
           ...price,
           currencyAddress
         },
-        info: (await currencyInfoMap.get(currencyAddress)) || undefined,
+        info: await currencyInfoMap.get(currencyAddress),
         balance: (await currencyBalanceInfoMap.get(currencyAddress)) || { balance: '0' }
       }
     }) || []
