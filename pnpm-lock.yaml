@@ -78,8 +78,8 @@ importers:
   examples/components:
     dependencies:
       '@0xsequence/design-system':
-        specifier: ^2.0.11
-        version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 2.0.12
+        version: 2.0.12(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/network':
         specifier: '*'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -102,8 +102,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/connect
       '@0xsequence/design-system':
-        specifier: ^2.0.11
-        version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 2.0.12
+        version: 2.0.12(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -175,8 +175,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/connect
       '@0xsequence/design-system':
-        specifier: ^2.0.11
-        version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 2.0.12
+        version: 2.0.12(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/network':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -257,8 +257,8 @@ importers:
         specifier: '>= 2.2.13'
         version: 2.2.13
       '@0xsequence/design-system':
-        specifier: ^2.0.11
-        version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 2.0.12
+        version: 2.0.12(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -336,8 +336,8 @@ importers:
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/design-system':
-        specifier: ^2.0.11
-        version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 2.0.12
+        version: 2.0.12(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/ethauth':
         specifier: ^1.0.0
         version: 1.0.0(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -472,8 +472,8 @@ importers:
         specifier: '>= 2.2.13'
         version: 2.2.13
       '@0xsequence/design-system':
-        specifier: ^2.0.11
-        version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 2.0.12
+        version: 2.0.12(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -558,8 +558,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/design-system@2.0.11':
-    resolution: {integrity: sha512-UpL8pfmJLTq0376CFwAemPYIetXR2TYOHoTIoisroT53kOdSvCx3cT1nAaMr8lr2xfCz88+KvgsxK/5ZYye4OA==}
+  '@0xsequence/design-system@2.0.12':
+    resolution: {integrity: sha512-4pvRg+WdURUr2dFl8t2r/YkL3AGzYfNYbrCc06julSBVzaGIWAElGRBnnPYIFLjBAOBEJ5iTQVCLmSQ6+JnA6g==}
     peerDependencies:
       motion: '>= 12'
       react: '>= 17'
@@ -6558,7 +6558,7 @@ snapshots:
       '@0xsequence/utils': 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/design-system@2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@0xsequence/design-system@2.0.12(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@radix-ui/react-aspect-ratio': 1.1.2(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-checkbox': 1.1.4(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
