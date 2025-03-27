@@ -27,7 +27,6 @@ export class EcosystemWalletTransportProvider extends ethers.AbstractProvider im
     this.currentNetwork = ethers.Network.from(initialChainId)
   }
 
-   
   async request({ method, params }: { method: string; params?: any[] }) {
     if (method === 'wallet_switchEthereumChain') {
       const chainId = normalizeChainId(params?.[0].chainId)
