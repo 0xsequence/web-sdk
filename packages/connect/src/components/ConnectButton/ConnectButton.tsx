@@ -1,4 +1,4 @@
-import { Card, EllipsisIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
+import { Card, ContextMenuIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
@@ -81,7 +81,7 @@ export const ShowAllWalletsButton = ({ onClick }: ShowAllWalletsButtonProps) => 
           height: BUTTON_HEIGHT
         }}
       >
-        <EllipsisIcon className="text-primary" size="xl" />
+        <ContextMenuIcon className="text-primary" size="xl" />
       </Card>
     </Tooltip>
   )
