@@ -100,7 +100,7 @@ export const flattenPaginatedTransactionHistory = (
   return transactionHistory
 }
 
-export const getMoreBalances = (balances: TokenBalance[], pageSize: number, options?: { enabled: boolean }) => {
+export const useGetMoreBalances = (balances: TokenBalance[], pageSize: number, options?: { enabled: boolean }) => {
   return useInfiniteQuery({
     queryKey: ['infiniteBalances', balances],
     queryFn: ({ pageParam }) => {

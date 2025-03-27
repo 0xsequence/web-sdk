@@ -1,13 +1,13 @@
 import { ContractVerificationStatus } from '@0xsequence/connect'
 import { SearchIcon, TextInput, GearIcon, cn, cardVariants } from '@0xsequence/design-system'
+import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
-import { useGetTokenBalancesDetails } from '@0xsequence/react-hooks'
 import Fuse from 'fuse.js'
 import { AnimatePresence } from 'motion/react'
 import { useState, useMemo } from 'react'
 
 import { useSettings } from '../../hooks'
-import { getMoreBalances } from '../../utils'
+import { useGetMoreBalances } from '../../utils'
 import { FilterMenu } from '../FilterMenu'
 
 import { CollectiblesTab } from './components/CollectiblesTab'
@@ -73,14 +73,14 @@ export const SearchCollectibles = () => {
     fetchNextPage: fetchMoreBalances,
     hasNextPage: hasMoreBalances,
     isFetching: isFetchingMoreBalances
-  } = getMoreBalances(collectibleBalances, pageSize, { enabled: search.trim() === '' })
+  } = useGetMoreBalances(collectibleBalances, pageSize, { enabled: search.trim() === '' })
 
   const {
     data: infiniteSearchBalances,
     fetchNextPage: fetchMoreSearchBalances,
     hasNextPage: hasMoreSearchBalances,
     isFetching: isFetchingMoreSearchBalances
-  } = getMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
+  } = useGetMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
 
   const onFilterClick = () => {
     setIsFilterOpen(true)

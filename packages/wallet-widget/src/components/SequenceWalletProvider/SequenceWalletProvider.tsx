@@ -21,7 +21,15 @@ const DEFAULT_LOCATION: Navigation = {
   location: 'home'
 }
 
-export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps) => {
+export const SequenceWalletProvider = (props: SequenceWalletProviderProps) => {
+  return (
+    <SequenceCheckoutProvider>
+      <WalletContent {...props} />
+    </SequenceCheckoutProvider>
+  )
+}
+
+export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
   const { isAddFundsModalOpen } = useAddFundsModal()
   // Wallet Modal Context
@@ -58,41 +66,39 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
     navigation.location === 'search-collectibles'
 
   return (
-    <SequenceCheckoutProvider>
-      <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
-        <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
-          <ShadowRoot theme={theme}>
-            <AnimatePresence>
-              {openWalletModal && !isAddFundsModalOpen && (
-                <Modal
-                  contentProps={{
-                    style: {
-                      maxWidth: WALLET_WIDTH,
-                      height: 'fit-content',
-                      ...getModalPositionCss(position),
-                      scrollbarColor: 'gray black',
-                      scrollbarWidth: 'thin'
-                    }
-                  }}
-                  scroll={false}
-                  onClose={() => setOpenWalletModal(false)}
-                >
-                  <div id="sequence-kit-wallet-content">
-                    {getHeader(navigation)}
+    <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
+      <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
+        <ShadowRoot theme={theme}>
+          <AnimatePresence>
+            {openWalletModal && !isAddFundsModalOpen && (
+              <Modal
+                contentProps={{
+                  style: {
+                    maxWidth: WALLET_WIDTH,
+                    height: 'fit-content',
+                    ...getModalPositionCss(position),
+                    scrollbarColor: 'gray black',
+                    scrollbarWidth: 'thin'
+                  }
+                }}
+                scroll={false}
+                onClose={() => setOpenWalletModal(false)}
+              >
+                <div id="sequence-kit-wallet-content">
+                  {getHeader(navigation)}
 
-                    {displayScrollbar ? (
-                      <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
-                    ) : (
-                      getContent(navigation)
-                    )}
-                  </div>
-                </Modal>
-              )}
-            </AnimatePresence>
-          </ShadowRoot>
-          {children}
-        </NavigationContextProvider>
-      </WalletModalContextProvider>
-    </SequenceCheckoutProvider>
+                  {displayScrollbar ? (
+                    <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
+                  ) : (
+                    getContent(navigation)
+                  )}
+                </div>
+              </Modal>
+            )}
+          </AnimatePresence>
+        </ShadowRoot>
+        {children}
+      </NavigationContextProvider>
+    </WalletModalContextProvider>
   )
 }
