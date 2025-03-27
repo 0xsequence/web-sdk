@@ -31,7 +31,9 @@
     "build:css": "rimraf ./src/styles.ts && tailwindcss -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`\" > ./src/styles.ts",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
-    "dev": "pnpm run writeVersion && pnpm pnpm build:css && tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
+    "dev": "pnpm run writeVersion && concurrently \"pnpm dev:tsc\"  \"pnpm watch-css\"",
+    "dev:tsc": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
+    "watch-css": "node scripts/watch-css.js",
     "writeVersion": "node scripts/writeVersion.js",
     "test": "echo",
     "typecheck": "tsc --noEmit"
@@ -70,6 +72,7 @@
   },
   "devDependencies": {
     "0xsequence": "^2.2.13",
+    "concurrently": "^9.1.2",
     "@tanstack/react-query": "^5.62.0",
     "@types/uuid": "^9.0.8",
     "ethers": "^6.13.0",
