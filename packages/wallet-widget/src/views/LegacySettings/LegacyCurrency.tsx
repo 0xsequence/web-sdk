@@ -2,7 +2,7 @@ import { Text } from '@0xsequence/design-system'
 // import { SelectButton } from '../../components/SelectButton'
 import { useObservable } from 'micro-observables'
 
-import { SelectRow } from '../../components/SelectRow/SelectRow'
+import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
 import { supportedFiatCurrencies } from '../../constants'
 import { useSettings } from '../../hooks'
 
@@ -28,7 +28,7 @@ export const LegacySettingsCurrency = () => {
             //     <Text color="muted">{currency.name.message}</Text>
             //   </div>
             // </SelectButton>
-            <SelectRow
+            <ListCardSelect
               isSelected={currency.symbol === fiatCurrency.symbol}
               onClick={() => setFiatCurrency && setFiatCurrency(currency)}
             >
@@ -36,7 +36,7 @@ export const LegacySettingsCurrency = () => {
                 {currency.symbol}
               </Text>
               <Text color="muted">{currency.name.message}</Text>
-            </SelectRow>
+            </ListCardSelect>
           )
         })}
       </div>

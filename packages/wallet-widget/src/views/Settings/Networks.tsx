@@ -2,7 +2,7 @@ import { Text, TokenImage } from '@0xsequence/design-system'
 import { ChainId } from '@0xsequence/network'
 import { useObservable } from 'micro-observables'
 
-import { SelectRow } from '../../components/SelectRow/SelectRow'
+import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
 import { useSettings } from '../../hooks'
 
 export const SettingsNetworks = () => {
@@ -12,14 +12,18 @@ export const SettingsNetworks = () => {
   return (
     <div className="flex flex-col pb-5 px-4 pt-3 gap-2">
       {allNetworks.length > 1 && (
-        <SelectRow key="all" isSelected={selectedNetworksObservable.get().length > 1} onClick={() => setSelectedNetworks([])}>
+        <ListCardSelect
+          key="all"
+          isSelected={selectedNetworksObservable.get().length > 1}
+          onClick={() => setSelectedNetworks([])}
+        >
           <Text color="primary" fontWeight="medium" variant="normal">
             All
           </Text>
-        </SelectRow>
+        </ListCardSelect>
       )}
       {allNetworks.map(chainId => (
-        <SelectRow
+        <ListCardSelect
           key={chainId}
           isSelected={selectedNetworks.length === 1 && selectedNetworks.includes(chainId)}
           onClick={() => setSelectedNetworks([chainId])}
@@ -30,7 +34,7 @@ export const SettingsNetworks = () => {
               {ChainId[chainId]}
             </Text>
           </div>
-        </SelectRow>
+        </ListCardSelect>
       ))}
     </div>
   )
