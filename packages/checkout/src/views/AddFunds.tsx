@@ -15,9 +15,6 @@ const EventTypeOrderFailed = 'TRANSAK_ORDER_FAILED'
 
 export const AddFundsContent = () => {
   const { addFundsSettings = {} as AddFundsSettings } = useAddFundsModal()
-  if (!addFundsSettings) {
-    return
-  }
 
   const { provider } = addFundsSettings
 
