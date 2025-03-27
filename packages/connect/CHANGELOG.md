@@ -1,5 +1,14 @@
 # @0xsequence/kit
 
+## 5.0.6
+
+### Patch Changes
+
+- Stricter lint rules for react hooks and related fixes
+
+- Updated dependencies []:
+  - @0xsequence/hooks@5.0.6
+
 ## 5.0.5
 
 ### Patch Changes
