@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.0.7
+
+### Patch Changes
+
+- approvedSpenderAddress field integrated to approve step in checkout
+
 ## 5.0.6
 
 ### Patch Changes
