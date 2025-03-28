@@ -27,7 +27,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
     txData,
     collectibles,
     collectionAddress,
-    approvedSpenderAddress,
+    sardineConfig,
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
@@ -107,7 +107,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
         transakConfig,
-        approvedSpenderAddress: approvedSpenderAddress || targetContractAddress,
+        approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || targetContractAddress,
         supplementaryAnalyticsInfo
       }
     }

@@ -18,6 +18,10 @@ export interface SupplementaryAnalyticsInfo {
   [key: string]: string
 }
 
+export interface SardineConfig {
+  approvedSpenderAddress?: string
+}
+
 export interface SelectPaymentSettings {
   collectibles: Collectible[]
   chain: number | string
@@ -39,6 +43,7 @@ export interface SelectPaymentSettings {
   creditCardProviders?: string[]
   copyrightText?: string
   transakConfig?: TransakConfig
+  sardineConfig?: SardineConfig
   customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
 }

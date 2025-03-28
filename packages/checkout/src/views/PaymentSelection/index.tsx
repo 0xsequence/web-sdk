@@ -60,6 +60,7 @@ export const PaymentSelectionContent = () => {
     collectionAddress,
     currencyAddress,
     targetContractAddress,
+    approvedSpenderAddress,
     price,
     txData,
     enableTransferFunds = true,
@@ -96,7 +97,7 @@ export const PaymentSelectionContent = () => {
     functionName: 'allowance',
     chainId: chainId,
     address: currencyAddress as Hex,
-    args: [userAddress, targetContractAddress],
+    args: [userAddress, approvedSpenderAddress || targetContractAddress],
     query: {
       enabled: !!userAddress && !isNativeToken
     }
@@ -179,7 +180,7 @@ export const PaymentSelectionContent = () => {
       const approveTxData = encodeFunctionData({
         abi: ERC_20_CONTRACT_ABI,
         functionName: 'approve',
-        args: [targetContractAddress, price]
+        args: [approvedSpenderAddress || targetContractAddress, price]
       })
 
       const transactions = [
@@ -281,7 +282,7 @@ export const PaymentSelectionContent = () => {
       const approveTxData = encodeFunctionData({
         abi: ERC_20_CONTRACT_ABI,
         functionName: 'approve',
-        args: [targetContractAddress, price]
+        args: [approvedSpenderAddress || targetContractAddress, price]
       })
 
       const isSwapNativeToken = compareAddress(zeroAddress, swapPrice.price.currencyAddress)
