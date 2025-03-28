@@ -20,6 +20,7 @@ export interface AddFundsSettings {
 }
 
 type AddFundsModalContext = {
+  isAddFundsModalOpen: boolean
   triggerAddFunds: (settings: AddFundsSettings) => void
   closeAddFunds: () => void
   addFundsSettings?: AddFundsSettings

@@ -98,14 +98,25 @@ export interface SendCollectibleNavigation {
 export interface BasicNavigation {
   location:
     | 'home'
+    | 'send'
+    | 'swap'
+    | 'receive'
     | 'receive'
     | 'history'
-    | 'receive'
+    | 'legacy-settings'
+    | 'legacy-settings-general'
+    | 'legacy-settings-currency'
+    | 'legacy-settings-networks'
     | 'settings'
-    | 'settings-general'
-    | 'settings-currency'
+    | 'settings-wallets'
     | 'settings-networks'
+    | 'settings-currency'
+    | 'settings-profiles'
+    | 'settings-apps'
+    | 'connect-dapp'
     | 'search'
+    | 'search-tokens'
+    | 'search-collectibles'
 }
 
 export type Navigation =

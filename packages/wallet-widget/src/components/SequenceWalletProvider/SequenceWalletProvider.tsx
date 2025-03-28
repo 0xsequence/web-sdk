@@ -1,5 +1,6 @@
 'use client'
 
+import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout'
 import { getModalPositionCss, useTheme, ShadowRoot } from '@0xsequence/connect'
 import { Modal, Scroll } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
@@ -10,6 +11,8 @@ import { History, Navigation, NavigationContextProvider, WalletModalContextProvi
 
 import { getHeader, getContent } from './utils'
 
+export const WALLET_WIDTH = 460
+
 export type SequenceWalletProviderProps = {
   children: React.ReactNode
 }
@@ -18,9 +21,17 @@ const DEFAULT_LOCATION: Navigation = {
   location: 'home'
 }
 
-export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps) => {
-  const { theme, position } = useTheme()
+export const SequenceWalletProvider = (props: SequenceWalletProviderProps) => {
+  return (
+    <SequenceCheckoutProvider>
+      <WalletContent {...props} />
+    </SequenceCheckoutProvider>
+  )
+}
 
+export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
+  const { theme, position } = useTheme()
+  const { isAddFundsModalOpen } = useAddFundsModal()
   // Wallet Modal Context
   const [openWalletModal, setOpenWalletModalState] = useState<boolean>(false)
 
@@ -44,18 +55,26 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
-    navigation.location === 'settings-currency'
+    navigation.location === 'settings' ||
+    navigation.location === 'settings-wallets' ||
+    navigation.location === 'settings-networks' ||
+    navigation.location === 'settings-currency' ||
+    navigation.location === 'settings-profiles' ||
+    navigation.location === 'settings-apps' ||
+    navigation.location === 'legacy-settings-currency' ||
+    navigation.location === 'search-tokens' ||
+    navigation.location === 'search-collectibles'
 
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
         <ShadowRoot theme={theme}>
           <AnimatePresence>
-            {openWalletModal && (
+            {openWalletModal && !isAddFundsModalOpen && (
               <Modal
                 contentProps={{
                   style: {
-                    maxWidth: '400px',
+                    maxWidth: WALLET_WIDTH,
                     height: 'fit-content',
                     ...getModalPositionCss(position),
                     scrollbarColor: 'gray black',
@@ -69,7 +88,11 @@ export const SequenceWalletProvider = ({ children }: SequenceWalletProviderProps
                   {getHeader(navigation)}
 
                   {displayScrollbar ? (
-                    <Scroll style={{ paddingTop: HEADER_HEIGHT, height: 'min(800px, 80vh)' }}>{getContent(navigation)}</Scroll>
+                    <Scroll
+                      style={{ paddingTop: navigation.location === 'home' ? '' : HEADER_HEIGHT, height: 'min(800px, 90vh)' }}
+                    >
+                      {getContent(navigation)}
+                    </Scroll>
                   ) : (
                     getContent(navigation)
                   )}

@@ -1,13 +1,16 @@
 import { Card, Switch, Text } from '@0xsequence/design-system'
 // import { useTheme } from '@0xsequence/connect'
+import { useObservable } from 'micro-observables'
 import React from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useSettings } from '../../hooks'
 
-export const SettingsGeneral = () => {
+export const LegacySettingsGeneral = () => {
   // const { theme, setTheme } = useTheme()
-  const { hideUnlistedTokens, setHideUnlistedTokens, hideCollectibles, setHideCollectibles } = useSettings()
+  const { hideUnlistedTokensObservable, setHideUnlistedTokens, hideCollectiblesObservable, setHideCollectibles } = useSettings()
+  const hideUnlistedTokens = useObservable(hideUnlistedTokensObservable)
+  const hideCollectibles = useObservable(hideCollectiblesObservable)
 
   // const onChangeTheme = () => {
   //   setTheme && setTheme(theme === 'light' ? 'dark' : 'light')
