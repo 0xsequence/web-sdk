@@ -1,30 +1,10 @@
+import { useWallets } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 
-import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
-import { supportedFiatCurrencies } from '../../constants'
-import { useSettings } from '../../hooks'
-
 export const SettingsProfiles = () => {
-  const { fiatCurrency, setFiatCurrency } = useSettings()
-
   return (
     <div className="flex flex-col pb-5 px-4 pt-3 gap-2">
-      {supportedFiatCurrencies.map(currency => {
-        return (
-          <ListCardSelect
-            key={currency.symbol}
-            isSelected={currency.symbol === fiatCurrency.symbol}
-            onClick={() => setFiatCurrency && setFiatCurrency(currency)}
-          >
-            <div className="flex gap-2 justify-start items-center">
-              <Text color="primary" fontWeight="bold">
-                {currency.symbol}
-              </Text>
-              <Text color="muted">{currency.name.message}</Text>
-            </div>
-          </ListCardSelect>
-        )
-      })}
+      <Text>Profiles</Text>
     </div>
   )
 }

@@ -1,8 +1,14 @@
+import { useWallets } from '@0xsequence/connect'
+
 import { useNavigation } from '../../hooks'
 
 import { SettingsItem } from './SettingsItem'
 
 export const SettingsMenu = () => {
+  const { wallets } = useWallets()
+  const activeWallet = wallets.find(wallet => wallet.isActive)
+  const isEmbedded = activeWallet?.id.includes('waas')
+
   const { setNavigation } = useNavigation()
 
   const onClickWallets = () => {
@@ -41,7 +47,7 @@ export const SettingsMenu = () => {
         <SettingsItem label="Manage Wallets" onClick={onClickWallets} />
         <SettingsItem label="Manage Networks" onClick={onClickNetworks} />
         <SettingsItem label="Manage Currency" onClick={onClickCurrency} />
-        <SettingsItem label="Manage Profiles" onClick={onClickProfiles} />
+        {isEmbedded && <SettingsItem label="Manage Profiles" onClick={onClickProfiles} />}
         {/* <SettingsItem label="Manage Apps" onClick={onClickApps} /> */}
       </div>
     </div>

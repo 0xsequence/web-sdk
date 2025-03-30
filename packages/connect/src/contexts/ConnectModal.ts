@@ -5,6 +5,7 @@ import React from 'react'
 import { createGenericContext } from './genericContext'
 
 type ConnectModalContext = {
+  isConnectModalOpen: boolean
   setOpenConnectModal: React.Dispatch<React.SetStateAction<boolean>>
   openConnectModalState: boolean
 }

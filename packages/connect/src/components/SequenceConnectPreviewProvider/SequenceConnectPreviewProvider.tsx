@@ -119,7 +119,9 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
         }}
       >
         <GoogleOAuthProvider clientId={googleClientId}>
-          <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
+          <ConnectModalContextProvider
+            value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+          >
             <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">

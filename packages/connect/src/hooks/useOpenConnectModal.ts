@@ -7,6 +7,7 @@ import { useConnectModalContext } from '../contexts/ConnectModal'
  * @property Current open state of the Connect modal `openConnectModalState`
  */
 type UseOpenConnectModalReturnType = {
+  isConnectModalOpen: boolean
   setOpenConnectModal: (isOpen: boolean) => void
   openConnectModalState: boolean
 }
@@ -47,7 +48,7 @@ type UseOpenConnectModalReturnType = {
  * ```
  */
 export const useOpenConnectModal = (): UseOpenConnectModalReturnType => {
-  const { setOpenConnectModal, openConnectModalState } = useConnectModalContext()
+  const { isConnectModalOpen, setOpenConnectModal, openConnectModalState } = useConnectModalContext()
 
-  return { setOpenConnectModal, openConnectModalState }
+  return { isConnectModalOpen, setOpenConnectModal, openConnectModalState }
 }

@@ -15,7 +15,7 @@ import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
-import { useContext, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { parseAbi } from 'viem'
 import { encodeFunctionData } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
@@ -115,39 +115,47 @@ export const IntegratedWallet = () => {
   })
 
   const coinBalancesIconSet = new Set()
-  const coinBalancesIcons = coinBalances
-    .map(coin => {
-      const isNativeToken = compareAddress(coin.contractAddress, ethers.ZeroAddress)
-      const nativeTokenInfo = getNativeTokenInfoByChainId(coin.chainId, chains)
-      const logoURI = isNativeToken ? nativeTokenInfo.logoURI : coin.contractInfo?.logoURI
-      const tokenName = isNativeToken ? nativeTokenInfo.name : coin.contractInfo?.name
+  const coinBalancesIcons = useMemo(
+    () =>
+      coinBalances
+        .map(coin => {
+          const isNativeToken = compareAddress(coin.contractAddress, ethers.ZeroAddress)
+          const nativeTokenInfo = getNativeTokenInfoByChainId(coin.chainId, chains)
+          const logoURI = isNativeToken ? nativeTokenInfo.logoURI : coin.contractInfo?.logoURI
+          const tokenName = isNativeToken ? nativeTokenInfo.name : coin.contractInfo?.name
 
-      if (coinBalancesIconSet.has(tokenName)) {
-        return
-      }
+          if (coinBalancesIconSet.has(tokenName)) {
+            return
+          }
 
-      coinBalancesIconSet.add(tokenName)
-      if (coinBalancesIconSet.size <= 3) {
-        return logoURI
-      }
-    })
-    .filter(Boolean) as string[]
+          coinBalancesIconSet.add(tokenName)
+          if (coinBalancesIconSet.size <= 3) {
+            return logoURI
+          }
+        })
+        .filter(Boolean) as string[],
+    [coinBalances, selectedWallets, selectedNetworks, hideUnlistedTokens, selectedCollections]
+  )
 
   const collectibleBalancesIconSet = new Set()
-  const collectibleBalancesIcons = collectibleBalances
-    .map(collectible => {
-      const logoURI = collectible.tokenMetadata?.image
+  const collectibleBalancesIcons = useMemo(
+    () =>
+      collectibleBalances
+        .map(collectible => {
+          const logoURI = collectible.tokenMetadata?.image
 
-      if (collectibleBalancesIconSet.has(logoURI)) {
-        return
-      }
+          if (collectibleBalancesIconSet.has(logoURI)) {
+            return
+          }
 
-      collectibleBalancesIconSet.add(logoURI)
-      if (collectibleBalancesIconSet.size <= 3) {
-        return logoURI
-      }
-    })
-    .filter(Boolean) as string[]
+          collectibleBalancesIconSet.add(logoURI)
+          if (collectibleBalancesIconSet.size <= 3) {
+            return logoURI
+          }
+        })
+        .filter(Boolean) as string[],
+    [collectibleBalances, selectedWallets, selectedNetworks, hideUnlistedTokens, selectedCollections]
+  )
 
   const collectibleBalancesAmount = collectibleBalances.length
 
@@ -323,7 +331,7 @@ export const IntegratedWallet = () => {
         {accountSelectorModalOpen && (
           <SlideupDrawer
             onClose={() => setAccountSelectorModalOpen(false)}
-            label="Select active wallet"
+            label="Select main wallet"
             buttonLabel="+ Add new wallet"
             handleButtonPress={handleAddNewWallet}
             dragHandleWidth={28}
