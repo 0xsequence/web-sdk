@@ -165,7 +165,9 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
           }}
         >
           <GoogleOAuthProvider clientId={googleClientId}>
-            <ConnectModalContextProvider value={{ setOpenConnectModal, openConnectModalState: openConnectModal }}>
+            <ConnectModalContextProvider
+              value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+            >
               <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
                 <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                   <ShadowRoot theme={theme}>
@@ -179,6 +181,11 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               maxWidth: '390px',
                               overflow: 'visible',
                               ...getModalPositionCss(position)
+                            }
+                          }}
+                          rootProps={{
+                            style: {
+                              zIndex: 30
                             }
                           }}
                           onClose={() => setOpenConnectModal(false)}

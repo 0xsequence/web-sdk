@@ -194,9 +194,6 @@ export const styles = String.raw`
   }
 }
 @layer utilities {
-  .pointer-events-auto {
-    pointer-events: auto;
-  }
   .pointer-events-none {
     pointer-events: none;
   }
@@ -365,9 +362,6 @@ export const styles = String.raw`
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
-  .ml-\[-16px\] {
-    margin-left: -16px;
-  }
   .block {
     display: block;
   }
@@ -439,9 +433,6 @@ export const styles = String.raw`
   }
   .h-\[1px\] {
     height: 1px;
-  }
-  .h-\[14px\] {
-    height: 14px;
   }
   .h-\[52px\] {
     height: 52px;
@@ -538,9 +529,6 @@ export const styles = String.raw`
   }
   .w-\[1px\] {
     width: 1px;
-  }
-  .w-\[14px\] {
-    width: 14px;
   }
   .w-\[52px\] {
     width: 52px;
@@ -765,10 +753,6 @@ export const styles = String.raw`
   .border-0 {
     border-style: var(--tw-border-style);
     border-width: 0px;
-  }
-  .border-1 {
-    border-style: var(--tw-border-style);
-    border-width: 1px;
   }
   .border-2 {
     border-style: var(--tw-border-style);
@@ -1005,9 +989,6 @@ export const styles = String.raw`
   }
   .text-center {
     text-align: center;
-  }
-  .text-left {
-    text-align: left;
   }
   .text-right {
     text-align: right;

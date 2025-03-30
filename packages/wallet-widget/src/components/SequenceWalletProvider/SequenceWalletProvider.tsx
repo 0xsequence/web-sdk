@@ -1,7 +1,7 @@
 'use client'
 
 import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout'
-import { getModalPositionCss, useTheme, ShadowRoot } from '@0xsequence/connect'
+import { getModalPositionCss, useTheme, ShadowRoot, useOpenConnectModal } from '@0xsequence/connect'
 import { Modal, Scroll } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import React, { useState } from 'react'
@@ -32,6 +32,7 @@ export const SequenceWalletProvider = (props: SequenceWalletProviderProps) => {
 export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
   const { isAddFundsModalOpen } = useAddFundsModal()
+  const { isConnectModalOpen } = useOpenConnectModal()
   // Wallet Modal Context
   const [openWalletModal, setOpenWalletModalState] = useState<boolean>(false)
 
@@ -70,7 +71,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
         <ShadowRoot theme={theme}>
           <AnimatePresence>
-            {openWalletModal && !isAddFundsModalOpen && (
+            {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
               <Modal
                 contentProps={{
                   style: {

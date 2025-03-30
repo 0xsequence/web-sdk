@@ -1,83 +1,74 @@
-import { ChevronLeftIcon, IconButton, SearchIcon } from '@0xsequence/design-system'
-import * as PopoverPrimitive from '@radix-ui/react-popover'
-import { AnimatePresence, motion } from 'motion/react'
-import React, { useState, useRef, useEffect } from 'react'
+import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
+import { ChevronLeftIcon, IconButton, Text } from '@0xsequence/design-system'
+import { AnimatePresence } from 'motion/react'
+import { useState } from 'react'
 
 import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation, useOpenWalletModal } from '../../hooks'
+import { useNavigation } from '../../hooks'
+import { SelectWalletRow } from '../SelectWalletRow'
+import { SlideupDrawer } from '../SlideupDrawer'
 
 import { AccountInformation } from './components/AccountInformation'
-import { WalletDropdownContent } from './components/WalletDropdownContent'
 
-export const WalletHeader = () => {
-  const { openWalletModalState } = useOpenWalletModal()
+export const WalletHeader = ({ label }: { label?: string }) => {
+  const { wallets, setActiveWallet } = useWallets()
+  const { setOpenConnectModal } = useOpenConnectModal()
+  const { goBack } = useNavigation()
 
-  const [openWalletDropdown, setOpenWalletDropdown] = useState<boolean>(false)
-  const { goBack, history, setNavigation } = useNavigation()
-  const hasDropdownOpened = useRef<boolean>(false)
+  const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (!openWalletModalState) {
-      setOpenWalletDropdown(false)
-    }
-  }, [openWalletModalState])
+  const onClickSelector = () => {
+    setAccountSelectorModalOpen(true)
+  }
 
-  // Close dropdown when navigating to a new page
-  useEffect(() => {
-    if (openWalletDropdown) {
-      if (!hasDropdownOpened.current) {
-        hasDropdownOpened.current = true
-      } else {
-        setOpenWalletDropdown(false)
-      }
-    } else {
-      hasDropdownOpened.current = false
-    }
-  }, [history.length, openWalletDropdown])
-
-  const onClickAccount = () => {
-    setOpenWalletDropdown(true)
+  const handleAddNewWallet = () => {
+    setAccountSelectorModalOpen(false)
+    setOpenConnectModal(true)
   }
 
   const onClickBack = () => {
     goBack()
   }
 
-  const onClickSearch = () => {
-    setNavigation({
-      location: 'search'
-    })
-  }
-
   return (
-    <motion.div>
-      <PopoverPrimitive.Root open={openWalletDropdown}>
-        <PopoverPrimitive.Anchor />
-        <div
-          className="flex bg-background-primary z-20 fixed flex-row items-center justify-between w-full px-4"
-          style={{
-            height: HEADER_HEIGHT
-          }}
-        >
-          {history.length > 0 ? (
-            <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" />
-          ) : (
-            <IconButton onClick={onClickSearch} icon={SearchIcon} size="xs" />
-          )}
-          <PopoverPrimitive.Trigger asChild>
-            <AccountInformation onClickAccount={onClickAccount} />
-          </PopoverPrimitive.Trigger>
-          <div style={{ width: '44px' }} />
-        </div>
-
-        <AnimatePresence>
-          {openWalletDropdown && (
-            <PopoverPrimitive.Content asChild side="bottom" align="start">
-              <WalletDropdownContent setOpenWalletDropdown={setOpenWalletDropdown} />
-            </PopoverPrimitive.Content>
-          )}
-        </AnimatePresence>
-      </PopoverPrimitive.Root>
-    </motion.div>
+    <div
+      className="flex justify-between items-center fixed bg-background-primary w-full px-4 z-20 "
+      style={{
+        height: HEADER_HEIGHT
+      }}
+    >
+      <div className="flex flex-row justify-between items-center w-full">
+        <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" />
+        <AccountInformation onClickAccount={onClickSelector} />
+        <div style={{ width: '28px' }} />
+      </div>
+      {label && (
+        <Text variant="normal" color="primary" fontWeight="medium">
+          {label}
+        </Text>
+      )}
+      <AnimatePresence>
+        {accountSelectorModalOpen && (
+          <SlideupDrawer
+            onClose={() => setAccountSelectorModalOpen(false)}
+            label="Select main wallet"
+            buttonLabel="+ Add new wallet"
+            handleButtonPress={handleAddNewWallet}
+            dragHandleWidth={28}
+          >
+            <div className="flex flex-col gap-2">
+              {wallets.map((wallet, index) => (
+                <SelectWalletRow
+                  key={index}
+                  wallet={wallet}
+                  onClose={() => setAccountSelectorModalOpen(false)}
+                  setActiveWallet={setActiveWallet}
+                />
+              ))}
+            </div>
+          </SlideupDrawer>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
