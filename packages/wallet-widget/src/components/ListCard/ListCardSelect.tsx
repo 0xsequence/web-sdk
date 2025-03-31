@@ -17,7 +17,7 @@ export const ListCardSelect = ({
   shape?: 'rounded' | 'square'
   style?: React.CSSProperties
   type?: 'radio' | 'custom'
-  isSelected: boolean
+  isSelected?: boolean
   disabled?: boolean
   onClick?: () => void
 }) => {

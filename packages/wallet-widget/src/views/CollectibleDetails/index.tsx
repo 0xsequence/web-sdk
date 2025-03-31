@@ -1,4 +1,4 @@
-import { formatDisplay, ContractVerificationStatus } from '@0xsequence/connect'
+import { formatDisplay, ContractVerificationStatus, useWallets } from '@0xsequence/connect'
 import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
 import {
   useGetTokenBalancesDetails,
@@ -6,8 +6,9 @@ import {
   useGetCollectiblePrices,
   useGetExchangeRate
 } from '@0xsequence/hooks'
+import { useEffect } from 'react'
 import { formatUnits } from 'viem'
-import { useAccount, useConfig } from 'wagmi'
+import { useConfig } from 'wagmi'
 
 import { CollectibleTileImage } from '../../components/CollectibleTileImage'
 import { InfiniteScroll } from '../../components/InfiniteScroll'
@@ -17,19 +18,22 @@ import { useSettings, useNavigation } from '../../hooks'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'
-
 export interface CollectibleDetailsProps {
   contractAddress: string
   chainId: number
   tokenId: string
+  accountAddress: string
 }
 
-export const CollectibleDetails = ({ contractAddress, chainId, tokenId }: CollectibleDetailsProps) => {
+export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountAddress }: CollectibleDetailsProps) => {
   const { chains } = useConfig()
-
-  const { address: accountAddress } = useAccount()
+  const { setActiveWallet } = useWallets()
   const { fiatCurrency } = useSettings()
   const { setNavigation } = useNavigation()
+
+  useEffect(() => {
+    setActiveWallet(accountAddress || '')
+  }, [accountAddress])
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 

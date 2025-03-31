@@ -3,7 +3,7 @@ import { ChevronLeftIcon, IconButton, Text } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 
-import { HEADER_HEIGHT } from '../../constants'
+import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { useNavigation } from '../../hooks'
 import { SelectWalletRow } from '../SelectWalletRow'
 import { SlideupDrawer } from '../SlideupDrawer'
@@ -32,9 +32,9 @@ export const WalletHeader = ({ label }: { label?: string }) => {
 
   return (
     <div
-      className="flex justify-between items-center fixed bg-background-primary w-full px-4 z-20 "
+      className="flex flex-col justify-between items-center fixed bg-background-primary w-full p-4 z-20 "
       style={{
-        height: HEADER_HEIGHT
+        height: label ? HEADER_HEIGHT_WITH_LABEL : HEADER_HEIGHT
       }}
     >
       <div className="flex flex-row justify-between items-center w-full">
@@ -43,7 +43,7 @@ export const WalletHeader = ({ label }: { label?: string }) => {
         <div style={{ width: '28px' }} />
       </div>
       {label && (
-        <Text variant="normal" color="primary" fontWeight="medium">
+        <Text variant="normal" color="primary" fontWeight="bold">
           {label}
         </Text>
       )}

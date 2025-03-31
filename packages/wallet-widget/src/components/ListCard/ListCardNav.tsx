@@ -26,7 +26,7 @@ export const ListCardNav = ({
 
       <div className="flex flex-row gap-1 items-center">
         {rightChildren}
-        <ChevronRightIcon color="white" size="lg" />
+        <ChevronRightIcon color="white" />
       </div>
     </div>
   )

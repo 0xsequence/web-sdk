@@ -39,7 +39,8 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
         location: 'collection-details',
         params: {
           contractAddress: balance.contractAddress,
-          chainId: balance.chainId
+          chainId: balance.chainId,
+          accountAddress: balance.accountAddress
         }
       })
     } else {
@@ -47,7 +48,8 @@ export const BalanceItem = ({ balance }: BalanceItemProps) => {
         location: 'coin-details',
         params: {
           contractAddress: balance.contractAddress,
-          chainId: balance.chainId
+          chainId: balance.chainId,
+          accountAddress: balance.accountAddress
         }
       })
     }

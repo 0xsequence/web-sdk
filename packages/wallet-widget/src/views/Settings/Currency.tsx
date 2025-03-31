@@ -10,7 +10,7 @@ export const SettingsCurrency = () => {
   const fiatCurrency = useObservable(fiatCurrencyObservable)
 
   return (
-    <div className="pb-5 px-4 pt-3">
+    <div className="p-4">
       <div className="flex flex-col gap-2">
         {supportedFiatCurrencies.map(currency => {
           return (

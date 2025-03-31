@@ -1,8 +1,8 @@
 import { useWallets } from '@0xsequence/connect'
+import { Text } from '@0xsequence/design-system'
 
+import { ListCardNav } from '../../components/ListCard/ListCardNav'
 import { useNavigation } from '../../hooks'
-
-import { SettingsItem } from './SettingsItem'
 
 export const SettingsMenu = () => {
   const { wallets } = useWallets()
@@ -41,14 +41,42 @@ export const SettingsMenu = () => {
     })
   }
 
+  const onClickPreferences = () => {
+    setNavigation({
+      location: 'settings-preferences'
+    })
+  }
+
   return (
-    <div className="p-4 pt-2">
+    <div className="p-4">
       <div className="flex flex-col gap-2">
-        <SettingsItem label="Manage Wallets" onClick={onClickWallets} />
-        <SettingsItem label="Manage Networks" onClick={onClickNetworks} />
-        <SettingsItem label="Manage Currency" onClick={onClickCurrency} />
-        {isEmbedded && <SettingsItem label="Manage Profiles" onClick={onClickProfiles} />}
-        {/* <SettingsItem label="Manage Apps" onClick={onClickApps} /> */}
+        <ListCardNav onClick={onClickWallets} style={{ height: '64px' }}>
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Manage Wallets
+          </Text>
+        </ListCardNav>
+        <ListCardNav onClick={onClickNetworks} style={{ height: '64px' }}>
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Manage Networks
+          </Text>
+        </ListCardNav>
+        <ListCardNav onClick={onClickCurrency} style={{ height: '64px' }}>
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Manage Currency
+          </Text>
+        </ListCardNav>
+        {isEmbedded && (
+          <ListCardNav onClick={onClickProfiles} style={{ height: '64px' }}>
+            <Text color="primary" fontWeight="medium" variant="normal">
+              Manage Profiles
+            </Text>
+          </ListCardNav>
+        )}
+        <ListCardNav onClick={onClickPreferences} style={{ height: '64px' }}>
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Preferences
+          </Text>
+        </ListCardNav>
       </div>
     </div>
   )

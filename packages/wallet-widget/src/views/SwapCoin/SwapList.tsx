@@ -172,7 +172,8 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
         location: 'coin-details',
         params: {
           chainId,
-          contractAddress
+          contractAddress,
+          accountAddress: userAddress
         }
       })
     } catch (e) {

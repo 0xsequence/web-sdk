@@ -20,13 +20,16 @@ import {
   SearchTokens,
   SearchCollectibles
 } from '../../../views'
+import { SendGeneral } from '../../../views/SendGeneral'
 import { SettingsWallets } from '../../../views/Settings'
 import { SettingsApps } from '../../../views/Settings/Apps'
 import { SettingsCurrency } from '../../../views/Settings/Currency'
 import { SettingsMenu } from '../../../views/Settings/Menu'
 import { SettingsNetworks } from '../../../views/Settings/Networks'
+import { SettingsPreferences } from '../../../views/Settings/Preferences'
 import { SettingsProfiles } from '../../../views/Settings/Profiles'
 import { QrScan } from '../../../views/Settings/QrScan'
+import { Swap } from '../../../views/Swap'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
 
@@ -34,8 +37,8 @@ export const getContent = (navigation: Navigation) => {
   const { location } = navigation
 
   switch (location) {
-    case 'send':
-      return <History />
+    case 'send-general':
+      return <SendGeneral />
     case 'send-coin':
       return <SendCoin chainId={navigation.params.chainId} contractAddress={navigation.params.contractAddress} />
     case 'send-collectible':
@@ -47,7 +50,7 @@ export const getContent = (navigation: Navigation) => {
         />
       )
     case 'swap':
-      return <History />
+      return <Swap />
     case 'receive':
       return <Receive />
     case 'history':
@@ -70,6 +73,8 @@ export const getContent = (navigation: Navigation) => {
       return <SettingsCurrency />
     case 'settings-profiles':
       return <SettingsProfiles />
+    case 'settings-preferences':
+      return <SettingsPreferences />
     case 'settings-apps':
       return <SettingsApps />
     case 'connect-dapp':
@@ -83,13 +88,21 @@ export const getContent = (navigation: Navigation) => {
     case 'legacy-settings-networks':
       return <LegacySettingsNetwork />
     case 'coin-details':
-      return <CoinDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
+      return (
+        <CoinDetails
+          contractAddress={navigation.params.contractAddress}
+          chainId={navigation.params.chainId}
+          accountAddress={navigation.params.accountAddress}
+        />
+      )
+
     case 'collectible-details':
       return (
         <CollectibleDetails
           contractAddress={navigation.params.contractAddress}
           chainId={navigation.params.chainId}
           tokenId={navigation.params.tokenId}
+          accountAddress={navigation.params.accountAddress}
         />
       )
     case 'collection-details':
@@ -141,6 +154,8 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader primaryText="Currency" />
     case 'settings-profiles':
       return <NavigationHeader primaryText="Profiles" />
+    case 'settings-preferences':
+      return <NavigationHeader primaryText="Preferences" />
     case 'settings-apps':
       return <NavigationHeader primaryText="Apps" />
     case 'connect-dapp':
@@ -153,7 +168,7 @@ export const getHeader = (navigation: Navigation) => {
       return <WalletHeader />
     case 'transaction-details':
       return <NavigationHeader secondaryText="" primaryText="" />
-    case 'send':
+    case 'send-general':
       return <WalletHeader label="Send" />
     case 'send-coin':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Send Coin" />
