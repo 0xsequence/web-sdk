@@ -10,7 +10,7 @@ import { SlideupDrawer } from '../SlideupDrawer'
 
 import { AccountInformation } from './components/AccountInformation'
 
-export const WalletHeader = ({ label }: { label?: string }) => {
+export const WalletHeader = ({ label, enableAccountSelector = false }: { label?: string; enableAccountSelector?: boolean }) => {
   const { wallets, setActiveWallet } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
   const { goBack } = useNavigation()
@@ -39,7 +39,7 @@ export const WalletHeader = ({ label }: { label?: string }) => {
     >
       <div className="flex flex-row justify-between items-center w-full">
         <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" />
-        <AccountInformation onClickAccount={onClickSelector} />
+        <AccountInformation onClickAccount={enableAccountSelector ? onClickSelector : undefined} />
         <div style={{ width: '28px' }} />
       </div>
       {label && (

@@ -62,6 +62,26 @@ export const SearchTokens = () => {
     return Number(fiatB) - Number(fiatA)
   })
 
+  const coinBalancesWithPrices = coinBalances.map(balance => {
+    const matchingPrice = coinPrices.find(price => {
+      const isSameChainAndAddress =
+        price.token.chainId === balance.chainId && price.token.contractAddress === balance.contractAddress
+
+      const isTokenIdMatch =
+        price.token.tokenId === balance.tokenID || !(balance.contractType === 'ERC721' || balance.contractType === 'ERC1155')
+
+      return isSameChainAndAddress && isTokenIdMatch
+    })
+
+    const priceValue = (matchingPrice?.price?.value || 0) * conversionRate
+    const priceCurrency = fiatCurrency.symbol
+
+    return {
+      ...balance,
+      price: { value: priceValue, currency: priceCurrency }
+    }
+  })
+
   const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
   const fuseOptions = {
@@ -81,8 +101,8 @@ export const SearchTokens = () => {
   }
 
   const fuse = useMemo(() => {
-    return new Fuse(coinBalances, fuseOptions)
-  }, [coinBalances])
+    return new Fuse(coinBalancesWithPrices, fuseOptions)
+  }, [coinBalancesWithPrices])
 
   const searchResults = useMemo(() => {
     if (!search.trimStart()) {
@@ -96,7 +116,7 @@ export const SearchTokens = () => {
     fetchNextPage: fetchMoreBalances,
     hasNextPage: hasMoreBalances,
     isFetching: isFetchingMoreBalances
-  } = useGetMoreBalances(coinBalances, pageSize, { enabled: search.trim() === '' })
+  } = useGetMoreBalances(coinBalancesWithPrices, pageSize, { enabled: search.trim() === '' })
 
   const {
     data: infiniteSearchBalances,

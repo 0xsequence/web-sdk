@@ -33,7 +33,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
   const { fiatCurrency, hideUnlistedTokens } = useSettings()
 
   useEffect(() => {
-    setActiveWallet(accountAddress || '')
+    setActiveWallet(accountAddress)
   }, [accountAddress])
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
