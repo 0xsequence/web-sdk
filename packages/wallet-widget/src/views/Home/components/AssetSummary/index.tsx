@@ -87,7 +87,8 @@ export const AssetSummary = () => {
         params: {
           contractAddress: balance.contractAddress,
           chainId: balance.chainId,
-          tokenId: balance.tokenID || ''
+          tokenId: balance.tokenID || '',
+          accountAddress: balance.accountAddress
         }
       })
     } else {
@@ -95,7 +96,8 @@ export const AssetSummary = () => {
         location: 'coin-details',
         params: {
           contractAddress: balance.contractAddress,
-          chainId: balance.chainId
+          chainId: balance.chainId,
+          accountAddress: balance.accountAddress
         }
       })
     }

@@ -1,4 +1,4 @@
-import { SwapModalSettings, useAddFundsModal, useSwapModal } from '@0xsequence/checkout'
+import { useAddFundsModal } from '@0xsequence/checkout'
 import { compareAddress, formatAddress, useWallets, useOpenConnectModal, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import {
   Button,
@@ -15,9 +15,7 @@ import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import { AnimatePresence } from 'motion/react'
-import { useEffect, useMemo, useState } from 'react'
-import { parseAbi } from 'viem'
-import { encodeFunctionData } from 'viem'
+import { useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { StackedIconTag } from '../../../../components/IconWrappers/StackedIconTag'
@@ -41,7 +39,6 @@ export const IntegratedWallet = () => {
   const { wallets, setActiveWallet } = useWallets()
 
   const { setOpenConnectModal } = useOpenConnectModal()
-  const { openSwapModal } = useSwapModal()
   const { triggerAddFunds } = useAddFundsModal()
   const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState(false)
   const [walletFilterOpen, setWalletFilterOpen] = useState(false)
@@ -124,7 +121,7 @@ export const IntegratedWallet = () => {
           const logoURI = isNativeToken ? nativeTokenInfo.logoURI : coin.contractInfo?.logoURI
           const tokenName = isNativeToken ? nativeTokenInfo.name : coin.contractInfo?.name
 
-          if (coinBalancesIconSet.has(tokenName)) {
+          if (coinBalancesIconSet.has(tokenName) || !logoURI) {
             return
           }
 
@@ -144,7 +141,7 @@ export const IntegratedWallet = () => {
         .map(collectible => {
           const logoURI = collectible.tokenMetadata?.image
 
-          if (collectibleBalancesIconSet.has(logoURI)) {
+          if (collectibleBalancesIconSet.has(logoURI) || !logoURI) {
             return
           }
 
@@ -168,36 +165,13 @@ export const IntegratedWallet = () => {
   }
   const onClickSend = () => {
     setNavigation({
-      location: 'send'
+      location: 'send-general'
     })
   }
   const onClickSwap = () => {
     setNavigation({
       location: 'swap'
     })
-    // const chainId = 137
-    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    // const currencyAmount = '20000'
-    // const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
-
-    // const swapModalSettings: SwapModalSettings = {
-    //   onSuccess: () => {
-    //     console.log('swap successful!')
-    //   },
-    //   chainId,
-    //   currencyAddress,
-    //   currencyAmount,
-    //   postSwapTransactions: [
-    //     {
-    //       to: '0x37470dac8a0255141745906c972e414b1409b470',
-    //       data
-    //     }
-    //   ],
-    //   title: 'Swap and Pay',
-    //   description: 'Select a token in your wallet to swap to 0.2 USDC.'
-    // }
-
-    // openSwapModal(swapModalSettings)
   }
   const onClickReceive = () => {
     setNavigation({
@@ -296,36 +270,38 @@ export const IntegratedWallet = () => {
         <OperationButtonTemplate label="Receive" onClick={onClickReceive} icon={ScanIcon} />
         <OperationButtonTemplate label="Buy" onClick={onClickAddFunds} icon={AddIcon} />
       </div>
-      <ListCardNavTable navItems={homeNavTableItems}>
-        <>
-          <Text color="primary" fontWeight="bold" variant="normal">
-            Items
+      <div className="flex flex-col gap-2 w-full">
+        <ListCardNavTable navItems={homeNavTableItems}>
+          <>
+            <Text color="primary" fontWeight="bold" variant="normal">
+              Items
+            </Text>
+            <StackedIconTag
+              iconList={selectedWallets.map(wallet => wallet.address)}
+              isAccount
+              label={
+                <div className="flex flex-row items-center" style={{ gap: '3px' }}>
+                  <Text color="primary" variant="normal" fontWeight="medium">
+                    {`${selectedWallets.length} Wallet${selectedWallets.length === 1 ? '' : 's'}`}
+                  </Text>
+                  <EllipsisIcon color="white" />
+                </div>
+              }
+              onClick={onClickWalletSelector}
+            />
+          </>
+        </ListCardNavTable>
+        <ListCardNav onClick={onClickTransactions}>
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Transactions
           </Text>
-          <StackedIconTag
-            iconList={selectedWallets.map(wallet => wallet.address)}
-            isAccount
-            label={
-              <div className="flex flex-row items-center" style={{ gap: '3px' }}>
-                <Text color="primary" variant="normal" fontWeight="medium">
-                  {`${selectedWallets.length} Wallet${selectedWallets.length === 1 ? '' : 's'}`}
-                </Text>
-                <EllipsisIcon color="white" />
-              </div>
-            }
-            onClick={onClickWalletSelector}
-          />
-        </>
-      </ListCardNavTable>
-      <ListCardNav onClick={onClickTransactions} style={{ marginTop: '8px' }}>
-        <Text color="primary" fontWeight="medium" variant="normal">
-          Transactions
-        </Text>
-      </ListCardNav>
-      <ListCardNav onClick={onClickSettings} style={{ marginTop: '8px' }}>
-        <Text color="primary" fontWeight="medium" variant="normal">
-          Settings
-        </Text>
-      </ListCardNav>
+        </ListCardNav>
+        <ListCardNav onClick={onClickSettings}>
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Settings
+          </Text>
+        </ListCardNav>
+      </div>
 
       <AnimatePresence>
         {accountSelectorModalOpen && (

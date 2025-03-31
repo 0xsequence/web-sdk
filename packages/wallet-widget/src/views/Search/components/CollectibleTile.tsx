@@ -14,7 +14,12 @@ export const CollectibleTile = ({ balance }: CollectibleTileProps) => {
   const onClickItem = (balance: TokenBalance) => {
     setNavigation({
       location: 'collectible-details',
-      params: { contractAddress: balance.contractAddress, chainId: balance.chainId, tokenId: balance.tokenID || '' }
+      params: {
+        contractAddress: balance.contractAddress,
+        chainId: balance.chainId,
+        tokenId: balance.tokenID || '',
+        accountAddress: balance.accountAddress
+      }
     })
   }
 

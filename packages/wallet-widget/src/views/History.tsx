@@ -15,14 +15,12 @@ export const History = () => {
   })
 
   return (
-    <div>
-      <div className="px-4 pb-5 pt-3">
-        <TransactionHistoryList
-          transactions={transactionHistory}
-          isPending={isPendingTransactionHistory}
-          isFetchingNextPage={false}
-        />
-      </div>
+    <div className="px-4 pb-5 pt-3">
+      <TransactionHistoryList
+        transactions={transactionHistory}
+        isPending={isPendingTransactionHistory}
+        isFetchingNextPage={false}
+      />
     </div>
   )
 }

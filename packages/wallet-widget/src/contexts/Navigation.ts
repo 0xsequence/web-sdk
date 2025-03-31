@@ -7,6 +7,7 @@ import { createGenericContext } from './genericContext'
 export interface CollectionDetailsParams {
   contractAddress: string
   chainId: number
+  accountAddress: string
 }
 
 export interface CollectionDetailsNavigation {
@@ -17,6 +18,7 @@ export interface CollectionDetailsNavigation {
 export interface CoinDetailsParams {
   contractAddress: string
   chainId: number
+  accountAddress: string
 }
 
 export interface CoinDetailsNavigation {
@@ -28,6 +30,7 @@ export interface CollectibleDetailsParams {
   contractAddress: string
   chainId: number
   tokenId: string
+  accountAddress: string
 }
 
 export interface CollectibleDetailsNavigation {
@@ -98,9 +101,8 @@ export interface SendCollectibleNavigation {
 export interface BasicNavigation {
   location:
     | 'home'
-    | 'send'
+    | 'send-general'
     | 'swap'
-    | 'receive'
     | 'receive'
     | 'history'
     | 'legacy-settings'
@@ -113,6 +115,7 @@ export interface BasicNavigation {
     | 'settings-currency'
     | 'settings-profiles'
     | 'settings-apps'
+    | 'settings-preferences'
     | 'connect-dapp'
     | 'search'
     | 'search-tokens'

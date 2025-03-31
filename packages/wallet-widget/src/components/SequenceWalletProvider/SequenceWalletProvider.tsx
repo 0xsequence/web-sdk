@@ -6,7 +6,7 @@ import { Modal, Scroll } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import React, { useState } from 'react'
 
-import { HEADER_HEIGHT } from '../../constants'
+import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
 
 import { getHeader, getContent } from './utils'
@@ -50,6 +50,8 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
 
   const displayScrollbar =
     navigation.location === 'home' ||
+    navigation.location === 'send-general' ||
+    navigation.location === 'swap' ||
     navigation.location === 'collection-details' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||
@@ -61,10 +63,26 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
     navigation.location === 'settings-networks' ||
     navigation.location === 'settings-currency' ||
     navigation.location === 'settings-profiles' ||
+    navigation.location === 'settings-preferences' ||
     navigation.location === 'settings-apps' ||
     navigation.location === 'legacy-settings-currency' ||
     navigation.location === 'search-tokens' ||
     navigation.location === 'search-collectibles'
+
+  let paddingTop = 0
+  switch (navigation.location) {
+    case 'home':
+      paddingTop = 0
+      break
+    case 'send-general':
+      paddingTop = HEADER_HEIGHT_WITH_LABEL
+      break
+    case 'swap':
+      paddingTop = HEADER_HEIGHT_WITH_LABEL
+      break
+    default:
+      paddingTop = HEADER_HEIGHT
+  }
 
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
@@ -89,11 +107,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                   {getHeader(navigation)}
 
                   {displayScrollbar ? (
-                    <Scroll
-                      style={{ paddingTop: navigation.location === 'home' ? '' : HEADER_HEIGHT, height: 'min(800px, 90vh)' }}
-                    >
-                      {getContent(navigation)}
-                    </Scroll>
+                    <Scroll style={{ paddingTop: paddingTop, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
                   ) : (
                     getContent(navigation)
                   )}

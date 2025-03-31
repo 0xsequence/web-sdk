@@ -10,7 +10,7 @@ export const SettingsNetworks = () => {
   const selectedNetworks = useObservable(selectedNetworksObservable)
 
   return (
-    <div className="flex flex-col pb-5 px-4 pt-3 gap-2">
+    <div className="flex flex-col p-4 gap-2">
       {allNetworks.length > 1 && (
         <ListCardSelect
           key="all"
