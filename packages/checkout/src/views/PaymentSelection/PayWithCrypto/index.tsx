@@ -143,7 +143,13 @@ export const PayWithCrypto = ({
                   price={priceDisplay}
                   disabled={disableButtons}
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
-                  isInsufficientFunds={coin.currencyAddress !== zeroAddress ? isNotEnoughFunds : skipNativeBalanceCheck ? undefined : isNotEnoughFunds}
+                  isInsufficientFunds={
+                    coin.currencyAddress !== zeroAddress
+                      ? isNotEnoughFunds
+                      : skipNativeBalanceCheck
+                        ? undefined
+                        : isNotEnoughFunds
+                  }
                 />
               </Fragment>
             )
