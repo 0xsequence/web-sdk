@@ -20,7 +20,7 @@ export const StackedIconTag = ({
       style={{ height: '28px', gap: '3px' }}
       onClick={onClick}
     >
-      {iconList.length > 0 && <MediaIconWrapper iconList={iconList} isAccount={isAccount} shape={shape} size="4xs" />}
+      <MediaIconWrapper iconList={iconList} isAccount={isAccount} shape={shape} size="4xs" />
       {label}
     </div>
   )

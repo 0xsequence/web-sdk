@@ -1,17 +1,18 @@
 import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
 import React from 'react'
 
-import { InfiniteScroll } from '../../../components/InfiniteScroll'
+import { TokenBalanceWithPrice } from '../../../utils'
+import { InfiniteScroll } from '../../InfiniteScroll'
 
 import { CollectibleTile } from './CollectibleTile'
 
 interface CollectiblesTabProps {
-  displayedCollectibleBalances: TokenBalance[] | undefined
+  displayedCollectibleBalances: TokenBalanceWithPrice[] | undefined
   fetchMoreCollectibleBalances: () => Promise<any>
   hasMoreCollectibleBalances: boolean
   isFetchingMoreCollectibleBalances: boolean
   isFetchingInitialBalances: boolean
+  onTokenClick: (token: TokenBalanceWithPrice) => void
 }
 
 export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
@@ -19,11 +20,12 @@ export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
   fetchMoreCollectibleBalances,
   hasMoreCollectibleBalances,
   isFetchingMoreCollectibleBalances,
-  isFetchingInitialBalances
+  isFetchingInitialBalances,
+  onTokenClick
 }) => {
   return (
     <div>
-      <div className="grid gap-2" style={{ gridTemplateColumns: `calc(50% - 4px) calc(50% - 4px)` }}>
+      <div className="grid gap-2" style={{ gridTemplateColumns: `calc(50% - 4px) calc(50% - 4px)`, width: '100%' }}>
         {isFetchingInitialBalances ? (
           <>
             {Array(6)
@@ -34,19 +36,20 @@ export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
           </>
         ) : (
           <>
-            {!displayedCollectibleBalances || displayedCollectibleBalances.length === 0 ? (
+            {(!displayedCollectibleBalances || displayedCollectibleBalances.length === 0) &&
+            !isFetchingMoreCollectibleBalances ? (
               <Text color="primary">No Collectibles Found</Text>
             ) : (
               <InfiniteScroll onLoad={() => fetchMoreCollectibleBalances()} hasMore={hasMoreCollectibleBalances}>
                 {displayedCollectibleBalances?.map((balance, index) => {
-                  return <CollectibleTile key={index} balance={balance} />
+                  return <CollectibleTile key={index} balance={balance} onTokenClick={onTokenClick} />
                 })}
               </InfiniteScroll>
             )}
           </>
         )}
-        {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
       </div>
+      {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import {
-  compareAddress,
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
   ExtendedConnector,
@@ -15,54 +14,50 @@ import {
   CopyIcon,
   CloseIcon,
   GradientAvatar,
+  AddIcon,
+  SubtractIcon,
   Text,
   NumericInput,
   TextInput,
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import {
-  useClearCachedBalances,
-  useGetTokenBalancesSummary,
-  useGetCoinPrices,
-  useGetExchangeRate,
-  useIndexerClient
-} from '@0xsequence/hooks'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
-import { useState, ChangeEvent, useRef, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, Hex } from 'viem'
+import { useGetTokenBalancesDetails, useClearCachedBalances, useIndexerClient } from '@0xsequence/hooks'
+import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { useRef, useState, ChangeEvent, useEffect } from 'react'
+import { encodeFunctionData, formatUnits, parseUnits, toHex, Hex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction, usePublicClient } from 'wagmi'
 
-import { SendItemInfo } from '../components/SendItemInfo'
-import { TransactionConfirmation } from '../components/TransactionConfirmation'
-import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
-import { useNavigationContext } from '../contexts/Navigation'
-import { useSettings, useNavigation } from '../hooks'
-import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
+import { SendItemInfo } from '../../components/SendItemInfo'
+import { TransactionConfirmation } from '../../components/TransactionConfirmation'
+import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
+import { useNavigationContext } from '../../contexts/Navigation'
+import { useNavigation } from '../../hooks'
+import { limitDecimals, isEthAddress } from '../../utils'
 
-interface SendCoinProps {
+interface SendCollectibleProps {
   chainId: number
   contractAddress: string
+  tokenId: string
 }
 
-export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
-  const { clearCachedBalances } = useClearCachedBalances()
-  const publicClient = usePublicClient({ chainId })
-  const indexerClient = useIndexerClient(chainId)
+export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendCollectibleProps) => {
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
   const { address: accountAddress = '', connector } = useAccount()
+  const indexerClient = useIndexerClient(chainId)
+  const publicClient = usePublicClient({ chainId })
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
   const isCorrectChainId = connectedChainId === chainId
-  const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
+  const { clearCachedBalances } = useClearCachedBalances()
   const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
-  const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
+  const [showAmountControls, setShowAmountControls] = useState<boolean>(false)
   const { sendTransaction } = useSendTransaction()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -78,61 +73,60 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
+  const { data: dataTokens, isPending: isPendingBalances } = useGetTokenBalancesDetails({
     filter: {
       accountAddresses: [accountAddress],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [contractAddress],
       omitNativeBalances: false
-    }
+    },
+    chainIds: [chainId]
   })
-  const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
-  const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
-    {
-      chainId,
-      contractAddress
+
+  const tokenBalance = dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
+
+  let contractType: ContractType | undefined
+  if (tokenBalance) {
+    contractType = tokenBalance.contractType
+  }
+
+  useEffect(() => {
+    if (tokenBalance) {
+      if (contractType === 'ERC721') {
+        setAmount('1')
+        setShowAmountControls(false)
+      } else if (contractType === 'ERC1155') {
+        if (Number(formatUnits(BigInt(tokenBalance?.balance || 0), decimals)) >= 1) {
+          setAmount('1')
+        }
+        setShowAmountControls(true)
+      }
     }
-  ])
+  }, [tokenBalance])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
-
-  const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
-
-  // Handle fee option confirmation when pendingFeeOption is available
   useEffect(() => {
     if (pendingFeeOption && selectedFeeTokenAddress !== null) {
       confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
     }
   }, [pendingFeeOption, selectedFeeTokenAddress])
 
-  // Control back button when showing confirmation
   useEffect(() => {
     setIsBackButtonEnabled(!showConfirmation)
   }, [showConfirmation, setIsBackButtonEnabled])
+
+  const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
+
+  const isPending = isPendingBalances
 
   if (isPending) {
     return null
   }
 
-  const isNativeCoin = compareAddress(contractAddress, zeroAddress)
-  const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
-  const name = isNativeCoin ? nativeTokenInfo.name : tokenBalance?.contractInfo?.name || ''
-  const imageUrl = isNativeCoin ? nativeTokenInfo.logoURI : tokenBalance?.contractInfo?.logoURI
-  const symbol = isNativeCoin ? nativeTokenInfo.symbol : tokenBalance?.contractInfo?.symbol || ''
+  const decimals = tokenBalance?.tokenMetadata?.decimals || 0
+  const name = tokenBalance?.tokenMetadata?.name || 'Unknown'
+  const imageUrl = tokenBalance?.tokenMetadata?.image || tokenBalance?.contractInfo?.logoURI || ''
   const amountToSendFormatted = amount === '' ? '0' : amount
   const amountRaw = parseUnits(amountToSendFormatted, decimals)
-
-  const amountToSendFiat = computeBalanceFiat({
-    balance: {
-      ...(tokenBalance as TokenBalance),
-      balance: amountRaw.toString()
-    },
-    prices: coinPrices,
-    conversionRate,
-    decimals
-  })
 
   const insufficientFunds = amountRaw > BigInt(tokenBalance?.balance || '0')
   const isNonZeroAmount = amountRaw > 0n
@@ -144,6 +138,24 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     const formattedValue = limitDecimals(value, decimals)
 
     setAmount(formattedValue)
+  }
+
+  const handleSubtractOne = () => {
+    amountInputRef.current?.focus()
+    const decrementedAmount = Number(amount) - 1
+
+    const newAmount = Math.max(decrementedAmount, 0).toString()
+    setAmount(newAmount)
+  }
+
+  const handleAddOne = () => {
+    amountInputRef.current?.focus()
+    const incrementedAmount = Number(amount) + 1
+    const maxAmount = Number(formatUnits(BigInt(tokenBalance?.balance || 0), decimals))
+
+    const newAmount = Math.min(incrementedAmount, maxAmount).toString()
+
+    setAmount(newAmount)
   }
 
   const handleMax = () => {
@@ -165,21 +177,36 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    if (!isCorrectChainId && !isConnectorSequenceBased) {
+      await switchChainAsync({ chainId })
+    }
+
     setIsCheckingFeeOptions(true)
 
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
     let transaction
 
-    if (isNativeCoin) {
-      transaction = {
-        to: toAddress as `0x${string}`,
-        value: BigInt(sendAmount.toString())
-      }
-    } else {
-      transaction = {
-        to: tokenBalance?.contractAddress as `0x${string}`,
-        data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] })
-      }
+    switch (contractType) {
+      case 'ERC721':
+        transaction = {
+          to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+          data: encodeFunctionData({
+            abi: ERC_721_ABI,
+            functionName: 'safeTransferFrom',
+            args: [accountAddress, toAddress, tokenId]
+          })
+        }
+        break
+      case 'ERC1155':
+      default:
+        transaction = {
+          to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+          data: encodeFunctionData({
+            abi: ERC_1155_ABI,
+            functionName: 'safeBatchTransferFrom',
+            args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
+          })
+        }
     }
 
     // Check fee options before showing confirmation
@@ -207,16 +234,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       await switchChainAsync({ chainId })
     }
 
-    analytics?.track({
-      event: 'SEND_TRANSACTION_REQUEST',
-      props: {
-        walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-        source: 'sequence-kit/wallet'
-      }
-    })
-
-    setIsSendTxnPending(true)
-
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
 
     const txOptions = {
@@ -227,46 +244,80 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           setNavigation({
             location: 'home'
           })
-          setIsSendTxnPending(false)
-          if (publicClient) {
-            await waitForTransactionReceipt({
-              indexerClient,
-              txnHash: hash as Hex,
-              publicClient,
-              confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
-            })
-            clearCachedBalances()
-          }
+        }
+        setIsSendTxnPending(false)
+        if (publicClient) {
+          await waitForTransactionReceipt({
+            indexerClient,
+            txnHash: hash as Hex,
+            publicClient,
+            confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
+          })
+          clearCachedBalances()
         }
       }
     }
 
-    if (isNativeCoin) {
-      sendTransaction(
-        {
-          to: toAddress as `0x${string}`,
-          value: BigInt(sendAmount.toString()),
-          gas: null
-        },
-        txOptions
-      )
-    } else {
-      sendTransaction(
-        {
-          to: tokenBalance?.contractAddress as `0x${string}`,
-          data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] }),
-          gas: null
-        },
-        txOptions
-      )
+    switch (contractType) {
+      case 'ERC721':
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            source: 'sequence-kit/wallet'
+          }
+        })
+        setIsSendTxnPending(true)
+        // _from, _to, _id
+        sendTransaction(
+          {
+            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+            data: encodeFunctionData({
+              abi: ERC_721_ABI,
+              functionName: 'safeTransferFrom',
+              args: [accountAddress, toAddress, tokenId]
+            }),
+            gas: null
+          },
+          txOptions
+        )
+        break
+      case 'ERC1155':
+      default:
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            source: 'sequence-kit/wallet'
+          }
+        })
+        setIsSendTxnPending(true)
+        // _from, _to, _ids, _amounts, _data
+        sendTransaction(
+          {
+            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+            data: encodeFunctionData({
+              abi: ERC_1155_ABI,
+              functionName: 'safeBatchTransferFrom',
+              args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
+            }),
+            gas: null
+          },
+          txOptions
+        )
     }
   }
 
+  const maxAmount = formatUnits(BigInt(tokenBalance?.balance || 0), decimals).toString()
+
+  const isMinimum = Number(amount) === 0
+  const isMaximum = Number(amount) >= Number(maxAmount)
+
   return (
     <form
-      className="flex p-5 pt-3 gap-2 flex-col"
+      className="flex px-4 pb-4 gap-2 flex-col"
       style={{
-        marginTop: HEADER_HEIGHT
+        marginTop: HEADER_HEIGHT_WITH_LABEL
       }}
       onSubmit={handleSendClick}
     >
@@ -275,16 +326,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <SendItemInfo
               imageUrl={imageUrl}
+              showSquareImage
               decimals={decimals}
               name={name}
-              symbol={symbol}
+              symbol={''}
               balance={tokenBalance?.balance || '0'}
-              fiatValue={computeBalanceFiat({
-                balance: tokenBalance as TokenBalance,
-                prices: coinPrices,
-                conversionRate,
-                decimals
-              })}
               chainId={chainId}
             />
             <NumericInput
@@ -292,21 +338,22 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               name="amount"
               value={amount}
               onChange={handleChangeAmount}
+              disabled={!showAmountControls}
               controls={
                 <>
-                  <Text className="whitespace-nowrap" variant="small" color="muted">
-                    {`~${fiatCurrency.sign}${amountToSendFiat}`}
-                  </Text>
-                  <Button className="shrink-0" size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" />
-                  <Text variant="xlarge" fontWeight="bold" color="primary">
-                    {symbol}
-                  </Text>
+                  {showAmountControls && (
+                    <div className="flex gap-2">
+                      <Button disabled={isMinimum} size="xs" onClick={handleSubtractOne} leftIcon={SubtractIcon} />
+                      <Button disabled={isMaximum} size="xs" onClick={handleAddOne} leftIcon={AddIcon} />
+                      <Button className="shrink-0" size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" />
+                    </div>
+                  )}
                 </>
               }
             />
             {insufficientFunds && (
               <Text className="mt-2" variant="normal" color="negative" asChild>
-                <div>Insufficient Funds</div>
+                <div>Insufficient Balance</div>
               </Text>
             )}
           </div>
@@ -349,38 +396,16 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             )}
           </div>
 
-          {showSwitchNetwork && (
-            <div className="mt-3">
-              <Text className="mb-2" variant="small" color="negative">
-                The wallet is connected to the wrong network. Please switch network before proceeding
-              </Text>
-              <Button
-                className="mt-2 w-full"
-                variant="primary"
-                size="lg"
-                type="button"
-                label="Switch Network"
-                onClick={async () => await switchChainAsync({ chainId })}
-                disabled={isCorrectChainId}
-              />
-            </div>
-          )}
-
-          <div className="flex items-center justify-center" style={{ height: '52px' }}>
+          <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
             {isCheckingFeeOptions ? (
               <Spinner />
             ) : (
               <Button
-                className="text-primary mt-3 w-full"
+                className="text-primary w-full"
                 variant="primary"
                 size="lg"
                 type="submit"
-                disabled={
-                  !isNonZeroAmount ||
-                  !isEthAddress(toAddress) ||
-                  insufficientFunds ||
-                  (!isCorrectChainId && !isConnectorSequenceBased)
-                }
+                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
                 label="Send"
                 rightIcon={ChevronRightIcon}
               />
@@ -391,19 +416,20 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       {showConfirmation && (
         <TransactionConfirmation
           name={name}
-          symbol={symbol}
+          symbol=""
           imageUrl={imageUrl}
           amount={amountToSendFormatted}
           toAddress={toAddress}
+          showSquareImage={true}
           chainId={chainId}
           balance={tokenBalance?.balance || '0'}
           decimals={decimals}
-          fiatValue={amountToSendFiat}
           feeOptions={feeOptions}
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
           isLoading={isSendTxnPending}
+          disabled={!isCorrectChainId && !isConnectorSequenceBased}
           onConfirm={() => {
             executeTransaction()
           }}
