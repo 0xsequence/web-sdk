@@ -408,7 +408,7 @@ export const PaymentSelectionContent = () => {
 
   const validCreditCardProviders = creditCardProviders.filter(provider => {
     if (provider === 'transak') {
-      return selectPaymentSettings?.transakConfig
+      return !!selectPaymentSettings?.transakConfig
     }
     return true
   })
