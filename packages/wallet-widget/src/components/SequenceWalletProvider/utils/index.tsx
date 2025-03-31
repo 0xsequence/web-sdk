@@ -2,18 +2,11 @@ import { Navigation } from '../../../contexts'
 import {
   CoinDetails,
   CollectibleDetails,
-  CollectionDetails,
   Home,
   Receive,
   SendCoin,
   SendCollectible,
   History,
-  SearchWallet,
-  SearchWalletViewAll,
-  LegacySettingsMenu,
-  LegacySettingsCurrency,
-  LegacySettingsNetwork,
-  LegacySettingsGeneral,
   TransactionDetails,
   SwapCoin,
   SwapList,
@@ -55,10 +48,6 @@ export const getContent = (navigation: Navigation) => {
       return <Receive />
     case 'history':
       return <History />
-    case 'search':
-      return <SearchWallet />
-    case 'search-view-all':
-      return <SearchWalletViewAll defaultTab={navigation.params.defaultTab} />
     case 'search-tokens':
       return <SearchTokens />
     case 'search-collectibles':
@@ -79,14 +68,6 @@ export const getContent = (navigation: Navigation) => {
       return <SettingsApps />
     case 'connect-dapp':
       return <QrScan />
-    case 'legacy-settings':
-      return <LegacySettingsMenu />
-    case 'legacy-settings-general':
-      return <LegacySettingsGeneral />
-    case 'legacy-settings-currency':
-      return <LegacySettingsCurrency />
-    case 'legacy-settings-networks':
-      return <LegacySettingsNetwork />
     case 'coin-details':
       return (
         <CoinDetails
@@ -105,8 +86,6 @@ export const getContent = (navigation: Navigation) => {
           accountAddress={navigation.params.accountAddress}
         />
       )
-    case 'collection-details':
-      return <CollectionDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
     case 'transaction-details':
       return <TransactionDetails transaction={navigation.params.transaction} />
     case 'swap-coin':
@@ -128,22 +107,10 @@ export const getContent = (navigation: Navigation) => {
 export const getHeader = (navigation: Navigation) => {
   const { location } = navigation
   switch (location) {
-    case 'search':
-      return <NavigationHeader primaryText="Search wallet" />
-    case 'search-view-all':
-      return <NavigationHeader secondaryText="Search wallet / " primaryText="View all" />
     case 'search-tokens':
       return <NavigationHeader primaryText="Tokens" />
     case 'search-collectibles':
       return <NavigationHeader primaryText="Collectibles" />
-    case 'legacy-settings':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Settings" />
-    case 'legacy-settings-general':
-      return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="General" />
-    case 'legacy-settings-currency':
-      return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Currency" />
-    case 'legacy-settings-networks':
-      return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Networks" />
     case 'settings':
       return <NavigationHeader primaryText="Settings" />
     case 'settings-wallets':

@@ -4,7 +4,7 @@ import React from 'react'
 
 import { InfiniteScroll } from '../../../components/InfiniteScroll'
 
-import { BalanceItem } from './BalanceItem'
+import { CoinRow } from './CoinRow'
 
 interface CoinsTabProps {
   displayedCoinBalances: TokenBalance[] | undefined
@@ -39,7 +39,7 @@ export const CoinsTab: React.FC<CoinsTabProps> = ({
             ) : (
               <InfiniteScroll onLoad={() => fetchMoreCoinBalances()} hasMore={hasMoreCoinBalances}>
                 {displayedCoinBalances?.map((balance, index) => {
-                  return <BalanceItem key={index} balance={balance} />
+                  return <CoinRow key={index} balance={balance} />
                 })}
               </InfiniteScroll>
             )}
