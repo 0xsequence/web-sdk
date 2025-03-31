@@ -267,8 +267,11 @@ export const useWallets = (): UseWalletsReturnType => {
   }))
 
   const setActiveWallet = async (walletAddress: string) => {
-    const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
+    const connection = connections.find(
+      (c: UseConnectionsReturnType[number]) => c.accounts[0].toLowerCase() === walletAddress.toLowerCase()
+    )
     if (!connection) {
+      console.error('No connection found for wallet address:', walletAddress)
       return
     }
 
@@ -280,7 +283,9 @@ export const useWallets = (): UseWalletsReturnType => {
   }
 
   const disconnectWallet = async (walletAddress: string) => {
-    const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
+    const connection = connections.find(
+      (c: UseConnectionsReturnType[number]) => c.accounts[0].toLowerCase() === walletAddress.toLowerCase()
+    )
     if (!connection) {
       return
     }

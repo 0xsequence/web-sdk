@@ -5,12 +5,14 @@ export const ListCardNav = ({
   rightChildren,
   shape = 'rounded',
   style,
+  type = 'chevron',
   onClick
 }: {
   children: React.ReactNode
   rightChildren?: React.ReactNode
   shape?: 'rounded' | 'square'
   style?: React.CSSProperties
+  type?: 'chevron' | 'custom'
   onClick: () => void
 }) => {
   return (
@@ -22,11 +24,11 @@ export const ListCardNav = ({
       style={{ height: '52px', ...style }}
       onClick={onClick}
     >
-      {children}
+      <div className="flex flex-row gap-2 items-center">{children}</div>
 
       <div className="flex flex-row gap-1 items-center">
         {rightChildren}
-        <ChevronRightIcon color="white" />
+        {type === 'chevron' && <ChevronRightIcon color="white" />}
       </div>
     </div>
   )

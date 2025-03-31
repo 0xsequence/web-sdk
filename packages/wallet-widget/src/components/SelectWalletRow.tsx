@@ -16,6 +16,7 @@ export const SelectWalletRow = ({
   onClose: () => void
 }) => {
   const onSelectWallet = () => {
+    console.log(wallet.address)
     setActiveWallet(wallet.address)
     onClose()
   }

@@ -37,6 +37,14 @@ export const SearchCollectibles = () => {
     return Number(b.balance) - Number(a.balance)
   })
 
+  const collectibleBalancesWithPrice = collectibleBalances.map(balance => ({
+    ...balance,
+    price: {
+      value: 0,
+      currency: 'USD'
+    }
+  }))
+
   const isPending = isPendingTokenBalances
 
   const fuseOptions = {
@@ -58,8 +66,8 @@ export const SearchCollectibles = () => {
   }
 
   const fuse = useMemo(() => {
-    return new Fuse(collectibleBalances, fuseOptions)
-  }, [collectibleBalances])
+    return new Fuse(collectibleBalancesWithPrice, fuseOptions)
+  }, [collectibleBalancesWithPrice])
 
   const searchResults = useMemo(() => {
     if (!search.trimStart()) {
@@ -73,7 +81,7 @@ export const SearchCollectibles = () => {
     fetchNextPage: fetchMoreBalances,
     hasNextPage: hasMoreBalances,
     isFetching: isFetchingMoreBalances
-  } = useGetMoreBalances(collectibleBalances, pageSize, { enabled: search.trim() === '' })
+  } = useGetMoreBalances(collectibleBalancesWithPrice, pageSize, { enabled: search.trim() === '' })
 
   const {
     data: infiniteSearchBalances,

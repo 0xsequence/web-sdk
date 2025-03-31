@@ -1,17 +1,19 @@
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
-import { Text, ChevronRightIcon, TokenImage } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
-import React from 'react'
+import { Text, TokenImage } from '@0xsequence/design-system'
+import { useMemo } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { useNavigation } from '../../../hooks'
+import { ListCardNav } from '../../../components/ListCard/ListCardNav'
+import { useNavigation, useSettings } from '../../../hooks'
+import { TokenBalanceWithPrice } from '../../../utils/tokens'
 
 interface BalanceItemProps {
-  balance: TokenBalance
+  balance: TokenBalanceWithPrice
 }
 
 export const CoinRow = ({ balance }: BalanceItemProps) => {
+  const { fiatCurrency } = useSettings()
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
   const isNativeToken = compareAddress(balance.contractAddress, zeroAddress)
@@ -29,6 +31,12 @@ export const CoinRow = ({ balance }: BalanceItemProps) => {
     return `${displayBalance} ${symbol}`
   }
 
+  const getValue = () => {
+    const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
+    const bal = formatUnits(BigInt(balance.balance), decimals || 0)
+    return `${fiatCurrency.sign}${(balance.price.value * Number(bal)).toFixed(2)}`
+  }
+
   const onClick = () => {
     setNavigation({
       location: 'coin-details',
@@ -40,20 +48,25 @@ export const CoinRow = ({ balance }: BalanceItemProps) => {
     })
   }
 
-  return (
-    <div className="flex w-full flex-row justify-between items-center select-none cursor-pointer" onClick={onClick}>
-      <div className="flex gap-3 flex-row items-center justify-center min-w-0">
-        <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} style={{ zIndex: '0' }} />
-        <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="primary" fontWeight="bold" ellipsis>
-          {tokenName}
-        </Text>
-      </div>
-      <div className="flex flex-row items-center justify-center gap-1 max-w-1/2">
-        <Text className="text-right whitespace-nowrap" variant="normal" color="muted" fontWeight="bold" ellipsis>
+  const balanceAndValue = useMemo(() => {
+    return (
+      <div className="flex flex-col items-end">
+        <Text variant="normal" color="primary" fontWeight="bold" ellipsis>
           {getQuantity()}
         </Text>
-        <ChevronRightIcon className="text-muted" />
+        <Text variant="normal" color="muted" fontWeight="bold" ellipsis>
+          {getValue()}
+        </Text>
       </div>
-    </div>
+    )
+  }, [balance])
+
+  return (
+    <ListCardNav rightChildren={balanceAndValue} type="custom" onClick={onClick} style={{ height: '60px' }}>
+      <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} style={{ zIndex: '0' }} />
+      <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="primary" fontWeight="bold" ellipsis>
+        {tokenName}
+      </Text>
+    </ListCardNav>
   )
 }

@@ -1,13 +1,13 @@
 import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
 import React from 'react'
 
 import { InfiniteScroll } from '../../../components/InfiniteScroll'
+import { TokenBalanceWithPrice } from '../../../utils/tokens'
 
 import { CoinRow } from './CoinRow'
 
 interface CoinsTabProps {
-  displayedCoinBalances: TokenBalance[] | undefined
+  displayedCoinBalances: TokenBalanceWithPrice[] | undefined
   fetchMoreCoinBalances: () => Promise<any>
   hasMoreCoinBalances: boolean
   isFetchingMoreCoinBalances: boolean

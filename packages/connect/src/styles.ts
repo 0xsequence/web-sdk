@@ -327,9 +327,6 @@ export const styles = String.raw`
   .mt-6 {
     margin-top: calc(var(--spacing) * 6);
   }
-  .mt-8 {
-    margin-top: calc(var(--spacing) * 8);
-  }
   .mt-10 {
     margin-top: calc(var(--spacing) * 10);
   }
@@ -557,9 +554,6 @@ export const styles = String.raw`
   }
   .w-screen {
     width: 100vw;
-  }
-  .max-w-1\/2 {
-    max-width: calc(1/2 * 100%);
   }
   .max-w-\[532px\] {
     max-width: 532px;
@@ -993,9 +987,6 @@ export const styles = String.raw`
   }
   .text-center {
     text-align: center;
-  }
-  .text-right {
-    text-align: right;
   }
   .font-body {
     font-family: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
