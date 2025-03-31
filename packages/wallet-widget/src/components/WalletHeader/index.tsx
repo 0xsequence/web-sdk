@@ -10,7 +10,13 @@ import { SlideupDrawer } from '../SlideupDrawer'
 
 import { AccountInformation } from './components/AccountInformation'
 
-export const WalletHeader = ({ label, enableAccountSelector = false }: { label?: string; enableAccountSelector?: boolean }) => {
+export const WalletHeader = ({
+  primaryText,
+  enableAccountSelector = false
+}: {
+  primaryText?: string
+  enableAccountSelector?: boolean
+}) => {
   const { wallets, setActiveWallet } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
   const { goBack } = useNavigation()
@@ -32,9 +38,9 @@ export const WalletHeader = ({ label, enableAccountSelector = false }: { label?:
 
   return (
     <div
-      className="flex flex-col justify-between items-center fixed bg-background-primary w-full p-4 z-20 "
+      className="flex flex-col justify-between items-center fixed bg-background-primary w-full p-4 z-20"
       style={{
-        height: label ? HEADER_HEIGHT_WITH_LABEL : HEADER_HEIGHT
+        height: primaryText ? HEADER_HEIGHT_WITH_LABEL : HEADER_HEIGHT
       }}
     >
       <div className="flex flex-row justify-between items-center w-full">
@@ -42,9 +48,9 @@ export const WalletHeader = ({ label, enableAccountSelector = false }: { label?:
         <AccountInformation onClickAccount={enableAccountSelector ? onClickSelector : undefined} />
         <div style={{ width: '28px' }} />
       </div>
-      {label && (
+      {primaryText && (
         <Text variant="normal" color="primary" fontWeight="bold">
-          {label}
+          {primaryText}
         </Text>
       )}
       <AnimatePresence>

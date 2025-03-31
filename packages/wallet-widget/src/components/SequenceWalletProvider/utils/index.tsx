@@ -10,19 +10,19 @@ import {
   TransactionDetails,
   SwapCoin,
   SwapList,
+  SendGeneral,
   SearchTokens,
-  SearchCollectibles
+  SearchCollectibles,
+  SettingsWallets,
+  SettingsApps,
+  SettingsCurrency,
+  SettingsMenu,
+  SettingsNetworks,
+  SettingsPreferences,
+  SettingsProfiles,
+  QrScan,
+  Swap
 } from '../../../views'
-import { SendGeneral } from '../../../views/SendGeneral'
-import { SettingsWallets } from '../../../views/Settings'
-import { SettingsApps } from '../../../views/Settings/Apps'
-import { SettingsCurrency } from '../../../views/Settings/Currency'
-import { SettingsMenu } from '../../../views/Settings/Menu'
-import { SettingsNetworks } from '../../../views/Settings/Networks'
-import { SettingsPreferences } from '../../../views/Settings/Preferences'
-import { SettingsProfiles } from '../../../views/Settings/Profiles'
-import { QrScan } from '../../../views/Settings/QrScan'
-import { Swap } from '../../../views/Swap'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
 
@@ -136,17 +136,17 @@ export const getHeader = (navigation: Navigation) => {
     case 'transaction-details':
       return <NavigationHeader secondaryText="" primaryText="" />
     case 'send-general':
-      return <WalletHeader label="Send" enableAccountSelector />
+      return <WalletHeader primaryText="Send" enableAccountSelector />
     case 'send-coin':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Send Coin" />
+      return <WalletHeader primaryText="Send Coin" />
     case 'send-collectible':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Send Collectible" />
+      return <WalletHeader primaryText="Send Collectible" />
     case 'swap':
-      return <WalletHeader label="Swap" />
+      return <WalletHeader primaryText="Swap" />
     case 'swap-coin':
     case 'swap-coin-list':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Buy" />
     case 'receive':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Receive" />
+      return <NavigationHeader primaryText="Receive" />
   }
 }

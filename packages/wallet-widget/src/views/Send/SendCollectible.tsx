@@ -26,12 +26,12 @@ import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
-import { SendItemInfo } from '../components/SendItemInfo'
-import { TransactionConfirmation } from '../components/TransactionConfirmation'
-import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT } from '../constants'
-import { useNavigationContext } from '../contexts/Navigation'
-import { useNavigation } from '../hooks'
-import { limitDecimals, isEthAddress } from '../utils'
+import { SendItemInfo } from '../../components/SendItemInfo'
+import { TransactionConfirmation } from '../../components/TransactionConfirmation'
+import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
+import { useNavigationContext } from '../../contexts/Navigation'
+import { useNavigation } from '../../hooks'
+import { limitDecimals, isEthAddress } from '../../utils'
 
 interface SendCollectibleProps {
   chainId: number
@@ -48,8 +48,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const { address: accountAddress = '', connector } = useAccount()
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
   const isCorrectChainId = connectedChainId === chainId
-  const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
-  const { switchChain } = useSwitchChain()
+  const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
@@ -173,6 +172,10 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    if (!isCorrectChainId && !isConnectorSequenceBased) {
+      await switchChainAsync({ chainId })
+    }
+
     setIsCheckingFeeOptions(true)
 
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
@@ -223,7 +226,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   const executeTransaction = async () => {
     if (!isCorrectChainId && isConnectorSequenceBased) {
-      switchChain({ chainId })
+      await switchChainAsync({ chainId })
     }
 
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
@@ -298,9 +301,9 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   return (
     <form
-      className="flex p-5 pt-3 gap-2 flex-col"
+      className="flex px-4 pb-4 gap-2 flex-col"
       style={{
-        marginTop: HEADER_HEIGHT
+        marginTop: HEADER_HEIGHT_WITH_LABEL
       }}
       onSubmit={handleSendClick}
     >
@@ -379,38 +382,16 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             )}
           </div>
 
-          {showSwitchNetwork && (
-            <div className="mt-3">
-              <Text className="mb-2" variant="small" color="negative">
-                The wallet is connected to the wrong network. Please switch network before proceeding
-              </Text>
-              <Button
-                className="mt-2 w-full"
-                variant="primary"
-                size="lg"
-                type="button"
-                label="Switch Network"
-                onClick={() => switchChain({ chainId })}
-                disabled={isCorrectChainId}
-              />
-            </div>
-          )}
-
-          <div className="flex items-center justify-center" style={{ height: '52px' }}>
+          <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
             {isCheckingFeeOptions ? (
               <Spinner />
             ) : (
               <Button
-                className="text-primary mt-3 w-full"
+                className="text-primary w-full"
                 variant="primary"
                 size="lg"
                 type="submit"
-                disabled={
-                  !isNonZeroAmount ||
-                  !isEthAddress(toAddress) ||
-                  insufficientFunds ||
-                  (!isCorrectChainId && !isConnectorSequenceBased)
-                }
+                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
                 label="Send"
                 rightIcon={ChevronRightIcon}
               />
@@ -434,6 +415,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
           isLoading={isSendTxnPending}
+          disabled={!isCorrectChainId && !isConnectorSequenceBased}
           onConfirm={() => {
             executeTransaction()
           }}

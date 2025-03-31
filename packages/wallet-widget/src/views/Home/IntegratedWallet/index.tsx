@@ -14,6 +14,7 @@ import {
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
+import { useObservable } from 'micro-observables'
 import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -33,7 +34,8 @@ import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 
 export const IntegratedWallet = () => {
   const { setNavigation } = useNavigation()
-  const { selectedWallets, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
+  const { selectedWalletsObservable, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
+  const selectedWallets = useObservable(selectedWalletsObservable)
   const { chains } = useConfig()
   const { address: accountAddress } = useAccount()
   const { wallets, setActiveWallet } = useWallets()
@@ -154,8 +156,6 @@ export const IntegratedWallet = () => {
     [collectibleBalances, selectedWallets, selectedNetworks, hideUnlistedTokens, selectedCollections]
   )
 
-  const collectibleBalancesAmount = collectibleBalances.length
-
   const onClickAccountSelector = () => {
     setAccountSelectorModalOpen(true)
   }
@@ -212,13 +212,19 @@ export const IntegratedWallet = () => {
     <ListCardNav
       onClick={onClickTokens}
       rightChildren={
-        <div className="flex flex-row gap-1 items-center">
-          <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
-            {fiatCurrency.sign}
-            {isPending ? <Skeleton className="w-4 h-4" /> : `${totalCoinPrices}`}
+        coinBalances.length > 0 ? (
+          <div className="flex flex-row gap-1 items-center">
+            <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
+              {fiatCurrency.sign}
+              {isPending ? <Skeleton className="w-4 h-4" /> : `${totalCoinPrices}`}
+            </Text>
+            <StackedIconTag iconList={coinBalancesIcons} onClick={onClickWalletSelector} />
+          </div>
+        ) : (
+          <Text color="muted" fontWeight="medium" variant="normal">
+            No Tokens
           </Text>
-          <StackedIconTag iconList={coinBalancesIcons} onClick={onClickWalletSelector} />
-        </div>
+        )
       }
       shape="square"
     >
@@ -229,15 +235,21 @@ export const IntegratedWallet = () => {
     <ListCardNav
       onClick={onClickCollectibles}
       rightChildren={
-        <StackedIconTag
-          iconList={collectibleBalancesIcons}
-          onClick={onClickWalletSelector}
-          label={
-            <Text color="muted" fontWeight="medium" variant="normal">
-              {collectibleBalancesAmount}
-            </Text>
-          }
-        />
+        collectibleBalances.length > 0 ? (
+          <StackedIconTag
+            iconList={collectibleBalancesIcons}
+            onClick={onClickWalletSelector}
+            label={
+              <Text color="muted" fontWeight="medium" variant="normal">
+                {collectibleBalances.length}
+              </Text>
+            }
+          />
+        ) : (
+          <Text color="muted" fontWeight="medium" variant="normal">
+            No Collectibles
+          </Text>
+        )
       }
       shape="square"
     >

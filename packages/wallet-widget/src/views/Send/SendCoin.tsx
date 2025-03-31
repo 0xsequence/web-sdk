@@ -25,12 +25,12 @@ import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
 
-import { SendItemInfo } from '../components/SendItemInfo'
-import { TransactionConfirmation } from '../components/TransactionConfirmation'
-import { ERC_20_ABI, HEADER_HEIGHT } from '../constants'
-import { useNavigationContext } from '../contexts/Navigation'
-import { useSettings, useNavigation } from '../hooks'
-import { computeBalanceFiat, limitDecimals, isEthAddress } from '../utils'
+import { SendItemInfo } from '../../components/SendItemInfo'
+import { TransactionConfirmation } from '../../components/TransactionConfirmation'
+import { ERC_20_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
+import { useNavigationContext } from '../../contexts/Navigation'
+import { useSettings, useNavigation } from '../../hooks'
+import { computeBalanceFiat, limitDecimals, isEthAddress } from '../../utils'
 
 interface SendCoinProps {
   chainId: number
@@ -46,7 +46,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { address: accountAddress = '', connector } = useAccount()
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
   const isCorrectChainId = connectedChainId === chainId
-  const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
   const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
   const { fiatCurrency } = useSettings()
@@ -154,6 +153,10 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    if (!isCorrectChainId && !isConnectorSequenceBased) {
+      await switchChainAsync({ chainId })
+    }
+
     setIsCheckingFeeOptions(true)
 
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
@@ -244,9 +247,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
   return (
     <form
-      className="flex p-5 pt-3 gap-2 flex-col"
+      className="flex px-4 pb-4 gap-2 flex-col"
       style={{
-        marginTop: HEADER_HEIGHT
+        marginTop: HEADER_HEIGHT_WITH_LABEL
       }}
       onSubmit={handleSendClick}
     >
@@ -278,17 +281,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                     {`~${fiatCurrency.sign}${amountToSendFiat}`}
                   </Text>
                   <Button className="shrink-0" size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" />
-                  <Text variant="xlarge" fontWeight="bold" color="primary">
-                    {symbol}
-                  </Text>
                 </>
               }
             />
-            {insufficientFunds && (
-              <Text className="mt-2" variant="normal" color="negative" asChild>
-                <div>Insufficient Funds</div>
-              </Text>
-            )}
           </div>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <Text variant="normal" color="muted">
@@ -329,38 +324,16 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             )}
           </div>
 
-          {showSwitchNetwork && (
-            <div className="mt-3">
-              <Text className="mb-2" variant="small" color="negative">
-                The wallet is connected to the wrong network. Please switch network before proceeding
-              </Text>
-              <Button
-                className="mt-2 w-full"
-                variant="primary"
-                size="lg"
-                type="button"
-                label="Switch Network"
-                onClick={async () => await switchChainAsync({ chainId })}
-                disabled={isCorrectChainId}
-              />
-            </div>
-          )}
-
-          <div className="flex items-center justify-center" style={{ height: '52px' }}>
+          <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
             {isCheckingFeeOptions ? (
               <Spinner />
             ) : (
               <Button
-                className="text-primary mt-3 w-full"
+                className="text-primary w-full"
                 variant="primary"
                 size="lg"
                 type="submit"
-                disabled={
-                  !isNonZeroAmount ||
-                  !isEthAddress(toAddress) ||
-                  insufficientFunds ||
-                  (!isCorrectChainId && !isConnectorSequenceBased)
-                }
+                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
                 label="Send"
                 rightIcon={ChevronRightIcon}
               />
@@ -384,6 +357,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
           isLoading={isSendTxnPending}
+          disabled={!isCorrectChainId && !isConnectorSequenceBased}
           onConfirm={() => {
             executeTransaction()
           }}

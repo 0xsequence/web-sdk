@@ -130,9 +130,6 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
           </Text>
           <NetworkBadge chainId={chainId} />
         </div>
-        <Text variant="normal" fontWeight="medium" color="muted">
-          {accountAddress}
-        </Text>
         <div>
           <Text variant="normal" fontWeight="medium" color="muted">
             Balance

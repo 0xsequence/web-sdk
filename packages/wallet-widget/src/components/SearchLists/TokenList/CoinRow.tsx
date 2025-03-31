@@ -4,18 +4,18 @@ import { useMemo } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { ListCardNav } from '../../../components/ListCard/ListCardNav'
-import { useNavigation, useSettings } from '../../../hooks'
+import { useSettings } from '../../../hooks'
 import { TokenBalanceWithPrice } from '../../../utils/tokens'
+import { ListCardNav } from '../../ListCard/ListCardNav'
 
 interface BalanceItemProps {
   balance: TokenBalanceWithPrice
+  onTokenClick: (token: TokenBalanceWithPrice) => void
 }
 
-export const CoinRow = ({ balance }: BalanceItemProps) => {
+export const CoinRow = ({ balance, onTokenClick }: BalanceItemProps) => {
   const { fiatCurrency } = useSettings()
   const { chains } = useConfig()
-  const { setNavigation } = useNavigation()
   const isNativeToken = compareAddress(balance.contractAddress, zeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(balance.chainId, chains)
   const logoURI = isNativeToken ? nativeTokenInfo.logoURI : balance?.contractInfo?.logoURI
@@ -38,14 +38,7 @@ export const CoinRow = ({ balance }: BalanceItemProps) => {
   }
 
   const onClick = () => {
-    setNavigation({
-      location: 'coin-details',
-      params: {
-        contractAddress: balance.contractAddress,
-        chainId: balance.chainId,
-        accountAddress: balance.accountAddress
-      }
-    })
+    onTokenClick(balance)
   }
 
   const balanceAndValue = useMemo(() => {

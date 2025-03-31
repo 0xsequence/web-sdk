@@ -22,7 +22,7 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
 
   return (
     <div
-      className="flex bg-background-primary z-20 fixed w-full flex-row items-center justify-between px-4"
+      className="flex flex-row justify-between items-center fixed bg-background-primary w-full p-4 z-20"
       style={{
         height: HEADER_HEIGHT
       }}
@@ -50,7 +50,7 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
       </div>
       <div
         style={{
-          width: '44px'
+          width: '28px'
         }}
       />
     </div>
