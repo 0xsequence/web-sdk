@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.0.8
+
+### Patch Changes
+
+- various fixes related to iframes, credit card providers, documentation
+
 ## 5.0.7
 
 ### Patch Changes

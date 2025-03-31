@@ -1,5 +1,15 @@
 # @0xsequence/kit-connectors
 
+## 5.0.8
+
+### Patch Changes
+
+- various fixes related to iframes, credit card providers, documentation
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.0.8
+  - @0xsequence/hooks@5.0.8
+
 ## 5.0.7
 
 ### Patch Changes
