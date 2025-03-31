@@ -130,6 +130,9 @@ export const PayWithCrypto = ({
       <div className="flex flex-col justify-center items-center gap-2 w-full">
         {coins.map(coin => {
           if (compareAddress(coin.currencyAddress, currencyAddress)) {
+            const isNative = compareAddress(coin.currencyAddress, zeroAddress)
+            const isNativeBalanceCheckSkipped = isNative && skipNativeBalanceCheck
+
             return (
               <Fragment key={currencyAddress}>
                 <CryptoOption
@@ -143,13 +146,7 @@ export const PayWithCrypto = ({
                   price={priceDisplay}
                   disabled={disableButtons}
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
-                  isInsufficientFunds={
-                    coin.currencyAddress !== zeroAddress
-                      ? isNotEnoughFunds
-                      : skipNativeBalanceCheck
-                        ? undefined
-                        : isNotEnoughFunds
-                  }
+                  showInsufficientFundsWarning={isNativeBalanceCheckSkipped ? undefined : isNotEnoughFunds}
                 />
               </Fragment>
             )
@@ -183,7 +180,7 @@ export const PayWithCrypto = ({
                 price={swapQuotePriceDisplay}
                 disabled={disableButtons}
                 isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
-                isInsufficientFunds={false}
+                showInsufficientFundsWarning={false}
               />
             )
           }

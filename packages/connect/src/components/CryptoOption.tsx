@@ -11,7 +11,7 @@ interface CryptoOptionProps {
   onClick: () => void
   isSelected: boolean
   disabled: boolean
-  isInsufficientFunds?: boolean | undefined
+  showInsufficientFundsWarning?: boolean | undefined
 }
 
 export const CryptoOption = ({
@@ -22,11 +22,11 @@ export const CryptoOption = ({
   price,
   onClick,
   isSelected,
-  isInsufficientFunds = undefined,
+  showInsufficientFundsWarning = undefined,
   disabled
 }: CryptoOptionProps) => {
   const onClickCard = () => {
-    if (!isInsufficientFunds && !disabled) {
+    if (!showInsufficientFundsWarning && !disabled) {
       onClick()
     }
   }
@@ -67,7 +67,7 @@ export const CryptoOption = ({
       </div>
       <div className="flex flex-row justify-center items-center gap-3">
         <div className="flex flex-col text-center justify-between items-end">
-          {isInsufficientFunds ? (
+          {showInsufficientFundsWarning ? (
             <Text variant="small" color="negative">
               Insufficient funds
             </Text>
