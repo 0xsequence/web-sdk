@@ -112,10 +112,6 @@ export const AddFundsContentTransak = () => {
   const { transakApiUrl, transakApiKey } = useEnvironmentContext()
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
 
-  if (!addFundsSettings) {
-    return null
-  }
-
   useEffect(() => {
     const handleMessage = (message: MessageEvent<any>) => {
       const iframe = iframeRef.current?.contentWindow

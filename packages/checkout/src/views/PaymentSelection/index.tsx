@@ -406,6 +406,13 @@ export const PaymentSelectionContent = () => {
 
   const cryptoSymbol = isNativeToken ? network?.nativeToken.symbol : _currencyInfoData?.symbol
 
+  const validCreditCardProviders = creditCardProviders.filter(provider => {
+    if (provider === 'transak') {
+      return selectPaymentSettings?.transakConfig
+    }
+    return true
+  })
+
   return (
     <>
       <div
@@ -429,7 +436,7 @@ export const PaymentSelectionContent = () => {
             />
           </>
         )}
-        {creditCardProviders?.length > 0 && (
+        {validCreditCardProviders.length > 0 && (
           <>
             <Divider className="w-full my-3" />
             <PayWithCreditCard
