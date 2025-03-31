@@ -407,7 +407,8 @@ export const Connected = () => {
       onClose: () => {
         console.log('modal closed!')
       },
-      txData: purchaseTransactionData
+      txData: purchaseTransactionData,
+      skipNativeBalanceCheck: true
     })
   }
 

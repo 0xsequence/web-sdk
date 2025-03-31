@@ -72,7 +72,8 @@ export const PaymentSelectionContent = () => {
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
-    supplementaryAnalyticsInfo
+    supplementaryAnalyticsInfo,
+    skipNativeBalanceCheck,
   } = selectPaymentSettings
 
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
@@ -109,10 +110,10 @@ export const PaymentSelectionContent = () => {
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      omitNativeBalances: false
+      omitNativeBalances: skipNativeBalanceCheck ?? false
     },
     // omitMetadata must be true to avoid a bug
-    omitMetadata: true
+    omitMetadata: true 
   })
 
   const { data: _currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({

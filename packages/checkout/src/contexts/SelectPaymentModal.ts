@@ -46,6 +46,7 @@ export interface SelectPaymentSettings {
   sardineConfig?: SardineConfig
   customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
+  skipNativeBalanceCheck?: boolean
 }
 
 type SelectPaymentModalContext = {

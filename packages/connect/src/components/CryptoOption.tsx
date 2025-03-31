@@ -11,7 +11,7 @@ interface CryptoOptionProps {
   onClick: () => void
   isSelected: boolean
   disabled: boolean
-  isInsufficientFunds?: boolean
+  isInsufficientFunds?: boolean | undefined
 }
 
 export const CryptoOption = ({
@@ -22,7 +22,7 @@ export const CryptoOption = ({
   price,
   onClick,
   isSelected,
-  isInsufficientFunds = false,
+  isInsufficientFunds = undefined,
   disabled
 }: CryptoOptionProps) => {
   const onClickCard = () => {

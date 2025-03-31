@@ -4,7 +4,7 @@ import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo,
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
 import { useState, useEffect, Fragment, SetStateAction } from 'react'
-import { formatUnits } from 'viem'
+import { formatUnits, zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { SelectPaymentSettings } from '../../../contexts'
@@ -29,7 +29,7 @@ export const PayWithCrypto = ({
   const [showMore, setShowMore] = useState(false)
   const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
 
-  const { chain, currencyAddress, price } = settings
+  const { chain, currencyAddress, price, skipNativeBalanceCheck } = settings
   const { address: userAddress } = useAccount()
   const { clearCachedBalances } = useClearCachedBalances()
   const network = findSupportedNetwork(chain)
@@ -41,7 +41,7 @@ export const PayWithCrypto = ({
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      omitNativeBalances: false
+      omitNativeBalances: skipNativeBalanceCheck ?? false
     },
     omitMetadata: true
   })
@@ -121,7 +121,6 @@ export const PayWithCrypto = ({
   // balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
 
   const isNotEnoughFunds: boolean = BigInt(price) > balance
-
   useEffect(() => {
     clearCachedBalances()
   }, [])
@@ -144,7 +143,7 @@ export const PayWithCrypto = ({
                   price={priceDisplay}
                   disabled={disableButtons}
                   isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
-                  isInsufficientFunds={isNotEnoughFunds}
+                  isInsufficientFunds={coin.currencyAddress !== zeroAddress ? isNotEnoughFunds : skipNativeBalanceCheck ? undefined : isNotEnoughFunds}
                 />
               </Fragment>
             )
