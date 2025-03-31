@@ -1,4 +1,4 @@
-import { IntegratedWallet } from './components/IntegratedWallet'
+import { IntegratedWallet } from './IntegratedWallet'
 
 export const Home = () => {
   return (

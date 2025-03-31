@@ -4,17 +4,6 @@ import { Transaction } from '@0xsequence/indexer'
 
 import { createGenericContext } from './genericContext'
 
-export interface CollectionDetailsParams {
-  contractAddress: string
-  chainId: number
-  accountAddress: string
-}
-
-export interface CollectionDetailsNavigation {
-  location: 'collection-details'
-  params: CollectionDetailsParams
-}
-
 export interface CoinDetailsParams {
   contractAddress: string
   chainId: number
@@ -126,7 +115,6 @@ export type Navigation =
   | BasicNavigation
   | CoinDetailsNavigation
   | CollectibleDetailsNavigation
-  | CollectionDetailsNavigation
   | TransactionDetailsNavigation
   | SearchViewAllNavigation
   | SendCoinNavigation
