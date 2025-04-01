@@ -123,25 +123,31 @@ export const useSettings = (): Settings => {
       if (settings?.selectedWallets !== undefined) {
         selectedWallets = settings?.selectedWallets as ConnectedWallet[]
 
-        const hasInvalidWallets = selectedWallets.some(
-          wallet => !allWallets.some((w: ConnectedWallet) => w.address === wallet.address)
-        )
-
         const isPartialSelection = selectedWallets.length > 1 && selectedWallets.length !== allWallets.length
+        const hasInvalidWallets =
+          selectedWallets.some(wallet => !allWallets.some((w: ConnectedWallet) => w.address === wallet.address)) ||
+          isPartialSelection
 
-        if ((hasInvalidWallets || isPartialSelection) && allWallets.length !== 0) {
+        if (hasInvalidWallets && allWallets.length !== 0) {
           selectedWallets = allWallets
+          localStorage.setItem(LocalStorageKey.Settings, JSON.stringify({ ...settings, selectedWallets: allWallets }))
         }
       }
       if (settings?.selectedNetworks !== undefined) {
-        let areSelectedNetworksValid = true
+        selectedNetworks = settings?.selectedNetworks as number[]
+
+        let hasInvalidNetworks = false
         settings.selectedNetworks.forEach((chainId: number) => {
           if (allNetworks.find(chain => chain === chainId) === undefined) {
-            areSelectedNetworksValid = false
+            hasInvalidNetworks = true
           }
         })
-        if (areSelectedNetworksValid) {
-          selectedNetworks = settings?.selectedNetworks as number[]
+
+        const hasInvalidNetworksSelection = selectedNetworks.length > 1 && selectedNetworks.length !== allNetworks.length
+
+        if (hasInvalidNetworks || hasInvalidNetworksSelection) {
+          selectedNetworks = allNetworks
+          localStorage.setItem(LocalStorageKey.Settings, JSON.stringify({ ...settings, selectedNetworks: allNetworks }))
         }
       }
       if (settings?.selectedCollections !== undefined) {
@@ -164,14 +170,16 @@ export const useSettings = (): Settings => {
   const resetSettings = () => {
     if (settingsObservables) {
       const selectedWallets = settingsObservables.selectedWalletsObservable.get()
-
-      const hasInvalidWallets = selectedWallets.some(
-        wallet => !allWallets.some((w: ConnectedWallet) => w.address === wallet.address)
-      )
+      const selectedNetworks = settingsObservables.selectedNetworksObservable.get()
 
       const isPartialSelection = selectedWallets.length > 1 && selectedWallets.length !== allWallets.length
+      const hasInvalidWallets =
+        selectedWallets.some(wallet => !allWallets.some((w: ConnectedWallet) => w.address === wallet.address)) ||
+        isPartialSelection
 
-      if (hasInvalidWallets || isPartialSelection) {
+      const hasInvalidNetworksSelection = selectedNetworks.length > 1 && selectedNetworks.length !== allNetworks.length
+
+      if (hasInvalidWallets || hasInvalidNetworksSelection) {
         return true
       }
     }
