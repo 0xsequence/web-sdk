@@ -1,5 +1,6 @@
 import { GetTransactionHistoryReturn, Page, SequenceIndexer } from '@0xsequence/indexer'
 import { InfiniteData, useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
+import { getAddress } from 'ethers'
 
 import { QUERY_KEYS, time } from '../../constants'
 import { HooksOptions } from '../../types'
@@ -44,7 +45,7 @@ const getTransactionHistory = async (
   indexerClient: SequenceIndexer,
   { contractAddress, accountAddress, tokenId, page }: GetTransactionHistoryArgs
 ) => {
-  const res = indexerClient.getTransactionHistory({
+  const res = await indexerClient.getTransactionHistory({
     includeMetadata: true,
     page,
     filter: {
@@ -54,7 +55,21 @@ const getTransactionHistory = async (
     }
   })
 
-  return res
+  const transactions = res.transactions.map(transaction => {
+    return {
+      ...transaction,
+      transfers: transaction.transfers?.map(transfer => ({
+        ...transfer,
+        from: getAddress(transfer.from),
+        to: getAddress(transfer.to)
+      }))
+    }
+  })
+
+  return {
+    ...res,
+    transactions
+  }
 }
 
 /**

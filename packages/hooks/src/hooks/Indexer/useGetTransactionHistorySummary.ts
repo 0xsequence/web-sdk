@@ -1,5 +1,6 @@
 import { SequenceIndexer, Transaction } from '@0xsequence/indexer'
 import { useQuery } from '@tanstack/react-query'
+import { getAddress } from 'ethers'
 
 import { QUERY_KEYS, time } from '../../constants'
 import { HooksOptions } from '../../types'
@@ -33,7 +34,16 @@ const getTransactionHistorySummary = async (
     return secondDate - firstDate
   })
 
-  return orderedTransactions
+  const transactions = orderedTransactions.map(transaction => ({
+    ...transaction,
+    transfers: transaction.transfers?.map(transfer => ({
+      ...transfer,
+      from: getAddress(transfer.from),
+      to: getAddress(transfer.to)
+    }))
+  }))
+
+  return transactions
 }
 
 /**
