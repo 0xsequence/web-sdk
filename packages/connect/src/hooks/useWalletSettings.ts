@@ -7,6 +7,8 @@ import { useWalletConfigContext } from '../contexts/WalletConfig'
  * - Displayed assets configuration (which tokens/contracts to show)
  * - Read-only networks (networks where transactions are disabled)
  *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useWalletSettings} for more detailed documentation.
+ *
  * @returns An object containing:
  * - `displayedAssets` - Array of assets to display, each with a contract address and chain ID
  * - `readOnlyNetworks` - Array of network IDs where transactions are disabled
