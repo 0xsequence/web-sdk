@@ -28,9 +28,6 @@ export const handlers = [
 
     return HttpResponse.json(
       {
-        page: {
-          page: 1
-        },
         balances: [
           {
             chainId: 1,
@@ -86,9 +83,6 @@ export const handlers = [
 
     return HttpResponse.json(
       {
-        page: {
-          page: 1
-        },
         balances: [
           {
             chainId: 1,
@@ -132,9 +126,6 @@ export const handlers = [
 
     return HttpResponse.json(
       {
-        page: {
-          page: 1
-        },
         balances: [
           {
             chainId: 1,
@@ -165,9 +156,6 @@ export const handlers = [
 
     return HttpResponse.json(
       {
-        page: {
-          page: 1
-        },
         tokenMetadata: [
           {
             contractType: 'ERC721',
@@ -224,7 +212,6 @@ export const handlers = [
   http.post('*/GetTransactionHistory', async () => {
     return HttpResponse.json(
       {
-        page: { page: 1 },
         transactions: [
           {
             txnHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
