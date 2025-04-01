@@ -7,18 +7,78 @@ import { Connector } from 'wagmi'
 
 import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
 
+/**
+ * Result object returned by the useWaasGetLinkedWalletsSignature hook.
+ * Contains all necessary information about the signature for wallet linking.
+ */
 interface UseWaasSignatureForLinkingResult {
+  /** The message that was signed */
   message: string | undefined
+  /** The signature of the message */
   signature: string | undefined
+  /** The address that signed the message */
   address: string | undefined
+  /** The chain ID used for signing */
   chainId: number
+  /** Whether the signature is currently being generated */
   loading: boolean
+  /** Any error that occurred during signature generation */
   error: Error | null
 }
 
 const WAAS_SIGNATURE_PREFIX = '@0xsequence.waas_signature-'
 const getSignatureKey = (address: string) => `${WAAS_SIGNATURE_PREFIX}${address}`
 
+/**
+ * Hook to manage signatures required for linking wallets in a WaaS (Wallet-as-a-Service) context.
+ * 
+ * This hook handles the generation and caching of signatures that are used to prove ownership
+ * of a parent wallet when linking child wallets. The signatures are cached in localStorage
+ * for 24 hours to avoid unnecessary re-signing.
+ * 
+ * Features:
+ * - Automatic signature generation when needed
+ * - 24-hour signature caching in localStorage
+ * - Automatic cleanup of old signatures
+ * - Error handling for signature generation
+ * 
+ * @param connection - The current wallet connection object containing:
+ *   - accounts: Array of connected addresses (uses the first one)
+ *   - chainId: The current chain ID
+ *   - connector: The wallet connector instance
+ * 
+ * @returns An object containing:
+ * - `message` - The message that was signed
+ * - `signature` - The generated signature
+ * - `address` - The address that signed the message
+ * - `chainId` - The chain ID used for signing
+ * - `loading` - Whether signature generation is in progress
+ * - `error` - Any error that occurred during the process
+ * 
+ * @example
+ * ```tsx
+ * const {
+ *   message,
+ *   signature,
+ *   address,
+ *   loading,
+ *   error
+ * } = useWaasGetLinkedWalletsSignature(waasConnection)
+ * 
+ * if (loading) {
+ *   return <div>Generating signature...</div>
+ * }
+ * 
+ * if (error) {
+ *   return <div>Error: {error.message}</div>
+ * }
+ * 
+ * if (signature) {
+ *   // Use the signature for wallet linking
+ *   console.log(`Got signature from ${address} for message: ${message}`)
+ * }
+ * ```
+ */
 export const useWaasGetLinkedWalletsSignature = (
   connection:
     | {

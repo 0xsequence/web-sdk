@@ -7,21 +7,78 @@ import { Connector } from 'wagmi'
 
 import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
 
+/**
+ * Parameters required for linking a child wallet to a parent WaaS wallet.
+ */
 interface LinkWalletParams {
+  /** Chain ID used for the signature verification */
   signatureChainId: number
+  /** Name of the connector used by the child wallet */
   connectorName: string
+  /** Address of the child wallet to be linked */
   childWalletAddress: string
+  /** Message signed by the child wallet */
   childMessage: string
+  /** Signature from the child wallet */
   childSignature: string
 }
 
+/**
+ * Result object returned by the useWaasLinkWallet hook.
+ */
 interface UseWaasLinkWalletResult {
+  /** Function to link a child wallet to the parent WaaS wallet */
   linkWallet: (params: LinkWalletParams) => Promise<void>
+  /** Function to remove a previously linked wallet */
   removeLinkedWallet: (linkedWalletAddress: string) => Promise<void>
+  /** Whether a linking or unlinking operation is in progress */
   loading: boolean
+  /** Any error that occurred during the operation */
   error: Error | null
 }
 
+/**
+ * Hook to manage wallet linking operations for WaaS (Wallet-as-a-Service).
+ * 
+ * This hook provides functionality to link and unlink child wallets to/from a parent WaaS wallet.
+ * It handles the signature generation and API calls required for the linking process.
+ * 
+ * The linking process involves:
+ * 1. Getting the parent WaaS wallet address
+ * 2. Signing a message with the parent wallet
+ * 3. Submitting both parent and child signatures to the API
+ * 
+ * The unlinking process involves:
+ * 1. Getting the parent WaaS wallet address
+ * 2. Signing a removal message
+ * 3. Submitting the request to the API
+ * 
+ * @param connector - The WaaS connector instance. Optional because the user might not have
+ *                   a WaaS wallet connected yet.
+ * 
+ * @returns An object containing:
+ * - `linkWallet` - Function to link a child wallet
+ * - `removeLinkedWallet` - Function to remove a linked wallet
+ * - `loading` - Whether an operation is in progress
+ * - `error` - Any error that occurred
+ * 
+ * @example
+ * ```tsx
+ * const { linkWallet, removeLinkedWallet, loading, error } = useWaasLinkWallet(waasConnector)
+ * 
+ * // Link a wallet
+ * await linkWallet({
+ *   signatureChainId: CHAIN_ID_FOR_SIGNATURE,
+ *   connectorName: 'MetaMask',
+ *   childWalletAddress: '0x...',
+ *   childMessage: 'Link to parent wallet...',
+ *   childSignature: '0x...'
+ * })
+ * 
+ * // Remove a linked wallet
+ * await removeLinkedWallet('0x...')
+ * ```
+ */
 export const useWaasLinkWallet = (connector: Connector | undefined): UseWaasLinkWalletResult => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
