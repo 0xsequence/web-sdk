@@ -122,7 +122,6 @@ const { data, isLoading, error } = useGetTransactionHistory({
   chainId: 1, // optional
   page: { // optional
     pageSize: 10,
-    page: 1
   },
   {
     // options param is optional and default values are below
@@ -189,8 +188,7 @@ const { data, isLoading, error } = useGetTokenBalancesSummary(
     omitMetadata: false, // optional
     page: {
       // optional
-      pageSize: 10,
-      page: 1
+      pageSize: 10
     }
   },
   {
@@ -222,8 +220,7 @@ const { data, isLoading, error } = useGetTokenBalancesDetails(
     omitMetadata: false, // optional
     page: {
       // optional
-      pageSize: 10,
-      page: 1
+      pageSize: 10
     }
   },
   {
@@ -255,8 +252,7 @@ const { data, isLoading, error } = useGetTokenBalancesByContract(
     omitMetadata: false, // optional
     page: {
       // optional
-      pageSize: 10,
-      page: 1
+      pageSize: 10
     }
   },
   {
