@@ -447,9 +447,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@6.2.1(@types/node@22.7.5)(jiti@2.4.2)(lightningcss@1.29.2))
-      ethers:
-        specifier: ^6.13.5
-        version: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -465,6 +462,9 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
+      viem:
+        specifier: ^2.23.10
+        version: 2.23.10(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)
       vite:
         specifier: ^6.0.2
         version: 6.2.1(@types/node@22.7.5)(jiti@2.4.2)(lightningcss@1.29.2)

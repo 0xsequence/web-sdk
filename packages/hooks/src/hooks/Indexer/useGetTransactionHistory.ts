@@ -1,6 +1,6 @@
 import { GetTransactionHistoryReturn, Page, SequenceIndexer } from '@0xsequence/indexer'
 import { InfiniteData, useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
-import { getAddress } from 'ethers'
+import { getAddress } from 'viem'
 
 import { QUERY_KEYS, time } from '../../constants'
 import { HooksOptions } from '../../types'
