@@ -70,9 +70,9 @@ export const connectConfig: ConnectConfig = {
 export const passportInstance = new passport.Passport({
   baseConfig: {
     environment: Environment.SANDBOX,
-    publishableKey: 'pk_imapik-test-lnUqNu5uDYfKDz_stwpN'
+    publishableKey: 'pk_imapik-test-VEMeW7wUX7hE7LHg3FxY'
   },
-  clientId: '420lberPuiZaO6SBX6Anoa7C9kpcsuer',
+  clientId: 'ap8Gv3188GLFROiBFBNFz77DojRpqxnS',
   redirectUri: `${window.location.origin}/auth/callback`,
   audience: 'platform_api',
   scope: 'openid offline_access email transact'
