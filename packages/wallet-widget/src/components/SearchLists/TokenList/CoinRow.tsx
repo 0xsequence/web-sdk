@@ -22,44 +22,47 @@ export const CoinRow = ({ balance, onTokenClick }: BalanceItemProps) => {
   const tokenName = isNativeToken ? nativeTokenInfo.name : balance?.contractInfo?.name || 'Unknown'
   const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 
-  const getQuantity = () => {
+  const quantity = useMemo(() => {
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
     const bal = formatUnits(BigInt(balance.balance), decimals || 0)
     const displayBalance = formatDisplay(bal)
     const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 
     return `${displayBalance} ${symbol}`
-  }
+  }, [balance])
 
-  const getValue = () => {
+  const value = useMemo(() => {
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
     const bal = formatUnits(BigInt(balance.balance), decimals || 0)
     return `${fiatCurrency.sign}${(balance.price.value * Number(bal)).toFixed(2)}`
-  }
+  }, [balance, fiatCurrency])
 
   const onClick = () => {
     onTokenClick(balance)
   }
 
-  const balanceAndValue = useMemo(() => {
-    return (
-      <div className="flex flex-col items-end">
-        <Text variant="normal" color="primary" fontWeight="bold" ellipsis>
-          {getQuantity()}
-        </Text>
-        <Text variant="normal" color="muted" fontWeight="bold" ellipsis>
-          {getValue()}
-        </Text>
-      </div>
-    )
-  }, [balance])
-
   return (
-    <ListCardNav rightChildren={balanceAndValue} type="custom" onClick={onClick} style={{ height: '60px' }}>
-      <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} style={{ zIndex: '0' }} />
-      <Text className="overflow-hidden whitespace-nowrap" variant="normal" color="primary" fontWeight="bold" ellipsis>
-        {tokenName}
-      </Text>
+    <ListCardNav type="custom" onClick={onClick} style={{ height: '60px' }}>
+      <div className="flex flex-row justify-between w-full gap-2">
+        <TokenImage src={logoURI} symbol={symbol} size="md" withNetwork={balance.chainId} />
+        <div className="flex flex-row gap-2 items-center" style={{ flex: '1 1 0', width: 0 }}>
+          <Text className="overflow-hidden" variant="normal" color="primary" fontWeight="bold" ellipsis>
+            {tokenName}
+          </Text>
+        </div>
+        <div className="flex flex-row justify-end items-center" style={{ flex: '1 1 0', width: 0 }}>
+          <div className="flex flex-col items-end w-full">
+            <div className="flex flex-row justify-end w-full">
+              <Text className="overflow-hidden" variant="normal" color="primary" fontWeight="bold" ellipsis>
+                {quantity}
+              </Text>
+            </div>
+            <Text variant="normal" color="muted" fontWeight="bold">
+              {value}
+            </Text>
+          </div>
+        </div>
+      </div>
     </ListCardNav>
   )
 }

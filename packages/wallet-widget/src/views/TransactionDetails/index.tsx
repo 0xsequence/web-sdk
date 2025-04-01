@@ -12,7 +12,7 @@ import {
   TokenImage
 } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/hooks'
-import { Transaction, TxnTransfer } from '@0xsequence/indexer'
+import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import dayjs from 'dayjs'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
@@ -91,8 +91,91 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     const recipientAddressFormatted =
       recipientAddress.substring(0, 10) + '...' + recipientAddress.substring(transfer.to.length - 4, transfer.to.length)
     const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', zeroAddress)
-    const logoURI = isNativeToken ? nativeTokenInfo.logoURI : transfer?.contractInfo?.logoURI
-    const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer?.contractInfo?.symbol || ''
+    const isCollectible = transfer.contractType === 'ERC721' || transfer.contractType === 'ERC1155'
+    const tokenId = transfer.tokenIds?.[0]
+    const tokenLogoURI = isNativeToken
+      ? nativeTokenInfo.logoURI
+      : isCollectible
+        ? transfer?.tokenMetadata?.[String(tokenId)]?.image
+        : transfer?.contractInfo?.logoURI
+    const contractLogoURI = transfer?.contractInfo?.logoURI
+    const tokenSymbol = isNativeToken
+      ? nativeTokenInfo.symbol
+      : isCollectible
+        ? transfer?.tokenMetadata?.[String(tokenId)]?.name || ''
+        : transfer?.contractInfo?.symbol || ''
+    const contractSymbol = transfer?.contractInfo?.name || ''
+
+    const WalletContent = () => (
+      <div
+        className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
+        style={{ flexBasis: '100%' }}
+      >
+        <GradientAvatar size="sm" address={recipientAddress} />
+        <Text variant="xsmall" fontWeight="bold" color="primary">
+          {recipientAddressFormatted}
+        </Text>
+      </div>
+    )
+
+    const TokenContent = ({
+      balanceDisplayed,
+      fiatValue,
+      fiatPrice
+    }: {
+      balanceDisplayed: string
+      fiatValue: string
+      fiatPrice: number
+    }) => (
+      <div
+        className={`flex flex-col justify-center items-start gap-2 rounded-xl bg-button-glass p-2 ${!isCollectible && 'h-12'}`}
+        style={{ flexBasis: '100%' }}
+      >
+        {isCollectible && (
+          <div className="flex flex-row justify-start items-center gap-2">
+            <TokenImage src={contractLogoURI} symbol={contractSymbol} size="sm" />
+            <Text
+              variant="xsmall"
+              fontWeight="bold"
+              color="primary"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
+              }}
+            >
+              {contractSymbol}
+            </Text>
+          </div>
+        )}
+        <div className="flex flex-row justify-start items-center gap-2">
+          <TokenImage src={tokenLogoURI} symbol={tokenSymbol} size="sm" />
+          <div className="flex gap-0.5 flex-col items-start justify-center">
+            <Text
+              variant="xsmall"
+              fontWeight={isCollectible ? 'normal' : 'bold'}
+              color="primary"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
+              }}
+            >
+              {`${balanceDisplayed} ${tokenSymbol}`}
+            </Text>
+            {arePricesLoading ? (
+              <Skeleton style={{ width: '44px', height: '12px' }} />
+            ) : (
+              <Text variant="xsmall" fontWeight="bold" color="muted">
+                {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
+              </Text>
+            )}
+          </div>
+        </div>
+      </div>
+    )
 
     return (
       <>
@@ -119,36 +202,23 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
 
           const fiatValue = (parseFloat(formattedBalance) * (conversionRate * (fiatPrice || 0))).toFixed(2)
 
+          const isReceiveTransfer = transfer.transferType === TxnTransferType.RECEIVE
+
           return (
             <div className="flex w-full flex-row gap-2 justify-between items-center" key={index}>
-              <div
-                className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
-                style={{ flexBasis: '100%' }}
-              >
-                <TokenImage src={logoURI} symbol={symbol} size="sm" />
-                <div className="flex gap-0.5 flex-col items-start justify-center">
-                  <Text variant="xsmall" fontWeight="bold" color="primary">
-                    {`${balanceDisplayed} ${symbol}`}
-                  </Text>
-                  {arePricesLoading ? (
-                    <Skeleton style={{ width: '44px', height: '12px' }} />
-                  ) : (
-                    <Text variant="xsmall" fontWeight="bold" color="muted">
-                      {fiatPrice ? `${fiatCurrency.sign}${fiatValue}` : ''}
-                    </Text>
-                  )}
-                </div>
-              </div>
-              <ArrowRightIcon className="text-muted" style={{ width: '16px' }} />
-              <div
-                className="flex flex-row justify-start items-center gap-2 h-12 rounded-xl bg-button-glass p-2"
-                style={{ flexBasis: '100%' }}
-              >
-                <GradientAvatar size="sm" address={recipientAddress} />
-                <Text variant="xsmall" fontWeight="bold" color="primary">
-                  {recipientAddressFormatted}
-                </Text>
-              </div>
+              {isReceiveTransfer ? (
+                <>
+                  <WalletContent />
+                  <ArrowRightIcon className="text-muted" style={{ width: '16px', transform: 'rotate(180deg)' }} />
+                  <TokenContent balanceDisplayed={balanceDisplayed} fiatValue={fiatValue} fiatPrice={fiatPrice || 0} />
+                </>
+              ) : (
+                <>
+                  <TokenContent balanceDisplayed={balanceDisplayed} fiatValue={fiatValue} fiatPrice={fiatPrice || 0} />
+                  <ArrowRightIcon className="text-muted" style={{ width: '16px' }} />
+                  <WalletContent />
+                </>
+              )}
             </div>
           )
         })}

@@ -34,7 +34,8 @@ export const SlideupDrawer = ({
           left: 0,
           width: '100%',
           height: '100%',
-          backgroundColor: 'black'
+          backgroundColor: 'black',
+          zIndex: 30
         }}
         onClick={onClose}
       />
@@ -51,7 +52,8 @@ export const SlideupDrawer = ({
           left: 0,
           width: '100%',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          zIndex: 30
         }}
         onClick={e => e.stopPropagation()}
       >

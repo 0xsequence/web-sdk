@@ -43,6 +43,8 @@ export const CollectiblesList = ({
   const isPending = isPendingTokenBalances
 
   const fuseOptions = {
+    threshold: 0.1,
+    ignoreLocation: true,
     keys: [
       {
         name: 'name',
@@ -56,8 +58,7 @@ export const CollectiblesList = ({
           return token.contractInfo?.name || ''
         }
       }
-    ],
-    ignoreLocation: true
+    ]
   }
 
   const fuse = useMemo(() => {
@@ -87,6 +88,10 @@ export const CollectiblesList = ({
 
   const onFilterClick = () => {
     setIsFilterOpen(true)
+  }
+
+  const onShowCollectibles = () => {
+    setIsFilterOpen(false)
   }
 
   return (
@@ -127,7 +132,7 @@ export const CollectiblesList = ({
             label="Collectible Filters"
             buttonLabel="Show Collectibles"
             type="collectibles"
-            handleButtonPress={() => {}}
+            handleButtonPress={onShowCollectibles}
           />
         )}
       </AnimatePresence>
