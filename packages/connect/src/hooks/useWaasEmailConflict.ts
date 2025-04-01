@@ -15,7 +15,7 @@ export type FormattedEmailConflictInfo = {
 
 /**
  * Helper function to convert raw account type information into user-friendly text.
- * 
+ *
  * @param info - The raw email conflict information from WaaS
  * @returns A user-friendly string describing the account type
  */
@@ -48,18 +48,18 @@ const accountTypeText = (info: EmailConflictInfo | null) => {
 
 /**
  * Hook to handle email conflict detection and resolution for WaaS (Wallet-as-a-Service) authentication.
- * 
+ *
  * This hook monitors all WaaS connectors for email conflicts that occur during sign-in attempts.
  * A conflict happens when a user tries to sign up with an email that's already associated with
  * a different authentication method (e.g., trying to use Google sign-in when the email was
  * previously used with Apple sign-in).
- * 
+ *
  * @returns An object containing:
  * - `toggleEmailConflictModal` - Function to manually show/hide the conflict modal
  * - `isEmailConflictOpen` - Whether the conflict modal is currently open
  * - `emailConflictInfo` - Formatted information about the conflict (email and account type)
  * - `forceCreate` - Function to force create a new account despite the conflict
- * 
+ *
  * @example
  * ```tsx
  * const {
@@ -67,14 +67,14 @@ const accountTypeText = (info: EmailConflictInfo | null) => {
  *   emailConflictInfo,
  *   toggleEmailConflictModal
  * } = useEmailConflict()
- * 
+ *
  * // When a conflict is detected
  * if (isEmailConflictOpen && emailConflictInfo) {
  *   console.log(
  *     `Email ${emailConflictInfo.email} is already used with ${emailConflictInfo.type}`
  *   )
  * }
- * 
+ *
  * // Close the conflict modal
  * toggleEmailConflictModal(false)
  * ```

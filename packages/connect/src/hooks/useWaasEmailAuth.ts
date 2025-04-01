@@ -17,18 +17,18 @@ interface SuccessResultV2 {
 
 /**
  * Hook to handle email-based authentication flow for WaaS (Wallet-as-a-Service).
- * 
+ *
  * This hook manages the complete email authentication process, including:
  * - Initiating email authentication
  * - Handling verification code submission
  * - Managing loading and error states
  * - Supporting both v1 (idToken) and v2 (SignInResponse) authentication formats
- * 
+ *
  * @param {ExtendedConnector} [params.connector] - The WaaS connector to use for authentication.
  *        Optional because the user might not have selected a connector yet.
  * @param {Function} params.onSuccess - Callback function called when authentication succeeds.
  *        Receives either a v1 result (with idToken) or v2 result (with SignInResponse).
- * 
+ *
  * @returns {Object} An object containing:
  * - `inProgress` - Whether authentication is currently in progress
  * - `loading` - Whether a specific authentication operation is loading
@@ -37,7 +37,7 @@ interface SuccessResultV2 {
  * - `sendChallengeAnswer` - Function to submit the verification code
  * - `cancel` - Function to cancel the authentication process
  * - `resetError` - Function to clear any error state
- * 
+ *
  * @example
  * ```tsx
  * const {
