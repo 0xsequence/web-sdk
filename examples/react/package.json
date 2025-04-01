@@ -17,7 +17,7 @@
     "@0xsequence/network": ">= 2.2.13",
     "@0xsequence/wallet-widget": "workspace:*",
     "@0xsequence/immutable-connector": "workspace:*",
-    "@0xsequence/react-hooks": "workspace:*",
+    "@0xsequence/hooks": "workspace:*",
     "@0xsequence/waas": ">= 2.2.13",
     "@imtbl/config": "^2.1.2",
     "@imtbl/sdk": "^2.1.2",
