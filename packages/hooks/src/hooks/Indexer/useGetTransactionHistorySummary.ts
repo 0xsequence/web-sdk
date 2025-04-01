@@ -7,20 +7,19 @@ import { HooksOptions } from '../../types'
 
 import { useIndexerClients } from './useIndexerClient'
 
-export interface GetTransactionHistorySummaryArgs {
-  accountAddress: string
-  chainIds: number[]
-}
+export type GetTransactionHistorySummaryArgs =
+  | { accountAddress: string; accountAddresses?: never; chainIds: number[] }
+  | { accountAddress?: never; accountAddresses: string[]; chainIds: number[] }
 
 const getTransactionHistorySummary = async (
   indexerClients: Map<number, SequenceIndexer>,
-  { accountAddress }: GetTransactionHistorySummaryArgs
+  { accountAddress, accountAddresses }: GetTransactionHistorySummaryArgs
 ): Promise<Transaction[]> => {
   const histories = await Promise.all(
     Array.from(indexerClients.values()).map(indexerClient =>
       indexerClient.getTransactionHistory({
         filter: {
-          accountAddress
+          accountAddresses: accountAddresses || [accountAddress]
         },
         includeMetadata: true
       })
@@ -130,7 +129,7 @@ export const useGetTransactionHistorySummary = (
     refetchOnMount: true,
     enabled:
       getTransactionHistorySummaryArgs.chainIds.length > 0 &&
-      !!getTransactionHistorySummaryArgs.accountAddress &&
+      !!(getTransactionHistorySummaryArgs.accountAddress || (getTransactionHistorySummaryArgs.accountAddresses?.length ?? 0)) &&
       !options?.disabled
   })
 }

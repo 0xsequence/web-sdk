@@ -85,6 +85,8 @@ export const TokenList = ({
   const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
   const fuseOptions = {
+    threshold: 0.1,
+    ignoreLocation: true,
     keys: [
       {
         name: 'name',
@@ -96,8 +98,7 @@ export const TokenList = ({
           return token.contractInfo?.name || 'Unknown'
         }
       }
-    ],
-    ignoreLocation: true
+    ]
   }
 
   const fuse = useMemo(() => {
@@ -127,6 +128,10 @@ export const TokenList = ({
 
   const onFilterClick = () => {
     setIsFilterOpen(true)
+  }
+
+  const onShowTokens = () => {
+    setIsFilterOpen(false)
   }
 
   return (
@@ -166,7 +171,7 @@ export const TokenList = ({
             label="Token Filters"
             buttonLabel="Show Tokens"
             type="tokens"
-            handleButtonPress={() => {}}
+            handleButtonPress={onShowTokens}
           />
         )}
       </AnimatePresence>

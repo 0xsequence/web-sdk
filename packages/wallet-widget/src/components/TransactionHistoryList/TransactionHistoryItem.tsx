@@ -1,10 +1,9 @@
 import { TokenPrice } from '@0xsequence/api'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
-import { ArrowRightIcon, Text, Image, TransactionIcon, Skeleton, NetworkImage } from '@0xsequence/design-system'
+import { ArrowRightIcon, Text, TransactionIcon, Skeleton, NetworkImage, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { Transaction, TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
 import dayjs from 'dayjs'
-import React from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
@@ -103,7 +102,15 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
       textColor = 'positive'
     }
 
-    return <Text variant="normal" fontWeight="bold" color={textColor}>{`${sign}${amount} ${symbol}`}</Text>
+    return (
+      <Text
+        className="overflow-hidden"
+        variant="normal"
+        fontWeight="bold"
+        color={textColor}
+        ellipsis
+      >{`${sign}${amount} ${symbol}`}</Text>
+    )
   }
 
   interface GetTransfer {
@@ -144,7 +151,11 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
             decimals = isNativeToken ? nativeTokenInfo.decimals : transfer.contractInfo?.decimals
           }
           const amountValue = formatUnits(BigInt(amount), decimals || 18)
-          const symbol = isNativeToken ? nativeTokenInfo.symbol : transfer.contractInfo?.symbol || ''
+          const symbol = isNativeToken
+            ? nativeTokenInfo.symbol
+            : isCollectible
+              ? transfer.contractInfo?.name || ''
+              : transfer.contractInfo?.symbol || ''
           const tokenLogoUri = isNativeToken ? nativeTokenInfo.logoURI : transfer.contractInfo?.logoURI
 
           const fiatConversionRate = coinPrices.find((coinPrice: TokenPrice) =>
@@ -153,8 +164,8 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
 
           return (
             <div className="flex flex-row justify-between" key={index}>
-              <div className="flex flex-row gap-2 justify-center items-center">
-                {tokenLogoUri && <Image className="w-5" src={tokenLogoUri} alt="token logo" />}
+              <div className="flex flex-row gap-2 justify-start items-center w-full">
+                {(tokenLogoUri || symbol) && <TokenImage src={tokenLogoUri} symbol={symbol} size="sm" />}
                 {getTransferAmountLabel(decimals === 0 ? amount : formatDisplay(amountValue), symbol, transfer.transferType)}
               </div>
               {isPending && <Skeleton style={{ width: '35px', height: '20px' }} />}

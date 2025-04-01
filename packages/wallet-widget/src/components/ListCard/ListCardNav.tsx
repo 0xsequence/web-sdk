@@ -18,18 +18,21 @@ export const ListCardNav = ({
   return (
     <div
       className={cn(
-        'flex flex-row justify-between items-center p-4 bg-background-secondary cursor-pointer hover:opacity-80 w-full',
+        'flex flex-row justify-between items-center bg-background-secondary cursor-pointer hover:opacity-80 w-full p-4',
         shape === 'rounded' ? 'rounded-lg' : 'rounded-none'
       )}
       style={{ height: '52px', ...style }}
       onClick={onClick}
     >
-      <div className="flex flex-row gap-2 items-center">{children}</div>
+      <div className="flex flex-row gap-2 items-center w-full">{children}</div>
 
-      <div className="flex flex-row gap-1 items-center">
-        {rightChildren}
-        {type === 'chevron' && <ChevronRightIcon color="white" />}
-      </div>
+      {rightChildren ||
+        (type === 'chevron' && (
+          <div className="flex flex-row gap-1 items-center">
+            {rightChildren}
+            {type === 'chevron' && <ChevronRightIcon color="white" />}
+          </div>
+        ))}
     </div>
   )
 }
