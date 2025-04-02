@@ -122,7 +122,7 @@ export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedW
       linkedWalletsListeners.delete(fetchData)
       abortControllerRef.current?.abort()
     }
-  }, [fetchData]) // Keep dependency array as is, fetchData is stable due to useCallback
+  }, [fetchData])
 
   const clearCache = useCallback(() => {
     localStorage.removeItem(createStorageKey(args))
