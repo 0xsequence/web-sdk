@@ -44,25 +44,4 @@ describe('useGetSwapQuoteV2', () => {
 
     await waitFor(() => expect(result.current.isError).toBe(true))
   })
-
-  it('should return correct data from dev api', async () => {
-    const response = await fetch('https://dev-api.sequence.app/rpc/API/GetSwapQuoteV2', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Access-Key': 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE'
-      },
-      body: JSON.stringify({
-        userAddress: ACCOUNT_ADDRESS,
-        buyCurrencyAddress: ZERO_ADDRESS,
-        sellCurrencyAddress: ZERO_ADDRESS,
-        buyAmount: '20000',
-        chainId: 1,
-        includeApprove: true
-      })
-    })
-
-    const data = await response.json()
-    console.log('Real API Response Structure:', JSON.stringify(data, null, 2))
-  })
 })
