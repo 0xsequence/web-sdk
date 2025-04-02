@@ -126,10 +126,11 @@ export const config =
           projectId: walletConnectProjectId
         },
         additionalWallets: [
-          immutable({
-            passportInstance,
-            environment: Environment.SANDBOX
-          })
+          // Uncomment to enable Immutable
+          // immutable({
+          //   passportInstance,
+          //   environment: Environment.SANDBOX
+          // })
         ]
       })
 
