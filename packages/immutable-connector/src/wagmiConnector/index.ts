@@ -12,15 +12,13 @@ export interface BaseImmutableConnectorOptions {
 immutableConnector.type = 'immutable' as const
 
 export function immutableConnector(params: BaseImmutableConnectorOptions) {
-  console.log('Immutable connector created')
-
-  type Provider = IMXProvider
+  type Provider = passport.Provider
   type Properties = {
     params: BaseImmutableConnectorOptions
   }
   type StorageItem = {}
 
-  let provider: IMXProvider | undefined = undefined
+  let provider: Provider | undefined = undefined
 
   const IMMUTABLE_CHAINS = {
     [Environment.SANDBOX]: 13473,
@@ -39,16 +37,9 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
     async setup() {},
 
     async connect() {
-      provider = await passportInstance.connectImx()
-
-      const isRegistered = await provider.isRegisteredOffchain()
-      if (!isRegistered) {
-        await provider.registerOffchain()
-      }
-
+      provider = await passportInstance.connectEvm()
       const accounts = await this.getAccounts()
       const chainId = await this.getChainId()
-
       return { accounts, chainId }
     },
 
@@ -59,21 +50,20 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
     },
 
     async getAccounts() {
-      const provider = (await this.getProvider()) as IMXProvider
-
-      const account = await provider.getAddress()
-
-      return [account as Address]
+      const provider = (await this.getProvider()) as Provider
+      const accounts = await provider.request({
+        method: 'eth_requestAccounts'
+      })
+      return [accounts[0] as Address]
     },
 
-    async getProvider(): Promise<IMXProvider> {
-      if (!provider) {
-        const userProfile = await passportInstance.login({ useCachedSession: true })
-        if (userProfile) {
-          provider = await passportInstance.connectImx()
-          return provider
-        }
+    async getProvider() {
+      const userProfile = await passportInstance.login({ useCachedSession: true })
+      if (!userProfile && !provider) {
         throw new Error('Provider not initialized')
+      }
+      if (!provider) {
+        provider = await passportInstance.connectEvm()
       }
       return provider
     },
@@ -83,8 +73,10 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
         if (!provider) {
           return false
         }
-        const address = await provider.getAddress()
-        return Boolean(address)
+        const accounts = await provider.request({
+          method: 'eth_requestAccounts'
+        })
+        return Boolean(accounts[0])
       } catch {
         return false
       }
