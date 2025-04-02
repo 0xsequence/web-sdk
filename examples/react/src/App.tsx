@@ -4,9 +4,9 @@ import { ThemeProvider } from '@0xsequence/design-system'
 import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import { config, checkoutConfig } from './config'
 import { Homepage } from './components/Homepage'
 import { ImmutableCallback } from './components/ImmutableCallback'
+import { config, checkoutConfig } from './config'
 
 export const App = () => {
   return (
