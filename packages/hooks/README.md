@@ -180,7 +180,7 @@ const { data, isLoading, error } = useGetTokenBalancesSummary(
     networks: ['mainnet'],
     filter: {
       accountAddresses: ['0x0123456789012345678901234567890123456789'],
-      contractWhitelist: ['0x0123456789012345678901234567890123456789'],
+      contractWhitelist: ['0x0123456789012345678901234567890123456789'], // If zeroAddress is not included in contractWhitelist, native tokens with a balance of 0 will be filtered out
       contractBlacklist: ['0x0000000000000000000000000000000000000000'],
       contractStatus: ContractVerificationStatus.VERIFIED,
       omitNativeBalances: false
@@ -212,7 +212,7 @@ const { data, isLoading, error } = useGetTokenBalancesDetails(
     networks: ['mainnet'],
     filter: {
       accountAddresses: ['0x0123456789012345678901234567890123456789'],
-      contractWhitelist: ['0x0123456789012345678901234567890123456789'],
+      contractWhitelist: ['0x0123456789012345678901234567890123456789'], // If zeroAddress is not included in contractWhitelist, native tokens with a balance of 0 will be filtered out
       contractBlacklist: ['0x0000000000000000000000000000000000000000'],
       contractStatus: ContractVerificationStatus.VERIFIED,
       omitNativeBalances: false
