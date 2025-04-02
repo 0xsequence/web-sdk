@@ -29,7 +29,9 @@
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@0xsequence/connect": "workspace:*"
+  },
   "peerDependencies": {
     "@0xsequence/connect": "workspace:*",
     "0xsequence": "^2.2.13",
