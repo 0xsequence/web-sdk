@@ -45,9 +45,11 @@ const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens: Token[
  *
  * @returns React Query result object containing:
  *   - data: Array of token prices when available, each containing:
- *     - floorPrice: The floor price for the collection
- *     - buyPrice: Current market buy price
- *     - sellPrice: Current market sell price
+ *     - price: The price for the collection
+ *     - price24hChange: The price change for the collection in the last 24 hours (if available)
+ *     - floorPrice: The floor price for the collection (if available)
+ *     - buyPrice: Current market buy price (if available)
+ *     - sellPrice: Current market sell price (if available)
  *   - isLoading: Whether the initial request is in progress
  *   - error: Any error that occurred
  *   - isError: Whether an error occurred
@@ -68,9 +70,7 @@ const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens: Token[
  * }
  *
  * if (prices?.[0]) {
- *   console.log('Floor price:', prices[0].floorPrice.value)
- *   console.log('Buy price:', prices[0].buyPrice.value)
- *   console.log('Sell price:', prices[0].sellPrice.value)
+ *   console.log('Price:', prices[0].price.value)
  * }
  * ```
  */

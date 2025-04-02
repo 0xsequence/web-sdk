@@ -65,7 +65,7 @@ const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
  * }
  *
  * if (prices) {
- *   console.log('ETH price:', prices[0].floorPrice.value)
+ *   console.log('ETH price:', prices[0].price.value)
  * }
  * ```
  */
