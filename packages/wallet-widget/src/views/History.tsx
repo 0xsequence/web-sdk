@@ -70,7 +70,14 @@ export const History = () => {
           const day = date.getDate()
           const month = date.toLocaleString('en-US', { month: 'long' })
           const year = date.getFullYear()
-          return `${day} ${month} ${year}`
+          return `
+          ${day} ${month} ${year} 
+          ${day} ${year} ${month} 
+          ${month} ${day} ${year} 
+          ${month} ${year} ${day}
+          ${year} ${day} ${month}
+          ${year} ${month} ${day}
+          `
         },
         customSearchFn: (query: string, options: { keys: string[] }) => {
           const queryParts = query.toLowerCase().split(/\s+/)
