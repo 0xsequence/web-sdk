@@ -83,6 +83,7 @@ export const SendGeneral = () => {
             isPendingTokenBalances={isPendingCollectibleBalances}
             onTokenClick={handleCollectibleClick}
             enableFilters={false}
+            gridColumns={3}
           />
         </TabsContent>
       </TabsRoot>

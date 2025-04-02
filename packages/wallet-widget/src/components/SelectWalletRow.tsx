@@ -1,9 +1,10 @@
 import { formatAddress, ConnectedWallet } from '@0xsequence/connect'
-import { ChevronRightIcon, Text } from '@0xsequence/design-system'
-import { cn, cardVariants } from '@0xsequence/design-system'
+import { Text } from '@0xsequence/design-system'
 
+import { useSettings } from '../hooks'
 import { getConnectorLogo } from '../utils/wallets'
 
+import { ListCardSelect } from './ListCard'
 import { WalletAccountGradient } from './WalletAccountGradient'
 
 export const SelectWalletRow = ({
@@ -15,33 +16,32 @@ export const SelectWalletRow = ({
   setActiveWallet: (address: string) => void
   onClose: () => void
 }) => {
+  const { fiatCurrency, walletsWithFiatValue } = useSettings()
+
   const onSelectWallet = () => {
     setActiveWallet(wallet.address)
     onClose()
   }
 
+  const fiatValue = walletsWithFiatValue.find(w => w.accountAddress === wallet.address)?.fiatValue
+
   return (
-    <div
-      key={wallet.address}
-      className={cn(
-        cardVariants({ clickable: true }),
-        'flex flex-row justify-between  items-center p-3',
-        wallet.isActive ? 'bg-background-secondary' : 'bg-background-muted'
-      )}
+    <ListCardSelect
+      rightChildren={
+        <Text color="muted" fontWeight="medium" variant="normal">
+          {fiatCurrency.sign}
+          {fiatValue}
+        </Text>
+      }
       onClick={onSelectWallet}
+      isSelected={wallet.isActive}
     >
-      <div className="flex flex-row gap-2 items-center">
-        <WalletAccountGradient accountAddress={wallet.address} loginIcon={getConnectorLogo(wallet.signInMethod)} size={'small'} />
-        <div className="flex flex-col">
-          <Text color="primary" fontWeight="medium" variant="normal">
-            {formatAddress(wallet.address)}
-          </Text>
-          <Text color="primary" fontWeight="medium" variant="small">
-            {wallet.id}
-          </Text>
-        </div>
+      <WalletAccountGradient accountAddress={wallet.address} loginIcon={getConnectorLogo(wallet.signInMethod)} size={'small'} />
+      <div className="flex flex-col">
+        <Text color="primary" fontWeight="medium" variant="normal">
+          {formatAddress(wallet.address)}
+        </Text>
       </div>
-      <ChevronRightIcon color="white" />
-    </div>
+    </ListCardSelect>
   )
 }

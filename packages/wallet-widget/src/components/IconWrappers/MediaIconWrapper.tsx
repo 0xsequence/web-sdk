@@ -23,7 +23,7 @@ export const MediaIconWrapper = ({
   const firstThreeIcons = iconList.slice(0, 3)
 
   let partialWidth = 0
-  let shapeClass = 'rounded-lg'
+  let shapeClass = 'rounded-lg;'
 
   switch (size) {
     case '4xs':

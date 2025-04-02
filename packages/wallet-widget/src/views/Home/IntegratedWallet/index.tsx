@@ -16,7 +16,8 @@ import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import { useObservable } from 'micro-observables'
 import { AnimatePresence } from 'motion/react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { getAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
 import { StackedIconTag } from '../../../components/IconWrappers/StackedIconTag'
@@ -25,7 +26,7 @@ import { ListCardNavTable } from '../../../components/ListCardTable/ListCardNavT
 import { SelectWalletRow } from '../../../components/SelectWalletRow'
 import { SlideupDrawer } from '../../../components/SlideupDrawer'
 import { WalletAccountGradient } from '../../../components/WalletAccountGradient'
-import { useNavigation, useSettings } from '../../../hooks'
+import { useNavigation, useSettings, WalletsWithFiatValue } from '../../../hooks'
 import { computeBalanceFiat } from '../../../utils'
 import { getConnectorLogo } from '../../../utils/wallets'
 import { FilterMenu } from '../../FilterMenu'
@@ -34,7 +35,15 @@ import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 
 export const IntegratedWallet = () => {
   const { setNavigation } = useNavigation()
-  const { selectedWalletsObservable, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
+  const {
+    selectedWalletsObservable,
+    selectedNetworks,
+    hideUnlistedTokens,
+    fiatCurrency,
+    selectedCollections,
+    walletsWithFiatValue,
+    setWalletsWithFiatValue
+  } = useSettings()
   const selectedWallets = useObservable(selectedWalletsObservable)
   const { chains } = useConfig()
   const { address: accountAddress } = useAccount()
@@ -72,21 +81,34 @@ export const IntegratedWallet = () => {
 
   const isPending = isTokenBalancesPending || isCoinPricesPending || isConversionRatePending
 
-  const totalCoinPrices = coinBalancesUnordered
-    .reduce((acc, coin) => {
-      return (
-        acc +
-        Number(
-          computeBalanceFiat({
-            balance: coin,
-            prices: coinPrices,
-            conversionRate,
-            decimals: coin.contractInfo?.decimals || 18
-          })
-        )
+  useEffect(() => {
+    if (!isTokenBalancesPending && coinBalancesUnordered.length > 0) {
+      setWalletsWithFiatValue(
+        wallets.map(wallet => {
+          const walletBalances = coinBalancesUnordered.filter(b => getAddress(b.accountAddress) === getAddress(wallet.address))
+          const walletFiatValue = walletBalances.reduce((acc, coin) => {
+            return (
+              acc +
+              Number(
+                computeBalanceFiat({
+                  balance: coin,
+                  prices: coinPrices,
+                  conversionRate,
+                  decimals: coin.contractInfo?.decimals || 18
+                })
+              )
+            )
+          }, 0)
+          return {
+            accountAddress: wallet.address,
+            fiatValue: walletFiatValue.toFixed(2)
+          } as WalletsWithFiatValue
+        })
       )
-    }, 0)
-    .toFixed(2)
+    }
+  }, [isTokenBalancesPending])
+
+  const totalFiatValue = walletsWithFiatValue.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0)
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
     const isHigherFiat =
@@ -216,7 +238,7 @@ export const IntegratedWallet = () => {
           <div className="flex flex-row gap-1 items-center">
             <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
               {fiatCurrency.sign}
-              {isPending ? <Skeleton className="w-4 h-4" /> : `${totalCoinPrices}`}
+              {isPending ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
             </Text>
             <StackedIconTag iconList={coinBalancesIcons} onClick={onClickWalletSelector} />
           </div>
@@ -244,6 +266,7 @@ export const IntegratedWallet = () => {
                 {collectibleBalances.length}
               </Text>
             }
+            shape="square"
           />
         ) : (
           <Text color="muted" fontWeight="medium" variant="normal">
@@ -322,9 +345,9 @@ export const IntegratedWallet = () => {
             label="Select main wallet"
             buttonLabel="+ Add new wallet"
             handleButtonPress={handleAddNewWallet}
-            dragHandleWidth={28}
+            dragHandleWidth={74}
           >
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 bg-background-primary">
               {wallets.map((wallet, index) => (
                 <SelectWalletRow
                   key={index}
