@@ -29,14 +29,12 @@
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@imtbl/config": "^2.1.2",
-    "@imtbl/sdk": "^2.1.2",
-    "@imtbl/x-provider": "^2.1.2"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@0xsequence/connect": "workspace:*",
     "0xsequence": "^2.2.13",
+    "@imtbl/config": ">=2.1.2",
+    "@imtbl/sdk": ">=2.1.2",
     "ethers": "^6.13.0",
     "react": ">= 17 < 19",
     "react-dom": ">= 17 < 19",

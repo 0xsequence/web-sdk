@@ -496,14 +496,11 @@ importers:
         specifier: workspace:*
         version: link:../connect
       '@imtbl/config':
-        specifier: ^2.1.2
+        specifier: '>=2.1.2'
         version: 2.1.15
       '@imtbl/sdk':
-        specifier: ^2.1.2
+        specifier: '>=2.1.2'
         version: 2.1.15(bufferutil@4.0.9)(hardhat@2.22.19(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
-      '@imtbl/x-provider':
-        specifier: ^2.1.2
-        version: 2.1.15(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       ethers:
         specifier: ^6.13.0
         version: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
