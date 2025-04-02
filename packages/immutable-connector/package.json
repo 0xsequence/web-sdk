@@ -1,39 +1,31 @@
 {
   "name": "@0xsequence/immutable-connector",
-  "version": "4.4.6",
+  "version": "5.0.8",
   "description": "Immutable connector for Sequence Kit",
-  "keywords": [
-    "sequence",
-    "kit",
-    "wallet",
-    "immutable"
-  ],
-  "repository": "https://github.com/0xsequence/kit/tree/master/packages/immutable-connector",
+  "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/immutable-connector",
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
+  "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/esm/index.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
-      "types": "./dist/types/index.d.ts",
       "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js",
-      "default": "./dist/esm/index.js"
-    },
-    "./styles.css": "./dist/styles.css"
+      "import": "./dist/esm/index.js"
+    }
   },
   "files": [
-    "src",
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs && pnpm build:types",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
-    "build:esm": "tsc --module es2022 --outDir dist/esm/",
-    "build:types": "tsc --declaration --declarationMap --emitDeclarationOnly --declarationDir dist/types/",
+    "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs",
+    "build:cjs": "tsc --module commonjs --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build:esm": "tsc --module es2022 --declaration --declarationMap --outDir dist/esm",
     "build:clean": "rimraf -g ./dist",
-    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm/ --declarationDir dist/types/",
+    "build:check": "attw --pack .",
+    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
