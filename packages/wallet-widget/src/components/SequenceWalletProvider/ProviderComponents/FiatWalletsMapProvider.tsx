@@ -10,14 +10,14 @@ import { computeBalanceFiat } from '../../../utils'
 // Define the provider component
 export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) => {
   const { wallets } = useWallets()
-  const { selectedNetworks, selectedWallets, hideUnlistedTokens, fiatCurrency } = useSettings()
+  const { selectedNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
 
   const [fiatWalletsMap, setFiatWalletsMap] = useState<FiatWalletPair[]>([])
 
   const { data: tokenBalancesData, isPending: isTokenBalancesPending } = useGetTokenBalancesDetails({
     chainIds: selectedNetworks,
     filter: {
-      accountAddresses: selectedWallets.map(wallet => wallet.address),
+      accountAddresses: wallets.map(wallet => wallet.address),
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
       omitNativeBalances: false
     }
@@ -69,7 +69,7 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
         setFiatWalletsMap(newFiatWalletsMap)
       }
     }
-  }, [coinBalancesUnordered, coinPrices, conversionRate, fiatCurrency, selectedNetworks, selectedWallets, hideUnlistedTokens])
+  }, [coinBalancesUnordered, coinPrices, conversionRate])
 
   return <FiatWalletsMapContextProvider value={{ fiatWalletsMap, setFiatWalletsMap }}>{children}</FiatWalletsMapContextProvider>
 }
