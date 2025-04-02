@@ -10,7 +10,7 @@ const isBrowser = typeof window !== 'undefined'
 export class ProviderTransport {
   private walletOrigin: string
   private walletWindow: Window | null = null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private callbacks: Map<string, (response: any) => void> = new Map()
   private connectionState: ConnectionState = 'disconnected'
   private session: SessionData | undefined
@@ -134,7 +134,6 @@ export class ProviderTransport {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async sendRequest(method: string, params: any[], chainId: number): Promise<any> {
     if (!isBrowser) {
       throw new Error('ProviderTransport is only available in browser environment')
@@ -180,7 +179,6 @@ export class ProviderTransport {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private openWalletAndPostMessage(message: any): Promise<void> {
     if (!isBrowser) {
       return Promise.reject(new Error('ProviderTransport is only available in browser environment'))
@@ -211,7 +209,6 @@ export class ProviderTransport {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private postMessageToWallet(message: any) {
     console.log('Posting message to wallet:', message)
     this.walletWindow!.postMessage(message, {
@@ -232,7 +229,9 @@ export class ProviderTransport {
   }
 
   private handleMessage = (event: MessageEvent) => {
-    if (event.origin !== this.walletOrigin) return
+    if (event.origin !== this.walletOrigin) {
+      return
+    }
 
     const response = event.data
     const callback = this.callbacks.get(response.id)
