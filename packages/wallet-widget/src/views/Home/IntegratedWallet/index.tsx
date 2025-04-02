@@ -19,6 +19,7 @@ import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
+import { FilterMenu } from '../../../components/FilterMenu'
 import { StackedIconTag } from '../../../components/IconWrappers/StackedIconTag'
 import { ListCardNav } from '../../../components/ListCard/ListCardNav'
 import { ListCardNavTable } from '../../../components/ListCardTable/ListCardNavTable'
@@ -29,7 +30,6 @@ import { useNavigation, useSettings } from '../../../hooks'
 import { useFiatWalletsMap } from '../../../hooks/useFiatWalletsMap'
 import { computeBalanceFiat } from '../../../utils'
 import { getConnectorLogo } from '../../../utils/wallets'
-import { FilterMenu } from '../../FilterMenu'
 
 import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 

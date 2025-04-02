@@ -11,7 +11,7 @@ import { useConfig } from 'wagmi'
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat, TokenBalanceWithPrice } from '../../utils'
 import { useGetMoreBalances } from '../../utils'
-import { FilterMenu } from '../../views/FilterMenu'
+import { FilterMenu } from '../FilterMenu'
 
 import { CoinsTab } from './TokenList/CoinsTab'
 
