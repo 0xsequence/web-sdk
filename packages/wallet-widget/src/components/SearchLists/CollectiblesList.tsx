@@ -13,12 +13,14 @@ export const CollectiblesList = ({
   tokenBalancesData,
   isPendingTokenBalances,
   onTokenClick,
-  enableFilters = true
+  enableFilters = true,
+  gridColumns = 2
 }: {
   tokenBalancesData: TokenBalance[]
   isPendingTokenBalances: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
   enableFilters?: boolean
+  gridColumns?: number
 }) => {
   const pageSize = 8
 
@@ -122,6 +124,7 @@ export const CollectiblesList = ({
           isFetchingMoreCollectibleBalances={search ? isFetchingMoreSearchBalances : isFetchingMoreBalances}
           isFetchingInitialBalances={isPending}
           onTokenClick={onTokenClick}
+          gridColumns={gridColumns}
         />
       </div>
 

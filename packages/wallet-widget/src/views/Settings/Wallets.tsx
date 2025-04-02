@@ -1,5 +1,5 @@
 import { formatAddress, useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { cardVariants, cn, Text, Button, Divider } from '@0xsequence/design-system'
+import { cardVariants, cn, Text, Divider } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 
 import { GradientAvatarList } from '../../components/GradientAvatarList'
@@ -32,7 +32,7 @@ export const SettingsWallets = () => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col justify-between" style={{ height: '100%' }}>
       <div className="flex flex-col p-4 gap-2">
         {wallets.length > 1 && (
           <ListCardSelect
@@ -72,11 +72,22 @@ export const SettingsWallets = () => {
           </ListCardSelect>
         ))}
       </div>
-      <Divider className="my-0" />
-      <div className="p-4 bg-background-primary">
-        <Button className="w-full" variant="primary" onClick={() => onClickAddWallet()}>
-          Add Wallet
-        </Button>
+
+      <div>
+        <Divider className="my-0" />
+        <div className="rounded-none m-4">
+          <div
+            className={cn(
+              cardVariants({ clickable: true }),
+              'flex justify-center items-center bg-gradient-primary rounded-full gap-2 p-3'
+            )}
+            onClick={() => onClickAddWallet()}
+          >
+            <Text color="primary" fontWeight="bold" variant="normal">
+              Add Wallet
+            </Text>
+          </div>
+        </div>
       </div>
     </div>
   )

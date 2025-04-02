@@ -24,16 +24,17 @@ export const ListCardSelect = ({
   return (
     <div
       className={cn(
-        'flex flex-row justify-between items-center p-4 bg-background-secondary w-full',
+        'flex flex-row justify-between items-center gap-2 p-4 bg-background-secondary w-full',
         !disabled && 'cursor-pointer hover:opacity-80',
-        shape === 'rounded' ? 'rounded-lg' : 'rounded-none'
+        shape === 'rounded' ? 'rounded-lg' : 'rounded-none',
+        isSelected && 'border-2 border-violet-600'
       )}
       style={{ height: '68px', ...style }}
       onClick={disabled ? undefined : onClick}
     >
       <div className="flex flex-row items-center gap-2">{children}</div>
 
-      <div className="flex flex-row gap-1 items-center">
+      <div className="flex flex-row gap-3 items-center">
         {rightChildren}
         {type === 'radio' && <RadioSelector isSelected={isSelected} />}
       </div>

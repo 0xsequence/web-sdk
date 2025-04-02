@@ -13,6 +13,7 @@ interface CollectiblesTabProps {
   isFetchingMoreCollectibleBalances: boolean
   isFetchingInitialBalances: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
+  gridColumns?: number
 }
 
 export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
@@ -21,11 +22,12 @@ export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
   hasMoreCollectibleBalances,
   isFetchingMoreCollectibleBalances,
   isFetchingInitialBalances,
-  onTokenClick
+  onTokenClick,
+  gridColumns
 }) => {
   return (
     <div>
-      <div className="grid gap-2" style={{ gridTemplateColumns: `calc(50% - 4px) calc(50% - 4px)`, width: '100%' }}>
+      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, width: '100%' }}>
         {isFetchingInitialBalances ? (
           <>
             {Array(6)
@@ -36,10 +38,7 @@ export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
           </>
         ) : (
           <>
-            {(!displayedCollectibleBalances || displayedCollectibleBalances.length === 0) &&
-            !isFetchingMoreCollectibleBalances ? (
-              <Text color="primary">No Collectibles Found</Text>
-            ) : (
+            {displayedCollectibleBalances && displayedCollectibleBalances.length > 0 && (
               <InfiniteScroll onLoad={() => fetchMoreCollectibleBalances()} hasMore={hasMoreCollectibleBalances}>
                 {displayedCollectibleBalances?.map((balance, index) => {
                   return <CollectibleTile key={index} balance={balance} onTokenClick={onTokenClick} />
@@ -49,6 +48,9 @@ export const CollectiblesTab: React.FC<CollectiblesTabProps> = ({
           </>
         )}
       </div>
+      {(!displayedCollectibleBalances || displayedCollectibleBalances.length === 0) && !isFetchingMoreCollectibleBalances && (
+        <Text color="primary">No Collectibles Found</Text>
+      )}
       {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
     </div>
   )

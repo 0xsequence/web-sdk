@@ -7,6 +7,7 @@ import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
 import { GradientAvatarList } from '../components/GradientAvatarList'
+import { ListCardNav } from '../components/ListCard'
 import { ListCardSelect } from '../components/ListCard/ListCardSelect'
 import { SlideupDrawer } from '../components/SlideupDrawer'
 import { WalletAccountGradient } from '../components/WalletAccountGradient'
@@ -39,6 +40,8 @@ export const FilterMenu = ({
     selectedWalletsObservable,
     selectedNetworksObservable,
     selectedCollectionsObservable,
+    fiatCurrency,
+    walletsWithFiatValue,
     setSelectedWallets,
     setSelectedNetworks,
     setSelectedCollections
@@ -47,6 +50,8 @@ export const FilterMenu = ({
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
+
+  const totalFiatValue = walletsWithFiatValue.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0)
 
   const { data: tokens } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
@@ -87,7 +92,7 @@ export const FilterMenu = ({
     ) : selectedCollections.length === 0 ? (
       'All'
     ) : (
-      <TokenImage src={selectedCollections[0].contractInfo?.logoURI} />
+      <TokenImage src={selectedCollections[0].contractInfo?.logoURI} symbol={selectedCollections[0].contractInfo?.name} />
     )
 
   const handleFilterChange = (filter: FilterType) => {
@@ -105,37 +110,33 @@ export const FilterMenu = ({
       }
     >
       {selectedFilter === FilterType.menu ? (
-        <div className="flex flex-col gap-3">
-          <div
-            className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
+        <div className="flex flex-col bg-background-primary gap-3">
+          <ListCardNav
+            rightChildren={
+              <Text color="primary" fontWeight="medium" variant="normal">
+                {walletsPreview}
+              </Text>
+            }
             style={{ height: '60px' }}
             onClick={() => handleFilterChange(FilterType.wallets)}
           >
             <Text color="primary" fontWeight="medium" variant="normal">
               Wallets
             </Text>
-            <div className="flex flex-row items-center gap-2">
+          </ListCardNav>
+          <ListCardNav
+            rightChildren={
               <Text color="primary" fontWeight="medium" variant="normal">
-                {walletsPreview}
+                {networksPreview}
               </Text>
-              <ChevronRightIcon color="white" />
-            </div>
-          </div>
-          <div
-            className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
+            }
             style={{ height: '60px' }}
             onClick={() => handleFilterChange(FilterType.networks)}
           >
             <Text color="primary" fontWeight="medium" variant="normal">
               Networks
             </Text>
-            <div className="flex flex-row items-center gap-2">
-              <Text color="primary" fontWeight="medium" variant="normal">
-                {networksPreview}
-              </Text>
-              <ChevronRightIcon color="white" />
-            </div>
-          </div>
+          </ListCardNav>
           {type === 'collectibles' && (
             <div
               className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
@@ -155,11 +156,17 @@ export const FilterMenu = ({
           )}
         </div>
       ) : selectedFilter === FilterType.wallets ? (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col bg-background-primary gap-3">
           {wallets.length > 1 && (
             <ListCardSelect
               key="all"
               isSelected={selectedWalletsObservable.get().length > 1}
+              rightChildren={
+                <Text color="muted" fontWeight="medium" variant="normal">
+                  {fiatCurrency.sign}
+                  {totalFiatValue}
+                </Text>
+              }
               onClick={() => setSelectedWallets([])}
             >
               <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
@@ -175,6 +182,12 @@ export const FilterMenu = ({
                 selectedWalletsObservable.get().length === 1 &&
                 selectedWalletsObservable.get().find(w => w.address === wallet.address) !== undefined
               }
+              rightChildren={
+                <Text color="muted" fontWeight="medium" variant="normal">
+                  {fiatCurrency.sign}
+                  {walletsWithFiatValue.find(w => w.accountAddress === wallet.address)?.fiatValue}
+                </Text>
+              }
               onClick={() => setSelectedWallets([wallet])}
             >
               <WalletAccountGradient
@@ -189,7 +202,7 @@ export const FilterMenu = ({
           ))}
         </div>
       ) : selectedFilter === FilterType.networks ? (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col bg-background-primary gap-3">
           {allNetworks.length > 1 && (
             <ListCardSelect
               key="all"
@@ -217,7 +230,7 @@ export const FilterMenu = ({
           ))}
         </div>
       ) : selectedFilter === FilterType.collections ? (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col bg-background-primary gap-3">
           {collections?.length && collections.length > 1 && (
             <ListCardSelect
               key="all"
@@ -238,7 +251,7 @@ export const FilterMenu = ({
               }
               onClick={() => setSelectedCollections([collection])}
             >
-              <TokenImage src={collection.contractInfo?.logoURI} />
+              <TokenImage src={collection.contractInfo?.logoURI} symbol={collection.contractInfo?.name} />
               <Text color="primary" fontWeight="medium" variant="normal">
                 {collection.contractInfo?.name}
               </Text>

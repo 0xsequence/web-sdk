@@ -26,13 +26,12 @@ export const ListCardNav = ({
     >
       <div className="flex flex-row gap-2 items-center w-full">{children}</div>
 
-      {rightChildren ||
-        (type === 'chevron' && (
-          <div className="flex flex-row gap-1 items-center">
-            {rightChildren}
-            {type === 'chevron' && <ChevronRightIcon color="white" />}
-          </div>
-        ))}
+      {(rightChildren || type === 'chevron') && (
+        <div className="flex flex-row gap-1 items-center">
+          {rightChildren}
+          {type === 'chevron' && <ChevronRightIcon color="white" size="md" />}
+        </div>
+      )}
     </div>
   )
 }

@@ -62,7 +62,7 @@ export const WalletHeader = ({
             handleButtonPress={handleAddNewWallet}
             dragHandleWidth={28}
           >
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 bg-background-primary">
               {wallets.map((wallet, index) => (
                 <SelectWalletRow
                   key={index}

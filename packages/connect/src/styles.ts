@@ -7,6 +7,7 @@ export const styles = String.raw`
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-violet-600: oklch(0.541 0.281 293.009);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -776,6 +777,9 @@ export const styles = String.raw`
   }
   .border-transparent {
     border-color: transparent;
+  }
+  .border-violet-600 {
+    border-color: var(--color-violet-600);
   }
   .border-t-primary {
     border-top-color: var(--seq-color-primary);

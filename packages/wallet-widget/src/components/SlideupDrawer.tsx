@@ -1,4 +1,4 @@
-import { Card, cardVariants, cn, Divider, Text, ChevronLeftIcon, Button } from '@0xsequence/design-system'
+import { cardVariants, cn, Divider, Text, ChevronLeftIcon, Button } from '@0xsequence/design-system'
 import { motion } from 'motion/react'
 
 import { WALLET_WIDTH } from './SequenceWalletProvider'
@@ -25,7 +25,7 @@ export const SlideupDrawer = ({
       <motion.div
         key="modal-background"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
+        animate={{ opacity: 0.6 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         style={{
@@ -34,7 +34,7 @@ export const SlideupDrawer = ({
           left: 0,
           width: '100%',
           height: '100%',
-          backgroundColor: 'black',
+          backgroundColor: 'rgba(38, 38, 38, 1)',
           zIndex: 30
         }}
         onClick={onClose}
@@ -57,8 +57,8 @@ export const SlideupDrawer = ({
         }}
         onClick={e => e.stopPropagation()}
       >
-        <Card className="bg-background-primary p-0" style={{ flex: 1 }}>
-          <Card className={cn('flex flex-row rounded-none pt-2', onBackPress ? 'justify-between' : 'justify-center')}>
+        <div className="bg-background-primary p-0 rounded-xl" style={{ flex: 1 }}>
+          <div className={`flex flex-row rounded-none p-4 ${onBackPress ? 'justify-between' : 'justify-center'}`}>
             {onBackPress && (
               <Button variant="text" className="pt-2" onClick={onBackPress}>
                 <ChevronLeftIcon color="white" />
@@ -69,31 +69,34 @@ export const SlideupDrawer = ({
                 <div className="rounded-full" style={{ width: dragHandleWidth, height: '4px', backgroundColor: 'white' }} />
               </div>
               <div className="flex flex-col items-center w-full rounded-none pt-2">
-                <Text color="primary" fontWeight="medium" variant="normal" style={{ display: 'flex', justifyContent: 'center' }}>
+                <Text color="primary" fontWeight="bold" variant="medium" style={{ display: 'flex', justifyContent: 'center' }}>
                   {label}
                 </Text>
               </div>
             </div>
             {onBackPress && <div style={{ width: '20px' }}></div>}
-          </Card>
-          <Card
-            className="rounded-none bg-background-raised"
+          </div>
+          <div
+            className="rounded-none bg-background-raised m-4"
             style={{ height: 'fit-content', maxHeight: '55vh', overflowY: 'auto' }}
           >
             {children}
-          </Card>
+          </div>
           <Divider className="my-0" />
-          <Card className="rounded-none">
+          <div className="rounded-none m-4">
             <div
-              className={cn(cardVariants({ clickable: true }), 'flex justify-center items-center rounded-full gap-2 p-3')}
+              className={cn(
+                cardVariants({ clickable: true }),
+                'flex justify-center items-center bg-gradient-primary rounded-full gap-2 p-3'
+              )}
               onClick={handleButtonPress}
             >
               <Text color="primary" fontWeight="bold" variant="normal">
                 {buttonLabel}
               </Text>
             </div>
-          </Card>
-        </Card>
+          </div>
+        </div>
       </motion.div>
     </>
   )
