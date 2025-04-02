@@ -53,7 +53,7 @@ export const FilterMenu = ({
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
 
-  const totalFiatValue = fiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0)
+  const totalFiatValue = fiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0).toFixed(2)
 
   const { data: tokens } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,

@@ -75,13 +75,15 @@ export const IntegratedWallet = () => {
 
   const isPending = isTokenBalancesPending || isCoinPricesPending || isConversionRatePending
 
-  const totalFiatValue = fiatWalletsMap.reduce((acc, wallet) => {
-    if (selectedWallets.some(selectedWallet => selectedWallet.address === wallet.accountAddress)) {
-      const walletFiatValue = Number(wallet.fiatValue)
-      return acc + walletFiatValue
-    }
-    return acc
-  }, 0)
+  const totalFiatValue = fiatWalletsMap
+    .reduce((acc, wallet) => {
+      if (selectedWallets.some(selectedWallet => selectedWallet.address === wallet.accountAddress)) {
+        const walletFiatValue = Number(wallet.fiatValue)
+        return acc + walletFiatValue
+      }
+      return acc
+    }, 0)
+    .toFixed(2)
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
     const isHigherFiat =
