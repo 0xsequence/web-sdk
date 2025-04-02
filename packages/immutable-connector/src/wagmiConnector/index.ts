@@ -1,6 +1,5 @@
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
-import { type IMXProvider } from '@imtbl/x-provider'
 import { type Address } from 'viem'
 import { createConnector } from 'wagmi'
 
