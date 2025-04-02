@@ -18,7 +18,6 @@ const getSwapQuoteArgs = {
 
 describe('useGetSwapQuoteV2', () => {
   it('should return data with a balance', async () => {
-
     const { result } = renderHook(() => useGetSwapQuote(getSwapQuoteArgs), {
       wrapper: createWrapper()
     })
