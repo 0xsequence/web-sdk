@@ -65,6 +65,16 @@ export interface UseLinkedWalletsResult {
   clearCache: () => void
 }
 
+// --- Listener pattern for cross-instance updates ---
+const linkedWalletsListeners: Set<() => Promise<void>> = new Set()
+const notifyLinkedWalletsListeners = () => {
+  // Use setTimeout to ensure notification happens after the current execution context,
+  // allowing React state updates to potentially settle before listeners run.
+  setTimeout(() => {
+    linkedWalletsListeners.forEach(listener => listener())
+  }, 0)
+}
+
 export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}): UseLinkedWalletsResult => {
   const apiClient = useAPIClient()
   const [data, setData] = useState<LinkedWallet[] | undefined>(undefined)
@@ -99,13 +109,20 @@ export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedW
     }
   }, [apiClient, args.parentWalletAddress, args.signatureChainId, options.enabled])
 
-  // Fetch on mount and when dependencies change
+  // Fetch on mount, when dependencies change, and register/unregister listener
   useEffect(() => {
+    // Register the listener
+    linkedWalletsListeners.add(fetchData)
+
+    // Initial fetch
     fetchData()
+
+    // Cleanup: remove listener and abort ongoing request
     return () => {
+      linkedWalletsListeners.delete(fetchData)
       abortControllerRef.current?.abort()
     }
-  }, [fetchData])
+  }, [fetchData]) // Keep dependency array as is, fetchData is stable due to useCallback
 
   const clearCache = useCallback(() => {
     localStorage.removeItem(createStorageKey(args))
@@ -114,6 +131,8 @@ export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedW
   const refetch = async () => {
     clearCache()
     await fetchData()
+    // Notify other hook instances after successful fetch
+    notifyLinkedWalletsListeners()
   }
 
   return {
