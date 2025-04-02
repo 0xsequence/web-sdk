@@ -16,11 +16,6 @@ export interface SettingsCollection {
   }
 }
 
-export interface WalletsWithFiatValue {
-  accountAddress: string
-  fiatValue: string
-}
-
 interface Settings {
   hideCollectibles: boolean
   hideUnlistedTokens: boolean
@@ -29,21 +24,18 @@ interface Settings {
   allNetworks: number[]
   selectedWallets: ConnectedWallet[]
   selectedCollections: SettingsCollection[]
-  walletsWithFiatValue: WalletsWithFiatValue[]
   hideCollectiblesObservable: Observable<boolean>
   hideUnlistedTokensObservable: Observable<boolean>
   fiatCurrencyObservable: Observable<FiatCurrency>
   selectedNetworksObservable: Observable<number[]>
   selectedWalletsObservable: Observable<ConnectedWallet[]>
   selectedCollectionsObservable: Observable<SettingsCollection[]>
-  walletsWithFiatValueObservable: Observable<WalletsWithFiatValue[]>
   setFiatCurrency: (newFiatCurrency: FiatCurrency) => void
   setHideCollectibles: (newState: boolean) => void
   setHideUnlistedTokens: (newState: boolean) => void
   setSelectedWallets: (newWallets: ConnectedWallet[]) => void
   setSelectedNetworks: (newNetworks: number[]) => void
   setSelectedCollections: (newCollections: SettingsCollection[]) => void
-  setWalletsWithFiatValue: (newWalletsWithFiatValue: WalletsWithFiatValue[]) => void
 }
 
 type SettingsItems = {
@@ -53,7 +45,6 @@ type SettingsItems = {
   selectedWalletsObservable: MutableObservable<ConnectedWallet[]>
   selectedNetworksObservable: MutableObservable<number[]>
   selectedCollectionsObservable: MutableObservable<SettingsCollection[]>
-  walletsWithFiatValueObservable: MutableObservable<WalletsWithFiatValue[]>
 }
 
 let settingsObservables: SettingsItems | null = null
@@ -114,7 +105,6 @@ export const useSettings = (): Settings => {
     let selectedWallets: ConnectedWallet[] = allWallets
     let selectedNetworks: number[] = allNetworks
     let selectedCollections: SettingsCollection[] = []
-    const walletsWithFiatValue: WalletsWithFiatValue[] = []
 
     try {
       const settingsStorage = localStorage.getItem(LocalStorageKey.Settings)
@@ -173,8 +163,7 @@ export const useSettings = (): Settings => {
       fiatCurrencyObservable: observable(fiatCurrency),
       selectedWalletsObservable: observable(selectedWallets),
       selectedNetworksObservable: observable(selectedNetworks),
-      selectedCollectionsObservable: observable(selectedCollections),
-      walletsWithFiatValueObservable: observable(walletsWithFiatValue)
+      selectedCollectionsObservable: observable(selectedCollections)
     }
   }
 
@@ -207,8 +196,7 @@ export const useSettings = (): Settings => {
     fiatCurrencyObservable,
     selectedWalletsObservable,
     selectedNetworksObservable,
-    selectedCollectionsObservable,
-    walletsWithFiatValueObservable
+    selectedCollectionsObservable
   } = settingsObservables
 
   const setHideUnlistedTokens = (newState: boolean) => {
@@ -257,11 +245,6 @@ export const useSettings = (): Settings => {
     }
   }
 
-  const setWalletsWithFiatValue = (newWalletsWithFiatValue: WalletsWithFiatValue[]) => {
-    walletsWithFiatValueObservable.set(newWalletsWithFiatValue)
-    updateLocalStorage()
-  }
-
   const updateLocalStorage = () => {
     const newSettings = {
       hideUnlistedTokens: hideUnlistedTokensObservable.get(),
@@ -269,8 +252,7 @@ export const useSettings = (): Settings => {
       fiatCurrency: fiatCurrencyObservable.get(),
       selectedWallets: selectedWalletsObservable.get(),
       selectedNetworks: selectedNetworksObservable.get(),
-      selectedCollections: selectedCollectionsObservable.get(),
-      walletsWithFiatValue: walletsWithFiatValueObservable.get()
+      selectedCollections: selectedCollectionsObservable.get()
     }
     console.log('settings updated', newSettings)
     localStorage.setItem(LocalStorageKey.Settings, JSON.stringify(newSettings))
@@ -284,20 +266,17 @@ export const useSettings = (): Settings => {
     selectedNetworks: selectedNetworksObservable.get(),
     allNetworks: allNetworks,
     selectedCollections: selectedCollectionsObservable.get(),
-    walletsWithFiatValue: walletsWithFiatValueObservable.get(),
     hideUnlistedTokensObservable,
     hideCollectiblesObservable,
     fiatCurrencyObservable,
     selectedWalletsObservable,
     selectedNetworksObservable,
     selectedCollectionsObservable,
-    walletsWithFiatValueObservable,
     setFiatCurrency,
     setHideCollectibles,
     setHideUnlistedTokens,
     setSelectedWallets,
     setSelectedNetworks,
-    setSelectedCollections,
-    setWalletsWithFiatValue
+    setSelectedCollections
   }
 }

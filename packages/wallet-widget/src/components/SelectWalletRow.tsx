@@ -2,6 +2,7 @@ import { formatAddress, ConnectedWallet } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 
 import { useSettings } from '../hooks'
+import { useFiatWalletsMap } from '../hooks/useFiatWalletsMap'
 import { getConnectorLogo } from '../utils/wallets'
 
 import { ListCardSelect } from './ListCard'
@@ -16,14 +17,15 @@ export const SelectWalletRow = ({
   setActiveWallet: (address: string) => void
   onClose: () => void
 }) => {
-  const { fiatCurrency, walletsWithFiatValue } = useSettings()
+  const { fiatCurrency } = useSettings()
+  const { fiatWalletsMap } = useFiatWalletsMap()
 
-  const onSelectWallet = () => {
+  function onSelectWallet() {
     setActiveWallet(wallet.address)
     onClose()
   }
 
-  const fiatValue = walletsWithFiatValue.find(w => w.accountAddress === wallet.address)?.fiatValue
+  const fiatValue = fiatWalletsMap.find(w => w.accountAddress === wallet.address)?.fiatValue
 
   return (
     <ListCardSelect
