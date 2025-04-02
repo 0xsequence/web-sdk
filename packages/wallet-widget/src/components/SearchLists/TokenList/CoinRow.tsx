@@ -24,7 +24,7 @@ export const CoinRow = ({ balance, onTokenClick }: BalanceItemProps) => {
 
   const quantity = useMemo(() => {
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
-    const bal = formatUnits(BigInt(balance.balance), decimals || 0)
+    const bal = formatUnits(BigInt(balance.balance), decimals || 18)
     const displayBalance = formatDisplay(bal)
     const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
 
@@ -33,7 +33,7 @@ export const CoinRow = ({ balance, onTokenClick }: BalanceItemProps) => {
 
   const value = useMemo(() => {
     const decimals = isNativeToken ? nativeTokenInfo.decimals : balance?.contractInfo?.decimals
-    const bal = formatUnits(BigInt(balance.balance), decimals || 0)
+    const bal = formatUnits(BigInt(balance.balance), decimals || 18)
     return `${fiatCurrency.sign}${(balance.price.value * Number(bal)).toFixed(2)}`
   }, [balance, fiatCurrency])
 

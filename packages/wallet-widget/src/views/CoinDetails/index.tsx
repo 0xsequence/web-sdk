@@ -97,7 +97,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
         balance: dataCoinBalance,
         prices: dataCoinPrices || [],
         conversionRate,
-        decimals: decimals || 0
+        decimals: decimals || 18
       })
     : '0'
 
