@@ -30,7 +30,7 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "@0xsequence/api": ">=2.2.13",
+    "@0xsequence/api": "^2.3.4",
     "@0xsequence/indexer": ">=2.2.13",
     "@0xsequence/metadata": ">=2.2.13",
     "@0xsequence/network": ">=2.2.13",
@@ -39,7 +39,7 @@
     "react-dom": ">= 17"
   },
   "devDependencies": {
-    "@0xsequence/api": "^2.2.13",
+    "@0xsequence/api": "^2.3.4",
     "@0xsequence/indexer": "^2.2.13",
     "@0xsequence/metadata": "^2.2.13",
     "@0xsequence/network": "^2.2.13",

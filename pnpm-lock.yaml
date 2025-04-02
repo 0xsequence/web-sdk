@@ -254,8 +254,8 @@ importers:
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/api':
-        specifier: '>= 2.2.13'
-        version: 2.2.13
+        specifier: ^2.3.4
+        version: 2.3.4
       '@0xsequence/design-system':
         specifier: ^2.0.11
         version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -327,8 +327,8 @@ importers:
   packages/connect:
     dependencies:
       '@0xsequence/api':
-        specifier: '>= 2.2.13'
-        version: 2.2.13
+        specifier: ^2.3.4
+        version: 2.3.4
       '@0xsequence/auth':
         specifier: '>= 2.2.13'
         version: 2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -418,8 +418,8 @@ importers:
   packages/hooks:
     devDependencies:
       '@0xsequence/api':
-        specifier: ^2.2.13
-        version: 2.2.13
+        specifier: ^2.3.4
+        version: 2.3.4
       '@0xsequence/indexer':
         specifier: ^2.2.13
         version: 2.2.13
@@ -469,8 +469,8 @@ importers:
   packages/wallet-widget:
     dependencies:
       '@0xsequence/api':
-        specifier: '>= 2.2.13'
-        version: 2.2.13
+        specifier: ^2.3.4
+        version: 2.3.4
       '@0xsequence/design-system':
         specifier: ^2.0.11
         version: 2.0.11(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(motion@12.4.10(@emotion/is-prop-valid@0.8.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -547,6 +547,9 @@ packages:
 
   '@0xsequence/api@2.2.13':
     resolution: {integrity: sha512-UmFMdLRCOfUGT2WqXzHE91sm+XU7eossdoKZ74W/F1ZTBU8XRa4DldQ0alKjff5x4Hxe/wIjppBPE9pQUzGYxA==}
+
+  '@0xsequence/api@2.3.4':
+    resolution: {integrity: sha512-C1qS+6YhKopoE54QonmfOqPUAi8djeoq4isAgPg0wVFb+qlMLCous63m0KqQjj7o4eCa9qOqn9+86lhTsLtaFw==}
 
   '@0xsequence/auth@2.2.13':
     resolution: {integrity: sha512-3UQ6/zDhrNO5BVsgiLwCfQq4Nmbd1W0Ync/FNug8Yum1i9r2il54bUZRtauct6uMUaotAqNG4l/nzy105v93QQ==}
@@ -6534,6 +6537,8 @@ snapshots:
       ethers: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   '@0xsequence/api@2.2.13': {}
+
+  '@0xsequence/api@2.3.4': {}
 
   '@0xsequence/auth@2.2.13(ethers@6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:

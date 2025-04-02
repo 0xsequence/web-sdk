@@ -40,7 +40,7 @@
     "motion": "^12.3.1"
   },
   "peerDependencies": {
-    "@0xsequence/api": ">= 2.2.13",
+    "@0xsequence/api": "^2.3.4",
     "@0xsequence/indexer": ">= 2.2.13",
     "@0xsequence/metadata": ">= 2.2.13",
     "@0xsequence/network": ">= 2.2.13",
