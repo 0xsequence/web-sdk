@@ -6,20 +6,21 @@ import { ChainId } from '@0xsequence/network'
 import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
-import { GradientAvatarList } from '../components/GradientAvatarList'
-import { ListCardNav } from '../components/ListCard'
-import { ListCardSelect } from '../components/ListCard/ListCardSelect'
-import { SlideupDrawer } from '../components/SlideupDrawer'
-import { WalletAccountGradient } from '../components/WalletAccountGradient'
 import { useSettings } from '../hooks'
 import { useFiatWalletsMap } from '../hooks/useFiatWalletsMap'
 import { getConnectorLogo } from '../utils/wallets'
 
+import { GradientAvatarList } from './GradientAvatarList'
+import { ListCardNav } from './ListCard'
+import { ListCardSelect } from './ListCard/ListCardSelect'
+import { SlideupDrawer } from './SlideupDrawer'
+import { WalletAccountGradient } from './WalletAccountGradient'
+
 enum FilterType {
   menu = 'Filters',
-  wallets = 'Select a Wallet',
-  networks = 'Select a Network',
-  collections = 'Select a Collection'
+  wallets = 'Select active Wallets',
+  networks = 'Select active Networks',
+  collections = 'Select active Collections'
 }
 
 export const FilterMenu = ({

@@ -5,7 +5,7 @@ import { AnimatePresence } from 'motion/react'
 import { useState, useMemo } from 'react'
 
 import { TokenBalanceWithPrice, useGetMoreBalances } from '../../utils'
-import { FilterMenu } from '../../views/FilterMenu'
+import { FilterMenu } from '../FilterMenu'
 
 import { CollectiblesTab } from './CollectiblesList/CollectiblesTab'
 

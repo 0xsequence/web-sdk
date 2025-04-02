@@ -12,7 +12,8 @@ import { History, Navigation, NavigationContextProvider, WalletModalContextProvi
 import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider'
 import { getHeader, getContent } from './utils'
 
-export const WALLET_WIDTH = 460
+export const WALLET_WIDTH = '460px'
+export const WALLET_HEIGHT = 'min(800px, 90vh)'
 
 export type SequenceWalletProviderProps = {
   children: React.ReactNode

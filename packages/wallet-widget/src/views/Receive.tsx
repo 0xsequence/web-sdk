@@ -1,18 +1,21 @@
-import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
-import { Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
+import { getNetwork } from '@0xsequence/connect'
+import { Button, Text, CopyIcon, ShareIcon, Image, Card } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { useAccount, useConfig } from 'wagmi'
+import { useAccount } from 'wagmi'
 
+import { NetworkSelect } from '../components/NetworkSelect'
 import { HEADER_HEIGHT } from '../constants'
+
+const isVowel = (char: string) => ['a', 'e', 'i', 'o', 'u'].includes(char.toLowerCase())
 
 export const Receive = () => {
   const { address, chain } = useAccount()
-  const { chains } = useConfig()
   const [isCopied, setCopied] = useState<boolean>(false)
 
-  const nativeTokenInfo = getNativeTokenInfoByChainId(chain?.id || 1, chains)
+  const networkInfo = getNetwork(chain?.id || 1)
+  const networkName = networkInfo.title || networkInfo.name
 
   useEffect(() => {
     if (isCopied) {
@@ -34,7 +37,10 @@ export const Receive = () => {
 
   return (
     <div style={{ paddingTop: HEADER_HEIGHT }}>
-      <div className="flex p-5 pt-3 flex-col justify-center items-center gap-4">
+      <div className="flex flex-col justify-center items-center p-4  gap-4">
+        <Card className="p-0 w-fit">
+          <NetworkSelect />
+        </Card>
         <div className="flex mt-1 w-fit bg-white rounded-xl items-center justify-center p-4">
           <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
         </div>
@@ -43,7 +49,7 @@ export const Receive = () => {
             <Text className="text-center leading-[inherit]" variant="medium" color="primary" style={{ fontWeight: '700' }}>
               My Wallet
             </Text>
-            <Image className="w-5" src={nativeTokenInfo.logoURI} alt="icon" />
+            <Image className="w-5 rounded-xs" src={networkInfo.logoURI} alt="icon" />
           </div>
           <div className="mt-2" style={{ maxWidth: '180px', textAlign: 'center' }}>
             <Text
@@ -74,7 +80,7 @@ export const Receive = () => {
               overflowWrap: 'anywhere'
             }}
           >
-            {`This is a ${nativeTokenInfo.name} address. Please only send assets on the ${nativeTokenInfo.name} network.`}
+            {`This is a${isVowel(networkName[0]) ? 'n' : ''} ${networkName} address. Please only send assets on the ${networkName} network.`}
           </Text>
         </div>
       </div>
