@@ -12,6 +12,7 @@ import { ListCardSelect } from '../components/ListCard/ListCardSelect'
 import { SlideupDrawer } from '../components/SlideupDrawer'
 import { WalletAccountGradient } from '../components/WalletAccountGradient'
 import { useSettings } from '../hooks'
+import { useFiatWalletsMap } from '../hooks/useFiatWalletsMap'
 import { getConnectorLogo } from '../utils/wallets'
 
 enum FilterType {
@@ -41,17 +42,17 @@ export const FilterMenu = ({
     selectedNetworksObservable,
     selectedCollectionsObservable,
     fiatCurrency,
-    walletsWithFiatValue,
     setSelectedWallets,
     setSelectedNetworks,
     setSelectedCollections
   } = useSettings()
+  const { fiatWalletsMap } = useFiatWalletsMap()
 
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
 
-  const totalFiatValue = walletsWithFiatValue.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0)
+  const totalFiatValue = fiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0)
 
   const { data: tokens } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
@@ -185,7 +186,7 @@ export const FilterMenu = ({
               rightChildren={
                 <Text color="muted" fontWeight="medium" variant="normal">
                   {fiatCurrency.sign}
-                  {walletsWithFiatValue.find(w => w.accountAddress === wallet.address)?.fiatValue}
+                  {fiatWalletsMap.find(w => w.accountAddress === wallet.address)?.fiatValue}
                 </Text>
               }
               onClick={() => setSelectedWallets([wallet])}

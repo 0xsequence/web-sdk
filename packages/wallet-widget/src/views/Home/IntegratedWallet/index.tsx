@@ -16,8 +16,7 @@ import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import { useObservable } from 'micro-observables'
 import { AnimatePresence } from 'motion/react'
-import { useEffect, useMemo, useState } from 'react'
-import { getAddress } from 'viem'
+import { useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { StackedIconTag } from '../../../components/IconWrappers/StackedIconTag'
@@ -26,7 +25,8 @@ import { ListCardNavTable } from '../../../components/ListCardTable/ListCardNavT
 import { SelectWalletRow } from '../../../components/SelectWalletRow'
 import { SlideupDrawer } from '../../../components/SlideupDrawer'
 import { WalletAccountGradient } from '../../../components/WalletAccountGradient'
-import { useNavigation, useSettings, WalletsWithFiatValue } from '../../../hooks'
+import { useNavigation, useSettings } from '../../../hooks'
+import { useFiatWalletsMap } from '../../../hooks/useFiatWalletsMap'
 import { computeBalanceFiat } from '../../../utils'
 import { getConnectorLogo } from '../../../utils/wallets'
 import { FilterMenu } from '../../FilterMenu'
@@ -35,15 +35,9 @@ import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 
 export const IntegratedWallet = () => {
   const { setNavigation } = useNavigation()
-  const {
-    selectedWalletsObservable,
-    selectedNetworks,
-    hideUnlistedTokens,
-    fiatCurrency,
-    selectedCollections,
-    walletsWithFiatValue,
-    setWalletsWithFiatValue
-  } = useSettings()
+  const { selectedWalletsObservable, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
+  const { fiatWalletsMap } = useFiatWalletsMap()
+
   const selectedWallets = useObservable(selectedWalletsObservable)
   const { chains } = useConfig()
   const { address: accountAddress } = useAccount()
@@ -77,38 +71,11 @@ export const IntegratedWallet = () => {
     }))
   )
 
-  const { data: conversionRate = 1, isPending: isConversionRatePending } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate, isPending: isConversionRatePending } = useGetExchangeRate(fiatCurrency.symbol)
 
   const isPending = isTokenBalancesPending || isCoinPricesPending || isConversionRatePending
 
-  useEffect(() => {
-    if (!isTokenBalancesPending && coinBalancesUnordered.length > 0) {
-      setWalletsWithFiatValue(
-        wallets.map(wallet => {
-          const walletBalances = coinBalancesUnordered.filter(b => getAddress(b.accountAddress) === getAddress(wallet.address))
-          const walletFiatValue = walletBalances.reduce((acc, coin) => {
-            return (
-              acc +
-              Number(
-                computeBalanceFiat({
-                  balance: coin,
-                  prices: coinPrices,
-                  conversionRate,
-                  decimals: coin.contractInfo?.decimals || 18
-                })
-              )
-            )
-          }, 0)
-          return {
-            accountAddress: wallet.address,
-            fiatValue: walletFiatValue.toFixed(2)
-          } as WalletsWithFiatValue
-        })
-      )
-    }
-  }, [isTokenBalancesPending])
-
-  const totalFiatValue = walletsWithFiatValue.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0)
+  const totalFiatValue = fiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0)
 
   const coinBalances = coinBalancesUnordered.sort((a, b) => {
     const isHigherFiat =
@@ -116,7 +83,7 @@ export const IntegratedWallet = () => {
         computeBalanceFiat({
           balance: b,
           prices: coinPrices,
-          conversionRate,
+          conversionRate: conversionRate || 1,
           decimals: b.contractInfo?.decimals || 18
         })
       ) -
@@ -124,7 +91,7 @@ export const IntegratedWallet = () => {
         computeBalanceFiat({
           balance: a,
           prices: coinPrices,
-          conversionRate,
+          conversionRate: conversionRate || 1,
           decimals: a.contractInfo?.decimals || 18
         })
       )

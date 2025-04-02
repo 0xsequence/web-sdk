@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
 
+import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider'
 import { getHeader, getContent } from './utils'
 
 export const WALLET_WIDTH = 460
@@ -86,36 +87,38 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
-        <ShadowRoot theme={theme}>
-          <AnimatePresence>
-            {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
-              <Modal
-                contentProps={{
-                  style: {
-                    maxWidth: WALLET_WIDTH,
-                    height: 'fit-content',
-                    ...getModalPositionCss(position),
-                    scrollbarColor: 'gray black',
-                    scrollbarWidth: 'thin'
-                  }
-                }}
-                scroll={false}
-                onClose={() => setOpenWalletModal(false)}
-              >
-                <div id="sequence-kit-wallet-content">
-                  {getHeader(navigation)}
+        <FiatWalletsMapProvider>
+          <ShadowRoot theme={theme}>
+            <AnimatePresence>
+              {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
+                <Modal
+                  contentProps={{
+                    style: {
+                      maxWidth: WALLET_WIDTH,
+                      height: 'fit-content',
+                      ...getModalPositionCss(position),
+                      scrollbarColor: 'gray black',
+                      scrollbarWidth: 'thin'
+                    }
+                  }}
+                  scroll={false}
+                  onClose={() => setOpenWalletModal(false)}
+                >
+                  <div id="sequence-kit-wallet-content">
+                    {getHeader(navigation)}
 
-                  {displayScrollbar ? (
-                    <Scroll style={{ paddingTop: paddingTop, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
-                  ) : (
-                    getContent(navigation)
-                  )}
-                </div>
-              </Modal>
-            )}
-          </AnimatePresence>
-        </ShadowRoot>
-        {children}
+                    {displayScrollbar ? (
+                      <Scroll style={{ paddingTop: paddingTop, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
+                    ) : (
+                      getContent(navigation)
+                    )}
+                  </div>
+                </Modal>
+              )}
+            </AnimatePresence>
+          </ShadowRoot>
+          {children}
+        </FiatWalletsMapProvider>
       </NavigationContextProvider>
     </WalletModalContextProvider>
   )
