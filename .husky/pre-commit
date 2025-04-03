@@ -1,3 +1,2 @@
 pnpm run typecheck
-pnpm run lint
-pnpm run prettier:check
+pnpm format
