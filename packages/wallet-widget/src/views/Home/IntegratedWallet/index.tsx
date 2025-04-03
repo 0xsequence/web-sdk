@@ -30,6 +30,7 @@ import { useNavigation, useSettings } from '../../../hooks'
 import { useFiatWalletsMap } from '../../../hooks/useFiatWalletsMap'
 import { computeBalanceFiat } from '../../../utils'
 import { getConnectorLogo } from '../../../utils/wallets'
+import { CoinSelect } from '../../Swap/CoinSelect'
 
 import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 

@@ -106,6 +106,12 @@ export const useGetSwapQuote = (getSwapQuoteArgs: GetSwapQuoteV2Args, options?: 
     retry: options?.retry ?? true,
     staleTime: time.oneMinute * 1,
     enabled:
-      !options?.disabled || !getSwapQuoteArgs.userAddress || !getSwapQuoteArgs.chainId || !getSwapQuoteArgs.buyCurrencyAddress
+      !options?.disabled &&
+      !!getSwapQuoteArgs.userAddress &&
+      !!getSwapQuoteArgs.buyCurrencyAddress &&
+      !!getSwapQuoteArgs.sellCurrencyAddress &&
+      getSwapQuoteArgs.buyAmount !== '0' &&
+      !!getSwapQuoteArgs.chainId &&
+      !!getSwapQuoteArgs.includeApprove
   })
 }

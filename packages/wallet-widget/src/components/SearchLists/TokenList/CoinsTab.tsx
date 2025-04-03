@@ -25,7 +25,7 @@ export const CoinsTab: React.FC<CoinsTabProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-2">
         {isFetchingInitialBalances ? (
           <>
             {Array(7)

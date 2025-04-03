@@ -1,5 +1,9 @@
 import { cardVariants, cn, Divider, Text, ChevronLeftIcon, Button } from '@0xsequence/design-system'
 import { motion } from 'motion/react'
+import { useContext } from 'react'
+import ReactDOM from 'react-dom'
+
+import { WalletContentRefContext } from '../contexts/WalletContentRef'
 
 import { WALLET_WIDTH } from './SequenceWalletProvider'
 
@@ -20,7 +24,13 @@ export const SlideupDrawer = ({
   handleButtonPress?: () => void
   onBackPress?: () => void
 }) => {
-  return (
+  const walletContentRef = useContext(WalletContentRefContext)
+
+  if (!walletContentRef.current) {
+    return null
+  }
+
+  return ReactDOM.createPortal(
     <>
       <motion.div
         key="modal-background"
@@ -37,7 +47,10 @@ export const SlideupDrawer = ({
           backgroundColor: 'rgba(38, 38, 38, 1)',
           zIndex: 30
         }}
-        onClick={onClose}
+        onClick={e => {
+          e.stopPropagation()
+          onClose()
+        }}
       />
       <motion.div
         key="modal-content"
@@ -45,6 +58,13 @@ export const SlideupDrawer = ({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: '100%', opacity: 0 }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        onDragEnd={(event, info) => {
+          if (info.offset.y > 100) {
+            onClose()
+          }
+        }}
         style={{
           maxWidth: WALLET_WIDTH,
           position: 'fixed',
@@ -66,7 +86,10 @@ export const SlideupDrawer = ({
             )}
             <div className="flex flex-col">
               <div className="flex justify-center items-center rounded-none p-0">
-                <div className="rounded-full" style={{ width: dragHandleWidth, height: '4px', backgroundColor: 'white' }} />
+                <div
+                  className="rounded-full"
+                  style={{ width: dragHandleWidth, height: '4px', backgroundColor: 'white', cursor: 'grab' }}
+                />
               </div>
               <div className="flex flex-col items-center w-full rounded-none pt-2">
                 <Text color="primary" fontWeight="bold" variant="medium" style={{ display: 'flex', justifyContent: 'center' }}>
@@ -77,7 +100,7 @@ export const SlideupDrawer = ({
             {onBackPress && <div style={{ width: '20px' }}></div>}
           </div>
           <div
-            className="rounded-none bg-background-raised m-4"
+            className="rounded-none bg-background-primary m-4"
             style={{ height: 'fit-content', maxHeight: '55vh', overflowY: 'auto' }}
           >
             {children}
@@ -98,6 +121,7 @@ export const SlideupDrawer = ({
           </div>
         </div>
       </motion.div>
-    </>
+    </>,
+    walletContentRef.current
   )
 }

@@ -6,7 +6,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount } from 'wagmi'
 
 import { NetworkSelect } from '../components/NetworkSelect'
-import { HEADER_HEIGHT } from '../constants'
+import { WALLET_WIDTH } from '../components/SequenceWalletProvider'
+import { HEADER_HEIGHT_WITH_LABEL } from '../constants'
 
 const isVowel = (char: string) => ['a', 'e', 'i', 'o', 'u'].includes(char.toLowerCase())
 
@@ -36,11 +37,9 @@ export const Receive = () => {
   }
 
   return (
-    <div style={{ paddingTop: HEADER_HEIGHT }}>
-      <div className="flex flex-col justify-center items-center p-4  gap-4">
-        <Card className="p-0 w-fit">
-          <NetworkSelect />
-        </Card>
+    <div style={{ paddingTop: HEADER_HEIGHT_WITH_LABEL }}>
+      <div className="flex flex-col justify-center items-center px-4 pb-4 gap-4">
+        <NetworkSelect />
         <div className="flex mt-1 w-fit bg-white rounded-xl items-center justify-center p-4">
           <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
         </div>
