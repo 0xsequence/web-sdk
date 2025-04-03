@@ -15,12 +15,28 @@ interface Balance {
   balance: string
 }
 
+/**
+ * Type representing a swap price with additional currency information
+ *
+ * @property price - The swap price information from the API
+ * @property info - Contract information for the currency, including name, symbol, decimals, etc.
+ * @property balance - The user's balance of this currency
+ */
 export type SwapPricesWithCurrencyInfo = {
   price: SwapPrice
   info: ContractInfo | undefined
   balance: Balance
 }
 
+/**
+ * Arguments for the useGetSwapPrices hook
+ *
+ * @property userAddress - The address of the user's wallet
+ * @property buyCurrencyAddress - The address of the currency to buy
+ * @property buyAmount - The amount of currency to buy (in base units)
+ * @property chainId - The chain ID where the swap will occur
+ * @property withContractInfo - Whether to fetch additional contract info for each currency
+ */
 export interface UseGetSwapPricesArgs {
   userAddress: string
   buyCurrencyAddress: string
@@ -138,7 +154,59 @@ const getSwapPrices = async (
 }
 
 /**
- * @description Gets the Swap Prices for a given currency
+ * Hook to fetch available swap prices for a given currency pair.
+ *
+ * This hook provides functionality to:
+ * - Get swap prices for a specified currency and amount
+ * - Fetch token information and balances for available swap options
+ * - Support both native tokens and ERC20 tokens
+ * - Handle currency conversions and price formatting
+ *
+ * The hook automatically handles:
+ * - Native token address normalization (between 0x0 and 0xEEE...)
+ * - Contract information fetching (name, symbol, decimals, etc.)
+ * - Error handling for failed API calls or balance fetches
+ *
+ * Go to {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSwapPrices} for more detailed documentation.
+ *
+ * @param args - Configuration object for the swap prices query {@link UseGetSwapPricesArgs}
+ * @param options - Optional configuration for the hook behavior {@link HooksOptions}
+ *
+ * @returns A React Query result object containing:
+ * - data: Array of {@link SwapPricesWithCurrencyInfo} objects
+ * - isLoading: Whether the query is in progress
+ * - isError: Whether an error occurred
+ * - error: Any error that occurred
+ * - Other standard React Query properties
+ *
+ * @example
+ * ```tsx
+ * import { useGetSwapPrices } from '@0xsequence/hooks'
+ *
+ * function SwapComponent() {
+ *   const { data: swapPrices, isLoading } = useGetSwapPrices({
+ *     userAddress: '0x123...',
+ *     buyCurrencyAddress: '0x456...',
+ *     buyAmount: '1000000000000000000', // 1 token in base units
+ *     chainId: 1,
+ *     withContractInfo: true
+ *   })
+ *
+ *   if (isLoading) return <div>Loading...</div>
+ *
+ *   return (
+ *     <div>
+ *       {swapPrices?.map(swap => (
+ *         <div key={swap.info?.address}>
+ *           Token: {swap.info?.symbol}
+ *           Price: {swap.price.price}
+ *           Balance: {swap.balance.balance}
+ *         </div>
+ *       ))}
+ *     </div>
+ *   )
+ * }
+ * ```
  */
 export const useGetSwapPrices = (args: UseGetSwapPricesArgs, options?: HooksOptions) => {
   const apiClient = useAPIClient()
