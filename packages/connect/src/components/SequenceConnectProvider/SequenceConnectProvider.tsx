@@ -183,11 +183,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               ...getModalPositionCss(position)
                             }
                           }}
-                          rootProps={{
-                            style: {
-                              zIndex: 30
-                            }
-                          }}
                           onClose={() => setOpenConnectModal(false)}
                         >
                           <Connect onClose={() => setOpenConnectModal(false)} emailConflictInfo={emailConflictInfo} {...props} />

@@ -4,10 +4,11 @@ import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout
 import { getModalPositionCss, useTheme, ShadowRoot, useOpenConnectModal } from '@0xsequence/connect'
 import { Modal, Scroll } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
+import { WalletContentRefProvider, WalletContentRefContext } from '../../contexts/WalletContentRef'
 
 import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider'
 import { getHeader, getContent } from './utils'
@@ -26,7 +27,9 @@ const DEFAULT_LOCATION: Navigation = {
 export const SequenceWalletProvider = (props: SequenceWalletProviderProps) => {
   return (
     <SequenceCheckoutProvider>
-      <WalletContent {...props} />
+      <WalletContentRefProvider>
+        <WalletContent {...props} />
+      </WalletContentRefProvider>
     </SequenceCheckoutProvider>
   )
 }
@@ -85,6 +88,8 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
       paddingTop = HEADER_HEIGHT
   }
 
+  const walletContentRef = useContext(WalletContentRefContext)
+
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
@@ -105,7 +110,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                   scroll={false}
                   onClose={() => setOpenWalletModal(false)}
                 >
-                  <div id="sequence-kit-wallet-content">
+                  <div id="sequence-kit-wallet-content" ref={walletContentRef}>
                     {getHeader(navigation)}
 
                     {displayScrollbar ? (
