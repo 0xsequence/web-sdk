@@ -1,6 +1,9 @@
 import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
+// import { immutable } from '@0xsequence/immutable-connector'
 import { ChainId } from '@0xsequence/network'
+import { Environment } from '@imtbl/config'
+import { passport } from '@imtbl/sdk'
 import { zeroAddress } from 'viem'
 
 const searchParams = new URLSearchParams(location.search)
@@ -64,6 +67,17 @@ export const connectConfig: ConnectConfig = {
     : undefined
 }
 
+export const passportInstance = new passport.Passport({
+  baseConfig: {
+    environment: Environment.SANDBOX,
+    publishableKey: 'pk_imapik-test-VEMeW7wUX7hE7LHg3FxY'
+  },
+  clientId: 'ap8Gv3188GLFROiBFBNFz77DojRpqxnS',
+  redirectUri: `${window.location.origin}/auth/callback`,
+  audience: 'platform_api',
+  scope: 'openid offline_access email transact'
+})
+
 export const config =
   walletType === 'waas'
     ? createConfig('waas', {
@@ -110,7 +124,14 @@ export const config =
 
         walletConnect: {
           projectId: walletConnectProjectId
-        }
+        },
+        additionalWallets: [
+          // Uncomment to enable Immutable
+          // immutable({
+          //   passportInstance,
+          //   environment: Environment.SANDBOX
+          // })
+        ]
       })
 
 export const getErc1155SaleContractConfig = (walletAddress: string) => ({
