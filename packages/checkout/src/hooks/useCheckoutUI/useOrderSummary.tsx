@@ -51,75 +51,73 @@ export interface UseOrderSummaryReturn {
   isLoading: boolean
 }
 
-export const useOrderSummary =
-  ({
-    chain,
-    currencyAddress,
-    totalPriceRaw,
-    collectible,
-    collectionAddress,
-    currencyInfo,
-    tokenMetadatas,
-    dataCollectionInfo,
-    isLoadingCollectionInfo,
-    errorCollectionInfo,
-    isLoadingTokenMetadatas,
-    errorTokenMetadata,
-    isLoadingCurrencyInfo,
-    errorCurrencyInfo
-  }: UseOrderSummaryArgs): (() => UseOrderSummaryReturn) =>
-  (): UseOrderSummaryReturn => {
-    const network = findSupportedNetwork(chain)
-    const chainId = network?.chainId || 137
-    const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
-    const currencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfo?.symbol
-    const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals
+export const useOrderSummary = ({
+  chain,
+  currencyAddress,
+  totalPriceRaw,
+  collectible,
+  collectionAddress,
+  currencyInfo,
+  tokenMetadatas,
+  dataCollectionInfo,
+  isLoadingCollectionInfo,
+  errorCollectionInfo,
+  isLoadingTokenMetadatas,
+  errorTokenMetadata,
+  isLoadingCurrencyInfo,
+  errorCurrencyInfo
+}: UseOrderSummaryArgs): UseOrderSummaryReturn => {
+  const network = findSupportedNetwork(chain)
+  const chainId = network?.chainId || 137
+  const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
+  const currencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfo?.symbol
+  const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals
 
-    const {
-      data: dataCoinPrices,
-      isLoading: isLoadingCoinPrices,
-      error: errorCoinPrices
-    } = useGetCoinPrices([
-      {
-        chainId,
-        contractAddress: currencyAddress
-      }
-    ])
+  const {
+    data: dataCoinPrices,
+    isLoading: isLoadingCoinPrices,
+    error: errorCoinPrices
+  } = useGetCoinPrices([
+    {
+      chainId,
+      contractAddress: currencyAddress
+    }
+  ])
 
-    const isLoading = isLoadingCurrencyInfo || isLoadingTokenMetadatas || isLoadingCoinPrices || isLoadingCollectionInfo
-    const error = errorTokenMetadata || errorCurrencyInfo || errorCoinPrices || errorCollectionInfo
+  const isLoading = isLoadingCurrencyInfo || isLoadingTokenMetadatas || isLoadingCoinPrices || isLoadingCollectionInfo
+  const error = errorTokenMetadata || errorCurrencyInfo || errorCoinPrices || errorCollectionInfo
 
-    let data = null
+  let data = null
 
-    if (!isLoading && !error) {
-      const formattedPrice = formatUnits(BigInt(totalPriceRaw), currencyDecimals || 18)
-      const displayPrice = formatDisplay(formattedPrice, {
-        disableScientificNotation: true,
-        disableCompactNotation: true,
-        significantDigits: 6
-      })
+  if (!isLoading && !error) {
+    const formattedPrice = formatUnits(BigInt(totalPriceRaw), currencyDecimals || 18)
+    const displayPrice = formatDisplay(formattedPrice, {
+      disableScientificNotation: true,
+      disableCompactNotation: true,
+      significantDigits: 6
+    })
 
-      const fiatExchangeRate = dataCoinPrices?.[0].price?.value || 0
-      const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
-      const tokenMetadata = tokenMetadatas?.find(t => t.tokenId === collectible.tokenId)
-      const formattedQuantity = formatUnits(BigInt(collectible.quantity), tokenMetadata?.decimals || 0)
+    const fiatExchangeRate = dataCoinPrices?.[0].price?.value || 0
+    const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
+    const tokenMetadata = tokenMetadatas?.find(t => t.tokenId === collectible.tokenId)
+    const formattedQuantity = formatUnits(BigInt(collectible.quantity), tokenMetadata?.decimals || 0)
 
-      data = {
-        formattedCryptoPrice: displayPrice,
-        cryptoSymbol: currencySymbol || 'POL',
-        networkName: network?.name || 'Polygon',
-        networkImageUrl: networkImageUrl(network?.chainId || 137),
-        networkBadge: <NetworkBadge chainId={chainId} />,
-        totalPriceFiat: priceFiat,
-        collectibleItem: {
-          quantityRaw: collectible.quantity,
-          quantityFormatted: formattedQuantity,
-          collectionName: dataCollectionInfo?.name || 'Unknown Collection',
-          collectibleName: tokenMetadata?.name || 'Unknown Item',
-          collectibleImageUrl: tokenMetadata?.image || ''
-        }
+    data = {
+      formattedCryptoPrice: displayPrice,
+      cryptoSymbol: currencySymbol || 'POL',
+      networkName: network?.name || 'Polygon',
+      networkImageUrl: networkImageUrl(network?.chainId || 137),
+      networkBadge: <NetworkBadge chainId={chainId} />,
+      totalPriceFiat: priceFiat,
+      collectibleItem: {
+        quantityRaw: collectible.quantity,
+        quantityFormatted: formattedQuantity,
+        collectionName: dataCollectionInfo?.name || 'Unknown Collection',
+        collectibleName: tokenMetadata?.name || 'Unknown Item',
+        collectibleImageUrl: tokenMetadata?.image || ''
       }
     }
-
-    return { isLoading, error, data }
   }
+
+  return { isLoading, error, data }
+}
