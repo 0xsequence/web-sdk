@@ -7,6 +7,7 @@ import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentMo
 
 import { useCreditCardPayment, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
 import { useOrderSummary, type UseOrderSummaryReturn } from './useOrderSummary'
+import { useCryptoPayment, type UseCryptoPaymentReturn } from './useCryptoPayment'
 
 interface UseCheckoutUIArgs {
   chain: string | number
@@ -27,6 +28,7 @@ interface UseCheckoutUIArgs {
 interface UseCheckoutUIReturn {
   orderSummary: UseOrderSummaryReturn
   creditCardPayment: UseCreditCardPaymentReturn
+  cryptoPayment: UseCryptoPaymentReturn
 }
 
 export const useCheckoutUI = ({
@@ -117,8 +119,32 @@ export const useCheckoutUI = ({
     errorCurrencyInfo
   })
 
+  const cryptoPayment = useCryptoPayment({
+    chain,
+    currencyAddress,
+    totalPriceRaw,
+    collectible,
+    collectionAddress,
+    recipientAddress,
+    targetContractAddress,
+    txData,
+    transactionConfirmations,
+    onSuccess,
+    onError,
+    currencyInfo,
+    tokenMetadatas,
+    dataCollectionInfo,
+    isLoadingCollectionInfo,
+    errorCollectionInfo,
+    isLoadingTokenMetadatas,
+    errorTokenMetadata,
+    isLoadingCurrencyInfo,
+    errorCurrencyInfo
+  })
+
   return {
     orderSummary,
-    creditCardPayment
+    creditCardPayment,
+    cryptoPayment
   }
 }
