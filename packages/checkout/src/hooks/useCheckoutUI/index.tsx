@@ -1,16 +1,12 @@
 import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import React from 'react'
 import { Hex } from 'viem'
 
 import { TransakConfig } from '../../contexts/CheckoutModal'
 import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
 
-import { useCreditCardPayment, type UseCreditCardPaymentArgs, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
-import { useOrderSummary, type UseOrderSummaryArgs, type UseOrderSummaryReturn } from './useOrderSummary'
-// crypto payment
-
-// credit card payment
+import { useCreditCardPayment, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
+import { useOrderSummary, type UseOrderSummaryReturn } from './useOrderSummary'
 
 interface UseCheckoutUIArgs {
   chain: string | number
@@ -29,8 +25,8 @@ interface UseCheckoutUIArgs {
 }
 
 interface UseCheckoutUIReturn {
-  useOrderSummary: (args: UseOrderSummaryArgs) => UseOrderSummaryReturn
-  // useCreditCardPayment: (args: UseCreditCardPaymentArgs) => UseCreditCardPaymentReturn
+  orderSummary: UseOrderSummaryReturn
+  creditCardPayment: UseCreditCardPaymentReturn
 }
 
 export const useCheckoutUI = ({
@@ -40,7 +36,13 @@ export const useCheckoutUI = ({
   collectible,
   collectionAddress,
   recipientAddress,
-  transactionConfirmations
+  targetContractAddress,
+  txData,
+  transactionConfirmations,
+  creditCardProvider,
+  transakConfig,
+  onSuccess,
+  onError
 }: UseCheckoutUIArgs): UseCheckoutUIReturn => {
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
@@ -73,22 +75,50 @@ export const useCheckoutUI = ({
     contractAddress: currencyAddress
   })
 
+  const orderSummary = useOrderSummary({
+    chain,
+    currencyAddress,
+    totalPriceRaw,
+    collectible,
+    collectionAddress,
+    currencyInfo,
+    tokenMetadatas,
+    dataCollectionInfo,
+    isLoadingCollectionInfo,
+    errorCollectionInfo,
+    isLoadingCurrencyInfo,
+    isLoadingTokenMetadatas,
+    errorTokenMetadata,
+    errorCurrencyInfo
+  })
+
+  const creditCardPayment = useCreditCardPayment({
+    chain,
+    currencyAddress,
+    totalPriceRaw,
+    collectible,
+    collectionAddress,
+    recipientAddress,
+    targetContractAddress,
+    txData,
+    transactionConfirmations,
+    creditCardProvider,
+    transakConfig,
+    onSuccess,
+    onError,
+    currencyInfo,
+    tokenMetadatas,
+    dataCollectionInfo,
+    isLoadingCollectionInfo,
+    errorCollectionInfo,
+    isLoadingTokenMetadatas,
+    errorTokenMetadata,
+    isLoadingCurrencyInfo,
+    errorCurrencyInfo
+  })
+
   return {
-    useOrderSummary: useOrderSummary({
-      chain,
-      currencyAddress,
-      totalPriceRaw,
-      collectible,
-      collectionAddress,
-      currencyInfo,
-      tokenMetadatas,
-      dataCollectionInfo,
-      isLoadingCollectionInfo,
-      errorCollectionInfo,
-      isLoadingCurrencyInfo,
-      isLoadingTokenMetadatas,
-      errorTokenMetadata,
-      errorCurrencyInfo
-    })
+    orderSummary,
+    creditCardPayment
   }
 }
