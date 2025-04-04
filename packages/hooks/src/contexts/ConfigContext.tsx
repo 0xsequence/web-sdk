@@ -13,6 +13,7 @@ export interface SequenceHooksEnv {
 export interface SequenceHooksConfigProviderValue {
   projectAccessKey: string
   env?: Partial<SequenceHooksEnv>
+  jwt?: string
 }
 
 export interface SequenceHooksConfig {
@@ -38,7 +39,7 @@ interface SequenceHooksProviderProps {
 }
 
 export const SequenceHooksProvider = (props: SequenceHooksProviderProps) => {
-  const [jwt, setJWT] = useState<string | undefined>(undefined)
+  const [jwt, setJWT] = useState<string | undefined>(props.config.jwt)
 
   const config: SequenceHooksConfig = {
     ...props.config,
