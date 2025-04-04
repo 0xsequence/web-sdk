@@ -4,13 +4,11 @@ import { useMemo } from 'react'
 import { useConfig } from '../useConfig'
 
 export const useIndexerGatewayClient = () => {
-  const { projectAccessKey, env } = useConfig()
+  const { env, projectAccessKey, jwt } = useConfig()
 
   const indexerGatewayClient = useMemo(() => {
-    const clientUrl = env.indexerGatewayUrl
-
-    return new SequenceIndexerGateway(clientUrl, projectAccessKey)
-  }, [projectAccessKey])
+    return new SequenceIndexerGateway(env.indexerGatewayUrl, projectAccessKey, jwt)
+  }, [projectAccessKey, jwt])
 
   return indexerGatewayClient
 }

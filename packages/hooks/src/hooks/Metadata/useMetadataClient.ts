@@ -4,13 +4,11 @@ import { useMemo } from 'react'
 import { useConfig } from '../useConfig'
 
 export const useMetadataClient = () => {
-  const { projectAccessKey, env } = useConfig()
+  const { env, projectAccessKey, jwt } = useConfig()
 
   const metadataClient = useMemo(() => {
-    const clientUrl = env.metadataUrl
-
-    return new SequenceMetadata(clientUrl, projectAccessKey)
-  }, [projectAccessKey])
+    return new SequenceMetadata(env.metadataUrl, projectAccessKey)
+  }, [projectAccessKey, jwt])
 
   return metadataClient
 }

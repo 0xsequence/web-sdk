@@ -7,17 +7,17 @@ import { useConfig } from '../useConfig'
 import { useNetwork } from '../useNetwork'
 
 export const useIndexerClient = (chainId: ChainId) => {
-  const { projectAccessKey, env } = useConfig()
+  const { env, projectAccessKey, jwt } = useConfig()
 
   const indexerClients = useMemo(() => {
     return new Map<ChainId, SequenceIndexer>()
-  }, [projectAccessKey])
+  }, [projectAccessKey, jwt])
 
   const network = useNetwork(chainId)
   const indexerUrl = envString(env.indexerUrl, 'indexer', network.name)
 
   if (!indexerClients.has(chainId)) {
-    indexerClients.set(chainId, new SequenceIndexer(indexerUrl, projectAccessKey))
+    indexerClients.set(chainId, new SequenceIndexer(indexerUrl, projectAccessKey, jwt))
   }
 
   const indexerClient = indexerClients.get(chainId)
@@ -30,11 +30,11 @@ export const useIndexerClient = (chainId: ChainId) => {
 }
 
 export const useIndexerClients = (chainIds: number[]) => {
-  const { projectAccessKey, env } = useConfig()
+  const { env, projectAccessKey, jwt } = useConfig()
 
   const indexerClients = useMemo(() => {
     return new Map<ChainId, SequenceIndexer>()
-  }, [projectAccessKey])
+  }, [projectAccessKey, jwt])
 
   const result = new Map<ChainId, SequenceIndexer>()
 
@@ -43,7 +43,7 @@ export const useIndexerClients = (chainIds: number[]) => {
     const indexerUrl = envString(env.indexerUrl, 'indexer', network.name)
 
     if (!indexerClients.has(chainId)) {
-      indexerClients.set(chainId, new SequenceIndexer(indexerUrl, projectAccessKey))
+      indexerClients.set(chainId, new SequenceIndexer(indexerUrl, projectAccessKey, jwt))
     }
 
     const indexerClient = indexerClients.get(chainId)

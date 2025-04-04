@@ -4,13 +4,11 @@ import { useMemo } from 'react'
 import { useConfig } from '../useConfig'
 
 export const useAPIClient = () => {
-  const { projectAccessKey, env } = useConfig()
+  const { projectAccessKey, jwt, env } = useConfig()
 
   const apiClient = useMemo(() => {
-    const clientUrl = env.apiUrl
-
-    return new SequenceAPIClient(clientUrl, projectAccessKey)
-  }, [projectAccessKey])
+    return new SequenceAPIClient(env.apiUrl, projectAccessKey, jwt)
+  }, [projectAccessKey, jwt])
 
   return apiClient
 }

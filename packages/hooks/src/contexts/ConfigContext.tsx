@@ -18,6 +18,7 @@ export interface SequenceHooksConfigProviderValue {
 export interface SequenceHooksConfig {
   projectAccessKey: string
   env: Required<SequenceHooksEnv>
+  jwt?: string
 }
 
 const defaultEnv: Required<SequenceHooksEnv> = {
@@ -36,12 +37,13 @@ interface SequenceHooksProviderProps {
 }
 
 export const SequenceHooksProvider = (props: SequenceHooksProviderProps) => {
-  const config = {
+  const config: SequenceHooksConfig = {
     ...props.config,
     env: {
       ...defaultEnv,
       ...props.config.env
-    }
+    },
+    jwt: undefined
   }
 
   return <SequenceHooksContext.Provider value={config}>{props.children}</SequenceHooksContext.Provider>
