@@ -1,5 +1,6 @@
 import { ContractType, IndexerGateway, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
 import { useQuery } from '@tanstack/react-query'
+import { zeroAddress } from 'viem'
 
 import { QUERY_KEYS, time } from '../../constants'
 import { BalanceHookOptions } from '../../types'
@@ -23,10 +24,24 @@ const getTokenBalancesSummary = async (
       }
     }
 
-    const nativeTokens: TokenBalance[] = res.nativeBalances.flatMap(nativeChainBalance =>
-      nativeChainBalance.results.map(nativeTokenBalance =>
-        createNativeTokenBalance(nativeChainBalance.chainId, nativeTokenBalance.accountAddress, nativeTokenBalance.balance)
-      )
+    const isNativeContractWhitelisted = getTokenBalancesSummaryArgs.filter.contractWhitelist?.includes(zeroAddress)
+
+    const nativeTokens = res.nativeBalances.flatMap(
+      nativeChainBalance =>
+        nativeChainBalance.results
+          .map(nativeTokenBalance => {
+            if (!isNativeContractWhitelisted) {
+              if (nativeTokenBalance.balance.toString() === '0') {
+                return null
+              }
+            }
+            return createNativeTokenBalance(
+              nativeChainBalance.chainId,
+              nativeTokenBalance.accountAddress,
+              nativeTokenBalance.balance
+            )
+          })
+          .filter(Boolean) as TokenBalance[]
     )
 
     const tokens: TokenBalance[] = res.balances.flatMap(chainBalance => chainBalance.results)
