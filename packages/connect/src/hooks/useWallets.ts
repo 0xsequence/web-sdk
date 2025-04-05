@@ -159,6 +159,7 @@ export interface ConnectedWallet {
   address: string
   isActive: boolean
   isEmbedded: boolean
+  signInMethod: string
 }
 
 /**
@@ -261,12 +262,16 @@ export const useWallets = (): UseWalletsReturnType => {
     name: getConnectorName(connection.connector),
     address: connection.accounts[0],
     isActive: connection.accounts[0] === address,
-    isEmbedded: connection.connector.id.includes('waas')
+    isEmbedded: connection.connector.id.includes('waas'),
+    signInMethod: (connection.connector._wallet as any)?.id
   }))
 
   const setActiveWallet = async (walletAddress: string) => {
-    const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
+    const connection = connections.find(
+      (c: UseConnectionsReturnType[number]) => c.accounts[0].toLowerCase() === walletAddress.toLowerCase()
+    )
     if (!connection) {
+      console.error('No connection found for wallet address:', walletAddress)
       return
     }
 
@@ -278,7 +283,9 @@ export const useWallets = (): UseWalletsReturnType => {
   }
 
   const disconnectWallet = async (walletAddress: string) => {
-    const connection = connections.find((c: UseConnectionsReturnType[number]) => c.accounts[0] === walletAddress)
+    const connection = connections.find(
+      (c: UseConnectionsReturnType[number]) => c.accounts[0].toLowerCase() === walletAddress.toLowerCase()
+    )
     if (!connection) {
       return
     }

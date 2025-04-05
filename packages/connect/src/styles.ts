@@ -7,6 +7,7 @@ export const styles = String.raw`
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-violet-600: oklch(0.541 0.281 293.009);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -194,9 +195,6 @@ export const styles = String.raw`
   }
 }
 @layer utilities {
-  .pointer-events-auto {
-    pointer-events: auto;
-  }
   .pointer-events-none {
     pointer-events: none;
   }
@@ -281,6 +279,9 @@ export const styles = String.raw`
   .-m-\[1px\] {
     margin: calc(1px * -1);
   }
+  .m-0 {
+    margin: calc(var(--spacing) * 0);
+  }
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
@@ -323,9 +324,6 @@ export const styles = String.raw`
   .mt-6 {
     margin-top: calc(var(--spacing) * 6);
   }
-  .mt-8 {
-    margin-top: calc(var(--spacing) * 8);
-  }
   .mt-10 {
     margin-top: calc(var(--spacing) * 10);
   }
@@ -358,9 +356,6 @@ export const styles = String.raw`
   }
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
-  }
-  .ml-\[-16px\] {
-    margin-left: -16px;
   }
   .block {
     display: block;
@@ -425,14 +420,14 @@ export const styles = String.raw`
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
+  .h-20 {
+    height: calc(var(--spacing) * 20);
+  }
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
   .h-\[1px\] {
     height: 1px;
-  }
-  .h-\[14px\] {
-    height: 14px;
   }
   .h-\[52px\] {
     height: 52px;
@@ -512,8 +507,14 @@ export const styles = String.raw`
   .w-13 {
     width: calc(var(--spacing) * 13);
   }
+  .w-14 {
+    width: calc(var(--spacing) * 14);
+  }
   .w-16 {
     width: calc(var(--spacing) * 16);
+  }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
   }
   .w-24 {
     width: calc(var(--spacing) * 24);
@@ -523,9 +524,6 @@ export const styles = String.raw`
   }
   .w-\[1px\] {
     width: 1px;
-  }
-  .w-\[14px\] {
-    width: 14px;
   }
   .w-\[52px\] {
     width: 52px;
@@ -550,9 +548,6 @@ export const styles = String.raw`
   }
   .w-screen {
     width: 100vw;
-  }
-  .max-w-1\/2 {
-    max-width: calc(1/2 * 100%);
   }
   .max-w-\[532px\] {
     max-width: 532px;
@@ -711,6 +706,9 @@ export const styles = String.raw`
   .overscroll-y-contain {
     overscroll-behavior-y: contain;
   }
+  .rounded {
+    border-radius: 0.25rem;
+  }
   .rounded-full {
     border-radius: calc(infinity * 1px);
   }
@@ -719,6 +717,9 @@ export const styles = String.raw`
   }
   .rounded-md {
     border-radius: var(--radius-md);
+  }
+  .rounded-none {
+    border-radius: 0;
   }
   .rounded-sm {
     border-radius: var(--radius-sm);
@@ -733,9 +734,21 @@ export const styles = String.raw`
     border-top-left-radius: var(--radius-2xl);
     border-top-right-radius: var(--radius-2xl);
   }
+  .rounded-t-none {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .rounded-t-xl {
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+  }
   .rounded-b-none {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+  }
+  .rounded-b-xl {
+    border-bottom-right-radius: var(--radius-xl);
+    border-bottom-left-radius: var(--radius-xl);
   }
   .border {
     border-style: var(--tw-border-style);
@@ -777,6 +790,9 @@ export const styles = String.raw`
   }
   .border-transparent {
     border-color: transparent;
+  }
+  .border-violet-600 {
+    border-color: var(--color-violet-600);
   }
   .border-t-primary {
     border-top-color: var(--seq-color-primary);
@@ -877,6 +893,9 @@ export const styles = String.raw`
   .p-5 {
     padding: calc(var(--spacing) * 5);
   }
+  .p-6 {
+    padding: calc(var(--spacing) * 6);
+  }
   .p-\[10px\] {
     padding: 10px;
   }
@@ -937,6 +956,9 @@ export const styles = String.raw`
   .pt-5 {
     padding-top: calc(var(--spacing) * 5);
   }
+  .pt-6 {
+    padding-top: calc(var(--spacing) * 6);
+  }
   .pt-\[60px\] {
     padding-top: 60px;
   }
@@ -981,12 +1003,6 @@ export const styles = String.raw`
   }
   .text-center {
     text-align: center;
-  }
-  .text-left {
-    text-align: left;
-  }
-  .text-right {
-    text-align: right;
   }
   .font-body {
     font-family: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

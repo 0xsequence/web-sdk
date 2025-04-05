@@ -1,8 +1,15 @@
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, ContractVerificationStatus } from '@0xsequence/connect'
+import {
+  compareAddress,
+  formatDisplay,
+  getNativeTokenInfoByChainId,
+  ContractVerificationStatus,
+  useWallets
+} from '@0xsequence/connect'
 import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate, useGetTransactionHistory } from '@0xsequence/hooks'
+import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
-import { useAccount, useConfig } from 'wagmi'
+import { useConfig } from 'wagmi'
 
 import { InfiniteScroll } from '../../components/InfiniteScroll'
 import { NetworkBadge } from '../../components/NetworkBadge'
@@ -16,13 +23,18 @@ import { CoinDetailsSkeleton } from './Skeleton'
 export interface CoinDetailsProps {
   contractAddress: string
   chainId: number
+  accountAddress: string
 }
 
-export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
+export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDetailsProps) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
+  const { setActiveWallet } = useWallets()
   const { fiatCurrency, hideUnlistedTokens } = useSettings()
-  const { address: accountAddress } = useAccount()
+
+  useEffect(() => {
+    setActiveWallet(accountAddress)
+  }, [accountAddress])
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 
@@ -85,7 +97,7 @@ export const CoinDetails = ({ contractAddress, chainId }: CoinDetailsProps) => {
         balance: dataCoinBalance,
         prices: dataCoinPrices || [],
         conversionRate,
-        decimals: decimals || 0
+        decimals: decimals || 18
       })
     : '0'
 

@@ -1,8 +1,13 @@
-import { TokenPrice } from '@0xsequence/api'
+import { Price, TokenPrice } from '@0xsequence/api'
 import { compareAddress } from '@0xsequence/connect'
 import { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
-import { InfiniteData } from '@tanstack/react-query'
+import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { formatUnits, zeroAddress } from 'viem'
+
+export interface TokenBalanceWithPrice extends TokenBalance {
+  price: Price
+}
 
 export const getPercentageColor = (value: number) => {
   if (value > 0) {
@@ -34,7 +39,9 @@ interface ComputeBalanceFiat {
 export const computeBalanceFiat = ({ balance, prices, decimals, conversionRate }: ComputeBalanceFiat): string => {
   let totalUsd = 0
 
-  const priceForToken = prices.find(p => compareAddress(p.token.contractAddress, balance.contractAddress))
+  const priceForToken = prices.find(
+    p => compareAddress(p.token.contractAddress, balance.contractAddress) && p.token.chainId === balance.chainId
+  )
   if (!priceForToken) {
     return '0.00'
   }
@@ -95,4 +102,26 @@ export const flattenPaginatedTransactionHistory = (
   })
 
   return transactionHistory
+}
+
+export const useGetMoreBalances = (
+  balances: TokenBalanceWithPrice[],
+  pageSize: number,
+  options?: { enabled: boolean }
+): UseInfiniteQueryResult<InfiniteData<TokenBalanceWithPrice[]>, Error> => {
+  return useInfiniteQuery({
+    queryKey: ['infiniteBalances', balances],
+    queryFn: ({ pageParam }) => {
+      const startIndex = pageParam * pageSize
+      return balances.slice(startIndex, startIndex + pageSize)
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < pageSize) {
+        return undefined
+      }
+      return allPages.length
+    },
+    initialPageParam: 0,
+    enabled: !!balances.length && (options?.enabled ?? true)
+  })
 }

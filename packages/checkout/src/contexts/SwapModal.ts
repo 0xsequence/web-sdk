@@ -23,6 +23,7 @@ export interface SwapModalSettings {
 }
 
 type SwapModalContext = {
+  isSwapModalOpen: boolean
   openSwapModal: (settings: SwapModalSettings) => void
   closeSwapModal: () => void
   swapModalSettings?: SwapModalSettings

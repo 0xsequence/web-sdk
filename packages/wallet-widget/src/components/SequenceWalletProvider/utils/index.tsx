@@ -1,24 +1,27 @@
-import React from 'react'
-
 import { Navigation } from '../../../contexts'
 import {
   CoinDetails,
   CollectibleDetails,
-  CollectionDetails,
   Home,
   Receive,
   SendCoin,
   SendCollectible,
   History,
-  SearchWallet,
-  SearchWalletViewAll,
-  SettingsMenu,
-  SettingsCurrency,
-  SettingsNetwork,
-  SettingsGeneral,
   TransactionDetails,
   SwapCoin,
-  SwapList
+  SwapList,
+  SendGeneral,
+  SearchTokens,
+  SearchCollectibles,
+  SettingsWallets,
+  SettingsApps,
+  SettingsCurrency,
+  SettingsMenu,
+  SettingsNetworks,
+  SettingsPreferences,
+  SettingsProfiles,
+  QrScan,
+  Swap
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'
@@ -27,6 +30,8 @@ export const getContent = (navigation: Navigation) => {
   const { location } = navigation
 
   switch (location) {
+    case 'send-general':
+      return <SendGeneral />
     case 'send-coin':
       return <SendCoin chainId={navigation.params.chainId} contractAddress={navigation.params.contractAddress} />
     case 'send-collectible':
@@ -37,34 +42,50 @@ export const getContent = (navigation: Navigation) => {
           tokenId={navigation.params.tokenId}
         />
       )
+    case 'swap':
+      return <Swap />
     case 'receive':
       return <Receive />
     case 'history':
       return <History />
-    case 'search':
-      return <SearchWallet />
-    case 'search-view-all':
-      return <SearchWalletViewAll defaultTab={navigation.params.defaultTab} />
+    case 'search-tokens':
+      return <SearchTokens />
+    case 'search-collectibles':
+      return <SearchCollectibles />
     case 'settings':
       return <SettingsMenu />
-    case 'settings-general':
-      return <SettingsGeneral />
+    case 'settings-wallets':
+      return <SettingsWallets />
+    case 'settings-networks':
+      return <SettingsNetworks />
     case 'settings-currency':
       return <SettingsCurrency />
-    case 'settings-networks':
-      return <SettingsNetwork />
+    case 'settings-profiles':
+      return <SettingsProfiles />
+    case 'settings-preferences':
+      return <SettingsPreferences />
+    case 'settings-apps':
+      return <SettingsApps />
+    case 'connect-dapp':
+      return <QrScan />
     case 'coin-details':
-      return <CoinDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
+      return (
+        <CoinDetails
+          contractAddress={navigation.params.contractAddress}
+          chainId={navigation.params.chainId}
+          accountAddress={navigation.params.accountAddress}
+        />
+      )
+
     case 'collectible-details':
       return (
         <CollectibleDetails
           contractAddress={navigation.params.contractAddress}
           chainId={navigation.params.chainId}
           tokenId={navigation.params.tokenId}
+          accountAddress={navigation.params.accountAddress}
         />
       )
-    case 'collection-details':
-      return <CollectionDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
     case 'transaction-details':
       return <TransactionDetails transaction={navigation.params.transaction} />
     case 'swap-coin':
@@ -77,6 +98,7 @@ export const getContent = (navigation: Navigation) => {
           amount={navigation.params.amount}
         />
       )
+    case 'home':
     default:
       return <Home />
   }
@@ -85,35 +107,46 @@ export const getContent = (navigation: Navigation) => {
 export const getHeader = (navigation: Navigation) => {
   const { location } = navigation
   switch (location) {
-    case 'search':
-      return <NavigationHeader primaryText="Search wallet" />
-    case 'search-view-all':
-      return <NavigationHeader secondaryText="Search wallet / " primaryText="View all" />
+    case 'search-tokens':
+      return <NavigationHeader primaryText="Tokens" />
+    case 'search-collectibles':
+      return <NavigationHeader primaryText="Collectibles" />
     case 'settings':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Settings" />
-    case 'settings-general':
-      return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="General" />
-    case 'settings-currency':
-      return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Currency" />
+      return <NavigationHeader primaryText="Settings" />
+    case 'settings-wallets':
+      return <NavigationHeader primaryText="Wallets" />
     case 'settings-networks':
-      return <NavigationHeader secondaryText="Wallet / Settings / " primaryText="Networks" />
-    case 'receive':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Receive" />
+      return <NavigationHeader primaryText="Networks" />
+    case 'settings-currency':
+      return <NavigationHeader primaryText="Currency" />
+    case 'settings-profiles':
+      return <NavigationHeader primaryText="Profiles" />
+    case 'settings-preferences':
+      return <NavigationHeader primaryText="Preferences" />
+    case 'settings-apps':
+      return <NavigationHeader primaryText="Apps" />
+    case 'connect-dapp':
+      return <NavigationHeader primaryText="Connect an App" />
     case 'history':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="History" />
+      return <NavigationHeader primaryText="Transaction History" />
     case 'coin-details':
       return <WalletHeader />
     case 'collectible-details':
       return <WalletHeader />
     case 'transaction-details':
       return <NavigationHeader secondaryText="" primaryText="" />
-    case 'send-collectible':
+    case 'send-general':
+      return <WalletHeader primaryText="Send" enableAccountSelector />
     case 'send-coin':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Send" />
+      return <WalletHeader primaryText="Send Coin" />
+    case 'send-collectible':
+      return <WalletHeader primaryText="Send Collectible" />
+    case 'swap':
+      return <WalletHeader primaryText="Swap" enableAccountSelector />
     case 'swap-coin':
     case 'swap-coin-list':
       return <NavigationHeader secondaryText="Wallet / " primaryText="Buy" />
-    default:
-      return <WalletHeader />
+    case 'receive':
+      return <WalletHeader primaryText="Receive" enableAccountSelector />
   }
 }

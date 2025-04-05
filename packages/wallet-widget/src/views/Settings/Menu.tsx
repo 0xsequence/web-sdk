@@ -1,21 +1,21 @@
-import { Button, SettingsIcon, ChevronRightIcon, CurrencyIcon, NetworkIcon } from '@0xsequence/design-system'
-import React from 'react'
+import { useWallets } from '@0xsequence/connect'
+import { CurrencyIcon, NetworkIcon, Text, WalletIcon } from '@0xsequence/design-system'
 
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation } from '../../hooks'
+import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag'
+import { ListCardNav } from '../../components/ListCard/ListCardNav'
+import { useNavigation, useSettings } from '../../hooks'
 
 export const SettingsMenu = () => {
+  const { wallets } = useWallets()
+  const { selectedNetworks, fiatCurrency } = useSettings()
+  // const activeWallet = wallets.find(wallet => wallet.isActive)
+  // const isEmbedded = activeWallet?.id.includes('waas')
+
   const { setNavigation } = useNavigation()
 
-  const onClickGeneral = () => {
+  const onClickWallets = () => {
     setNavigation({
-      location: 'settings-general'
-    })
-  }
-
-  const onClickCurrency = () => {
-    setNavigation({
-      location: 'settings-currency'
+      location: 'settings-wallets'
     })
   }
 
@@ -25,35 +25,87 @@ export const SettingsMenu = () => {
     })
   }
 
+  // const onClickProfiles = () => {
+  //   setNavigation({
+  //     location: 'settings-profiles'
+  //   })
+  // }
+
+  // const onClickApps = () => {
+  //   setNavigation({
+  //     location: 'settings-apps'
+  //   })
+  // }
+
+  const onClickCurrency = () => {
+    setNavigation({
+      location: 'settings-currency'
+    })
+  }
+
+  const onClickPreferences = () => {
+    setNavigation({
+      location: 'settings-preferences'
+    })
+  }
+
+  const walletsPreview = (
+    <StackedIconTag
+      label={<Text color="primary">{wallets.length}</Text>}
+      iconList={wallets.map(wallet => wallet.address)}
+      isAccount={true}
+      shape="rounded"
+    />
+  )
+
+  const networksPreview = (
+    <StackedIconTag
+      label={<Text color="primary">{selectedNetworks.length}</Text>}
+      iconList={selectedNetworks.map(network => {
+        return `https://assets.sequence.info/images/networks/medium/${network}.webp`
+      })}
+    />
+  )
+
+  const currencyPreview = (
+    <Text nowrap color="primary">
+      {fiatCurrency.symbol} {fiatCurrency.sign}
+    </Text>
+  )
+
   return (
-    <div style={{ paddingTop: HEADER_HEIGHT }}>
-      <div className="p-5 pt-3">
-        <div className="flex flex-col gap-2">
-          <Button
-            className="w-full rounded-xl"
-            size="lg"
-            onClick={onClickGeneral}
-            leftIcon={SettingsIcon}
-            rightIcon={ChevronRightIcon}
-            label="General"
-          />
-          <Button
-            className="w-full rounded-xl"
-            size="lg"
-            onClick={onClickCurrency}
-            leftIcon={CurrencyIcon}
-            rightIcon={ChevronRightIcon}
-            label="Currency"
-          />
-          <Button
-            className="w-full rounded-xl"
-            size="lg"
-            onClick={onClickNetworks}
-            leftIcon={NetworkIcon}
-            rightIcon={ChevronRightIcon}
-            label="Networks"
-          />
-        </div>
+    <div className="p-4">
+      <div className="flex flex-col gap-2">
+        <ListCardNav rightChildren={walletsPreview} onClick={onClickWallets} style={{ height: '64px' }}>
+          <WalletIcon className="text-primary w-6 h-6" />
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Manage Wallets
+          </Text>
+        </ListCardNav>
+        <ListCardNav rightChildren={networksPreview} onClick={onClickNetworks} style={{ height: '64px' }}>
+          <NetworkIcon className="text-primary w-6 h-6" />
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Manage Networks
+          </Text>
+        </ListCardNav>
+        <ListCardNav rightChildren={currencyPreview} onClick={onClickCurrency} style={{ height: '64px' }}>
+          <CurrencyIcon className="text-primary w-6 h-6" />
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Manage Currency
+          </Text>
+        </ListCardNav>
+        {/* {isEmbedded && (
+          <ListCardNav onClick={onClickProfiles} style={{ height: '64px' }}>
+            <Text color="primary" fontWeight="medium" variant="normal">
+              Manage Profiles
+            </Text>
+          </ListCardNav>
+        )} */}
+        <ListCardNav onClick={onClickPreferences} style={{ height: '64px' }}>
+          <Text color="primary" fontWeight="medium" variant="normal">
+            Preferences
+          </Text>
+        </ListCardNav>
       </div>
     </div>
   )

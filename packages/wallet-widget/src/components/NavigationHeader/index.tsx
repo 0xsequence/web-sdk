@@ -22,10 +22,9 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
 
   return (
     <div
-      className="flex bg-background-primary z-20 fixed w-full flex-row items-center justify-between px-4"
+      className="flex flex-row justify-between items-center fixed bg-background-primary w-full p-4 z-20"
       style={{
-        height: HEADER_HEIGHT,
-        paddingTop: '6px'
+        height: HEADER_HEIGHT
       }}
     >
       {history.length > 0 ? (
@@ -44,14 +43,14 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
           {secondaryText}
         </Text>
         <ModalPrimitive.Title asChild>
-          <Text fontWeight="medium" variant="small" color="primary">
+          <Text fontWeight="bold" variant="medium" color="primary">
             {primaryText}
           </Text>
         </ModalPrimitive.Title>
       </div>
       <div
         style={{
-          width: '44px'
+          width: '28px'
         }}
       />
     </div>
