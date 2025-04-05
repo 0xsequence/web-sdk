@@ -5,7 +5,9 @@ import {
   ExtendedConnector,
   truncateAtMiddle,
   useCheckWaasFeeOptions,
-  useWaasFeeOptions
+  useWaasFeeOptions,
+  waitForTransactionReceipt,
+  TRANSACTION_CONFIRMATIONS_DEFAULT
 } from '@0xsequence/connect'
 import {
   Button,
@@ -19,11 +21,17 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
+import {
+  useClearCachedBalances,
+  useGetTokenBalancesSummary,
+  useGetCoinPrices,
+  useGetExchangeRate,
+  useIndexerClient
+} from '@0xsequence/hooks'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress } from 'viem'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
+import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, Hex } from 'viem'
+import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction, usePublicClient } from 'wagmi'
 
 import { SendItemInfo } from '../components/SendItemInfo'
 import { TransactionConfirmation } from '../components/TransactionConfirmation'
@@ -38,6 +46,9 @@ interface SendCoinProps {
 }
 
 export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
+  const { clearCachedBalances } = useClearCachedBalances()
+  const publicClient = usePublicClient({ chainId })
+  const indexerClient = useIndexerClient(chainId)
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
@@ -209,15 +220,24 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
 
     const txOptions = {
-      onSettled: (result: any) => {
+      onSettled: async (hash: `0x${string}` | undefined) => {
         setIsBackButtonEnabled(true)
 
-        if (result) {
+        if (hash) {
           setNavigation({
             location: 'home'
           })
+          setIsSendTxnPending(false)
+          if (publicClient) {
+            await waitForTransactionReceipt({
+              indexerClient,
+              txnHash: hash as Hex,
+              publicClient,
+              confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
+            })
+            clearCachedBalances()
+          }
         }
-        setIsSendTxnPending(false)
       }
     }
 

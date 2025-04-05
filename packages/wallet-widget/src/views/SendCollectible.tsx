@@ -4,7 +4,9 @@ import {
   ExtendedConnector,
   truncateAtMiddle,
   useCheckWaasFeeOptions,
-  useWaasFeeOptions
+  useWaasFeeOptions,
+  waitForTransactionReceipt,
+  TRANSACTION_CONFIRMATIONS_DEFAULT
 } from '@0xsequence/connect'
 import {
   Button,
@@ -20,11 +22,11 @@ import {
   Spinner,
   Card
 } from '@0xsequence/design-system'
-import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
+import { useGetTokenBalancesDetails, useClearCachedBalances, useIndexerClient } from '@0xsequence/hooks'
 import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, ChangeEvent, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex } from 'viem'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction } from 'wagmi'
+import { encodeFunctionData, formatUnits, parseUnits, toHex, Hex } from 'viem'
+import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction, usePublicClient } from 'wagmi'
 
 import { SendItemInfo } from '../components/SendItemInfo'
 import { TransactionConfirmation } from '../components/TransactionConfirmation'
@@ -46,10 +48,13 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const { chains } = useConfig()
   const connectedChainId = useChainId()
   const { address: accountAddress = '', connector } = useAccount()
+  const indexerClient = useIndexerClient(chainId)
+  const publicClient = usePublicClient({ chainId })
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
   const isCorrectChainId = connectedChainId === chainId
   const showSwitchNetwork = !isCorrectChainId && !isConnectorSequenceBased
   const { switchChain } = useSwitchChain()
+  const { clearCachedBalances } = useClearCachedBalances()
   const amountInputRef = useRef<HTMLInputElement>(null)
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
@@ -229,15 +234,24 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
 
     const txOptions = {
-      onSettled: (result: any) => {
+      onSettled: async (hash: `0x${string}` | undefined) => {
         setIsBackButtonEnabled(true)
 
-        if (result) {
+        if (hash) {
           setNavigation({
             location: 'home'
           })
         }
         setIsSendTxnPending(false)
+        if (publicClient) {
+          await waitForTransactionReceipt({
+            indexerClient,
+            txnHash: hash as Hex,
+            publicClient,
+            confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
+          })
+          clearCachedBalances()
+        }
       }
     }
 
