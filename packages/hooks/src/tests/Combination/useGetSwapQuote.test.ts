@@ -2,21 +2,21 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { ACCOUNT_ADDRESS, NATIVE_TOKEN_ADDRESS_0X_SWAP } from '../../constants'
+import { ACCOUNT_ADDRESS, ZERO_ADDRESS } from '../../constants'
 import { useGetSwapQuote } from '../../hooks/Combination/useGetSwapQuote'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 
 const getSwapQuoteArgs = {
   userAddress: ACCOUNT_ADDRESS,
-  buyCurrencyAddress: NATIVE_TOKEN_ADDRESS_0X_SWAP,
-  sellCurrencyAddress: NATIVE_TOKEN_ADDRESS_0X_SWAP,
+  buyCurrencyAddress: ZERO_ADDRESS,
+  sellCurrencyAddress: ZERO_ADDRESS,
   buyAmount: '20000',
   chainId: 1,
   includeApprove: true
 }
 
-describe('useGetSwapQuote', () => {
+describe('useGetSwapQuoteV2', () => {
   it('should return data with a balance', async () => {
     const { result } = renderHook(() => useGetSwapQuote(getSwapQuoteArgs), {
       wrapper: createWrapper()

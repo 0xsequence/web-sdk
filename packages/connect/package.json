@@ -39,7 +39,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/api": ">= 2.2.13",
+    "@0xsequence/api": "^2.3.4",
     "@0xsequence/auth": ">= 2.2.13",
     "@0xsequence/core": ">= 2.2.13",
     "@0xsequence/design-system": "2.0.12",
