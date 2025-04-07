@@ -17,6 +17,46 @@ interface Settings {
 
 type SettingsItems = Pick<Settings, 'hideCollectibles' | 'hideUnlistedTokens' | 'fiatCurrency' | 'selectedNetworks'>
 
+/**
+ * Hook to manage wallet settings with persistent storage.
+ * Provides access to and control over user preferences for the wallet interface.
+ * Settings are stored in localStorage and persist across sessions.
+ *
+ * @returns {Settings} Object containing current settings and setter functions:
+ * - `hideCollectibles`: Whether to hide NFT collectibles in the wallet view
+ * - `hideUnlistedTokens`: Whether to hide unverified tokens
+ * - `fiatCurrency`: Selected fiat currency for value display (e.g., USD, EUR)
+ * - `selectedNetworks`: Array of chain IDs for networks to display
+ * - `setFiatCurrency`: Function to update fiat currency preference
+ * - `setHideCollectibles`: Function to toggle collectibles visibility
+ * - `setHideUnlistedTokens`: Function to toggle unlisted tokens visibility
+ * - `setSelectedNetworks`: Function to update selected networks
+ *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useSettings} for more detailed documentation.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage in a component
+ * function WalletView() {
+ *   const {
+ *     hideCollectibles,
+ *     fiatCurrency,
+ *     selectedNetworks,
+ *     setHideCollectibles
+ *   } = useSettings()
+ *
+ *   return (
+ *     <div>
+ *       <Toggle
+ *         checked={hideCollectibles}
+ *         onChange={setHideCollectibles}
+ *         label="Hide NFTs"
+ *       />
+ *       <Text>Currency: {fiatCurrency.symbol}</Text>
+ *     </div>
+ *   )
+ * } *
+ */
 export const useSettings = (): Settings => {
   const { readOnlyNetworks, displayedAssets } = useWalletSettings()
   const { chains } = useConfig()
