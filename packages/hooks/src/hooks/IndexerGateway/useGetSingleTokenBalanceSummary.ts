@@ -55,6 +55,8 @@ const getSingleTokenBalanceSummary = async (
  *
  * @returns Query result containing the token balance
  *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSingleTokenBalanceSummary} for more detailed documentation.
+ *
  * @example
  * ```tsx
  * import { useGetSingleTokenBalanceSummary, ZERO_ADDRESS } from '@0xsequence/hooks'
