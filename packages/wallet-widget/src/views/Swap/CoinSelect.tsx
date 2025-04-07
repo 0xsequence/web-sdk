@@ -15,10 +15,10 @@ export const CoinSelect = ({
   selectedCoin,
   setSelectedCoin
 }: {
-  selectType: 'From' | 'To'
+  selectType: 'from' | 'to'
   coinList: TokenBalanceWithPrice[]
   selectedCoin: TokenBalanceWithPrice | undefined
-  setSelectedCoin: (coin: TokenBalanceWithPrice) => void
+  setSelectedCoin: (coin: TokenBalanceWithPrice, type: 'from' | 'to') => void
 }) => {
   const { fiatCurrency } = useSettings()
   const chains = useChains()
@@ -28,7 +28,7 @@ export const CoinSelect = ({
   const { logo, name, symbol, displayBalance } = formatTokenInfo(selectedCoin, fiatCurrency.sign, chains)
 
   const handleSelect = (coin: TokenBalanceWithPrice) => {
-    setSelectedCoin(coin)
+    setSelectedCoin(coin, selectType)
     setIsSelectorOpen(false)
   }
 
@@ -40,7 +40,7 @@ export const CoinSelect = ({
       >
         <div className="flex flex-col gap-2 w-full">
           <Text variant="small" fontWeight="bold" color="muted">
-            {selectType}
+            {selectType === 'from' ? 'From' : 'To'}
           </Text>
           {selectedCoin ? (
             <div className="flex flex-row gap-2 items-center">
