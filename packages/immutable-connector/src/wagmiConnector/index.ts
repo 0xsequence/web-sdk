@@ -36,7 +36,9 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
     async setup() {},
 
     async connect() {
-      provider = await passportInstance.connectEvm()
+      provider = await passportInstance.connectEvm({
+        announceProvider: false
+      })
       const accounts = await this.getAccounts()
       const chainId = await this.getChainId()
       return { accounts, chainId }
@@ -62,7 +64,9 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
         throw new Error('Provider not initialized')
       }
       if (!provider) {
-        provider = await passportInstance.connectEvm()
+        provider = await passportInstance.connectEvm({
+          announceProvider: false
+        })
       }
       return provider
     },
