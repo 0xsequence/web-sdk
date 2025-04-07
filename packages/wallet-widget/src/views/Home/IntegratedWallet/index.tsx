@@ -16,7 +16,7 @@ import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import { useObservable } from 'micro-observables'
 import { AnimatePresence } from 'motion/react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { FilterMenu } from '../../../components/FilterMenu'
@@ -30,7 +30,6 @@ import { useNavigation, useSettings } from '../../../hooks'
 import { useFiatWalletsMap } from '../../../hooks/useFiatWalletsMap'
 import { computeBalanceFiat } from '../../../utils'
 import { getConnectorLogo } from '../../../utils/wallets'
-import { CoinSelect } from '../../Swap/CoinSelect'
 
 import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 
@@ -38,6 +37,7 @@ export const IntegratedWallet = () => {
   const { setNavigation } = useNavigation()
   const { selectedWalletsObservable, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
   const { fiatWalletsMap } = useFiatWalletsMap()
+  const { connector } = useAccount()
 
   const selectedWallets = useObservable(selectedWalletsObservable)
   const { chains } = useConfig()
@@ -48,6 +48,29 @@ export const IntegratedWallet = () => {
   const { triggerAddFunds } = useAddFundsModal()
   const [accountSelectorModalOpen, setAccountSelectorModalOpen] = useState(false)
   const [walletFilterOpen, setWalletFilterOpen] = useState(false)
+
+  const [signInDisplay, setSignInDisplay] = useState('')
+
+  useEffect(() => {
+    const fetchSignInDisplay = async () => {
+      const sequenceWaas = (await connector?.sequenceWaas) as {
+        listAccounts: () => Promise<{ accounts: { email: string; type: string }[] }>
+      }
+
+      if (sequenceWaas) {
+        const sequenceWaasAccounts = await sequenceWaas.listAccounts()
+        const waasEmail = sequenceWaasAccounts.accounts.find(account => account.type === 'OIDC')?.email
+        let backupEmail = ''
+        if (sequenceWaasAccounts.accounts.length > 0) {
+          backupEmail = sequenceWaasAccounts.accounts[0].email
+        }
+        setSignInDisplay(waasEmail || backupEmail)
+      } else {
+        setSignInDisplay(connector?.name || '')
+      }
+    }
+    fetchSignInDisplay()
+  }, [connector])
 
   const { data: tokenBalancesData, isPending: isTokenBalancesPending } = useGetTokenBalancesDetails({
     chainIds: selectedNetworks,
@@ -266,10 +289,11 @@ export const IntegratedWallet = () => {
           <Text color="primary" fontWeight="medium" variant="normal">
             {formatAddress(accountAddress || '')}
           </Text>
-
-          <Text color="muted" fontWeight="medium" variant="small">
-            placeholder@gmail.com
-          </Text>
+          {signInDisplay && (
+            <Text color="muted" fontWeight="medium" variant="small">
+              {signInDisplay}
+            </Text>
+          )}
         </div>
         <Button variant="text" onClick={onClickAccountSelector}>
           <ChevronDownIcon color="white" />

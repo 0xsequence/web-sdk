@@ -223,11 +223,18 @@ export interface UseWalletsReturnType {
  * }
  * ```
  */
+
+// const test = async (connector: Connector) => {
+//   console.log('test', await connector.getProvider())
+// }
+
 export const useWallets = (): UseWalletsReturnType => {
   const { address } = useAccount()
   const connections = useConnections()
   const { connectAsync } = useConnect()
   const { disconnectAsync } = useDisconnect()
+
+  // test(connections[0].connector)
 
   const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
 

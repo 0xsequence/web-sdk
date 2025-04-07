@@ -1,7 +1,6 @@
 import { Button, NumericInput, Text } from '@0xsequence/design-system'
-import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useMemo } from 'react'
 import { formatUnits } from 'viem'
-import { useChains } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'
@@ -10,14 +9,17 @@ import { formatFiatBalance, decimalsToWei } from '../../utils/formatBalance'
 export const CoinInput = ({
   coin,
   type,
-  setAmount
+  value,
+  setValue,
+  disabled
 }: {
   coin: TokenBalanceWithPrice
   type: 'from' | 'to'
-  setAmount: (amount: string) => void
+  value: string
+  setValue: (value: string, type: 'from' | 'to') => void
+  disabled?: boolean
 }) => {
   const { fiatCurrency } = useSettings()
-  const [value, setValue] = useState<string>('')
 
   const fiatBalance = formatFiatBalance(
     decimalsToWei(value, coin.contractInfo?.decimals || 18),
@@ -30,17 +32,13 @@ export const CoinInput = ({
     return value > coin.balance
   }, [coin.balance, value])
 
-  useEffect(() => {
-    setAmount(value)
-  }, [value])
-
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.target
-    setValue(value)
+    setValue(value, type)
   }
 
   const handleMax = () => {
-    setValue(formatUnits(BigInt(coin.balance), coin.contractInfo?.decimals || 18))
+    setValue(formatUnits(BigInt(coin.balance), coin.contractInfo?.decimals || 18), type)
   }
 
   return (
@@ -49,24 +47,28 @@ export const CoinInput = ({
         name="amount"
         value={value}
         onChange={handleChange}
+        disabled={disabled}
         controls={
           <>
-            {fiatBalance !== '' && (
+            {value && Number(value) > 0 && fiatBalance !== '' && (
               <Text className="whitespace-nowrap" variant="small" color="muted">
                 ~{fiatBalance}
               </Text>
             )}
             {type === 'from' && (
-              <Button className="shrink-0" size="xs" shape="square" label={`Max`} onClick={handleMax} data-id="maxCoin" />
+              <Button
+                disabled
+                className="shrink-0"
+                size="xs"
+                shape="square"
+                label={`Max`}
+                onClick={handleMax}
+                data-id="maxCoin"
+              />
             )}
           </>
         }
       />
-      {!hasSufficientFunds && (
-        <Text className="mt-2" variant="normal" color="negative" asChild>
-          Insufficient Funds
-        </Text>
-      )}
     </div>
   )
 }

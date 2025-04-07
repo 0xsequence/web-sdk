@@ -38,7 +38,7 @@ export const Receive = () => {
 
   return (
     <div style={{ paddingTop: HEADER_HEIGHT_WITH_LABEL }}>
-      <div className="flex flex-col justify-center items-center px-4 pb-4 gap-4">
+      <div className="flex flex-col justify-center items-center px-4 pb-6 gap-4">
         <NetworkSelect />
         <div className="flex mt-1 w-fit bg-white rounded-xl items-center justify-center p-4">
           <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
