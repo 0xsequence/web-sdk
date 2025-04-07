@@ -50,6 +50,8 @@ import { useAPIClient } from '../API/useAPIClient'
  * - error: Any error that occurred
  * - Other standard React Query properties
  *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSwapQuote} for more detailed documentation.
+ *
  * @example
  * ```tsx
  * import { useGetSwapQuote } from '@0xsequence/hooks'

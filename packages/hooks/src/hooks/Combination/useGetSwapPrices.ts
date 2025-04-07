@@ -167,7 +167,7 @@ const getSwapPrices = async (
  * - Contract information fetching (name, symbol, decimals, etc.)
  * - Error handling for failed API calls or balance fetches
  *
- * Go to {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSwapPrices} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSwapPrices} for more detailed documentation.
  *
  * @param args - Configuration object for the swap prices query {@link UseGetSwapPricesArgs}
  * @param options - Optional configuration for the hook behavior {@link HooksOptions}
