@@ -97,6 +97,8 @@ export const useIndexerClient = (chainId: ChainId) => {
  *
  * @throws Error if an indexer client cannot be created for any of the specified chain IDs
  *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useIndexerClients} for more detailed documentation.
+ *
  * @example
  * ```typescript
  * const TransactionFetcher = () => {

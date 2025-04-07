@@ -79,7 +79,7 @@ const getTransactionHistory = async (
  * It can filter transactions by contract address and token ID, making it useful for both
  * general account history and specific asset history views.
  *
- * Go to {@link https://docs.sequence.xyz/sdk/web/hooks/useGetTransactionHistory} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetTransactionHistory} for more detailed documentation.
  *
  * @param args - Configuration object for the transaction history query {@link GetTransactionHistoryArgs}
  *
