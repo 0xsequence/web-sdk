@@ -93,6 +93,7 @@ export { useProjectAccessKey } from './hooks/useProjectAccessKey'
 export { useStorage, useStorageItem } from './hooks/useStorage'
 export { useChain } from './hooks/useChain'
 export { useWallets } from './hooks/useWallets'
+export { useListAccounts } from './hooks/useListAccounts'
 export type { ConnectedWallet } from './hooks/useWallets'
 export type { LinkedWallet } from '@0xsequence/api'
 
