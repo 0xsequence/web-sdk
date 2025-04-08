@@ -2,19 +2,29 @@ import { SequenceCheckoutProvider } from '@0xsequence/checkout'
 import { SequenceConnect } from '@0xsequence/connect'
 import { ThemeProvider } from '@0xsequence/design-system'
 import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import { Homepage } from './components/Homepage'
 import { ImmutableCallback } from './components/ImmutableCallback'
 import { config, checkoutConfig } from './config'
 
+const isLocalhost = window.location.hostname === 'localhost'
+
 export const App = () => {
+  const isLocalhost = window.location.hostname === 'localhost'
+  const isRootPath = window.location.pathname === '/'
+
+  if (isLocalhost && isRootPath) {
+    window.location.href = '/web-sdk'
+    return null
+  }
+
   return (
     <ThemeProvider theme="dark">
       <SequenceConnect config={config}>
         <SequenceWalletProvider>
           <SequenceCheckoutProvider config={checkoutConfig}>
-            <BrowserRouter>
+            <BrowserRouter basename="/web-sdk">
               <Routes>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/auth/callback" element={<ImmutableCallback />} />
