@@ -416,7 +416,7 @@ export const Connect = (props: ConnectProps) => {
                   <div className="flex mt-6 gap-6 flex-col">
                     <>
                       {showSocialConnectorSection && (
-                        <div className="flex gap-2 justify-center items-center">
+                        <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
                           {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                             return (
                               <div className="w-full" key={connector.uid}>
