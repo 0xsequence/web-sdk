@@ -49,7 +49,6 @@ export const useListAccounts = (): UseListAccountsResult => {
   } = useQuery({
     queryKey: ['waas', 'listAccounts'],
     queryFn: async () => {
-      console.log('FETCHING ACCOUNTS')
       const waasConnection = connections.find(c => c.connector.id.includes('waas'))
       if (!waasConnection) {
         throw new Error('No WaaS connector found')
