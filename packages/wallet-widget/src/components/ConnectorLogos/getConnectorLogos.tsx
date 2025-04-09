@@ -1,15 +1,15 @@
 import { ReactNode } from 'react'
 
-import { AppleLogo } from './ConnectorLogos/AppleLogo'
-import { CoinbaseWalletLogo } from './ConnectorLogos/CoinbaseWalletLogo'
-import { DiscordLogo } from './ConnectorLogos/DiscordLogo'
-import { EmailLogo } from './ConnectorLogos/EmailLogo'
-import { FacebookLogo } from './ConnectorLogos/FacebookLogo'
-import { GoogleLogo } from './ConnectorLogos/GoogleLogo'
-import { MetaMaskLogo } from './ConnectorLogos/MetaMaskLogo'
-import { SequenceLogo } from './ConnectorLogos/SequenceLogo'
-import { TwitchLogo } from './ConnectorLogos/TwitchLogo'
-import { WalletConnectLogo } from './ConnectorLogos/WalletConnectLogo'
+import { AppleLogo } from './AppleLogo'
+import { CoinbaseWalletLogo } from './CoinbaseWalletLogo'
+import { DiscordLogo } from './DiscordLogo'
+import { EmailLogo } from './EmailLogo'
+import { FacebookLogo } from './FacebookLogo'
+import { GoogleLogo } from './GoogleLogo'
+import { MetaMaskLogo } from './MetaMaskLogo'
+import { SequenceLogo } from './SequenceLogo'
+import { TwitchLogo } from './TwitchLogo'
+import { WalletConnectLogo } from './WalletConnectLogo'
 
 export const getConnectorLogo = (connectorId: string, isDarkMode = false): ReactNode => {
   switch (connectorId) {
