@@ -2,9 +2,10 @@
 
 import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout'
 import { getModalPositionCss, useTheme, ShadowRoot, useOpenConnectModal } from '@0xsequence/connect'
-import { Modal, Scroll } from '@0xsequence/design-system'
+import { Modal, Scroll, ToastProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { useAccount } from 'wagmi'
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
@@ -38,6 +39,14 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
   const { isAddFundsModalOpen } = useAddFundsModal()
   const { isConnectModalOpen } = useOpenConnectModal()
+  const { address } = useAccount()
+
+  useEffect(() => {
+    if (!address) {
+      setOpenWalletModal(false)
+    }
+  }, [address])
+
   // Wallet Modal Context
   const [openWalletModal, setOpenWalletModalState] = useState<boolean>(false)
 
@@ -54,15 +63,13 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
 
   const displayScrollbar =
-    navigation.location === 'home' ||
+    // navigation.location === 'home' ||
     navigation.location === 'send-general' ||
-    navigation.location === 'swap' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'search-view-all' ||
-    navigation.location === 'settings' ||
     navigation.location === 'settings-wallets' ||
     navigation.location === 'settings-networks' ||
     navigation.location === 'settings-currency' ||
@@ -75,13 +82,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
 
   let paddingTop = 0
   switch (navigation.location) {
-    case 'home':
-      paddingTop = 0
-      break
     case 'send-general':
-      paddingTop = HEADER_HEIGHT_WITH_LABEL
-      break
-    case 'swap':
       paddingTop = HEADER_HEIGHT_WITH_LABEL
       break
     default:
@@ -94,36 +95,38 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
         <FiatWalletsMapProvider>
-          <ShadowRoot theme={theme}>
-            <AnimatePresence>
-              {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
-                <Modal
-                  contentProps={{
-                    style: {
-                      maxWidth: WALLET_WIDTH,
-                      height: 'fit-content',
-                      ...getModalPositionCss(position),
-                      scrollbarColor: 'gray black',
-                      scrollbarWidth: 'thin'
-                    }
-                  }}
-                  scroll={false}
-                  onClose={() => setOpenWalletModal(false)}
-                >
-                  <div id="sequence-kit-wallet-content" ref={walletContentRef}>
-                    {getHeader(navigation)}
+          <ToastProvider>
+            <ShadowRoot theme={theme}>
+              <AnimatePresence>
+                {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
+                  <Modal
+                    contentProps={{
+                      style: {
+                        maxWidth: WALLET_WIDTH,
+                        height: 'fit-content',
+                        ...getModalPositionCss(position),
+                        scrollbarColor: 'gray black',
+                        scrollbarWidth: 'thin'
+                      }
+                    }}
+                    scroll={false}
+                    onClose={() => setOpenWalletModal(false)}
+                  >
+                    <div id="sequence-kit-wallet-content" ref={walletContentRef}>
+                      {getHeader(navigation)}
 
-                    {displayScrollbar ? (
-                      <Scroll style={{ paddingTop: paddingTop, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
-                    ) : (
-                      getContent(navigation)
-                    )}
-                  </div>
-                </Modal>
-              )}
-            </AnimatePresence>
-          </ShadowRoot>
-          {children}
+                      {displayScrollbar ? (
+                        <Scroll style={{ paddingTop: paddingTop, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
+                      ) : (
+                        getContent(navigation)
+                      )}
+                    </div>
+                  </Modal>
+                )}
+              </AnimatePresence>
+            </ShadowRoot>
+            {children}
+          </ToastProvider>
         </FiatWalletsMapProvider>
       </NavigationContextProvider>
     </WalletModalContextProvider>

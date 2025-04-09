@@ -507,7 +507,11 @@ export const Connected = () => {
             <Text className="mt-6" variant="small" color="muted" fontWeight="medium">
               Demos
             </Text>
-            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
+            <CardButton
+              title="Wallet widget"
+              description="View your integrated wallet"
+              onClick={() => setOpenWalletModal(true)}
+            />
             {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"

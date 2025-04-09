@@ -1,18 +1,18 @@
 import { formatAddress, useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { cardVariants, cn, Text, Divider } from '@0xsequence/design-system'
-import { useObservable } from 'micro-observables'
+import { cardVariants, cn, Text, Divider, IconButton, CheckmarkIcon, CloseIcon, Spinner } from '@0xsequence/design-system'
+import { useState } from 'react'
 
-import { GradientAvatarList } from '../../components/GradientAvatarList'
+import { MediaIconWrapper } from '../../components/IconWrappers'
 import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient'
-import { useSettings } from '../../hooks'
 import { getConnectorLogo } from '../../utils/wallets'
 
 export const SettingsWallets = () => {
   const { wallets, disconnectWallet } = useWallets()
-  const { selectedWalletsObservable } = useSettings()
   const { setOpenConnectModal } = useOpenConnectModal()
-  const selectedWallets = useObservable(selectedWalletsObservable)
+
+  const [disconnectConfirm, setDisconnectConfirm] = useState<string | null>(null)
+  const [isUnlinking, setIsUnlinking] = useState<boolean>(false)
 
   const onClickAddWallet = () => {
     setOpenConnectModal(true)
@@ -31,23 +31,60 @@ export const SettingsWallets = () => {
     )
   }
 
+  const confrimDisconnectAll = () => {
+    setDisconnectConfirm('All')
+  }
+
+  const confirmDisconnect = (address: string) => {
+    setDisconnectConfirm(address)
+  }
+
+  const handleDisconnect = async () => {
+    setIsUnlinking(true)
+    if (disconnectConfirm === 'All') {
+      wallets.forEach(async wallet => await disconnectWallet(wallet.address))
+    } else {
+      await disconnectWallet(disconnectConfirm || '')
+    }
+    setDisconnectConfirm(null)
+    setIsUnlinking(false)
+  }
+
+  // <div className="flex relative items-center gap-2">
+  //         {isUnlinking ? (
+  //           <Spinner />
+  //         ) : showUnlinkConfirm ? (
+  //           <div className="flex gap-3">
+  //             <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={handleUnlink} />
+  //             <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
+  //           </div>
+  //         ) : (
+  //           <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
+  //         )}
+  //       </div>
+
   return (
     <div className="flex flex-col justify-between" style={{ height: '100%' }}>
       <div className="flex flex-col p-4 gap-2">
         {wallets.length > 1 && (
           <ListCardSelect
             key="all"
-            isSelected={selectedWallets.length > 1}
             type="custom"
-            disabled
+            disabled={isUnlinking}
             rightChildren={
-              <DisconnectButton
-                label="Disconnect All"
-                onClick={() => wallets.forEach(wallet => disconnectWallet(wallet.address))}
-              />
+              isUnlinking ? (
+                <Spinner />
+              ) : disconnectConfirm === 'All' ? (
+                <div className="flex gap-3">
+                  <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={() => handleDisconnect()} />
+                  <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setDisconnectConfirm(null)} />
+                </div>
+              ) : (
+                <DisconnectButton label="Disconnect All" onClick={() => confrimDisconnectAll()} />
+              )
             }
           >
-            <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
+            <MediaIconWrapper iconList={wallets.map(wallet => wallet.address)} size="sm" isAccount />
             <Text color="primary" fontWeight="medium" variant="normal">
               All
             </Text>
@@ -56,10 +93,20 @@ export const SettingsWallets = () => {
         {wallets.map(wallet => (
           <ListCardSelect
             key={wallet.address}
-            isSelected={selectedWallets.length === 1 && selectedWallets.find(w => w.address === wallet.address) !== undefined}
             type="custom"
-            disabled
-            rightChildren={<DisconnectButton label="Disconnect" onClick={() => disconnectWallet(wallet.address)} />}
+            disabled={isUnlinking}
+            rightChildren={
+              isUnlinking && disconnectConfirm === wallet.address ? (
+                <Spinner />
+              ) : disconnectConfirm === wallet.address ? (
+                <div className="flex gap-3">
+                  <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={() => handleDisconnect()} />
+                  <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setDisconnectConfirm(null)} />
+                </div>
+              ) : (
+                <DisconnectButton label="Disconnect" onClick={() => confirmDisconnect(wallet.address)} />
+              )
+            }
           >
             <WalletAccountGradient
               accountAddress={wallet.address}

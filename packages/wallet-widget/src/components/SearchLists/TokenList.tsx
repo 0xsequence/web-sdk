@@ -1,17 +1,16 @@
 import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
-import { cardVariants, cn, GearIcon, SearchIcon, TextInput } from '@0xsequence/design-system'
+import { SearchIcon, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
-import { AnimatePresence } from 'motion/react'
 import { useState, useMemo } from 'react'
 import { useConfig } from 'wagmi'
 
 import { useSettings } from '../../hooks'
 import { computeBalanceFiat, TokenBalanceWithPrice } from '../../utils'
 import { useGetMoreBalances } from '../../utils'
-import { FilterMenu } from '../FilterMenu'
+import { FilterButton } from '../Filter/FilterButton'
 
 import { CoinsTab } from './TokenList/CoinsTab'
 
@@ -19,12 +18,14 @@ export const TokenList = ({
   tokenBalancesData,
   isPendingTokenBalances,
   onTokenClick,
+  includeUserAddress = false,
   enableFilters = true
 }: {
   tokenBalancesData: TokenBalance[]
   isPendingTokenBalances: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
   enableFilters?: boolean
+  includeUserAddress?: boolean
 }) => {
   const pageSize = 15
 
@@ -32,7 +33,6 @@ export const TokenList = ({
   const { fiatCurrency } = useSettings()
 
   const [search, setSearch] = useState('')
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const coinBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
@@ -126,14 +126,6 @@ export const TokenList = ({
     isFetching: isFetchingMoreSearchBalances
   } = useGetMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
 
-  const onFilterClick = () => {
-    setIsFilterOpen(true)
-  }
-
-  const onShowTokens = () => {
-    setIsFilterOpen(false)
-  }
-
   return (
     <div className="flex flex-col gap-4 items-center justify-center">
       <div className="flex flex-row justify-between items-center w-full gap-2">
@@ -148,11 +140,7 @@ export const TokenList = ({
             data-1p-ignore
           />
         </div>
-        {enableFilters && (
-          <div className={cn(cardVariants({ clickable: true }), 'bg-background-primary p-0 w-fit')} onClick={onFilterClick}>
-            <GearIcon size="lg" color="white" />
-          </div>
-        )}
+        {enableFilters && <FilterButton label="Token Filters" type="tokens" />}
       </div>
       <div className="w-full">
         <CoinsTab
@@ -162,19 +150,9 @@ export const TokenList = ({
           isFetchingMoreCoinBalances={search ? isFetchingMoreSearchBalances : isFetchingMoreBalances}
           isFetchingInitialBalances={isPending}
           onTokenClick={onTokenClick}
+          includeUserAddress={includeUserAddress}
         />
       </div>
-      <AnimatePresence>
-        {isFilterOpen && (
-          <FilterMenu
-            onClose={() => setIsFilterOpen(false)}
-            label="Token Filters"
-            buttonLabel="Show Tokens"
-            type="tokens"
-            handleButtonPress={onShowTokens}
-          />
-        )}
-      </AnimatePresence>
     </div>
   )
 }

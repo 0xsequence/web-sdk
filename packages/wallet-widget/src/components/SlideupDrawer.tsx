@@ -1,6 +1,6 @@
 import { cardVariants, cn, Divider, Text, ChevronLeftIcon, Button } from '@0xsequence/design-system'
 import { motion } from 'motion/react'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 import { WalletContentRefContext } from '../contexts/WalletContentRef'
@@ -24,7 +24,15 @@ export const SlideupDrawer = ({
   handleButtonPress?: () => void
   onBackPress?: () => void
 }) => {
+  const [walletContentHeight, setWalletContentHeight] = useState(0)
   const walletContentRef = useContext(WalletContentRefContext)
+
+  useEffect(() => {
+    const rect = walletContentRef?.current?.getBoundingClientRect()
+    if (rect) {
+      setWalletContentHeight(rect.height)
+    }
+  }, [walletContentRef])
 
   if (!walletContentRef.current) {
     return null
@@ -100,25 +108,29 @@ export const SlideupDrawer = ({
             {onBackPress && <div style={{ width: '20px' }}></div>}
           </div>
           <div
-            className="rounded-none bg-background-primary m-4"
-            style={{ height: 'fit-content', maxHeight: '55vh', overflowY: 'auto' }}
+            className="rounded-none bg-background-primary px-4 pb-4"
+            style={{ height: 'auto', maxHeight: `calc(${walletContentHeight}px / 2)`, overflowY: 'auto' }}
           >
             {children}
           </div>
-          <Divider className="my-0" />
-          <div className="rounded-none m-4">
-            <div
-              className={cn(
-                cardVariants({ clickable: true }),
-                'flex justify-center items-center bg-gradient-primary rounded-full gap-2 p-3'
-              )}
-              onClick={handleButtonPress}
-            >
-              <Text color="primary" fontWeight="bold" variant="normal">
-                {buttonLabel}
-              </Text>
-            </div>
-          </div>
+          {buttonLabel && (
+            <>
+              <Divider className="my-0" />
+              <div className="rounded-none m-4">
+                <div
+                  className={cn(
+                    cardVariants({ clickable: true }),
+                    'flex justify-center items-center bg-gradient-primary rounded-full gap-2 p-3'
+                  )}
+                  onClick={handleButtonPress}
+                >
+                  <Text color="primary" fontWeight="bold" variant="normal">
+                    {buttonLabel}
+                  </Text>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </motion.div>
     </>,

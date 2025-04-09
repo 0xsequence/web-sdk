@@ -3,6 +3,7 @@ import { CurrencyIcon, NetworkIcon, Text, WalletIcon } from '@0xsequence/design-
 
 import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag'
 import { ListCardNav } from '../../components/ListCard/ListCardNav'
+import { HEADER_HEIGHT } from '../../constants'
 import { useNavigation, useSettings } from '../../hooks'
 
 export const SettingsMenu = () => {
@@ -53,8 +54,8 @@ export const SettingsMenu = () => {
     <StackedIconTag
       label={<Text color="primary">{wallets.length}</Text>}
       iconList={wallets.map(wallet => wallet.address)}
-      isAccount={true}
       shape="rounded"
+      isAccount
     />
   )
 
@@ -74,7 +75,7 @@ export const SettingsMenu = () => {
   )
 
   return (
-    <div className="p-4">
+    <div className="p-4" style={{ paddingTop: HEADER_HEIGHT }}>
       <div className="flex flex-col gap-2">
         <ListCardNav rightChildren={walletsPreview} onClick={onClickWallets} style={{ height: '64px' }}>
           <WalletIcon className="text-primary w-6 h-6" />

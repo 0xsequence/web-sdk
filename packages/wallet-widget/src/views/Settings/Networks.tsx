@@ -1,7 +1,7 @@
-import { Text, TokenImage } from '@0xsequence/design-system'
-import { ChainId } from '@0xsequence/network'
+import { Text } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 
+import { NetworkRow } from '../../components/Filter/NetworkRow'
 import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
 import { useSettings } from '../../hooks'
 
@@ -23,18 +23,12 @@ export const SettingsNetworks = () => {
         </ListCardSelect>
       )}
       {allNetworks.map(chainId => (
-        <ListCardSelect
+        <NetworkRow
           key={chainId}
+          chainId={chainId}
           isSelected={selectedNetworks.length === 1 && selectedNetworks.includes(chainId)}
           onClick={() => setSelectedNetworks([chainId])}
-        >
-          <div className="flex gap-2 justify-center items-center">
-            <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chainId}.webp`} />
-            <Text color="primary" variant="normal" fontWeight="bold">
-              {ChainId[chainId]}
-            </Text>
-          </div>
-        </ListCardSelect>
+        />
       ))}
     </div>
   )

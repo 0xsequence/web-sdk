@@ -1,12 +1,11 @@
 import { getNetwork } from '@0xsequence/connect'
-import { Button, Text, CopyIcon, ShareIcon, Image, Card } from '@0xsequence/design-system'
+import { Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount } from 'wagmi'
 
 import { NetworkSelect } from '../components/NetworkSelect'
-import { WALLET_WIDTH } from '../components/SequenceWalletProvider'
 import { HEADER_HEIGHT_WITH_LABEL } from '../constants'
 
 const isVowel = (char: string) => ['a', 'e', 'i', 'o', 'u'].includes(char.toLowerCase())

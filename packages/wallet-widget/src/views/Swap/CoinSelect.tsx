@@ -1,4 +1,4 @@
-import { cn, cardVariants, Text, ChevronDownIcon, TokenImage, compareAddress } from '@0xsequence/design-system'
+import { cn, cardVariants, Text, ChevronDownIcon, TokenImage } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 import { useChains } from 'wagmi'
@@ -65,12 +65,7 @@ export const CoinSelect = ({
 
       <AnimatePresence>
         {isSelectorOpen && (
-          <SlideupDrawer
-            label="Select Coin"
-            buttonLabel="Close"
-            handleButtonPress={() => setIsSelectorOpen(false)}
-            onClose={() => setIsSelectorOpen(false)}
-          >
+          <SlideupDrawer label="Select Coin" onClose={() => setIsSelectorOpen(false)}>
             <div className="flex flex-col gap-2">
               {coinList.map((coin, index) => (
                 <CoinRow key={index} balance={coin} onTokenClick={handleSelect} />
