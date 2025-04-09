@@ -17,7 +17,7 @@ export const App = () => {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Homepage />} />
-                <Route path="/auth/callback" element={<ImmutableCallback />} />
+                <Route path="/auth-callback" element={<ImmutableCallback />} />
               </Routes>
             </BrowserRouter>
           </SequenceCheckoutProvider>
