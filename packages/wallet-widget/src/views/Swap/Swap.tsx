@@ -1,6 +1,16 @@
 import { SwapQuote } from '@0xsequence/api'
 import { sendTransactions } from '@0xsequence/connect'
-import { ArrowRightIcon, Card, cardVariants, cn, compareAddress, IconButton, Spinner, Text } from '@0xsequence/design-system'
+import {
+  ArrowRightIcon,
+  Card,
+  cardVariants,
+  cn,
+  compareAddress,
+  IconButton,
+  Spinner,
+  Text,
+  useToast
+} from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary, useIndexerClient } from '@0xsequence/hooks'
 import { useAPIClient } from '@0xsequence/hooks'
 import { useEffect, useState } from 'react'
@@ -17,6 +27,7 @@ import { CoinInput } from './CoinInput'
 import { CoinSelect } from './CoinSelect'
 
 export const Swap = () => {
+  const toast = useToast()
   const { fiatCurrency } = useSettings()
   const { address: userAddress, connector } = useAccount()
   const connectedChainId = useChainId()
@@ -191,6 +202,12 @@ export const Swap = () => {
         indexerClient,
         senderAddress: userAddress,
         transactions: getSwapTransactions()
+      })
+
+      toast({
+        title: 'Transaction sent',
+        description: `Successfully swapped ${fromAmount} ${fromCoin?.contractInfo?.name} for ${toAmount} ${toCoin?.contractInfo?.name}`,
+        variant: 'success'
       })
     } catch (error) {
       setIsErrorTxn(true)

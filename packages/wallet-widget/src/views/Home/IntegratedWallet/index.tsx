@@ -2,11 +2,11 @@ import { useAddFundsModal } from '@0xsequence/checkout'
 import { compareAddress, formatAddress, useWallets, useOpenConnectModal, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import {
   Button,
-  SendIcon,
+  ArrowUpIcon,
   SwapIcon,
   ScanIcon,
   AddIcon,
-  ChevronDownIcon,
+  ChevronUpDownIcon,
   Text,
   EllipsisIcon,
   Skeleton
@@ -304,11 +304,11 @@ export const IntegratedWallet = () => {
           )}
         </div>
         <Button variant="text" onClick={onClickAccountSelector}>
-          <ChevronDownIcon color="white" />
+          <ChevronUpDownIcon color="white" />
         </Button>
       </div>
       <div className="flex flex-row gap-2 w-full mt-3">
-        <OperationButtonTemplate label="Send" onClick={onClickSend} icon={SendIcon} />
+        <OperationButtonTemplate label="Send" onClick={onClickSend} icon={ArrowUpIcon} />
         <OperationButtonTemplate label="Swap" onClick={onClickSwap} icon={SwapIcon} />
         <OperationButtonTemplate label="Receive" onClick={onClickReceive} icon={ScanIcon} />
         <OperationButtonTemplate label="Buy" onClick={onClickAddFunds} icon={AddIcon} />

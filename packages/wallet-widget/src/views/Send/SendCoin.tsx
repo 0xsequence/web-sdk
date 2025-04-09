@@ -19,7 +19,8 @@ import {
   NumericInput,
   TextInput,
   Spinner,
-  Card
+  Card,
+  useToast
 } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
@@ -49,6 +50,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { clearCachedBalances } = useClearCachedBalances()
   const publicClient = usePublicClient({ chainId })
   const indexerClient = useIndexerClient(chainId)
+  const toast = useToast()
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
@@ -247,6 +249,13 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             clearCachedBalances()
           }
         }
+        setIsSendTxnPending(false)
+
+        toast({
+          title: 'Transaction sent',
+          description: `Successfully sent ${amountToSendFormatted} ${symbol} to ${toAddress}`,
+          variant: 'success'
+        })
       }
     }
 

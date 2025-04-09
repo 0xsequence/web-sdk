@@ -8,7 +8,7 @@ export const StackedIconTag = ({
   onClick,
   enabled = false
 }: {
-  iconList: string[]
+  iconList: string[] | React.ReactNode[]
   isAccount?: boolean
   shape?: 'rounded' | 'square'
   label?: React.ReactNode

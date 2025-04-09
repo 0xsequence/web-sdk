@@ -27,7 +27,7 @@ export const TokenList = ({
   enableFilters?: boolean
   includeUserAddress?: boolean
 }) => {
-  const pageSize = 15
+  const pageSize = 10
 
   const { chains } = useConfig()
   const { fiatCurrency } = useSettings()

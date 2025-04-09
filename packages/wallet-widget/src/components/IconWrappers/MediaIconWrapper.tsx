@@ -16,7 +16,7 @@ export const MediaIconWrapper = ({
   size = 'base',
   shape = 'rounded'
 }: {
-  iconList: string[]
+  iconList: string[] | React.ReactNode[]
   isAccount?: boolean
   size?: '4xs' | '2xs' | 'sm' | 'base' | 'lg' | '2lg' | '3lg'
   shape?: 'rounded' | 'square'
@@ -70,22 +70,36 @@ export const MediaIconWrapper = ({
             transform: 'translateY(-50%)'
           }}
         >
-          {isAccount ? (
-            <div
-              className={`${shapeClass} border  overflow-hidden`}
-              style={{ width: `calc(${widthClassMap[size]} + 2px)`, height: `calc(${widthClassMap[size]} + 2px)` }}
-            >
-              <GradientAvatar address={icon} className="w-full h-full" />
-            </div>
+          {typeof icon === 'string' ? (
+            <>
+              {isAccount ? (
+                <div
+                  className={`flex items-center justify-center ${shapeClass} border overflow-hidden bg-background-primary`}
+                  style={{ width: `calc(${widthClassMap[size]} + 2px)`, height: `calc(${widthClassMap[size]} + 2px)` }}
+                >
+                  <GradientAvatar address={icon} className="w-full h-full" />
+                </div>
+              ) : (
+                <div
+                  className={`flex items-center justify-center ${shapeClass} border overflow-hidden bg-background-primary`}
+                  style={{
+                    width: `calc(${widthClassMap[size]} + 2px)`,
+                    height: `calc(${widthClassMap[size]} + 2px)`
+                  }}
+                >
+                  <img src={icon} alt="icon" style={{ backgroundColor: 'lightgray' }} />
+                </div>
+              )}
+            </>
           ) : (
             <div
-              className={`${shapeClass} border overflow-hidden`}
+              className={`flex items-center justify-center ${shapeClass} border overflow-hidden bg-background-primary`}
               style={{
                 width: `calc(${widthClassMap[size]} + 2px)`,
                 height: `calc(${widthClassMap[size]} + 2px)`
               }}
             >
-              <img src={icon} alt="icon" style={{ backgroundColor: 'lightgray' }} />
+              {icon}
             </div>
           )}
         </div>

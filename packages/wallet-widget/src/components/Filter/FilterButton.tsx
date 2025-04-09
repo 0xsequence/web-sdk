@@ -1,5 +1,5 @@
 import { useWallets } from '@0xsequence/connect'
-import { GearIcon, cn, cardVariants, Text } from '@0xsequence/design-system'
+import { FilterIcon, cn, cardVariants, Text } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
 
@@ -28,12 +28,12 @@ export const FilterButton = ({
 
   return (
     <div
-      className={cn(cardVariants({ clickable: true }), 'flex items-center justify-center p-2 relative')}
+      className={cn(cardVariants({ clickable: true }), 'flex items-center justify-center p-2 relative overflow-visible')}
       style={{ height: '52px', width: '52px' }}
       onClick={() => setIsOpen(true)}
     >
-      <GearIcon size="xl" color="white" />
-      <div className="absolute top-0 right-0">
+      <FilterIcon size="md" color="white" />
+      <div className="absolute" style={{ top: '-4px', right: '-4px' }}>
         {howManyModifiedFilters > 0 && (
           <div className="flex items-center justify-center w-6 h-6 rounded-full" style={{ backgroundColor: '#0076CC' }}>
             <Text variant="small" color="white">

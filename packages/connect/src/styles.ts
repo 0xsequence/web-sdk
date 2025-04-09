@@ -5,8 +5,7 @@ export const styles = String.raw`
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-      "Courier New", monospace;
+    --font-mono: "Roboto", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --color-violet-600: oklch(0.541 0.281 293.009);
     --color-black: #000;
     --color-white: #fff;
@@ -425,9 +424,6 @@ export const styles = String.raw`
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
-  .h-20 {
-    height: calc(var(--spacing) * 20);
-  }
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
@@ -512,14 +508,8 @@ export const styles = String.raw`
   .w-13 {
     width: calc(var(--spacing) * 13);
   }
-  .w-14 {
-    width: calc(var(--spacing) * 14);
-  }
   .w-16 {
     width: calc(var(--spacing) * 16);
-  }
-  .w-20 {
-    width: calc(var(--spacing) * 20);
   }
   .w-24 {
     width: calc(var(--spacing) * 24);
@@ -696,6 +686,9 @@ export const styles = String.raw`
   .overflow-scroll {
     overflow: scroll;
   }
+  .overflow-visible {
+    overflow: visible;
+  }
   .overflow-x-auto {
     overflow-x: auto;
   }
@@ -799,8 +792,8 @@ export const styles = String.raw`
   .border-violet-600 {
     border-color: var(--color-violet-600);
   }
-  .border-t-primary {
-    border-top-color: var(--seq-color-primary);
+  .border-b-primary {
+    border-bottom-color: var(--seq-color-primary);
   }
   .border-b-transparent {
     border-bottom-color: transparent;
