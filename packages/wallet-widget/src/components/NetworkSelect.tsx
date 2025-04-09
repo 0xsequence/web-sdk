@@ -1,4 +1,4 @@
-import { cardVariants, ChevronDownIcon, cn, NetworkImage, Text } from '@0xsequence/design-system'
+import { cardVariants, ChevronUpDownIcon, cn, NetworkImage, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 import { useChainId, useChains, useSwitchChain } from 'wagmi'
 
@@ -34,7 +34,7 @@ export const NetworkSelect = () => {
         </div>
       </div>
 
-      <ChevronDownIcon className="text-muted" />
+      <ChevronUpDownIcon className="text-muted" />
       {isOpen && (
         <SlideupDrawer label="Network" onClose={() => setIsOpen(false)}>
           <div className="flex flex-col gap-2 px-2" style={{ maxHeight: `calc(${WALLET_HEIGHT} / 2)`, overflowY: 'auto' }}>

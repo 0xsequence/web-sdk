@@ -1,5 +1,5 @@
 import { formatAddress } from '@0xsequence/connect'
-import { Text, GradientAvatar, ChevronDownIcon, Card } from '@0xsequence/design-system'
+import { Text, GradientAvatar, ChevronUpDownIcon, Card } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
 
 interface AccountInformationProps {
@@ -19,7 +19,7 @@ export const AccountInformation = ({ onClickAccount }: AccountInformationProps) 
       <Text color="primary" fontWeight="medium" variant="normal">
         {formatAddress(address || '')}
       </Text>
-      {onClickAccount && <ChevronDownIcon className="text-primary" />}
+      {onClickAccount && <ChevronUpDownIcon className="text-primary" />}
     </Card>
   )
 }

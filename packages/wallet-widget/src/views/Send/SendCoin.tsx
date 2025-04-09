@@ -17,7 +17,8 @@ import {
   NumericInput,
   TextInput,
   Spinner,
-  Card
+  Card,
+  useToast
 } from '@0xsequence/design-system'
 import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
@@ -38,6 +39,7 @@ interface SendCoinProps {
 }
 
 export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
+  const toast = useToast()
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
@@ -227,6 +229,12 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           })
         }
         setIsSendTxnPending(false)
+
+        toast({
+          title: 'Transaction sent',
+          description: `Successfully sent ${amountToSendFormatted} ${symbol} to ${toAddress}`,
+          variant: 'success'
+        })
       }
     }
 

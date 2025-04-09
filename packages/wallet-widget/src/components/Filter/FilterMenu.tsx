@@ -138,7 +138,13 @@ export const FilterMenu = ({
       />
     ) : (
       <StackedIconTag
-        iconList={[selectedCollections[0].contractInfo?.logoURI]}
+        iconList={[
+          <TokenImage
+            size="xs"
+            src={selectedCollections[0].contractInfo?.logoURI}
+            symbol={selectedCollections[0].contractInfo?.name}
+          />
+        ]}
         label={
           <Text variant="normal" color="primary" nowrap style={{ maxWidth: '200px' }} ellipsis>
             {selectedCollections[0].contractInfo?.name}
@@ -272,7 +278,14 @@ export const FilterMenu = ({
               isSelected={selectedCollectionsObservable.get().length === 0}
               onClick={() => setSelectedCollections([])}
             >
-              <MediaIconWrapper iconList={collections.map(collection => collection.contractInfo?.logoURI)} size="sm" />
+              <MediaIconWrapper
+                iconList={collections.map(collection => (
+                  <div className="bg-background-backdrop">
+                    <TokenImage src={collection.contractInfo?.logoURI} symbol={collection.contractInfo?.name} />
+                  </div>
+                ))}
+                size="sm"
+              />
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>

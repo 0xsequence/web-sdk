@@ -18,7 +18,8 @@ import {
   NumericInput,
   TextInput,
   Spinner,
-  Card
+  Card,
+  useToast
 } from '@0xsequence/design-system'
 import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
 import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
@@ -40,6 +41,7 @@ interface SendCollectibleProps {
 }
 
 export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendCollectibleProps) => {
+  const toast = useToast()
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
@@ -47,6 +49,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const connectedChainId = useChainId()
   const { address: accountAddress = '', connector } = useAccount()
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
+  const isConnectorWaas = !!(connector as ExtendedConnector)?.type?.includes('waas')
   const isCorrectChainId = connectedChainId === chainId
   const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -176,6 +179,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       await switchChainAsync({ chainId })
     }
 
+    if (!isConnectorWaas) {
+      executeTransaction()
+      return
+    }
+
     setIsCheckingFeeOptions(true)
 
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
@@ -241,6 +249,12 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           })
         }
         setIsSendTxnPending(false)
+
+        toast({
+          title: 'Transaction sent',
+          description: `Successfully sent ${amountToSendFormatted} ${name} to ${toAddress}`,
+          variant: 'success'
+        })
       }
     }
 

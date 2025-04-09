@@ -50,19 +50,6 @@ export const SettingsWallets = () => {
     setIsUnlinking(false)
   }
 
-  // <div className="flex relative items-center gap-2">
-  //         {isUnlinking ? (
-  //           <Spinner />
-  //         ) : showUnlinkConfirm ? (
-  //           <div className="flex gap-3">
-  //             <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={handleUnlink} />
-  //             <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
-  //           </div>
-  //         ) : (
-  //           <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
-  //         )}
-  //       </div>
-
   return (
     <div className="flex flex-col justify-between" style={{ height: '100%' }}>
       <div className="flex flex-col p-4 gap-2">
@@ -70,7 +57,7 @@ export const SettingsWallets = () => {
           <ListCardSelect
             key="all"
             type="custom"
-            disabled={isUnlinking}
+            disabled
             rightChildren={
               isUnlinking ? (
                 <Spinner />
@@ -94,7 +81,7 @@ export const SettingsWallets = () => {
           <ListCardSelect
             key={wallet.address}
             type="custom"
-            disabled={isUnlinking}
+            disabled
             rightChildren={
               isUnlinking && disconnectConfirm === wallet.address ? (
                 <Spinner />

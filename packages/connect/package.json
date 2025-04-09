@@ -40,7 +40,7 @@
     "@0xsequence/api": ">=2.3.4",
     "@0xsequence/auth": ">= 2.3.4",
     "@0xsequence/core": ">= 2.3.4",
-    "@0xsequence/design-system": "2.0.12",
+    "@0xsequence/design-system": "2.1.6",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/hooks": "workspace:*",
     "@0xsequence/indexer": ">= 2.3.4",

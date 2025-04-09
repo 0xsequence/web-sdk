@@ -171,7 +171,9 @@ export const TransactionConfirmation = ({
                 className="w-full"
                 variant="primary"
                 size="lg"
-                onClick={onConfirm}
+                onClick={() => {
+                  onConfirm()
+                }}
                 label="Confirm"
                 rightIcon={ChevronRightIcon}
                 disabled={isConfirmDisabled}
