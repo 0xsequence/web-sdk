@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react'
 import { formatUnits, Hex, zeroAddress } from 'viem'
 import { useAccount, useChainId, usePublicClient, useWalletClient } from 'wagmi'
 
-import { NetworkSelect } from '../../components/NetworkSelect'
+import { NetworkSelect } from '../../components/Select/NetworkSelect'
 import { HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { useSettings } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'

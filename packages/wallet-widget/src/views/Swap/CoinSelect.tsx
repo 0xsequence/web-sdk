@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useChains } from 'wagmi'
 
 import { CoinRow } from '../../components/SearchLists/TokenList/CoinRow'
-import { SlideupDrawer } from '../../components/SlideupDrawer'
+import { SlideupDrawer } from '../../components/Select/SlideupDrawer'
 import { useSettings } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'
 import { formatTokenInfo } from '../../utils/formatBalance'

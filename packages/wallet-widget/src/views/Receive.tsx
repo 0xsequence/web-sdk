@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount } from 'wagmi'
 
-import { NetworkSelect } from '../components/NetworkSelect'
+import { NetworkSelect } from '../components/Select/NetworkSelect'
 import { HEADER_HEIGHT_WITH_LABEL } from '../constants'
 
 const isVowel = (char: string) => ['a', 'e', 'i', 'o', 'u'].includes(char.toLowerCase())

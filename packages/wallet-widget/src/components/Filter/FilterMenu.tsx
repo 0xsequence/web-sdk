@@ -7,11 +7,10 @@ import { useState } from 'react'
 
 import { useSettings } from '../../hooks'
 import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap'
-import { getConnectorLogo } from '../../utils/wallets'
 import { MediaIconWrapper, StackedIconTag } from '../IconWrappers'
 import { ListCardNav } from '../ListCard'
 import { ListCardSelect } from '../ListCard/ListCardSelect'
-import { SlideupDrawer } from '../SlideupDrawer'
+import { SlideupDrawer } from '../Select/SlideupDrawer'
 import { WalletAccountGradient } from '../WalletAccountGradient'
 
 import { NetworkRow } from './NetworkRow'
@@ -233,11 +232,7 @@ export const FilterMenu = ({
               }
               onClick={() => setSelectedWallets([wallet])}
             >
-              <WalletAccountGradient
-                accountAddress={wallet.address}
-                loginIcon={getConnectorLogo(wallet.signInMethod)}
-                size={'small'}
-              />
+              <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
               <Text color="primary" fontWeight="medium" variant="normal">
                 {formatAddress(wallet.address)}
               </Text>
