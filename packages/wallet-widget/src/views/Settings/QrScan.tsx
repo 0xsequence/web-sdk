@@ -26,7 +26,7 @@ export function QrScan() {
   }
 
   return (
-    <div className="flex flex-col p-4 gap-4" style={{ paddingTop: HEADER_HEIGHT }}>
+    <div className="flex flex-col px-4 pb-4 gap-4" style={{ paddingTop: HEADER_HEIGHT }}>
       <Text variant="large" fontWeight="bold" color="text80">
         Connect to a DApp using WalletConnect
       </Text>

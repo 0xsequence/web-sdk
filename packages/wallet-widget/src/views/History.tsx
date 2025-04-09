@@ -3,6 +3,7 @@ import { compareAddress, SearchIcon, TextInput } from '@0xsequence/design-system
 import { useGetTransactionHistorySummary } from '@0xsequence/hooks'
 import { Transaction } from '@0xsequence/indexer'
 import Fuse from 'fuse.js'
+import { useObservable } from 'micro-observables'
 import { useMemo, useState } from 'react'
 import { zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
@@ -13,7 +14,10 @@ import { useSettings } from '../hooks'
 
 export const History = () => {
   const { chains } = useConfig()
-  const { selectedNetworks, selectedWallets } = useSettings()
+  const { selectedNetworksObservable, selectedWalletsObservable } = useSettings()
+
+  const selectedNetworks = useObservable(selectedNetworksObservable)
+  const selectedWallets = useObservable(selectedWalletsObservable)
 
   const [search, setSearch] = useState('')
 
@@ -124,7 +128,7 @@ export const History = () => {
   }, [search, fuse])
 
   return (
-    <div className="flex flex-col gap-3 p-4">
+    <div className="flex flex-col gap-3 px-4 pb-4">
       <div className="flex flex-row justify-between items-center w-full gap-2">
         <div className="grow">
           <TextInput

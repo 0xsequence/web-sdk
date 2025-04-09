@@ -7,7 +7,7 @@ export const SettingsApps = () => {
     setNavigation({ location: 'connect-dapp' })
   }
   return (
-    <div className="flex flex-col p-4 gap-2">
+    <div className="flex flex-col px-4 pb-4 gap-2">
       <OptionsFooter primaryButtonText="+ Connect an App" onPrimaryButtonClick={onClickConnectApp} />
     </div>
   )

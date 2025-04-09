@@ -20,7 +20,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { CopyButton } from '../../../components/CopyButton'
-import { FilterMenu } from '../../../components/Filter/FilterMenu'
+import { WalletsFilter } from '../../../components/Filter/WalletsFilter'
 import { StackedIconTag } from '../../../components/IconWrappers/StackedIconTag'
 import { ListCardNav } from '../../../components/ListCard/ListCardNav'
 import { ListCardNavTable } from '../../../components/ListCardTable/ListCardNavTable'
@@ -369,7 +369,9 @@ export const IntegratedWallet = () => {
           </SlideupDrawer>
         )}
         {walletFilterOpen && (
-          <FilterMenu onClose={() => setWalletFilterOpen(false)} label="Select active wallet" type="bypassMenuWallets" />
+          <SlideupDrawer onClose={() => setWalletFilterOpen(false)} label="Select active wallet">
+            <WalletsFilter />
+          </SlideupDrawer>
         )}
       </AnimatePresence>
     </div>

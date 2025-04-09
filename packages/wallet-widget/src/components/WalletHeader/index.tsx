@@ -49,7 +49,7 @@ export const WalletHeader = ({
         <div style={{ width: '28px' }} />
       </div>
       {primaryText && (
-        <Text variant="normal" color="primary" fontWeight="bold">
+        <Text variant="medium" color="primary">
           {primaryText}
         </Text>
       )}
