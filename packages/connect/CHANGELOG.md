@@ -1,4 +1,4 @@
-# @0xsequence/kit
+# @0xsequence/connect
 
 ## 5.1.0
 

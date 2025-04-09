@@ -1,4 +1,4 @@
-# @0xsequence/kit-example-react
+# @0xsequence/web-sdk-example-react
 
 ## 1.0.4
 

@@ -1,4 +1,4 @@
-# @0xsequence/kit-example-next
+# @0xsequence/web-sdk-example-next
 
 ## 1.0.4
 

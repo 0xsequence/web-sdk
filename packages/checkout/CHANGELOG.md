@@ -1,4 +1,4 @@
-# @0xsequence/kit-connectors
+# @0xsequence/checkout
 
 ## 5.1.0
 
