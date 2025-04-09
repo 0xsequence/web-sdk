@@ -108,7 +108,13 @@ export const config =
         },
         walletConnect: {
           projectId: walletConnectProjectId
-        }
+        },
+        additionalWallets: [
+          immutable({
+            passportInstance,
+            environment: Environment.SANDBOX
+          })
+        ]
       })
     : createConfig('universal', {
         ...connectConfig,

@@ -193,6 +193,10 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
     )
   }
 
+  if (options?.additionalWallets && options?.additionalWallets.length > 0) {
+    wallets.push(...options.additionalWallets)
+  }
+
   return getConnectWallets(projectAccessKey, wallets)
 }
 
