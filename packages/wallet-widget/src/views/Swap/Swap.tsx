@@ -4,11 +4,11 @@ import { ArrowRightIcon, Card, cardVariants, cn, compareAddress, IconButton, Spi
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary, useIndexerClient } from '@0xsequence/hooks'
 import { useAPIClient } from '@0xsequence/hooks'
 import { useEffect, useState } from 'react'
-import { encodeFunctionData, formatUnits, Hex, zeroAddress } from 'viem'
-import { parseAbi } from 'viem'
+import { formatUnits, Hex, zeroAddress } from 'viem'
 import { useAccount, useChainId, usePublicClient, useWalletClient } from 'wagmi'
 
 import { NetworkSelect } from '../../components/NetworkSelect'
+import { HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { useSettings } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'
 import { decimalsToWei } from '../../utils/formatBalance'
@@ -38,7 +38,22 @@ export const Swap = () => {
   const [isTxnPending, setIsTxnPending] = useState(false)
   const [isErrorTxn, setIsErrorTxn] = useState(false)
 
+  // Do not remove these unused states, they will be used in future updates
+
   const apiClient = useAPIClient()
+
+  useEffect(() => {
+    __setFromCoin(undefined)
+    setFromAmount('')
+    __setToCoin(undefined)
+    setToAmount('')
+    setRecentInput('from')
+    setSwapQuoteData(undefined)
+    setIsSwapQuotePending(false)
+    setIsErrorSwapQuote(false)
+    setIsTxnPending(false)
+    setIsErrorTxn(false)
+  }, [userAddress, connectedChainId])
 
   const { data: tokenBalances } = useGetTokenBalancesSummary({
     chainIds: [connectedChainId],
@@ -191,26 +206,17 @@ export const Swap = () => {
       setIsSwapQuotePending(true)
       setIsErrorSwapQuote(false)
 
-      const sellAddress = compareAddress(fromCoin?.contractAddress, zeroAddress)
-        ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-        : fromCoin?.contractAddress
-
-      const buyAddress = compareAddress(toCoin?.contractAddress, zeroAddress)
-        ? '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-        : toCoin?.contractAddress
-
       let swapQuote
       try {
-        swapQuote = await apiClient.getSwapQuote({
+        swapQuote = await apiClient.getSwapQuoteV2({
           userAddress: String(userAddress),
-          buyCurrencyAddress: buyAddress || '',
-          sellCurrencyAddress: sellAddress || '',
+          buyCurrencyAddress: toCoin?.contractAddress || '',
+          sellCurrencyAddress: fromCoin?.contractAddress || '',
           buyAmount: decimalsToWei(toAmount, toCoin?.contractInfo?.decimals || 18) || '0',
           chainId: toCoin?.chainId || 1,
           includeApprove: true
         })
 
-        // TODO: change to useSwapQuoteV2
         // TODO: change to multi-directional swap quote
 
         console.log(swapQuote?.swapQuote)
@@ -233,7 +239,7 @@ export const Swap = () => {
   }, [fromCoin, toCoin, fromAmount, toAmount])
 
   return (
-    <div className="flex flex-col justify-center items-center px-4 pb-4 gap-4">
+    <div className="flex flex-col justify-center items-center px-4 pb-4 gap-4" style={{ paddingTop: HEADER_HEIGHT_WITH_LABEL }}>
       <NetworkSelect />
       <div className="flex gap-1 flex-col w-full">
         <Card className="flex flex-col rounded-b-none rounded-t-xl relative pb-6" style={{ overflow: 'visible' }}>

@@ -19,7 +19,7 @@ import { AnimatePresence } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
-import { FilterMenu } from '../../../components/FilterMenu'
+import { FilterMenu } from '../../../components/Filter/FilterMenu'
 import { StackedIconTag } from '../../../components/IconWrappers/StackedIconTag'
 import { ListCardNav } from '../../../components/ListCard/ListCardNav'
 import { ListCardNavTable } from '../../../components/ListCardTable/ListCardNavTable'
@@ -239,10 +239,18 @@ export const IntegratedWallet = () => {
               {fiatCurrency.sign}
               {isPending ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
             </Text>
-            <StackedIconTag iconList={coinBalancesIcons} onClick={onClickWalletSelector} />
+            <StackedIconTag
+              iconList={coinBalancesIcons}
+              onClick={onClickWalletSelector}
+              label={
+                <Text color="muted" fontWeight="medium" variant="normal">
+                  {coinBalances.length}
+                </Text>
+              }
+            />
           </div>
         ) : (
-          <Text color="muted" fontWeight="medium" variant="normal">
+          <Text color="muted" fontWeight="medium" variant="normal" nowrap>
             No Tokens
           </Text>
         )
@@ -268,7 +276,7 @@ export const IntegratedWallet = () => {
             shape="square"
           />
         ) : (
-          <Text color="muted" fontWeight="medium" variant="normal">
+          <Text color="muted" fontWeight="medium" variant="normal" nowrap>
             No Collectibles
           </Text>
         )
@@ -313,7 +321,6 @@ export const IntegratedWallet = () => {
             </Text>
             <StackedIconTag
               iconList={selectedWallets.map(wallet => wallet.address)}
-              isAccount
               label={
                 <div className="flex flex-row items-center" style={{ gap: '3px' }}>
                   <Text color="primary" variant="normal" fontWeight="medium">
@@ -322,6 +329,8 @@ export const IntegratedWallet = () => {
                   <EllipsisIcon color="white" />
                 </div>
               }
+              isAccount
+              enabled
               onClick={onClickWalletSelector}
             />
           </>
@@ -360,15 +369,7 @@ export const IntegratedWallet = () => {
           </SlideupDrawer>
         )}
         {walletFilterOpen && (
-          <FilterMenu
-            onClose={() => setWalletFilterOpen(false)}
-            label="Select active wallet"
-            buttonLabel="Close"
-            type="bypassMenuWallets"
-            handleButtonPress={() => {
-              setWalletFilterOpen(false)
-            }}
-          />
+          <FilterMenu onClose={() => setWalletFilterOpen(false)} label="Select active wallet" type="bypassMenuWallets" />
         )}
       </AnimatePresence>
     </div>

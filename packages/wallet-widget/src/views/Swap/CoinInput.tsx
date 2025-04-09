@@ -1,5 +1,5 @@
 import { Button, NumericInput, Text } from '@0xsequence/design-system'
-import { ChangeEvent, useMemo } from 'react'
+import { ChangeEvent } from 'react'
 import { formatUnits } from 'viem'
 
 import { useSettings } from '../../hooks'
@@ -27,10 +27,6 @@ export const CoinInput = ({
     coin.contractInfo?.decimals || 18,
     fiatCurrency.sign
   )
-
-  const hasSufficientFunds = useMemo(() => {
-    return value > coin.balance
-  }, [coin.balance, value])
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.target

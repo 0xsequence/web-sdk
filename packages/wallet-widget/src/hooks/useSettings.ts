@@ -179,7 +179,7 @@ export const useSettings = (): Settings => {
 
       const hasInvalidNetworksSelection = selectedNetworks.length > 1 && selectedNetworks.length !== allNetworks.length
 
-      if (hasInvalidWallets || hasInvalidNetworksSelection) {
+      if (hasInvalidWallets || hasInvalidNetworksSelection || !selectedWallets.length) {
         return true
       }
     }
@@ -217,32 +217,29 @@ export const useSettings = (): Settings => {
   const setSelectedWallets = (newSelectedWallets: ConnectedWallet[]) => {
     if (newSelectedWallets.length === 0) {
       selectedWalletsObservable.set(allWallets)
-      updateLocalStorage()
     } else {
       selectedWalletsObservable.set(newSelectedWallets)
-      updateLocalStorage()
     }
+    updateLocalStorage()
   }
 
   const setSelectedNetworks = (newSelectedNetworks: number[]) => {
     if (newSelectedNetworks.length === 0) {
       selectedNetworksObservable.set(allNetworks)
-      updateLocalStorage()
     } else {
       selectedNetworksObservable.set(newSelectedNetworks)
       selectedCollectionsObservable.set([])
-      updateLocalStorage()
     }
+    updateLocalStorage()
   }
 
   const setSelectedCollections = (newSelectedCollections: SettingsCollection[]) => {
     if (newSelectedCollections.length === 0) {
       selectedCollectionsObservable.set([])
-      updateLocalStorage()
     } else {
       selectedCollectionsObservable.set(newSelectedCollections)
-      updateLocalStorage()
     }
+    updateLocalStorage()
   }
 
   const updateLocalStorage = () => {

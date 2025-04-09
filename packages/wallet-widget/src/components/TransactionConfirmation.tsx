@@ -166,6 +166,7 @@ export const TransactionConfirmation = ({
             </div>
           ) : (
             <>
+              <Button className="w-full" variant="glass" size="lg" onClick={onCancel} label="Cancel" />
               <Button
                 className="w-full"
                 variant="primary"
@@ -175,7 +176,6 @@ export const TransactionConfirmation = ({
                 rightIcon={ChevronRightIcon}
                 disabled={isConfirmDisabled}
               />
-              <Button className="w-full" variant="glass" size="lg" onClick={onCancel} label="Cancel" />
             </>
           )}
         </div>

@@ -6,7 +6,8 @@ export const ListCardNav = ({
   shape = 'rounded',
   style,
   type = 'chevron',
-  onClick
+  onClick,
+  disabled = false
 }: {
   children: React.ReactNode
   rightChildren?: React.ReactNode
@@ -14,15 +15,16 @@ export const ListCardNav = ({
   style?: React.CSSProperties
   type?: 'chevron' | 'custom'
   onClick: () => void
+  disabled?: boolean
 }) => {
   return (
     <div
       className={cn(
-        'flex flex-row justify-between items-center bg-background-secondary cursor-pointer hover:opacity-80 w-full p-4',
+        `flex flex-row justify-between items-center bg-background-secondary w-full p-4 ${!disabled && 'cursor-pointer hover:opacity-80'}`,
         shape === 'rounded' ? 'rounded-lg' : 'rounded-none'
       )}
       style={{ height: '52px', ...style }}
-      onClick={onClick}
+      onClick={!disabled ? onClick : undefined}
     >
       <div className="flex flex-row gap-2 items-center w-full">{children}</div>
 

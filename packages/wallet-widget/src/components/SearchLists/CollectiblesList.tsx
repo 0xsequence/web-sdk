@@ -1,11 +1,10 @@
-import { SearchIcon, TextInput, GearIcon, cn, cardVariants } from '@0xsequence/design-system'
+import { SearchIcon, TextInput } from '@0xsequence/design-system'
 import { TokenBalance } from '@0xsequence/indexer'
 import Fuse from 'fuse.js'
-import { AnimatePresence } from 'motion/react'
 import { useState, useMemo } from 'react'
 
 import { TokenBalanceWithPrice, useGetMoreBalances } from '../../utils'
-import { FilterMenu } from '../FilterMenu'
+import { FilterButton } from '../Filter/FilterButton'
 
 import { CollectiblesTab } from './CollectiblesList/CollectiblesTab'
 
@@ -25,7 +24,6 @@ export const CollectiblesList = ({
   const pageSize = 8
 
   const [search, setSearch] = useState('')
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const collectibleBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC721' || b.contractType === 'ERC1155') || []
@@ -88,14 +86,6 @@ export const CollectiblesList = ({
     isFetching: isFetchingMoreSearchBalances
   } = useGetMoreBalances(searchResults, pageSize, { enabled: search.trim() !== '' })
 
-  const onFilterClick = () => {
-    setIsFilterOpen(true)
-  }
-
-  const onShowCollectibles = () => {
-    setIsFilterOpen(false)
-  }
-
   return (
     <div className="flex flex-col gap-4 items-center justify-center">
       <div className="flex flex-row justify-between items-center w-full gap-2">
@@ -110,11 +100,7 @@ export const CollectiblesList = ({
             data-1p-ignore
           />
         </div>
-        {enableFilters && (
-          <div className={cn(cardVariants({ clickable: true }), 'bg-background-primary p-0 w-fit')} onClick={onFilterClick}>
-            <GearIcon size="lg" color="white" />
-          </div>
-        )}
+        {enableFilters && <FilterButton label="Collectible Filters" type="collectibles" />}
       </div>
       <div className="w-full">
         <CollectiblesTab
@@ -127,18 +113,6 @@ export const CollectiblesList = ({
           gridColumns={gridColumns}
         />
       </div>
-
-      <AnimatePresence>
-        {isFilterOpen && (
-          <FilterMenu
-            onClose={() => setIsFilterOpen(false)}
-            label="Collectible Filters"
-            buttonLabel="Show Collectibles"
-            type="collectibles"
-            handleButtonPress={onShowCollectibles}
-          />
-        )}
-      </AnimatePresence>
     </div>
   )
 }

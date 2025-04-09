@@ -12,9 +12,10 @@ export const SettingsCurrency = () => {
   return (
     <div className="p-4">
       <div className="flex flex-col gap-2">
-        {supportedFiatCurrencies.map(currency => {
+        {supportedFiatCurrencies.map((currency, index) => {
           return (
             <ListCardSelect
+              key={index}
               isSelected={currency.symbol === fiatCurrency.symbol}
               onClick={() => setFiatCurrency && setFiatCurrency(currency)}
             >

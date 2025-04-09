@@ -13,6 +13,12 @@ import { WalletConnectLogo } from './ConnectorLogos/WalletConnectLogo'
 
 export const getConnectorLogo = (connectorId: string, isDarkMode = false): ReactNode => {
   switch (connectorId) {
+    case 'apple-waas':
+      return <AppleLogo isDarkMode={isDarkMode} />
+    case 'email-waas':
+      return <EmailLogo isDarkMode={isDarkMode} />
+    case 'google-waas':
+      return <GoogleLogo />
     case 'apple':
       return <AppleLogo isDarkMode={isDarkMode} />
     case 'coinbase-wallet':

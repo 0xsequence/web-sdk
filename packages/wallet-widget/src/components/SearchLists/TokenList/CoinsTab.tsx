@@ -13,6 +13,7 @@ interface CoinsTabProps {
   isFetchingMoreCoinBalances: boolean
   isFetchingInitialBalances: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
+  includeUserAddress?: boolean
 }
 
 export const CoinsTab: React.FC<CoinsTabProps> = ({
@@ -21,7 +22,8 @@ export const CoinsTab: React.FC<CoinsTabProps> = ({
   hasMoreCoinBalances,
   isFetchingMoreCoinBalances,
   isFetchingInitialBalances,
-  onTokenClick
+  onTokenClick,
+  includeUserAddress = false
 }) => {
   return (
     <div>
@@ -41,7 +43,9 @@ export const CoinsTab: React.FC<CoinsTabProps> = ({
             ) : (
               <InfiniteScroll onLoad={() => fetchMoreCoinBalances()} hasMore={hasMoreCoinBalances}>
                 {displayedCoinBalances?.map((balance, index) => {
-                  return <CoinRow key={index} balance={balance} onTokenClick={onTokenClick} />
+                  return (
+                    <CoinRow key={index} balance={balance} onTokenClick={onTokenClick} includeUserAddress={includeUserAddress} />
+                  )
                 })}
               </InfiniteScroll>
             )}

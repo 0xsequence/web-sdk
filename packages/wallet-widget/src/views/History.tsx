@@ -1,14 +1,13 @@
 import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
-import { cardVariants, cn, compareAddress, GearIcon, SearchIcon, TextInput } from '@0xsequence/design-system'
+import { compareAddress, SearchIcon, TextInput } from '@0xsequence/design-system'
 import { useGetTransactionHistorySummary } from '@0xsequence/hooks'
 import { Transaction } from '@0xsequence/indexer'
 import Fuse from 'fuse.js'
-import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
 import { zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { FilterMenu } from '../components/FilterMenu'
+import { FilterButton } from '../components/Filter/FilterButton'
 import { TransactionHistoryList } from '../components/TransactionHistoryList'
 import { useSettings } from '../hooks'
 
@@ -16,7 +15,6 @@ export const History = () => {
   const { chains } = useConfig()
   const { selectedNetworks, selectedWallets } = useSettings()
 
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [search, setSearch] = useState('')
 
   const { data: transactionHistory = [], isPending: isPendingTransactionHistory } = useGetTransactionHistorySummary({
@@ -125,14 +123,6 @@ export const History = () => {
     return fuse.search(search).map(result => result.item)
   }, [search, fuse])
 
-  const onFilterClick = () => {
-    setIsFilterOpen(true)
-  }
-
-  const onShowTransactions = () => {
-    setIsFilterOpen(false)
-  }
-
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="flex flex-row justify-between items-center w-full gap-2">
@@ -147,26 +137,13 @@ export const History = () => {
             data-1p-ignore
           />
         </div>
-        <div className={cn(cardVariants({ clickable: true }), 'bg-background-primary p-0 w-fit')} onClick={onFilterClick}>
-          <GearIcon size="lg" color="white" />
-        </div>
+        <FilterButton label="Transaction Filters" type="transactions" />
       </div>
       <TransactionHistoryList
         transactions={search ? searchResults : transactionHistory}
         isPending={isPendingTransactionHistory}
         isFetchingNextPage={false}
       />
-      <AnimatePresence>
-        {isFilterOpen && (
-          <FilterMenu
-            onClose={() => setIsFilterOpen(false)}
-            label="Transaction Filters"
-            buttonLabel="Show Transactions"
-            type="transactions"
-            handleButtonPress={onShowTransactions}
-          />
-        )}
-      </AnimatePresence>
     </div>
   )
 }

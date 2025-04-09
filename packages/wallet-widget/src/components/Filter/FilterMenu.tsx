@@ -1,20 +1,20 @@
-import { formatAddress, useWallets } from '@0xsequence/connect'
-import { cardVariants, ChevronRightIcon, cn, GradientAvatar, Text, TokenImage } from '@0xsequence/design-system'
+import { formatAddress, getNetwork, useWallets } from '@0xsequence/connect'
+import { Text, TokenImage } from '@0xsequence/design-system'
 import { useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { ContractType } from '@0xsequence/indexer'
-import { ChainId } from '@0xsequence/network'
 import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
-import { useSettings } from '../hooks'
-import { useFiatWalletsMap } from '../hooks/useFiatWalletsMap'
-import { getConnectorLogo } from '../utils/wallets'
+import { useSettings } from '../../hooks'
+import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap'
+import { getConnectorLogo } from '../../utils/wallets'
+import { MediaIconWrapper, StackedIconTag } from '../IconWrappers'
+import { ListCardNav } from '../ListCard'
+import { ListCardSelect } from '../ListCard/ListCardSelect'
+import { SlideupDrawer } from '../SlideupDrawer'
+import { WalletAccountGradient } from '../WalletAccountGradient'
 
-import { GradientAvatarList } from './GradientAvatarList'
-import { ListCardNav } from './ListCard'
-import { ListCardSelect } from './ListCard/ListCardSelect'
-import { SlideupDrawer } from './SlideupDrawer'
-import { WalletAccountGradient } from './WalletAccountGradient'
+import { NetworkRow } from './NetworkRow'
 
 enum FilterType {
   menu = 'Filters',
@@ -25,16 +25,12 @@ enum FilterType {
 
 export const FilterMenu = ({
   label,
-  buttonLabel,
   type,
-  onClose,
-  handleButtonPress
+  onClose
 }: {
   label: string
-  buttonLabel: string
   type: 'tokens' | 'collectibles' | 'transactions' | 'bypassMenuWallets'
   onClose: () => void
-  handleButtonPress: () => void
 }) => {
   const { wallets } = useWallets()
   const {
@@ -79,22 +75,76 @@ export const FilterMenu = ({
     type === 'bypassMenuWallets' ? FilterType.wallets : FilterType.menu
   )
 
-  const walletsPreview = selectedWallets.length > 1 ? 'All' : <GradientAvatar address={selectedWallets[0].address} size="sm" />
+  const walletsPreview =
+    selectedWallets.length > 1 ? (
+      <StackedIconTag
+        iconList={[]}
+        label={
+          <Text variant="normal" color="primary">
+            All
+          </Text>
+        }
+      />
+    ) : (
+      <div className="flex flex-row gap-2 items-center">
+        <StackedIconTag
+          iconList={[selectedWallets[0].address]}
+          isAccount
+          label={
+            <Text variant="normal" color="primary" nowrap style={{ maxWidth: '200px' }} ellipsis>
+              {formatAddress(selectedWallets[0].address)}
+            </Text>
+          }
+        />
+      </div>
+    )
 
   const networksPreview =
     selectedNetworks.length > 1 ? (
-      'All'
+      <div className="flex flex-row gap-2 items-center">
+        <StackedIconTag
+          iconList={[]}
+          label={
+            <Text variant="normal" color="primary">
+              All
+            </Text>
+          }
+        />
+      </div>
     ) : (
-      <TokenImage src={`https://assets.sequence.info/images/networks/medium/${selectedNetworks[0]}.webp`} />
+      <StackedIconTag
+        iconList={[`https://assets.sequence.info/images/networks/medium/${selectedNetworks[0]}.webp`]}
+        label={
+          <Text variant="normal" color="primary" nowrap style={{ maxWidth: '200px' }} ellipsis>
+            {getNetwork(selectedNetworks[0]).title}
+          </Text>
+        }
+      />
     )
 
   const collectionsPreview =
     collections?.length === 0 ? (
-      'N/A'
+      <Text variant="normal" color="primary">
+        N/A
+      </Text>
     ) : selectedCollections.length === 0 ? (
-      'All'
+      <StackedIconTag
+        iconList={[]}
+        label={
+          <Text variant="normal" color="primary">
+            All
+          </Text>
+        }
+      />
     ) : (
-      <TokenImage src={selectedCollections[0].contractInfo?.logoURI} symbol={selectedCollections[0].contractInfo?.name} />
+      <StackedIconTag
+        iconList={[selectedCollections[0].contractInfo?.logoURI]}
+        label={
+          <Text variant="normal" color="primary" nowrap style={{ maxWidth: '200px' }} ellipsis>
+            {selectedCollections[0].contractInfo?.name}
+          </Text>
+        }
+      />
     )
 
   const handleFilterChange = (filter: FilterType) => {
@@ -105,8 +155,6 @@ export const FilterMenu = ({
     <SlideupDrawer
       onClose={onClose}
       label={selectedFilter === FilterType.menu ? label : selectedFilter}
-      buttonLabel={buttonLabel}
-      handleButtonPress={handleButtonPress}
       onBackPress={
         type !== 'bypassMenuWallets' && selectedFilter !== FilterType.menu ? () => handleFilterChange(FilterType.menu) : undefined
       }
@@ -114,12 +162,8 @@ export const FilterMenu = ({
       {selectedFilter === FilterType.menu ? (
         <div className="flex flex-col bg-background-primary gap-3">
           <ListCardNav
-            rightChildren={
-              <Text color="primary" fontWeight="medium" variant="normal">
-                {walletsPreview}
-              </Text>
-            }
-            style={{ height: '60px' }}
+            rightChildren={walletsPreview}
+            style={{ height: '64px' }}
             onClick={() => handleFilterChange(FilterType.wallets)}
           >
             <Text color="primary" fontWeight="medium" variant="normal">
@@ -127,12 +171,8 @@ export const FilterMenu = ({
             </Text>
           </ListCardNav>
           <ListCardNav
-            rightChildren={
-              <Text color="primary" fontWeight="medium" variant="normal">
-                {networksPreview}
-              </Text>
-            }
-            style={{ height: '60px' }}
+            rightChildren={networksPreview}
+            style={{ height: '64px' }}
             onClick={() => handleFilterChange(FilterType.networks)}
           >
             <Text color="primary" fontWeight="medium" variant="normal">
@@ -140,21 +180,16 @@ export const FilterMenu = ({
             </Text>
           </ListCardNav>
           {type === 'collectibles' && (
-            <div
-              className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
-              style={{ height: '60px' }}
-              onClick={collections?.length ? () => handleFilterChange(FilterType.collections) : undefined}
+            <ListCardNav
+              rightChildren={collectionsPreview}
+              style={{ height: '64px' }}
+              disabled={collections?.length === 0}
+              onClick={() => handleFilterChange(FilterType.collections)}
             >
               <Text color="primary" fontWeight="medium" variant="normal">
                 Collections
               </Text>
-              <div className="flex flex-row items-center gap-2">
-                <Text color="primary" fontWeight="medium" variant="normal">
-                  {collectionsPreview}
-                </Text>
-                <ChevronRightIcon color="white" />
-              </div>
-            </div>
+            </ListCardNav>
           )}
         </div>
       ) : selectedFilter === FilterType.wallets ? (
@@ -171,7 +206,7 @@ export const FilterMenu = ({
               }
               onClick={() => setSelectedWallets([])}
             >
-              <GradientAvatarList accountAddressList={wallets.map(wallet => wallet.address)} size="md" />
+              <MediaIconWrapper iconList={wallets.map(wallet => wallet.address)} size="sm" isAccount />
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>
@@ -211,24 +246,22 @@ export const FilterMenu = ({
               isSelected={selectedNetworksObservable.get().length > 1}
               onClick={() => setSelectedNetworks([])}
             >
+              <MediaIconWrapper
+                iconList={allNetworks.map(network => `https://assets.sequence.info/images/networks/medium/${network}.webp`)}
+                size="sm"
+              />
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>
             </ListCardSelect>
           )}
           {allNetworks.map(chainId => (
-            <ListCardSelect
+            <NetworkRow
               key={chainId}
+              chainId={chainId}
               isSelected={selectedNetworksObservable.get().length === 1 && selectedNetworksObservable.get().includes(chainId)}
               onClick={() => setSelectedNetworks([chainId])}
-            >
-              <div className="flex gap-2 justify-center items-center">
-                <TokenImage src={`https://assets.sequence.info/images/networks/medium/${chainId}.webp`} />
-                <Text color="primary" variant="normal" fontWeight="bold">
-                  {ChainId[chainId]}
-                </Text>
-              </div>
-            </ListCardSelect>
+            />
           ))}
         </div>
       ) : selectedFilter === FilterType.collections ? (
@@ -239,6 +272,7 @@ export const FilterMenu = ({
               isSelected={selectedCollectionsObservable.get().length === 0}
               onClick={() => setSelectedCollections([])}
             >
+              <MediaIconWrapper iconList={collections.map(collection => collection.contractInfo?.logoURI)} size="sm" />
               <Text color="primary" fontWeight="medium" variant="normal">
                 All
               </Text>
@@ -251,7 +285,7 @@ export const FilterMenu = ({
                 selectedCollectionsObservable.get().find(c => c.contractAddress === collection.contractAddress) !== undefined ||
                 collections.length === 1
               }
-              onClick={() => setSelectedCollections([collection])}
+              onClick={collections.length > 1 ? () => setSelectedCollections([collection]) : undefined}
             >
               <TokenImage src={collection.contractInfo?.logoURI} symbol={collection.contractInfo?.name} />
               <Text color="primary" fontWeight="medium" variant="normal">
@@ -264,6 +298,3 @@ export const FilterMenu = ({
     </SlideupDrawer>
   )
 }
-
-// TODO: swap out collectionsPreview with home screen icons later
-// TODO: add icons to networks

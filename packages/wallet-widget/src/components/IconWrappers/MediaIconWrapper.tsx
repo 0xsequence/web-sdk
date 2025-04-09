@@ -1,12 +1,13 @@
 import { GradientAvatar } from '@0xsequence/design-system'
 
 const widthClassMap = {
-  '4xs': 'w-4 h-4',
-  '2xs': 'w-6 h-6',
-  base: 'w-11 h-11',
-  lg: 'w-14 h-14',
-  '2lg': 'w-16 h-16',
-  '3lg': 'w-20 h-20'
+  '4xs': '16px',
+  '2xs': '24px',
+  sm: '32px',
+  base: '44px',
+  lg: '56px',
+  '2lg': '64px',
+  '3lg': '80px'
 }
 
 export const MediaIconWrapper = ({
@@ -17,13 +18,13 @@ export const MediaIconWrapper = ({
 }: {
   iconList: string[]
   isAccount?: boolean
-  size?: '4xs' | '2xs' | 'base' | 'lg' | '2lg' | '3lg'
+  size?: '4xs' | '2xs' | 'sm' | 'base' | 'lg' | '2lg' | '3lg'
   shape?: 'rounded' | 'square'
 }) => {
   const firstThreeIcons = iconList.slice(0, 3)
 
   let partialWidth = 0
-  let shapeClass = 'rounded-lg;'
+  let shapeClass = 'rounded-lg'
 
   switch (size) {
     case '4xs':
@@ -33,6 +34,9 @@ export const MediaIconWrapper = ({
     case '2xs':
       partialWidth = 12
       shapeClass = 'rounded-md'
+      break
+    case 'sm':
+      partialWidth = 16
       break
     case 'base':
       partialWidth = 22
@@ -67,15 +71,21 @@ export const MediaIconWrapper = ({
           }}
         >
           {isAccount ? (
-            <div className={`${shapeClass} border overflow-hidden ${widthClassMap[size]}`}>
+            <div
+              className={`${shapeClass} border  overflow-hidden`}
+              style={{ width: `calc(${widthClassMap[size]} + 2px)`, height: `calc(${widthClassMap[size]} + 2px)` }}
+            >
               <GradientAvatar address={icon} className="w-full h-full" />
             </div>
           ) : (
             <div
-              className={`${shapeClass} border overflow-hidden ${widthClassMap[size]}`}
-              style={{ backgroundColor: 'lightgrey' }}
+              className={`${shapeClass} border overflow-hidden`}
+              style={{
+                width: `calc(${widthClassMap[size]} + 2px)`,
+                height: `calc(${widthClassMap[size]} + 2px)`
+              }}
             >
-              <img src={icon} alt="icon" className="w-full h-full" />
+              <img src={icon} alt="icon" style={{ backgroundColor: 'lightgray' }} />
             </div>
           )}
         </div>

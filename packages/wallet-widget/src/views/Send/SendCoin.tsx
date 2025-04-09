@@ -56,6 +56,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const connectedChainId = useChainId()
   const { address: accountAddress = '', connector } = useAccount()
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
+  const isConnectorWaas = !!(connector as ExtendedConnector)?.type?.includes('waas')
   const isCorrectChainId = connectedChainId === chainId
   const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -166,6 +167,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     if (!isCorrectChainId && !isConnectorSequenceBased) {
       await switchChainAsync({ chainId })
+    }
+
+    if (!isConnectorWaas) {
+      executeTransaction()
+      return
     }
 
     setIsCheckingFeeOptions(true)

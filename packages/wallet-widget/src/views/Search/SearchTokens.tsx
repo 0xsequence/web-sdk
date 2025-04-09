@@ -39,6 +39,7 @@ export const SearchTokens = () => {
         tokenBalancesData={tokenBalancesData}
         isPendingTokenBalances={isPendingTokenBalances}
         onTokenClick={handleTokenClick}
+        includeUserAddress
       />
     </div>
   )
