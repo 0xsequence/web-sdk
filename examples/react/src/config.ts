@@ -72,6 +72,7 @@ export const passportInstance = new passport.Passport({
     environment: Environment.SANDBOX,
     publishableKey: 'pk_imapik-test-VEMeW7wUX7hE7LHg3FxY'
   },
+  forceScwDeployBeforeMessageSignature: true,
   clientId: 'ap8Gv3188GLFROiBFBNFz77DojRpqxnS',
   redirectUri: `${window.location.origin}/web-sdk/auth/callback`,
   audience: 'platform_api',
