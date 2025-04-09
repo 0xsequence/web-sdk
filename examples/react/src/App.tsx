@@ -22,7 +22,7 @@ export const App = () => {
       <SequenceConnect config={config}>
         <SequenceWalletProvider>
           <SequenceCheckoutProvider config={checkoutConfig}>
-            <BrowserRouter basename="/web-sdk">
+            <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/auth/callback" element={<ImmutableCallback />} />

@@ -74,7 +74,7 @@ export const passportInstance = new passport.Passport({
   },
   forceScwDeployBeforeMessageSignature: true,
   clientId: 'ap8Gv3188GLFROiBFBNFz77DojRpqxnS',
-  redirectUri: `${window.location.origin}/web-sdk/auth/callback`,
+  redirectUri: `${window.location.origin}/auth/callback`,
   audience: 'platform_api',
   scope: 'openid offline_access email transact'
 })
