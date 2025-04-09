@@ -1,5 +1,17 @@
 # @0xsequence/kit-connectors
 
+## 5.1.0
+
+### Minor Changes
+
+- immutable connector release; other fixes
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.1.0
+  - @0xsequence/hooks@5.1.0
+
 ## 5.0.9
 
 ### Patch Changes

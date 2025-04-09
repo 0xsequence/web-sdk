@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.1.0
+
+### Minor Changes
+
+- immutable connector release; other fixes
+
 ## 5.0.9
 
 ### Patch Changes
