@@ -2,7 +2,7 @@
   "name": "example-react",
   "version": "1.0.4",
   "private": true,
-  "homepage": "web-sdk",
+  "homepage": "/",
   "type": "module",
   "scripts": {
     "dev": "vite",
