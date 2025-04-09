@@ -75,7 +75,7 @@ export const SettingsMenu = () => {
   )
 
   return (
-    <div className="p-4" style={{ paddingTop: HEADER_HEIGHT }}>
+    <div className="px-4 pb-4" style={{ paddingTop: HEADER_HEIGHT }}>
       <div className="flex flex-col gap-2">
         <ListCardNav rightChildren={walletsPreview} onClick={onClickWallets} style={{ height: '64px' }}>
           <WalletIcon className="text-primary w-6 h-6" />

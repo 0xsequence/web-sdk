@@ -7,13 +7,7 @@ import { useSettings } from '../../hooks'
 
 import { FilterMenu } from './FilterMenu'
 
-export const FilterButton = ({
-  label,
-  type
-}: {
-  label: string
-  type: 'tokens' | 'collectibles' | 'transactions' | 'bypassMenuWallets'
-}) => {
+export const FilterButton = ({ label, type }: { label: string; type: 'tokens' | 'collectibles' | 'transactions' }) => {
   const { wallets } = useWallets()
   const { selectedWallets, selectedNetworks, selectedCollections, allNetworks } = useSettings()
   const [isOpen, setIsOpen] = useState(false)

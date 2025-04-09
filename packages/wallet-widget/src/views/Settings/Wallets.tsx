@@ -52,7 +52,7 @@ export const SettingsWallets = () => {
 
   return (
     <div className="flex flex-col justify-between" style={{ height: '100%' }}>
-      <div className="flex flex-col p-4 gap-2">
+      <div className="flex flex-col px-4 pb-4 gap-2" style={{ paddingBottom: 'calc(77px + 1px + 16px)' }}>
         {wallets.length > 1 && (
           <ListCardSelect
             key="all"
@@ -104,7 +104,7 @@ export const SettingsWallets = () => {
         ))}
       </div>
 
-      <div>
+      <div className="bg-background-primary" style={{ position: 'absolute', bottom: 0, width: '100%' }}>
         <Divider className="my-0" />
         <div className="rounded-none m-4">
           <div

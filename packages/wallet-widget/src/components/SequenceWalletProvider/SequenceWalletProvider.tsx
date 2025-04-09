@@ -63,7 +63,6 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
 
   const displayScrollbar =
-    // navigation.location === 'home' ||
     navigation.location === 'send-general' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||
@@ -74,7 +73,6 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
     navigation.location === 'settings-networks' ||
     navigation.location === 'settings-currency' ||
     navigation.location === 'settings-profiles' ||
-    navigation.location === 'settings-preferences' ||
     navigation.location === 'settings-apps' ||
     navigation.location === 'legacy-settings-currency' ||
     navigation.location === 'search-tokens' ||

@@ -38,7 +38,7 @@ export const SearchCollectibles = () => {
   }
 
   return (
-    <div className="p-4 w-full">
+    <div className="px-4 pb-4 w-full">
       <CollectiblesList
         tokenBalancesData={tokenBalancesData}
         isPendingTokenBalances={isPendingTokenBalances}

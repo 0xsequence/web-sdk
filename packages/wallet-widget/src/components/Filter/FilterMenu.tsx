@@ -1,4 +1,4 @@
-import { formatAddress, getNetwork, useWallets } from '@0xsequence/connect'
+import { formatAddress, getNetwork } from '@0xsequence/connect'
 import { Text, TokenImage } from '@0xsequence/design-system'
 import { useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { ContractType } from '@0xsequence/indexer'
@@ -6,14 +6,13 @@ import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
 import { useSettings } from '../../hooks'
-import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap'
-import { MediaIconWrapper, StackedIconTag } from '../IconWrappers'
+import { StackedIconTag } from '../IconWrappers'
 import { ListCardNav } from '../ListCard'
-import { ListCardSelect } from '../ListCard/ListCardSelect'
 import { SlideupDrawer } from '../Select/SlideupDrawer'
-import { WalletAccountGradient } from '../WalletAccountGradient'
 
-import { NetworkRow } from './NetworkRow'
+import { CollectionsFilter } from './CollectionsFilter'
+import { NetworksFilter } from './NetworksFilter'
+import { WalletsFilter } from './WalletsFilter'
 
 enum FilterType {
   menu = 'Filters',
@@ -28,27 +27,15 @@ export const FilterMenu = ({
   onClose
 }: {
   label: string
-  type: 'tokens' | 'collectibles' | 'transactions' | 'bypassMenuWallets'
+  type: 'tokens' | 'collectibles' | 'transactions'
   onClose: () => void
 }) => {
-  const { wallets } = useWallets()
-  const {
-    allNetworks,
-    selectedWalletsObservable,
-    selectedNetworksObservable,
-    selectedCollectionsObservable,
-    fiatCurrency,
-    setSelectedWallets,
-    setSelectedNetworks,
-    setSelectedCollections
-  } = useSettings()
-  const { fiatWalletsMap } = useFiatWalletsMap()
-
+  const { selectedWalletsObservable, selectedNetworksObservable, selectedCollectionsObservable } = useSettings()
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
 
-  const totalFiatValue = fiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0).toFixed(2)
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>(FilterType.menu)
 
   const { data: tokens } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
@@ -69,10 +56,6 @@ export const FilterMenu = ({
         }
       }
     })
-
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>(
-    type === 'bypassMenuWallets' ? FilterType.wallets : FilterType.menu
-  )
 
   const walletsPreview =
     selectedWallets.length > 1 ? (
@@ -160,9 +143,7 @@ export const FilterMenu = ({
     <SlideupDrawer
       onClose={onClose}
       label={selectedFilter === FilterType.menu ? label : selectedFilter}
-      onBackPress={
-        type !== 'bypassMenuWallets' && selectedFilter !== FilterType.menu ? () => handleFilterChange(FilterType.menu) : undefined
-      }
+      onBackPress={selectedFilter !== FilterType.menu ? () => handleFilterChange(FilterType.menu) : undefined}
     >
       {selectedFilter === FilterType.menu ? (
         <div className="flex flex-col bg-background-primary gap-3">
@@ -198,110 +179,11 @@ export const FilterMenu = ({
           )}
         </div>
       ) : selectedFilter === FilterType.wallets ? (
-        <div className="flex flex-col bg-background-primary gap-3">
-          {wallets.length > 1 && (
-            <ListCardSelect
-              key="all"
-              isSelected={selectedWalletsObservable.get().length > 1}
-              rightChildren={
-                <Text color="muted" fontWeight="medium" variant="normal">
-                  {fiatCurrency.sign}
-                  {totalFiatValue}
-                </Text>
-              }
-              onClick={() => setSelectedWallets([])}
-            >
-              <MediaIconWrapper iconList={wallets.map(wallet => wallet.address)} size="sm" isAccount />
-              <Text color="primary" fontWeight="medium" variant="normal">
-                All
-              </Text>
-            </ListCardSelect>
-          )}
-          {wallets.map(wallet => (
-            <ListCardSelect
-              key={wallet.address}
-              isSelected={
-                selectedWalletsObservable.get().length === 1 &&
-                selectedWalletsObservable.get().find(w => w.address === wallet.address) !== undefined
-              }
-              rightChildren={
-                <Text color="muted" fontWeight="medium" variant="normal">
-                  {fiatCurrency.sign}
-                  {fiatWalletsMap.find(w => w.accountAddress === wallet.address)?.fiatValue}
-                </Text>
-              }
-              onClick={() => setSelectedWallets([wallet])}
-            >
-              <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
-              <Text color="primary" fontWeight="medium" variant="normal">
-                {formatAddress(wallet.address)}
-              </Text>
-            </ListCardSelect>
-          ))}
-        </div>
+        <WalletsFilter />
       ) : selectedFilter === FilterType.networks ? (
-        <div className="flex flex-col bg-background-primary gap-3">
-          {allNetworks.length > 1 && (
-            <ListCardSelect
-              key="all"
-              isSelected={selectedNetworksObservable.get().length > 1}
-              onClick={() => setSelectedNetworks([])}
-            >
-              <MediaIconWrapper
-                iconList={allNetworks.map(network => `https://assets.sequence.info/images/networks/medium/${network}.webp`)}
-                size="sm"
-              />
-              <Text color="primary" fontWeight="medium" variant="normal">
-                All
-              </Text>
-            </ListCardSelect>
-          )}
-          {allNetworks.map(chainId => (
-            <NetworkRow
-              key={chainId}
-              chainId={chainId}
-              isSelected={selectedNetworksObservable.get().length === 1 && selectedNetworksObservable.get().includes(chainId)}
-              onClick={() => setSelectedNetworks([chainId])}
-            />
-          ))}
-        </div>
+        <NetworksFilter />
       ) : selectedFilter === FilterType.collections ? (
-        <div className="flex flex-col bg-background-primary gap-3">
-          {collections?.length && collections.length > 1 && (
-            <ListCardSelect
-              key="all"
-              isSelected={selectedCollectionsObservable.get().length === 0}
-              onClick={() => setSelectedCollections([])}
-            >
-              <MediaIconWrapper
-                iconList={collections.map(collection => (
-                  <div className="bg-background-backdrop">
-                    <TokenImage src={collection.contractInfo?.logoURI} symbol={collection.contractInfo?.name} />
-                  </div>
-                ))}
-                size="sm"
-              />
-              <Text color="primary" fontWeight="medium" variant="normal">
-                All
-              </Text>
-            </ListCardSelect>
-          )}
-          {collections?.map(collection => (
-            <ListCardSelect
-              key={collection.contractAddress}
-              isSelected={
-                selectedCollectionsObservable.get().find(c => c.contractAddress === collection.contractAddress) !== undefined ||
-                collections.length === 1
-              }
-              onClick={collections.length > 1 ? () => setSelectedCollections([collection]) : undefined}
-            >
-              <TokenImage src={collection.contractInfo?.logoURI} symbol={collection.contractInfo?.name} />
-              <Text color="primary" fontWeight="medium" variant="normal">
-                {collection.contractInfo?.name}
-              </Text>
-            </ListCardSelect>
-          ))}
-        </div>
+        <CollectionsFilter />
       ) : null}
     </SlideupDrawer>
   )
