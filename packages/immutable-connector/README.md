@@ -19,12 +19,15 @@ First, an Immutable Passport instance must be created with valid and correctly c
 
 Note, that the application will need a callback route configured similarly to this example: https://github.com/immutable/ts-immutable-sdk/blob/main/examples/passport/login-with-nextjs/src/app/redirect/page.tsx
 
+Also, the `forceScwDeployBeforeMessageSignature` parameter must be set to true for the signing of message to work for new users.
+
 ```js
 export const passportInstance = new passport.Passport({
   baseConfig: {
     environment: Environment.SANDBOX,
     publishableKey: 'my_publisheable_key'
   },
+  forceScwDeployBeforeMessageSignature: true,
   clientId: 'my_client_id',
   redirectUri: `${window.location.origin}/auth/callback`,
   audience: 'platform_api',
