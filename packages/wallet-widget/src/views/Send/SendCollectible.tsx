@@ -29,6 +29,7 @@ import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, Hex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction, usePublicClient } from 'wagmi'
 
+import { WalletSelect } from '../../components/Select/WalletSelect'
 import { SendItemInfo } from '../../components/SendItemInfo'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation'
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
@@ -389,24 +390,27 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 <CloseIcon className="text-white" size="sm" />
               </Card>
             ) : (
-              <TextInput
-                value={toAddress}
-                onChange={ev => setToAddress(ev.target.value)}
-                placeholder={`${nativeTokenInfo.name} Address (0x...)`}
-                name="to-address"
-                data-1p-ignore
-                controls={
-                  <Button
-                    className="shrink-0"
-                    size="xs"
-                    shape="square"
-                    label="Paste"
-                    onClick={handlePaste}
-                    data-id="to-address"
-                    leftIcon={CopyIcon}
-                  />
-                }
-              />
+              <>
+                <TextInput
+                  value={toAddress}
+                  onChange={ev => setToAddress(ev.target.value)}
+                  placeholder={`${nativeTokenInfo.name} Address (0x...)`}
+                  name="to-address"
+                  data-1p-ignore
+                  controls={
+                    <Button
+                      className="shrink-0"
+                      size="xs"
+                      shape="square"
+                      label="Paste"
+                      onClick={handlePaste}
+                      data-id="to-address"
+                      leftIcon={CopyIcon}
+                    />
+                  }
+                />
+                <WalletSelect selectedWallet={toAddress} onClick={setToAddress} />
+              </>
             )}
           </div>
 

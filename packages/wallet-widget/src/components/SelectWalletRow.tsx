@@ -3,25 +3,27 @@ import { Text } from '@0xsequence/design-system'
 
 import { useSettings } from '../hooks'
 import { useFiatWalletsMap } from '../hooks/useFiatWalletsMap'
-import { getConnectorLogo } from '../utils/wallets'
 
+import { CopyButton } from './CopyButton'
 import { ListCardSelect } from './ListCard'
 import { WalletAccountGradient } from './WalletAccountGradient'
 
 export const SelectWalletRow = ({
   wallet,
-  setActiveWallet,
+  isSelected = false,
+  onClick,
   onClose
 }: {
   wallet: ConnectedWallet
-  setActiveWallet: (address: string) => void
+  isSelected?: boolean
+  onClick: (address: string) => void
   onClose: () => void
 }) => {
   const { fiatCurrency } = useSettings()
   const { fiatWalletsMap } = useFiatWalletsMap()
 
   function onSelectWallet() {
-    setActiveWallet(wallet.address)
+    onClick(wallet.address)
     onClose()
   }
 
@@ -36,12 +38,13 @@ export const SelectWalletRow = ({
         </Text>
       }
       onClick={onSelectWallet}
-      isSelected={wallet.isActive}
+      isSelected={wallet.isActive || isSelected}
     >
-      <WalletAccountGradient accountAddress={wallet.address} loginIcon={getConnectorLogo(wallet.signInMethod)} size={'small'} />
+      <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
       <div className="flex flex-col">
-        <Text color="primary" fontWeight="medium" variant="normal">
+        <Text className="flex flex-row gap-1 items-center" color="primary" fontWeight="medium" variant="normal">
           {formatAddress(wallet.address)}
+          <CopyButton text={wallet.address} buttonVariant="icon" />
         </Text>
       </div>
     </ListCardSelect>

@@ -5,8 +5,8 @@ import { useState } from 'react'
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { useNavigation } from '../../hooks'
+import { SlideupDrawer } from '../Select/SlideupDrawer'
 import { SelectWalletRow } from '../SelectWalletRow'
-import { SlideupDrawer } from '../SlideupDrawer'
 
 import { AccountInformation } from './components/AccountInformation'
 
@@ -68,7 +68,7 @@ export const WalletHeader = ({
                   key={index}
                   wallet={wallet}
                   onClose={() => setAccountSelectorModalOpen(false)}
-                  setActiveWallet={setActiveWallet}
+                  onClick={setActiveWallet}
                 />
               ))}
             </div>

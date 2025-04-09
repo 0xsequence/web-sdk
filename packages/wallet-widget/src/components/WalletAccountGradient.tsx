@@ -1,16 +1,20 @@
+import { useWallets } from '@0xsequence/connect'
 import { GradientAvatar } from '@0xsequence/design-system'
-import { ReactNode } from 'react'
+
+import { getConnectorLogo } from '../utils/wallets'
 
 export const WalletAccountGradient = ({
   accountAddress,
-  loginIcon: LoginIcon,
   size = 'large'
 }: {
   accountAddress: string
-  loginIcon: ReactNode
   size?: 'small' | 'large'
 }) => {
+  const { wallets } = useWallets()
   const remSize = size === 'small' ? 8 : 16
+
+  const LoginIcon = getConnectorLogo(wallets.find(wallet => wallet.address === accountAddress)?.signInMethod || '')
+
   return (
     <div className="flex relative">
       <div className="relative inline-block">

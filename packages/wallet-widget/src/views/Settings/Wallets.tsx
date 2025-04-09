@@ -2,10 +2,10 @@ import { formatAddress, useOpenConnectModal, useWallets } from '@0xsequence/conn
 import { cardVariants, cn, Text, Divider, IconButton, CheckmarkIcon, CloseIcon, Spinner } from '@0xsequence/design-system'
 import { useState } from 'react'
 
+import { CopyButton } from '../../components/CopyButton'
 import { MediaIconWrapper } from '../../components/IconWrappers'
 import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient'
-import { getConnectorLogo } from '../../utils/wallets'
 
 export const SettingsWallets = () => {
   const { wallets, disconnectWallet } = useWallets()
@@ -95,13 +95,10 @@ export const SettingsWallets = () => {
               )
             }
           >
-            <WalletAccountGradient
-              accountAddress={wallet.address}
-              loginIcon={getConnectorLogo(wallet.signInMethod)}
-              size={'small'}
-            />
-            <Text color="primary" fontWeight="medium" variant="normal">
+            <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
+            <Text className="flex flex-row gap-1 items-center" color="primary" fontWeight="medium" variant="normal">
               {formatAddress(wallet.address)}
+              <CopyButton text={wallet.address} buttonVariant="icon" />
             </Text>
           </ListCardSelect>
         ))}

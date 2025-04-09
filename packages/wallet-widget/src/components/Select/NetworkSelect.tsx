@@ -2,11 +2,13 @@ import { cardVariants, ChevronUpDownIcon, cn, NetworkImage, Text } from '@0xsequ
 import { useState } from 'react'
 import { useChainId, useChains, useSwitchChain } from 'wagmi'
 
-import { NetworkRow } from './Filter/NetworkRow'
-import { WALLET_HEIGHT } from './SequenceWalletProvider'
+import { NetworkRow } from '../Filter/NetworkRow'
+import { WALLET_HEIGHT } from '../SequenceWalletProvider'
+
 import { SlideupDrawer } from './SlideupDrawer'
 
 const NETWORK_SELECT_HEIGHT = 70
+
 export const NetworkSelect = () => {
   const chains = useChains()
   const chainId = useChainId()

@@ -19,17 +19,17 @@ import { AnimatePresence } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
+import { CopyButton } from '../../../components/CopyButton'
 import { FilterMenu } from '../../../components/Filter/FilterMenu'
 import { StackedIconTag } from '../../../components/IconWrappers/StackedIconTag'
 import { ListCardNav } from '../../../components/ListCard/ListCardNav'
 import { ListCardNavTable } from '../../../components/ListCardTable/ListCardNavTable'
+import { SlideupDrawer } from '../../../components/Select/SlideupDrawer'
 import { SelectWalletRow } from '../../../components/SelectWalletRow'
-import { SlideupDrawer } from '../../../components/SlideupDrawer'
 import { WalletAccountGradient } from '../../../components/WalletAccountGradient'
 import { useNavigation, useSettings } from '../../../hooks'
 import { useFiatWalletsMap } from '../../../hooks/useFiatWalletsMap'
 import { computeBalanceFiat } from '../../../utils'
-import { getConnectorLogo } from '../../../utils/wallets'
 
 import { OperationButtonTemplate } from './Buttons/OperationButtonTemplate'
 
@@ -226,9 +226,6 @@ export const IntegratedWallet = () => {
     })
   }
 
-  const activeWallet = wallets.find(wallet => wallet.isActive)
-  const LoginIconComponent = getConnectorLogo(activeWallet?.signInMethod || '')
-
   const homeNavTableItems = [
     <ListCardNav
       onClick={onClickTokens}
@@ -292,11 +289,14 @@ export const IntegratedWallet = () => {
   return (
     <div className="flex flex-col items-center pt-4">
       <div className="flex flex-row gap-2 items-center">
-        <WalletAccountGradient accountAddress={accountAddress || ''} loginIcon={LoginIconComponent} />
+        <WalletAccountGradient accountAddress={accountAddress || ''} />
         <div className="flex flex-col">
-          <Text color="primary" fontWeight="medium" variant="normal">
-            {formatAddress(accountAddress || '')}
-          </Text>
+          <div className="flex flex-row gap-1 items-center">
+            <Text color="primary" fontWeight="medium" variant="normal">
+              {formatAddress(accountAddress || '')}
+            </Text>
+            <CopyButton text={accountAddress || ''} buttonVariant="icon" />
+          </div>
           {signInDisplay && (
             <Text color="muted" fontWeight="medium" variant="small">
               {signInDisplay}
@@ -362,7 +362,7 @@ export const IntegratedWallet = () => {
                   key={index}
                   wallet={wallet}
                   onClose={() => setAccountSelectorModalOpen(false)}
-                  setActiveWallet={setActiveWallet}
+                  onClick={setActiveWallet}
                 />
               ))}
             </div>

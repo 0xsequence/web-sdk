@@ -17,7 +17,7 @@ export const CopyButton = (props: CopyButtonProps) => {
     if (isCopied) {
       setTimeout(() => {
         setCopy(false)
-      }, 4000)
+      }, 2000)
     }
   }, [isCopied])
 
