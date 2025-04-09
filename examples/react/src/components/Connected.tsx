@@ -24,6 +24,8 @@ import React, { type ComponentProps, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
+import { CustomCheckout } from './CustomCheckout'
+
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
@@ -35,8 +37,8 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
+  const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
-
   const { address } = useAccount()
   const { openSwapModal } = useSwapModal()
   const { setOpenWalletModal } = useOpenWalletModal()
@@ -637,6 +639,11 @@ export const Connected = () => {
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
                 />
+                <CardButton
+                  title="Custom Checkout"
+                  description="Hook for creating custom checkout UIs"
+                  onClick={() => setIsOpenCustomCheckout(true)}
+                />
               </>
             )}
             <CardButton
@@ -809,6 +816,23 @@ export const Connected = () => {
                 />
               </div>
             </div>
+          </Modal>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isOpenCustomCheckout && (
+          <Modal
+            contentProps={{
+              style: {
+                maxWidth: '400px',
+                height: 'auto',
+                ...getModalPositionCss('center')
+              }
+            }}
+            scroll={false}
+            onClose={() => setIsOpenCustomCheckout(false)}
+          >
+            <CustomCheckout />
           </Modal>
         )}
       </AnimatePresence>
