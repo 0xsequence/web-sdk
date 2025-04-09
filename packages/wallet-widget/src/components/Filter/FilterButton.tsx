@@ -32,7 +32,7 @@ export const FilterButton = ({
       style={{ height: '52px', width: '52px' }}
       onClick={() => setIsOpen(true)}
     >
-      <FilterIcon size="md" color="white" />
+      <FilterIcon size="sm" color="white" />
       <div className="absolute" style={{ top: '-4px', right: '-4px' }}>
         {howManyModifiedFilters > 0 && (
           <div className="flex items-center justify-center w-6 h-6 rounded-full" style={{ backgroundColor: '#0076CC' }}>
