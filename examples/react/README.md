@@ -2,7 +2,7 @@
 
 This demo showcases the sign in flow, the embedded wallet and the checkout component of Sequence Web SDK.
 
-View the [demo here](https://web-sdk-react-example.pages.dev)! 👀
+View the [demo here](https://web-sdk.sequence-demos.xyz)! 👀
 
 ## Run Demo Locally
 
