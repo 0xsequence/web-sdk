@@ -1,6 +1,6 @@
 import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
-// import { immutable } from '@0xsequence/immutable-connector'
+import { immutable } from '@0xsequence/immutable-connector'
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
@@ -127,11 +127,10 @@ export const config =
           projectId: walletConnectProjectId
         },
         additionalWallets: [
-          // Uncomment to enable Immutable
-          // immutable({
-          //   passportInstance,
-          //   environment: Environment.SANDBOX
-          // })
+          immutable({
+            passportInstance,
+            environment: Environment.SANDBOX
+          })
         ]
       })
 
