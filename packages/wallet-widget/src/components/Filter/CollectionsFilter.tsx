@@ -8,6 +8,7 @@ import { ListCardSelect } from '../ListCard/ListCardSelect'
 
 export const CollectionsFilter = () => {
   const { selectedCollectionsObservable, selectedNetworks, selectedWallets, setSelectedCollections } = useSettings()
+  const selectedCollections = selectedCollectionsObservable.get()
 
   const { data: tokens } = useGetTokenBalancesSummary({
     chainIds: selectedNetworks,
@@ -22,6 +23,7 @@ export const CollectionsFilter = () => {
     .map(collection => {
       return {
         contractAddress: collection.contractAddress,
+        chainId: collection.chainId,
         contractInfo: {
           name: collection.contractInfo?.name || '',
           logoURI: collection.contractInfo?.logoURI || ''
@@ -54,12 +56,17 @@ export const CollectionsFilter = () => {
         <ListCardSelect
           key={collection.contractAddress}
           isSelected={
-            selectedCollectionsObservable.get().find(c => c.contractAddress === collection.contractAddress) !== undefined ||
-            collections.length === 1
+            selectedCollections.find(
+              c => c.contractAddress === collection.contractAddress && c.chainId === collection.chainId
+            ) !== undefined
           }
           onClick={collections.length > 1 ? () => setSelectedCollections([collection]) : undefined}
         >
-          <TokenImage src={collection.contractInfo?.logoURI} symbol={collection.contractInfo?.name} />
+          <TokenImage
+            src={collection.contractInfo?.logoURI}
+            symbol={collection.contractInfo?.name}
+            withNetwork={collection.chainId}
+          />
           <Text color="primary" fontWeight="medium" variant="normal">
             {collection.contractInfo?.name}
           </Text>

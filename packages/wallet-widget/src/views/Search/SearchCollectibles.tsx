@@ -25,6 +25,15 @@ export const SearchCollectibles = () => {
     }
   })
 
+  const isSingleCollectionSelected = selectedCollections.length === 1
+
+  const collectibleBalancesFiltered = tokenBalancesData.filter(token => {
+    if (isSingleCollectionSelected) {
+      return token.chainId === selectedCollections[0].chainId
+    }
+    return true
+  })
+
   const onHandleCollectibleClick = (balance: TokenBalanceWithPrice) => {
     setNavigation({
       location: 'collectible-details',
@@ -40,7 +49,7 @@ export const SearchCollectibles = () => {
   return (
     <div className="p-4 pt-2 w-full">
       <CollectiblesList
-        tokenBalancesData={tokenBalancesData}
+        tokenBalancesData={collectibleBalancesFiltered}
         isPendingTokenBalances={isPendingTokenBalances}
         onTokenClick={onHandleCollectibleClick}
         enableFilters={true}
