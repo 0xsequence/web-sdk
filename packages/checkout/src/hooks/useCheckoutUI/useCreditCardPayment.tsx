@@ -206,6 +206,7 @@ export const useCreditCardPayment = ({
                 maxWidth: '380px',
                 width: '100%'
               }}
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
         ),
