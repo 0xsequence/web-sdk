@@ -48,13 +48,13 @@ export interface UseCreditCardPaymentArgs {
 interface UseCreditCardPaymentData {
   iframeId: string
   paymentUrl?: string
-  CreditCardIframe?: React.ReactElement
-  EventListener?: React.ReactElement
+  CreditCardIframe: React.ComponentType
+  EventListener: React.ComponentType
 }
 
 export interface UseCreditCardPaymentReturn {
   error: Error | null
-  data: UseCreditCardPaymentData | null
+  data: UseCreditCardPaymentData
   isLoading: boolean
 }
 
@@ -129,7 +129,11 @@ export const useCreditCardPayment = ({
   if (missingCreditCardProvider || missingTransakConfig) {
     return {
       error: new Error('Missing credit card provider or transak config'),
-      data: null,
+      data: {
+        iframeId: '',
+        CreditCardIframe: () => null,
+        EventListener: () => null
+      },
       isLoading: false
     }
   }
@@ -137,7 +141,11 @@ export const useCreditCardPayment = ({
   if (error || isLoading) {
     return {
       error,
-      data: null,
+      data: {
+        iframeId: '',
+        CreditCardIframe: () => null,
+        EventListener: () => null
+      },
       isLoading
     }
   }
@@ -186,7 +194,7 @@ export const useCreditCardPayment = ({
       data: {
         iframeId: TRANSAK_IFRAME_ID,
         paymentUrl: transakLink,
-        CreditCardIframe: (
+        CreditCardIframe: () => (
           <div className="flex items-center justify-center" style={{ height: '770px' }}>
             <iframe
               id="transakIframe"
@@ -201,7 +209,7 @@ export const useCreditCardPayment = ({
             />
           </div>
         ),
-        EventListener: (
+        EventListener: () => (
           <TransakEventListener
             transactionConfirmations={transactionConfirmations}
             chainId={network?.chainId || 137}
@@ -222,36 +230,33 @@ export const useCreditCardPayment = ({
   const isLoadingSardine = isLoadingClientToken || isLoading
   const errorSardine = errorClientToken || error
 
-  const data =
-    !isLoadingSardine && !errorSardine
-      ? {
-          iframeId: SARDINE_IFRAME_ID,
-          paymentUrl: url,
-          CreditCardIframe: (
-            <div className="flex items-center justify-center" style={{ height: '770px' }}>
-              <iframe
-                id={SARDINE_IFRAME_ID}
-                src={url}
-                style={{
-                  maxHeight: '650px',
-                  height: '100%',
-                  maxWidth: '380px',
-                  width: '100%'
-                }}
-              />
-            </div>
-          ),
-          EventListener: (
-            <SardineEventListener
-              transactionConfirmations={transactionConfirmations}
-              chainId={network?.chainId || 137}
-              onSuccess={onSuccess}
-              onError={onError}
-              orderId={dataClientToken?.orderId || ''}
-            />
-          )
-        }
-      : null
+  const data = {
+    iframeId: SARDINE_IFRAME_ID,
+    paymentUrl: url,
+    CreditCardIframe: () => (
+      <div className="flex items-center justify-center" style={{ height: '770px' }}>
+        <iframe
+          id={SARDINE_IFRAME_ID}
+          src={url}
+          style={{
+            maxHeight: '650px',
+            height: '100%',
+            maxWidth: '380px',
+            width: '100%'
+          }}
+        />
+      </div>
+    ),
+    EventListener: () => (
+      <SardineEventListener
+        transactionConfirmations={transactionConfirmations}
+        chainId={network?.chainId || 137}
+        onSuccess={onSuccess}
+        onError={onError}
+        orderId={dataClientToken?.orderId || ''}
+      />
+    )
+  }
 
   return {
     error: errorSardine,
