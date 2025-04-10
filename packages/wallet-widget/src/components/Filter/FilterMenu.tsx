@@ -1,4 +1,4 @@
-import { formatAddress, getNetwork } from '@0xsequence/connect'
+import { formatAddress, getNetwork, useWallets } from '@0xsequence/connect'
 import { Text, TokenImage } from '@0xsequence/design-system'
 import { useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { ContractType } from '@0xsequence/indexer'
@@ -30,6 +30,7 @@ export const FilterMenu = ({
   type: 'tokens' | 'collectibles' | 'transactions'
   onClose: () => void
 }) => {
+  const { wallets } = useWallets()
   const { selectedWalletsObservable, selectedNetworksObservable, selectedCollectionsObservable } = useSettings()
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
@@ -58,7 +59,7 @@ export const FilterMenu = ({
     })
 
   const walletsPreview =
-    selectedWallets.length > 1 ? (
+    selectedWallets.length > 1 || wallets.length === 1 ? (
       <StackedIconTag
         iconList={[]}
         label={

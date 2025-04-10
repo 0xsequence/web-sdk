@@ -56,9 +56,8 @@ export const CollectionsFilter = () => {
         <ListCardSelect
           key={collection.contractAddress}
           isSelected={
-            selectedCollections.find(
-              c => c.contractAddress === collection.contractAddress && c.chainId === collection.chainId
-            ) !== undefined
+            selectedCollections.some(c => c.contractAddress === collection.contractAddress && c.chainId === collection.chainId) ||
+            collections.length === 1
           }
           onClick={collections.length > 1 ? () => setSelectedCollections([collection]) : undefined}
         >
