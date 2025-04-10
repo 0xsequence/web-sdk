@@ -85,8 +85,18 @@ export const IntegratedWallet = () => {
   const coinBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
 
+  const isSingleCollectionSelected = selectedCollections.length === 1
+
   const collectibleBalancesUnordered =
-    tokenBalancesData?.filter(b => b.contractType === 'ERC721' || b.contractType === 'ERC1155') || []
+    tokenBalancesData?.filter(token => {
+      if (token.contractType !== 'ERC721' && token.contractType !== 'ERC1155') {
+        return false
+      }
+      if (isSingleCollectionSelected) {
+        return token.chainId === selectedCollections[0].chainId
+      }
+      return true
+    }) || []
 
   const { data: coinPrices = [], isPending: isCoinPricesPending } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
