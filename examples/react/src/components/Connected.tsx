@@ -15,7 +15,7 @@ import {
   useOpenConnectModal,
   useWallets
 } from '@0xsequence/connect'
-import { Button, Card, Modal, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
+import { Button, Card, Modal, Scroll, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
@@ -832,7 +832,9 @@ export const Connected = () => {
             scroll={false}
             onClose={() => setIsOpenCustomCheckout(false)}
           >
-            <CustomCheckout />
+            <Scroll style={{ height: '600px' }}>
+              <CustomCheckout />
+            </Scroll>
           </Modal>
         )}
       </AnimatePresence>
