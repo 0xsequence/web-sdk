@@ -2,7 +2,7 @@ import { useWallets } from '@0xsequence/connect'
 import { ChevronUpDownIcon, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
-import { SelectWalletRow } from '../SelectWalletRow'
+import { SelectWalletRow } from './SelectWalletRow'
 import { WALLET_HEIGHT } from '../SequenceWalletProvider'
 
 import { SlideupDrawer } from './SlideupDrawer'
