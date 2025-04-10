@@ -1,5 +1,7 @@
 import { Text, Button, Spinner, NetworkImage, Image } from '@0xsequence/design-system'
+import React, { useMemo } from 'react'
 import { useCheckoutUI, CreditCardProviders } from '@0xsequence/checkout'
+import { CryptoOption } from '@0xsequence/connect'
 import { encodeFunctionData, toHex } from 'viem'
 import { useAccount } from 'wagmi'
 import { ERC_1155_SALE_CONTRACT } from '../../constants/erc1155-sale-contract'
@@ -51,7 +53,7 @@ export const CustomCheckout = () => {
     recipientAddress: address || '',
     currencyAddress,
     collectionAddress,
-    creditCardProvider: 'sardine' as CreditCardProviders,
+    creditCardProvider: 'transak' as CreditCardProviders,
     transakConfig: {
       contractId,
       apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
@@ -66,10 +68,6 @@ export const CustomCheckout = () => {
   }
 
   const { orderSummary, creditCardPayment, cryptoPayment } = useCheckoutUI(checkoutUIParams)
-
-  console.log('orderSummary', orderSummary)
-  console.log('creditCardPayment', creditCardPayment)
-  console.log('cryptoPayment', cryptoPayment)
 
   const OrderSummary = () => {
     if (orderSummary.isLoading) {
@@ -91,7 +89,7 @@ export const CustomCheckout = () => {
                 width: '36px'
               }}
             >
-              <Image src={orderSummary.data?.collectibleItem?.collectibleImageUrl} />
+              <Image disableAnimation src={orderSummary.data?.collectibleItem?.collectibleImageUrl} />
             </div>
             <div className="flex flex-col gap-0.5">
               <Text variant="small" color="secondary" fontWeight="medium">
@@ -105,7 +103,7 @@ export const CustomCheckout = () => {
         </div>
         <div className="flex gap-1 flex-col">
           <div className="flex flex-row gap-2 items-center">
-            <NetworkImage chainId={chainId} size="sm" />
+            <NetworkImage disableAnimation chainId={chainId} size="sm" />
             <Text
               color="white"
               variant="large"
@@ -143,7 +141,36 @@ export const CustomCheckout = () => {
   }
 
   const CryptoPayment = () => {
-    return <div>Crypto Payment</div>
+    if (cryptoPayment.cryptoOptions.isLoading) {
+      return <Spinner />
+    }
+
+    if (cryptoPayment.cryptoOptions.error) {
+      return <Text color="error">Error loading crypto payment</Text>
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        {cryptoPayment.cryptoOptions.data.map(option => (
+          <CryptoOption
+            key={option.currencyAddress}
+            currencyName={option.currencyName}
+            chainId={option.chainId}
+            symbol={option.symbol}
+            price={option.totalPriceDisplay}
+            onClick={() => {
+              cryptoPayment.purchaseAction.setSelectedCurrencyAddress(option.currencyAddress)
+            }}
+            isSelected={option.isSelected}
+            showInsufficientFundsWarning={option.isInsufficientFunds}
+            disabled={option.isInsufficientFunds}
+          />
+        ))}
+        <Button onClick={cryptoPayment.purchaseAction.action} disabled={!cryptoPayment.purchaseAction.isReady}>
+          Purchase
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -160,7 +187,7 @@ export const CustomCheckout = () => {
       <Text fontSize="large" fontWeight="bold" color="primary">
         Credit Card Payment section
       </Text>
-      {/* <CreditCardPayment /> */}
+      <CreditCardPayment />
     </div>
   )
 }

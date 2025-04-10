@@ -289,6 +289,7 @@ const TransakEventListener = ({
     const transakIframe = transakIframeElement.contentWindow
 
     const readMessage = async (message: any) => {
+      console.log('message', message)
       if (message.source !== transakIframe) {
         return
       }
