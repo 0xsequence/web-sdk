@@ -6,8 +6,8 @@ import { TransakConfig } from '../../contexts/CheckoutModal'
 import { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
 
 import { useCreditCardPayment, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
-import { useOrderSummary, type UseOrderSummaryReturn } from './useOrderSummary'
 import { useCryptoPayment, type UseCryptoPaymentReturn } from './useCryptoPayment'
+import { useOrderSummary, type UseOrderSummaryReturn } from './useOrderSummary'
 
 interface UseCheckoutUIArgs {
   chain: string | number
