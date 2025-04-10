@@ -21,7 +21,35 @@ const getNativeTokenBalance = async (
 }
 
 /**
- * @description Gets the native token balance for a list of given networks or chainIds
+ * Hook to fetch native token balances (like ETH, POL) across multiple chains for a given address.
+ * Uses the indexer gateway client to efficiently fetch balances in a single request.
+ *
+ * @param getNativeTokenBalanceArgs - Arguments for fetching native token balances
+ * @param getNativeTokenBalanceArgs.accountAddress - The address to fetch balances for
+ * @param getNativeTokenBalanceArgs.chainIds - Array of chain IDs to fetch balances from
+ * @param options - Optional configuration for the query behavior
+ *
+ * @returns Query result containing an array of TokenBalance objects
+ *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetNativeTokenBalance} for more detailed documentation.
+ *
+ * @example
+ * ```tsx
+ * import { useGetNativeTokenBalance } from '@0xsequence/hooks'
+ *
+ * function NativeBalances() {
+ *   const { data: balances } = useGetNativeTokenBalance({
+ *     accountAddress: '0x123...',
+ *     chainIds: [1, 137] // Fetch ETH on Ethereum and MATIC on Polygon
+ *   })
+ *
+ *   return balances?.map(balance => (
+ *     <div key={balance.chainId}>
+ *       Chain {balance.chainId}: {balance.balance}
+ *     </div>
+ *   ))
+ * }
+ * ```
  */
 export const useGetNativeTokenBalance = (
   getNativeTokenBalanceArgs: IndexerGateway.GetNativeTokenBalanceArgs,
