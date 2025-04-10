@@ -128,7 +128,7 @@ export const History = () => {
   }, [search, fuse])
 
   return (
-    <div className="flex flex-col gap-3 px-4 pb-4">
+    <div className="flex flex-col gap-3 p-4 pt-2">
       <div className="flex flex-row justify-between items-center w-full gap-2">
         <div className="grow">
           <TextInput

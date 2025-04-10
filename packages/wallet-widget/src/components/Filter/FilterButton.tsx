@@ -22,12 +22,12 @@ export const FilterButton = ({ label, type }: { label: string; type: 'tokens' | 
 
   return (
     <div
-      className={cn(cardVariants({ clickable: true }), 'flex items-center justify-center p-2 relative overflow-visible')}
+      className={cn(cardVariants({ clickable: true }), 'flex items-center justify-center relative overflow-visible')}
       style={{ height: '52px', width: '52px' }}
       onClick={() => setIsOpen(true)}
     >
       <FilterIcon size="sm" color="white" />
-      <div className="absolute" style={{ top: '-4px', right: '-4px' }}>
+      <div className="absolute" style={{ top: '-5px', right: '-10px' }}>
         {howManyModifiedFilters > 0 && (
           <div className="flex items-center justify-center w-6 h-6 rounded-full" style={{ backgroundColor: '#0076CC' }}>
             <Text variant="small" color="white">
