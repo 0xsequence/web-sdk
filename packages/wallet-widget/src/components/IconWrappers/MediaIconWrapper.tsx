@@ -29,7 +29,7 @@ export const MediaIconWrapper = ({
   switch (size) {
     case '4xs':
       partialWidth = 8
-      shapeClass = 'rounded-xs'
+      shapeClass = 'rounded-sm'
       break
     case '2xs':
       partialWidth = 12
