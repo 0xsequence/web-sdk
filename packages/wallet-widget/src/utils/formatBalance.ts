@@ -38,7 +38,7 @@ export const formatTokenInfo = (
   }
 }
 
-export const formatFiatBalance = (balance: string, price: number, decimals: number, fiatSign: string) => {
+export const formatFiatBalance = (balance: number, price: number, decimals: number, fiatSign: string) => {
   if (!balance) {
     return ''
   }
@@ -48,10 +48,10 @@ export const formatFiatBalance = (balance: string, price: number, decimals: numb
   return `${fiatSign}${(price * Number(bal)).toFixed(2)}`
 }
 
-export const decimalsToWei = (balance: string, decimals: number) => {
-  const scaledBalance = Number(balance) * Math.pow(10, decimals)
+export const decimalsToWei = (balance: number, decimals: number) => {
+  const scaledBalance = balance * Math.pow(10, decimals)
 
   const balanceBigInt = BigInt(scaledBalance)
 
-  return balanceBigInt.toString()
+  return Number(balanceBigInt)
 }

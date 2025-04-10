@@ -5,8 +5,8 @@ import { useState } from 'react'
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { useNavigation } from '../../hooks'
-import { SlideupDrawer } from '../Select/SlideupDrawer'
 import { SelectWalletRow } from '../Select/SelectWalletRow'
+import { SlideupDrawer } from '../Select/SlideupDrawer'
 
 import { AccountInformation } from './components/AccountInformation'
 

@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useChainId, useChains, useSwitchChain } from 'wagmi'
 
 import { NetworkRow } from '../Filter/NetworkRow'
-import { WALLET_HEIGHT } from '../SequenceWalletProvider'
 
 import { SlideupDrawer } from './SlideupDrawer'
 
@@ -39,7 +38,7 @@ export const NetworkSelect = () => {
       <ChevronUpDownIcon className="text-muted" />
       {isOpen && (
         <SlideupDrawer label="Network" onClose={() => setIsOpen(false)}>
-          <div className="flex flex-col gap-2 px-2" style={{ maxHeight: `calc(${WALLET_HEIGHT} / 2)`, overflowY: 'auto' }}>
+          <div className="flex flex-col gap-2" style={{ overflowY: 'auto' }}>
             {chains.map(chain => (
               <NetworkRow
                 key={chain.id}

@@ -3,7 +3,6 @@ import { Text } from '@0xsequence/design-system'
 
 import { useSettings } from '../../hooks'
 import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap'
-
 import { CopyButton } from '../CopyButton'
 import { ListCardSelect } from '../ListCard/ListCardSelect'
 import { WalletAccountGradient } from '../WalletAccountGradient'

@@ -3,8 +3,6 @@ import { ChevronUpDownIcon, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
 import { SelectWalletRow } from './SelectWalletRow'
-import { WALLET_HEIGHT } from '../SequenceWalletProvider'
-
 import { SlideupDrawer } from './SlideupDrawer'
 
 const WALLET_SELECT_HEIGHT = 60
@@ -37,7 +35,7 @@ export const WalletSelect = ({ selectedWallet, onClick }: { selectedWallet: stri
       <ChevronUpDownIcon className="text-muted" />
       {isOpen && (
         <SlideupDrawer label="Network" onClose={() => setIsOpen(false)}>
-          <div className="flex flex-col gap-2 px-2" style={{ maxHeight: `calc(${WALLET_HEIGHT} / 2)`, overflowY: 'auto' }}>
+          <div className="flex flex-col gap-2" style={{ overflowY: 'auto' }}>
             {allButActiveWallet.map(wallet => (
               <SelectWalletRow
                 key={wallet.address}

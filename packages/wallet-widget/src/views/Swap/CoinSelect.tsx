@@ -6,36 +6,39 @@ import { useChains } from 'wagmi'
 import { CoinRow } from '../../components/SearchLists/TokenList/CoinRow'
 import { SlideupDrawer } from '../../components/Select/SlideupDrawer'
 import { useSettings } from '../../hooks'
+import { useSwap } from '../../hooks/useSwap'
 import { TokenBalanceWithPrice } from '../../utils'
 import { formatTokenInfo } from '../../utils/formatBalance'
 
 export const CoinSelect = ({
   selectType,
   coinList,
-  selectedCoin,
-  setSelectedCoin
+  disabled
 }: {
   selectType: 'from' | 'to'
   coinList: TokenBalanceWithPrice[]
-  selectedCoin: TokenBalanceWithPrice | undefined
-  setSelectedCoin: (coin: TokenBalanceWithPrice, type: 'from' | 'to') => void
+  disabled?: boolean
 }) => {
+  const { fromCoin, toCoin, setFromCoin, setToCoin } = useSwap()
   const { fiatCurrency } = useSettings()
   const chains = useChains()
+
+  const selectedCoin = selectType === 'from' ? fromCoin : toCoin
+  const setSelectedCoin = selectType === 'from' ? setFromCoin : setToCoin
 
   const [isSelectorOpen, setIsSelectorOpen] = useState(false)
 
   const { logo, name, symbol, displayBalance } = formatTokenInfo(selectedCoin, fiatCurrency.sign, chains)
 
   const handleSelect = (coin: TokenBalanceWithPrice) => {
-    setSelectedCoin(coin, selectType)
+    setSelectedCoin(coin)
     setIsSelectorOpen(false)
   }
 
   return (
     <div>
       <div
-        className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center')}
+        className={cn(cardVariants({ clickable: true, disabled }), 'flex flex-row justify-between items-center')}
         onClick={() => setIsSelectorOpen(true)}
       >
         <div className="flex flex-col gap-2 w-full">
