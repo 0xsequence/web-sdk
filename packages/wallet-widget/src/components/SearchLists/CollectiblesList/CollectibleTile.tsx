@@ -1,10 +1,11 @@
+import { NetworkImage } from '@0xsequence/design-system'
 import { useGetTokenMetadata } from '@0xsequence/hooks'
 
 import { TokenBalanceWithPrice } from '../../../utils'
 import { CollectibleTileImage } from '../../CollectibleTileImage'
-import { NetworkImage } from '@0xsequence/design-system'
 
-const NETWORK_IMAGE_SIZE = '32px'
+const NETWORK_IMAGE_SIZE = '15%'
+const NETWORK_IMAGE_OFFSET = '2%'
 
 interface CollectibleTileProps {
   balance: TokenBalanceWithPrice
@@ -33,8 +34,8 @@ export const CollectibleTile = ({ balance, onTokenClick }: CollectibleTileProps)
         style={{
           width: NETWORK_IMAGE_SIZE,
           height: NETWORK_IMAGE_SIZE,
-          right: '2px',
-          bottom: '2px'
+          right: NETWORK_IMAGE_OFFSET,
+          bottom: NETWORK_IMAGE_OFFSET
         }}
       />
     </div>
