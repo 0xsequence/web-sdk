@@ -1,1 +1,0 @@
-export { ShadowRoot } from './ShadowRoot'

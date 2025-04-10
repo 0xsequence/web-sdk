@@ -1,1 +1,0 @@
-export { CollectibleTileImage } from './CollectibleTileImage'

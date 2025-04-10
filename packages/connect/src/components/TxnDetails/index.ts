@@ -1,1 +1,0 @@
-export { TxnDetails } from './TxnDetails'
