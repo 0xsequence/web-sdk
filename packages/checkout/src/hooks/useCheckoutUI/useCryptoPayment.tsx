@@ -1,25 +1,8 @@
-import { useProjectAccessKey } from '@0xsequence/connect'
-import {
-  compareAddress,
-  ContractVerificationStatus,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  formatDisplay,
-  sendTransactions
-} from '@0xsequence/connect'
-import {
-  useIndexerClient,
-  useConfig,
-  useClearCachedBalances,
-  useGetTokenBalancesSummary,
-  useGetSwapPrices,
-  useGetContractInfo,
-  useGetSwapQuote
-} from '@0xsequence/hooks'
-import { TransactionStatus } from '@0xsequence/indexer'
+import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/connect'
+import { useIndexerClient, useGetTokenBalancesSummary, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/hooks'
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
-import pako from 'pako'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Hex, encodeFunctionData, formatUnits, zeroAddress } from 'viem'
 import { usePublicClient, useAccount, useReadContract, useWalletClient } from 'wagmi'
 
@@ -65,41 +48,31 @@ export interface UseCryptoPaymentReturn {
 interface CryptoOptions {
   chainId: number
   currencyAddress: string
+  currencyName: string
   totalPriceRaw: string
   symbol: string
   decimals: number
   totalPriceDisplay: string
   currrencyLogoUrl?: string
-  isBalanceSufficient: boolean
+  isInsufficientFunds: boolean
+  isSelected: boolean
 }
 
 export const useCryptoPayment = ({
   chain,
   currencyAddress,
   totalPriceRaw,
-  collectible,
-  collectionAddress,
-  recipientAddress,
   targetContractAddress,
   txData,
   transactionConfirmations,
   onSuccess,
   onError,
   currencyInfo,
-  tokenMetadatas,
-  dataCollectionInfo,
-  isLoadingCollectionInfo,
-  errorCollectionInfo,
-  isLoadingTokenMetadatas,
-  errorTokenMetadata,
   isLoadingCurrencyInfo,
   errorCurrencyInfo
 }: UseCryptoPaymentArgs): UseCryptoPaymentReturn => {
-  const [actionInProgress, setActionInProgress] = useState(false)
-  const [actionError, setActionError] = useState<Error | null>(null)
   const [selectedCurrencyAddress, setSelectedCurrencyAddress] = useState<string | undefined>(undefined)
   const { address: userAddress, connector } = useAccount()
-  const { clearCachedBalances } = useClearCachedBalances()
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
@@ -141,7 +114,11 @@ export const useCryptoPayment = ({
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrencyAddress || ''
 
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useGetSwapPrices({
+  const {
+    data: swapPrices = [],
+    isLoading: swapPricesIsLoading,
+    error: swapPricesError
+  } = useGetSwapPrices({
     userAddress: userAddress ?? '',
     buyCurrencyAddress,
     chainId: chainId,
@@ -176,12 +153,14 @@ export const useCryptoPayment = ({
   const mainCurrencyOption = {
     chainId,
     currencyAddress,
+    currencyName: currencyInfo?.name || 'unknown',
     totalPriceRaw: totalPriceRaw,
     decimals: currencyDecimals || 18,
     totalPriceDisplay: priceDisplay,
     currrencyLogoUrl: currencyInfo?.logoURI,
     symbol: currencySymbol || '',
-    isBalanceSufficient: Number(mainCurrencyBalance) > Number(totalPriceRaw)
+    isInsufficientFunds: Number(mainCurrencyBalance) < Number(totalPriceRaw),
+    isSelected: compareAddress(currencyAddress, selectedCurrencyAddress || '')
   }
 
   const swapOptions = swapPrices.map(swapPrice => {
@@ -197,13 +176,15 @@ export const useCryptoPayment = ({
     return {
       chainId,
       currencyAddress: swapQuoteAddress,
+      currencyName: swapPrice.info?.name || 'unknown',
       totalPriceRaw: swapPrice.price.price,
       totalPriceDisplay: swapQuotePriceDisplay,
       currrencyLogoUrl: swapPrice.info?.logoURI,
       symbol: swapPrice.info?.symbol || '',
       decimals: swapPrice.info?.decimals || 18,
       // The balance check is done at the API level
-      isBalanceSufficient: false
+      isInsufficientFunds: false,
+      isSelected: compareAddress(swapQuoteAddress, selectedCurrencyAddress || '')
     }
   })
 
@@ -370,8 +351,8 @@ export const useCryptoPayment = ({
   return {
     cryptoOptions: {
       data: [mainCurrencyOption, ...swapOptions],
-      isLoading: isLoadingCurrencyInfo || isLoadingTokenMetadatas || isLoadingCollectionInfo,
-      error: errorCurrencyInfo || errorTokenMetadata || errorCollectionInfo
+      isLoading: isLoadingCurrencyInfo || swapPricesIsLoading,
+      error: errorCurrencyInfo || swapPricesError
     },
     purchaseAction: {
       action: purchaseAction,
