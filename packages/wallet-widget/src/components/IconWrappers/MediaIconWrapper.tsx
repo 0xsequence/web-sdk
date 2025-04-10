@@ -81,13 +81,13 @@ export const MediaIconWrapper = ({
                 </div>
               ) : (
                 <div
-                  className={`flex items-center justify-center ${shapeClass} border overflow-hidden bg-background-primary`}
+                  className={`flex items-center justify-center ${shapeClass} border overflow-hidden`}
                   style={{
                     width: `calc(${widthClassMap[size]} + 2px)`,
                     height: `calc(${widthClassMap[size]} + 2px)`
                   }}
                 >
-                  <img src={icon} alt="icon" style={{ backgroundColor: 'lightgray' }} />
+                  <img src={icon} alt="icon" />
                 </div>
               )}
             </>
