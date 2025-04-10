@@ -56,7 +56,6 @@ export const useOrderSummary = ({
   currencyAddress,
   totalPriceRaw,
   collectible,
-  collectionAddress,
   currencyInfo,
   tokenMetadatas,
   dataCollectionInfo,

@@ -6,8 +6,9 @@ import { useState } from 'react'
 import { Hex, encodeFunctionData, formatUnits, zeroAddress } from 'viem'
 import { usePublicClient, useAccount, useReadContract, useWalletClient } from 'wagmi'
 
-import { Collectible } from '../../contexts/SelectPaymentModal'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
+import { Collectible } from '../../contexts/SelectPaymentModal'
+
 export interface UseCryptoPaymentArgs {
   chain: string | number
   currencyAddress: string
@@ -150,18 +151,22 @@ export const useCryptoPayment = ({
     significantDigits: 6
   })
 
-  const mainCurrencyOption = {
-    chainId,
-    currencyAddress,
-    currencyName: currencyInfo?.name || 'unknown',
-    totalPriceRaw: totalPriceRaw,
-    decimals: currencyDecimals || 18,
-    totalPriceDisplay: priceDisplay,
-    currrencyLogoUrl: currencyInfo?.logoURI,
-    symbol: currencySymbol || '',
-    isInsufficientFunds: Number(mainCurrencyBalance) < Number(totalPriceRaw),
-    isSelected: compareAddress(currencyAddress, selectedCurrencyAddress || '')
-  }
+  const mainCurrencyOption = currencyBalanceIsLoading
+    ? [
+        {
+          chainId,
+          currencyAddress,
+          currencyName: currencyInfo?.name || 'unknown',
+          totalPriceRaw: totalPriceRaw,
+          decimals: currencyDecimals || 18,
+          totalPriceDisplay: priceDisplay,
+          currrencyLogoUrl: currencyInfo?.logoURI,
+          symbol: currencySymbol || '',
+          isInsufficientFunds: Number(mainCurrencyBalance) < Number(totalPriceRaw),
+          isSelected: compareAddress(currencyAddress, selectedCurrencyAddress || '')
+        }
+      ]
+    : []
 
   const swapOptions = swapPrices.map(swapPrice => {
     const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
@@ -350,8 +355,8 @@ export const useCryptoPayment = ({
 
   return {
     cryptoOptions: {
-      data: [mainCurrencyOption, ...swapOptions],
-      isLoading: isLoadingCurrencyInfo || swapPricesIsLoading,
+      data: [...mainCurrencyOption, ...swapOptions],
+      isLoading: isLoadingCurrencyInfo || swapPricesIsLoading || currencyBalanceIsLoading,
       error: errorCurrencyInfo || swapPricesError
     },
     purchaseAction: {

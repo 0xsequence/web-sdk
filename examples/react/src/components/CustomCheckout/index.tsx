@@ -1,9 +1,10 @@
-import { Text, Button, Spinner, NetworkImage, Image } from '@0xsequence/design-system'
-import React, { useMemo } from 'react'
 import { useCheckoutUI, CreditCardProviders } from '@0xsequence/checkout'
 import { CryptoOption } from '@0xsequence/connect'
+import { Text, Button, Spinner, NetworkImage, Image } from '@0xsequence/design-system'
+import { useState } from 'react'
 import { encodeFunctionData, toHex } from 'viem'
 import { useAccount } from 'wagmi'
+
 import { ERC_1155_SALE_CONTRACT } from '../../constants/erc1155-sale-contract'
 
 export const CustomCheckout = () => {
@@ -121,6 +122,7 @@ export const CustomCheckout = () => {
   }
 
   const CreditCardPayment = () => {
+    const [showCreditCardPayment, setShowCreditCardPayment] = useState(false)
     if (creditCardPayment.isLoading) {
       return <Spinner />
     }
@@ -132,12 +134,16 @@ export const CustomCheckout = () => {
     const CreditCardIframe = creditCardPayment.data?.CreditCardIframe
     const EventListener = creditCardPayment.data?.EventListener
 
-    return (
-      <div>
-        <CreditCardIframe />
-        <EventListener />
-      </div>
-    )
+    if (showCreditCardPayment) {
+      return (
+        <div>
+          <CreditCardIframe />
+          <EventListener />
+        </div>
+      )
+    }
+
+    return <Button onClick={() => setShowCreditCardPayment(true)}>Show Credit Card Payment</Button>
   }
 
   const CryptoPayment = () => {

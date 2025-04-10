@@ -24,12 +24,11 @@ import React, { type ComponentProps, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
-import { CustomCheckout } from './CustomCheckout'
-
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 import { abi } from '../constants/nft-abi'
+import { CustomCheckout } from './CustomCheckout'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 // append ?debug to url to enable debug mode
