@@ -1,13 +1,11 @@
 import { useProjectAccessKey } from '@0xsequence/connect'
-import { compareAddress, waitForTransactionReceipt, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/connect'
-import { useIndexerClient, useConfig } from '@0xsequence/hooks'
-import { TransactionStatus } from '@0xsequence/indexer'
+import { compareAddress } from '@0xsequence/connect'
+import { useConfig } from '@0xsequence/hooks'
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import React, { useEffect, useRef } from 'react'
 import { Hex, formatUnits, zeroAddress } from 'viem'
-import { usePublicClient } from 'wagmi'
 
 import { fetchSardineOrderStatus } from '../../api'
 import { useEnvironmentContext } from '../../contexts'
@@ -212,14 +210,7 @@ export const useCreditCardPayment = ({
           </div>
         ),
         EventListener: () => (
-          <TransakEventListener
-            transactionConfirmations={transactionConfirmations}
-            chainId={network?.chainId || 137}
-            onSuccess={onSuccess}
-            onError={onError}
-            isLoading={isLoading}
-            iframeRef={iframeRef}
-          />
+          <TransakEventListener onSuccess={onSuccess} onError={onError} isLoading={isLoading} iframeRef={iframeRef} />
         )
       },
       isLoading: false
@@ -251,15 +242,7 @@ export const useCreditCardPayment = ({
         />
       </div>
     ),
-    EventListener: () => (
-      <SardineEventListener
-        transactionConfirmations={transactionConfirmations}
-        chainId={network?.chainId || 137}
-        onSuccess={onSuccess}
-        onError={onError}
-        orderId={dataClientToken?.orderId || ''}
-      />
-    )
+    EventListener: () => <SardineEventListener onSuccess={onSuccess} onError={onError} orderId={dataClientToken?.orderId || ''} />
   }
 
   return {
@@ -272,20 +255,11 @@ export const useCreditCardPayment = ({
 interface TransakEventListenerProps {
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
-  chainId: number
-  transactionConfirmations?: number
   isLoading: boolean
   iframeRef: React.RefObject<HTMLIFrameElement | null>
 }
 
-const TransakEventListener = ({
-  onSuccess,
-  onError,
-  chainId,
-  transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
-  isLoading,
-  iframeRef
-}: TransakEventListenerProps) => {
+const TransakEventListener = ({ onSuccess, onError, isLoading, iframeRef }: TransakEventListenerProps) => {
   useEffect(() => {
     const transakIframe = iframeRef.current?.contentWindow
     if (!transakIframe) {
@@ -320,12 +294,10 @@ const TransakEventListener = ({
 interface SardineEventListenerProps {
   onSuccess?: (txHash: string) => void
   onError?: (error: Error) => void
-  chainId: number
-  transactionConfirmations?: number
   orderId: string
 }
 
-const SardineEventListener = ({ onSuccess, onError, chainId, orderId, transactionConfirmations }: SardineEventListenerProps) => {
+const SardineEventListener = ({ onSuccess, onError, orderId }: SardineEventListenerProps) => {
   const { env } = useConfig()
   const projectAccessKey = useProjectAccessKey()
 
