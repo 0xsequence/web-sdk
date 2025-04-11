@@ -79,7 +79,7 @@ export const Swap = () => {
               </Text>
             ) : (
               <Text className="mt-2" variant="normal" color="negative">
-                Something went wrong. Please try again later.
+                Something went wrong. Try again later or with a different combination of coins.
               </Text>
             ))}
 

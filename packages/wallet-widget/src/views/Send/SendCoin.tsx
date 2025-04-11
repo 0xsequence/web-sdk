@@ -7,7 +7,8 @@ import {
   useCheckWaasFeeOptions,
   useWaasFeeOptions,
   waitForTransactionReceipt,
-  TRANSACTION_CONFIRMATIONS_DEFAULT
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  useWallets
 } from '@0xsequence/connect'
 import {
   Button,
@@ -52,6 +53,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const publicClient = usePublicClient({ chainId })
   const indexerClient = useIndexerClient(chainId)
   const toast = useToast()
+  const { wallets } = useWallets()
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
@@ -358,7 +360,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                     />
                   }
                 />
-                <WalletSelect selectedWallet={toAddress} onClick={setToAddress} />
+                {wallets.length > 1 && <WalletSelect selectedWallet={toAddress} onClick={setToAddress} />}
               </>
             )}
           </div>
