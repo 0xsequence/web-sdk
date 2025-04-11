@@ -79,6 +79,7 @@ export const useCryptoPayment = ({
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
   const currencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfo?.symbol
   const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals
+  const isMainCurrencySelected = compareAddress(selectedCurrencyAddress || '', currencyAddress)
 
   const { data: walletClient } = useWalletClient({
     chainId
@@ -151,7 +152,7 @@ export const useCryptoPayment = ({
     significantDigits: 6
   })
 
-  const mainCurrencyOption = currencyBalanceIsLoading
+  const mainCurrencyOption = !currencyBalanceIsLoading
     ? [
         {
           chainId,
@@ -214,9 +215,8 @@ export const useCryptoPayment = ({
       throw new Error('Connector is not connected')
     }
 
-    const isMainCurrency = compareAddress(selectedCurrencyAddress, currencyAddress)
     try {
-      if (isMainCurrency) {
+      if (isMainCurrencySelected) {
         const walletClientChainId = await walletClient.getChainId()
         if (walletClientChainId !== chainId) {
           await walletClient.switchChain({ id: chainId })
@@ -361,7 +361,8 @@ export const useCryptoPayment = ({
     },
     purchaseAction: {
       action: purchaseAction,
-      isReady: !!selectedCurrencyAddress && !isLoadingSwapQuote && (!allowanceIsLoading || isNativeCurrency),
+      isReady:
+        !!selectedCurrencyAddress && (!isLoadingSwapQuote || isMainCurrencySelected) && (!allowanceIsLoading || isNativeCurrency),
       selectedCurrencyAddress,
       setSelectedCurrencyAddress
     }

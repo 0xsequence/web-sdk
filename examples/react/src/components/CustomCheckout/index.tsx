@@ -147,7 +147,7 @@ export const CustomCheckout = () => {
   }
 
   const CryptoPayment = () => {
-    if (cryptoPayment.cryptoOptions.isLoading) {
+    if (cryptoPayment.cryptoOptions.data.length === 0) {
       return <Spinner />
     }
 
@@ -172,6 +172,7 @@ export const CustomCheckout = () => {
             disabled={option.isInsufficientFunds}
           />
         ))}
+        {cryptoPayment.cryptoOptions.isLoading && <Spinner />}
         <Button onClick={cryptoPayment.purchaseAction.action} disabled={!cryptoPayment.purchaseAction.isReady}>
           Purchase
         </Button>
