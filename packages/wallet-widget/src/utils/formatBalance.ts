@@ -1,10 +1,13 @@
 import { formatDisplay } from '@0xsequence/connect'
 import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { compareAddress } from '@0xsequence/design-system'
+import { TokenBalance } from '@0xsequence/indexer'
 import { Chain, formatUnits } from 'viem'
 import { zeroAddress } from 'viem'
 
 import { TokenBalanceWithPrice } from './tokens'
+
+//TODO: rename these and maybe do a refactor
 
 export const formatTokenInfo = (
   balance: TokenBalanceWithPrice | undefined,
@@ -46,6 +49,20 @@ export const formatFiatBalance = (balance: number, price: number, decimals: numb
   const bal = formatUnits(BigInt(Number(balance)), decimals || 18)
 
   return `${fiatSign}${(price * Number(bal)).toFixed(2)}`
+}
+
+export const formatTokenUnits = (token: TokenBalance | undefined, chains: readonly [Chain, ...Chain[]]) => {
+  if (!token) {
+    return ''
+  }
+
+  const isNativeToken = token.contractType === 'NATIVE'
+  const nativeTokenInfo = getNativeTokenInfoByChainId(token.chainId, chains)
+
+  if (isNativeToken) {
+    return formatUnits(BigInt(Number(token.balance)), nativeTokenInfo.decimals)
+  }
+  return formatUnits(BigInt(Number(token.balance)), token.contractInfo?.decimals || 18)
 }
 
 export const decimalsToWei = (balance: number, decimals: number) => {

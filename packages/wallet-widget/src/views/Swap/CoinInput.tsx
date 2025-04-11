@@ -7,48 +7,45 @@ import { useSwap } from '../../hooks/useSwap'
 import { formatFiatBalance, decimalsToWei } from '../../utils/formatBalance'
 
 export const CoinInput = ({ type, disabled }: { type: 'from' | 'to'; disabled?: boolean }) => {
-  const { toCoin, fromCoin, toAmount, fromAmount, setToAmount, setFromAmount, setRecentInput } = useSwap()
+  const { toCoin, fromCoin, amount, nonRecentAmount, recentInput, setAmount } = useSwap()
   const coin = type === 'from' ? fromCoin : toCoin
-  const amount = type === 'from' ? fromAmount : toAmount
-  const setAmount = type === 'from' ? setFromAmount : setToAmount
 
   const { fiatCurrency } = useSettings()
 
   const [inputValue, setInputValue] = useState<string>('')
 
   const fiatBalance = formatFiatBalance(
-    amount || 0,
+    type === recentInput ? amount : nonRecentAmount,
     coin?.price.value || 0,
     coin?.contractInfo?.decimals || 18,
     fiatCurrency.sign
   )
 
   useEffect(() => {
-    const formattedAmount = formatUnits(BigInt(amount || 0), coin?.contractInfo?.decimals || 18)
-    if (formattedAmount !== '0') {
-      setInputValue(formattedAmount)
-    } else if (Number(inputValue) > 0) {
-      setInputValue('')
+    if (type === recentInput) {
+      if (amount > 0) {
+        setInputValue(formatUnits(BigInt(amount), coin?.contractInfo?.decimals || 18))
+      } else if (Number(inputValue)) {
+        setInputValue('')
+      }
+    } else if (type !== recentInput) {
+      if (nonRecentAmount > 0) {
+        setInputValue(formatUnits(BigInt(nonRecentAmount), coin?.contractInfo?.decimals || 18))
+      } else if (Number(inputValue)) {
+        setInputValue('')
+      }
     }
-  }, [amount])
+  }, [recentInput, amount, nonRecentAmount])
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.target
     const changedValue = Number(value)
-
-    if (type === 'from') {
-      setFromAmount(decimalsToWei(changedValue, coin?.contractInfo?.decimals || 18))
-      setRecentInput('from')
-    } else {
-      setToAmount(decimalsToWei(changedValue, coin?.contractInfo?.decimals || 18))
-      setRecentInput('to')
-    }
-
     setInputValue(value)
+    setAmount(decimalsToWei(changedValue, coin?.contractInfo?.decimals || 18), type)
   }
 
   const handleMax = () => {
-    setAmount(Number(formatUnits(BigInt(coin?.balance || 0), coin?.contractInfo?.decimals || 18)))
+    setAmount(Number(formatUnits(BigInt(coin?.balance || 0), coin?.contractInfo?.decimals || 18)), type)
   }
 
   return (
@@ -60,7 +57,7 @@ export const CoinInput = ({ type, disabled }: { type: 'from' | 'to'; disabled?: 
         disabled={disabled}
         controls={
           <>
-            {amount && Number(amount) > 0 && fiatBalance !== '' && (
+            {fiatBalance && (
               <Text className="whitespace-nowrap" variant="small" color="muted">
                 ~{fiatBalance}
               </Text>

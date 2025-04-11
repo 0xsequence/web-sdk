@@ -5,8 +5,8 @@ import { createGenericContext } from './genericContext'
 export interface SwapContext {
   fromCoin: TokenBalanceWithPrice | undefined
   toCoin: TokenBalanceWithPrice | undefined
-  fromAmount: number
-  toAmount: number
+  amount: number
+  nonRecentAmount: number
   recentInput: 'from' | 'to'
   isSwapReady: boolean
   isSwapQuotePending: boolean
@@ -16,10 +16,7 @@ export interface SwapContext {
   isErrorTxn: boolean
   setFromCoin: (coin: TokenBalanceWithPrice | undefined) => void
   setToCoin: (coin: TokenBalanceWithPrice | undefined) => void
-  setFromAmount: (amount: number) => void
-  setToAmount: (amount: number) => void
-  setRecentInput: (input: 'from' | 'to') => void
-  setNonRecentAmount: (amount: number) => void
+  setAmount: (amount: number, type: 'from' | 'to') => void
   switchCoinOrder: () => void
   onSubmitSwap: () => void
   resetSwapStates: () => void
