@@ -27,7 +27,6 @@ export interface UseCreditCardPaymentArgs {
   recipientAddress: string
   targetContractAddress: string
   txData: Hex
-  transactionConfirmations?: number
   creditCardProvider?: CreditCardProviders
   transakConfig?: TransakConfig
   onSuccess?: (txHash: string) => void
@@ -65,7 +64,6 @@ export const useCreditCardPayment = ({
   recipientAddress,
   targetContractAddress,
   txData,
-  transactionConfirmations,
   creditCardProvider,
   transakConfig,
   onSuccess,
