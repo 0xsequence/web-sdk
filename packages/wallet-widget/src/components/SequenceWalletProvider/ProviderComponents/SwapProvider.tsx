@@ -1,10 +1,10 @@
 import { SwapQuote } from '@0xsequence/api'
-import { sendTransactions } from '@0xsequence/connect'
+import { getNativeTokenInfoByChainId, sendTransactions } from '@0xsequence/connect'
 import { compareAddress, useToast } from '@0xsequence/design-system'
 import { useAPIClient, useIndexerClient } from '@0xsequence/hooks'
 import { ReactNode, useEffect, useState } from 'react'
-import { Hex, zeroAddress } from 'viem'
-import { useAccount, useChainId, usePublicClient, useWalletClient } from 'wagmi'
+import { formatUnits, Hex, zeroAddress } from 'viem'
+import { useAccount, useChainId, useChains, usePublicClient, useWalletClient } from 'wagmi'
 
 import { SwapContextProvider } from '../../../contexts/Swap'
 import { useNavigation } from '../../../hooks/useNavigation'
@@ -16,13 +16,12 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const { setNavigation } = useNavigation()
   const apiClient = useAPIClient()
   const connectedChainId = useChainId()
-
+  const chains = useChains()
   const [fromCoin, _setFromCoin] = useState<TokenBalanceWithPrice>()
-  const [fromAmount, setFromAmount] = useState<number>(0)
   const [toCoin, _setToCoin] = useState<TokenBalanceWithPrice>()
-  const [toAmount, setToAmount] = useState<number>(0)
+  const [amount, _setAmount] = useState<number>(0)
+  const [nonRecentAmount, setNonRecentAmount] = useState<number>(0)
   const [recentInput, setRecentInput] = useState<'from' | 'to'>('from')
-  const [setNonRecentAmount, _setNonRecentAmount] = useState<() => void>(() => 0)
 
   const [isSwapReady, setIsSwapReady] = useState(false)
   const [swapQuoteData, setSwapQuoteData] = useState<SwapQuote>()
@@ -39,10 +38,9 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
 
   const resetSwapStates = () => {
     setFromCoin(undefined)
-    setFromAmount(0)
     setToCoin(undefined)
-    setToAmount(0)
-    setRecentInput('from')
+    setAmount(0, 'from')
+    setNonRecentAmount(0)
     setIsSwapReady(false)
     setSwapQuoteData(undefined)
     setIsSwapQuotePending(false)
@@ -56,22 +54,14 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
   }, [userAddress, connectedChainId])
 
   useEffect(() => {
-    if (recentInput === 'from') {
-      _setNonRecentAmount(() => setFromAmount)
-    } else {
-      _setNonRecentAmount(() => setToAmount)
-    }
-  }, [recentInput])
-
-  useEffect(() => {
     setIsSwapReady(false)
     setSwapQuoteData(undefined)
     setIsErrorSwapQuote(false)
-  }, [fromCoin, toCoin, fromAmount, toAmount])
+  }, [fromCoin, toCoin, amount])
 
   useEffect(() => {
     const fetchSwapQuote = async () => {
-      if (!fromCoin || !toCoin || (fromAmount === 0 && toAmount === 0)) {
+      if (!fromCoin || !toCoin || amount === 0) {
         return
       }
 
@@ -94,7 +84,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
           userAddress: String(userAddress),
           buyCurrencyAddress: toCoin.contractAddress,
           sellCurrencyAddress: fromCoin.contractAddress,
-          buyAmount: String(toAmount),
+          buyAmount: String(amount),
           chainId: connectedChainId,
           includeApprove: true
         })
@@ -103,11 +93,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
 
         // TODO: change this to "amount" from return
 
-        if (recentInput === 'from') {
-          setToAmount(Number(transactionValue))
-        } else {
-          setFromAmount(Number(transactionValue))
-        }
+        setNonRecentAmount(Number(transactionValue))
 
         setSwapQuoteData(swapQuote?.swapQuote)
         setIsSwapReady(true)
@@ -120,7 +106,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
     }
 
     fetchSwapQuote()
-  }, [fromCoin, toCoin, fromAmount, toAmount])
+  }, [fromCoin, toCoin, amount])
 
   const setFromCoin = (coin: TokenBalanceWithPrice | undefined) => {
     if (coin?.chainId === toCoin?.chainId && coin?.contractAddress === toCoin?.contractAddress) {
@@ -138,20 +124,28 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const setAmount = (newAmount: number, type: 'from' | 'to') => {
+    if (type === recentInput) {
+      _setAmount(newAmount)
+    } else {
+      const tempAmount = amount
+      setRecentInput(recentInput === 'from' ? 'to' : 'from')
+      _setAmount(newAmount)
+      setNonRecentAmount(tempAmount)
+    }
+  }
+
   const switchCoinOrder = () => {
     const tempFrom = fromCoin
     const tempTo = toCoin
-    const tempFromAmount = fromAmount
-    const tempToAmount = toAmount
     _setFromCoin(tempTo)
     _setToCoin(tempFrom)
-    setFromAmount(tempToAmount)
-    setToAmount(tempFromAmount)
+    setRecentInput(recentInput === 'from' ? 'to' : 'from')
   }
 
   const onSubmitSwap = async () => {
-    if (isErrorSwapQuote || !userAddress || !publicClient || !walletClient || !connector) {
-      console.error('Please ensure validation before submitting')
+    if (isErrorSwapQuote || !userAddress || !publicClient || !walletClient || !connector || !fromCoin || !toCoin || !amount) {
+      console.error('Please ensure validation before allowing users to submit a swap')
       return
     }
 
@@ -197,6 +191,21 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
         await walletClient.switchChain({ id: connectedChainId })
       }
 
+      const isFromCoinNative = fromCoin.contractType === 'NATIVE'
+      const isToCoinNative = toCoin.contractType === 'NATIVE'
+      const fromCoinNativeInfo = getNativeTokenInfoByChainId(fromCoin.chainId, chains)
+      const toCoinNativeInfo = getNativeTokenInfoByChainId(toCoin.chainId, chains)
+      const toastFromCoinName = isFromCoinNative ? fromCoinNativeInfo.symbol : fromCoin.contractInfo?.symbol
+      const toastToCoinName = isToCoinNative ? toCoinNativeInfo.symbol : toCoin.contractInfo?.symbol
+      const toastFromAmount = formatUnits(
+        BigInt(recentInput === 'from' ? amount : nonRecentAmount),
+        (isFromCoinNative ? fromCoinNativeInfo.decimals : fromCoin.contractInfo?.decimals) || 18
+      )
+      const toastToAmount = formatUnits(
+        BigInt(recentInput === 'from' ? nonRecentAmount : amount),
+        (isToCoinNative ? toCoinNativeInfo.decimals : toCoin.contractInfo?.decimals) || 18
+      )
+
       await sendTransactions({
         connector,
         walletClient,
@@ -209,7 +218,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
 
       toast({
         title: 'Transaction sent',
-        description: `Successfully swapped ${fromAmount} ${fromCoin?.contractInfo?.name} for ${toAmount} ${toCoin?.contractInfo?.name}`,
+        description: `Successfully swapped ${toastFromAmount} ${toastFromCoinName} for ${toastToAmount} ${toastToCoinName}`,
         variant: 'success'
       })
 
@@ -228,9 +237,9 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
     <SwapContextProvider
       value={{
         fromCoin,
-        fromAmount,
         toCoin,
-        toAmount,
+        amount,
+        nonRecentAmount,
         recentInput,
         isSwapReady,
         isSwapQuotePending,
@@ -239,11 +248,8 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
         isTxnPending,
         isErrorTxn,
         setFromCoin,
-        setFromAmount,
         setToCoin,
-        setToAmount,
-        setRecentInput,
-        setNonRecentAmount,
+        setAmount,
         switchCoinOrder,
         onSubmitSwap,
         resetSwapStates
