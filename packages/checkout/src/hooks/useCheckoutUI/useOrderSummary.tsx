@@ -38,10 +38,11 @@ export interface CollectibleItem {
 export interface UseOrderSummaryData {
   formattedCryptoPrice: string
   cryptoSymbol: string
+  cryptoImageUrl?: string
   totalPriceFiat: string
   networkName: string
   networkImageUrl: string
-  networkBadge: ReactNode
+  NetworkBadge: ReactNode
   collectibleItem: CollectibleItem
 }
 
@@ -71,6 +72,7 @@ export const useOrderSummary = ({
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
   const currencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfo?.symbol
   const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals
+  const cryptoImageUrl = isNativeCurrency ? network?.logoURI : currencyInfo?.logoURI
 
   const {
     data: dataCoinPrices,
@@ -104,9 +106,10 @@ export const useOrderSummary = ({
     data = {
       formattedCryptoPrice: displayPrice,
       cryptoSymbol: currencySymbol || 'POL',
+      cryptoImageUrl: cryptoImageUrl,
       networkName: network?.name || 'Polygon',
       networkImageUrl: networkImageUrl(network?.chainId || 137),
-      networkBadge: <NetworkBadge chainId={chainId} />,
+      NetworkBadge: <NetworkBadge chainId={chainId} />,
       totalPriceFiat: priceFiat,
       collectibleItem: {
         quantityRaw: collectible.quantity,
