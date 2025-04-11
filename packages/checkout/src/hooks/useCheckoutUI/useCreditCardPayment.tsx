@@ -5,7 +5,7 @@ import { TransactionStatus } from '@0xsequence/indexer'
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Hex, formatUnits, zeroAddress } from 'viem'
 import { usePublicClient } from 'wagmi'
 
@@ -93,7 +93,7 @@ export const useCreditCardPayment = ({
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
   const currencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfo?.symbol || 'POL'
   const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals || 18
-
+  const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const tokenMetadata = tokenMetadatas?.[0]
 
   const {
@@ -198,6 +198,7 @@ export const useCreditCardPayment = ({
           <div className="flex items-center justify-center" style={{ height: '770px' }}>
             <iframe
               id="transakIframe"
+              ref={iframeRef}
               allow="camera;microphone;payment"
               src={transakLink}
               style={{
@@ -216,6 +217,8 @@ export const useCreditCardPayment = ({
             chainId={network?.chainId || 137}
             onSuccess={onSuccess}
             onError={onError}
+            isLoading={isLoading}
+            iframeRef={iframeRef}
           />
         )
       },
@@ -271,26 +274,25 @@ interface TransakEventListenerProps {
   onError?: (error: Error) => void
   chainId: number
   transactionConfirmations?: number
+  isLoading: boolean
+  iframeRef: React.RefObject<HTMLIFrameElement | null>
 }
 
 const TransakEventListener = ({
   onSuccess,
   onError,
   chainId,
-  transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT
+  transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+  isLoading,
+  iframeRef
 }: TransakEventListenerProps) => {
-  const publicClient = usePublicClient({ chainId })
-  const indexerClient = useIndexerClient(chainId)
-
   useEffect(() => {
-    const transakIframeElement = document.getElementById(TRANSAK_IFRAME_ID) as HTMLIFrameElement
-    if (!transakIframeElement) {
+    const transakIframe = iframeRef.current?.contentWindow
+    if (!transakIframe) {
       return
     }
-    const transakIframe = transakIframeElement.contentWindow
 
     const readMessage = async (message: any) => {
-      console.log('message', message)
       if (message.source !== transakIframe) {
         return
       }
@@ -299,23 +301,7 @@ const TransakEventListener = ({
         console.log('Order Data: ', message?.data?.data)
         const txHash = message?.data?.data?.transactionHash || ''
 
-        if (!publicClient) {
-          onError?.(new Error('Public client not available'))
-          return
-        }
-
-        const { txnStatus } = await waitForTransactionReceipt({
-          txnHash: txHash,
-          indexerClient,
-          publicClient,
-          confirmations: transactionConfirmations
-        })
-
-        if (txnStatus === TransactionStatus.FAILED) {
-          onError?.(new Error('Transak transaction failed'))
-        } else {
-          onSuccess?.(txHash)
-        }
+        onSuccess?.(txHash)
       }
 
       if (message?.data?.event_id === 'TRANSAK_ORDER_FAILED') {
@@ -326,7 +312,7 @@ const TransakEventListener = ({
     window.addEventListener('message', readMessage)
 
     return () => window.removeEventListener('message', readMessage)
-  }, [])
+  }, [isLoading])
 
   return null
 }
@@ -342,15 +328,9 @@ interface SardineEventListenerProps {
 const SardineEventListener = ({ onSuccess, onError, chainId, orderId, transactionConfirmations }: SardineEventListenerProps) => {
   const { env } = useConfig()
   const projectAccessKey = useProjectAccessKey()
-  const indexerClient = useIndexerClient(chainId)
-  const publicClient = usePublicClient({ chainId })
 
   const pollForOrderStatus = async () => {
     try {
-      if (!indexerClient || !publicClient) {
-        onError?.(new Error('Indexer or public client not available'))
-        return
-      }
       console.log('Polling for transaction status')
       const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey, env.apiUrl)
       const status = pollResponse.resp.status
@@ -359,18 +339,7 @@ const SardineEventListener = ({ onSuccess, onError, chainId, orderId, transactio
       console.log('transaction status poll response:', status)
 
       if (status === 'Complete') {
-        const { txnStatus } = await waitForTransactionReceipt({
-          txnHash: transactionHash,
-          indexerClient,
-          publicClient,
-          confirmations: transactionConfirmations
-        })
-
-        if (txnStatus === TransactionStatus.FAILED) {
-          onError?.(new Error('Sardine transaction failed'))
-        } else {
-          onSuccess?.(transactionHash)
-        }
+        onSuccess?.(transactionHash)
       }
       if (status === 'Declined' || status === 'Cancelled') {
         onError?.(new Error('Failed to transfer collectible'))
