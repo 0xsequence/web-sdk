@@ -74,7 +74,7 @@ export const MediaIconWrapper = ({
             <>
               {isAccount ? (
                 <div
-                  className={`flex items-center justify-center ${shapeClass} border overflow-hidden bg-background-primary`}
+                  className={`flex items-center justify-center ${shapeClass} border bg-background-primary`}
                   style={{ width: `calc(${widthClassMap[size]} + 2px)`, height: `calc(${widthClassMap[size]} + 2px)` }}
                 >
                   <GradientAvatar address={icon} className="w-full h-full" />
@@ -87,13 +87,13 @@ export const MediaIconWrapper = ({
                     height: `calc(${widthClassMap[size]} + 2px)`
                   }}
                 >
-                  <img src={icon} alt="icon" style={{ backgroundColor: 'lightgray' }} />
+                  <img className="bg-background-muted" src={icon} alt="icon" />
                 </div>
               )}
             </>
           ) : (
             <div
-              className={`flex items-center justify-center ${shapeClass} border overflow-hidden bg-background-primary`}
+              className={`flex items-center justify-center ${shapeClass} border bg-background-primary`}
               style={{
                 width: `calc(${widthClassMap[size]} + 2px)`,
                 height: `calc(${widthClassMap[size]} + 2px)`

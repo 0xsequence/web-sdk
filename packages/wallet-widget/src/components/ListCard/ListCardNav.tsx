@@ -23,7 +23,7 @@ export const ListCardNav = ({
         `flex flex-row justify-between items-center bg-background-secondary w-full p-4 ${!disabled && 'cursor-pointer hover:opacity-80'}`,
         shape === 'rounded' ? 'rounded-lg' : 'rounded-none'
       )}
-      style={{ height: '52px', ...style }}
+      style={{ height: '52px', ...(disabled ? { opacity: 0.6 } : {}), ...style }}
       onClick={!disabled ? onClick : undefined}
     >
       <div className="flex flex-row gap-2 items-center w-full">{children}</div>
