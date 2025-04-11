@@ -20,7 +20,8 @@ export const useSwap = () => {
     setRecentInput,
     setNonRecentAmount,
     switchCoinOrder,
-    onSubmitSwap
+    onSubmitSwap,
+    resetSwapStates
   } = useSwapContext()
 
   return {
@@ -42,6 +43,7 @@ export const useSwap = () => {
     setRecentInput,
     setNonRecentAmount,
     switchCoinOrder,
-    onSubmitSwap
+    onSubmitSwap,
+    resetSwapStates
   }
 }

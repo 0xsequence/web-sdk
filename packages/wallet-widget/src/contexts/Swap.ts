@@ -22,6 +22,7 @@ export interface SwapContext {
   setNonRecentAmount: (amount: number) => void
   switchCoinOrder: () => void
   onSubmitSwap: () => void
+  resetSwapStates: () => void
 }
 
 const [useSwapContext, SwapContextProvider] = createGenericContext<SwapContext>()

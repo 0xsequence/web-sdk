@@ -1,5 +1,6 @@
 import { ArrowRightIcon, Card, cardVariants, cn, IconButton, Spinner, Text } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from '@0xsequence/hooks'
+import { useEffect } from 'react'
 import { useAccount, useChainId } from 'wagmi'
 
 import { NetworkSelect } from '../../components/Select/NetworkSelect'
@@ -20,11 +21,16 @@ export const Swap = () => {
     isErrorSwapQuote,
     isTxnPending,
     switchCoinOrder,
-    onSubmitSwap
+    onSubmitSwap,
+    resetSwapStates
   } = useSwap()
   const { fiatCurrency } = useSettings()
   const { address: userAddress } = useAccount()
   const connectedChainId = useChainId()
+
+  useEffect(() => {
+    return resetSwapStates()
+  }, [])
 
   const { data: tokenBalances } = useGetTokenBalancesSummary({
     chainIds: [connectedChainId],

@@ -37,7 +37,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const { data: walletClient } = useWalletClient({ chainId: connectedChainId })
   const indexerClient = useIndexerClient(connectedChainId)
 
-  useEffect(() => {
+  const resetSwapStates = () => {
     setFromCoin(undefined)
     setFromAmount(0)
     setToCoin(undefined)
@@ -49,6 +49,10 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
     setIsErrorSwapQuote(false)
     setIsTxnPending(false)
     setIsErrorTxn(false)
+  }
+
+  useEffect(() => {
+    resetSwapStates()
   }, [userAddress, connectedChainId])
 
   useEffect(() => {
@@ -241,7 +245,8 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
         setRecentInput,
         setNonRecentAmount,
         switchCoinOrder,
-        onSubmitSwap
+        onSubmitSwap,
+        resetSwapStates
       }}
     >
       {children}
