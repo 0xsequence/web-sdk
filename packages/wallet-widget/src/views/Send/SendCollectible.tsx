@@ -4,7 +4,8 @@ import {
   ExtendedConnector,
   truncateAtMiddle,
   useCheckWaasFeeOptions,
-  useWaasFeeOptions
+  useWaasFeeOptions,
+  useWallets
 } from '@0xsequence/connect'
 import {
   Button,
@@ -43,6 +44,7 @@ interface SendCollectibleProps {
 
 export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendCollectibleProps) => {
   const toast = useToast()
+  const { wallets } = useWallets()
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
@@ -395,7 +397,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                     />
                   }
                 />
-                <WalletSelect selectedWallet={toAddress} onClick={setToAddress} />
+                {wallets.length > 1 && <WalletSelect selectedWallet={toAddress} onClick={setToAddress} />}
               </>
             )}
           </div>

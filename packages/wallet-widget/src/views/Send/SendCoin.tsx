@@ -5,7 +5,8 @@ import {
   ExtendedConnector,
   truncateAtMiddle,
   useCheckWaasFeeOptions,
-  useWaasFeeOptions
+  useWaasFeeOptions,
+  useWallets
 } from '@0xsequence/connect'
 import {
   Button,
@@ -41,6 +42,7 @@ interface SendCoinProps {
 
 export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const toast = useToast()
+  const { wallets } = useWallets()
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
   const { analytics } = useAnalyticsContext()
@@ -337,7 +339,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                     />
                   }
                 />
-                <WalletSelect selectedWallet={toAddress} onClick={setToAddress} />
+                {wallets.length > 1 && <WalletSelect selectedWallet={toAddress} onClick={setToAddress} />}
               </>
             )}
           </div>
