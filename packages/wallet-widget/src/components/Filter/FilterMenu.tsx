@@ -11,6 +11,7 @@ import { ListCardNav } from '../ListCard'
 import { SlideupDrawer } from '../Select/SlideupDrawer'
 
 import { CollectionsFilter } from './CollectionsFilter'
+import { NetworkImageCustom } from './NetworkImageCustom'
 import { NetworksFilter } from './NetworksFilter'
 import { WalletsFilter } from './WalletsFilter'
 
@@ -96,7 +97,8 @@ export const FilterMenu = ({
       </div>
     ) : (
       <StackedIconTag
-        iconList={[`https://assets.sequence.info/images/networks/medium/${selectedNetworks[0]}.webp`]}
+        // iconList={[`https://assets.sequence.info/images/networks/medium/${selectedNetworks[0]}.webp`]}
+        iconList={[<NetworkImageCustom chainId={selectedNetworks[0]} style={{ width: '16px', height: '16px' }} />]}
         label={
           <Text variant="normal" color="primary" nowrap style={{ maxWidth: '200px' }} ellipsis>
             {getNetwork(selectedNetworks[0]).title}
