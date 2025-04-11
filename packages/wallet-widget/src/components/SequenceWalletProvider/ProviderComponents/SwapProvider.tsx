@@ -74,10 +74,9 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
         //   userAddress: String(userAddress),
         //   buyCurrencyAddress: toCoin.contractAddress,
         //   sellCurrencyAddress: fromCoin.contractAddress,
-        //   tokenAmount: String(recentInput === 'to' ? toAmount : fromAmount),
-        //   isBuyAmount: recentInput === 'to',
         //   chainId: connectedChainId,
         //   includeApprove: true
+        //   ...(recentInput === 'from' ? {sellAmount: String(amount)} : {buyAmount: String(amount)})
         // })
 
         swapQuote = await apiClient.getSwapQuoteV2({
