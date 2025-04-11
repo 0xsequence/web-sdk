@@ -254,3 +254,56 @@ const MyComponent = () => {
   return <button onClick={onClick}>Add Funds</button>
 }
 ```
+
+## Custom Checkout UIs
+
+Fully customized checkout UIs can be created with the `useCheckoutUI` hook. The hook will return three objects `orderSummary`, `creditCardPayment` and `cryptoPayment` which serve to create the order summary section, credit card payment section and crypto payment section of a checkout UI. API calls are done within the hook and all that if left to build is placing the information and actions.
+
+Each section comes with its own loading, error and data states.
+
+```js
+import { useCheckoutUI } from '@0xsequence/checkout'
+
+const CustomCheckoutUI = () => {
+  const checkoutUIParams = {
+    collectible,
+    chain: chainId,
+    totalPriceRaw: price,
+    targetContractAddress: salesContractAddress,
+    recipientAddress: address || '',
+    currencyAddress,
+    collectionAddress,
+    creditCardProvider: 'transak' as CreditCardProviders,
+    transakConfig: {
+      contractId,
+      apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
+    },
+    onSuccess: (txnHash: string) => {
+      console.log('success!', txnHash)
+    },
+    onError: (error: Error) => {
+      console.error(error)
+    },
+    txData: purchaseTransactionData
+  }
+
+  const { orderSummary, creditCardPayment, cryptoPayment } = useCheckoutUI(checkoutUIParams)
+
+  const isLoading = orderSummary.isLoading || creditCardPayment.isLoading || cryptoPayment.isLoading
+
+  const error = orderSummary.error || creditCardPayment.error || cryptoPayment.error
+
+  if (isLoading) {
+    return <div>loading...</div>
+  }
+  if (error)  {
+    return <div>an error has occurred</div>
+  }
+
+  return (
+    <CustomOrderSummaryComponent data={orderSummary.data}>
+    <CustomCreditCardComponent data={creditCardPayment.data}>
+    <CustomCryptoPaymentComponent data={cryptoPayment.data} purchaseAction={cryptoPayment.purchaseAction}>
+  )
+}
+```
