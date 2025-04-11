@@ -103,7 +103,6 @@ export const useCheckoutUI = ({
     recipientAddress,
     targetContractAddress,
     txData,
-    transactionConfirmations,
     creditCardProvider,
     transakConfig,
     onSuccess,
