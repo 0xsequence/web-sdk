@@ -190,7 +190,7 @@ export const Swap = () => {
       return (
         <div className="flex w-full justify-center items-center">
           <Text variant="normal" color="primary">
-            No swap option found!
+            No swap options found on your wallet, please ensure you hold an eligible token for the swap.
           </Text>
         </div>
       )

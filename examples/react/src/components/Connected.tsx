@@ -333,6 +333,7 @@ export const Connected = () => {
           data
         }
       ],
+      customSwapErrorMessage: 'No swap options found, custom message.',
       title: 'Swap and Pay',
       description: 'Select a token in your wallet to swap to 0.2 USDC.'
     }
