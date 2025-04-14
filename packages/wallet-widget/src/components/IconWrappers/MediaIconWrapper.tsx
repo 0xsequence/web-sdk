@@ -87,7 +87,7 @@ export const MediaIconWrapper = ({
                     height: `calc(${widthClassMap[size]} + 2px)`
                   }}
                 >
-                  <img className="bg-background-muted" src={icon} alt="icon" />
+                  <img src={icon} alt="icon" style={{ backgroundColor: 'lightgray' }} />
                 </div>
               )}
             </>

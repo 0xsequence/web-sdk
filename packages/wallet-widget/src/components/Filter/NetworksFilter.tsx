@@ -5,6 +5,7 @@ import { useSettings } from '../../hooks'
 import { MediaIconWrapper } from '../IconWrappers'
 import { ListCardSelect } from '../ListCard/ListCardSelect'
 
+import { NetworkImageCustom } from './NetworkImageCustom'
 import { NetworkRow } from './NetworkRow'
 
 export const NetworksFilter = () => {
@@ -17,7 +18,9 @@ export const NetworksFilter = () => {
       {allNetworks.length > 1 && (
         <ListCardSelect key="all" isSelected={selectedNetworks.length > 1} onClick={() => setSelectedNetworks([])}>
           <MediaIconWrapper
-            iconList={allNetworks.map(network => `https://assets.sequence.info/images/networks/medium/${network}.webp`)}
+            iconList={allNetworks.map(network => (
+              <NetworkImageCustom chainId={network} style={{ width: '32px', height: '32px' }} />
+            ))}
             size="sm"
           />
           <Text color="primary" fontWeight="medium" variant="normal">
