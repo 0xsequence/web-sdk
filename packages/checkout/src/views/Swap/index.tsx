@@ -20,6 +20,7 @@ export const Swap = () => {
     description,
     postSwapTransactions,
     blockConfirmations,
+    customSwapErrorMessage,
     onSuccess = () => {}
   } = swapModalSettings!
   const { address: userAddress, connector } = useAccount()
@@ -190,7 +191,8 @@ export const Swap = () => {
       return (
         <div className="flex w-full justify-center items-center">
           <Text variant="normal" color="primary">
-            No swap options found on your wallet, please ensure you hold an eligible token for the swap.
+            {customSwapErrorMessage ||
+              'No swap options found on your wallet, please ensure you hold an eligible token for the swap.'}
           </Text>
         </div>
       )
