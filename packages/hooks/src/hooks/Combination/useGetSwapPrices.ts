@@ -4,7 +4,7 @@ import { ContractInfo, SequenceMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useQuery } from '@tanstack/react-query'
 
-import { NATIVE_TOKEN_ADDRESS_0X_SWAP, QUERY_KEYS, ZERO_ADDRESS, time } from '../../constants'
+import { NATIVE_TOKEN_ADDRESS_0X_SWAP, QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants'
 import { HooksOptions } from '../../types'
 import { compareAddress } from '../../utils/helpers'
 import { useAPIClient } from '../API/useAPIClient'
@@ -59,7 +59,12 @@ const getSwapPrices = async (
 
   const { withContractInfo, ...swapPricesArgs } = args
 
-  const res = await apiClient.getSwapPermit2Prices(swapPricesArgs)
+  const isNativeTokenInArgs =
+    compareAddress(args.buyCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) || compareAddress(args.buyCurrencyAddress, ZERO_ADDRESS)
+  const res = await apiClient.getSwapPermit2Prices({
+    ...swapPricesArgs,
+    buyCurrencyAddress: isNativeTokenInArgs ? NATIVE_TOKEN_ADDRESS_0X_SWAP : args.buyCurrencyAddress
+  })
 
   if (res.swapPermit2Prices === null) {
     return []
@@ -68,16 +73,15 @@ const getSwapPrices = async (
   const currencyInfoMap = new Map<string, Promise<ContractInfo | undefined>>()
   if (withContractInfo) {
     res?.swapPermit2Prices.forEach(price => {
-      const { currencyAddress: rawCurrencyAddress } = price
-      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
-      const isNativeToken = compareAddress(currencyAddress, ZERO_ADDRESS)
+      const { currencyAddress } = price
+      const isNativeToken = compareAddress(currencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP || ZERO_ADDRESS)
       if (currencyAddress && !currencyInfoMap.has(currencyAddress)) {
         const getNativeTokenInfo = () =>
           new Promise<ContractInfo>(resolve => {
             resolve({
               ...network?.nativeToken,
               logoURI: network?.logoURI || '',
-              address: ZERO_ADDRESS
+              address: NATIVE_TOKEN_ADDRESS_0X_SWAP
             } as ContractInfo)
           })
 
@@ -102,9 +106,8 @@ const getSwapPrices = async (
 
   const currencyBalanceInfoMap = new Map<string, Promise<Balance>>()
   res?.swapPermit2Prices.forEach(price => {
-    const { currencyAddress: rawCurrencyAddress } = price
-    const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
-    const isNativeToken = compareAddress(currencyAddress, ZERO_ADDRESS)
+    const { currencyAddress } = price
+    const isNativeToken = compareAddress(currencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP || ZERO_ADDRESS)
 
     if (currencyAddress && !currencyBalanceInfoMap.has(currencyAddress)) {
       const tokenBalance = indexerGatewayClient
@@ -139,7 +142,9 @@ const getSwapPrices = async (
   return Promise.all(
     res?.swapPermit2Prices.map(async price => {
       const { currencyAddress: rawCurrencyAddress } = price
-      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
+      const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP)
+        ? NATIVE_TOKEN_ADDRESS_0X_SWAP
+        : rawCurrencyAddress
 
       return {
         price: {
