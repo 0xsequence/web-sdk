@@ -59,15 +59,15 @@ const getSwapPrices = async (
 
   const { withContractInfo, ...swapPricesArgs } = args
 
-  const res = await apiClient.getSwapPrices(swapPricesArgs)
+  const res = await apiClient.getSwapPermit2Prices(swapPricesArgs)
 
-  if (res.swapPrices === null) {
+  if (res.swapPermit2Prices === null) {
     return []
   }
 
   const currencyInfoMap = new Map<string, Promise<ContractInfo | undefined>>()
   if (withContractInfo) {
-    res?.swapPrices.forEach(price => {
+    res?.swapPermit2Prices.forEach(price => {
       const { currencyAddress: rawCurrencyAddress } = price
       const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
       const isNativeToken = compareAddress(currencyAddress, ZERO_ADDRESS)
@@ -101,7 +101,7 @@ const getSwapPrices = async (
   }
 
   const currencyBalanceInfoMap = new Map<string, Promise<Balance>>()
-  res?.swapPrices.forEach(price => {
+  res?.swapPermit2Prices.forEach(price => {
     const { currencyAddress: rawCurrencyAddress } = price
     const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
     const isNativeToken = compareAddress(currencyAddress, ZERO_ADDRESS)
@@ -137,7 +137,7 @@ const getSwapPrices = async (
   })
 
   return Promise.all(
-    res?.swapPrices.map(async price => {
+    res?.swapPermit2Prices.map(async price => {
       const { currencyAddress: rawCurrencyAddress } = price
       const currencyAddress = compareAddress(rawCurrencyAddress, NATIVE_TOKEN_ADDRESS_0X_SWAP) ? ZERO_ADDRESS : rawCurrencyAddress
 
