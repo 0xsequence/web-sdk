@@ -1,5 +1,15 @@
 # @0xsequence/kit-wallet
 
+## 5.1.1
+
+### Patch Changes
+
+- swap api v2 migration
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.1.1
+  - @0xsequence/hooks@5.1.1
+
 ## 5.1.0
 
 ### Minor Changes

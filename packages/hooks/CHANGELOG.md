@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.1.1
+
+### Patch Changes
+
+- swap api v2 migration
+
 ## 5.1.0
 
 ### Minor Changes
