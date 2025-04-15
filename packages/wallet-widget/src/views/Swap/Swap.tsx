@@ -77,7 +77,8 @@ export const Swap = () => {
       <div className="flex gap-1 flex-col w-full">
         <Card className="flex flex-col rounded-b-none rounded-t-xl relative pb-6" style={{ overflow: 'visible' }}>
           <CoinSelect disabled={isTxnPending} coinList={coinBalancesWithPrices || []} selectType="from" />
-          {fromCoin && <CoinInput disabled={isTxnPending} type="from" />}
+          {fromCoin && <CoinInput disabled={true} type="from" />}
+          {/* TODO: change out disabled to isTxnPending after new swap api is implemented */}
           {isErrorSwapQuote &&
             (hasInsufficientFunds ? (
               <Text className="mt-2" variant="normal" color="negative">

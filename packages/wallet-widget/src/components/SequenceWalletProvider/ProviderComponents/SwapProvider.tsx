@@ -37,10 +37,11 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const indexerClient = useIndexerClient(connectedChainId)
 
   const resetSwapStates = () => {
-    setFromCoin(undefined)
-    setToCoin(undefined)
-    setAmount(0, 'from')
+    _setFromCoin(undefined)
+    _setToCoin(undefined)
+    _setAmount(0)
     setNonRecentAmount(0)
+    setRecentInput('from')
     setIsSwapReady(false)
     setSwapQuoteData(undefined)
     setIsSwapQuotePending(false)
