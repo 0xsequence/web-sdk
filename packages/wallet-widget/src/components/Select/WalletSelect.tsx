@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { SelectWalletRow } from './SelectWalletRow'
 import { SlideupDrawer } from './SlideupDrawer'
 
-const WALLET_SELECT_HEIGHT = 60
+const WALLET_SELECT_HEIGHT = '60px'
 
 export const WalletSelect = ({ selectedWallet, onClick }: { selectedWallet: string; onClick: (address: string) => void }) => {
   const { wallets } = useWallets()

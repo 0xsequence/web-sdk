@@ -6,7 +6,7 @@ import { NetworkRow } from '../Filter/NetworkRow'
 
 import { SlideupDrawer } from './SlideupDrawer'
 
-const NETWORK_SELECT_HEIGHT = 70
+const NETWORK_SELECT_HEIGHT = '70px'
 
 export const NetworkSelect = () => {
   const chains = useChains()

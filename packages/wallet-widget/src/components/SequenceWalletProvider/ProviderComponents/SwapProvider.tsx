@@ -80,6 +80,8 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
         //   ...(recentInput === 'from' ? {sellAmount: String(amount)} : {buyAmount: String(amount)})
         // })
 
+        // TODO: use commented out code when getSwapQuoteV2 is updated to include sellAmount
+
         swapQuote = await apiClient.getSwapQuoteV2({
           userAddress: String(userAddress),
           buyCurrencyAddress: toCoin.contractAddress,
@@ -90,7 +92,6 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
         })
 
         const transactionValue = swapQuote?.swapQuote?.transactionValue || '0'
-
         // TODO: change this to "amount" from return
 
         setNonRecentAmount(Number(transactionValue))

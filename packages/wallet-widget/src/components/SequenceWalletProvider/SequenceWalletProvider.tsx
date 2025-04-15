@@ -8,15 +8,13 @@ import React, { useState, useContext, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
+import { WALLET_WIDTH, WALLET_HEIGHT } from '../../constants'
 import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
 import { WalletContentRefProvider, WalletContentRefContext } from '../../contexts/WalletContentRef'
 
 import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider'
 import { SwapProvider } from './ProviderComponents/SwapProvider'
 import { getHeader, getContent } from './utils'
-
-export const WALLET_WIDTH = '460px'
-export const WALLET_HEIGHT = 'min(800px, 90vh)'
 
 export type SequenceWalletProviderProps = {
   children: React.ReactNode
@@ -79,7 +77,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
     navigation.location === 'search-tokens' ||
     navigation.location === 'search-collectibles'
 
-  let paddingTop = 0
+  let paddingTop = '0px'
   switch (navigation.location) {
     case 'send-general':
       paddingTop = HEADER_HEIGHT_WITH_LABEL
@@ -116,7 +114,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                         {getHeader(navigation)}
 
                         {displayScrollbar ? (
-                          <Scroll style={{ paddingTop: paddingTop, height: 'min(800px, 90vh)' }}>{getContent(navigation)}</Scroll>
+                          <Scroll style={{ paddingTop: paddingTop, height: WALLET_HEIGHT }}>{getContent(navigation)}</Scroll>
                         ) : (
                           getContent(navigation)
                         )}
