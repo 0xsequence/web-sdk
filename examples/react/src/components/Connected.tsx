@@ -33,6 +33,8 @@ import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
+const checkoutProvider = searchParams.get('checkoutProvider')
+const onRampProvider = searchParams.get('onRampProvider')
 
 export const Connected = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
@@ -391,8 +393,8 @@ export const Connected = () => {
       recipientAddress: address,
       currencyAddress,
       collectionAddress,
-      creditCardProviders: ['sardine', 'transak'],
-      onRampProvider: TransactionOnRampProvider.sardine,
+      creditCardProviders: [checkoutProvider || 'transak'],
+      onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
       transakConfig: {
         contractId,
         apiKey: '5911d9ec-46b5-48fa-a755-d59a715ff0cf'
@@ -444,7 +446,7 @@ export const Connected = () => {
   const onClickAddFunds = () => {
     triggerAddFunds({
       walletAddress: address || '',
-      provider: TransactionOnRampProvider.transak
+      provider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak
     })
   }
 
