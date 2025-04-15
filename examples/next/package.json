@@ -10,13 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "2.0.12",
-    "@0xsequence/network": ">= 2.2.13",
+    "@0xsequence/design-system": "2.1.6",
+    "@0xsequence/network": ">= 2.3.7",
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
     "@0xsequence/hooks": "workspace:*",
     "@0xsequence/wallet-widget": "workspace:*",
-    "@0xsequence/waas": ">= 2.2.13",
+    "@0xsequence/waas": ">= 2.3.7",
     "@tailwindcss/postcss": "^4.0.6",
     "@tanstack/react-query": "^5.62.0",
     "example-shared-components": "workspace:*",

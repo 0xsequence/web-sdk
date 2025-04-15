@@ -30,7 +30,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "2.0.12",
+    "@0xsequence/design-system": "2.1.6",
     "@0xsequence/hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.0.7",
     "dayjs": "^1.11.11",
@@ -40,10 +40,10 @@
     "motion": "^12.3.1"
   },
   "peerDependencies": {
-    "@0xsequence/api": "^2.3.4",
-    "@0xsequence/indexer": ">= 2.2.13",
-    "@0xsequence/metadata": ">= 2.2.13",
-    "@0xsequence/network": ">= 2.2.13",
+    "@0xsequence/api": ">=2.3.7",
+    "@0xsequence/indexer": ">=2.3.7",
+    "@0xsequence/metadata": ">=2.3.7",
+    "@0xsequence/network": ">=2.3.7",
     "@0xsequence/connect": "workspace:*",
     "@tanstack/react-query": ">= 5",
     "ethers": ">= 6.13.0",

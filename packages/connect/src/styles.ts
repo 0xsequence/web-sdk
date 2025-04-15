@@ -5,8 +5,7 @@ export const styles = String.raw`
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-      "Courier New", monospace;
+    --font-mono: "Roboto", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -18,14 +17,19 @@ export const styles = String.raw`
     --text-base--line-height: calc(1.5 / 1);
     --text-xl: 1.25rem;
     --text-xl--line-height: calc(1.75 / 1.25);
-    --text-3xl: 1.875rem;
-    --text-3xl--line-height: calc(2.25 / 1.875);
+    --text-2xl: 1.5rem;
+    --text-2xl--line-height: calc(2 / 1.5);
+    --text-4xl: 2.25rem;
+    --text-4xl--line-height: calc(2.5 / 2.25);
+    --text-6xl: 3.75rem;
+    --text-6xl--line-height: 1;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
     --tracking-normal: 0em;
     --tracking-wide: 0.025em;
+    --tracking-widest: 0.1em;
     --radius-xs: 0.125rem;
     --radius-sm: 0.25rem;
     --radius-md: 0.375rem;
@@ -753,9 +757,9 @@ export const styles = String.raw`
     border-style: var(--tw-border-style);
     border-width: 2px;
   }
-  .border-t-2 {
-    border-top-style: var(--tw-border-style);
-    border-top-width: 2px;
+  .border-b-2 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 2px;
   }
   .border-dashed {
     --tw-border-style: dashed;
@@ -778,11 +782,11 @@ export const styles = String.raw`
   .border-transparent {
     border-color: transparent;
   }
-  .border-t-primary {
-    border-top-color: var(--seq-color-primary);
+  .border-b-primary {
+    border-bottom-color: var(--seq-color-primary);
   }
-  .border-t-transparent {
-    border-top-color: transparent;
+  .border-b-transparent {
+    border-bottom-color: transparent;
   }
   .bg-background-backdrop {
     background-color: var(--seq-color-background-backdrop);
@@ -989,14 +993,22 @@ export const styles = String.raw`
     text-align: right;
   }
   .font-body {
-    font-family: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
   .font-mono {
-    font-family: var(--font-mono);
+    font-family: "Roboto", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   }
-  .text-3xl {
-    font-size: var(--text-3xl);
-    line-height: var(--tw-leading, var(--text-3xl--line-height));
+  .text-2xl {
+    font-size: var(--text-2xl);
+    line-height: var(--tw-leading, var(--text-2xl--line-height));
+  }
+  .text-4xl {
+    font-size: var(--text-4xl);
+    line-height: var(--tw-leading, var(--text-4xl--line-height));
+  }
+  .text-6xl {
+    font-size: var(--text-6xl);
+    line-height: var(--tw-leading, var(--text-6xl--line-height));
   }
   .text-base {
     font-size: var(--text-base);
@@ -1056,9 +1068,13 @@ export const styles = String.raw`
     --tw-leading: calc(var(--spacing) * 8);
     line-height: calc(var(--spacing) * 8);
   }
-  .leading-9 {
-    --tw-leading: calc(var(--spacing) * 9);
-    line-height: calc(var(--spacing) * 9);
+  .leading-10 {
+    --tw-leading: calc(var(--spacing) * 10);
+    line-height: calc(var(--spacing) * 10);
+  }
+  .leading-15 {
+    --tw-leading: calc(var(--spacing) * 15);
+    line-height: calc(var(--spacing) * 15);
   }
   .leading-\[inherit\] {
     --tw-leading: inherit;
@@ -1091,6 +1107,10 @@ export const styles = String.raw`
   .tracking-wide {
     --tw-tracking: var(--tracking-wide);
     letter-spacing: var(--tracking-wide);
+  }
+  .tracking-widest {
+    --tw-tracking: var(--tracking-widest);
+    letter-spacing: var(--tracking-widest);
   }
   .text-ellipsis {
     text-overflow: ellipsis;
@@ -1840,7 +1860,7 @@ export const styles = String.raw`
   --seq-color-inverse: rgba(0, 0, 0, 1);
   --seq-color-background-primary: rgba(0, 0, 0, 1);
   --seq-color-background-secondary: rgba(255, 255, 255, 0.1);
-  --seq-color-background-contrast: rgba(255, 255, 255, 0.5);
+  --seq-color-background-contrast: rgba(0, 0, 0, 0.5);
   --seq-color-background-muted: rgba(255, 255, 255, 0.05);
   --seq-color-background-control: rgba(255, 255, 255, 0.25);
   --seq-color-background-inverse: rgba(255, 255, 255, 1);
@@ -1890,7 +1910,7 @@ export const styles = String.raw`
   --seq-color-background-contrast: rgba(244, 244, 244, 0.5);
   --seq-color-background-muted: rgba(0, 0, 0, 0.05);
   --seq-color-background-control: rgba(0, 0, 0, 0.25);
-  --seq-color-background-inverse: #rgba(0, 0, 0, 1);
+  --seq-color-background-inverse: rgba(0, 0, 0, 1);
   --seq-color-background-backdrop: rgba(221, 221, 221, 0.9);
   --seq-color-background-overlay: rgba(244, 244, 244, 0.7);
   --seq-color-background-raised: rgba(192, 192, 192, 0.7);

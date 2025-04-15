@@ -30,20 +30,20 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "@0xsequence/api": "^2.3.4",
-    "@0xsequence/indexer": ">=2.2.13",
-    "@0xsequence/metadata": ">=2.2.13",
-    "@0xsequence/network": ">=2.2.13",
+    "@0xsequence/api": ">=2.3.7",
+    "@0xsequence/indexer": ">=2.3.7",
+    "@0xsequence/metadata": ">=2.3.7",
+    "@0xsequence/network": ">=2.3.7",
     "@tanstack/react-query": ">= 5",
     "react": ">= 17",
     "react-dom": ">= 17",
     "viem": ">= 2.0.0"
   },
   "devDependencies": {
-    "@0xsequence/api": "^2.3.4",
-    "@0xsequence/indexer": "^2.2.13",
-    "@0xsequence/metadata": "^2.2.13",
-    "@0xsequence/network": "^2.2.13",
+    "@0xsequence/api": ">=2.3.7",
+    "@0xsequence/indexer": ">=2.3.7",
+    "@0xsequence/metadata": ">=2.3.7",
+    "@0xsequence/network": ">=2.3.7",
     "@tanstack/react-query": "^5.62.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",

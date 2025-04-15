@@ -39,18 +39,18 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/api": "^2.3.4",
-    "@0xsequence/auth": ">= 2.2.13",
-    "@0xsequence/core": ">= 2.2.13",
-    "@0xsequence/design-system": "2.0.12",
+    "@0xsequence/api": ">=2.3.7",
+    "@0xsequence/auth": ">= 2.3.7",
+    "@0xsequence/core": ">= 2.3.7",
+    "@0xsequence/design-system": "2.1.6",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/hooks": "workspace:*",
-    "@0xsequence/indexer": ">= 2.2.13",
-    "@0xsequence/metadata": ">= 2.2.13",
-    "@0xsequence/network": ">= 2.2.13",
-    "@0xsequence/provider": ">= 2.2.13",
-    "@0xsequence/utils": ">= 2.2.13",
-    "@0xsequence/waas": ">= 2.2.13",
+    "@0xsequence/indexer": ">= 2.3.7",
+    "@0xsequence/metadata": ">= 2.3.7",
+    "@0xsequence/network": ">= 2.3.7",
+    "@0xsequence/provider": ">= 2.3.7",
+    "@0xsequence/utils": ">= 2.3.7",
+    "@0xsequence/waas": ">= 2.3.7",
     "@tailwindcss/cli": "^4.0.14",
     "clsx": "^2.1.1",
     "fuse.js": "^6.6.2",
@@ -59,7 +59,7 @@
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
-    "0xsequence": "^2.2.13",
+    "0xsequence": ">= 2.3.7",
     "@databeat/tracker": "^0.9.3",
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-query": ">= 5",
@@ -71,7 +71,7 @@
     "wagmi": ">= 2.14.13"
   },
   "devDependencies": {
-    "0xsequence": "^2.2.13",
+    "0xsequence": ">= 2.3.7",
     "concurrently": "^9.1.2",
     "@tanstack/react-query": "^5.62.0",
     "@types/uuid": "^9.0.8",
