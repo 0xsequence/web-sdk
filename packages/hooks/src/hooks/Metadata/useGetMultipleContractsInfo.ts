@@ -8,10 +8,10 @@ import { useMetadataClient } from './useMetadataClient'
 
 const getMultipleContractsInfo = async (
   metadataClient: SequenceMetadata,
-  arg: GetContractInfoArgs[]
+  args: GetContractInfoArgs[]
 ): Promise<ContractInfo[]> => {
   try {
-    const res = await Promise.all(arg.map(a => metadataClient.getContractInfo(a)))
+    const res = await Promise.all(args.map(a => metadataClient.getContractInfo(a)))
 
     return res.map(r => r.contractInfo)
   } catch (e) {
@@ -110,12 +110,12 @@ const getMultipleContractsInfo = async (
  * }
  * ```
  */
-export const useGetMultipleContractsInfo = (useGetMultipleContractsInfoArgs: GetContractInfoArgs[], options?: HooksOptions) => {
+export const useGetMultipleContractsInfo = (args: GetContractInfoArgs[], options?: HooksOptions) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetMultipleContractInfo, useGetMultipleContractsInfoArgs, options],
-    queryFn: async () => await getMultipleContractsInfo(metadataClient, useGetMultipleContractsInfoArgs),
+    queryKey: [QUERY_KEYS.useGetMultipleContractInfo, args, options],
+    queryFn: async () => await getMultipleContractsInfo(metadataClient, args),
     retry: options?.retry ?? true,
     staleTime: time.oneHour,
     enabled: !options?.disabled

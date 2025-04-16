@@ -120,15 +120,15 @@ const getTokenMetadata = async (metadataClient: SequenceMetadata, args: GetToken
  * }
  * ```
  */
-export const useGetTokenMetadata = (getTokenMetadataArgs: GetTokenMetadataArgs, options?: HooksOptions) => {
+export const useGetTokenMetadata = (args: GetTokenMetadataArgs, options?: HooksOptions) => {
   const { env } = useConfig()
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetTokenMetadata, getTokenMetadataArgs, options],
-    queryFn: () => getTokenMetadata(metadataClient, getTokenMetadataArgs, env.imageProxyUrl),
+    queryKey: [QUERY_KEYS.useGetTokenMetadata, args, options],
+    queryFn: () => getTokenMetadata(metadataClient, args, env.imageProxyUrl),
     retry: options?.retry ?? true,
     staleTime: time.oneHour,
-    enabled: !!getTokenMetadataArgs.chainID && !!getTokenMetadataArgs.contractAddress && !options?.disabled
+    enabled: !!args.chainID && !!args.contractAddress && !options?.disabled
   })
 }

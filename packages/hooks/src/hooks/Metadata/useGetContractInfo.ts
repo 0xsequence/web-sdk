@@ -71,19 +71,16 @@ import { useMetadataClient } from './useMetadataClient'
  * }
  * ```
  */
-export const useGetContractInfo = (
-  getContractInfoArgs: GetContractInfoArgs,
-  options?: HooksOptions
-): UseQueryResult<ContractInfo> => {
+export const useGetContractInfo = (args: GetContractInfoArgs, options?: HooksOptions): UseQueryResult<ContractInfo> => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetContractInfo, getContractInfoArgs, options],
+    queryKey: [QUERY_KEYS.useGetContractInfo, args, options],
     queryFn: async () => {
-      const isNativeToken = compareAddress(ZERO_ADDRESS, getContractInfoArgs.contractAddress)
+      const isNativeToken = compareAddress(ZERO_ADDRESS, args.contractAddress)
 
-      const res = await metadataClient.getContractInfo(getContractInfoArgs)
-      const network = findSupportedNetwork(getContractInfoArgs.chainID)
+      const res = await metadataClient.getContractInfo(args)
+      const network = findSupportedNetwork(args.chainID)
 
       return {
         ...res.contractInfo,
@@ -97,6 +94,6 @@ export const useGetContractInfo = (
     },
     retry: options?.retry ?? true,
     staleTime: time.oneMinute * 10,
-    enabled: !!getContractInfoArgs.chainID && !!getContractInfoArgs.contractAddress && !options?.disabled
+    enabled: !!args.chainID && !!args.contractAddress && !options?.disabled
   })
 }
