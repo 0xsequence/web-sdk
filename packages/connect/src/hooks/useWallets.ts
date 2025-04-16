@@ -276,6 +276,11 @@ export const useWallets = (): UseWalletsReturnType => {
       return
     }
 
+    // Do not try to change if it's already active
+    if (wallets.find(w => w.address.toLowerCase() === walletAddress.toLowerCase())?.isActive) {
+      return
+    }
+
     try {
       await connectAsync({ connector: connection.connector })
     } catch (error) {
