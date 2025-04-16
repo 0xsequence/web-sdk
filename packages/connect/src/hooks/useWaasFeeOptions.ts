@@ -98,7 +98,7 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
   const pendingConfirmationRef = useRef<
     Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | undefined
   >(undefined)
-  const indexerClient = useIndexerClient(connections[0].chainId ?? 1)
+  const indexerClient = useIndexerClient(connections[0]?.chainId ?? 1)
 
   // Reset state when chainId changes
   useEffect(() => {
