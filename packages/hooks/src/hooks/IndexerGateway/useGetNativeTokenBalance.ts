@@ -9,9 +9,9 @@ import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
 const getNativeTokenBalance = async (
   indexerGatewayClient: SequenceIndexerGateway,
-  getNativeTokenBalanceArgs: IndexerGateway.GetNativeTokenBalanceArgs
+  args: IndexerGateway.GetNativeTokenBalanceArgs
 ): Promise<TokenBalance[]> => {
-  const res = await indexerGatewayClient.getNativeTokenBalance(getNativeTokenBalanceArgs)
+  const res = await indexerGatewayClient.getNativeTokenBalance(args)
 
   const balances = res.balances.map(balances =>
     createNativeTokenBalance(balances.chainId, balances.result.accountAddress, balances.result.balance)
@@ -51,17 +51,14 @@ const getNativeTokenBalance = async (
  * }
  * ```
  */
-export const useGetNativeTokenBalance = (
-  getNativeTokenBalanceArgs: IndexerGateway.GetNativeTokenBalanceArgs,
-  options?: HooksOptions
-) => {
+export const useGetNativeTokenBalance = (args: IndexerGateway.GetNativeTokenBalanceArgs, options?: HooksOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetNativeTokenBalance, getNativeTokenBalanceArgs, options],
-    queryFn: async () => await getNativeTokenBalance(indexerGatewayClient, getNativeTokenBalanceArgs),
+    queryKey: [QUERY_KEYS.useGetNativeTokenBalance, args, options],
+    queryFn: async () => await getNativeTokenBalance(indexerGatewayClient, args),
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,
-    enabled: !!getNativeTokenBalanceArgs.accountAddress && !options?.disabled
+    enabled: !!args.accountAddress && !options?.disabled
   })
 }

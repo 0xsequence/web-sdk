@@ -2,15 +2,15 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { ACCOUNT_ADDRESS } from '../../constants'
+import { ACCOUNT_ADDRESS, ZERO_ADDRESS } from '../../constants'
 import { UseGetTransactionHistoryArgs, useGetTransactionHistory } from '../../hooks/Indexer/useGetTransactionHistory'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 
 const getTransactionHistoryArgs: UseGetTransactionHistoryArgs = {
   chainId: 1,
-  accountAddress: ACCOUNT_ADDRESS,
-  contractAddress: '0x0000000000000000000000000000000000000000'
+  accountAddresses: [ACCOUNT_ADDRESS],
+  contractAddresses: [ZERO_ADDRESS]
 }
 
 describe('useGetTransactionHistory', () => {
@@ -23,7 +23,7 @@ describe('useGetTransactionHistory', () => {
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.pages[0].transactions[0].txnHash || '')
+    const value = BigInt(result.current.data?.pages[0].transactions[0].txnHash || '')
 
     expect(value).toBeDefined()
   })
