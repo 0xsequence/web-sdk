@@ -15,7 +15,7 @@ import {
   useOpenConnectModal,
   useWallets
 } from '@0xsequence/connect'
-import { Button, Card, Modal, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
+import { Button, Card, Modal, Scroll, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
@@ -30,13 +30,15 @@ import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
+import { CustomCheckout } from './CustomCheckout'
+
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 
 export const Connected = () => {
+  const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
-
   const { address } = useAccount()
   const { openSwapModal } = useSwapModal()
   const { setOpenWalletModal } = useOpenWalletModal()
@@ -633,6 +635,11 @@ export const Connected = () => {
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
                 />
+                <CardButton
+                  title="Custom Checkout"
+                  description="Hook for creating custom checkout UIs"
+                  onClick={() => setIsOpenCustomCheckout(true)}
+                />
               </>
             )}
             <CardButton
@@ -805,6 +812,25 @@ export const Connected = () => {
                 />
               </div>
             </div>
+          </Modal>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isOpenCustomCheckout && (
+          <Modal
+            contentProps={{
+              style: {
+                maxWidth: '400px',
+                height: 'auto',
+                ...getModalPositionCss('center')
+              }
+            }}
+            scroll={false}
+            onClose={() => setIsOpenCustomCheckout(false)}
+          >
+            <Scroll style={{ height: '600px' }}>
+              <CustomCheckout />
+            </Scroll>
           </Modal>
         )}
       </AnimatePresence>

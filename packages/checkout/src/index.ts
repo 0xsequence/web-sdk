@@ -9,12 +9,13 @@ export { useTransferFundsModal } from './hooks/useTransferFundsModal'
 export { useCheckoutWhitelistStatus } from './hooks/useCheckoutWhitelistStatus'
 export { useSwapModal } from './hooks/useSwapModal'
 export { useERC1155SaleContractCheckout, useERC1155SaleContractPaymentModal } from './hooks/useERC1155SaleContractCheckout'
+export { useCheckoutUI } from './hooks/useCheckoutUI'
 
 export { type CheckoutSettings } from './contexts/CheckoutModal'
 export { type AddFundsSettings } from './contexts/AddFundsModal'
 export { type SelectPaymentSettings } from './contexts/SelectPaymentModal'
 export { type SwapModalSettings } from './contexts/SwapModal'
-
+export { type CreditCardProviders } from './contexts/SelectPaymentModal'
 // utils
 export { fetchTransakSupportedCountries, getTransakLink } from './utils/transak'
 
