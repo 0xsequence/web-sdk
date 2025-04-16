@@ -8,7 +8,7 @@ Easily integrate web3 wallets in your app with Sequence Web SDK 🧰. Based on [
 - Connect to popular web3 wallets eg: walletConnect, metamask ! 🦊 ⛓️
 - Full-fledged embedded wallet for coins and collectibles 👛 🖼️ 🪙
 
-View the [demo](https://0xsequence.github.io/web-sdk)! 👀
+View the [demo](https://web-sdk.sequence-demos.xyz/)! 👀
 
 ## [Migration Guide from kit v4 to web-sdk v5](MIGRATION.md)
 
