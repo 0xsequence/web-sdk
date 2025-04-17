@@ -1,11 +1,6 @@
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
 import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
-import {
-  useGetCoinPrices,
-  useGetExchangeRate,
-  useGetTransactionHistory,
-  useGetSingleTokenBalanceSummary
-} from '@0xsequence/hooks'
+import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistory, useGetSingleTokenBalance } from '@0xsequence/hooks'
 import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
@@ -51,7 +46,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: tokenBalance, isPending: isPendingCoinBalance } = useGetSingleTokenBalanceSummary({
+  const { data: tokenBalance, isPending: isPendingCoinBalance } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: accountAddress || ''

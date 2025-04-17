@@ -3,22 +3,19 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS, ZERO_ADDRESS } from '../../constants'
-import {
-  GetSingleTokenBalanceSummaryArgs,
-  useGetSingleTokenBalanceSummary
-} from '../../hooks/IndexerGateway/useGetSingleTokenBalanceSummary'
+import { GetSingleTokenBalanceArgs, useGetSingleTokenBalance } from '../../hooks/IndexerGateway/useGetSingleTokenBalance'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 
-const getTokenBalancesSummaryArgs: GetSingleTokenBalanceSummaryArgs = {
+const getTokenBalancesArgs: GetSingleTokenBalanceArgs = {
   chainId: 1,
   accountAddress: ACCOUNT_ADDRESS,
   contractAddress: ZERO_ADDRESS
 }
 
-describe('useGetSingleTokenBalanceSummary', () => {
+describe('useGetSingleTokenBalance', () => {
   it('should return data with a balance', async () => {
-    const { result } = renderHook(() => useGetSingleTokenBalanceSummary(getTokenBalancesSummaryArgs), {
+    const { result } = renderHook(() => useGetSingleTokenBalance(getTokenBalancesArgs), {
       wrapper: createWrapper()
     })
 
@@ -38,7 +35,7 @@ describe('useGetSingleTokenBalanceSummary', () => {
       })
     )
 
-    const { result } = renderHook(() => useGetSingleTokenBalanceSummary(getTokenBalancesSummaryArgs, { retry: false }), {
+    const { result } = renderHook(() => useGetSingleTokenBalance(getTokenBalancesArgs, { retry: false }), {
       wrapper: createWrapper()
     })
 

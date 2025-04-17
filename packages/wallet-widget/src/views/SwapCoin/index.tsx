@@ -1,6 +1,6 @@
 import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
-import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalanceSummary } from '@0xsequence/hooks'
+import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalance } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, ChangeEvent } from 'react'
 import { parseUnits, zeroAddress } from 'viem'
@@ -25,7 +25,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalanceSummary({
+  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: accountAddress || ''

@@ -27,10 +27,7 @@ export {
 // IndexerGateway
 export { useIndexerGatewayClient } from './hooks/IndexerGateway/useIndexerGatewayClient'
 export { useGetNativeTokenBalance } from './hooks/IndexerGateway/useGetNativeTokenBalance'
-export {
-  useGetSingleTokenBalanceSummary,
-  type GetSingleTokenBalanceSummaryArgs
-} from './hooks/IndexerGateway/useGetSingleTokenBalanceSummary'
+export { useGetSingleTokenBalance, type GetSingleTokenBalanceArgs } from './hooks/IndexerGateway/useGetSingleTokenBalance'
 export { useGetTokenBalancesByContract } from './hooks/IndexerGateway/useGetTokenBalancesByContract'
 export { useGetTokenBalancesDetails } from './hooks/IndexerGateway/useGetTokenBalancesDetails'
 export { useGetTokenBalancesSummary } from './hooks/IndexerGateway/useGetTokenBalancesSummary'

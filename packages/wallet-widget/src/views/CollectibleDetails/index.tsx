@@ -4,7 +4,7 @@ import {
   useGetTransactionHistory,
   useGetCollectiblePrices,
   useGetExchangeRate,
-  useGetSingleTokenBalanceSummary
+  useGetSingleTokenBalance
 } from '@0xsequence/hooks'
 import { useEffect } from 'react'
 import { formatUnits } from 'viem'
@@ -52,7 +52,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: tokenBalance, isPending: isPendingCollectibleBalance } = useGetSingleTokenBalanceSummary({
+  const { data: tokenBalance, isPending: isPendingCollectibleBalance } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: accountAddress || '',
