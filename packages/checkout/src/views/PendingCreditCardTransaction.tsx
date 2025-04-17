@@ -11,6 +11,7 @@ import { EVENT_SOURCE } from '../constants/index.js'
 import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
   useCheckoutModal,
+  useForteAccessToken,
   useNavigation,
   useSardineClientToken,
   useSkipOnCloseCallback,
@@ -35,6 +36,8 @@ export const PendingCreditCardTransaction = () => {
   const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
 
   switch (provider) {
+    case 'forte':
+      return <PendingCreditCardTransactionForte skipOnCloseCallback={skipOnCloseCallback} />
     case 'transak':
       return <PendingCreditCardTransactionTransak skipOnCloseCallback={skipOnCloseCallback} />
     case 'sardine':
@@ -437,6 +440,33 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
       />
+    </div>
+  )
+}
+
+export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+  const { data: accessTokenData, isLoading: isLoadingAccessToken, isError: isErrorAccessToken } = useForteAccessToken()
+
+  if (isLoadingAccessToken) {
+    return (
+      <div className="flex items-center justify-center" style={{ height: '770px' }}>
+        <Spinner size="lg" />
+      </div>
+    )
+  }
+
+  if (isErrorAccessToken) {
+    return (
+      <div className="flex items-center justify-center" style={{ height: '770px' }}>
+        <Text color="primary">An error has occurred</Text>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center justify-center" style={{ height: '770px' }}>
+      <Text color="primary">Forte</Text>
+      <Text color="primary">{accessTokenData?.accessToken}</Text>
     </div>
   )
 }
