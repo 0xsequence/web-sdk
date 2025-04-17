@@ -1,5 +1,6 @@
 import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
 import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
+import { useEffect } from 'react'
 
 export const useGetCollections = ({
   accountAddresses,
@@ -14,7 +15,8 @@ export const useGetCollections = ({
     data: tokenBalancesData,
     isFetching,
     fetchNextPage,
-    hasNextPage
+    hasNextPage,
+    isFetchingNextPage
   } = useGetTokenBalancesDetails({
     chainIds,
     filter: {
@@ -25,9 +27,11 @@ export const useGetCollections = ({
     page: { pageSize: 40 }
   })
 
-  while (hasNextPage) {
-    fetchNextPage()
-  }
+  useEffect(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
+    }
+  }, [hasNextPage, isFetchingNextPage])
 
   const collections = tokenBalancesData?.pages
     .flatMap(page => page.balances)

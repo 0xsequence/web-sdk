@@ -1,27 +1,18 @@
-import { ContractType, IndexerGateway, Page, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
+import { IndexerGateway, Page, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { BalanceHookOptions } from '../../types'
+import { HooksOptions } from '../../types'
 import { createNativeTokenBalance, sortBalancesByType } from '../../utils/helpers'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
 const getTokenBalancesDetails = async (
   indexerGatewayClient: SequenceIndexerGateway,
-  args: IndexerGateway.GetTokenBalancesDetailsArgs,
-  hideCollectibles: boolean
+  args: IndexerGateway.GetTokenBalancesDetailsArgs
 ) => {
   try {
     const res = await indexerGatewayClient.getTokenBalancesDetails(args)
-
-    if (hideCollectibles) {
-      for (const chainBalance of res.balances) {
-        chainBalance.results = chainBalance.results.filter(
-          result => result.contractType !== ContractType.ERC721 && result.contractType !== ContractType.ERC1155
-        )
-      }
-    }
 
     const nativeTokens: TokenBalance[] = res.nativeBalances.flatMap(nativeChainBalance =>
       nativeChainBalance.results.map(nativeTokenBalance =>
@@ -134,13 +125,13 @@ const getTokenBalancesDetails = async (
  * }
  * ```
  */
-export const useGetTokenBalancesDetails = (args: IndexerGateway.GetTokenBalancesDetailsArgs, options?: BalanceHookOptions) => {
+export const useGetTokenBalancesDetails = (args: IndexerGateway.GetTokenBalancesDetailsArgs, options?: HooksOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.useGetTokenBalancesDetails, args, options],
     queryFn: ({ pageParam }) => {
-      return getTokenBalancesDetails(indexerGatewayClient, { ...args, page: pageParam }, options?.hideCollectibles ?? false)
+      return getTokenBalancesDetails(indexerGatewayClient, { ...args, page: pageParam })
     },
     getNextPageParam: ({ page }) => {
       return page?.more ? page : undefined

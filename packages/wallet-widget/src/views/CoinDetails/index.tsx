@@ -1,4 +1,4 @@
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
 import { Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
 import {
   useGetCoinPrices,
@@ -6,6 +6,7 @@ import {
   useGetTransactionHistory,
   useGetSingleTokenBalanceSummary
 } from '@0xsequence/hooks'
+import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
@@ -28,6 +29,11 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
   const { fiatCurrency } = useSettings()
+  const { setActiveWallet } = useWallets()
+
+  useEffect(() => {
+    setActiveWallet(accountAddress)
+  }, [accountAddress])
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 

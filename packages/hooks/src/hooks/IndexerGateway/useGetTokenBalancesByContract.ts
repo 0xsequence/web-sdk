@@ -1,25 +1,16 @@
-import { ContractType, IndexerGateway, Page, SequenceIndexerGateway } from '@0xsequence/indexer'
+import { IndexerGateway, Page, SequenceIndexerGateway } from '@0xsequence/indexer'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { BalanceHookOptions } from '../../types'
+import { HooksOptions } from '../../types'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
 const getTokenBalancesByContract = async (
   indexerGatewayClient: SequenceIndexerGateway,
-  args: IndexerGateway.GetTokenBalancesByContractArgs,
-  hideCollectibles: boolean
+  args: IndexerGateway.GetTokenBalancesByContractArgs
 ) => {
   const res = await indexerGatewayClient.getTokenBalancesByContract(args)
-
-  if (hideCollectibles) {
-    for (const chainBalance of res.balances) {
-      chainBalance.results = chainBalance.results.filter(
-        result => result.contractType !== ContractType.ERC721 && result.contractType !== ContractType.ERC1155
-      )
-    }
-  }
 
   return {
     balances: res.balances.flatMap(balance => balance.results),
@@ -81,16 +72,13 @@ const getTokenBalancesByContract = async (
  * }
  * ```
  */
-export const useGetTokenBalancesByContract = (
-  args: IndexerGateway.GetTokenBalancesByContractArgs,
-  options?: BalanceHookOptions
-) => {
+export const useGetTokenBalancesByContract = (args: IndexerGateway.GetTokenBalancesByContractArgs, options?: HooksOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.useGetTokenBalancesByContract, args, options],
     queryFn: ({ pageParam }) => {
-      return getTokenBalancesByContract(indexerGatewayClient, { ...args, page: pageParam }, options?.hideCollectibles ?? false)
+      return getTokenBalancesByContract(indexerGatewayClient, { ...args, page: pageParam })
     },
     getNextPageParam: ({ page }) => {
       return page?.more ? page : undefined
