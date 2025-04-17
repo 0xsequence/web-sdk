@@ -391,7 +391,7 @@ export const Connected = () => {
       recipientAddress: address,
       currencyAddress,
       collectionAddress,
-      creditCardProviders: ['sardine', 'transak'],
+      creditCardProviders: ['forte', 'sardine', 'transak'],
       onRampProvider: TransactionOnRampProvider.sardine,
       transakConfig: {
         contractId,
