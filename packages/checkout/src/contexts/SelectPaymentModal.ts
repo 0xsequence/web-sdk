@@ -5,7 +5,7 @@ import type { TransakConfig } from '../contexts/CheckoutModal.js'
 
 import { createGenericContext } from './genericContext.js'
 
-export type CreditCardProviders = 'sardine' | 'transak'
+export type CreditCardProviders = 'sardine' | 'transak' | 'forte'
 
 export interface Collectible {
   tokenId?: string
