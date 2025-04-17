@@ -142,7 +142,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
         {!isReadOnly && (
           <div className="flex gap-2">
             <Button className="w-full text-primary" variant="primary" leftIcon={SendIcon} label="Send" onClick={onClickSend} />
-            <Button className="w-full text-primary" variant="primary" leftIcon={SwapIcon} label="Buy" onClick={onClickSwap} />
+            <Button className="w-full text-primary" variant="primary" leftIcon={SwapIcon} label="Swap" onClick={onClickSwap} />
           </div>
         )}
         <div>

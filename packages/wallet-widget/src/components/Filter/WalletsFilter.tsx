@@ -3,6 +3,7 @@ import { Text } from '@0xsequence/design-system'
 
 import { useSettings } from '../../hooks'
 import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap'
+import { CopyButton } from '../CopyButton'
 import { MediaIconWrapper } from '../IconWrappers'
 import { ListCardSelect } from '../ListCard/ListCardSelect'
 import { WalletAccountGradient } from '../WalletAccountGradient'
@@ -50,8 +51,9 @@ export const WalletsFilter = () => {
           onClick={() => setSelectedWallets([wallet])}
         >
           <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
-          <Text color="primary" fontWeight="medium" variant="normal">
+          <Text className="flex flex-row gap-1 items-center" nowrap color="primary" fontWeight="medium" variant="normal">
             {formatAddress(wallet.address)}
+            <CopyButton text={wallet.address} buttonVariant="icon" onClick={e => e.stopPropagation()} />
           </Text>
         </ListCardSelect>
       ))}

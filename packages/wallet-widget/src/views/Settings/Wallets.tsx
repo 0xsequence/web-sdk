@@ -115,7 +115,7 @@ export const SettingsWallets = () => {
             onClick={() => onClickAddWallet()}
           >
             <Text color="primary" fontWeight="bold" variant="normal">
-              Add Wallet
+              + Add new Wallet
             </Text>
           </div>
         </div>
