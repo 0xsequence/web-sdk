@@ -14,7 +14,7 @@ interface PayWithCreditCardProps {
   skipOnCloseCallback: () => void
 }
 
-type BasePaymentProviderOptions = 'sardine' | 'transak'
+type BasePaymentProviderOptions = 'sardine' | 'transak' | 'forte'
 type CustomPaymentProviderOptions = 'custom'
 type PaymentProviderOptions = BasePaymentProviderOptions | CustomPaymentProviderOptions
 
@@ -64,6 +64,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         return
       case 'sardine':
       case 'transak':
+      case 'forte':
         onPurchase()
         return
       default:
@@ -134,6 +135,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
             switch (creditCardProvider) {
               case 'sardine':
               case 'transak':
+              case 'forte':
               case 'custom':
                 return (
                   <Card
