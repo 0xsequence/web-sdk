@@ -29,7 +29,7 @@ interface GetTransactionHistoryArgs {
  *     - transfers: Optional array of transaction transfers
  *     - timestamp: Transaction timestamp
  *   - page: Pagination information:
- *     - page: Next page number
+ *     - after: Next page cursor
  *     - more: Whether more results exist in the next page
  *     - pageSize: Number of results per page
  * @property everything else that react query returns {@link UseInfiniteQueryResult}
@@ -142,18 +142,14 @@ export const useGetTransactionHistory = (
     queryFn: ({ pageParam }) => {
       return getTransactionHistory(indexerClient, {
         ...args,
-        page: { page: pageParam }
+        page: pageParam
       })
     },
     getNextPageParam: ({ page }) => {
       // Note: must return undefined instead of null to stop the infinite scroll
-      if (!page.more) {
-        return undefined
-      }
-
-      return page?.page || 1
+      return page?.more ? page : undefined
     },
-    initialPageParam: 1,
+    initialPageParam: { pageSize: args.page?.pageSize } as Page,
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,
     enabled: !!args.chainId && !!args.accountAddress && !options?.disabled
