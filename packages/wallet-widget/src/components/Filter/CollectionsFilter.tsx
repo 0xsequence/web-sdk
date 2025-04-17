@@ -24,7 +24,7 @@ export const CollectionsFilter = () => {
         >
           <MediaIconWrapper
             iconList={collections.map(collection => (
-              <div className="bg-background-backdrop">
+              <div className="bg-background-backdrop rounded-full">
                 <TokenImage src={collection.logoURI} symbol={collection.name} />
               </div>
             ))}
