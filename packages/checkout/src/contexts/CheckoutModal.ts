@@ -23,6 +23,8 @@ export interface TransakConfig {
   callDataOverride?: string
 }
 
+export interface ForteConfig {}
+
 export interface CreditCardCheckout {
   chainId: number
   contractAddress: string
@@ -36,8 +38,9 @@ export interface CreditCardCheckout {
   nftQuantity: string
   nftDecimals?: string
   calldata: string
-  provider?: 'sardine' | 'transak'
+  provider?: 'sardine' | 'transak' | 'forte'
   transakConfig?: TransakConfig
+  forteConfig?: ForteConfig
   onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
   onError?: (error: Error, settings: CreditCardCheckout) => void
   onClose?: () => void
