@@ -5,8 +5,7 @@ import { useAccount, useChainId } from 'wagmi'
 
 import { NetworkSelect } from '../../components/Select/NetworkSelect'
 import { HEADER_HEIGHT_WITH_LABEL } from '../../constants'
-import { useSettings } from '../../hooks'
-import { useSwap } from '../../hooks/useSwap'
+import { useSettings, useSwap } from '../../hooks'
 
 import { CoinInput } from './CoinInput'
 import { CoinSelect } from './CoinSelect'
@@ -40,7 +39,12 @@ export const Swap = () => {
     }
   })
 
-  const coinBalances = tokenBalances?.filter(c => c.contractType !== 'ERC1155' && c.contractType !== 'ERC721') || []
+  // TODO: add new Lifi endpoints to get buy token as well as supported networks GetLifiChains and GetLifiTokens
+
+  const coinBalances =
+    tokenBalances?.pages
+      .flatMap(page => page.balances)
+      .filter(c => c.contractType !== 'ERC1155' && c.contractType !== 'ERC721') || []
 
   const { data: coinPrices = [] } = useGetCoinPrices(
     coinBalances.map(token => ({

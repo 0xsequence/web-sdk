@@ -1,7 +1,7 @@
 import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
-import { useGetTokenBalancesSummary, useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalanceSummary } from '@0xsequence/hooks'
+import { TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, ChangeEvent } from 'react'
 import { parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
@@ -25,18 +25,13 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
 
-  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
-    filter: {
-      accountAddresses: [accountAddress],
-      contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [contractAddress],
-      omitNativeBalances: false
-    }
+  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalanceSummary({
+    chainId,
+    contractAddress,
+    accountAddress: accountAddress || ''
   })
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
-  const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
   const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,

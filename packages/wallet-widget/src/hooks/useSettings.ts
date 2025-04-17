@@ -11,10 +11,8 @@ interface MutableObservable<T> extends Observable<T> {
 export interface SettingsCollection {
   contractAddress: string
   chainId: number
-  contractInfo: {
-    name: string
-    logoURI: string
-  }
+  name: string
+  logoURI: string
 }
 
 interface Settings {

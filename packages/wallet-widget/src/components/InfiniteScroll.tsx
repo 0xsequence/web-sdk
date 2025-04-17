@@ -29,7 +29,7 @@ export const InfiniteScroll = (props: PropsWithChildren<InfiniteScrollProps>) =>
   const { onLoad, hasMore = true, children, resetTrigger } = props
 
   const [pageNumber, setPageNumber] = useState(0)
-  const [isLoading, setLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const isBottom = useIntersectionObserver(bottomRef)
 
@@ -38,18 +38,18 @@ export const InfiniteScroll = (props: PropsWithChildren<InfiniteScrollProps>) =>
   }, [resetTrigger])
 
   useEffect(() => {
-    if (isBottom && hasMore && !isLoading) {
+    if (isBottom && hasMore && !isFetching) {
       handleLoad()
     }
   }, [isBottom])
 
   const handleLoad = async () => {
-    setLoading(true)
+    setIsFetching(true)
 
     await onLoad(pageNumber)
 
     setPageNumber(pageNumber => pageNumber + 1)
-    setLoading(false)
+    setIsFetching(false)
   }
 
   return (

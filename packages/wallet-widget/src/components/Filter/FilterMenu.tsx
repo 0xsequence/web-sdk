@@ -1,11 +1,9 @@
 import { formatAddress, getNetwork, useWallets } from '@0xsequence/connect'
 import { Text, TokenImage } from '@0xsequence/design-system'
-import { useGetTokenBalancesSummary } from '@0xsequence/hooks'
-import { ContractType } from '@0xsequence/indexer'
 import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
-import { useSettings } from '../../hooks'
+import { useSettings, useGetCollections } from '../../hooks'
 import { StackedIconTag } from '../IconWrappers'
 import { ListCardNav } from '../ListCard'
 import { SlideupDrawer } from '../Select/SlideupDrawer'
@@ -32,32 +30,20 @@ export const FilterMenu = ({
   onClose: () => void
 }) => {
   const { wallets } = useWallets()
-  const { selectedWalletsObservable, selectedNetworksObservable, selectedCollectionsObservable } = useSettings()
+  const { selectedWalletsObservable, selectedNetworksObservable, selectedCollectionsObservable, hideUnlistedTokensObservable } =
+    useSettings()
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
+  const hideUnlistedTokens = useObservable(hideUnlistedTokensObservable)
 
   const [selectedFilter, setSelectedFilter] = useState<FilterType>(FilterType.menu)
 
-  const { data: tokens } = useGetTokenBalancesSummary({
+  const { data: collections } = useGetCollections({
+    accountAddresses: selectedWallets.map(wallet => wallet.address),
     chainIds: selectedNetworks,
-    filter: {
-      accountAddresses: selectedWallets.map(wallet => wallet.address),
-      omitNativeBalances: true
-    }
+    hideUnlistedTokens
   })
-
-  const collections = tokens
-    ?.filter(token => token.contractType === ContractType.ERC721 || token.contractType === ContractType.ERC1155)
-    .map(collection => {
-      return {
-        contractAddress: collection.contractAddress,
-        contractInfo: {
-          name: collection.contractInfo?.name || '',
-          logoURI: collection.contractInfo?.logoURI || ''
-        }
-      }
-    })
 
   const walletsPreview =
     selectedWallets.length > 1 || wallets.length === 1 ? (
@@ -123,16 +109,10 @@ export const FilterMenu = ({
       />
     ) : (
       <StackedIconTag
-        iconList={[
-          <TokenImage
-            size="xs"
-            src={selectedCollections[0].contractInfo?.logoURI}
-            symbol={selectedCollections[0].contractInfo?.name}
-          />
-        ]}
+        iconList={[<TokenImage size="xs" src={selectedCollections[0].logoURI} symbol={selectedCollections[0].name} />]}
         label={
           <Text variant="normal" color="primary" nowrap style={{ maxWidth: '200px' }} ellipsis>
-            {selectedCollections[0].contractInfo?.name}
+            {selectedCollections[0].name}
           </Text>
         }
       />

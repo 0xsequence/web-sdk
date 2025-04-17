@@ -1,11 +1,9 @@
 import { useWallets } from '@0xsequence/connect'
 import { TabsHeader, TabsContent, TabsRoot } from '@0xsequence/design-system'
-import { useGetTokenBalancesDetails, useGetTokenBalancesSummary } from '@0xsequence/hooks'
-import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useState } from 'react'
 
 import { CollectiblesList, TokenList } from '../../components/SearchLists'
-import { useSettings, useNavigation } from '../../hooks'
+import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils/tokens'
 
 export const SendGeneral = () => {
@@ -16,22 +14,11 @@ export const SendGeneral = () => {
 
   const activeWallet = wallets.find(wallet => wallet.isActive)
 
-  const { data: tokenBalancesData = [], isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
+  const { data: tokenBalancesData = [], isPending: isPendingTokenBalances } = useGetAllTokensDetails({
+    accountAddresses: [activeWallet?.address || ''],
     chainIds: allNetworks,
-    filter: {
-      accountAddresses: [activeWallet?.address || ''],
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      omitNativeBalances: false
-    }
-  })
-
-  const { data: collectibleBalancesData = [], isPending: isPendingCollectibleBalances } = useGetTokenBalancesDetails({
-    chainIds: allNetworks,
-    filter: {
-      accountAddresses: [activeWallet?.address || ''],
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      omitNativeBalances: false
-    }
+    contractWhitelist: [],
+    hideUnlistedTokens
   })
 
   const handleTokenClick = (token: TokenBalanceWithPrice) => {
@@ -72,15 +59,15 @@ export const SendGeneral = () => {
         <TabsContent className="w-full" value={'coins'}>
           <TokenList
             tokenBalancesData={tokenBalancesData}
-            isPendingTokenBalances={isPendingTokenBalances}
+            isPendingFirstPage={isPendingTokenBalances}
             onTokenClick={handleTokenClick}
             enableFilters={false}
           />
         </TabsContent>
         <TabsContent className="flex flex-col w-full gap-4" value={'collectibles'}>
           <CollectiblesList
-            tokenBalancesData={collectibleBalancesData}
-            isPendingTokenBalances={isPendingCollectibleBalances}
+            tokenBalancesData={tokenBalancesData}
+            isPendingFirstPage={isPendingTokenBalances}
             onTokenClick={handleCollectibleClick}
             enableFilters={false}
             gridColumns={3}

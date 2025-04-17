@@ -49,7 +49,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
 
   const {
     data: swapPrices = [],
-    isLoading: swapPricesIsLoading,
+    isPending: swapPricesIsPending,
     isError: isErrorSwapPrices
   } = useGetSwapPrices({
     userAddress: userAddress ?? '',
@@ -59,22 +59,22 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     withContractInfo: true
   })
 
-  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+  const { data: currencyInfo, isPending: isPendingCurrencyInfo } = useGetContractInfo({
     chainID: String(chainId),
     contractAddress: contractAddress
   })
 
   useEffect(() => {
-    if (!swapPricesIsLoading && swapPrices.length > 0) {
+    if (!swapPricesIsPending && swapPrices.length > 0) {
       setSelectedCurrency(swapPrices[0].info?.address)
     }
-  }, [swapPricesIsLoading])
+  }, [swapPricesIsPending])
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
   const {
     data: swapQuote,
-    isLoading: isLoadingSwapQuote,
+    isPending: isPendingSwapQuote,
     isError: isErrorSwapQuote
   } = useGetSwapQuote(
     {
@@ -93,9 +93,9 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
 
   const indexerClient = useIndexerClient(chainId)
 
-  const quoteFetchInProgress = isLoadingSwapQuote
+  const quoteFetchInProgress = isPendingSwapQuote
 
-  const isLoading = swapPricesIsLoading || isLoadingCurrencyInfo
+  const isPending = swapPricesIsPending || isPendingCurrencyInfo || isPendingSwapQuote
 
   const onClickProceed = async () => {
     if (!userAddress || !publicClient || !walletClient || !connector) {
@@ -186,7 +186,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const noOptionsFound = swapPrices.length === 0
 
   const SwapContent = () => {
-    if (isLoading) {
+    if (isPending) {
       return (
         <div className="flex w-full justify-center items-center">
           <Spinner />

@@ -7,22 +7,21 @@ import Fuse from 'fuse.js'
 import { useState, useMemo } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useSettings } from '../../hooks'
+import { useSettings, useGetMoreBalances } from '../../hooks'
 import { computeBalanceFiat, TokenBalanceWithPrice } from '../../utils'
-import { useGetMoreBalances } from '../../utils'
 import { FilterButton } from '../Filter/FilterButton'
 
 import { CoinsTab } from './TokenList/CoinsTab'
 
 export const TokenList = ({
   tokenBalancesData,
-  isPendingTokenBalances,
+  isPendingFirstPage,
   onTokenClick,
   includeUserAddress = false,
   enableFilters = true
 }: {
   tokenBalancesData: TokenBalance[]
-  isPendingTokenBalances: boolean
+  isPendingFirstPage: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
   enableFilters?: boolean
   includeUserAddress?: boolean
@@ -82,7 +81,7 @@ export const TokenList = ({
     }
   })
 
-  const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
+  const isPending = isPendingFirstPage || isPendingCoinPrices || isPendingConversionRate
 
   const fuseOptions = {
     threshold: 0.1,
