@@ -7,17 +7,14 @@ import { compareAddress, createNativeTokenBalance } from '../../utils/helpers'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
-export interface GetSingleTokenBalanceSummaryArgs {
+export interface GetSingleTokenBalanceArgs {
   chainId: number
   accountAddress: string
   contractAddress: string
   tokenId?: string
 }
 
-const getSingleTokenBalanceSummary = async (
-  args: GetSingleTokenBalanceSummaryArgs,
-  indexerGatewayClient: SequenceIndexerGateway
-) => {
+const getSingleTokenBalance = async (args: GetSingleTokenBalanceArgs, indexerGatewayClient: SequenceIndexerGateway) => {
   const balance = await indexerGatewayClient.getTokenBalancesDetails({
     chainIds: [args.chainId],
     filter: {
@@ -78,13 +75,13 @@ const getSingleTokenBalanceSummary = async (
  * }
  * ```
  */
-export const useGetSingleTokenBalanceSummary = (args: GetSingleTokenBalanceSummaryArgs, options?: HooksOptions) => {
+export const useGetSingleTokenBalance = (args: GetSingleTokenBalanceArgs, options?: HooksOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetSingleTokenBalanceSummary, args, options],
+    queryKey: [QUERY_KEYS.useGetSingleTokenBalance, args, options],
     queryFn: async () => {
-      return await getSingleTokenBalanceSummary(args, indexerGatewayClient)
+      return await getSingleTokenBalance(args, indexerGatewayClient)
     },
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,

@@ -1,6 +1,6 @@
 import { commons } from '@0xsequence/core'
 import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-import { useAPIClient, useGetSingleTokenBalanceSummary, useGetTokenMetadata } from '@0xsequence/hooks'
+import { useAPIClient, useGetSingleTokenBalance, useGetTokenMetadata } from '@0xsequence/hooks'
 import { ContractType } from '@0xsequence/indexer'
 import { useEffect, useState } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
@@ -93,7 +93,7 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const isNFT = transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const { data: tokenBalance } = useGetSingleTokenBalanceSummary({
+  const { data: tokenBalance } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: address

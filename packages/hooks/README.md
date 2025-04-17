@@ -42,7 +42,7 @@ Sequence hooks are grouped into 5 categories, based on the sequence service they
 - useGetTokenBalancesSummary
 - useGetTokenBalancesDetails
 - useGetTokenBalancesByContract
-- useGetSingleTokenBalanceSummary
+- useGetSingleTokenBalance
 
 ### Metadata
 
@@ -261,12 +261,12 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
 )
 ```
 
-### useGetSingleTokenBalanceSummary
+### useGetSingleTokenBalance
 
 ```tsx
-import { useGetSingleTokenBalanceSummary } from '@0xsequence/hooks'
+import { useGetSingleTokenBalance } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetSingleTokenBalanceSummary({
+const { data, isPending, error } = useGetSingleTokenBalance({
   chainId: 1,
   accountAddress: '0x9876543210987654321098765432109876543210',
   contractAddress: '0x0123456789012345678901234567890123456789'

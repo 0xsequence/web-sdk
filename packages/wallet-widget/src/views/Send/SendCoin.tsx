@@ -28,7 +28,7 @@ import {
   useGetCoinPrices,
   useGetExchangeRate,
   useIndexerClient,
-  useGetSingleTokenBalanceSummary
+  useGetSingleTokenBalance
 } from '@0xsequence/hooks'
 import { TokenBalance } from '@0xsequence/indexer'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
@@ -83,7 +83,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalanceSummary({
+  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress

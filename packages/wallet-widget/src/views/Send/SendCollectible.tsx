@@ -24,7 +24,7 @@ import {
   Card,
   useToast
 } from '@0xsequence/design-system'
-import { useClearCachedBalances, useIndexerClient, useGetSingleTokenBalanceSummary } from '@0xsequence/hooks'
+import { useClearCachedBalances, useIndexerClient, useGetSingleTokenBalance } from '@0xsequence/hooks'
 import { ContractType, TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, Hex } from 'viem'
@@ -79,10 +79,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalanceSummary({
+  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
-    accountAddress
+    accountAddress,
+    tokenId
   })
 
   let contractType: ContractType | undefined
