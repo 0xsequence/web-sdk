@@ -195,7 +195,6 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
     // options param is optional and default values are below
     disabled: false,
     retry: true,
-    hideCollectibles: false
   }
 )
 ```
@@ -227,7 +226,6 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
     // options param is optional and default values are below
     disabled: false,
     retry: true,
-    hideCollectibles: false
   }
 )
 ```
@@ -259,7 +257,6 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
     // options param is optional and default values are below
     disabled: false,
     retry: true,
-    hideCollectibles: false
   }
 )
 ```
