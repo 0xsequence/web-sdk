@@ -11,6 +11,7 @@ export interface GetSingleTokenBalanceSummaryArgs {
   chainId: number
   accountAddress: string
   contractAddress: string
+  tokenId?: string
 }
 
 const getSingleTokenBalanceSummary = async (
@@ -38,7 +39,11 @@ const getSingleTokenBalanceSummary = async (
   if (compareAddress(args.contractAddress, ZERO_ADDRESS)) {
     return createNativeTokenBalance(args.chainId, args.accountAddress, balance.nativeBalances[0].results[0].balance)
   } else {
-    return balance.balances[0].results[0]
+    if (args.tokenId) {
+      return balance.balances[0].results.find(result => result.tokenID === args.tokenId)
+    } else {
+      return balance.balances[0].results[0]
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import { OptionsFooter } from '../../components/OptionsFooter'
-import { useNavigation } from '../../hooks/useNavigation'
+import { useNavigation } from '../../hooks'
 
 export const SettingsApps = () => {
   const { setNavigation } = useNavigation()

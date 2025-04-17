@@ -68,7 +68,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
 
   const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const arePricesLoading =
+  const arePricesPending =
     (coins.length > 0 && isPendingCoinPrices) ||
     (collectibles.length > 0 && isPendingCollectiblePrices) ||
     isPendingConversionRate
@@ -165,7 +165,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
             >
               {`${balanceDisplayed} ${tokenSymbol}`}
             </Text>
-            {arePricesLoading ? (
+            {arePricesPending ? (
               <Skeleton style={{ width: '44px', height: '12px' }} />
             ) : (
               <Text variant="xsmall" fontWeight="bold" color="muted">

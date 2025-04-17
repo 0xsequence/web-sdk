@@ -11,7 +11,7 @@ import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 
 const getTransactionHistorySummaryArgs: GetTransactionHistorySummaryArgs = {
-  accountAddress: ACCOUNT_ADDRESS,
+  accountAddresses: [ACCOUNT_ADDRESS],
   chainIds: [1]
 }
 

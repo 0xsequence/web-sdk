@@ -11,8 +11,7 @@ import {
   EllipsisIcon,
   Skeleton
 } from '@0xsequence/design-system'
-import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesDetails } from '@0xsequence/hooks'
-import { ContractVerificationStatus } from '@0xsequence/indexer'
+import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { ethers } from 'ethers'
 import { useObservable } from 'micro-observables'
 import { AnimatePresence } from 'motion/react'
@@ -27,8 +26,7 @@ import { ListCardNavTable } from '../../components/ListCardTable/ListCardNavTabl
 import { SelectWalletRow } from '../../components/Select/SelectWalletRow'
 import { SlideupDrawer } from '../../components/Select/SlideupDrawer'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient'
-import { useNavigation, useSettings } from '../../hooks'
-import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap'
+import { useNavigation, useSettings, useGetAllTokensDetails, useFiatWalletsMap } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
 
 import { OperationButtonTemplate } from './OperationButtonTemplate'
@@ -72,14 +70,11 @@ export const Home = () => {
     fetchSignInDisplay()
   }, [connector])
 
-  const { data: tokenBalancesData, isPending: isTokenBalancesPending } = useGetTokenBalancesDetails({
+  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetAllTokensDetails({
+    accountAddresses: [accountAddress || ''],
     chainIds: selectedNetworks,
-    filter: {
-      accountAddresses: selectedWallets.map(wallet => wallet.address),
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
-      omitNativeBalances: false
-    }
+    contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
+    hideUnlistedTokens
   })
 
   const coinBalancesUnordered =
@@ -98,16 +93,16 @@ export const Home = () => {
       return true
     }) || []
 
-  const { data: coinPrices = [], isPending: isCoinPricesPending } = useGetCoinPrices(
+  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate, isPending: isConversionRatePending } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const isPending = isTokenBalancesPending || isCoinPricesPending || isConversionRatePending
+  const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
 
   const totalFiatValue = fiatWalletsMap
     .reduce((acc, wallet) => {
@@ -243,7 +238,6 @@ export const Home = () => {
         coinBalances.length > 0 ? (
           <div className="flex flex-row gap-1 items-center">
             <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
-              {fiatCurrency.sign}
               {isPending ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
             </Text>
             <StackedIconTag

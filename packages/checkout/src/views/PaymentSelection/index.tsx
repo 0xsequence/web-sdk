@@ -1,14 +1,7 @@
-import {
-  useAnalyticsContext,
-  compareAddress,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  sendTransactions,
-  ContractVerificationStatus
-} from '@0xsequence/connect'
+import { useAnalyticsContext, compareAddress, TRANSACTION_CONFIRMATIONS_DEFAULT, sendTransactions } from '@0xsequence/connect'
 import { Button, Divider, Text, Spinner } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
-  useGetTokenBalancesSummary,
   useGetContractInfo,
   SwapPricesWithCurrencyInfo,
   useGetSwapPrices,
@@ -72,8 +65,7 @@ export const PaymentSelectionContent = () => {
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
-    supplementaryAnalyticsInfo,
-    skipNativeBalanceCheck
+    supplementaryAnalyticsInfo
   } = selectPaymentSettings
 
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
@@ -102,18 +94,6 @@ export const PaymentSelectionContent = () => {
     query: {
       enabled: !!userAddress && !isNativeToken
     }
-  })
-
-  const { data: _currencyBalanceData, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
-    filter: {
-      accountAddresses: userAddress ? [userAddress] : [],
-      contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [currencyAddress],
-      omitNativeBalances: skipNativeBalanceCheck ?? false
-    },
-    // omitMetadata must be true to avoid a bug
-    omitMetadata: true
   })
 
   const { data: _currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
@@ -151,14 +131,9 @@ export const PaymentSelectionContent = () => {
     }
   )
 
-  const isLoading = (allowanceIsLoading && !isNativeToken) || currencyBalanceIsLoading || isLoadingCurrencyInfo
+  const isLoading = (allowanceIsLoading && !isNativeToken) || isLoadingCurrencyInfo
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
-
-  // const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
-  // const balance: bigint = BigInt(balanceInfo?.balance || '0')
-  // let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
-  // balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
 
   useEffect(() => {
     clearCachedBalances()

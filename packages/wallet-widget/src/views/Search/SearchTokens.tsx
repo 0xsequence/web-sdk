@@ -1,9 +1,8 @@
-import { useGetTokenBalancesSummary } from '@0xsequence/hooks'
-import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useObservable } from 'micro-observables'
 
 import { TokenList } from '../../components/SearchLists'
 import { useNavigation, useSettings } from '../../hooks'
+import { useGetAllTokensDetails } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'
 
 export const SearchTokens = () => {
@@ -13,13 +12,10 @@ export const SearchTokens = () => {
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
 
-  const { data: tokenBalancesData = [], isPending: isPendingTokenBalances } = useGetTokenBalancesSummary({
+  const { data: tokenBalancesData, isPending } = useGetAllTokensDetails({
+    accountAddresses: selectedWallets.map(wallet => wallet.address),
     chainIds: selectedNetworks,
-    filter: {
-      accountAddresses: selectedWallets.map(wallet => wallet.address),
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      omitNativeBalances: false
-    }
+    hideUnlistedTokens
   })
 
   const handleTokenClick = (balance: TokenBalanceWithPrice) => {
@@ -37,7 +33,7 @@ export const SearchTokens = () => {
     <div className="p-4 pt-2 w-full">
       <TokenList
         tokenBalancesData={tokenBalancesData}
-        isPendingTokenBalances={isPendingTokenBalances}
+        isPendingFirstPage={isPending}
         onTokenClick={handleTokenClick}
         includeUserAddress
       />

@@ -2,7 +2,7 @@ import { IconButton, ChevronLeftIcon, Text, ModalPrimitive } from '@0xsequence/d
 
 import { HEADER_HEIGHT } from '../../constants'
 import { useNavigationContext } from '../../contexts/Navigation'
-import { useNavigation } from '../../hooks/useNavigation'
+import { useNavigation } from '../../hooks'
 
 interface NavigationHeaderProps {
   primaryText?: string

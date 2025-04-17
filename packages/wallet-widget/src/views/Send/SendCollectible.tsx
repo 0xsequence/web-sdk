@@ -24,8 +24,8 @@ import {
   Card,
   useToast
 } from '@0xsequence/design-system'
-import { useGetTokenBalancesDetails, useClearCachedBalances, useIndexerClient } from '@0xsequence/hooks'
-import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { useClearCachedBalances, useIndexerClient, useGetSingleTokenBalanceSummary } from '@0xsequence/hooks'
+import { ContractType, TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, Hex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'
@@ -79,17 +79,11 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: dataTokens, isPending: isPendingBalances } = useGetTokenBalancesDetails({
-    filter: {
-      accountAddresses: [accountAddress],
-      contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [contractAddress],
-      omitNativeBalances: false
-    },
-    chainIds: [chainId]
+  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalanceSummary({
+    chainId,
+    contractAddress,
+    accountAddress
   })
-
-  const tokenBalance = dataTokens && dataTokens.length > 0 ? dataTokens.find(balance => balance.tokenID === tokenId) : undefined
 
   let contractType: ContractType | undefined
   if (tokenBalance) {
@@ -476,7 +470,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
-          isLoading={isSendTxnPending}
+          isPending={isSendTxnPending}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
           onConfirm={() => {
             executeTransaction()

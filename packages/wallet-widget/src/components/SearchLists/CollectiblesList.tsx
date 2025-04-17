@@ -3,20 +3,21 @@ import { TokenBalance } from '@0xsequence/indexer'
 import Fuse from 'fuse.js'
 import { useState, useMemo } from 'react'
 
-import { TokenBalanceWithPrice, useGetMoreBalances } from '../../utils'
+import { useGetMoreBalances } from '../../hooks'
+import { TokenBalanceWithPrice } from '../../utils'
 import { FilterButton } from '../Filter/FilterButton'
 
 import { CollectiblesTab } from './CollectiblesList/CollectiblesTab'
 
 export const CollectiblesList = ({
   tokenBalancesData,
-  isPendingTokenBalances,
+  isPendingFirstPage,
   onTokenClick,
   enableFilters = true,
   gridColumns = 2
 }: {
   tokenBalancesData: TokenBalance[]
-  isPendingTokenBalances: boolean
+  isPendingFirstPage: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
   enableFilters?: boolean
   gridColumns?: number
@@ -39,8 +40,6 @@ export const CollectiblesList = ({
       currency: 'USD'
     }
   }))
-
-  const isPending = isPendingTokenBalances
 
   const fuseOptions = {
     threshold: 0.1,
@@ -108,7 +107,7 @@ export const CollectiblesList = ({
           fetchMoreCollectibleBalances={search ? fetchMoreSearchBalances : fetchMoreBalances}
           hasMoreCollectibleBalances={search ? hasMoreSearchBalances : hasMoreBalances}
           isFetchingMoreCollectibleBalances={search ? isFetchingMoreSearchBalances : isFetchingMoreBalances}
-          isFetchingInitialBalances={isPending}
+          isFetchingInitialBalances={isPendingFirstPage}
           onTokenClick={onTokenClick}
           gridColumns={gridColumns}
         />

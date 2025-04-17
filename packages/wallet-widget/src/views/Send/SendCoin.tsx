@@ -25,12 +25,12 @@ import {
 } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
-  useGetTokenBalancesSummary,
   useGetCoinPrices,
   useGetExchangeRate,
-  useIndexerClient
+  useIndexerClient,
+  useGetSingleTokenBalanceSummary
 } from '@0xsequence/hooks'
-import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
+import { TokenBalance } from '@0xsequence/indexer'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, Hex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'
@@ -83,17 +83,13 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: balances = [], isPending: isPendingBalances } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
-    filter: {
-      accountAddresses: [accountAddress],
-      contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [contractAddress],
-      omitNativeBalances: false
-    }
+  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalanceSummary({
+    chainId,
+    contractAddress,
+    accountAddress
   })
+
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
-  const tokenBalance = (balances as TokenBalance[]).find(b => b.contractAddress === contractAddress)
   const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
     {
       chainId,
@@ -430,7 +426,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
-          isLoading={isSendTxnPending}
+          isPending={isSendTxnPending}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
           onConfirm={() => {
             executeTransaction()
