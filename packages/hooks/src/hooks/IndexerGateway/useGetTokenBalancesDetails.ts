@@ -25,7 +25,11 @@ const getTokenBalancesDetails = async (
     const sortedBalances = sortBalancesByType([...nativeTokens, ...tokens])
 
     return {
-      balances: [...sortedBalances.nativeTokens, ...sortedBalances.erc20Tokens, ...sortedBalances.collectibles],
+      balances: [
+        ...(res.page.after ? [] : [...sortedBalances.nativeTokens]),
+        ...sortedBalances.erc20Tokens,
+        ...sortedBalances.collectibles
+      ],
       page: res.page
     }
   } catch (e) {
