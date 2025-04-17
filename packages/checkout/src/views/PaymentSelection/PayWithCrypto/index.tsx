@@ -35,7 +35,13 @@ export const PayWithCrypto = ({
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
+  const {
+    data: currencyBalanceData,
+    isLoading: currencyBalanceIsLoading,
+    fetchNextPage: fetchNextCurrencyBalance,
+    hasNextPage: hasNextCurrencyBalance,
+    isFetchingNextPage: isFetchingNextCurrencyBalance
+  } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
@@ -43,8 +49,15 @@ export const PayWithCrypto = ({
       contractWhitelist: [currencyAddress],
       omitNativeBalances: skipNativeBalanceCheck ?? false
     },
-    omitMetadata: true
+    omitMetadata: true,
+    page: { pageSize: 40 }
   })
+
+  useEffect(() => {
+    if (hasNextCurrencyBalance && !isFetchingNextCurrencyBalance) {
+      fetchNextCurrencyBalance()
+    }
+  }, [hasNextCurrencyBalance, isFetchingNextCurrencyBalance])
 
   const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
     chainID: String(chainId),
@@ -64,7 +77,7 @@ export const PayWithCrypto = ({
     { disabled: !enableSwapPayments }
   )
 
-  const isLoadingOptions = currencyBalanceIsLoading || isLoadingCurrencyInfo || isLoading
+  const isLoadingOptions = currencyBalanceIsLoading || isFetchingNextCurrencyBalance || isLoadingCurrencyInfo || isLoading
 
   const swapsIsLoading = swapPricesIsLoading
 
@@ -114,7 +127,9 @@ export const PayWithCrypto = ({
     significantDigits: 6
   })
 
-  const balanceInfo = currencyBalanceData?.find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
+  const balanceInfo = currencyBalanceData?.pages
+    ?.flatMap(page => page.balances)
+    .find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
 
   const balance: bigint = BigInt(balanceInfo?.balance || '0')
   // let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))

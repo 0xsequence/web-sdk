@@ -7,7 +7,7 @@ import { formatUnits, Hex, zeroAddress } from 'viem'
 import { useAccount, useChainId, useChains, usePublicClient, useWalletClient } from 'wagmi'
 
 import { SwapContextProvider } from '../../../contexts/Swap'
-import { useNavigation } from '../../../hooks/useNavigation'
+import { useNavigation } from '../../../hooks'
 import { TokenBalanceWithPrice } from '../../../utils'
 
 export const SwapProvider = ({ children }: { children: ReactNode }) => {

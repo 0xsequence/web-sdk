@@ -1,9 +1,7 @@
-import { ContractVerificationStatus } from '@0xsequence/connect'
-import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
 import { useObservable } from 'micro-observables'
 
 import { CollectiblesList } from '../../components/SearchLists/CollectiblesList'
-import { useSettings, useNavigation } from '../../hooks'
+import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'
 
 export const SearchCollectibles = () => {
@@ -15,14 +13,11 @@ export const SearchCollectibles = () => {
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
 
-  const { data: tokenBalancesData = [], isPending: isPendingTokenBalances } = useGetTokenBalancesDetails({
+  const { data: tokenBalancesData = [], isPending } = useGetAllTokensDetails({
+    accountAddresses: selectedWallets.map(wallet => wallet.address),
     chainIds: selectedNetworks,
-    filter: {
-      accountAddresses: selectedWallets.map(wallet => wallet.address),
-      contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
-      omitNativeBalances: false
-    }
+    contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
+    hideUnlistedTokens
   })
 
   const isSingleCollectionSelected = selectedCollections.length === 1
@@ -50,7 +45,7 @@ export const SearchCollectibles = () => {
     <div className="p-4 pt-2 w-full">
       <CollectiblesList
         tokenBalancesData={collectibleBalancesFiltered}
-        isPendingTokenBalances={isPendingTokenBalances}
+        isPendingFirstPage={isPending}
         onTokenClick={onHandleCollectibleClick}
         enableFilters={true}
       />

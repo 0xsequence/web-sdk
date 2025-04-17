@@ -11,28 +11,23 @@ interface MutableObservable<T> extends Observable<T> {
 export interface SettingsCollection {
   contractAddress: string
   chainId: number
-  contractInfo: {
-    name: string
-    logoURI: string
-  }
+  name: string
+  logoURI: string
 }
 
 interface Settings {
-  hideCollectibles: boolean
   hideUnlistedTokens: boolean
   fiatCurrency: FiatCurrency
   selectedNetworks: number[]
   allNetworks: number[]
   selectedWallets: ConnectedWallet[]
   selectedCollections: SettingsCollection[]
-  hideCollectiblesObservable: Observable<boolean>
   hideUnlistedTokensObservable: Observable<boolean>
   fiatCurrencyObservable: Observable<FiatCurrency>
   selectedNetworksObservable: Observable<number[]>
   selectedWalletsObservable: Observable<ConnectedWallet[]>
   selectedCollectionsObservable: Observable<SettingsCollection[]>
   setFiatCurrency: (newFiatCurrency: FiatCurrency) => void
-  setHideCollectibles: (newState: boolean) => void
   setHideUnlistedTokens: (newState: boolean) => void
   setSelectedWallets: (newWallets: ConnectedWallet[]) => void
   setSelectedNetworks: (newNetworks: number[]) => void
@@ -40,7 +35,6 @@ interface Settings {
 }
 
 type SettingsItems = {
-  hideCollectiblesObservable: MutableObservable<boolean>
   hideUnlistedTokensObservable: MutableObservable<boolean>
   fiatCurrencyObservable: MutableObservable<FiatCurrency>
   selectedWalletsObservable: MutableObservable<ConnectedWallet[]>
@@ -56,12 +50,10 @@ let settingsObservables: SettingsItems | null = null
  * Settings are stored in localStorage and persist across sessions.
  *
  * @returns {Settings} Object containing current settings and setter functions:
- * - `hideCollectibles`: Whether to hide NFT collectibles in the wallet view
  * - `hideUnlistedTokens`: Whether to hide unverified tokens
  * - `fiatCurrency`: Selected fiat currency for value display (e.g., USD, EUR)
  * - `selectedNetworks`: Array of chain IDs for networks to display
  * - `setFiatCurrency`: Function to update fiat currency preference
- * - `setHideCollectibles`: Function to toggle collectibles visibility
  * - `setHideUnlistedTokens`: Function to toggle unlisted tokens visibility
  * - `setSelectedNetworks`: Function to update selected networks
  *
@@ -72,19 +64,12 @@ let settingsObservables: SettingsItems | null = null
  * // Basic usage in a component
  * function WalletView() {
  *   const {
- *     hideCollectibles,
  *     fiatCurrency,
  *     selectedNetworks,
- *     setHideCollectibles
  *   } = useSettings()
  *
  *   return (
  *     <div>
- *       <Toggle
- *         checked={hideCollectibles}
- *         onChange={setHideCollectibles}
- *         label="Hide NFTs"
- *       />
  *       <Text>Currency: {fiatCurrency.symbol}</Text>
  *     </div>
  *   )
@@ -101,7 +86,6 @@ export const useSettings = (): Settings => {
 
   const getSettingsFromStorage = (): SettingsItems => {
     let hideUnlistedTokens = true
-    let hideCollectibles = false
     let fiatCurrency = defaultFiatCurrency
     let selectedWallets: ConnectedWallet[] = allWallets
     let selectedNetworks: number[] = allNetworks
@@ -114,9 +98,6 @@ export const useSettings = (): Settings => {
 
       if (settings?.hideUnlistedTokens !== undefined) {
         hideUnlistedTokens = settings?.hideUnlistedTokens
-      }
-      if (settings?.hideCollectibles !== undefined) {
-        hideCollectibles = settings?.hideCollectibles
       }
       if (settings?.fiatCurrency !== undefined) {
         fiatCurrency = settings?.fiatCurrency as FiatCurrency
@@ -160,7 +141,6 @@ export const useSettings = (): Settings => {
 
     return {
       hideUnlistedTokensObservable: observable(hideUnlistedTokens),
-      hideCollectiblesObservable: observable(hideCollectibles),
       fiatCurrencyObservable: observable(fiatCurrency),
       selectedWalletsObservable: observable(selectedWallets),
       selectedNetworksObservable: observable(selectedNetworks),
@@ -193,7 +173,6 @@ export const useSettings = (): Settings => {
 
   const {
     hideUnlistedTokensObservable,
-    hideCollectiblesObservable,
     fiatCurrencyObservable,
     selectedWalletsObservable,
     selectedNetworksObservable,
@@ -202,11 +181,6 @@ export const useSettings = (): Settings => {
 
   const setHideUnlistedTokens = (newState: boolean) => {
     hideUnlistedTokensObservable.set(newState)
-    updateLocalStorage()
-  }
-
-  const setHideCollectibles = (newState: boolean) => {
-    hideCollectiblesObservable.set(newState)
     updateLocalStorage()
   }
 
@@ -246,7 +220,6 @@ export const useSettings = (): Settings => {
   const updateLocalStorage = () => {
     const newSettings = {
       hideUnlistedTokens: hideUnlistedTokensObservable.get(),
-      hideCollectibles: hideCollectiblesObservable.get(),
       fiatCurrency: fiatCurrencyObservable.get(),
       selectedWallets: selectedWalletsObservable.get(),
       selectedNetworks: selectedNetworksObservable.get(),
@@ -258,20 +231,17 @@ export const useSettings = (): Settings => {
 
   return {
     hideUnlistedTokens: hideUnlistedTokensObservable.get(),
-    hideCollectibles: hideCollectiblesObservable.get(),
     fiatCurrency: fiatCurrencyObservable.get(),
     selectedWallets: selectedWalletsObservable.get(),
     selectedNetworks: selectedNetworksObservable.get(),
     allNetworks: allNetworks,
     selectedCollections: selectedCollectionsObservable.get(),
     hideUnlistedTokensObservable,
-    hideCollectiblesObservable,
     fiatCurrencyObservable,
     selectedWalletsObservable,
     selectedNetworksObservable,
     selectedCollectionsObservable,
     setFiatCurrency,
-    setHideCollectibles,
     setHideUnlistedTokens,
     setSelectedWallets,
     setSelectedNetworks,

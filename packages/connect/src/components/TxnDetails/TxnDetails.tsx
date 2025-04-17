@@ -1,7 +1,7 @@
 import { commons } from '@0xsequence/core'
 import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
-import { useAPIClient, useGetTokenBalancesSummary, useGetTokenMetadata } from '@0xsequence/hooks'
-import { ContractType, ContractVerificationStatus } from '@0xsequence/indexer'
+import { useAPIClient, useGetSingleTokenBalance, useGetTokenMetadata } from '@0xsequence/hooks'
+import { ContractType } from '@0xsequence/indexer'
 import { useEffect, useState } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
@@ -93,14 +93,10 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
   const isNFT = transferProps.contractType === ContractType.ERC1155 || transferProps.contractType === ContractType.ERC721
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const { data: balances = [] } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
-    filter: {
-      accountAddresses: [address],
-      contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [contractAddress],
-      omitNativeBalances: false
-    }
+  const { data: tokenBalance } = useGetSingleTokenBalance({
+    chainId,
+    contractAddress,
+    accountAddress: address
   })
 
   const { data: tokenMetadata } = useGetTokenMetadata({
@@ -109,7 +105,6 @@ const TransferItemInfo = ({ address, transferProps, chainId }: TransferItemInfoP
     tokenIDs: transferProps.tokenIds ?? []
   })
 
-  const tokenBalance = contractAddress ? balances.find(b => compareAddress(b.contractAddress, contractAddress)) : undefined
   const decimals = isNativeCoin ? nativeTokenInfo.decimals : tokenBalance?.contractInfo?.decimals || 18
 
   const imageUrl = isNativeCoin
