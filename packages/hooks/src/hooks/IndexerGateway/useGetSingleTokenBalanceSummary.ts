@@ -43,7 +43,44 @@ const getSingleTokenBalanceSummary = async (
 }
 
 /**
- * @description Gets the single token balance summary for a given chainId and contractAddress
+ * Hook to fetch the balance of a specific token (native or ERC20) for an account on a specific chain.
+ * For native tokens, use ZERO_ADDRESS (0x0000...0000) as the contractAddress.
+ *
+ * @param args - Arguments for fetching the token balance
+ * @param args.chainId - The chain ID to fetch the balance from
+ * @param args.accountAddress - The address to fetch the balance for
+ * @param args.contractAddress - The token contract address (use ZERO_ADDRESS for native tokens)
+ * @param options - Optional configuration for the query behavior
+ * @param options.hideCollectibles - If true, filters out ERC721 and ERC1155 tokens
+ *
+ * @returns Query result containing the token balance
+ *
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSingleTokenBalanceSummary} for more detailed documentation.
+ *
+ * @example
+ * ```tsx
+ * import { useGetSingleTokenBalanceSummary, ZERO_ADDRESS } from '@0xsequence/hooks'
+ *
+ * // Fetch native ETH balance
+ * function NativeBalance() {
+ *   const { data: ethBalance } = useGetSingleTokenBalanceSummary({
+ *     chainId: 1,
+ *     accountAddress: '0x123...',
+ *     contractAddress: ZERO_ADDRESS
+ *   })
+ *   return <div>ETH Balance: {ethBalance?.balance}</div>
+ * }
+ *
+ * // Fetch USDC balance
+ * function TokenBalance() {
+ *   const { data: usdcBalance } = useGetSingleTokenBalanceSummary({
+ *     chainId: 1,
+ *     accountAddress: '0x123...',
+ *     contractAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' // USDC
+ *   })
+ *   return <div>USDC Balance: {usdcBalance?.balance}</div>
+ * }
+ * ```
  */
 export const useGetSingleTokenBalanceSummary = (args: GetSingleTokenBalanceSummaryArgs, options?: BalanceHookOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
