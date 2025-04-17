@@ -34,7 +34,7 @@ export const WalletSelect = ({ selectedWallet, onClick }: { selectedWallet: stri
 
       <ChevronUpDownIcon className="text-muted" />
       {isOpen && (
-        <SlideupDrawer label="Network" onClose={() => setIsOpen(false)}>
+        <SlideupDrawer label="Wallets" onClose={() => setIsOpen(false)}>
           <div className="flex flex-col gap-2" style={{ overflowY: 'auto' }}>
             {allButActiveWallet.map(wallet => (
               <SelectWalletRow
