@@ -238,6 +238,7 @@ export const Home = () => {
         coinBalances.length > 0 ? (
           <div className="flex flex-row gap-1 items-center">
             <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
+              {fiatCurrency.sign}
               {isPending ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
             </Text>
             <StackedIconTag
