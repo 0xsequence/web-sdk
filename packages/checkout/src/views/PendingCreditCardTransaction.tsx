@@ -1,10 +1,11 @@
 import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
-import { Spinner, Text } from '@0xsequence/design-system'
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
+import { useSignMessage, usePublicClient, useAccount } from 'wagmi'
 
 import { fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
@@ -12,6 +13,7 @@ import { useEnvironmentContext, type TransactionPendingNavigation } from '../con
 import {
   useCheckoutModal,
   useForteAccessToken,
+  useFortePaymentIntent,
   useNavigation,
   useSardineClientToken,
   useSkipOnCloseCallback,
@@ -445,9 +447,82 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 }
 
 export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+  const { forteWidgetUrl } = useEnvironmentContext()
   const { data: accessTokenData, isLoading: isLoadingAccessToken, isError: isErrorAccessToken } = useForteAccessToken()
+  const { data: signatureData, signMessage } = useSignMessage()
+  const { address } = useAccount()
+  const nav = useNavigation()
+  const {
+    params: { creditCardCheckout }
+  } = nav.navigation as TransactionPendingNavigation
+  const publicClient = usePublicClient({ chainId: creditCardCheckout.chainId })
+  const isMessageSigned = signatureData !== undefined
 
-  if (isLoadingAccessToken) {
+  const {
+    data: tokenMetadatas,
+    isLoading: isLoadingTokenMetadata,
+    isError: isErrorTokenMetadata
+  } = useGetTokenMetadata({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress,
+    tokenIDs: [creditCardCheckout.nftId]
+  })
+
+  const tokenMetadata = tokenMetadatas ? tokenMetadatas[0] : undefined
+
+  const nftQuantity = formatUnits(BigInt(creditCardCheckout.nftQuantity), Number(creditCardCheckout.nftDecimals || 0))
+
+  const {
+    data: paymentIntentData,
+    isLoading: isLoadingPaymentIntent,
+    isError: isErrorPaymentIntent
+  } = useFortePaymentIntent(
+    {
+      accessToken: accessTokenData?.accessToken || '',
+      tokenType: accessTokenData?.tokenType || '',
+      nonce: `${address || ''}-${Date.now()}`,
+      nftQuantity,
+      recipientAddress: creditCardCheckout.recipientAddress,
+      chainId: creditCardCheckout.chainId.toString(),
+      signature: signatureData || '',
+      tokenAddress: creditCardCheckout.nftAddress,
+      protocolAddress: creditCardCheckout.contractAddress,
+      nftName: tokenMetadata?.name || '',
+      imageUrl: tokenMetadata?.image || '',
+      tokenId: creditCardCheckout.nftId
+    },
+    {
+      disabled: !isMessageSigned || isLoadingTokenMetadata
+    }
+  )
+
+  const isLoading = isLoadingTokenMetadata || isLoadingAccessToken || isLoadingPaymentIntent
+  const isError = isErrorTokenMetadata || isErrorAccessToken || isErrorPaymentIntent
+
+  const onClickSignMessage = async () => {
+    if (!publicClient || !address) {
+      console.error('No public client or address')
+      return
+    }
+
+    try {
+      await signMessage({ message: creditCardCheckout.calldata })
+    } catch (e) {
+      console.error('An error occurred while signing the message')
+    }
+  }
+
+  if (!isMessageSigned) {
+    return (
+      <div className="flex items-center justify-center" style={{ height: '770px' }}>
+        <Button variant="primary" onClick={onClickSignMessage}>
+          Approve and purchase
+        </Button>
+      </div>
+    )
+  }
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center" style={{ height: '770px' }}>
         <Spinner size="lg" />
@@ -455,7 +530,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     )
   }
 
-  if (isErrorAccessToken) {
+  if (isError) {
     return (
       <div className="flex items-center justify-center" style={{ height: '770px' }}>
         <Text color="primary">An error has occurred</Text>
@@ -463,10 +538,20 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     )
   }
 
+  const initializeFortePayment = () => {
+    // @ts-ignore-next-line
+    window.initFortePaymentsWidget({
+      containerId: 'forte-payments-widget-container',
+      data: {
+        ...paymentIntentData
+      }
+    })
+  }
+
   return (
     <div className="flex items-center justify-center" style={{ height: '770px' }}>
-      <Text color="primary">Forte</Text>
-      <Text color="primary">{accessTokenData?.accessToken}</Text>
+      <div id="forte-payments-widget-container"></div>
+      <script onLoad={initializeFortePayment} type="module" async src={forteWidgetUrl}></script>
     </div>
   )
 }

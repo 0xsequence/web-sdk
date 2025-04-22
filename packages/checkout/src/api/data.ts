@@ -240,14 +240,11 @@ export interface FetchForteAccessTokenReturn {
   tokenType: string
 }
 
-//TODO: remove once part of the sequence api
-const FORTE_URL = 'https://staging-api.pti-dev.cloud'
-
-export const fetchForteAccessToken = async (): Promise<FetchForteAccessTokenReturn> => {
+export const fetchForteAccessToken = async (forteApiUrl: string): Promise<FetchForteAccessTokenReturn> => {
   const clientId = '5tpnj5869vs3jpgtpif2ci8v08'
   const clientSecret = 'jpkbg3e2ho9rbd0959qe5l6ke238d4bca2nptstfga2i9hant5e'
 
-  const url = `${FORTE_URL}/auth/v1/oauth2/token`
+  const url = `${forteApiUrl}/auth/v1/oauth2/token`
 
   const res = await fetch(url, {
     method: 'POST',
@@ -292,7 +289,10 @@ export interface CreateFortePaymentIntentReturn {
   widgetData: string
 }
 
-export const createFortePaymentIntent = async (args: CreateFortePaymentIntentArgs): Promise<CreateFortePaymentIntentReturn> => {
+export const createFortePaymentIntent = async (
+  forteApiUrl: string,
+  args: CreateFortePaymentIntentArgs
+): Promise<CreateFortePaymentIntentReturn> => {
   const {
     accessToken,
     tokenType,
@@ -312,7 +312,7 @@ export const createFortePaymentIntent = async (args: CreateFortePaymentIntentArg
     throw new Error('Invalid chainId')
   }
 
-  const url = `${FORTE_URL}/payments/v2/intent`
+  const url = `${forteApiUrl}/payments/v2/intent`
   const forteBlockchainName = network.name.toLowerCase().replace('-', '_')
   const idempotencyKey = `${recipientAddress}-${tokenId}-${protocolAddress}-${nftName}-${new Date().getTime()}`
 
