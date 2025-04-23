@@ -7,7 +7,7 @@
 - useCheckoutUI hook
 
 - Updated dependencies []:
-  - @0xsequence/hooks@5.1.2
+  - @0xsequence/hooks@5.2.0
 
 ## 5.1.1
 
