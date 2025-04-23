@@ -1,8 +1,8 @@
 # @0xsequence/immutable-connector
 
-## 5.1.2
+## 5.2.0
 
-### Patch Changes
+### Minor Changes
 
 - useCheckoutUI hook
 
