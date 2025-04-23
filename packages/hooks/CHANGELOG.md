@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.1.2
+
+### Patch Changes
+
+- useCheckoutUI hook
+
 ## 5.1.1
 
 ### Patch Changes
