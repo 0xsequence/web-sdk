@@ -540,6 +540,9 @@ importers:
       '@radix-ui/react-popover':
         specifier: ^1.0.7
         version: 1.1.4(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@yudiel/react-qr-scanner':
+        specifier: 2.2.1
+        version: 2.2.1(@types/emscripten@1.40.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       dayjs:
         specifier: ^1.11.11
         version: 1.11.13
@@ -571,9 +574,6 @@ importers:
       '@types/react-copy-to-clipboard':
         specifier: ^5.0.7
         version: 5.0.7
-      '@yudiel/react-qr-scanner':
-        specifier: 2.2.1
-        version: 2.2.1(@types/emscripten@1.40.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       ethers:
         specifier: ^6.13.0
         version: 6.13.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
