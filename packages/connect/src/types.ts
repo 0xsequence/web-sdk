@@ -71,6 +71,7 @@ export interface ConnectConfig {
   signIn?: {
     logoUrl?: string
     descriptiveSocials?: boolean
+    disableTooltipForDescriptiveSocials?: boolean
     projectName?: string
     useMock?: boolean
   }

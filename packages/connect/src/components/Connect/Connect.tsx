@@ -433,7 +433,12 @@ export const Connect = (props: ConnectProps) => {
                                     onConnect={onConnect}
                                   />
                                 ) : (
-                                  <ConnectButton isDescriptive={descriptiveSocials} connector={connector} onConnect={onConnect} />
+                                  <ConnectButton
+                                    disableTooltip={config?.signIn?.disableTooltipForDescriptiveSocials}
+                                    isDescriptive={descriptiveSocials}
+                                    connector={connector}
+                                    onConnect={onConnect}
+                                  />
                                 )}
                               </div>
                             )
