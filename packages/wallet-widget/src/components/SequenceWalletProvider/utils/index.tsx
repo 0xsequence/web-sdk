@@ -20,7 +20,7 @@ import {
   SettingsNetworks,
   SettingsPreferences,
   SettingsProfiles,
-  QrScan,
+  // QrScan,
   Swap
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
@@ -66,8 +66,8 @@ export const getContent = (navigation: Navigation) => {
       return <SettingsPreferences />
     case 'settings-apps':
       return <SettingsApps />
-    case 'connect-dapp':
-      return <QrScan />
+    // case 'connect-dapp':
+    //   return <QrScan />
     case 'coin-details':
       return (
         <CoinDetails
