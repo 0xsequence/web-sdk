@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.2.1
+
+### Patch Changes
+
+- Usage of pagination by hooks
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.2.1
+
 ## 5.2.0
 
 ### Minor Changes
