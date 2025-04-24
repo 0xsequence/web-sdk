@@ -12,7 +12,7 @@ export const SearchTokens = () => {
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
 
-  const { data: tokenBalancesData, isPending } = useGetAllTokensDetails({
+  const { data: tokenBalancesData, isLoading } = useGetAllTokensDetails({
     accountAddresses: selectedWallets.map(wallet => wallet.address),
     chainIds: selectedNetworks,
     hideUnlistedTokens
@@ -33,7 +33,7 @@ export const SearchTokens = () => {
     <div className="p-4 pt-2 w-full">
       <TokenList
         tokenBalancesData={tokenBalancesData}
-        isPendingFirstPage={isPending}
+        isLoadingFirstPage={isLoading}
         onTokenClick={handleTokenClick}
         includeUserAddress
       />

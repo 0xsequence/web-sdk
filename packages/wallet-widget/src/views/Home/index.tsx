@@ -70,7 +70,7 @@ export const Home = () => {
     fetchSignInDisplay()
   }, [connector])
 
-  const { data: tokenBalancesData, isPending: isPendingTokenBalances } = useGetAllTokensDetails({
+  const { data: tokenBalancesData, isLoading: isLoadingTokenBalances } = useGetAllTokensDetails({
     accountAddresses: [accountAddress || ''],
     chainIds: selectedNetworks,
     contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
@@ -93,16 +93,16 @@ export const Home = () => {
       return true
     }) || []
 
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices(
+  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const isPending = isPendingTokenBalances || isPendingCoinPrices || isPendingConversionRate
+  const isLoading = isLoadingTokenBalances || isLoadingCoinPrices || isLoadingConversionRate
 
   const totalFiatValue = fiatWalletsMap
     .reduce((acc, wallet) => {
@@ -239,7 +239,7 @@ export const Home = () => {
           <div className="flex flex-row gap-1 items-center">
             <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
               {fiatCurrency.sign}
-              {isPending ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
+              {isLoading ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
             </Text>
             <StackedIconTag
               iconList={coinBalancesIcons}

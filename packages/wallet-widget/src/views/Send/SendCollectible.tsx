@@ -79,7 +79,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalance({
+  const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress,
@@ -117,9 +117,9 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
-  const isPending = isPendingBalances
+  const isLoading = isLoadingBalances
 
-  if (isPending) {
+  if (isLoading) {
     return null
   }
 
@@ -471,7 +471,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
-          isPending={isSendTxnPending}
+          isLoading={isSendTxnPending}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
           onConfirm={() => {
             executeTransaction()

@@ -14,7 +14,7 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
 
   const [fiatWalletsMap, setFiatWalletsMap] = useState<FiatWalletPair[]>([])
 
-  const { data: tokenBalancesData, isPending: isTokenBalancesPending } = useGetAllTokensDetails({
+  const { data: tokenBalancesData, isLoading: isTokenBalancesLoading } = useGetAllTokensDetails({
     accountAddresses: wallets.map(wallet => wallet.address),
     chainIds: selectedNetworks,
     hideUnlistedTokens
@@ -23,20 +23,20 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
   const coinBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, zeroAddress)) || []
 
-  const { data: coinPrices = [], isPending: isCoinPricesPending } = useGetCoinPrices(
+  const { data: coinPrices = [], isLoading: isCoinPricesLoading } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
       chainId: token.chainId,
       contractAddress: token.contractAddress
     }))
   )
 
-  const { data: conversionRate, isPending: isConversionRatePending } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate, isLoading: isConversionRateLoading } = useGetExchangeRate(fiatCurrency.symbol)
 
   useEffect(() => {
     if (
-      !isTokenBalancesPending &&
-      !isCoinPricesPending &&
-      !isConversionRatePending &&
+      !isTokenBalancesLoading &&
+      !isCoinPricesLoading &&
+      !isConversionRateLoading &&
       coinBalancesUnordered.length > 0 &&
       coinPrices.length > 0 &&
       conversionRate

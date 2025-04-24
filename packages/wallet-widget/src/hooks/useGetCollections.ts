@@ -13,7 +13,7 @@ export const useGetCollections = ({
 }) => {
   const {
     data: tokenBalancesData,
-    isFetching,
+    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -51,6 +51,6 @@ export const useGetCollections = ({
 
   return {
     data: uniqueCollections,
-    isPending: isFetching
+    isLoading
   }
 }

@@ -39,7 +39,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
 
   const {
     data: dataTransactionHistory,
-    isPending: isPendingTransactionHistory,
+    isLoading: isLoadingTransactionHistory,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -52,14 +52,14 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: tokenBalance, isPending: isPendingCollectibleBalance } = useGetSingleTokenBalance({
+  const { data: tokenBalance, isLoading: isLoadingCollectibleBalance } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: accountAddress || '',
     tokenId
   })
 
-  const { data: dataCollectiblePrices, isPending: isPendingCollectiblePrices } = useGetCollectiblePrices([
+  const { data: dataCollectiblePrices, isLoading: isLoadingCollectiblePrices } = useGetCollectiblePrices([
     {
       chainId,
       contractAddress,
@@ -67,11 +67,11 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const isPending = isPendingCollectibleBalance || isPendingCollectiblePrices || isPendingConversionRate
+  const isLoading = isLoadingCollectibleBalance || isLoadingCollectiblePrices || isLoadingConversionRate
 
-  if (isPending) {
+  if (isLoading) {
     return <CollectibleDetailsSkeleton isReadOnly={isReadOnly} />
   }
 
@@ -171,7 +171,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList
               transactions={transactionHistory}
-              isPending={isPendingTransactionHistory}
+              isLoading={isLoadingTransactionHistory}
               isFetchingNextPage={isFetchingNextPage}
             />
           </InfiniteScroll>

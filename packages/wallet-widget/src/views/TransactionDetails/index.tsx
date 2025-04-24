@@ -62,16 +62,16 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
     }
   })
 
-  const { data: coinPricesData, isPending: isPendingCoinPrices } = useGetCoinPrices(coins)
+  const { data: coinPricesData, isLoading: isLoadingCoinPrices } = useGetCoinPrices(coins)
 
-  const { data: collectiblePricesData, isPending: isPendingCollectiblePrices } = useGetCollectiblePrices(collectibles)
+  const { data: collectiblePricesData, isLoading: isLoadingCollectiblePrices } = useGetCollectiblePrices(collectibles)
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const arePricesPending =
-    (coins.length > 0 && isPendingCoinPrices) ||
-    (collectibles.length > 0 && isPendingCollectiblePrices) ||
-    isPendingConversionRate
+  const arePricesLoading =
+    (coins.length > 0 && isLoadingCoinPrices) ||
+    (collectibles.length > 0 && isLoadingCollectiblePrices) ||
+    isLoadingConversionRate
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(transaction.chainId, chains)
 
@@ -165,7 +165,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
             >
               {`${balanceDisplayed} ${tokenSymbol}`}
             </Text>
-            {arePricesPending ? (
+            {arePricesLoading ? (
               <Skeleton style={{ width: '44px', height: '12px' }} />
             ) : (
               <Text variant="xsmall" fontWeight="bold" color="muted">

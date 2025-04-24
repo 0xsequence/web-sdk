@@ -102,7 +102,7 @@ export const useCryptoPayment = ({
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(totalPriceRaw) || isNativeCurrency
 
-  const { data: currencyBalanceData, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
+  const { data: currencyBalanceDataPaginated, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
     chainIds: [chainId],
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
@@ -112,6 +112,8 @@ export const useCryptoPayment = ({
     },
     omitMetadata: true
   })
+
+  const currencyBalanceData = currencyBalanceDataPaginated?.pages?.flatMap(page => page.balances)
 
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrencyAddress || ''

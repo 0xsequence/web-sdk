@@ -34,7 +34,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
 
   const {
     data: dataTransactionHistory,
-    isPending: isPendingTransactionHistory,
+    isLoading: isLoadingTransactionHistory,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
@@ -46,24 +46,24 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
 
   const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
 
-  const { data: tokenBalance, isPending: isPendingCoinBalance } = useGetSingleTokenBalance({
+  const { data: tokenBalance, isLoading: isLoadingCoinBalance } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: accountAddress || ''
   })
 
-  const { data: dataCoinPrices, isPending: isPendingCoinPrices } = useGetCoinPrices([
+  const { data: dataCoinPrices, isLoading: isLoadingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const isPending = isPendingCoinBalance || isPendingCoinPrices || isPendingConversionRate
+  const isLoading = isLoadingCoinBalance || isLoadingCoinPrices || isLoadingConversionRate
 
-  if (isPending) {
+  if (isLoading) {
     return <CoinDetailsSkeleton chainId={chainId} isReadOnly={isReadOnly} />
   }
 
@@ -132,7 +132,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
           <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
             <TransactionHistoryList
               transactions={transactionHistory}
-              isPending={isPendingTransactionHistory}
+              isLoading={isLoadingTransactionHistory}
               isFetchingNextPage={isFetchingNextPage}
             />
           </InfiniteScroll>

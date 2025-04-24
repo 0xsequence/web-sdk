@@ -13,7 +13,7 @@ export const SearchCollectibles = () => {
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedCollections = useObservable(selectedCollectionsObservable)
 
-  const { data: tokenBalancesData = [], isPending } = useGetAllTokensDetails({
+  const { data: tokenBalancesData = [], isLoading } = useGetAllTokensDetails({
     accountAddresses: selectedWallets.map(wallet => wallet.address),
     chainIds: selectedNetworks,
     contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
@@ -45,7 +45,7 @@ export const SearchCollectibles = () => {
     <div className="p-4 pt-2 w-full">
       <CollectiblesList
         tokenBalancesData={collectibleBalancesFiltered}
-        isPendingFirstPage={isPending}
+        isLoadingFirstPage={isLoading}
         onTokenClick={onHandleCollectibleClick}
         enableFilters={true}
       />

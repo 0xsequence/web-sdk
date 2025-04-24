@@ -11,13 +11,13 @@ import { CollectiblesTab } from './CollectiblesList/CollectiblesTab'
 
 export const CollectiblesList = ({
   tokenBalancesData,
-  isPendingFirstPage,
+  isLoadingFirstPage,
   onTokenClick,
   enableFilters = true,
   gridColumns = 2
 }: {
   tokenBalancesData: TokenBalance[]
-  isPendingFirstPage: boolean
+  isLoadingFirstPage: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
   enableFilters?: boolean
   gridColumns?: number
@@ -107,7 +107,7 @@ export const CollectiblesList = ({
           fetchMoreCollectibleBalances={search ? fetchMoreSearchBalances : fetchMoreBalances}
           hasMoreCollectibleBalances={search ? hasMoreSearchBalances : hasMoreBalances}
           isFetchingMoreCollectibleBalances={search ? isFetchingMoreSearchBalances : isFetchingMoreBalances}
-          isFetchingInitialBalances={isPendingFirstPage}
+          isFetchingInitialBalances={isLoadingFirstPage}
           onTokenClick={onTokenClick}
           gridColumns={gridColumns}
         />

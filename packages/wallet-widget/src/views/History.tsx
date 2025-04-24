@@ -21,7 +21,7 @@ export const History = () => {
 
   const [search, setSearch] = useState('')
 
-  const { data: transactionHistory = [], isPending: isPendingTransactionHistory } = useGetTransactionHistorySummary({
+  const { data: transactionHistory = [], isLoading: isLoadingTransactionHistory } = useGetTransactionHistorySummary({
     accountAddresses: selectedWallets.map(wallet => wallet.address),
     chainIds: selectedNetworks
   })
@@ -145,7 +145,7 @@ export const History = () => {
       </div>
       <TransactionHistoryList
         transactions={search ? searchResults : transactionHistory}
-        isPending={isPendingTransactionHistory}
+        isLoading={isLoadingTransactionHistory}
         isFetchingNextPage={false}
       />
     </div>

@@ -26,7 +26,7 @@ interface TransactionConfirmationProps {
   }
   disabled?: boolean
   onSelectFeeOption?: (feeTokenAddress: string | null) => void
-  isPending?: boolean
+  isLoading?: boolean
 
   // Callbacks
   onConfirm: () => void
@@ -89,7 +89,7 @@ export const TransactionConfirmation = ({
   decimals,
   feeOptions,
   onSelectFeeOption,
-  isPending,
+  isLoading,
   disabled,
   onConfirm,
   onCancel
@@ -160,7 +160,7 @@ export const TransactionConfirmation = ({
         </div>
 
         <div className="flex mt-3 gap-2">
-          {isPending ? (
+          {isLoading ? (
             <div className="flex w-full items-center justify-center" style={{ height: '52px' }}>
               <Spinner />
             </div>

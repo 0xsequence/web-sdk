@@ -31,14 +31,14 @@ export const CheckoutSelection = () => {
   const displayCreditCardCheckout = !!creditCardCheckoutSettings
   const displayCryptoCheckout = !!cryptoCheckoutSettings
 
-  const { data: contractInfoData, isLoading: isPendingContractInfo } = useGetContractInfo({
+  const { data: contractInfoData, isLoading: isLoadingContractInfo } = useGetContractInfo({
     chainID: String(cryptoCheckoutSettings?.chainId || 1),
     contractAddress: cryptoCheckoutSettings?.coinQuantity?.contractAddress || ''
   })
 
   const {
     data: balancesData,
-    isPending: isPendingBalances,
+    isLoading: isLoadingBalances,
     fetchNextPage: fetchNextBalances,
     hasNextPage: hasNextPageBalances,
     isFetchingNextPage: isFetchingNextPageBalances
@@ -58,7 +58,7 @@ export const CheckoutSelection = () => {
     }
   }, [hasNextPageBalances, isFetchingNextPageBalances])
 
-  const isPending = (isPendingContractInfo || isPendingBalances || isFetchingNextPageBalances) && cryptoCheckoutSettings
+  const isLoading = (isLoadingContractInfo || isLoadingBalances || isFetchingNextPageBalances) && cryptoCheckoutSettings
 
   const isNativeToken = compareAddress(cryptoCheckoutSettings?.coinQuantity?.contractAddress || '', zeroAddress)
   const nativeTokenInfo = getNativeTokenInfoByChainId(cryptoCheckoutSettings?.chainId || 1, chains)
@@ -156,7 +156,7 @@ export const CheckoutSelection = () => {
           <Text variant="normal" color="muted">
             Total
           </Text>
-          {isPending ? (
+          {isLoading ? (
             <Skeleton style={{ width: '100px', height: '17px' }} />
           ) : (
             <div className="flex flex-row gap-1 items-center">
@@ -179,7 +179,7 @@ export const CheckoutSelection = () => {
             onClick={onClickPayWithCard}
           />
         )}
-        {displayCryptoCheckout && !isInsufficientBalance && !isPending && (
+        {displayCryptoCheckout && !isInsufficientBalance && !isLoading && (
           <Button
             className="w-full h-14 rounded-xl"
             leftIcon={() => <TokenImage src={coinImageUrl} size="sm" />}
@@ -189,7 +189,7 @@ export const CheckoutSelection = () => {
             onClick={onClickPayWithCrypto}
           />
         )}
-        {displayCryptoCheckout && (isInsufficientBalance || isPending) && (
+        {displayCryptoCheckout && (isInsufficientBalance || isLoading) && (
           <Button
             className="w-full"
             shape="square"
@@ -207,7 +207,7 @@ export const CheckoutSelection = () => {
       </div>
       {displayCryptoCheckout && (
         <div className="flex w-full justify-end">
-          {isPending ? (
+          {isLoading ? (
             <Skeleton style={{ width: '102px', height: '14px' }} />
           ) : (
             <Text variant="small" fontWeight="bold" color="muted">

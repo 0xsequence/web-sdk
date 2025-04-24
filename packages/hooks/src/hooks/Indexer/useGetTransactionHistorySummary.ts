@@ -85,7 +85,7 @@ const getTransactionHistorySummary = async (
  *   const { address: accountAddress } = useAccount()
  *   const {
  *     data: transactionHistory = [],
- *     isPending: isPendingTransactionHistory
+ *     isLoading: isLoadingTransactionHistory
  *   } = useGetTransactionHistorySummary({
  *     accountAddress: accountAddress || '',
  *     chainIds: [1, 137]

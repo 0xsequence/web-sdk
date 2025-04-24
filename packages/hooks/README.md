@@ -62,7 +62,7 @@ Sequence hooks are grouped into 5 categories, based on the sequence service they
 ```tsx
 import { useGetCoinPrices } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetCoinPrices(
+const { data, isLoading, error } = useGetCoinPrices(
   [
     {
       chainId: 1,
@@ -82,7 +82,7 @@ const { data, isPending, error } = useGetCoinPrices(
 ```tsx
 import { useGetCollectiblePrices } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetCollectiblePrices(
+const { data, isLoading, error } = useGetCollectiblePrices(
   [
     {
       chainId: 1,
@@ -103,7 +103,7 @@ const { data, isPending, error } = useGetCollectiblePrices(
 ```tsx
 import { useGetExchangeRate } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetExchangeRate('CAD', {
+const { data, isLoading, error } = useGetExchangeRate('CAD', {
   // options param is optional and default values are below
   disabled: false,
   retry: true
@@ -115,7 +115,7 @@ const { data, isPending, error } = useGetExchangeRate('CAD', {
 ```tsx
 import { useGetTransactionHistory } from '@0xsequence/hooks'
 
-const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTransactionHistory({
+const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTransactionHistory({
   accountAddresses: ['0x0123456789012345678901234567890123456789'],
   contractAddresses: ['0x0123456789012345678901234567890123456789'], // optional
   tokenId: '1', // optional
@@ -136,7 +136,7 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
 ```tsx
 import { useGetTransactionHistorySummary } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetTransactionHistorySummary(
+const { data, isLoading, error } = useGetTransactionHistorySummary(
   {
     accountAddresses: ['0x0123456789012345678901234567890123456789'],
     chainIds: [1]
@@ -154,7 +154,7 @@ const { data, isPending, error } = useGetTransactionHistorySummary(
 ```tsx
 import { useGetNativeTokenBalance } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetNativeTokenBalance(
+const { data, isLoading, error } = useGetNativeTokenBalance(
   {
     accountAddress: '0x0123456789012345678901234567890123456789',
     chainIds: [1], // either use chainIds or networks name
@@ -174,7 +174,7 @@ const { data, isPending, error } = useGetNativeTokenBalance(
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useGetTokenBalancesSummary } from '@0xsequence/hooks'
 
-const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesSummary(
+const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesSummary(
   {
     chainIds: [1], // either use chainIds or networks name
     networks: ['mainnet'],
@@ -194,7 +194,7 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
   {
     // options param is optional and default values are below
     disabled: false,
-    retry: true,
+    retry: true
   }
 )
 ```
@@ -205,7 +205,7 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
 
-const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesDetails(
+const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesDetails(
   {
     chainIds: [1], // either use chainIds or networks name
     networks: ['mainnet'],
@@ -225,7 +225,7 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
   {
     // options param is optional and default values are below
     disabled: false,
-    retry: true,
+    retry: true
   }
 )
 ```
@@ -236,7 +236,7 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useGetTokenBalancesByContract } from '@0xsequence/hooks'
 
-const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesByContract(
+const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesByContract(
   {
     chainIds: [1], // either use chainIds or networks name
     networks: ['mainnet'],
@@ -256,7 +256,7 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
   {
     // options param is optional and default values are below
     disabled: false,
-    retry: true,
+    retry: true
   }
 )
 ```
@@ -266,7 +266,7 @@ const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage, error }
 ```tsx
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetSingleTokenBalance({
+const { data, isLoading, error } = useGetSingleTokenBalance({
   chainId: 1,
   accountAddress: '0x9876543210987654321098765432109876543210',
   contractAddress: '0x0123456789012345678901234567890123456789'
@@ -278,7 +278,7 @@ const { data, isPending, error } = useGetSingleTokenBalance({
 ```tsx
 import { useGetContractInfo } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetContractInfo(
+const { data, isLoading, error } = useGetContractInfo(
   {
     chainId: 1,
     contractAddress: '0x0123456789012345678901234567890123456789'
@@ -296,7 +296,7 @@ const { data, isPending, error } = useGetContractInfo(
 ```tsx
 import { useGetMultipleContractInfo } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetMultipleContractInfo(
+const { data, isLoading, error } = useGetMultipleContractInfo(
   [
     { chainId: 1, contractAddress: '0x0123456789012345678901234567890123456789' },
     { chainId: 1, contractAddress: '0x0123456789012345678901234567890123456789' }
@@ -314,7 +314,7 @@ const { data, isPending, error } = useGetMultipleContractInfo(
 ```tsx
 import { useGetTokenMetadata } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetTokenMetadata(
+const { data, isLoading, error } = useGetTokenMetadata(
   {
     chainId: '1',
     contractAddress: '0x0123456789012345678901234567890123456789',
@@ -333,7 +333,7 @@ const { data, isPending, error } = useGetTokenMetadata(
 ```tsx
 import { useGetSwapPrices } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetSwapPrices({
+const { data, isLoading, error } = useGetSwapPrices({
   userAddress: '0x0123456789012345678901234567890123456789',
   buyCurrencyAddress: '0x0123456789012345678901234567890123456789',
   buyAmount: '1',
@@ -347,7 +347,7 @@ const { data, isPending, error } = useGetSwapPrices({
 ```tsx
 import { useGetSwapQuote } from '@0xsequence/hooks'
 
-const { data, isPending, error } = useGetSwapQuote({
+const { data, isLoading, error } = useGetSwapQuote({
   userAddress: '0x9876543210987654321098765432109876543210',
   buyCurrencyAddress: '0x0123456789012345678901234567890123456789',
   sellCurrencyAddress: '0x0123456789012345678901234567890123456789',

@@ -14,7 +14,7 @@ export const SendGeneral = () => {
 
   const activeWallet = wallets.find(wallet => wallet.isActive)
 
-  const { data: tokenBalancesData = [], isPending: isPendingTokenBalances } = useGetAllTokensDetails({
+  const { data: tokenBalancesData = [], isLoading: isLoadingTokenBalances } = useGetAllTokensDetails({
     accountAddresses: [activeWallet?.address || ''],
     chainIds: allNetworks,
     contractWhitelist: [],
@@ -59,7 +59,7 @@ export const SendGeneral = () => {
         <TabsContent className="w-full" value={'coins'}>
           <TokenList
             tokenBalancesData={tokenBalancesData}
-            isPendingFirstPage={isPendingTokenBalances}
+            isLoadingFirstPage={isLoadingTokenBalances}
             onTokenClick={handleTokenClick}
             enableFilters={false}
           />
@@ -67,7 +67,7 @@ export const SendGeneral = () => {
         <TabsContent className="flex flex-col w-full gap-4" value={'collectibles'}>
           <CollectiblesList
             tokenBalancesData={tokenBalancesData}
-            isPendingFirstPage={isPendingTokenBalances}
+            isLoadingFirstPage={isLoadingTokenBalances}
             onTokenClick={handleCollectibleClick}
             enableFilters={false}
             gridColumns={3}

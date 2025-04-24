@@ -25,23 +25,23 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalance({
+  const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: accountAddress || ''
   })
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
+  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
+  const isLoading = isLoadingBalances || isLoadingCoinPrices || isLoadingConversionRate
 
   const handleChangeAmount = (ev: ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.target
@@ -64,7 +64,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
     })
   }
 
-  if (isPending) {
+  if (isLoading) {
     return null
   }
 

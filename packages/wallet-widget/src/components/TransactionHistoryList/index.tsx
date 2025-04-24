@@ -7,11 +7,11 @@ import { TransactionHistorySkeleton } from './TransactionHistorySkeleton'
 
 interface TransactionHistoryListProps {
   transactions: Transaction[]
-  isPending: boolean
+  isLoading: boolean
   isFetchingNextPage: boolean
 }
 
-export const TransactionHistoryList = ({ transactions, isPending, isFetchingNextPage }: TransactionHistoryListProps) => {
+export const TransactionHistoryList = ({ transactions, isLoading, isFetchingNextPage }: TransactionHistoryListProps) => {
   type TransactionPeriodId = 'today' | 'yesterday' | 'week' | 'month' | 'year' | 'past'
 
   interface TransactionPeriods {
@@ -90,7 +90,7 @@ export const TransactionHistoryList = ({ transactions, isPending, isFetchingNext
     return transactionsByTime
   }, [transactions])
 
-  if (isPending) {
+  if (isLoading) {
     return (
       <div className="flex flex-col gap-2">
         <TransactionHistorySkeleton />

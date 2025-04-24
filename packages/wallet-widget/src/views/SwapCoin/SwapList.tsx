@@ -49,7 +49,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
 
   const {
     data: swapPrices = [],
-    isPending: swapPricesIsPending,
+    isLoading: swapPricesIsLoading,
     isError: isErrorSwapPrices
   } = useGetSwapPrices({
     userAddress: userAddress ?? '',
@@ -59,22 +59,22 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     withContractInfo: true
   })
 
-  const { data: currencyInfo, isPending: isPendingCurrencyInfo } = useGetContractInfo({
+  const { data: currencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
     chainID: String(chainId),
     contractAddress: contractAddress
   })
 
   useEffect(() => {
-    if (!swapPricesIsPending && swapPrices.length > 0) {
+    if (!swapPricesIsLoading && swapPrices.length > 0) {
       setSelectedCurrency(swapPrices[0].info?.address)
     }
-  }, [swapPricesIsPending])
+  }, [swapPricesIsLoading])
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
   const {
     data: swapQuote,
-    isPending: isPendingSwapQuote,
+    isLoading: isLoadingSwapQuote,
     isError: isErrorSwapQuote
   } = useGetSwapQuote(
     {
@@ -93,9 +93,9 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
 
   const indexerClient = useIndexerClient(chainId)
 
-  const quoteFetchInProgress = isPendingSwapQuote
+  const quoteFetchInProgress = isLoadingSwapQuote
 
-  const isPending = swapPricesIsPending || isPendingCurrencyInfo || isPendingSwapQuote
+  const isLoading = swapPricesIsLoading || isLoadingCurrencyInfo || isLoadingSwapQuote
 
   const onClickProceed = async () => {
     if (!userAddress || !publicClient || !walletClient || !connector) {
@@ -186,7 +186,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   const noOptionsFound = swapPrices.length === 0
 
   const SwapContent = () => {
-    if (isPending) {
+    if (isLoading) {
       return (
         <div className="flex w-full justify-center items-center">
           <Spinner />

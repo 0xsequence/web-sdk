@@ -83,23 +83,23 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const checkFeeOptions = useCheckWaasFeeOptions()
   const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
-  const { data: tokenBalance, isPending: isPendingBalances } = useGetSingleTokenBalance({
+  const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress
   })
 
   const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
-  const { data: coinPrices = [], isPending: isPendingCoinPrices } = useGetCoinPrices([
+  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useGetCoinPrices([
     {
       chainId,
       contractAddress
     }
   ])
 
-  const { data: conversionRate = 1, isPending: isPendingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
+  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
 
-  const isPending = isPendingBalances || isPendingCoinPrices || isPendingConversionRate
+  const isLoading = isLoadingBalances || isLoadingCoinPrices || isLoadingConversionRate
 
   // Handle fee option confirmation when pendingFeeOption is available
   useEffect(() => {
@@ -113,7 +113,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     setIsBackButtonEnabled(!showConfirmation)
   }, [showConfirmation, setIsBackButtonEnabled])
 
-  if (isPending) {
+  if (isLoading) {
     return null
   }
 
@@ -426,7 +426,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
-          isPending={isSendTxnPending}
+          isLoading={isSendTxnPending}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
           onConfirm={() => {
             executeTransaction()
