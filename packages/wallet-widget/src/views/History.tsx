@@ -57,7 +57,7 @@ export const History = () => {
               ?.map(transfer => {
                 return Object.values(transfer.tokenMetadata || {})
                   .map(tokenMetadata => {
-                    return tokenMetadata.name
+                    return tokenMetadata?.name
                   })
                   .join(', ')
               })
