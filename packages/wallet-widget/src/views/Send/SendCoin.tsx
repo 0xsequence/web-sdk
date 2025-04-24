@@ -33,7 +33,7 @@ import {
 import { ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { useState, ChangeEvent, useRef, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, Hex } from 'viem'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction, usePublicClient } from 'wagmi'
+import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect'
 import { SendItemInfo } from '../../components/SendItemInfo'
@@ -68,7 +68,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { fiatCurrency } = useSettings()
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
-  const { sendTransaction } = useSendTransaction()
+  const { data: walletClient } = useWalletClient()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [feeOptions, setFeeOptions] = useState<
@@ -229,57 +229,90 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       }
     })
 
+    if (!walletClient) {
+      console.error('Wallet client not found')
+      toast({
+        title: 'Error',
+        description: 'Wallet client not available. Please ensure your wallet is connected.',
+        variant: 'error'
+      })
+      setIsSendTxnPending(false)
+      return
+    }
+
     setIsSendTxnPending(true)
 
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
+    let txHash: Hex | undefined
 
-    const txOptions = {
-      onSettled: async (hash: `0x${string}` | undefined) => {
-        setIsBackButtonEnabled(true)
+    try {
+      if (isNativeCoin) {
+        console.log('Sending native coin via walletClient')
+        txHash = await walletClient.sendTransaction({
+          account: accountAddress as `0x${string}`,
+          to: toAddress as `0x${string}`,
+          value: BigInt(sendAmount.toString()),
+          chain: chains.find(c => c.id === chainId)
+        })
+      } else {
+        console.log('Sending ERC20 coin via walletClient')
+        txHash = await walletClient.sendTransaction({
+          account: accountAddress as `0x${string}`,
+          to: tokenBalance?.contractAddress as `0x${string}`,
+          data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] }),
+          chain: chains.find(c => c.id === chainId)
+        })
+      }
 
-        if (hash) {
-          setNavigation({
-            location: 'home'
-          })
-          setIsSendTxnPending(false)
-          if (publicClient) {
-            await waitForTransactionReceipt({
-              indexerClient,
-              txnHash: hash as Hex,
-              publicClient,
-              confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
-            })
-            clearCachedBalances()
-          }
-        }
-        setIsSendTxnPending(false)
+      // Handle successful transaction submission
+      setIsBackButtonEnabled(true)
+      if (txHash) {
+        setNavigation({
+          location: 'home'
+        })
+        setIsSendTxnPending(false) // Set pending to false immediately after getting hash
 
         toast({
           title: 'Transaction sent',
           description: `Successfully sent ${amountToSendFormatted} ${symbol} to ${toAddress}`,
           variant: 'success'
         })
-      }
-    }
 
-    if (isNativeCoin) {
-      sendTransaction(
-        {
-          to: toAddress as `0x${string}`,
-          value: BigInt(sendAmount.toString()),
-          gas: null
-        },
-        txOptions
-      )
-    } else {
-      sendTransaction(
-        {
-          to: tokenBalance?.contractAddress as `0x${string}`,
-          data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] }),
-          gas: null
-        },
-        txOptions
-      )
+        // Wait for receipt in the background
+        if (publicClient) {
+          waitForTransactionReceipt({
+            indexerClient,
+            txnHash: txHash,
+            publicClient,
+            confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
+          })
+            .then(() => {
+              clearCachedBalances()
+              console.log('Transaction confirmed and balances cleared:', txHash)
+            })
+            .catch(error => {
+              console.error('Error waiting for transaction receipt:', error)
+              // Optionally show another toast for confirmation failure
+            })
+        }
+      } else {
+        // Handle case where txHash is unexpectedly undefined
+        setIsSendTxnPending(false)
+        toast({
+          title: 'Transaction Error',
+          description: 'Transaction submitted but no hash received.',
+          variant: 'error'
+        })
+      }
+    } catch (error: any) {
+      console.error('Transaction failed:', error)
+      setIsSendTxnPending(false)
+      setIsBackButtonEnabled(true)
+      toast({
+        title: 'Transaction Failed',
+        description: error?.shortMessage || error?.message || 'An unknown error occurred.',
+        variant: 'error'
+      })
     }
   }
 

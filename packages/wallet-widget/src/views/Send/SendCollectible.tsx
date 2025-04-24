@@ -28,7 +28,7 @@ import { useGetTokenBalancesDetails, useClearCachedBalances, useIndexerClient } 
 import { ContractType, ContractVerificationStatus, TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, ChangeEvent, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, Hex } from 'viem'
-import { useAccount, useChainId, useSwitchChain, useConfig, useSendTransaction, usePublicClient } from 'wagmi'
+import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect'
 import { SendItemInfo } from '../../components/SendItemInfo'
@@ -64,7 +64,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [amount, setAmount] = useState<string>('0')
   const [toAddress, setToAddress] = useState<string>('')
   const [showAmountControls, setShowAmountControls] = useState<boolean>(false)
-  const { sendTransaction } = useSendTransaction()
+  const { data: walletClient } = useWalletClient()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [feeOptions, setFeeOptions] = useState<
@@ -241,87 +241,115 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   }
 
   const executeTransaction = async () => {
-    if (!isCorrectChainId && isConnectorSequenceBased) {
+    if (!isCorrectChainId && !isConnectorSequenceBased) {
       await switchChainAsync({ chainId })
     }
 
+    analytics?.track({
+      event: 'SEND_TRANSACTION_REQUEST',
+      props: {
+        walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+        source: 'sequence-kit/wallet'
+      }
+    })
+
+    if (!walletClient) {
+      console.error('Wallet client not found')
+      toast({
+        title: 'Error',
+        description: 'Wallet client not available. Please ensure your wallet is connected.',
+        variant: 'error'
+      })
+      setIsSendTxnPending(false)
+      return
+    }
+
+    setIsSendTxnPending(true)
+
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
+    let txHash: Hex | undefined
+    let txData: Hex | undefined
 
-    const txOptions = {
-      onSettled: async (hash: `0x${string}` | undefined) => {
-        setIsBackButtonEnabled(true)
+    try {
+      switch (contractType) {
+        case 'ERC721':
+          console.log('Sending ERC721 via walletClient')
+          txData = encodeFunctionData({
+            abi: ERC_721_ABI,
+            functionName: 'safeTransferFrom',
+            args: [accountAddress, toAddress, tokenId]
+          })
+          txHash = await walletClient.sendTransaction({
+            account: accountAddress as `0x${string}`,
+            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+            data: txData,
+            chain: chains.find(c => c.id === chainId)
+          })
+          break
+        case 'ERC1155':
+        default:
+          console.log('Sending ERC1155 via walletClient')
+          txData = encodeFunctionData({
+            abi: ERC_1155_ABI,
+            functionName: 'safeBatchTransferFrom',
+            args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
+          })
+          txHash = await walletClient.sendTransaction({
+            account: accountAddress as `0x${string}`,
+            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+            data: txData,
+            chain: chains.find(c => c.id === chainId)
+          })
+      }
 
-        if (hash) {
-          setNavigation({
-            location: 'home'
-          })
-        }
-        setIsSendTxnPending(false)
-        if (publicClient) {
-          await waitForTransactionReceipt({
-            indexerClient,
-            txnHash: hash as Hex,
-            publicClient,
-            confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
-          })
-          clearCachedBalances()
-        }
+      // Handle successful transaction submission
+      setIsBackButtonEnabled(true)
+      if (txHash) {
+        setNavigation({
+          location: 'home'
+        })
+        setIsSendTxnPending(false) // Set pending to false immediately after getting hash
 
         toast({
           title: 'Transaction sent',
           description: `Successfully sent ${amountToSendFormatted} ${name} to ${toAddress}`,
           variant: 'success'
         })
-      }
-    }
 
-    switch (contractType) {
-      case 'ERC721':
-        analytics?.track({
-          event: 'SEND_TRANSACTION_REQUEST',
-          props: {
-            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-            source: 'sequence-kit/wallet'
-          }
+        // Wait for receipt in the background
+        if (publicClient) {
+          waitForTransactionReceipt({
+            indexerClient,
+            txnHash: txHash,
+            publicClient,
+            confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
+          })
+            .then(() => {
+              clearCachedBalances()
+              console.log('Transaction confirmed and balances cleared:', txHash)
+            })
+            .catch(error => {
+              console.error('Error waiting for transaction receipt:', error)
+            })
+        }
+      } else {
+        // Handle case where txHash is unexpectedly undefined
+        setIsSendTxnPending(false)
+        toast({
+          title: 'Transaction Error',
+          description: 'Transaction submitted but no hash received.',
+          variant: 'error'
         })
-        setIsSendTxnPending(true)
-        // _from, _to, _id
-        sendTransaction(
-          {
-            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: encodeFunctionData({
-              abi: ERC_721_ABI,
-              functionName: 'safeTransferFrom',
-              args: [accountAddress, toAddress, tokenId]
-            }),
-            gas: null
-          },
-          txOptions
-        )
-        break
-      case 'ERC1155':
-      default:
-        analytics?.track({
-          event: 'SEND_TRANSACTION_REQUEST',
-          props: {
-            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-            source: 'sequence-kit/wallet'
-          }
-        })
-        setIsSendTxnPending(true)
-        // _from, _to, _ids, _amounts, _data
-        sendTransaction(
-          {
-            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: encodeFunctionData({
-              abi: ERC_1155_ABI,
-              functionName: 'safeBatchTransferFrom',
-              args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
-            }),
-            gas: null
-          },
-          txOptions
-        )
+      }
+    } catch (error: any) {
+      console.error('Transaction failed:', error)
+      setIsSendTxnPending(false)
+      setIsBackButtonEnabled(true)
+      toast({
+        title: 'Transaction Failed',
+        description: error?.shortMessage || error?.message || 'An unknown error occurred.',
+        variant: 'error'
+      })
     }
   }
 
