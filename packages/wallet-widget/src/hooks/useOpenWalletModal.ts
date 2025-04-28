@@ -1,21 +1,22 @@
-import { useWalletModalContext } from '../contexts/WalletModal'
+import { useWalletModalContext, WalletOptions } from '../contexts/WalletModal'
 
 /**
  * Return type for the useOpenWalletModal hook.
  *
- * @property {function(isOpen: boolean): void} setOpenWalletModal - Function to open or close the Wallet modal
+ * @property {function(isOpen: boolean, options?: WalletOptions): void} setOpenWalletModal - Function to open or close the Wallet modal
  * @property {boolean} openWalletModalState - Current open state of the Wallet modal
  */
 type UseOpenWalletModalReturnType = {
-  setOpenWalletModal: (isOpen: boolean) => void
+  setOpenWalletModal: (isOpen: boolean, options?: WalletOptions) => void
   openWalletModalState: boolean
 }
 
 /**
- * Hook to manage the Wallet Inventory modal that allows users to view their tokens and NFTs.
+ * Hook to manage the Wallet Widget modal.
  *
- * This hook provides a method to open and close the wallet inventory modal, and access its current open state.
- * The Wallet modal displays all tokens, NFTs and collectibles present in the connected wallet.
+ * This hook provides a method to open and close the wallet widget modal, and access its current open state.
+ * The Wallet Widget displays your Tokens, Collectibles, Transactions, Settings, multiple connected / linked wallets and also allows
+ * to send, receive, buy (on-ramp) and swap tokens.
  *
  * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useOpenWalletModal} for more detailed documentation.
  *
@@ -29,17 +30,17 @@ type UseOpenWalletModalReturnType = {
  *   // Get the function to open/close the wallet modal
  *   const { setOpenWalletModal } = useOpenWalletModal()
  *
- *   // Function to handle opening the wallet inventory
- *   const handleViewInventory = () => {
- *     setOpenWalletModal(true) // Open the wallet modal to view tokens
+ *   // Function to handle opening the wallet widget modal
+ *   const handleViewWallet = () => {
+ *     setOpenWalletModal(true) // Open the wallet widget modal
  *   }
  *
  *   return (
  *     <button
- *       onClick={handleViewInventory}
- *       title="Inventory"
+ *       onClick={handleViewWallet}
+ *       title="Wallet"
  *     >
- *       View all tokens in your wallet
+ *       View your wallet
  *     </button>
  *   )
  * }
