@@ -24,7 +24,11 @@ export interface TransakConfig {
   callDataOverride?: string
 }
 
-export interface ForteConfig {}
+export interface ForteConfig {
+  orderHash?: string
+  protocolAddress?: string
+  protocol: 'seaport' | 'magiceden'
+}
 
 export interface CreditCardCheckout {
   chainId: number
