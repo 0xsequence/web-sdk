@@ -322,7 +322,7 @@ export const Home = () => {
         <ListCardNavTable navItems={homeNavTableItems}>
           <>
             <Text color="primary" fontWeight="bold" variant="normal">
-              Items
+              Show items for
             </Text>
             <StackedIconTag
               iconList={selectedWallets.map(wallet => wallet.address)}
@@ -374,7 +374,7 @@ export const Home = () => {
           </SlideupDrawer>
         )}
         {walletFilterOpen && (
-          <SlideupDrawer onClose={() => setWalletFilterOpen(false)} label="Select active wallet">
+          <SlideupDrawer onClose={() => setWalletFilterOpen(false)} label="Filter items by wallet">
             <WalletsFilter />
           </SlideupDrawer>
         )}
