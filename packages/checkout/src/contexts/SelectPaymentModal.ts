@@ -1,7 +1,7 @@
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { Hex } from 'viem'
 
-import type { TransakConfig } from '../contexts/CheckoutModal'
+import type { TransakConfig, ForteConfig } from '../contexts/CheckoutModal'
 
 import { createGenericContext } from './genericContext'
 
@@ -44,6 +44,7 @@ export interface SelectPaymentSettings {
   copyrightText?: string
   transakConfig?: TransakConfig
   sardineConfig?: SardineConfig
+  forteConfig?: ForteConfig
   customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
   skipNativeBalanceCheck?: boolean
