@@ -30,7 +30,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "2.1.6",
+    "@0xsequence/design-system": "2.1.8",
     "@0xsequence/hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.0.7",
     "micro-observables": "1.7.2",
