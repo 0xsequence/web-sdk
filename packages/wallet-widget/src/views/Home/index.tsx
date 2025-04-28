@@ -322,7 +322,7 @@ export const Home = () => {
         <ListCardNavTable navItems={homeNavTableItems}>
           <>
             <Text color="primary" fontWeight="bold" variant="normal">
-              Show items for
+              Items
             </Text>
             <StackedIconTag
               iconList={selectedWallets.map(wallet => wallet.address)}
