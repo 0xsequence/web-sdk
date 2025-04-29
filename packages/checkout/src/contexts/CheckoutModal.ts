@@ -24,10 +24,13 @@ export interface TransakConfig {
   callDataOverride?: string
 }
 
+export type ForteProtocolType = 'seaport' | 'magiceden' | 'mint'
+
 export interface ForteConfig {
   orderHash?: string
   protocolAddress?: string
-  protocol: 'seaport' | 'magiceden'
+  auctionHouse?: string
+  protocol: ForteProtocolType
 }
 
 export interface CreditCardCheckout {

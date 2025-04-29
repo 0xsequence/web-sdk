@@ -457,6 +457,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
   } = nav.navigation as TransactionPendingNavigation
   const publicClient = usePublicClient({ chainId: creditCardCheckout.chainId })
   const isMessageSigned = signatureData !== undefined
+  const isSignatureRequired = creditCardCheckout.forteConfig?.protocol === 'mint'
 
   const {
     data: tokenMetadatas,
@@ -480,19 +481,22 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     {
       accessToken: accessTokenData?.accessToken || '',
       tokenType: accessTokenData?.tokenType || '',
-      nonce: `${address || ''}-${Date.now()}`,
       nftQuantity,
       recipientAddress: creditCardCheckout.recipientAddress,
       chainId: creditCardCheckout.chainId.toString(),
       signature: signatureData || '',
-      tokenAddress: creditCardCheckout.nftAddress,
+      nftAddress: creditCardCheckout.nftAddress,
+      currencyAddress: creditCardCheckout.currencyAddress,
       protocolAddress: creditCardCheckout.contractAddress,
       nftName: tokenMetadata?.name || '',
       imageUrl: tokenMetadata?.image || '',
-      tokenId: creditCardCheckout.nftId
+      tokenId: creditCardCheckout.nftId,
+      protocol: creditCardCheckout.forteConfig?.protocol || 'mint',
+      auctionHouse: creditCardCheckout.forteConfig?.auctionHouse,
+      orderHash: creditCardCheckout.forteConfig?.orderHash
     },
     {
-      disabled: !isMessageSigned || isLoadingTokenMetadata
+      disabled: (!isMessageSigned && isSignatureRequired) || isLoadingTokenMetadata
     }
   )
 
