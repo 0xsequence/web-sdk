@@ -469,19 +469,19 @@ export const fetchFortePaymentStatus = async (
   const url = `${forteApiUrl}/payments/v1/payments/statuses`
 
   const res = await fetch(url, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `${tokenType} ${accessToken}`
     },
     body: JSON.stringify({
-      payment_intent_id: paymentIntentId
+      payment_intent_ids: [paymentIntentId]
     })
   })
 
   const { data } = await res.json()
 
   return {
-    status: data.status as FortePaymentStatus
+    status: (data[0]?.status as FortePaymentStatus) || ''
   }
 }
