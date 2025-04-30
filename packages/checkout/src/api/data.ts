@@ -283,6 +283,7 @@ export interface CreateFortePaymentIntentArgs {
   protocol: ForteProtocolType
   auctionHouse?: string
   orderHash?: string
+  seaportProtocolAddress?: string
 }
 
 export interface CreateFortePaymentIntentReturn {
@@ -330,8 +331,10 @@ export const createFortePaymentIntent = async (
     auctionHouse,
     orderHash,
     nftAddress,
-    currencyAddress
+    currencyAddress,
+    seaportProtocolAddress
   } = args
+
   const network = findSupportedNetwork(chainId)
 
   if (!network) {
@@ -354,7 +357,7 @@ export const createFortePaymentIntent = async (
     }
   }
 
-  if (protocol === 'mint') {
+  if (protocol == 'mint') {
     body = {
       ...body,
       transaction_type: 'BUY_NFT_MINT',
@@ -381,13 +384,13 @@ export const createFortePaymentIntent = async (
   } else {
     let listingData: { [key: string]: any } = {}
 
-    if (protocol === 'seaport') {
+    if (protocol == 'seaport') {
       listingData = {
         protocol,
         order_hash: orderHash,
-        protocol_address: protocolAddress
+        protocol_address: seaportProtocolAddress
       }
-    } else if (protocol === 'magiceden') {
+    } else if (protocol == 'magiceden') {
       listingData = {
         protocol,
         auction_house: auctionHouse,
