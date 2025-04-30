@@ -44,6 +44,7 @@ export const TxnDetails = ({ address, txs, chainId }: TxnDetailsProps) => {
   const [awardItemProps, setAwardItemProps] = useState<AwardItemProps[]>([])
 
   const getTxnProps = async () => {
+    // @ts-ignore
     const decodedTxnDatas = await decodeTransactions(apiClient, address, txs)
     const type = decodedTxnDatas[0]?.type
 

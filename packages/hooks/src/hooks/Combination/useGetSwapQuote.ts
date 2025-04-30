@@ -1,4 +1,4 @@
-import { GetSwapQuoteV2Args } from '@0xsequence/api'
+import { GetLifiSwapQuoteArgs } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, ZERO_ADDRESS, time } from '../../constants'
@@ -80,38 +80,38 @@ import { useAPIClient } from '../API/useAPIClient'
  * }
  * ```
  */
-export const useGetSwapQuote = (getSwapQuoteArgs: GetSwapQuoteV2Args, options?: HooksOptions) => {
+export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteArgs, options?: HooksOptions) => {
   const apiClient = useAPIClient()
 
   return useQuery({
     queryKey: [QUERY_KEYS.useGetSwapQuote, getSwapQuoteArgs, options],
     queryFn: async () => {
-      const res = await apiClient.getSwapQuoteV2({
-        ...getSwapQuoteArgs,
-        buyCurrencyAddress: compareAddress(getSwapQuoteArgs.buyCurrencyAddress, ZERO_ADDRESS)
-          ? ZERO_ADDRESS
-          : getSwapQuoteArgs.buyCurrencyAddress,
-        sellCurrencyAddress: compareAddress(getSwapQuoteArgs.sellCurrencyAddress, ZERO_ADDRESS)
-          ? ZERO_ADDRESS
-          : getSwapQuoteArgs.sellCurrencyAddress
+      const res = await apiClient.getLifiSwapQuote({
+        params: {
+          ...getSwapQuoteArgs.params,
+          toTokenAddress: compareAddress(getSwapQuoteArgs.params.toTokenAddress, ZERO_ADDRESS)
+            ? ZERO_ADDRESS
+            : getSwapQuoteArgs.params.toTokenAddress,
+          fromTokenAddress: compareAddress(getSwapQuoteArgs.params.fromTokenAddress, ZERO_ADDRESS)
+            ? ZERO_ADDRESS
+            : getSwapQuoteArgs.params.fromTokenAddress
+        }
       })
 
       return {
-        ...res.swapQuote,
-        currencyAddress: compareAddress(res.swapQuote.currencyAddress, ZERO_ADDRESS)
-          ? ZERO_ADDRESS
-          : res.swapQuote.currencyAddress
+        ...res.quote,
+        currencyAddress: compareAddress(res.quote.currencyAddress, ZERO_ADDRESS) ? ZERO_ADDRESS : res.quote.currencyAddress
       }
     },
     retry: options?.retry ?? true,
     staleTime: time.oneMinute * 1,
     enabled:
       !options?.disabled &&
-      !!getSwapQuoteArgs.userAddress &&
-      !!getSwapQuoteArgs.buyCurrencyAddress &&
-      !!getSwapQuoteArgs.sellCurrencyAddress &&
-      getSwapQuoteArgs.buyAmount !== '0' &&
-      !!getSwapQuoteArgs.chainId &&
-      !!getSwapQuoteArgs.includeApprove
+      !!getSwapQuoteArgs.params.walletAddress &&
+      !!getSwapQuoteArgs.params.fromTokenAddress &&
+      !!getSwapQuoteArgs.params.toTokenAddress &&
+      getSwapQuoteArgs.params.fromTokenAmount !== '0' &&
+      !!getSwapQuoteArgs.params.chainId &&
+      !!getSwapQuoteArgs.params.includeApprove
   })
 }

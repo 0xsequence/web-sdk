@@ -1,12 +1,12 @@
+import { LifiToken } from '@0xsequence/api'
 import { useAnalyticsContext, compareAddress, TRANSACTION_CONFIRMATIONS_DEFAULT, sendTransactions } from '@0xsequence/connect'
 import { Button, Divider, Text, Spinner } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
   useGetContractInfo,
-  SwapPricesWithCurrencyInfo,
-  useGetSwapPrices,
   useGetSwapQuote,
-  useIndexerClient
+  useIndexerClient,
+  useGetSwapOptions
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
@@ -104,13 +104,11 @@ export const PaymentSelectionContent = () => {
   const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
-  const { data: swapPrices = [], isLoading: _swapPricesIsLoading } = useGetSwapPrices(
+  const { data: swapOptions = [], isLoading: swapOptionsIsLoading } = useGetSwapOptions(
     {
       userAddress: userAddress ?? '',
-      buyCurrencyAddress,
-      chainId: chainId,
-      buyAmount: price,
-      withContractInfo: true
+      chainId,
+      toTokenAddress: currencyAddress
     },
     { disabled: !enableSwapPayments }
   )
@@ -119,12 +117,15 @@ export const PaymentSelectionContent = () => {
 
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useGetSwapQuote(
     {
-      userAddress: userAddress ?? '',
-      buyCurrencyAddress: currencyAddress,
-      buyAmount: price,
-      chainId: chainId,
-      sellCurrencyAddress,
-      includeApprove: true
+      params: {
+        walletAddress: userAddress ?? '',
+        toTokenAddress: buyCurrencyAddress,
+        fromTokenAddress: sellCurrencyAddress,
+        toTokenAmount: price,
+        chainId: chainId,
+        includeApprove: true,
+        slippageBps: 100
+      }
     },
     {
       disabled: disableSwapQuote
@@ -241,7 +242,7 @@ export const PaymentSelectionContent = () => {
     setDisableButtons(false)
   }
 
-  const onClickPurchaseSwap = async (swapPrice: SwapPricesWithCurrencyInfo) => {
+  const onClickPurchaseSwap = async (swapTokenOption: LifiToken) => {
     if (!walletClient || !userAddress || !publicClient || !userAddress || !connector || !swapQuote) {
       return
     }
@@ -261,14 +262,14 @@ export const PaymentSelectionContent = () => {
         args: [approvedSpenderAddress || targetContractAddress, price]
       })
 
-      const isSwapNativeToken = compareAddress(zeroAddress, swapPrice.price.currencyAddress)
+      const isSwapNativeToken = compareAddress(zeroAddress, swapTokenOption.address)
 
       const transactions = [
         // Swap quote optional approve step
         ...(swapQuote?.approveData && !isSwapNativeToken
           ? [
               {
-                to: swapPrice.price.currencyAddress as Hex,
+                to: swapTokenOption.address as Hex,
                 data: swapQuote.approveData as Hex,
                 chain: chainId
               }
@@ -327,7 +328,7 @@ export const PaymentSelectionContent = () => {
           type: 'crypto',
           source: NFT_CHECKOUT_SOURCE,
           chainId: String(chainId),
-          listedCurrency: swapPrice.price.currencyAddress,
+          listedCurrency: swapTokenOption.address,
           purchasedCurrency: currencyAddress,
           origin: window.location.origin,
           from: userAddress,
@@ -372,7 +373,7 @@ export const PaymentSelectionContent = () => {
     if (compareAddress(selectedCurrency || '', currencyAddress)) {
       onPurchaseMainCurrency()
     } else {
-      const foundSwap = swapPrices?.find(price => price.info?.address === selectedCurrency)
+      const foundSwap = swapOptions?.find(tokenOption => tokenOption.address === selectedCurrency)
       if (foundSwap) {
         onClickPurchaseSwap(foundSwap)
       }
@@ -460,7 +461,13 @@ export const PaymentSelectionContent = () => {
               <Button
                 className="mt-6 w-full"
                 onClick={onClickPurchase}
-                disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
+                disabled={
+                  isLoading ||
+                  disableButtons ||
+                  !selectedCurrency ||
+                  swapOptionsIsLoading ||
+                  (!disableSwapQuote && isLoadingSwapQuote)
+                }
                 shape="square"
                 variant="primary"
                 label="Complete Purchase"

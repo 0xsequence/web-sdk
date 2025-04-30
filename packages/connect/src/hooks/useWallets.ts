@@ -95,6 +95,7 @@ export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedW
       abortControllerRef.current?.abort()
       abortControllerRef.current = new AbortController()
 
+      // @ts-ignore
       const linkedWallets = await getLinkedWallets(apiClient, args, undefined, abortControllerRef.current.signal)
 
       setData(linkedWallets)

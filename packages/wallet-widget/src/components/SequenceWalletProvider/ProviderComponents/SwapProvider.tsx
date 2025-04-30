@@ -1,4 +1,4 @@
-import { SwapQuote } from '@0xsequence/api'
+import { LifiSwapQuote } from '@0xsequence/api'
 import { getNativeTokenInfoByChainId, sendTransactions } from '@0xsequence/connect'
 import { compareAddress, useToast } from '@0xsequence/design-system'
 import { useAPIClient, useIndexerClient } from '@0xsequence/hooks'
@@ -24,7 +24,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const [recentInput, setRecentInput] = useState<'from' | 'to'>('from')
 
   const [isSwapReady, setIsSwapReady] = useState(false)
-  const [swapQuoteData, setSwapQuoteData] = useState<SwapQuote>()
+  const [swapQuoteData, setSwapQuoteData] = useState<LifiSwapQuote>()
   const [isSwapQuotePending, setIsSwapQuotePending] = useState(false)
   const [hasInsufficientFunds, setHasInsufficientFunds] = useState(false)
   const [isErrorSwapQuote, setIsErrorSwapQuote] = useState(false)
@@ -82,21 +82,24 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
 
         // TODO: use commented out code when getSwapQuoteV2 is updated to include sellAmount
 
-        swapQuote = await apiClient.getSwapQuoteV2({
-          userAddress: String(userAddress),
-          buyCurrencyAddress: toCoin.contractAddress,
-          sellCurrencyAddress: fromCoin.contractAddress,
-          buyAmount: String(amount),
-          chainId: connectedChainId,
-          includeApprove: true
+        swapQuote = await apiClient.getLifiSwapQuote({
+          params: {
+            walletAddress: userAddress ?? '',
+            toTokenAddress: toCoin.contractAddress,
+            fromTokenAddress: fromCoin.contractAddress,
+            toTokenAmount: String(amount),
+            chainId: connectedChainId,
+            includeApprove: true,
+            slippageBps: 100
+          }
         })
 
-        const transactionValue = swapQuote?.swapQuote?.transactionValue || '0'
+        const transactionValue = swapQuote?.quote.transactionValue || '0'
         // TODO: change this to "amount" from return
 
         setNonRecentAmount(Number(transactionValue))
 
-        setSwapQuoteData(swapQuote?.swapQuote)
+        setSwapQuoteData(swapQuote?.quote)
         setIsSwapReady(true)
       } catch (error) {
         const hasInsufficientFunds = (error as any).code === -4

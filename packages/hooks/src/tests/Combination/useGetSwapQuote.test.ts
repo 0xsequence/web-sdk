@@ -7,13 +7,26 @@ import { useGetSwapQuote } from '../../hooks/Combination/useGetSwapQuote'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 
+// chainId: number;
+// walletAddress: string;
+// fromTokenAddress: string;
+// toTokenAddress: string;
+// fromTokenAmount: string;
+// toTokenAmount: string;
+// includeApprove: boolean;
+// slippageBps: number;
+
 const getSwapQuoteArgs = {
-  userAddress: ACCOUNT_ADDRESS,
-  buyCurrencyAddress: ZERO_ADDRESS,
-  sellCurrencyAddress: ZERO_ADDRESS,
-  buyAmount: '20000',
-  chainId: 1,
-  includeApprove: true
+  params: {
+    walletAddress: ACCOUNT_ADDRESS,
+    toTokenAddress: ZERO_ADDRESS,
+    fromTokenAddress: ZERO_ADDRESS,
+    fromTokenAmount: '20000',
+    toTokenAmount: '10000',
+    chainId: 1,
+    includeApprove: true,
+    slippageBps: 100
+  }
 }
 
 describe('useGetSwapQuoteV2', () => {

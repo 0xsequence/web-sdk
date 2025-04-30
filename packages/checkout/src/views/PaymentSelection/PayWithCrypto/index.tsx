@@ -1,9 +1,9 @@
 import { CryptoOption, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/connect'
 import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
-import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapPrices } from '@0xsequence/hooks'
+import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapOptions } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
-import { useState, useEffect, Fragment, SetStateAction } from 'react'
+import { useState, useEffect, Fragment, SetStateAction, useMemo } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 
@@ -35,51 +35,84 @@ export const PayWithCrypto = ({
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
+  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: currencyAddress
+  })
+
+  const { data: swapOptions = [], isLoading: swapOptionsIsLoading } = useGetSwapOptions(
+    {
+      userAddress: userAddress ?? '',
+      chainId,
+      toTokenAddress: currencyAddress
+    },
+    { disabled: !enableSwapPayments || !userAddress }
+  )
+
+  const tokenAddressesToFetch = useMemo(() => {
+    const addresses = new Set<string>()
+    if (enableMainCurrencyPayment && currencyAddress) {
+      addresses.add(currencyAddress)
+    }
+    swapOptions.forEach(option => {
+      if (option.address) {
+        addresses.add(option.address)
+      }
+    })
+    return Array.from(addresses)
+      .filter(addr => !!addr)
+      .map(addr => addr.toLowerCase())
+  }, [currencyAddress, swapOptions, enableMainCurrencyPayment])
+
+  const balanceHookOptions = useMemo(
+    () => ({
+      disabled: !userAddress || tokenAddressesToFetch.length === 0
+    }),
+    [userAddress, tokenAddressesToFetch.length]
+  )
+
   const {
     data: currencyBalanceData,
     isLoading: currencyBalanceIsLoading,
     fetchNextPage: fetchNextCurrencyBalance,
     hasNextPage: hasNextCurrencyBalance,
     isFetchingNextPage: isFetchingNextCurrencyBalance
-  } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
-    filter: {
-      accountAddresses: userAddress ? [userAddress] : [],
-      contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [currencyAddress],
-      omitNativeBalances: skipNativeBalanceCheck ?? false
+  } = useGetTokenBalancesSummary(
+    {
+      chainIds: [chainId],
+      filter: {
+        accountAddresses: userAddress ? [userAddress] : [],
+        contractStatus: ContractVerificationStatus.ALL,
+        contractWhitelist: tokenAddressesToFetch,
+        omitNativeBalances: skipNativeBalanceCheck ?? false
+      },
+      omitMetadata: true,
+      page: { pageSize: 40 }
     },
-    omitMetadata: true,
-    page: { pageSize: 40 }
-  })
+    balanceHookOptions
+  )
+
+  const balanceMap = useMemo(() => {
+    const map = new Map<string, bigint>()
+    currencyBalanceData?.pages?.forEach(page => {
+      page.balances?.forEach(balanceData => {
+        if (balanceData.contractAddress && balanceData.balance) {
+          map.set(balanceData.contractAddress.toLowerCase(), BigInt(balanceData.balance))
+        }
+      })
+    })
+    return map
+  }, [currencyBalanceData])
 
   useEffect(() => {
     if (hasNextCurrencyBalance && !isFetchingNextCurrencyBalance) {
       fetchNextCurrencyBalance()
     }
-  }, [hasNextCurrencyBalance, isFetchingNextCurrencyBalance])
+  }, [hasNextCurrencyBalance, isFetchingNextCurrencyBalance, fetchNextCurrencyBalance])
 
-  const { data: currencyInfoData, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
-    chainID: String(chainId),
-    contractAddress: currencyAddress
-  })
+  const isLoadingOptions = (currencyBalanceIsLoading && !balanceHookOptions.disabled) || isLoadingCurrencyInfo || isLoading
 
-  const buyCurrencyAddress = settings?.currencyAddress
-
-  const { data: swapPrices = [], isLoading: swapPricesIsLoading } = useGetSwapPrices(
-    {
-      userAddress: userAddress ?? '',
-      buyCurrencyAddress,
-      chainId: chainId,
-      buyAmount: price,
-      withContractInfo: true
-    },
-    { disabled: !enableSwapPayments }
-  )
-
-  const isLoadingOptions = currencyBalanceIsLoading || isFetchingNextCurrencyBalance || isLoadingCurrencyInfo || isLoading
-
-  const swapsIsLoading = swapPricesIsLoading
+  const swapsAreLoading = swapOptionsIsLoading && enableSwapPayments
 
   interface Coin {
     index: number
@@ -88,94 +121,131 @@ export const PayWithCrypto = ({
     currencyAddress: string
   }
 
-  const coins: Coin[] = [
-    ...(enableMainCurrencyPayment
-      ? [
-          {
-            index: 0,
-            name: currencyInfoData?.name || 'Unknown',
-            symbol: currencyInfoData?.symbol || '',
-            currencyAddress
-          }
-        ]
-      : []),
-    ...swapPrices.map((price, index) => {
-      return {
-        index: index + 1,
-        name: price.info?.name || 'Unknown',
-        symbol: price.info?.symbol || '',
-        currencyAddress: price.info?.address || ''
-      }
-    })
-  ]
+  const coins: Coin[] = useMemo(() => {
+    const initialCoins = [
+      ...(enableMainCurrencyPayment && currencyInfoData && currencyAddress
+        ? [
+            {
+              index: 0,
+              name: currencyInfoData.name || 'Unknown',
+              symbol: currencyInfoData.symbol || '',
+              currencyAddress: currencyAddress
+            }
+          ]
+        : []),
+      ...swapOptions.map((tokenOption, index) => {
+        return {
+          index: enableMainCurrencyPayment && currencyAddress ? index + 1 : index,
+          name: tokenOption.name || 'Unknown',
+          symbol: tokenOption.symbol || '',
+          currencyAddress: tokenOption.address || ''
+        }
+      })
+    ]
+    return initialCoins
+      .filter(coin => !!coin.currencyAddress)
+      .map(coin => ({ ...coin, currencyAddress: coin.currencyAddress.toLowerCase() }))
+  }, [enableMainCurrencyPayment, currencyInfoData, swapOptions, currencyAddress])
+
+  console.log('coins', coins)
+  console.log('balanceMap', balanceMap)
 
   useEffect(() => {
-    if (selectedCurrency) {
+    if (selectedCurrency || coins.length === 0 || (currencyBalanceIsLoading && !balanceHookOptions.disabled)) {
       return
     }
-    if (enableMainCurrencyPayment && !isNotEnoughFunds) {
-      setSelectedCurrency(coins[0].currencyAddress)
-    } else if (!swapPricesIsLoading) {
-      setSelectedCurrency(swapPrices?.[0]?.info?.address)
+
+    const lowerCaseCurrencyAddress = currencyAddress?.toLowerCase()
+
+    const mainCurrencyBalance = balanceMap.get(lowerCaseCurrencyAddress || '') ?? 0n
+    const priceBigInt = BigInt(price || '0')
+    const mainCurrencySufficient = priceBigInt <= mainCurrencyBalance
+
+    if (enableMainCurrencyPayment && lowerCaseCurrencyAddress && mainCurrencySufficient) {
+      setSelectedCurrency(lowerCaseCurrencyAddress)
+    } else {
+      const firstSwapCoin = coins.find(c => c.currencyAddress !== lowerCaseCurrencyAddress)
+      if (firstSwapCoin) {
+        setSelectedCurrency(firstSwapCoin.currencyAddress)
+      } else if (enableMainCurrencyPayment && lowerCaseCurrencyAddress) {
+        setSelectedCurrency(lowerCaseCurrencyAddress)
+      }
     }
-  }, [swapPricesIsLoading])
+  }, [
+    coins,
+    selectedCurrency,
+    enableMainCurrencyPayment,
+    currencyAddress,
+    price,
+    balanceMap,
+    setSelectedCurrency,
+    currencyBalanceIsLoading,
+    balanceHookOptions.disabled
+  ])
 
-  const priceFormatted = formatUnits(BigInt(price), currencyInfoData?.decimals || 0)
-  const priceDisplay = formatDisplay(priceFormatted, {
-    disableScientificNotation: true,
-    disableCompactNotation: true,
-    significantDigits: 6
-  })
+  const priceDisplay = useMemo(() => {
+    const priceBigInt = BigInt(price || '0')
+    const decimals = currencyInfoData?.decimals || 0
+    if (decimals <= 0) {
+      return '0'
+    }
+    const priceFormatted = formatUnits(priceBigInt, decimals)
+    return formatDisplay(priceFormatted, {
+      disableScientificNotation: true,
+      disableCompactNotation: true,
+      significantDigits: 6
+    })
+  }, [price, currencyInfoData])
 
-  const balanceInfo = currencyBalanceData?.pages
-    ?.flatMap(page => page.balances)
-    .find(balanceData => compareAddress(currencyAddress, balanceData.contractAddress))
-
-  const balance: bigint = BigInt(balanceInfo?.balance || '0')
-  // let balanceFormatted = Number(formatUnits(balance, currencyInfoData?.decimals || 0))
-  // balanceFormatted = Math.trunc(Number(balanceFormatted) * 10000) / 10000
-
-  const isNotEnoughFunds: boolean = BigInt(price) > balance
   useEffect(() => {
     clearCachedBalances()
-  }, [])
+  }, [clearCachedBalances])
+
+  console.log(coins, 'coins')
 
   const Options = () => {
+    const lowerSelectedCurrency = selectedCurrency?.toLowerCase()
+    const lowerCurrencyAddress = currencyAddress?.toLowerCase()
+    const priceBigInt = BigInt(price || '0')
+
     return (
       <div className="flex flex-col justify-center items-center gap-2 w-full">
         {coins.map(coin => {
-          if (compareAddress(coin.currencyAddress, currencyAddress)) {
+          const isMainCurrency = coin.currencyAddress === lowerCurrencyAddress
+          const currentBalance = balanceMap.get(coin.currencyAddress) ?? 0n
+
+          if (isMainCurrency) {
             const isNative = compareAddress(coin.currencyAddress, zeroAddress)
             const isNativeBalanceCheckSkipped = isNative && skipNativeBalanceCheck
+            const hasInsufficientFunds = priceBigInt > currentBalance
 
             return (
-              <Fragment key={currencyAddress}>
+              <Fragment key={coin.currencyAddress}>
                 <CryptoOption
-                  currencyName={currencyInfoData?.name || 'Unknown'}
+                  currencyName={coin.name}
                   chainId={chainId}
                   iconUrl={currencyInfoData?.logoURI}
-                  symbol={currencyInfoData?.symbol || ''}
+                  symbol={coin.symbol}
                   onClick={() => {
-                    setSelectedCurrency(currencyAddress)
+                    setSelectedCurrency(coin.currencyAddress)
                   }}
                   price={priceDisplay}
                   disabled={disableButtons}
-                  isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
-                  showInsufficientFundsWarning={isNativeBalanceCheckSkipped ? undefined : isNotEnoughFunds}
+                  isSelected={lowerSelectedCurrency === coin.currencyAddress}
+                  showInsufficientFundsWarning={isNativeBalanceCheckSkipped ? undefined : hasInsufficientFunds}
                 />
               </Fragment>
             )
           } else {
-            const swapPrice = swapPrices?.find(price => compareAddress(price.info?.address || '', coin.currencyAddress))
-            const currencyInfoNotFound =
-              !swapPrice || !swapPrice.info || swapPrice?.info?.decimals === undefined || !swapPrice.balance?.balance
+            const swapOption = swapOptions?.find(tokenOption => tokenOption.address?.toLowerCase() === coin.currencyAddress)
 
-            if (currencyInfoNotFound || !enableSwapPayments) {
+            if (!swapOption || !enableSwapPayments) {
               return null
             }
-            const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
-            const swapQuoteAddress = swapPrice.info?.address || ''
 
+            const hasInsufficientFunds = priceBigInt > currentBalance
+
+            const swapQuotePriceFormatted = formatUnits(BigInt(swapOption.priceUsd || '0'), swapOption.decimals || 18)
             const swapQuotePriceDisplay = formatDisplay(swapQuotePriceFormatted, {
               disableScientificNotation: true,
               disableCompactNotation: true,
@@ -184,18 +254,18 @@ export const PayWithCrypto = ({
 
             return (
               <CryptoOption
-                key={swapQuoteAddress}
-                currencyName={swapPrice.info?.name || 'Unknown'}
+                key={coin.currencyAddress}
+                currencyName={coin.name}
                 chainId={chainId}
-                iconUrl={swapPrice.info?.logoURI}
-                symbol={swapPrice.info?.symbol || ''}
+                iconUrl={swapOption.logoUri}
+                symbol={coin.symbol}
                 onClick={() => {
-                  setSelectedCurrency(swapQuoteAddress)
+                  setSelectedCurrency(coin.currencyAddress)
                 }}
                 price={swapQuotePriceDisplay}
                 disabled={disableButtons}
-                isSelected={compareAddress(selectedCurrency || '', swapQuoteAddress)}
-                showInsufficientFundsWarning={false}
+                isSelected={lowerSelectedCurrency === coin.currencyAddress}
+                showInsufficientFundsWarning={hasInsufficientFunds}
               />
             )
           }
@@ -207,8 +277,10 @@ export const PayWithCrypto = ({
   const gutterHeight = 8
   const optionHeight = 72
   const displayedOptionsAmount = Math.min(coins.length, MAX_OPTIONS)
-  const displayedGuttersAmount = displayedOptionsAmount - 1
-  const collapsedOptionsHeight = `${optionHeight * displayedOptionsAmount + gutterHeight * displayedGuttersAmount}px`
+  const displayedGuttersAmount = Math.max(0, displayedOptionsAmount - 1)
+  const collapsedOptionsHeight = useMemo(() => {
+    return `${optionHeight * displayedOptionsAmount + gutterHeight * displayedGuttersAmount}px`
+  }, [coins.length])
 
   const ShowMoreButton = () => {
     return (
@@ -257,12 +329,12 @@ export const PayWithCrypto = ({
             >
               <Options />
             </motion.div>
-            {swapsIsLoading && (
+            {swapsAreLoading && (
               <div className="flex justify-center items-center w-full mt-4">
                 <Spinner />
               </div>
             )}
-            {!swapsIsLoading && coins.length > MAX_OPTIONS && <ShowMoreButton />}
+            {!swapsAreLoading && coins.length > MAX_OPTIONS && <ShowMoreButton />}
           </>
         )}
       </div>

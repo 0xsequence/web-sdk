@@ -1,5 +1,5 @@
 import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/connect'
-import { useIndexerClient, useGetTokenBalancesSummary, useGetSwapPrices, useGetSwapQuote } from '@0xsequence/hooks'
+import { useIndexerClient, useGetTokenBalancesSummary, useGetSwapQuote, useGetSwapOptions } from '@0xsequence/hooks'
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
@@ -34,7 +34,7 @@ export interface UseCryptoPaymentArgs {
 
 export interface UseCryptoPaymentReturn {
   cryptoOptions: {
-    data: CryptoOptions[]
+    data: CryptoOption[]
     isLoading: boolean
     error: Error | null
   }
@@ -46,15 +46,15 @@ export interface UseCryptoPaymentReturn {
   }
 }
 
-interface CryptoOptions {
+interface CryptoOption {
   chainId: number
-  currencyAddress: string
-  currencyName: string
+  address: string
+  name: string
   totalPriceRaw: string
   symbol: string
   decimals: number
   totalPriceDisplay: string
-  currrencyLogoUrl?: string
+  logoUrl?: string
   isInsufficientFunds: boolean
   isSelected: boolean
 }
@@ -116,35 +116,38 @@ export const useCryptoPayment = ({
   const currencyBalanceData = currencyBalanceDataPaginated?.pages?.flatMap(page => page.balances)
 
   const buyCurrencyAddress = currencyAddress
-  const sellCurrencyAddress = selectedCurrencyAddress || ''
 
   const {
-    data: swapPrices = [],
-    isLoading: swapPricesIsLoading,
-    error: swapPricesError
-  } = useGetSwapPrices({
+    data: swapOptions = [],
+    isLoading: swapOptionsIsLoading,
+    error: swapOptionsError
+  } = useGetSwapOptions({
     userAddress: userAddress ?? '',
-    buyCurrencyAddress,
-    chainId: chainId,
-    buyAmount: totalPriceRaw,
-    withContractInfo: true
+    toTokenAddress: currencyAddress || '',
+    chainId: chainId
   })
 
   const disableSwapQuote = !selectedCurrencyAddress || compareAddress(selectedCurrencyAddress, buyCurrencyAddress)
 
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useGetSwapQuote(
     {
-      userAddress: userAddress ?? '',
-      buyCurrencyAddress: currencyAddress,
-      buyAmount: totalPriceRaw,
-      chainId: chainId,
-      sellCurrencyAddress,
-      includeApprove: true
+      params: {
+        walletAddress: userAddress ?? '',
+        toTokenAddress: currencyAddress,
+        toTokenAmount: totalPriceRaw,
+        fromTokenAddress: selectedCurrencyAddress || '',
+        fromTokenAmount: '0',
+        chainId: chainId,
+        includeApprove: true,
+        slippageBps: 100
+      }
     },
     {
       disabled: disableSwapQuote
     }
   )
+
+  console.log('currencyBalanceData', currencyBalanceData)
 
   const mainCurrencyBalance = currencyBalanceData?.[0]?.balance || '0'
   const priceFormatted = formatUnits(BigInt(totalPriceRaw), currencyInfo?.decimals || 0)
@@ -158,43 +161,18 @@ export const useCryptoPayment = ({
     ? [
         {
           chainId,
-          currencyAddress,
-          currencyName: currencyInfo?.name || 'unknown',
+          address: currencyAddress,
+          name: currencyInfo?.name || 'unknown',
           totalPriceRaw: totalPriceRaw,
           decimals: currencyDecimals || 18,
           totalPriceDisplay: priceDisplay,
-          currrencyLogoUrl: currencyInfo?.logoURI,
+          logoUrl: currencyInfo?.logoURI,
           symbol: currencySymbol || '',
           isInsufficientFunds: Number(mainCurrencyBalance) < Number(totalPriceRaw),
           isSelected: compareAddress(currencyAddress, selectedCurrencyAddress || '')
         }
       ]
     : []
-
-  const swapOptions = swapPrices.map(swapPrice => {
-    const swapQuotePriceFormatted = formatUnits(BigInt(swapPrice.price.price), swapPrice.info?.decimals || 18)
-    const swapQuoteAddress = swapPrice.info?.address || ''
-
-    const swapQuotePriceDisplay = formatDisplay(swapQuotePriceFormatted, {
-      disableScientificNotation: true,
-      disableCompactNotation: true,
-      significantDigits: 6
-    })
-
-    return {
-      chainId,
-      currencyAddress: swapQuoteAddress,
-      currencyName: swapPrice.info?.name || 'unknown',
-      totalPriceRaw: swapPrice.price.price,
-      totalPriceDisplay: swapQuotePriceDisplay,
-      currrencyLogoUrl: swapPrice.info?.logoURI,
-      symbol: swapPrice.info?.symbol || '',
-      decimals: swapPrice.info?.decimals || 18,
-      // The balance check is done at the API level
-      isInsufficientFunds: false,
-      isSelected: compareAddress(swapQuoteAddress, selectedCurrencyAddress || '')
-    }
-  })
 
   const purchaseAction = async () => {
     if (!selectedCurrencyAddress) {
@@ -267,9 +245,9 @@ export const useCryptoPayment = ({
         onSuccess?.(txHash)
         return txHash
       } else {
-        const swapPrice = swapPrices.find(swapPrice => compareAddress(swapPrice.info?.address || '', selectedCurrencyAddress))
-        if (!swapPrice) {
-          throw new Error('No swap price found')
+        const swapOption = swapOptions.find(swapOption => compareAddress(swapOption.address || '', selectedCurrencyAddress))
+        if (!swapOption) {
+          throw new Error('No swap option found')
         }
 
         if (!swapQuote) {
@@ -287,14 +265,14 @@ export const useCryptoPayment = ({
           args: [targetContractAddress, totalPriceRaw]
         })
 
-        const isSwapNativeToken = compareAddress(zeroAddress, swapPrice.price.currencyAddress)
+        const isSwapNativeToken = compareAddress(zeroAddress, swapOption.address)
 
         const transactions = [
           // Swap quote optional approve step
           ...(swapQuote?.approveData && !isSwapNativeToken
             ? [
                 {
-                  to: swapPrice.price.currencyAddress as Hex,
+                  to: swapOption.address as Hex,
                   data: swapQuote.approveData as Hex,
                   chain: chainId
                 }
@@ -357,9 +335,9 @@ export const useCryptoPayment = ({
 
   return {
     cryptoOptions: {
-      data: [...mainCurrencyOption, ...swapOptions],
-      isLoading: isLoadingCurrencyInfo || swapPricesIsLoading || currencyBalanceIsLoading,
-      error: errorCurrencyInfo || swapPricesError
+      data: [...mainCurrencyOption],
+      isLoading: isLoadingCurrencyInfo || swapOptionsIsLoading || currencyBalanceIsLoading,
+      error: errorCurrencyInfo || swapOptionsError
     },
     purchaseAction: {
       action: purchaseAction,

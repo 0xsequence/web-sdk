@@ -38,13 +38,8 @@ export { useGetContractInfo } from './hooks/Metadata/useGetContractInfo'
 export { useGetMultipleContractsInfo } from './hooks/Metadata/useGetMultipleContractsInfo'
 export { useGetTokenMetadata } from './hooks/Metadata/useGetTokenMetadata'
 
-// Combination
-export {
-  useGetSwapPrices,
-  type SwapPricesWithCurrencyInfo,
-  type UseGetSwapPricesArgs
-} from './hooks/Combination/useGetSwapPrices'
 export { useGetSwapQuote } from './hooks/Combination/useGetSwapQuote'
+export { useGetSwapOptions } from './hooks/Combination/useGetSwapOptions'
 
 // Etc
 export { useClearCachedBalances } from './hooks/useClearCachedBalances'

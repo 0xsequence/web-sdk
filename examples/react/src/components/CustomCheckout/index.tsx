@@ -159,13 +159,13 @@ export const CustomCheckout = () => {
       <div className="flex flex-col gap-2">
         {cryptoPayment.cryptoOptions.data.map(option => (
           <CryptoOption
-            key={option.currencyAddress}
-            currencyName={option.currencyName}
+            key={option.address}
+            currencyName={option.name}
             chainId={option.chainId}
             symbol={option.symbol}
             price={option.totalPriceDisplay}
             onClick={() => {
-              cryptoPayment.purchaseAction.setSelectedCurrencyAddress(option.currencyAddress)
+              cryptoPayment.purchaseAction.setSelectedCurrencyAddress(option.address)
             }}
             isSelected={option.isSelected}
             showInsufficientFundsWarning={option.isInsufficientFunds}

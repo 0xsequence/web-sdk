@@ -52,7 +52,6 @@ Sequence hooks are grouped into 5 categories, based on the sequence service they
 
 ### Combination
 
-- useGetSwapPrices
 - useGetSwapQuote
 
 ## Usage
@@ -326,20 +325,6 @@ const { data, isLoading, error } = useGetTokenMetadata(
     retry: true
   }
 )
-```
-
-### useGetSwapPrices
-
-```tsx
-import { useGetSwapPrices } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetSwapPrices({
-  userAddress: '0x0123456789012345678901234567890123456789',
-  buyCurrencyAddress: '0x0123456789012345678901234567890123456789',
-  buyAmount: '1',
-  chainId: 1,
-  withContractInfo: true // optional
-})
 ```
 
 ### useGetSwapQuote

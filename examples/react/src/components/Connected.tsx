@@ -392,6 +392,7 @@ export const Connected = () => {
       chain: chainId,
       price,
       targetContractAddress: salesContractAddress,
+      enableMainCurrencyPayment: true,
       recipientAddress: address,
       currencyAddress,
       collectionAddress,

@@ -12,8 +12,8 @@ export const QUERY_KEYS = {
   useGetExchangeRate: 'useGetExchangeRate',
   useGetCoinPrices: 'useGetCoinPrices',
   useGetCollectiblePrices: 'useGetCollectiblePrices',
-  useGetSwapPrices: 'useGetSwapPrices',
-  useGetSwapQuote: 'useGetSwapQuote'
+  useGetSwapQuote: 'useGetSwapQuote',
+  useGetSwapOptions: 'useGetSwapOptions'
 }
 
 export const time = {
