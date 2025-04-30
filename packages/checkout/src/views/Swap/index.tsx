@@ -1,6 +1,12 @@
 import { CryptoOption, compareAddress, formatDisplay, sendTransactions } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
-import { useGetContractInfo, useGetSwapOptions, useGetSwapQuote, useIndexerClient } from '@0xsequence/hooks'
+import {
+  useGetContractInfo,
+  useGetSwapOptions,
+  useGetSwapQuote,
+  useGetTokenBalancesSummary,
+  useIndexerClient
+} from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
@@ -47,6 +53,22 @@ export const Swap = () => {
     walletAddress: userAddress ?? ''
   })
 
+  const { data: tokenBalances, isLoading: isLoadingTokenBalances } = useGetTokenBalancesSummary({
+    chainIds: [chainId],
+    filter: {
+      accountAddresses: [userAddress ?? ''],
+      omitNativeBalances: false,
+      contractWhitelist: swapOptions.map(option => option.address)
+    }
+  })
+
+  const tokenBalancesMap = new Map<string, string>()
+  tokenBalances?.pages.forEach(page => {
+    page.balances.forEach(balance => {
+      tokenBalancesMap.set(balance.contractAddress, balance.balance)
+    })
+  })
+
   useEffect(() => {
     if (!disableMainCurrency) {
       setSelectedCurrency(toTokenAddress)
@@ -88,10 +110,8 @@ export const Swap = () => {
   )
 
   const indexerClient = useIndexerClient(chainId)
-
   const isMainCurrencySelected = compareAddress(selectedCurrency || '', toTokenAddress)
   const quoteFetchInProgress = isLoadingSwapQuote && !isMainCurrencySelected
-
   const isLoading = isLoadingCurrencyInfo || swapOptionsIsLoading
 
   const onClickProceed = async () => {
@@ -171,11 +191,8 @@ export const Swap = () => {
   const isErrorFetchingOptions = isErrorSwapOptions || isErrorCurrencyInfo
   const noOptionsFound = disableMainCurrency && swapOptions.length === 0
 
-  console.log('selectedCurrency', selectedCurrency)
-  console.log('swapOptions', swapOptions)
-
   const SwapContent = () => {
-    if (isLoading) {
+    if (isLoading || isLoadingTokenBalances) {
       return (
         <div className="flex w-full justify-center items-center">
           <Spinner />
@@ -230,6 +247,9 @@ export const Swap = () => {
             )}
             {swapOptions.map(tokenOption => {
               const displayPrice = formatUnits(BigInt(tokenOption.price || '0'), tokenOption.decimals || 0)
+              const balance = tokenBalancesMap.get(tokenOption.address.toLowerCase())
+              const insufficientFunds = balance ? BigInt(balance) < BigInt(tokenOption.price || '0') : false
+
               return (
                 <CryptoOption
                   key={tokenOption.address}
@@ -239,6 +259,7 @@ export const Swap = () => {
                   isSelected={compareAddress(selectedCurrency || '', tokenOption.address)}
                   iconUrl={tokenOption.logoUri}
                   price={displayPrice}
+                  showInsufficientFundsWarning={insufficientFunds}
                   onClick={() => {
                     setIsError(false)
                     setSelectedCurrency(tokenOption.address)
