@@ -42,7 +42,7 @@ export const PayWithCrypto = ({
 
   const { data: swapOptions = [], isLoading: swapOptionsIsLoading } = useGetSwapOptions(
     {
-      userAddress: userAddress ?? '',
+      walletAddress: userAddress ?? '',
       chainId,
       toTokenAddress: currencyAddress
     },
@@ -147,9 +147,6 @@ export const PayWithCrypto = ({
       .map(coin => ({ ...coin, currencyAddress: coin.currencyAddress.toLowerCase() }))
   }, [enableMainCurrencyPayment, currencyInfoData, swapOptions, currencyAddress])
 
-  console.log('coins', coins)
-  console.log('balanceMap', balanceMap)
-
   useEffect(() => {
     if (selectedCurrency || coins.length === 0 || (currencyBalanceIsLoading && !balanceHookOptions.disabled)) {
       return
@@ -245,8 +242,7 @@ export const PayWithCrypto = ({
 
             const hasInsufficientFunds = priceBigInt > currentBalance
 
-            const swapQuotePriceFormatted = formatUnits(BigInt(swapOption.priceUsd || '0'), swapOption.decimals || 18)
-            const swapQuotePriceDisplay = formatDisplay(swapQuotePriceFormatted, {
+            const swapQuotePriceDisplay = formatDisplay(swapOption.priceUsd, {
               disableScientificNotation: true,
               disableCompactNotation: true,
               significantDigits: 6

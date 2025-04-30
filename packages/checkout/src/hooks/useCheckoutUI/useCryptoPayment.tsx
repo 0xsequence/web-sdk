@@ -122,7 +122,7 @@ export const useCryptoPayment = ({
     isLoading: swapOptionsIsLoading,
     error: swapOptionsError
   } = useGetSwapOptions({
-    userAddress: userAddress ?? '',
+    walletAddress: userAddress ?? '',
     toTokenAddress: currencyAddress || '',
     chainId: chainId
   })

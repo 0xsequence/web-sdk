@@ -12,8 +12,8 @@ interface Transaction {
 
 export interface SwapModalSettings {
   chainId: number
-  currencyAddress: string
-  currencyAmount: string
+  toTokenAddress: string
+  toTokenAmount: string
   title?: string
   description?: string
   disableMainCurrency?: boolean

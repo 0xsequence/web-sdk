@@ -41,7 +41,7 @@
   },
   "peerDependencies": {
     "0xsequence": ">= 2.3.7",
-    "@0xsequence/api": "0.0.0-20250429150836",
+    "@0xsequence/api": "0.0.0-20250430094114",
     "@0xsequence/indexer": ">= 2.3.7",
     "@0xsequence/metadata": ">= 2.3.7",
     "@0xsequence/network": ">= 2.3.7",

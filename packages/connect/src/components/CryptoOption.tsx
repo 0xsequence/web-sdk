@@ -61,7 +61,7 @@ export const CryptoOption = ({
               width: '215px'
             }}
           >
-            {`${price} ${symbol}`}
+            {`Token price: $${price}`}
           </Text>
         </div>
       </div>

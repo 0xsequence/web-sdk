@@ -106,7 +106,7 @@ export const PaymentSelectionContent = () => {
 
   const { data: swapOptions = [], isLoading: swapOptionsIsLoading } = useGetSwapOptions(
     {
-      userAddress: userAddress ?? '',
+      walletAddress: userAddress ?? '',
       chainId,
       toTokenAddress: currencyAddress
     },

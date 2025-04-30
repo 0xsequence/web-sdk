@@ -10,12 +10,11 @@ import { HEADER_HEIGHT } from '../../constants'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks'
 
 export const Swap = () => {
-  console.log('IN SWAP MODAL')
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const { swapModalSettings, closeSwapModal } = useSwapModal()
   const {
-    currencyAddress,
-    currencyAmount,
+    toTokenAddress,
+    toTokenAmount,
     chainId,
     disableMainCurrency = true,
     description,
@@ -31,14 +30,13 @@ export const Swap = () => {
   const publicClient = usePublicClient({ chainId })
   const { data: walletClient } = useWalletClient({ chainId })
 
-  const buyCurrencyAddress = currencyAddress
   const sellCurrencyAddress = selectedCurrency || ''
 
   const {
     data: currencyInfoData,
     isLoading: isLoadingCurrencyInfo,
     isError: isErrorCurrencyInfo
-  } = useGetContractInfo({ chainID: String(chainId), contractAddress: currencyAddress })
+  } = useGetContractInfo({ chainID: String(chainId), contractAddress: toTokenAddress })
 
   const {
     data: swapOptions = [],
@@ -46,20 +44,20 @@ export const Swap = () => {
     isError: isErrorSwapOptions
   } = useGetSwapOptions({
     chainId,
-    toTokenAddress: buyCurrencyAddress,
-    userAddress: userAddress ?? ''
+    toTokenAddress,
+    walletAddress: userAddress ?? ''
   })
 
   useEffect(() => {
     if (!disableMainCurrency) {
-      setSelectedCurrency(currencyAddress)
+      setSelectedCurrency(toTokenAddress)
     } else if (!swapOptionsIsLoading) {
       const firstOptionAddress = swapOptions?.[0]?.address
       setSelectedCurrency(firstOptionAddress)
     }
   }, [swapOptionsIsLoading])
 
-  const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)
+  const isNativeCurrency = compareAddress(toTokenAddress, zeroAddress)
   const network = findSupportedNetwork(chainId)
 
   const mainCurrencyName = isNativeCurrency ? network?.nativeToken.name : currencyInfoData?.name
@@ -67,7 +65,7 @@ export const Swap = () => {
   const mainCurrencySymbol = isNativeCurrency ? network?.nativeToken.symbol : currencyInfoData?.symbol
   const mainCurrencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfoData?.decimals
 
-  const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
+  const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, toTokenAddress)
 
   const {
     data: swapQuote,
@@ -77,8 +75,8 @@ export const Swap = () => {
     {
       params: {
         walletAddress: userAddress ?? '',
-        toTokenAddress: buyCurrencyAddress,
-        toTokenAmount: currencyAmount,
+        toTokenAddress,
+        toTokenAmount,
         fromTokenAddress: sellCurrencyAddress,
         chainId: chainId,
         includeApprove: true,
@@ -92,7 +90,7 @@ export const Swap = () => {
 
   const indexerClient = useIndexerClient(chainId)
 
-  const isMainCurrencySelected = compareAddress(selectedCurrency || '', currencyAddress)
+  const isMainCurrencySelected = compareAddress(selectedCurrency || '', toTokenAddress)
   const quoteFetchInProgress = isLoadingSwapQuote && !isMainCurrencySelected
 
   const isLoading = isLoadingCurrencyInfo || swapOptionsIsLoading
@@ -199,7 +197,7 @@ export const Swap = () => {
         </div>
       )
     } else {
-      const formattedPrice = formatUnits(BigInt(currencyAmount), mainCurrencyDecimals || 0)
+      const formattedPrice = formatUnits(BigInt(toTokenAmount), mainCurrencyDecimals || 0)
       const displayPrice = formatDisplay(formattedPrice, {
         disableScientificNotation: true,
         disableCompactNotation: true,
@@ -214,16 +212,16 @@ export const Swap = () => {
           <div className="flex w-full flex-col gap-2">
             {!disableMainCurrency && (
               <CryptoOption
-                key={currencyAddress}
+                key={toTokenAddress}
                 chainId={chainId}
                 currencyName={mainCurrencyName || mainCurrencySymbol || ''}
                 price={displayPrice}
                 iconUrl={mainCurrencyLogo}
                 symbol={mainCurrencySymbol || ''}
-                isSelected={compareAddress(selectedCurrency || '', currencyAddress)}
+                isSelected={compareAddress(selectedCurrency || '', toTokenAddress)}
                 onClick={() => {
                   setIsError(false)
-                  setSelectedCurrency(currencyAddress)
+                  setSelectedCurrency(toTokenAddress)
                 }}
                 disabled={isTxsPending}
               />
@@ -231,8 +229,7 @@ export const Swap = () => {
             {swapOptions.map(tokenOption => {
               const sellCurrencyAddress = tokenOption.address || ''
 
-              const formattedPrice = formatUnits(BigInt(tokenOption.priceUsd), tokenOption.decimals || 0)
-              const displayPrice = formatDisplay(formattedPrice, {
+              const displayPrice = formatDisplay(tokenOption.priceUsd, {
                 disableScientificNotation: true,
                 disableCompactNotation: true,
                 significantDigits: 6

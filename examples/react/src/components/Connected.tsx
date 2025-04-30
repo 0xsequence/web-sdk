@@ -320,8 +320,8 @@ export const Connected = () => {
 
   const onClickSwap = () => {
     const chainId = 137
-    const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const currencyAmount = '20000'
+    const toTokenAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+    const toTokenAmount = '20000'
     const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
     const swapModalSettings: SwapModalSettings = {
@@ -329,8 +329,8 @@ export const Connected = () => {
         console.log('swap successful!')
       },
       chainId,
-      currencyAddress,
-      currencyAmount,
+      toTokenAddress,
+      toTokenAmount,
       postSwapTransactions: [
         {
           to: '0x37470dac8a0255141745906c972e414b1409b470',

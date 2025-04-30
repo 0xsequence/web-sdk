@@ -52,7 +52,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     isLoading: swapOptionsIsLoading,
     isError: isErrorSwapOptions
   } = useGetSwapOptions({
-    userAddress: userAddress ?? '',
+    walletAddress: userAddress ?? '',
     toTokenAddress: buyCurrencyAddress,
     chainId: chainId
   })
@@ -248,8 +248,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
             {swapOptions.map(swapOption => {
               const sellCurrencyAddress = swapOption.address || ''
 
-              const formattedPrice = formatUnits(BigInt(swapOption.priceUsd), swapOption.decimals || 0)
-              const displayPrice = formatDisplay(formattedPrice, {
+              const displayPrice = formatDisplay(swapOption.priceUsd, {
                 disableScientificNotation: true,
                 disableCompactNotation: true,
                 significantDigits: 6

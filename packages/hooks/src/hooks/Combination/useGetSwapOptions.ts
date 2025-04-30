@@ -13,14 +13,14 @@ import { useAPIClient } from '../API/useAPIClient'
  * @property chainId - The chain ID where the swap will occur
  */
 export interface UseGetSwapOptionsArgs {
-  userAddress: string
+  walletAddress: string
   toTokenAddress: string
   chainId: number
 }
 
 const getSwapOptions = async (
   apiClient: SequenceAPIClient,
-  args: GetLifiSwapRoutesArgs & { userAddress: string }
+  args: GetLifiSwapRoutesArgs & { walletAddress: string }
 ): Promise<LifiToken[]> => {
   if (!args.chainId || !args.toTokenAddress) {
     return []
@@ -28,6 +28,7 @@ const getSwapOptions = async (
 
   const res = await apiClient.getLifiSwapRoutes({
     chainId: args.chainId,
+    walletAddress: args.walletAddress,
     toTokenAddress: args.toTokenAddress
   })
 
@@ -42,8 +43,7 @@ const getSwapOptions = async (
       })
     ) || []
 
-  const result = await Promise.all(promises)
-  return result.slice(0, 3)
+  return await Promise.all(promises)
 }
 
 export const useGetSwapOptions = (args: UseGetSwapOptionsArgs, options?: HooksOptions) => {
