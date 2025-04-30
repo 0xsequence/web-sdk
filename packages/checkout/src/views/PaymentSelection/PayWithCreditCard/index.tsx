@@ -32,8 +32,9 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
     onError = () => {},
     onClose = () => {},
     creditCardProviders = [],
+    supplementaryAnalyticsInfo = {},
     transakConfig,
-    supplementaryAnalyticsInfo = {}
+    forteConfig
   } = settings
 
   const { address: userAddress } = useAccount()
@@ -107,9 +108,10 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
-        transakConfig,
         approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || targetContractAddress,
-        supplementaryAnalyticsInfo
+        supplementaryAnalyticsInfo,
+        transakConfig,
+        forteConfig
       }
     }
 
