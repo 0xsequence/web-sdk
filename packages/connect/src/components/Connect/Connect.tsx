@@ -40,7 +40,7 @@ export const Connect = (props: ConnectProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const { analytics } = useAnalyticsContext()
-  const { showExternalWallets, showLinkedWallets } = useWalletSettings()
+  const { showExternalWallets, showConnectedWallets } = useWalletSettings()
 
   const { onClose, emailConflictInfo, config = {} as ConnectConfig, isPreview = false } = props
   const { signIn = {} } = config
@@ -382,7 +382,7 @@ export const Connect = (props: ConnectProps) => {
         </div>
       ) : (
         <>
-          {showLinkedWallets && wallets.length > 0 && !showEmailWaasPinInput && (
+          {showConnectedWallets && wallets.length > 0 && !showEmailWaasPinInput && (
             <>
               <ConnectedWallets
                 wallets={wallets}
@@ -392,12 +392,16 @@ export const Connect = (props: ConnectProps) => {
               />
 
               <>
-                <Divider className="text-background-raised w-full" />
-                <div className="flex justify-center">
-                  <Text variant="small" color="muted">
-                    {!hasConnectedSocialOrSequenceUniversal ? 'Connect with a social account' : 'Connect another wallet'}
-                  </Text>
-                </div>
+                {showExternalWallets && (
+                  <>
+                    <Divider className="text-background-raised w-full" />
+                    <div className="flex justify-center">
+                      <Text variant="small" color="muted">
+                        {!hasConnectedSocialOrSequenceUniversal ? 'Connect with a social account' : 'Connect another wallet'}
+                      </Text>
+                    </div>
+                  </>
+                )}
               </>
             </>
           )}

@@ -9,7 +9,7 @@ type WalletConfigContext = {
   displayedAssets: DisplayedAsset[]
   readOnlyNetworks?: number[]
   showExternalWallets?: boolean
-  showLinkedWallets?: boolean
+  showConnectedWallets?: boolean
 }
 
 const [useWalletConfigContext, WalletConfigContextProvider] = createGenericContext<WalletConfigContext>()

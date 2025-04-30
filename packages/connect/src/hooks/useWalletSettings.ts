@@ -16,11 +16,11 @@ import { useWalletConfigContext } from '../contexts/WalletConfig'
  * - `readOnlyNetworks` - Array of network IDs where transactions are disabled
  * - `setDisplayedAssets` - Function to update the list of displayed assets
  * - `showExternalWallets` - Whether external wallets are visible on the Connect Modal
- * - `showLinkedWallets` - Whether linked wallets are visible on the Connect Modal
+ * - `showConnectedWallets` - Whether linked wallets are visible on the Connect Modal
  *
  * @example
  * ```tsx
- * const { displayedAssets, readOnlyNetworks, setDisplayedAssets, showExternalWallets, showLinkedWallets } = useWalletSettings()
+ * const { displayedAssets, readOnlyNetworks, setDisplayedAssets, showExternalWallets, showConnectedWallets } = useWalletSettings()
  *
  * // Check if a network is read-only
  * const isReadOnly = readOnlyNetworks?.includes(1) // true if Ethereum mainnet is read-only
@@ -33,7 +33,7 @@ import { useWalletConfigContext } from '../contexts/WalletConfig'
  * ```
  */
 export const useWalletSettings = () => {
-  const { setDisplayedAssets, displayedAssets, readOnlyNetworks, showExternalWallets, showLinkedWallets } =
+  const { setDisplayedAssets, displayedAssets, readOnlyNetworks, showExternalWallets, showConnectedWallets } =
     useWalletConfigContext()
 
   return {
@@ -41,6 +41,6 @@ export const useWalletSettings = () => {
     readOnlyNetworks,
     setDisplayedAssets,
     showExternalWallets,
-    showLinkedWallets
+    showConnectedWallets
   }
 }
