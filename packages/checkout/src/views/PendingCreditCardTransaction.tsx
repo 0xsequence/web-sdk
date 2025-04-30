@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 import { useSignMessage, usePublicClient, useAccount } from 'wagmi'
 
-import { fetchFortePaymentStatus, fetchSardineOrderStatus } from '../api/data.js'
+import { fetchFortePaymentStatus, fetchSardineOrderStatus, type CreateFortePaymentIntentReturn } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
 import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
@@ -602,8 +602,51 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
 
   return (
     <div className="flex items-center justify-center" style={{ height: '770px' }}>
-      <div id="forte-payments-widget-container"></div>
-      <script onLoad={initializeFortePayment} type="module" async src={forteWidgetUrl}></script>
+      <Text color="primary">Payment in progress...</Text>
+      <ForteWidgetLoader widgetData={paymentIntentData?.widgetData || ''} />
     </div>
   )
+}
+
+interface ForteWidgetLoaderProps {
+  widgetData: CreateFortePaymentIntentReturn['widgetData']
+}
+
+export function ForteWidgetLoader({ widgetData }: ForteWidgetLoaderProps) {
+  console.log('widgetData', widgetData)
+  const { forteWidgetUrl } = useEnvironmentContext()
+
+  useEffect(() => {
+    if (document.getElementById('forte-widget-script')) return
+
+    const container = document.createElement('div')
+    container.id = 'forte-payments-widget-container'
+    document.body.appendChild(container)
+
+    const script = document.createElement('script')
+    script.id = 'forte-widget-script'
+    script.type = 'module'
+    script.async = true
+    script.src = forteWidgetUrl
+
+    script.onload = () => {
+      // @ts-ignore-next-line
+      if (window?.initFortePaymentsWidget && widgetData) {
+        // @ts-ignore-next-line
+        window.initFortePaymentsWidget({
+          containerId: 'forte-payments-widget-container',
+          data: widgetData
+        })
+      }
+    }
+
+    document.body.appendChild(script)
+
+    return () => {
+      document.getElementById('forte-widget-script')?.remove()
+      document.getElementById('forte-payments-widget-container')?.remove()
+    }
+  }, [widgetData])
+
+  return <div id="forte-payments-widget-container"></div>
 }
