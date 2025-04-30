@@ -51,7 +51,7 @@ export const getContent = (navigation: Navigation) => {
     case 'search-tokens':
       return <SearchTokens />
     case 'search-collectibles':
-      return <SearchCollectibles />
+      return <SearchCollectibles selectedCollection={navigation.params?.selectedCollection} />
     case 'settings':
       return <SettingsMenu />
     case 'settings-wallets':

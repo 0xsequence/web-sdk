@@ -517,6 +517,25 @@ export const Connected = () => {
               onClick={() => setOpenWalletModal(true)}
             />
             <CardButton
+              title="Wallet Widget Inventory"
+              description="View your items by collection"
+              onClick={() =>
+                setOpenWalletModal(true, {
+                  defaultNavigation: {
+                    location: 'search-collectibles',
+                    params: {
+                      selectedCollection: {
+                        chainId: 137,
+                        contractAddress: '0x92473261F2c26F2264429C451F70b0192f858795',
+                        name: 'TrainZ native sale (kit demo)',
+                        logoURI: ''
+                      }
+                    }
+                  }
+                })
+              }
+            />
+            <CardButton
               title="Wallet Widget Collectibles"
               description="View your integrated wallet collectibles"
               onClick={() =>

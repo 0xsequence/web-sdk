@@ -1,13 +1,27 @@
 import { useObservable } from 'micro-observables'
+import { useEffect } from 'react'
 
 import { CollectiblesList } from '../../components/SearchLists/CollectiblesList'
-import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
+import { useSettings, useNavigation, useGetAllTokensDetails, SettingsCollection } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'
 
-export const SearchCollectibles = () => {
-  const { selectedWalletsObservable, selectedNetworksObservable, selectedCollectionsObservable, hideUnlistedTokens } =
-    useSettings()
+export const SearchCollectibles = ({ selectedCollection }: { selectedCollection?: SettingsCollection }) => {
+  const {
+    selectedWalletsObservable,
+    selectedNetworksObservable,
+    selectedCollectionsObservable,
+    hideUnlistedTokens,
+    setSelectedCollections
+  } = useSettings()
   const { setNavigation } = useNavigation()
+
+  useEffect(() => {
+    if (selectedCollection) {
+      setSelectedCollections([selectedCollection])
+    } else {
+      setSelectedCollections([])
+    }
+  }, [selectedCollection])
 
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
