@@ -31,6 +31,7 @@ export interface ForteConfig {
   auctionHouse?: string
   protocol: ForteProtocolType
   seaportProtocolAddress?: string
+  sellerAddress?: string
 }
 
 export interface CreditCardCheckout {
