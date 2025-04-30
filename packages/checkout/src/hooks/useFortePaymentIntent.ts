@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { createFortePaymentIntent, CreateFortePaymentIntentArgs } from '../api/data'
-import { useEnvironmentContext } from '../contexts/Environment'
+import { createFortePaymentIntent, type CreateFortePaymentIntentArgs } from '../api/data.js'
+import { useEnvironmentContext } from '../contexts/Environment.js'
+
 interface UseFortePaymentIntentOptions {
   disabled?: boolean
 }
