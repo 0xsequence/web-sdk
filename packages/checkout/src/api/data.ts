@@ -285,6 +285,7 @@ export interface CreateFortePaymentIntentArgs {
   orderHash?: string
   seaportProtocolAddress?: string
   sellerAddress?: string
+  currencyQuantity: string
 }
 
 export interface CreateFortePaymentIntentReturn {
@@ -334,7 +335,8 @@ export const createFortePaymentIntent = async (
     nftAddress,
     currencyAddress,
     seaportProtocolAddress,
-    sellerAddress
+    sellerAddress,
+    currencyQuantity
   } = args
 
   const network = findSupportedNetwork(chainId)
@@ -406,7 +408,7 @@ export const createFortePaymentIntent = async (
       currency: getForteCurrency(chainId, currencyAddress),
       items: [
         {
-          amount: nftQuantity,
+          amount: currencyQuantity,
           id: '1',
           image_url: imageUrl,
           listing_data: listingData,
