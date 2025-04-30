@@ -50,7 +50,7 @@ export interface CreditCardCheckout {
   provider?: 'sardine' | 'transak' | 'forte'
   transakConfig?: TransakConfig
   forteConfig?: ForteConfig
-  onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
+  onSuccess?: (transactionHash?: string, settings?: CreditCardCheckout) => void
   onError?: (error: Error, settings: CreditCardCheckout) => void
   onClose?: () => void
   approvedSpenderAddress?: string

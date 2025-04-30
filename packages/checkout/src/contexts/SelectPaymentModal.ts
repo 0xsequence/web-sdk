@@ -39,7 +39,7 @@ export interface SelectPaymentSettings {
   recipientAddress: string | Hex
   approvedSpenderAddress?: string
   transactionConfirmations?: number
-  onSuccess?: (txHash: string) => void
+  onSuccess?: (txHash?: string) => void
   onError?: (error: Error) => void
   onClose?: () => void
   onRampProvider?: TransactionOnRampProvider
