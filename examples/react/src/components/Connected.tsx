@@ -440,10 +440,11 @@ export const Connected = () => {
       forteConfig: {
         protocol: 'seaport',
         orderHash: '0xe03a66c8b92779d5add941c30892fc1c3a1c5595425bd58b69602d42d54e0f20',
-        seaportProtocolAddress: '0x0000000000000068F116a894984e2DB1123eB395'
+        seaportProtocolAddress: '0x0000000000000068F116a894984e2DB1123eB395',
+        sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
       },
       copyrightText: 'ⓒ2024 Sequence',
-      onSuccess: (txnHash: string) => {
+      onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)
       },
       onError: (error: Error) => {
