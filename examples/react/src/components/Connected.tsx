@@ -526,9 +526,7 @@ export const Connected = () => {
                     params: {
                       selectedCollection: {
                         chainId: 137,
-                        contractAddress: '0x92473261F2c26F2264429C451F70b0192f858795',
-                        name: 'TrainZ native sale (kit demo)',
-                        logoURI: ''
+                        contractAddress: '0x92473261F2c26F2264429C451F70b0192f858795'
                       }
                     }
                   }

@@ -1,11 +1,18 @@
+import { useGetContractInfo } from '@0xsequence/hooks'
 import { useObservable } from 'micro-observables'
 import { useEffect } from 'react'
 
 import { CollectiblesList } from '../../components/SearchLists/CollectiblesList'
-import { useSettings, useNavigation, useGetAllTokensDetails, SettingsCollection } from '../../hooks'
+import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
 import { TokenBalanceWithPrice } from '../../utils'
 
-export const SearchCollectibles = ({ selectedCollection }: { selectedCollection?: SettingsCollection }) => {
+export const SearchCollectibles = ({
+  contractAddress,
+  chainId
+}: {
+  contractAddress: string | undefined
+  chainId: number | undefined
+}) => {
   const {
     selectedWalletsObservable,
     selectedNetworksObservable,
@@ -15,13 +22,29 @@ export const SearchCollectibles = ({ selectedCollection }: { selectedCollection?
   } = useSettings()
   const { setNavigation } = useNavigation()
 
+  // Only fetch contract info if contract address and chain id are provided
+  const { data: contractInfo } = useGetContractInfo(
+    {
+      chainID: String(chainId),
+      contractAddress: contractAddress || ''
+    },
+    { disabled: !contractAddress || !chainId }
+  )
+
   useEffect(() => {
-    if (selectedCollection) {
-      setSelectedCollections([selectedCollection])
+    if (contractAddress && chainId && contractInfo) {
+      setSelectedCollections([
+        {
+          contractAddress,
+          chainId: Number(chainId),
+          logoURI: contractInfo.logoURI,
+          name: contractInfo.name
+        }
+      ])
     } else {
       setSelectedCollections([])
     }
-  }, [selectedCollection])
+  }, [contractInfo])
 
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)

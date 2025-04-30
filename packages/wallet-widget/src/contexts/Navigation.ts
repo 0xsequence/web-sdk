@@ -2,8 +2,6 @@
 
 import { Transaction } from '@0xsequence/indexer'
 
-import { SettingsCollection } from '../hooks'
-
 import { createGenericContext } from './genericContext'
 
 export interface CoinDetailsParams {
@@ -90,7 +88,10 @@ export interface SendCollectibleNavigation {
 }
 
 export interface SearchCollectiblesParams {
-  selectedCollection: SettingsCollection
+  selectedCollection: {
+    chainId: number
+    contractAddress: string
+  }
 }
 
 export interface SearchCollectiblesNavigation {
