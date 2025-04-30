@@ -407,7 +407,11 @@ export const createFortePaymentIntent = async (
           amount: nftQuantity,
           id: '1',
           image_url: imageUrl,
-          listing_data: listingData
+          listing_data: listingData,
+          nft_data: {
+            contract_address: nftAddress,
+            token_id: tokenId
+          }
         }
       ]
     }
@@ -432,5 +436,43 @@ export const createFortePaymentIntent = async (
     notes,
     paymentIntentId: payment_intent_id,
     widgetData: widget_data
+  }
+}
+
+export interface FetchFortePaymentStatusArgs {
+  accessToken: string
+  tokenType: string
+  paymentIntentId: string
+}
+
+export type FortePaymentStatus = 'Expired' | 'Created' | 'Declined' | 'Approved'
+
+export interface FetchFortePaymentStatusReturn {
+  status: FortePaymentStatus
+}
+
+export const fetchFortePaymentStatus = async (
+  forteApiUrl: string,
+  args: FetchFortePaymentStatusArgs
+): Promise<FetchFortePaymentStatusReturn> => {
+  const { accessToken, tokenType, paymentIntentId } = args
+
+  const url = `${forteApiUrl}/payments/v1/payments/statuses`
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${tokenType} ${accessToken}`
+    },
+    body: JSON.stringify({
+      payment_intent_id: paymentIntentId
+    })
+  })
+
+  const { data } = await res.json()
+
+  return {
+    status: data.status as FortePaymentStatus
   }
 }
