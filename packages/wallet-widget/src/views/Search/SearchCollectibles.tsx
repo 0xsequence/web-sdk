@@ -44,7 +44,7 @@ export const SearchCollectibles = ({
     } else {
       setSelectedCollections([])
     }
-  }, [contractInfo])
+  }, [contractInfo, contractAddress, chainId])
 
   const selectedWallets = useObservable(selectedWalletsObservable)
   const selectedNetworks = useObservable(selectedNetworksObservable)
@@ -60,8 +60,12 @@ export const SearchCollectibles = ({
   const isSingleCollectionSelected = selectedCollections.length === 1
 
   const collectibleBalancesFiltered = tokenBalancesData.filter(token => {
-    if (isSingleCollectionSelected) {
-      return token.chainId === selectedCollections[0].chainId
+    if (isSingleCollectionSelected && selectedCollections[0]) {
+      // Ensure we only show tokens from the selected collection's chain and contract
+      return (
+        token.chainId === selectedCollections[0].chainId &&
+        token.contractAddress.toLowerCase() === selectedCollections[0].contractAddress.toLowerCase()
+      )
     }
     return true
   })
@@ -78,13 +82,26 @@ export const SearchCollectibles = ({
     })
   }
 
+  // Get the single selected collection details if available
+  const singleCollection = isSingleCollectionSelected ? selectedCollections[0] : null
+
+  // Prepare the header info object, only if a single collection is selected
+  const collectionHeaderInfo = singleCollection
+    ? {
+        logoURI: singleCollection.logoURI,
+        name: singleCollection.name,
+        chainId: singleCollection.chainId
+        // We could add collectibleBalancesFiltered.length here if needed later
+      }
+    : undefined
+
   return (
-    <div className="p-4 pt-2 w-full">
+    <div className="p-4 pt-2 w-full flex flex-col">
       <CollectiblesList
         tokenBalancesData={collectibleBalancesFiltered}
         isLoadingFirstPage={isLoading}
+        collectionHeaderInfo={collectionHeaderInfo} // Pass the new prop
         onTokenClick={onHandleCollectibleClick}
-        enableFilters={true}
       />
     </div>
   )
