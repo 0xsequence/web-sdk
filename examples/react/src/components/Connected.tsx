@@ -1,11 +1,11 @@
 import {
-  TransactionOnRampProvider,
   useAddFundsModal,
   useCheckoutModal,
   useSelectPaymentModal,
-  useSwapModal
+  useSwapModal,
+  TransactionOnRampProvider,
+  type SwapModalSettings
 } from '@0xsequence/checkout'
-import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
@@ -21,7 +21,7 @@ import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, type ComponentProps } from 'react'
-import { encodeFunctionData, formatUnits, parseAbi, toHex } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi, toHex, zeroAddress } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
@@ -358,11 +358,22 @@ export const Connected = () => {
     // const contractId = '674eb55a3d739107bbd18ecb'
 
     // // ERC-20 contract
-    const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-    const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
-    const price = '200000'
-    const contractId = '674eb5613d739107bbd18ed2'
+    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+    // const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
+    // const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
+    // const price = '20000'
+    // const contractId = '674eb5613d739107bbd18ed2'
+
+    // const chainId = 137
+
+    // Forte payment testnet testing
+    const currencyAddress = zeroAddress
+    const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
+    const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
+    const price = '1'
+    const contractId = ''
+
+    const chainId = 11155111
 
     const collectibles = [
       {
@@ -421,6 +432,15 @@ export const Connected = () => {
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
       transakConfig: {
         contractId
+      },
+      // forteConfig: {
+      //   protocol: 'mint'
+      // },
+      // Config for seaport testnet
+      forteConfig: {
+        protocol: 'seaport',
+        orderHash: '0xe03a66c8b92779d5add941c30892fc1c3a1c5595425bd58b69602d42d54e0f20',
+        seaportProtocolAddress: '0x0000000000000068F116a894984e2DB1123eB395'
       },
       copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash: string) => {
