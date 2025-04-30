@@ -8,6 +8,8 @@ type WalletConfigContext = {
   setDisplayedAssets: React.Dispatch<React.SetStateAction<DisplayedAsset[]>>
   displayedAssets: DisplayedAsset[]
   readOnlyNetworks?: number[]
+  showExternalWallets?: boolean
+  showLinkedWallets?: boolean
 }
 
 const [useWalletConfigContext, WalletConfigContextProvider] = createGenericContext<WalletConfigContext>()

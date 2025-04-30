@@ -32,7 +32,9 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
     displayedAssets: displayedAssetsSetting = [],
     readOnlyNetworks,
     ethAuth = {} as EthAuthSettings,
-    disableAnalytics = false
+    disableAnalytics = false,
+    showExternalWallets = true,
+    showLinkedWallets = true
   } = config
 
   const defaultAppName = signIn.projectName || 'app'
@@ -122,7 +124,9 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
           <ConnectModalContextProvider
             value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
           >
-            <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
+            <WalletConfigContextProvider
+              value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks, showExternalWallets, showLinkedWallets }}
+            >
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">
                   <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>

@@ -45,7 +45,9 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     displayedAssets: displayedAssetsSetting = [],
     readOnlyNetworks,
     ethAuth = {} as EthAuthSettings,
-    disableAnalytics = false
+    disableAnalytics = false,
+    showExternalWallets = true,
+    showLinkedWallets = true
   } = config
 
   const defaultAppName = signIn.projectName || 'app'
@@ -168,7 +170,9 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
             <ConnectModalContextProvider
               value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
             >
-              <WalletConfigContextProvider value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks }}>
+              <WalletConfigContextProvider
+                value={{ setDisplayedAssets, displayedAssets, readOnlyNetworks, showExternalWallets, showLinkedWallets }}
+              >
                 <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                   <ShadowRoot theme={theme}>
                     <AnimatePresence>

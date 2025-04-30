@@ -79,6 +79,8 @@ export interface ConnectConfig {
   readOnlyNetworks?: number[]
   ethAuth?: EthAuthSettings
   env?: Partial<SequenceHooksEnv>
+  showExternalWallets?: boolean
+  showLinkedWallets?: boolean
 }
 
 export type StorageItem = {

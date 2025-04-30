@@ -15,6 +15,7 @@ import { useEmailAuth } from '../../hooks/useWaasEmailAuth'
 import { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict'
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet'
 import { useWallets } from '../../hooks/useWallets'
+import { useWalletSettings } from '../../hooks/useWalletSettings'
 import { ExtendedConnector, ConnectConfig, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
@@ -39,6 +40,7 @@ export const Connect = (props: ConnectProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const { analytics } = useAnalyticsContext()
+  const { showExternalWallets, showLinkedWallets } = useWalletSettings()
 
   const { onClose, emailConflictInfo, config = {} as ConnectConfig, isPreview = false } = props
   const { signIn = {} } = config
@@ -380,7 +382,7 @@ export const Connect = (props: ConnectProps) => {
         </div>
       ) : (
         <>
-          {wallets.length > 0 && !showEmailWaasPinInput && (
+          {showLinkedWallets && wallets.length > 0 && !showEmailWaasPinInput && (
             <>
               <ConnectedWallets
                 wallets={wallets}
@@ -486,7 +488,7 @@ export const Connect = (props: ConnectProps) => {
                   </div>
                 </>
               )}
-              {walletConnectors.length > 0 && (
+              {showExternalWallets && walletConnectors.length > 0 && (
                 <>
                   <div
                     className={clsx(
