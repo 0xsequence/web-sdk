@@ -529,10 +529,11 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       protocol: creditCardCheckout.forteConfig?.protocol || 'mint',
       auctionHouse: creditCardCheckout.forteConfig?.auctionHouse,
       orderHash: creditCardCheckout.forteConfig?.orderHash,
-      seaportProtocolAddress: creditCardCheckout.forteConfig?.seaportProtocolAddress
+      seaportProtocolAddress: creditCardCheckout.forteConfig?.seaportProtocolAddress,
+      sellerAddress: creditCardCheckout.forteConfig?.sellerAddress
     },
     {
-      disabled: (!isMessageSigned && isSignatureRequired) || isLoadingTokenMetadata
+      disabled: (!isMessageSigned && isSignatureRequired) || isLoadingTokenMetadata || isLoadingAccessToken
     }
   )
 
