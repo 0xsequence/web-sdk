@@ -518,7 +518,7 @@ export const Connected = () => {
             />
             <CardButton
               title="Wallet Widget Inventory"
-              description="View your items by collection"
+              description="Open the wallet widget with a specific collection"
               onClick={() =>
                 setOpenWalletModal(true, {
                   defaultNavigation: {
@@ -529,17 +529,6 @@ export const Connected = () => {
                         contractAddress: '0x92473261F2c26F2264429C451F70b0192f858795'
                       }
                     }
-                  }
-                })
-              }
-            />
-            <CardButton
-              title="Wallet Widget Collectibles"
-              description="View your integrated wallet collectibles"
-              onClick={() =>
-                setOpenWalletModal(true, {
-                  defaultNavigation: {
-                    location: 'search-collectibles'
                   }
                 })
               }
