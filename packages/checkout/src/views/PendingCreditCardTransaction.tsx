@@ -493,7 +493,8 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       tokenId: creditCardCheckout.nftId,
       protocol: creditCardCheckout.forteConfig?.protocol || 'mint',
       auctionHouse: creditCardCheckout.forteConfig?.auctionHouse,
-      orderHash: creditCardCheckout.forteConfig?.orderHash
+      orderHash: creditCardCheckout.forteConfig?.orderHash,
+      seaportProtocolAddress: creditCardCheckout.forteConfig?.seaportProtocolAddress
     },
     {
       disabled: (!isMessageSigned && isSignatureRequired) || isLoadingTokenMetadata
@@ -516,7 +517,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     }
   }
 
-  if (!isMessageSigned) {
+  if (!isMessageSigned && isSignatureRequired) {
     return (
       <div className="flex items-center justify-center" style={{ height: '770px' }}>
         <Button variant="primary" onClick={onClickSignMessage}>
