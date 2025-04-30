@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 import { useSignMessage, usePublicClient, useAccount } from 'wagmi'
 
-import { fetchSardineOrderStatus } from '../api/data.js'
+import { fetchFortePaymentStatus, fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
 import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
@@ -455,6 +455,8 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
   const publicClient = usePublicClient({ chainId: creditCardCheckout.chainId })
   const isMessageSigned = signatureData !== undefined
   const isSignatureRequired = creditCardCheckout.forteConfig?.protocol === 'mint'
+  const { fortePaymentUrl } = useEnvironmentContext()
+  const { closeCheckout } = useCheckoutModal()
 
   const {
     data: tokenMetadatas,
@@ -469,6 +471,39 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
   const tokenMetadata = tokenMetadatas ? tokenMetadatas[0] : undefined
 
   const nftQuantity = formatUnits(BigInt(creditCardCheckout.nftQuantity), Number(creditCardCheckout.nftDecimals || 0))
+
+  useEffect(() => {
+    return () => {
+      creditCardCheckout.onClose?.()
+    }
+  }, [])
+
+  const checkFortePaymentStatus = async (paymentIntentId: string) => {
+    if (!accessTokenData) {
+      return
+    }
+
+    const { status } = await fetchFortePaymentStatus(fortePaymentUrl, {
+      accessToken: accessTokenData.accessToken,
+      tokenType: accessTokenData.tokenType,
+      paymentIntentId: paymentIntentId
+    })
+
+    if (status === 'Approved') {
+      creditCardCheckout.onSuccess?.()
+      closeCheckout()
+    }
+
+    if (status === 'Declined' || status === 'Expired') {
+      skipOnCloseCallback()
+      nav.setNavigation({
+        location: 'transaction-error',
+        params: {
+          error: new Error('A problem occurred while processing your payment')
+        }
+      })
+    }
+  }
 
   const {
     data: paymentIntentData,
@@ -497,6 +532,17 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       disabled: (!isMessageSigned && isSignatureRequired) || isLoadingTokenMetadata
     }
   )
+
+  const paymentIntentId = paymentIntentData?.paymentIntentId
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (paymentIntentId) {
+        checkFortePaymentStatus(paymentIntentId)
+      }
+    }, POLLING_TIME)
+
+    return () => clearInterval(interval)
+  }, [paymentIntentId])
 
   const isLoading = isLoadingTokenMetadata || isLoadingAccessToken || isLoadingPaymentIntent
   const isError = isErrorTokenMetadata || isErrorAccessToken || isErrorPaymentIntent
