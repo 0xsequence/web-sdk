@@ -370,7 +370,7 @@ export const Connected = () => {
     const currencyAddress = zeroAddress
     const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
     const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
-    const price = '1'
+    const price = '600000000000000'
     const contractId = ''
 
     const chainId = 11155111
@@ -439,7 +439,7 @@ export const Connected = () => {
       // Config for seaport testnet
       forteConfig: {
         protocol: 'seaport',
-        orderHash: '0xe03a66c8b92779d5add941c30892fc1c3a1c5595425bd58b69602d42d54e0f20',
+        orderHash: '0x832b698e52508849fe533fdef53d6d9674be4f43eb1a2eb3415e46041f087af9',
         seaportProtocolAddress: '0x0000000000000068F116a894984e2DB1123eB395',
         sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
       },
