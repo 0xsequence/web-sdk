@@ -37,7 +37,7 @@ export const CryptoOption = ({
         <div className="w-fit">
           <TokenImage src={iconUrl} size="lg" symbol={symbol} withNetwork={chainId} disableAnimation />
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-center">
           <Text
             className="whitespace-nowrap"
             variant="normal"
@@ -51,18 +51,20 @@ export const CryptoOption = ({
           >
             {currencyName}
           </Text>
-          <Text
-            className="whitespace-nowrap"
-            variant="normal"
-            color="muted"
-            ellipsis
-            style={{
-              overflow: 'hidden',
-              width: '215px'
-            }}
-          >
-            {`Token price: $${price}`}
-          </Text>
+          {price && (
+            <Text
+              className="whitespace-nowrap"
+              variant="normal"
+              color="muted"
+              ellipsis
+              style={{
+                overflow: 'hidden',
+                width: '215px'
+              }}
+            >
+              {`${price} ${symbol}`}
+            </Text>
+          )}
         </div>
       </div>
       <div className="flex flex-row justify-center items-center gap-3">

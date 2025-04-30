@@ -54,6 +54,7 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
   } = useGetSwapOptions({
     walletAddress: userAddress ?? '',
     toTokenAddress: buyCurrencyAddress,
+    toTokenAmount: amount,
     chainId: chainId
   })
 

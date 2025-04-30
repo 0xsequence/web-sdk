@@ -102,12 +102,12 @@ export const PaymentSelectionContent = () => {
   })
 
   const buyCurrencyAddress = currencyAddress
-  const sellCurrencyAddress = selectedCurrency || ''
 
   const { data: swapOptions = [], isLoading: swapOptionsIsLoading } = useGetSwapOptions(
     {
       walletAddress: userAddress ?? '',
       chainId,
+      toTokenAmount: price,
       toTokenAddress: currencyAddress
     },
     { disabled: !enableSwapPayments }
@@ -120,7 +120,7 @@ export const PaymentSelectionContent = () => {
       params: {
         walletAddress: userAddress ?? '',
         toTokenAddress: buyCurrencyAddress,
-        fromTokenAddress: sellCurrencyAddress,
+        fromTokenAddress: selectedCurrency || '',
         toTokenAmount: price,
         chainId: chainId,
         includeApprove: true,
@@ -309,6 +309,8 @@ export const PaymentSelectionContent = () => {
         }
       ]
 
+      console.log('transactions', transactions)
+
       const txHash = await sendTransactions({
         chainId,
         senderAddress: userAddress,
@@ -374,6 +376,7 @@ export const PaymentSelectionContent = () => {
       onPurchaseMainCurrency()
     } else {
       const foundSwap = swapOptions?.find(tokenOption => tokenOption.address === selectedCurrency)
+      console.log('foundSwap', foundSwap)
       if (foundSwap) {
         onClickPurchaseSwap(foundSwap)
       }

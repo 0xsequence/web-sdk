@@ -44,6 +44,7 @@ export const PayWithCrypto = ({
     {
       walletAddress: userAddress ?? '',
       chainId,
+      toTokenAmount: price,
       toTokenAddress: currencyAddress
     },
     { disabled: !enableSwapPayments || !userAddress }
@@ -197,8 +198,6 @@ export const PayWithCrypto = ({
   useEffect(() => {
     clearCachedBalances()
   }, [clearCachedBalances])
-
-  console.log(coins, 'coins')
 
   const Options = () => {
     const lowerSelectedCurrency = selectedCurrency?.toLowerCase()

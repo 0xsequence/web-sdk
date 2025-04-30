@@ -16,6 +16,7 @@ export interface UseGetSwapOptionsArgs {
   walletAddress: string
   toTokenAddress: string
   chainId: number
+  toTokenAmount: string
 }
 
 const getSwapOptions = async (
@@ -29,7 +30,8 @@ const getSwapOptions = async (
   const res = await apiClient.getLifiSwapRoutes({
     chainId: args.chainId,
     walletAddress: args.walletAddress,
-    toTokenAddress: args.toTokenAddress
+    toTokenAddress: args.toTokenAddress,
+    toTokenAmount: args.toTokenAmount
   })
 
   if (res.routes.length === 0) {

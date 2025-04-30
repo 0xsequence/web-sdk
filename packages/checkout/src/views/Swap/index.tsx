@@ -30,8 +30,6 @@ export const Swap = () => {
   const publicClient = usePublicClient({ chainId })
   const { data: walletClient } = useWalletClient({ chainId })
 
-  const sellCurrencyAddress = selectedCurrency || ''
-
   const {
     data: currencyInfoData,
     isLoading: isLoadingCurrencyInfo,
@@ -45,6 +43,7 @@ export const Swap = () => {
   } = useGetSwapOptions({
     chainId,
     toTokenAddress,
+    toTokenAmount,
     walletAddress: userAddress ?? ''
   })
 
@@ -77,7 +76,7 @@ export const Swap = () => {
         walletAddress: userAddress ?? '',
         toTokenAddress,
         toTokenAmount,
-        fromTokenAddress: sellCurrencyAddress,
+        fromTokenAddress: selectedCurrency || '',
         chainId: chainId,
         includeApprove: true,
         slippageBps: 100
@@ -172,6 +171,9 @@ export const Swap = () => {
   const isErrorFetchingOptions = isErrorSwapOptions || isErrorCurrencyInfo
   const noOptionsFound = disableMainCurrency && swapOptions.length === 0
 
+  console.log('selectedCurrency', selectedCurrency)
+  console.log('swapOptions', swapOptions)
+
   const SwapContent = () => {
     if (isLoading) {
       return (
@@ -227,25 +229,19 @@ export const Swap = () => {
               />
             )}
             {swapOptions.map(tokenOption => {
-              const sellCurrencyAddress = tokenOption.address || ''
-
-              const displayPrice = formatDisplay(tokenOption.priceUsd, {
-                disableScientificNotation: true,
-                disableCompactNotation: true,
-                significantDigits: 6
-              })
+              const displayPrice = formatUnits(BigInt(tokenOption.price || '0'), tokenOption.decimals || 0)
               return (
                 <CryptoOption
-                  key={sellCurrencyAddress}
+                  key={tokenOption.address}
                   chainId={chainId}
                   currencyName={tokenOption.name || tokenOption.symbol || ''}
                   symbol={tokenOption.symbol || ''}
-                  isSelected={compareAddress(selectedCurrency || '', sellCurrencyAddress)}
+                  isSelected={compareAddress(selectedCurrency || '', tokenOption.address)}
                   iconUrl={tokenOption.logoUri}
                   price={displayPrice}
                   onClick={() => {
                     setIsError(false)
-                    setSelectedCurrency(sellCurrencyAddress)
+                    setSelectedCurrency(tokenOption.address)
                   }}
                   disabled={isTxsPending}
                 />

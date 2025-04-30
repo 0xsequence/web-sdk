@@ -360,7 +360,7 @@ export const Connected = () => {
     const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
     const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
-    const price = '20000'
+    const price = '200000'
     const contractId = '674eb5613d739107bbd18ed2'
 
     const chainId = 137

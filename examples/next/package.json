@@ -10,30 +10,30 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "2.1.6",
-    "@0xsequence/network": ">= 2.3.7",
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
+    "@0xsequence/design-system": "2.1.6",
     "@0xsequence/hooks": "workspace:*",
+    "@0xsequence/network": "^2.3.10",
+    "@0xsequence/waas": "^2.3.10",
     "@0xsequence/wallet-widget": "workspace:*",
-    "@0xsequence/waas": ">= 2.3.7",
-    "@tailwindcss/postcss": "^4.0.6",
-    "@tanstack/react-query": "^5.62.0",
+    "@tailwindcss/postcss": "^4.1.4",
+    "@tanstack/react-query": "^5.74.11",
     "example-shared-components": "workspace:*",
     "next": "14.2.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.6",
-    "viem": "^2.28.0",
-    "wagmi": "^2.15.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.4",
+    "viem": "^2.28.1",
+    "wagmi": "^2.15.1"
   },
   "devDependencies": {
-    "@types/node": "^20.12.12",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "eslint": "^8",
+    "@types/node": "^20.17.32",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.3",
+    "eslint": "^8.57.1",
     "eslint-config-next": "14.2.3",
-    "postcss": "^8.5.1",
-    "typescript": "^5.8.2"
+    "postcss": "^8.5.3",
+    "typescript": "^5.8.3"
   }
 }

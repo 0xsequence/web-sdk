@@ -39,23 +39,23 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/api": "0.0.0-20250430094114",
-    "@0xsequence/auth": ">= 2.3.7",
-    "@0xsequence/core": ">= 2.3.7",
+    "@0xsequence/api": "0.0.0-20250430130723",
+    "@0xsequence/auth": "^2.3.10",
+    "@0xsequence/core": "^2.3.10",
     "@0xsequence/design-system": "2.1.6",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/hooks": "workspace:*",
-    "@0xsequence/indexer": ">= 2.3.7",
-    "@0xsequence/metadata": ">= 2.3.7",
-    "@0xsequence/network": ">= 2.3.7",
-    "@0xsequence/provider": ">= 2.3.7",
-    "@0xsequence/utils": ">= 2.3.7",
-    "@0xsequence/waas": ">= 2.3.7",
-    "@tailwindcss/cli": "^4.0.14",
+    "@0xsequence/indexer": "^2.3.10",
+    "@0xsequence/metadata": "^2.3.10",
+    "@0xsequence/network": "^2.3.10",
+    "@0xsequence/provider": "^2.3.10",
+    "@0xsequence/utils": "^2.3.10",
+    "@0xsequence/waas": "^2.3.10",
+    "@tailwindcss/cli": "^4.1.4",
     "clsx": "^2.1.1",
     "fuse.js": "^6.6.2",
-    "motion": "^12.3.1",
-    "tailwindcss": "^4.0.6",
+    "motion": "^12.9.2",
+    "tailwindcss": "^4.1.4",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
@@ -71,14 +71,14 @@
     "wagmi": ">= 2.15.0"
   },
   "devDependencies": {
-    "0xsequence": ">= 2.3.7",
-    "concurrently": "^9.1.2",
-    "@tanstack/react-query": "^5.62.0",
+    "0xsequence": "^2.3.10",
+    "@tanstack/react-query": "^5.74.11",
     "@types/uuid": "^9.0.8",
-    "ethers": "^6.13.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "viem": "^2.28.0",
-    "wagmi": "^2.15.0"
+    "concurrently": "^9.1.2",
+    "ethers": "^6.13.7",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "viem": "^2.28.1",
+    "wagmi": "^2.15.1"
   }
 }
