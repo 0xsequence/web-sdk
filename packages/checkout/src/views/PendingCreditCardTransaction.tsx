@@ -474,6 +474,10 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
   const tokenMetadata = tokenMetadatas ? tokenMetadatas[0] : undefined
 
   const nftQuantity = formatUnits(BigInt(creditCardCheckout.nftQuantity), Number(creditCardCheckout.nftDecimals || 0))
+  const currencyQuantity = formatUnits(
+    BigInt(creditCardCheckout.currencyQuantity),
+    Number(creditCardCheckout.currencyDecimals || 18)
+  )
 
   useEffect(() => {
     return () => {
@@ -530,7 +534,8 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       auctionHouse: creditCardCheckout.forteConfig?.auctionHouse,
       orderHash: creditCardCheckout.forteConfig?.orderHash,
       seaportProtocolAddress: creditCardCheckout.forteConfig?.seaportProtocolAddress,
-      sellerAddress: creditCardCheckout.forteConfig?.sellerAddress
+      sellerAddress: creditCardCheckout.forteConfig?.sellerAddress,
+      currencyQuantity
     },
     {
       disabled: (!isMessageSigned && isSignatureRequired) || isLoadingTokenMetadata || isLoadingAccessToken
