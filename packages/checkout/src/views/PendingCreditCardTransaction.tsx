@@ -624,6 +624,7 @@ export function ForteWidgetLoader({ widgetData }: ForteWidgetLoaderProps) {
     script.src = forteWidgetUrl
 
     script.onload = () => {
+      console.log(Object.hasOwn(window, 'initFortePaymentsWidget'))
       // @ts-ignore-next-line
       if (window?.initFortePaymentsWidget && widgetData) {
         // @ts-ignore-next-line
