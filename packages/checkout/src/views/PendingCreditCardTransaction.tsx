@@ -642,5 +642,5 @@ export function ForteWidgetLoader({ widgetData }: ForteWidgetLoaderProps) {
     }
   }, [widgetData])
 
-  return <div id="forte-payments-widget-container"></div>
+  return null
 }
