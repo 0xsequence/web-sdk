@@ -426,6 +426,10 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     body: JSON.stringify(body)
   })
 
+  if (!res.ok) {
+    throw new Error(`Failed to fetch widget data, with status: ${res.status}`)
+  }
+
   const data = await res.json()
 
   return data
