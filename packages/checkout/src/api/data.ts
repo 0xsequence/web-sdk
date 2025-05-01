@@ -288,14 +288,6 @@ export interface CreateFortePaymentIntentArgs {
   currencyQuantity: string
 }
 
-export interface CreateFortePaymentIntentReturn {
-  errorCode: string | null
-  flow: string
-  notes: string[]
-  paymentIntentId: string
-  widgetData: string
-}
-
 const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
   '1': {
     [zeroAddress]: 'ETH',
@@ -314,10 +306,7 @@ const getForteCurrency = (chainId: string, currencyAddress: string) => {
   return forteCurrencyMap[chainId]?.[currencyAddress.toLowerCase()] || 'ETH'
 }
 
-export const createFortePaymentIntent = async (
-  forteApiUrl: string,
-  args: CreateFortePaymentIntentArgs
-): Promise<CreateFortePaymentIntentReturn> => {
+export const createFortePaymentIntent = async (forteApiUrl: string, args: CreateFortePaymentIntentArgs): Promise<any> => {
   const {
     accessToken,
     tokenType,
@@ -437,17 +426,9 @@ export const createFortePaymentIntent = async (
     body: JSON.stringify(body)
   })
 
-  const {
-    data: { error_code, flow, notes, payment_intent_id, widget_data }
-  } = await res.json()
+  const data = await res.json()
 
-  return {
-    errorCode: error_code,
-    flow,
-    notes,
-    paymentIntentId: payment_intent_id,
-    widgetData: widget_data
-  }
+  return data
 }
 
 export interface FetchFortePaymentStatusArgs {
