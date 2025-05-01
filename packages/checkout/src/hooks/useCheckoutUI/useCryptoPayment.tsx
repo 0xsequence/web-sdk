@@ -102,19 +102,6 @@ export const useCryptoPayment = ({
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(totalPriceRaw) || isNativeCurrency
 
-  const { data: currencyBalanceDataPaginated, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
-    chainIds: [chainId],
-    filter: {
-      accountAddresses: userAddress ? [userAddress] : [],
-      contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [currencyAddress],
-      omitNativeBalances: false
-    },
-    omitMetadata: true
-  })
-
-  const currencyBalanceData = currencyBalanceDataPaginated?.pages?.flatMap(page => page.balances)
-
   const buyCurrencyAddress = currencyAddress
 
   const {
@@ -127,6 +114,19 @@ export const useCryptoPayment = ({
     toTokenAddress: currencyAddress || '',
     chainId: chainId
   })
+
+  const { data: currencyBalanceDataPaginated, isLoading: currencyBalanceIsLoading } = useGetTokenBalancesSummary({
+    chainIds: [chainId],
+    filter: {
+      accountAddresses: userAddress ? [userAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [currencyAddress, ...swapOptions.map(swapOption => swapOption.address)],
+      omitNativeBalances: false
+    },
+    omitMetadata: true
+  })
+
+  const currencyBalanceData = currencyBalanceDataPaginated?.pages?.flatMap(page => page.balances)
 
   const disableSwapQuote = !selectedCurrencyAddress || compareAddress(selectedCurrencyAddress, buyCurrencyAddress)
 
@@ -148,9 +148,8 @@ export const useCryptoPayment = ({
     }
   )
 
-  console.log('currencyBalanceData', currencyBalanceData)
-
-  const mainCurrencyBalance = currencyBalanceData?.[0]?.balance || '0'
+  const mainCurrencyBalance =
+    currencyBalanceData?.find(balance => balance.contractAddress === currencyAddress.toLowerCase())?.balance || '0'
   const priceFormatted = formatUnits(BigInt(totalPriceRaw), currencyInfo?.decimals || 0)
   const priceDisplay = formatDisplay(priceFormatted, {
     disableScientificNotation: true,
@@ -334,9 +333,27 @@ export const useCryptoPayment = ({
     }
   }
 
+  const swapOptionsFormatted: CryptoOption[] = swapOptions.map(swapOption => ({
+    ...swapOption,
+    totalPriceRaw: swapOption.price || '0',
+    isSelected: compareAddress(swapOption.address, selectedCurrencyAddress || ''),
+    isInsufficientFunds:
+      Number(
+        currencyBalanceData?.find(balance => balance.contractAddress.toLowerCase() === swapOption.address.toLowerCase())
+          ?.balance || '0'
+      ) < Number(swapOption.price || '0'),
+    totalPriceDisplay: swapOption.price
+      ? formatDisplay(formatUnits(BigInt(swapOption.price || '0'), swapOption.decimals || 18), {
+          disableScientificNotation: true,
+          disableCompactNotation: true,
+          significantDigits: 6
+        })
+      : '0'
+  }))
+
   return {
     cryptoOptions: {
-      data: [...mainCurrencyOption],
+      data: [...mainCurrencyOption, ...swapOptionsFormatted],
       isLoading: isLoadingCurrencyInfo || swapOptionsIsLoading || currencyBalanceIsLoading,
       error: errorCurrencyInfo || swapOptionsError
     },
