@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 import { useSignMessage, usePublicClient, useAccount } from 'wagmi'
 
-import { fetchSardineOrderStatus, fetchFortePaymentStatus, CreateFortePaymentIntentReturn } from '../api'
+import { fetchSardineOrderStatus, fetchFortePaymentStatus } from '../api'
 import { NFT_CHECKOUT_SOURCE } from '../constants'
 import { TransactionPendingNavigation, useEnvironmentContext } from '../contexts'
 import {
@@ -570,7 +570,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     )
   }
 
-  if (isLoading) {
+  if (isLoading || !paymentIntentData) {
     return (
       <div className="flex items-center justify-center" style={{ height: '770px' }}>
         <Spinner size="lg" />
@@ -586,30 +586,19 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     )
   }
 
-  const initializeFortePayment = () => {
-    // @ts-ignore-next-line
-    window.initFortePaymentsWidget({
-      containerId: 'forte-payments-widget-container',
-      data: {
-        ...paymentIntentData
-      }
-    })
-  }
-
   return (
     <div className="flex items-center justify-center" style={{ height: '770px' }}>
       <Text color="primary">Payment in progress...</Text>
-      <ForteWidgetLoader widgetData={paymentIntentData?.widgetData || ''} />
+      <ForteWidgetLoader widgetData={paymentIntentData} />
     </div>
   )
 }
 
 interface ForteWidgetLoaderProps {
-  widgetData: CreateFortePaymentIntentReturn['widgetData']
+  widgetData: any
 }
 
 export function ForteWidgetLoader({ widgetData }: ForteWidgetLoaderProps) {
-  console.log('widgetData', widgetData)
   const { forteWidgetUrl } = useEnvironmentContext()
 
   useEffect(() => {
