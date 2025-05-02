@@ -2,7 +2,7 @@ import { CryptoOption, compareAddress, formatDisplay, sendTransactions } from '@
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useGetContractInfo,
-  useGetSwapOptions,
+  useGetSwapRoutes,
   useGetSwapQuote,
   useGetTokenBalancesSummary,
   useIndexerClient
@@ -43,10 +43,10 @@ export const Swap = () => {
   } = useGetContractInfo({ chainID: String(chainId), contractAddress: toTokenAddress })
 
   const {
-    data: swapOptions = [],
-    isLoading: swapOptionsIsLoading,
-    isError: isErrorSwapOptions
-  } = useGetSwapOptions({
+    data: swapRoutes = [],
+    isLoading: swapRoutesIsLoading,
+    isError: isErrorSwapRoutes
+  } = useGetSwapRoutes({
     chainId,
     toTokenAddress,
     toTokenAmount,
@@ -58,7 +58,7 @@ export const Swap = () => {
     filter: {
       accountAddresses: [userAddress ?? ''],
       omitNativeBalances: false,
-      contractWhitelist: swapOptions.map(option => option.address)
+      contractWhitelist: swapRoutes.flatMap(route => route.fromTokens).map(fromToken => fromToken.address)
     }
   })
 
@@ -72,11 +72,11 @@ export const Swap = () => {
   useEffect(() => {
     if (!disableMainCurrency) {
       setSelectedCurrency(toTokenAddress)
-    } else if (!swapOptionsIsLoading) {
-      const firstOptionAddress = swapOptions?.[0]?.address
+    } else if (!swapRoutesIsLoading) {
+      const firstOptionAddress = swapRoutes.flatMap(route => route.fromTokens)[0]?.address
       setSelectedCurrency(firstOptionAddress)
     }
-  }, [swapOptionsIsLoading])
+  }, [swapRoutesIsLoading])
 
   const isNativeCurrency = compareAddress(toTokenAddress, zeroAddress)
   const network = findSupportedNetwork(chainId)
@@ -112,7 +112,7 @@ export const Swap = () => {
   const indexerClient = useIndexerClient(chainId)
   const isMainCurrencySelected = compareAddress(selectedCurrency || '', toTokenAddress)
   const quoteFetchInProgress = isLoadingSwapQuote && !isMainCurrencySelected
-  const isLoading = isLoadingCurrencyInfo || swapOptionsIsLoading
+  const isLoading = isLoadingCurrencyInfo || swapRoutesIsLoading
 
   const onClickProceed = async () => {
     if (!userAddress || !publicClient || !walletClient || !connector) {
@@ -123,7 +123,7 @@ export const Swap = () => {
     setIsTxsPending(true)
 
     try {
-      const swapOption = swapOptions?.find(option => option.address === selectedCurrency)
+      const swapOption = swapRoutes.flatMap(route => route.fromTokens).find(option => option.address === selectedCurrency)
       const isSwapNativeToken = compareAddress(zeroAddress, swapOption?.address || '')
 
       const getSwapTransactions = () => {
@@ -188,8 +188,8 @@ export const Swap = () => {
     }
   }
 
-  const isErrorFetchingOptions = isErrorSwapOptions || isErrorCurrencyInfo
-  const noOptionsFound = disableMainCurrency && swapOptions.length === 0
+  const isErrorFetchingOptions = isErrorSwapRoutes || isErrorCurrencyInfo
+  const noOptionsFound = disableMainCurrency && swapRoutes.flatMap(route => route.fromTokens).length === 0
 
   const SwapContent = () => {
     if (isLoading || isLoadingTokenBalances) {
@@ -245,29 +245,31 @@ export const Swap = () => {
                 disabled={isTxsPending}
               />
             )}
-            {swapOptions.map(tokenOption => {
-              const displayPrice = formatUnits(BigInt(tokenOption.price || '0'), tokenOption.decimals || 0)
-              const balance = tokenBalancesMap.get(tokenOption.address.toLowerCase())
-              const insufficientFunds = balance ? BigInt(balance) < BigInt(tokenOption.price || '0') : false
+            {swapRoutes
+              .flatMap(route => route.fromTokens)
+              .map(tokenOption => {
+                const displayPrice = formatUnits(BigInt(tokenOption.price || '0'), tokenOption.decimals || 0)
+                const balance = tokenBalancesMap.get(tokenOption.address.toLowerCase())
+                const insufficientFunds = balance ? BigInt(balance) < BigInt(tokenOption.price || '0') : false
 
-              return (
-                <CryptoOption
-                  key={tokenOption.address}
-                  chainId={chainId}
-                  currencyName={tokenOption.name || tokenOption.symbol || ''}
-                  symbol={tokenOption.symbol || ''}
-                  isSelected={compareAddress(selectedCurrency || '', tokenOption.address)}
-                  iconUrl={tokenOption.logoUri}
-                  price={displayPrice}
-                  showInsufficientFundsWarning={insufficientFunds}
-                  onClick={() => {
-                    setIsError(false)
-                    setSelectedCurrency(tokenOption.address)
-                  }}
-                  disabled={isTxsPending}
-                />
-              )
-            })}
+                return (
+                  <CryptoOption
+                    key={tokenOption.address}
+                    chainId={chainId}
+                    currencyName={tokenOption.name || tokenOption.symbol || ''}
+                    symbol={tokenOption.symbol || ''}
+                    isSelected={compareAddress(selectedCurrency || '', tokenOption.address)}
+                    iconUrl={tokenOption.logoUri}
+                    price={displayPrice}
+                    showInsufficientFundsWarning={insufficientFunds}
+                    onClick={() => {
+                      setIsError(false)
+                      setSelectedCurrency(tokenOption.address)
+                    }}
+                    disabled={isTxsPending}
+                  />
+                )
+              })}
           </div>
           {isError && (
             <div className="w-full">

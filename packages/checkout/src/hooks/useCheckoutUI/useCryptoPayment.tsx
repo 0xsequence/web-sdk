@@ -1,5 +1,5 @@
 import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/connect'
-import { useIndexerClient, useGetTokenBalancesSummary, useGetSwapQuote, useGetSwapOptions } from '@0xsequence/hooks'
+import { useIndexerClient, useGetTokenBalancesSummary, useGetSwapQuote, useGetSwapRoutes } from '@0xsequence/hooks'
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
@@ -105,10 +105,10 @@ export const useCryptoPayment = ({
   const buyCurrencyAddress = currencyAddress
 
   const {
-    data: swapOptions = [],
-    isLoading: swapOptionsIsLoading,
-    error: swapOptionsError
-  } = useGetSwapOptions({
+    data: swapRoutes = [],
+    isLoading: swapRoutesIsLoading,
+    error: swapRoutesError
+  } = useGetSwapRoutes({
     walletAddress: userAddress ?? '',
     toTokenAmount: totalPriceRaw,
     toTokenAddress: currencyAddress || '',
@@ -120,7 +120,7 @@ export const useCryptoPayment = ({
     filter: {
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
-      contractWhitelist: [currencyAddress, ...swapOptions.map(swapOption => swapOption.address)],
+      contractWhitelist: [currencyAddress, ...swapRoutes.flatMap(swapRoute => swapRoute.fromTokens.map(token => token.address))],
       omitNativeBalances: false
     },
     omitMetadata: true
@@ -245,7 +245,9 @@ export const useCryptoPayment = ({
         onSuccess?.(txHash)
         return txHash
       } else {
-        const swapOption = swapOptions.find(swapOption => compareAddress(swapOption.address || '', selectedCurrencyAddress))
+        const swapOption = swapRoutes
+          .flatMap(route => route.fromTokens)
+          .find(token => compareAddress(token.address, selectedCurrencyAddress))
         if (!swapOption) {
           throw new Error('No swap option found')
         }
@@ -333,29 +335,31 @@ export const useCryptoPayment = ({
     }
   }
 
-  const swapOptionsFormatted: CryptoOption[] = swapOptions.map(swapOption => ({
-    ...swapOption,
-    totalPriceRaw: swapOption.price || '0',
-    isSelected: compareAddress(swapOption.address, selectedCurrencyAddress || ''),
-    isInsufficientFunds:
-      Number(
-        currencyBalanceData?.find(balance => balance.contractAddress.toLowerCase() === swapOption.address.toLowerCase())
-          ?.balance || '0'
-      ) < Number(swapOption.price || '0'),
-    totalPriceDisplay: swapOption.price
-      ? formatDisplay(formatUnits(BigInt(swapOption.price || '0'), swapOption.decimals || 18), {
-          disableScientificNotation: true,
-          disableCompactNotation: true,
-          significantDigits: 6
-        })
-      : '0'
-  }))
+  const swapOptionsFormatted: CryptoOption[] = swapRoutes
+    .flatMap(route => route.fromTokens)
+    .map(fromToken => ({
+      ...fromToken,
+      totalPriceRaw: fromToken.price || '0',
+      isSelected: compareAddress(fromToken.address, selectedCurrencyAddress || ''),
+      isInsufficientFunds:
+        Number(
+          currencyBalanceData?.find(balance => balance.contractAddress.toLowerCase() === fromToken.address.toLowerCase())
+            ?.balance || '0'
+        ) < Number(fromToken.price || '0'),
+      totalPriceDisplay: fromToken.price
+        ? formatDisplay(formatUnits(BigInt(fromToken.price || '0'), fromToken.decimals || 18), {
+            disableScientificNotation: true,
+            disableCompactNotation: true,
+            significantDigits: 6
+          })
+        : '0'
+    }))
 
   return {
     cryptoOptions: {
       data: [...mainCurrencyOption, ...swapOptionsFormatted],
-      isLoading: isLoadingCurrencyInfo || swapOptionsIsLoading || currencyBalanceIsLoading,
-      error: errorCurrencyInfo || swapOptionsError
+      isLoading: isLoadingCurrencyInfo || swapRoutesIsLoading || currencyBalanceIsLoading,
+      error: errorCurrencyInfo || swapRoutesError
     },
     purchaseAction: {
       action: purchaseAction,

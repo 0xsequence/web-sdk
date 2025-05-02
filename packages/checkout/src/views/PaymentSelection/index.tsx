@@ -6,7 +6,7 @@ import {
   useGetContractInfo,
   useGetSwapQuote,
   useIndexerClient,
-  useGetSwapOptions
+  useGetSwapRoutes
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
@@ -103,7 +103,7 @@ export const PaymentSelectionContent = () => {
 
   const buyCurrencyAddress = currencyAddress
 
-  const { data: swapOptions = [], isLoading: swapOptionsIsLoading } = useGetSwapOptions(
+  const { data: swapRoutes = [], isLoading: swapRoutesIsLoading } = useGetSwapRoutes(
     {
       walletAddress: userAddress ?? '',
       chainId,
@@ -375,8 +375,7 @@ export const PaymentSelectionContent = () => {
     if (compareAddress(selectedCurrency || '', currencyAddress)) {
       onPurchaseMainCurrency()
     } else {
-      const foundSwap = swapOptions?.find(tokenOption => tokenOption.address === selectedCurrency)
-      console.log('foundSwap', foundSwap)
+      const foundSwap = swapRoutes.flatMap(route => route.fromTokens).find(fromToken => fromToken.address === selectedCurrency)
       if (foundSwap) {
         onClickPurchaseSwap(foundSwap)
       }
@@ -468,7 +467,7 @@ export const PaymentSelectionContent = () => {
                   isLoading ||
                   disableButtons ||
                   !selectedCurrency ||
-                  swapOptionsIsLoading ||
+                  swapRoutesIsLoading ||
                   (!disableSwapQuote && isLoadingSwapQuote)
                 }
                 shape="square"

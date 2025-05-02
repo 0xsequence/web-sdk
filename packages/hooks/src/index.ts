@@ -39,7 +39,7 @@ export { useGetMultipleContractsInfo } from './hooks/Metadata/useGetMultipleCont
 export { useGetTokenMetadata } from './hooks/Metadata/useGetTokenMetadata'
 
 export { useGetSwapQuote } from './hooks/Combination/useGetSwapQuote'
-export { useGetSwapOptions } from './hooks/Combination/useGetSwapOptions'
+export { useGetSwapRoutes } from './hooks/Combination/useGetSwapRoutes'
 
 // Etc
 export { useClearCachedBalances } from './hooks/useClearCachedBalances'

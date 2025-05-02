@@ -1,6 +1,6 @@
 import { CryptoOption, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/connect'
 import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
-import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapOptions } from '@0xsequence/hooks'
+import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapRoutes } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
 import { useState, useEffect, Fragment, SetStateAction, useMemo } from 'react'
@@ -40,7 +40,7 @@ export const PayWithCrypto = ({
     contractAddress: currencyAddress
   })
 
-  const { data: swapOptions = [], isLoading: swapOptionsIsLoading } = useGetSwapOptions(
+  const { data: swapRoutes = [], isLoading: swapRoutesIsLoading } = useGetSwapRoutes(
     {
       walletAddress: userAddress ?? '',
       chainId,
@@ -55,15 +55,17 @@ export const PayWithCrypto = ({
     if (enableMainCurrencyPayment && currencyAddress) {
       addresses.add(currencyAddress)
     }
-    swapOptions.forEach(option => {
-      if (option.address) {
-        addresses.add(option.address)
-      }
-    })
+    swapRoutes
+      .flatMap(route => route.fromTokens)
+      .forEach(fromToken => {
+        if (fromToken.address) {
+          addresses.add(fromToken.address)
+        }
+      })
     return Array.from(addresses)
       .filter(addr => !!addr)
       .map(addr => addr.toLowerCase())
-  }, [currencyAddress, swapOptions, enableMainCurrencyPayment])
+  }, [currencyAddress, swapRoutes, enableMainCurrencyPayment])
 
   const balanceHookOptions = useMemo(
     () => ({
@@ -112,7 +114,7 @@ export const PayWithCrypto = ({
   }, [hasNextTokenBalances, isFetchingNextTokenBalances, fetchNextTokenBalances])
 
   const isLoadingOptions = (tokenBalancesIsLoading && !balanceHookOptions.disabled) || isLoadingCurrencyInfo || isLoading
-  const swapsAreLoading = swapOptionsIsLoading && enableSwapPayments
+  const swapsAreLoading = swapRoutesIsLoading && enableSwapPayments
 
   interface TokenPayOption {
     index: number
@@ -139,22 +141,24 @@ export const PayWithCrypto = ({
             }
           ]
         : []),
-      ...swapOptions.map((tokenOption, index) => {
-        return {
-          index: enableMainCurrencyPayment && currencyAddress ? index + 1 : index,
-          name: tokenOption.name || 'Unknown',
-          symbol: tokenOption.symbol || '',
-          currencyAddress: tokenOption.address || '',
-          price: Number(tokenOption.price || 0),
-          decimals: tokenOption.decimals || 0,
-          logoUri: tokenOption.logoUri
-        }
-      })
+      ...swapRoutes
+        .flatMap(route => route.fromTokens)
+        .map((fromToken, index) => {
+          return {
+            index: enableMainCurrencyPayment && currencyAddress ? index + 1 : index,
+            name: fromToken.name || 'Unknown',
+            symbol: fromToken.symbol || '',
+            currencyAddress: fromToken.address || '',
+            price: Number(fromToken.price || 0),
+            decimals: fromToken.decimals || 0,
+            logoUri: fromToken.logoUri
+          }
+        })
     ]
     return initialCoins
       .filter(coin => !!coin.currencyAddress)
       .map(coin => ({ ...coin, currencyAddress: coin.currencyAddress.toLowerCase() }))
-  }, [enableMainCurrencyPayment, currencyInfoData, swapOptions, currencyAddress])
+  }, [enableMainCurrencyPayment, currencyInfoData, swapRoutes, currencyAddress])
 
   useEffect(() => {
     if (selectedCurrency || tokenPayOptions.length === 0 || (tokenBalancesIsLoading && !balanceHookOptions.disabled)) {

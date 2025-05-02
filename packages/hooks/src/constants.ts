@@ -13,7 +13,7 @@ export const QUERY_KEYS = {
   useGetCoinPrices: 'useGetCoinPrices',
   useGetCollectiblePrices: 'useGetCollectiblePrices',
   useGetSwapQuote: 'useGetSwapQuote',
-  useGetSwapOptions: 'useGetSwapOptions'
+  useGetSwapRoutes: 'useGetSwapRoutes'
 }
 
 export const time = {
