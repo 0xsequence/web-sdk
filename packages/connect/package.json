@@ -42,7 +42,7 @@
     "@0xsequence/api": "2.3.11",
     "@0xsequence/auth": "^2.3.10",
     "@0xsequence/core": "^2.3.10",
-    "@0xsequence/design-system": "2.1.6",
+    "@0xsequence/design-system": "2.1.11",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/hooks": "workspace:*",
     "@0xsequence/indexer": "^2.3.10",

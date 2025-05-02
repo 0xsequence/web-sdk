@@ -13,7 +13,7 @@
   "dependencies": {
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
-    "@0xsequence/design-system": "2.1.6",
+    "@0xsequence/design-system": "2.1.11",
     "@0xsequence/hooks": "workspace:*",
     "@0xsequence/immutable-connector": "workspace:*",
     "@0xsequence/network": "^2.3.10",

@@ -30,7 +30,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "2.1.6",
+    "@0xsequence/design-system": "2.1.11",
     "@0xsequence/hooks": "workspace:*",
     "@0xsequence/marketplace": "^2.3.10",
     "motion": "^12.9.2",
