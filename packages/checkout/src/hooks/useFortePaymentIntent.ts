@@ -18,7 +18,7 @@ export const useFortePaymentIntent = (args: CreateFortePaymentIntentArgs, option
     },
     retry: false,
     staleTime: 60 * 1000,
-    refetchOnWindowFocus: false,
+    refetchOnMount: 'always',
     enabled: !options?.disabled
   })
 }
