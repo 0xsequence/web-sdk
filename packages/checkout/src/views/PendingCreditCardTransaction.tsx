@@ -7,9 +7,10 @@ import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 import { useSignMessage, usePublicClient, useAccount } from 'wagmi'
 
-import { fetchFortePaymentStatus, fetchSardineOrderStatus } from '../api/data.js'
+import { fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
 import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
+import { useFortePaymentController } from '../contexts/index.js'
 import {
   useCheckoutModal,
   useForteAccessToken,
@@ -444,7 +445,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 }
 
 export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
-  const { forteWidgetUrl } = useEnvironmentContext()
+  const { initializeWidget } = useFortePaymentController()
   const { data: accessTokenData, isLoading: isLoadingAccessToken, isError: isErrorAccessToken } = useForteAccessToken()
   const { data: signatureData, signMessage } = useSignMessage()
   const { address } = useAccount()
@@ -455,7 +456,6 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
   const publicClient = usePublicClient({ chainId: creditCardCheckout.chainId })
   const isMessageSigned = signatureData !== undefined
   const isSignatureRequired = creditCardCheckout.forteConfig?.protocol === 'mint'
-  const { fortePaymentUrl } = useEnvironmentContext()
   const { closeCheckout } = useCheckoutModal()
 
   const {
@@ -476,44 +476,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     Number(creditCardCheckout.currencyDecimals || 18)
   )
 
-  useEffect(() => {
-    return () => {
-      creditCardCheckout.onClose?.()
-    }
-  }, [])
-
-  const checkFortePaymentStatus = async (paymentIntentId: string) => {
-    if (!accessTokenData) {
-      return
-    }
-
-    const { status } = await fetchFortePaymentStatus(fortePaymentUrl, {
-      accessToken: accessTokenData.accessToken,
-      tokenType: accessTokenData.tokenType,
-      paymentIntentId: paymentIntentId
-    })
-
-    if (status === 'Approved') {
-      creditCardCheckout.onSuccess?.()
-      closeCheckout()
-    }
-
-    if (status === 'Declined' || status === 'Expired') {
-      skipOnCloseCallback()
-      nav.setNavigation({
-        location: 'transaction-error',
-        params: {
-          error: new Error('A problem occurred while processing your payment')
-        }
-      })
-    }
-  }
-
-  const {
-    data: paymentIntentData,
-    isLoading: isLoadingPaymentIntent,
-    isError: isErrorPaymentIntent
-  } = useFortePaymentIntent(
+  const { data: paymentIntentData, isError: isErrorPaymentIntent } = useFortePaymentIntent(
     {
       accessToken: accessTokenData?.accessToken || '',
       tokenType: accessTokenData?.tokenType || '',
@@ -539,18 +502,22 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     }
   )
 
-  const paymentIntentId = paymentIntentData?.paymentIntentId
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (paymentIntentId) {
-        checkFortePaymentStatus(paymentIntentId)
-      }
-    }, POLLING_TIME)
+    if (!paymentIntentData) {
+      return
+    }
 
-    return () => clearInterval(interval)
-  }, [paymentIntentId])
+    initializeWidget({
+      paymentIntentId: paymentIntentData.payment_intent_id,
+      widgetData: paymentIntentData,
+      accessToken: accessTokenData?.accessToken || '',
+      tokenType: accessTokenData?.tokenType || '',
+      creditCardCheckout
+    })
+    skipOnCloseCallback()
+    closeCheckout()
+  }, [paymentIntentData])
 
-  const isLoading = isLoadingTokenMetadata || isLoadingAccessToken || isLoadingPaymentIntent
   const isError = isErrorTokenMetadata || isErrorAccessToken || isErrorPaymentIntent
 
   const onClickSignMessage = async () => {
@@ -576,14 +543,6 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     )
   }
 
-  if (isLoading || !paymentIntentData) {
-    return (
-      <div className="flex items-center justify-center" style={{ height: '770px' }}>
-        <Spinner size="lg" />
-      </div>
-    )
-  }
-
   if (isError) {
     return (
       <div className="flex items-center justify-center" style={{ height: '770px' }}>
@@ -594,50 +553,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
 
   return (
     <div className="flex items-center justify-center" style={{ height: '770px' }}>
-      <Text color="primary">Payment in progress...</Text>
-      <ForteWidgetLoader widgetData={paymentIntentData} />
+      <Spinner size="lg" />
     </div>
   )
-}
-
-interface ForteWidgetLoaderProps {
-  widgetData: any
-}
-
-export function ForteWidgetLoader({ widgetData }: ForteWidgetLoaderProps) {
-  const { forteWidgetUrl } = useEnvironmentContext()
-
-  useEffect(() => {
-    if (document.getElementById('forte-widget-script')) return
-
-    const container = document.createElement('div')
-    container.id = 'forte-payments-widget-container'
-    document.body.appendChild(container)
-
-    const script = document.createElement('script')
-    script.id = 'forte-widget-script'
-    script.type = 'module'
-    script.async = true
-    script.src = forteWidgetUrl
-
-    script.onload = () => {
-      // @ts-ignore-next-line
-      if (window?.initFortePaymentsWidget && widgetData) {
-        // @ts-ignore-next-line
-        window.initFortePaymentsWidget({
-          containerId: 'forte-payments-widget-container',
-          data: widgetData.data
-        })
-      }
-    }
-
-    document.body.appendChild(script)
-
-    return () => {
-      document.getElementById('forte-widget-script')?.remove()
-      document.getElementById('forte-payments-widget-container')?.remove()
-    }
-  }, [widgetData])
-
-  return null
 }

@@ -419,6 +419,8 @@ export const Connected = () => {
     //   args: [address, BigInt(1), currencyAddress, price, [toHex(0, { size: 32 })]]
     // })
 
+    const creditCardProvider = checkoutProvider || 'transak'
+
     openSelectPaymentModal({
       collectibles,
       chain: chainId,
@@ -428,7 +430,7 @@ export const Connected = () => {
       recipientAddress: address,
       currencyAddress,
       collectionAddress,
-      creditCardProviders: ['forte', 'sardine', 'transak'],
+      creditCardProviders: [creditCardProvider],
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
       transakConfig: {
         contractId

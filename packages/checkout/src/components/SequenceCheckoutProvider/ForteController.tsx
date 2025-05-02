@@ -1,8 +1,8 @@
-import { FortePaymentControllerProvider, FortePaymentData } from '../../contexts'
 import { useState, useEffect } from 'react'
 
-import { useEnvironmentContext } from '../../contexts/Environment'
 import { fetchFortePaymentStatus } from '../../api'
+import { FortePaymentControllerProvider, FortePaymentData } from '../../contexts'
+import { useEnvironmentContext } from '../../contexts/Environment'
 
 const POLLING_TIME = 10 * 1000
 
@@ -44,8 +44,12 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
   }, [fortePaymentData])
 
   useEffect(() => {
-    if (!fortePaymentData) return
-    if (document.getElementById('forte-widget-script')) return
+    if (!fortePaymentData) {
+      return
+    }
+    if (document.getElementById('forte-widget-script')) {
+      return
+    }
 
     const container = document.createElement('div')
     container.id = 'forte-payments-widget-container'
@@ -57,13 +61,14 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     script.async = true
     script.src = forteWidgetUrl
 
+    const widgetData = fortePaymentData.widgetData
     script.onload = () => {
       // @ts-ignore-next-line
       if (window?.initFortePaymentsWidget && widgetData) {
         // @ts-ignore-next-line
         window.initFortePaymentsWidget({
           containerId: 'forte-payments-widget-container',
-          data: fortePaymentData.widgetData
+          data: widgetData
         })
       }
     }
