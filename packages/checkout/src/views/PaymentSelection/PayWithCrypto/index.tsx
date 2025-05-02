@@ -29,7 +29,7 @@ export const PayWithCrypto = ({
   const [showMore, setShowMore] = useState(false)
   const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
 
-  const { chain, currencyAddress, price, skipNativeBalanceCheck } = settings
+  const { chain, currencyAddress, price, skipNativeBalanceCheck, nativeTokenAddress } = settings
   const { address: userAddress } = useAccount()
   const { clearCachedBalances } = useClearCachedBalances()
   const network = findSupportedNetwork(chain)
@@ -47,7 +47,7 @@ export const PayWithCrypto = ({
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      omitNativeBalances: !!skipNativeBalanceCheck
+      omitNativeBalances: skipNativeBalanceCheck ? true : false
     },
     omitMetadata: true,
     page: { pageSize: 40 }
@@ -145,7 +145,7 @@ export const PayWithCrypto = ({
       <div className="flex flex-col justify-center items-center gap-2 w-full">
         {coins.map(coin => {
           if (compareAddress(coin.currencyAddress, currencyAddress)) {
-            const isNative = compareAddress(coin.currencyAddress, skipNativeBalanceCheck?.currencyAddress || zeroAddress)
+            const isNative = compareAddress(coin.currencyAddress, nativeTokenAddress || zeroAddress)
             const isNativeBalanceCheckSkipped = isNative && skipNativeBalanceCheck
 
             return (
