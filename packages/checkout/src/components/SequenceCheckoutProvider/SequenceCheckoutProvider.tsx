@@ -22,7 +22,8 @@ import {
   SwapModalSettings,
   SwapModalContextProvider,
   EnvironmentContextProvider,
-  EnvironmentOverrides
+  EnvironmentOverrides,
+  FortePaymentControllerProvider
 } from '../../contexts'
 import {
   PendingCreditCardTransaction,
@@ -36,6 +37,7 @@ import {
   Swap
 } from '../../views'
 import { NavigationHeader } from '../NavigationHeader'
+import { ForteController } from './ForteController'
 
 export interface SequenceCheckoutConfig {
   env?: Partial<EnvironmentOverrides>
@@ -255,112 +257,114 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                   }}
                 >
                   <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>
-                    <ShadowRoot theme={theme}>
-                      <AnimatePresence>
-                        {openCheckoutModal && (
-                          <Modal
-                            contentProps={{
-                              style: {
-                                maxWidth: '540px',
-                                height: 'auto',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            scroll={false}
-                            onClose={() => setOpenCheckoutModal(false)}
-                          >
-                            <div id="sequence-kit-checkout-content">
-                              {getCheckoutHeader()}
-                              {getCheckoutContent()}
-                            </div>
-                          </Modal>
-                        )}
-                        {openAddFundsModal && (
-                          <Modal
-                            contentProps={{
-                              style: {
-                                maxWidth: '540px',
-                                height: 'auto',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            scroll={false}
-                            onClose={closeAddFunds}
-                          >
-                            <div id="sequence-kit-add-funds-content">
-                              {getAddFundsHeader()}
-                              {getAddFundsContent()}
-                            </div>
-                          </Modal>
-                        )}
-                        {openPaymentSelectionModal && (
-                          <Modal
-                            contentProps={{
-                              style: {
-                                maxWidth: '420px',
-                                ...getModalPositionCss(position),
-                                scrollbarColor: 'gray black',
-                                scrollbarWidth: 'thin'
-                              }
-                            }}
-                            onClose={() => setOpenPaymentSelectionModal(false)}
-                          >
-                            <div id="sequence-kit-payment-selection-content">
-                              <PaymentSelection />
-                            </div>
-                          </Modal>
-                        )}
-                        {openTransferFundsModal && (
-                          <Modal
-                            contentProps={{
-                              style: {
-                                height: 'auto',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            onClose={closeTransferFunds}
-                          >
-                            <div id="sequence-kit-transfer-funds-modal">
-                              <NavigationHeader primaryText="Receive" />
-                              <TransferToWallet />
-                            </div>
-                          </Modal>
-                        )}
-                        {openTransactionStatusModal && (
-                          <Modal
-                            contentProps={{
-                              style: {
-                                height: 'auto',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            onClose={closeTransactionStatusModal}
-                          >
-                            <div id="sequence-kit-transaction-status-modal">
-                              <TransactionStatus />
-                            </div>
-                          </Modal>
-                        )}
-                        {isOpenSwapModal && (
-                          <Modal
-                            contentProps={{
-                              style: {
-                                maxWidth: '450px',
-                                height: 'auto',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            onClose={closeSwapModal}
-                          >
-                            <div id="sequence-kit-swap-modal">
-                              <NavigationHeader primaryText={swapModalSettings?.title || 'Swap'} />
-                              <Swap />
-                            </div>
-                          </Modal>
-                        )}
-                      </AnimatePresence>
-                    </ShadowRoot>
-                    {children}
+                    <ForteController>
+                      <ShadowRoot theme={theme}>
+                        <AnimatePresence>
+                          {openCheckoutModal && (
+                            <Modal
+                              contentProps={{
+                                style: {
+                                  maxWidth: '540px',
+                                  height: 'auto',
+                                  ...getModalPositionCss(position)
+                                }
+                              }}
+                              scroll={false}
+                              onClose={() => setOpenCheckoutModal(false)}
+                            >
+                              <div id="sequence-kit-checkout-content">
+                                {getCheckoutHeader()}
+                                {getCheckoutContent()}
+                              </div>
+                            </Modal>
+                          )}
+                          {openAddFundsModal && (
+                            <Modal
+                              contentProps={{
+                                style: {
+                                  maxWidth: '540px',
+                                  height: 'auto',
+                                  ...getModalPositionCss(position)
+                                }
+                              }}
+                              scroll={false}
+                              onClose={closeAddFunds}
+                            >
+                              <div id="sequence-kit-add-funds-content">
+                                {getAddFundsHeader()}
+                                {getAddFundsContent()}
+                              </div>
+                            </Modal>
+                          )}
+                          {openPaymentSelectionModal && (
+                            <Modal
+                              contentProps={{
+                                style: {
+                                  maxWidth: '420px',
+                                  ...getModalPositionCss(position),
+                                  scrollbarColor: 'gray black',
+                                  scrollbarWidth: 'thin'
+                                }
+                              }}
+                              onClose={() => setOpenPaymentSelectionModal(false)}
+                            >
+                              <div id="sequence-kit-payment-selection-content">
+                                <PaymentSelection />
+                              </div>
+                            </Modal>
+                          )}
+                          {openTransferFundsModal && (
+                            <Modal
+                              contentProps={{
+                                style: {
+                                  height: 'auto',
+                                  ...getModalPositionCss(position)
+                                }
+                              }}
+                              onClose={closeTransferFunds}
+                            >
+                              <div id="sequence-kit-transfer-funds-modal">
+                                <NavigationHeader primaryText="Receive" />
+                                <TransferToWallet />
+                              </div>
+                            </Modal>
+                          )}
+                          {openTransactionStatusModal && (
+                            <Modal
+                              contentProps={{
+                                style: {
+                                  height: 'auto',
+                                  ...getModalPositionCss(position)
+                                }
+                              }}
+                              onClose={closeTransactionStatusModal}
+                            >
+                              <div id="sequence-kit-transaction-status-modal">
+                                <TransactionStatus />
+                              </div>
+                            </Modal>
+                          )}
+                          {isOpenSwapModal && (
+                            <Modal
+                              contentProps={{
+                                style: {
+                                  maxWidth: '450px',
+                                  height: 'auto',
+                                  ...getModalPositionCss(position)
+                                }
+                              }}
+                              onClose={closeSwapModal}
+                            >
+                              <div id="sequence-kit-swap-modal">
+                                <NavigationHeader primaryText={swapModalSettings?.title || 'Swap'} />
+                                <Swap />
+                              </div>
+                            </Modal>
+                          )}
+                        </AnimatePresence>
+                      </ShadowRoot>
+                      {children}
+                    </ForteController>
                   </NavigationContextProvider>
                 </TransferFundsContextProvider>
               </CheckoutModalContextProvider>
