@@ -432,7 +432,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
 
   const data = await res.json()
 
-  return data
+  return data.data
 }
 
 export interface FetchFortePaymentStatusArgs {
