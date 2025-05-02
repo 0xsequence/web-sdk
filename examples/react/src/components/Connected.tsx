@@ -3,8 +3,7 @@ import {
   useAddFundsModal,
   useSelectPaymentModal,
   useSwapModal,
-  TransactionOnRampProvider,
-  ForteProtocolType
+  TransactionOnRampProvider
 } from '@0xsequence/checkout'
 import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
@@ -397,6 +396,8 @@ export const Connected = () => {
       ]
     })
 
+    const creditCardProvider = checkoutProvider || 'transak'
+
     openSelectPaymentModal({
       collectibles,
       chain: chainId,
@@ -405,7 +406,7 @@ export const Connected = () => {
       recipientAddress: address,
       currencyAddress,
       collectionAddress,
-      creditCardProviders: ['forte', 'sardine', 'transak'],
+      creditCardProviders: [creditCardProvider],
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
       transakConfig: {
         contractId,

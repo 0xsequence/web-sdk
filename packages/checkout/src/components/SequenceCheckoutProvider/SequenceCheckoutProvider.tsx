@@ -22,8 +22,7 @@ import {
   SwapModalSettings,
   SwapModalContextProvider,
   EnvironmentContextProvider,
-  EnvironmentOverrides,
-  FortePaymentControllerProvider
+  EnvironmentOverrides
 } from '../../contexts'
 import {
   PendingCreditCardTransaction,
@@ -37,6 +36,7 @@ import {
   Swap
 } from '../../views'
 import { NavigationHeader } from '../NavigationHeader'
+
 import { ForteController } from './ForteController'
 
 export interface SequenceCheckoutConfig {
