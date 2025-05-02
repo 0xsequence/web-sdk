@@ -40,7 +40,7 @@ export const Connect = (props: ConnectProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const { analytics } = useAnalyticsContext()
-  const { showExternalWallets, showConnectedWallets } = useWalletSettings()
+  const { showExternalWallets, showConnectedWallets, showSocialWallets } = useWalletSettings()
 
   const { onClose, emailConflictInfo, config = {} as ConnectConfig, isPreview = false } = props
   const { signIn = {} } = config
@@ -421,7 +421,7 @@ export const Connect = (props: ConnectProps) => {
 
                   <div className="flex mt-6 gap-6 flex-col">
                     <>
-                      {showSocialConnectorSection && (
+                      {showSocialWallets && showSocialConnectorSection && (
                         <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
                           {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                             return (
@@ -456,7 +456,7 @@ export const Connect = (props: ConnectProps) => {
                           )}
                         </div>
                       )}
-                      {showSocialConnectorSection && showEmailInputSection && (
+                      {showSocialWallets && showSocialConnectorSection && showEmailInputSection && (
                         <div className="flex gap-4 flex-row justify-center items-center">
                           <Divider className="mx-0 my-0 text-background-secondary grow" />
                           <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">

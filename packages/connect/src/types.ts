@@ -80,6 +80,7 @@ export interface ConnectConfig {
   ethAuth?: EthAuthSettings
   env?: Partial<SequenceHooksEnv>
   showExternalWallets?: boolean
+  showSocialWallets?: boolean
   showConnectedWallets?: boolean
 }
 

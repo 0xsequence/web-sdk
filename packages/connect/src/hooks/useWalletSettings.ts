@@ -33,7 +33,7 @@ import { useWalletConfigContext } from '../contexts/WalletConfig'
  * ```
  */
 export const useWalletSettings = () => {
-  const { setDisplayedAssets, displayedAssets, readOnlyNetworks, showExternalWallets, showConnectedWallets } =
+  const { setDisplayedAssets, displayedAssets, readOnlyNetworks, showExternalWallets, showConnectedWallets, showSocialWallets } =
     useWalletConfigContext()
 
   return {
@@ -41,6 +41,7 @@ export const useWalletSettings = () => {
     readOnlyNetworks,
     setDisplayedAssets,
     showExternalWallets,
-    showConnectedWallets
+    showConnectedWallets,
+    showSocialWallets
   }
 }
