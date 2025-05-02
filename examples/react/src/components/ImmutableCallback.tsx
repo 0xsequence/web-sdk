@@ -24,7 +24,7 @@ export function ImmutableCallback() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <Spinner size="lg" />
-      <Text marginTop="4">Processing Immutable login...</Text>
+      <Text className="mt-4">Processing Immutable login...</Text>
     </div>
   )
 }

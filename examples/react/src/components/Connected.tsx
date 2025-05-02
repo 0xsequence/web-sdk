@@ -702,7 +702,8 @@ export const Connected = () => {
                           <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
                         </div>
                         <div className="flex flex-row">
-                          <Text>Wallet balance for {option.token.name}: </Text> <Text>{option.balanceFormatted}</Text>
+                          <Text>Wallet balance for {option.token.name}: </Text>{' '}
+                          <Text>{'balanceFormatted' in option ? option.balanceFormatted : null}</Text>
                         </div>
                       </div>
                     ),
@@ -718,7 +719,7 @@ export const Connected = () => {
                     )
 
                     if (selected?.token.contractAddress !== undefined) {
-                      if (!selected.hasEnoughBalanceForFee) {
+                      if (!('hasEnoughBalanceForFee' in selected) || !selected.hasEnoughBalanceForFee) {
                         setFeeOptionAlert({
                           title: 'Insufficient balance',
                           description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
