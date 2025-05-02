@@ -23,6 +23,17 @@ export interface TransakConfig {
   callDataOverride?: string
 }
 
+export type ForteProtocolType = 'seaport' | 'magiceden' | 'mint'
+
+export interface ForteConfig {
+  orderHash?: string
+  protocolAddress?: string
+  auctionHouse?: string
+  protocol: ForteProtocolType
+  seaportProtocolAddress?: string
+  sellerAddress?: string
+}
+
 export interface CreditCardCheckout {
   chainId: number
   contractAddress: string
@@ -36,9 +47,10 @@ export interface CreditCardCheckout {
   nftQuantity: string
   nftDecimals?: string
   calldata: string
-  provider?: 'sardine' | 'transak'
+  provider?: 'sardine' | 'transak' | 'forte'
   transakConfig?: TransakConfig
-  onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
+  forteConfig?: ForteConfig
+  onSuccess?: (transactionHash?: string, settings?: CreditCardCheckout) => void
   onError?: (error: Error, settings: CreditCardCheckout) => void
   onClose?: () => void
   approvedSpenderAddress?: string

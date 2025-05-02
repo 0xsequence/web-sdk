@@ -1,8 +1,9 @@
 import { SequenceAPIClient } from '@0xsequence/api'
 import { TokenMetadata } from '@0xsequence/metadata'
-import { ChainId, networks } from '@0xsequence/network'
+import { ChainId, networks, findSupportedNetwork } from '@0xsequence/network'
+import { zeroAddress } from 'viem'
 
-import { CreditCardCheckout } from '../contexts'
+import { CreditCardCheckout, ForteProtocolType } from '../contexts'
 
 export interface FetchSardineClientTokenReturn {
   token: string
@@ -232,4 +233,242 @@ export const fetchSardineOnRampLink = async ({
   })
 
   return url.href
+}
+
+export interface FetchForteAccessTokenReturn {
+  accessToken: string
+  expiresIn: number
+  tokenType: string
+}
+
+export const fetchForteAccessToken = async (forteApiUrl: string): Promise<FetchForteAccessTokenReturn> => {
+  const clientId = '5tpnj5869vs3jpgtpif2ci8v08'
+  const clientSecret = 'jpkbg3e2ho9rbd0959qe5l6ke238d4bca2nptstfga2i9hant5e'
+
+  const url = `${forteApiUrl}/auth/v1/oauth2/token`
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret
+    })
+  })
+
+  const { data } = await res.json()
+
+  return {
+    accessToken: data.access_token,
+    expiresIn: data.expires_in,
+    tokenType: data.token_type
+  }
+}
+
+export interface CreateFortePaymentIntentArgs {
+  accessToken: string
+  tokenType: string
+  nftQuantity: string
+  recipientAddress: string
+  chainId: string
+  signature?: string
+  nftAddress: string
+  currencyAddress: string
+  protocolAddress: string
+  nftName: string
+  imageUrl: string
+  tokenId: string
+  protocol: ForteProtocolType
+  auctionHouse?: string
+  orderHash?: string
+  seaportProtocolAddress?: string
+  sellerAddress?: string
+  currencyQuantity: string
+}
+
+const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
+  '1': {
+    [zeroAddress]: 'ETH',
+    ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase()]: 'USDC_ETH'
+  },
+  '137': {
+    [zeroAddress]: 'POL',
+    ['0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'.toLowerCase()]: 'USDC_POLYGON'
+  },
+  '8453': {
+    [zeroAddress]: 'BASE_ETH'
+  }
+}
+
+const getForteCurrency = (chainId: string, currencyAddress: string) => {
+  return forteCurrencyMap[chainId]?.[currencyAddress.toLowerCase()] || 'ETH'
+}
+
+export const createFortePaymentIntent = async (forteApiUrl: string, args: CreateFortePaymentIntentArgs): Promise<any> => {
+  const {
+    accessToken,
+    tokenType,
+    recipientAddress,
+    chainId,
+    signature,
+    protocolAddress,
+    nftName,
+    nftQuantity,
+    imageUrl,
+    tokenId,
+    protocol,
+    auctionHouse,
+    orderHash,
+    nftAddress,
+    currencyAddress,
+    seaportProtocolAddress,
+    sellerAddress,
+    currencyQuantity
+  } = args
+
+  const network = findSupportedNetwork(chainId)
+
+  if (!network) {
+    throw new Error('Invalid chainId')
+  }
+
+  const url = `${forteApiUrl}/payments/v2/intent`
+  const forteBlockchainName = network.name.toLowerCase().replace('-', '_')
+  const idempotencyKey = `${recipientAddress}-${tokenId}-${protocolAddress}-${nftName}-${new Date().getTime()}`
+
+  let body: { [key: string]: any } = {
+    blockchain: forteBlockchainName,
+    idempotency_key: idempotencyKey,
+    buyer: {
+      id: recipientAddress,
+      wallet: {
+        address: recipientAddress,
+        blockchain: forteBlockchainName
+      }
+    }
+  }
+
+  if (protocol == 'mint') {
+    body = {
+      ...body,
+      transaction_type: 'BUY_NFT_MINT',
+      currency: 'USD',
+      items: [
+        {
+          name: nftName,
+          quantity: nftQuantity,
+          price: {
+            amount: nftQuantity,
+            image_url: imageUrl,
+            title: nftName,
+            mint_data: {
+              nonce: `${nftAddress}-${Date.now()}`,
+              signature: signature,
+              token_ids: [tokenId],
+              protocol_address: protocolAddress,
+              protocol: 'protocol-mint'
+            }
+          }
+        }
+      ]
+    }
+  } else {
+    let listingData: { [key: string]: any } = {}
+
+    if (protocol == 'seaport') {
+      listingData = {
+        protocol,
+        order_hash: orderHash,
+        protocol_address: seaportProtocolAddress
+      }
+    } else if (protocol == 'magiceden') {
+      listingData = {
+        protocol,
+        auction_house: auctionHouse,
+        token_address: nftAddress
+      }
+    }
+
+    body = {
+      ...body,
+      transaction_type: 'BUY_NFT',
+      currency: getForteCurrency(chainId, currencyAddress),
+      items: [
+        {
+          amount: currencyQuantity,
+          id: '1',
+          image_url: imageUrl,
+          listing_data: listingData,
+          nft_data: {
+            contract_address: nftAddress,
+            token_id: tokenId
+          },
+          title: nftName
+        }
+      ],
+      seller: {
+        wallet: {
+          address: sellerAddress || '',
+          blockchain: forteBlockchainName
+        }
+      }
+    }
+  }
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${tokenType} ${accessToken}`
+    },
+    body: JSON.stringify(body)
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch widget data, with status: ${res.status}`)
+  }
+
+  const data = await res.json()
+
+  return data.data
+}
+
+export interface FetchFortePaymentStatusArgs {
+  accessToken: string
+  tokenType: string
+  paymentIntentId: string
+}
+
+export type FortePaymentStatus = 'Expired' | 'Created' | 'Declined' | 'Approved'
+
+export interface FetchFortePaymentStatusReturn {
+  status: FortePaymentStatus
+}
+
+export const fetchFortePaymentStatus = async (
+  forteApiUrl: string,
+  args: FetchFortePaymentStatusArgs
+): Promise<FetchFortePaymentStatusReturn> => {
+  const { accessToken, tokenType, paymentIntentId } = args
+
+  const url = `${forteApiUrl}/payments/v1/payments/statuses`
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${tokenType} ${accessToken}`
+    },
+    body: JSON.stringify({
+      payment_intent_ids: [paymentIntentId]
+    })
+  })
+
+  const { data } = await res.json()
+
+  return {
+    status: (data[0]?.status as FortePaymentStatus) || ''
+  }
 }

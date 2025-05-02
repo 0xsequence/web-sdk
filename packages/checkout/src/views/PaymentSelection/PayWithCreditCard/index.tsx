@@ -14,7 +14,7 @@ interface PayWithCreditCardProps {
   skipOnCloseCallback: () => void
 }
 
-type BasePaymentProviderOptions = 'sardine' | 'transak'
+type BasePaymentProviderOptions = 'sardine' | 'transak' | 'forte'
 type CustomPaymentProviderOptions = 'custom'
 type PaymentProviderOptions = BasePaymentProviderOptions | CustomPaymentProviderOptions
 
@@ -32,8 +32,9 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
     onError = () => {},
     onClose = () => {},
     creditCardProviders = [],
+    supplementaryAnalyticsInfo = {},
     transakConfig,
-    supplementaryAnalyticsInfo = {}
+    forteConfig
   } = settings
 
   const { address: userAddress } = useAccount()
@@ -64,6 +65,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         return
       case 'sardine':
       case 'transak':
+      case 'forte':
         onPurchase()
         return
       default:
@@ -87,7 +89,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
 
     const checkoutSettings: CheckoutSettings = {
       creditCardCheckout: {
-        onSuccess: (txHash: string) => {
+        onSuccess: (txHash?: string) => {
           clearCachedBalances()
           onSuccess(txHash)
         },
@@ -106,9 +108,10 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
-        transakConfig,
         approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || targetContractAddress,
-        supplementaryAnalyticsInfo
+        supplementaryAnalyticsInfo,
+        transakConfig,
+        forteConfig
       }
     }
 
@@ -134,6 +137,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
             switch (creditCardProvider) {
               case 'sardine':
               case 'transak':
+              case 'forte':
               case 'custom':
                 return (
                   <Card
