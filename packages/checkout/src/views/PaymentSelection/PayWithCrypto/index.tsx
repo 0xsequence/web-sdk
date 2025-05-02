@@ -216,10 +216,10 @@ export const PayWithCrypto = ({
         {tokenPayOptions.map(swapOption => {
           const isMainCurrency = swapOption.currencyAddress === lowerCurrencyAddress
           const currentBalance = tokenBalancesMap.get(swapOption.currencyAddress) ?? 0n
+          const isNative = compareAddress(swapOption.currencyAddress, zeroAddress)
+          const isNativeBalanceCheckSkipped = isNative && skipNativeBalanceCheck
 
           if (isMainCurrency) {
-            const isNative = compareAddress(swapOption.currencyAddress, zeroAddress)
-            const isNativeBalanceCheckSkipped = isNative && skipNativeBalanceCheck
             const priceBigInt = BigInt(swapOption.price || 0)
             const hasInsufficientFunds = priceBigInt > currentBalance
 
@@ -266,7 +266,7 @@ export const PayWithCrypto = ({
                 price={formattedPrice}
                 disabled={disableButtons}
                 isSelected={lowerSelectedCurrency === swapOption.currencyAddress}
-                showInsufficientFundsWarning={hasInsufficientFunds}
+                showInsufficientFundsWarning={isNativeBalanceCheckSkipped ? undefined : hasInsufficientFunds}
               />
             )
           }
