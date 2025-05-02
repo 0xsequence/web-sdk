@@ -47,7 +47,7 @@ export const PayWithCrypto = ({
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [currencyAddress],
-      omitNativeBalances: skipNativeBalanceCheck ?? false
+      omitNativeBalances: !!skipNativeBalanceCheck
     },
     omitMetadata: true,
     page: { pageSize: 40 }
@@ -145,7 +145,7 @@ export const PayWithCrypto = ({
       <div className="flex flex-col justify-center items-center gap-2 w-full">
         {coins.map(coin => {
           if (compareAddress(coin.currencyAddress, currencyAddress)) {
-            const isNative = compareAddress(coin.currencyAddress, zeroAddress)
+            const isNative = compareAddress(coin.currencyAddress, skipNativeBalanceCheck?.currencyAddress || zeroAddress)
             const isNativeBalanceCheckSkipped = isNative && skipNativeBalanceCheck
 
             return (
