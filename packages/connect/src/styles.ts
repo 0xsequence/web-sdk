@@ -454,6 +454,9 @@ export const styles = String.raw`
   .max-h-\[200px\] {
     max-height: 200px;
   }
+  .max-h-\[360px\] {
+    max-height: 360px;
+  }
   .max-h-\[calc\(100dvh-80px\)\] {
     max-height: calc(100dvh - 80px);
   }
@@ -559,6 +562,9 @@ export const styles = String.raw`
   .min-w-6 {
     min-width: calc(var(--spacing) * 6);
   }
+  .min-w-\[var\(--radix-select-trigger-width\)\] {
+    min-width: var(--radix-select-trigger-width);
+  }
   .min-w-full {
     min-width: 100%;
   }
@@ -577,6 +583,9 @@ export const styles = String.raw`
   }
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+  }
+  .animate-skeleton {
+    animation: skeleton 1s ease infinite;
   }
   .animate-spin {
     animation: var(--animate-spin);
@@ -776,6 +785,9 @@ export const styles = String.raw`
   .border-solid {
     --tw-border-style: solid;
     border-style: solid;
+  }
+  .border-border-error {
+    border-color: var(--seq-color-border-error);
   }
   .border-border-focus {
     border-color: var(--seq-color-border-focus);
@@ -1222,6 +1234,9 @@ export const styles = String.raw`
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .ring-border-error {
+    --tw-ring-color: var(--seq-color-border-error);
+  }
   .ring-border-focus {
     --tw-ring-color: var(--seq-color-border-focus);
   }
@@ -1610,6 +1625,11 @@ export const styles = String.raw`
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
+  .focus-within\:ring-border-error {
+    &:focus-within {
+      --tw-ring-color: var(--seq-color-border-error);
+    }
+  }
   .focus-within\:ring-border-focus {
     &:focus-within {
       --tw-ring-color: var(--seq-color-border-focus);
@@ -1663,6 +1683,11 @@ export const styles = String.raw`
     &:focus {
       --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
+  .focus\:ring-border-error {
+    &:focus {
+      --tw-ring-color: var(--seq-color-border-error);
     }
   }
   .focus\:ring-border-focus {
@@ -1792,6 +1817,11 @@ export const styles = String.raw`
       transition-timing-function: var(--ease-out);
     }
   }
+  .data-\[swipe\=end\]\:animate-swipe-out {
+    &[data-swipe="end"] {
+      animation: swipe-out 200ms ease-out;
+    }
+  }
   .data-\[swipe\=move\]\:translate-x-\[var\(--radix-toast-swipe-move-x\)\] {
     &[data-swipe="move"] {
       --tw-translate-x: var(--radix-toast-swipe-move-x);
@@ -1898,6 +1928,7 @@ export const styles = String.raw`
   --seq-color-background-raised: rgba(54, 54, 54, 0.7);
   --seq-color-border-normal: rgba(255, 255, 255, 0.25);
   --seq-color-border-focus: rgba(255, 255, 255, 0.5);
+  --seq-color-border-error: rgba(255, 69, 0, 1);
   --seq-color-button-glass: rgba(255, 255, 255, 0.15);
   --seq-color-button-emphasis: rgba(0, 0, 0, 0.5);
   --seq-color-button-inverse: rgba(255, 255, 255, 0.8);
@@ -1945,6 +1976,7 @@ export const styles = String.raw`
   --seq-color-background-raised: rgba(192, 192, 192, 0.7);
   --seq-color-border-normal: rgba(0, 0, 0, 0.25);
   --seq-color-border-focus: rgba(0, 0, 0, 0.5);
+  --seq-color-border-error: rgba(255, 69, 0, 1);
   --seq-color-button-glass: rgba(0, 0, 0, 0.15);
   --seq-color-button-emphasis: rgba(255, 255, 255, 0.5);
   --seq-color-button-inverse: rgba(0, 0, 0, 0.8);
@@ -2241,6 +2273,25 @@ export const styles = String.raw`
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes skeleton {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes swipe-out {
+  from {
+    transform: translateX(var(--radix-toast-swipe-end-x));
+  }
+  to {
+    transform: translateX(100%);
   }
 }
 @layer properties {
