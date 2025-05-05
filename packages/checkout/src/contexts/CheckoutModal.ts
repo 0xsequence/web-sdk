@@ -26,14 +26,24 @@ export interface TransakConfig {
 
 export type ForteProtocolType = 'seaport' | 'magiceden' | 'mint'
 
-export interface ForteConfig {
-  orderHash?: string
-  protocolAddress?: string
-  auctionHouse?: string
-  protocol: ForteProtocolType
-  seaportProtocolAddress?: string
-  sellerAddress?: string
+export interface ForteMintConfig {
+  protocol: 'mint'
 }
+
+export interface ForteSeaportConfig {
+  protocol: 'seaport'
+  orderHash: string
+  seaportProtocolAddress: string
+  sellerAddress: string
+}
+
+export interface ForteMagicedenConfig {
+  protocol: 'magiceden'
+  auctionHouse: string
+  sellerAddress: string
+}
+
+export type ForteConfig = ForteMintConfig | ForteSeaportConfig | ForteMagicedenConfig
 
 export interface CreditCardCheckout {
   chainId: number
