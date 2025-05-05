@@ -486,15 +486,11 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       signature: signatureData || '',
       nftAddress: creditCardCheckout.nftAddress,
       currencyAddress: creditCardCheckout.currencyAddress,
-      protocolAddress: creditCardCheckout.contractAddress,
+      targetContractAddress: creditCardCheckout.contractAddress,
       nftName: tokenMetadata?.name || '',
       imageUrl: tokenMetadata?.image || '',
       tokenId: creditCardCheckout.nftId,
-      protocol: creditCardCheckout.forteConfig?.protocol || 'mint',
-      auctionHouse: creditCardCheckout.forteConfig?.auctionHouse,
-      orderHash: creditCardCheckout.forteConfig?.orderHash,
-      seaportProtocolAddress: creditCardCheckout.forteConfig?.seaportProtocolAddress,
-      sellerAddress: creditCardCheckout.forteConfig?.sellerAddress,
+      protocolConfig: creditCardCheckout.forteConfig || { protocol: 'mint' },
       currencyQuantity
     },
     {
