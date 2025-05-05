@@ -68,17 +68,6 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
-  console.log('[SwapList] Evaluating useGetSwapQuote:', {
-    userAddress,
-    selectedCurrency,
-    disableSwapQuote,
-    hookDisabledOption: !userAddress || !selectedCurrency || disableSwapQuote,
-    amount,
-    sellCurrencyAddress,
-    buyCurrencyAddress,
-    chainId
-  })
-
   const {
     data: swapQuote,
     isLoading: isLoadingSwapQuote,

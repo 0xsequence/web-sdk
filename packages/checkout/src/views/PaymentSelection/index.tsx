@@ -310,8 +310,6 @@ export const PaymentSelectionContent = () => {
         }
       ]
 
-      console.log('transactions', transactions)
-
       const txHash = await sendTransactions({
         chainId,
         senderAddress: userAddress,
