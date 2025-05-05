@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.2.3
+
+### Patch Changes
+
+- updated endpoints used for swaps
+
 ## 5.2.2
 
 ### Patch Changes

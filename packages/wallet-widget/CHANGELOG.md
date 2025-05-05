@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.2.3
+
+### Patch Changes
+
+- updated endpoints used for swaps
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.2.3
+  - @0xsequence/connect@5.2.3
+  - @0xsequence/hooks@5.2.3
+
 ## 5.2.2
 
 ### Patch Changes
