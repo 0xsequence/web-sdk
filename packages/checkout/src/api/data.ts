@@ -3,7 +3,14 @@ import { TokenMetadata } from '@0xsequence/metadata'
 import { ChainId, networks, findSupportedNetwork } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
-import { CreditCardCheckout, ForteProtocolType } from '../contexts'
+import {
+  CreditCardCheckout,
+  ForteProtocolType,
+  ForteConfig,
+  ForteMintConfig,
+  ForteSeaportConfig,
+  ForteMagicedenConfig
+} from '../contexts'
 
 export interface FetchSardineClientTokenReturn {
   token: string
@@ -276,16 +283,12 @@ export interface CreateFortePaymentIntentArgs {
   signature?: string
   nftAddress: string
   currencyAddress: string
-  protocolAddress: string
+  targetContractAddress: string
   nftName: string
   imageUrl: string
   tokenId: string
-  protocol: ForteProtocolType
-  auctionHouse?: string
-  orderHash?: string
-  seaportProtocolAddress?: string
-  sellerAddress?: string
   currencyQuantity: string
+  protocolConfig: ForteConfig
 }
 
 const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
@@ -313,18 +316,14 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     recipientAddress,
     chainId,
     signature,
-    protocolAddress,
+    targetContractAddress,
     nftName,
+    nftAddress,
     nftQuantity,
     imageUrl,
     tokenId,
-    protocol,
-    auctionHouse,
-    orderHash,
-    nftAddress,
+    protocolConfig,
     currencyAddress,
-    seaportProtocolAddress,
-    sellerAddress,
     currencyQuantity
   } = args
 
@@ -336,7 +335,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
 
   const url = `${forteApiUrl}/payments/v2/intent`
   const forteBlockchainName = network.name.toLowerCase().replace('-', '_')
-  const idempotencyKey = `${recipientAddress}-${tokenId}-${protocolAddress}-${nftName}-${new Date().getTime()}`
+  const idempotencyKey = `${recipientAddress}-${tokenId}-${targetContractAddress}-${nftName}-${new Date().getTime()}`
 
   let body: { [key: string]: any } = {
     blockchain: forteBlockchainName,
@@ -350,7 +349,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     }
   }
 
-  if (protocol == 'mint') {
+  if (protocolConfig.protocol == 'mint') {
     body = {
       ...body,
       transaction_type: 'BUY_NFT_MINT',
@@ -364,10 +363,10 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
             image_url: imageUrl,
             title: nftName,
             mint_data: {
-              nonce: `${nftAddress}-${Date.now()}`,
+              nonce: `${targetContractAddress}-${Date.now()}`,
               signature: signature,
               token_ids: [tokenId],
-              protocol_address: protocolAddress,
+              protocol_address: targetContractAddress,
               protocol: 'protocol-mint'
             }
           }
@@ -377,17 +376,17 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
   } else {
     let listingData: { [key: string]: any } = {}
 
-    if (protocol == 'seaport') {
+    if (protocolConfig.protocol == 'seaport') {
       listingData = {
-        protocol,
-        order_hash: orderHash,
-        protocol_address: seaportProtocolAddress
+        protocol: protocolConfig.protocol,
+        order_hash: protocolConfig.orderHash,
+        protocol_address: protocolConfig.seaportProtocolAddress
       }
-    } else if (protocol == 'magiceden') {
+    } else if (protocolConfig.protocol == 'magiceden') {
       listingData = {
-        protocol,
-        auction_house: auctionHouse,
-        token_address: nftAddress
+        protocol: protocolConfig.protocol,
+        auction_house: protocolConfig.auctionHouse,
+        token_address: nftName
       }
     }
 
@@ -410,7 +409,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
       ],
       seller: {
         wallet: {
-          address: sellerAddress || '',
+          address: protocolConfig.sellerAddress || '',
           blockchain: forteBlockchainName
         }
       }
