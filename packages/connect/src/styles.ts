@@ -6,9 +6,8 @@ export const styles = String.raw`
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --font-mono: "Roboto", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --color-violet-600: oklch(0.541 0.281 293.009);
-    --color-gray-500: oklch(0.551 0.027 264.364);
+    --color-violet-600: oklch(54.1% 0.281 293.009);
+    --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
