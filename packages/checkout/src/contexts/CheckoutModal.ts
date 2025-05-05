@@ -39,7 +39,6 @@ export interface ForteSeaportConfig {
 
 export interface ForteMagicedenConfig {
   protocol: 'magiceden'
-  auctionHouse: string
   sellerAddress: string
 }
 
