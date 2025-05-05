@@ -30,7 +30,7 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "@0xsequence/api": "0.0.0-20250430130723",
+    "@0xsequence/api": "2.3.11",
     "@0xsequence/indexer": ">=2.3.7",
     "@0xsequence/metadata": ">=2.3.7",
     "@0xsequence/network": ">=2.3.7",
@@ -40,7 +40,7 @@
     "viem": ">= 2.28.0"
   },
   "devDependencies": {
-    "@0xsequence/api": "0.0.0-20250430130723",
+    "@0xsequence/api": "2.3.11",
     "@0xsequence/indexer": "^2.3.10",
     "@0xsequence/metadata": "^2.3.10",
     "@0xsequence/network": "^2.3.10",
