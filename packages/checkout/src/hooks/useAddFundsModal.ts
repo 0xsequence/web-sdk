@@ -1,4 +1,4 @@
-import { AddFundsSettings, useAddFundsModalContext } from '../contexts/AddFundsModal'
+import { type AddFundsSettings, useAddFundsModalContext } from '../contexts/AddFundsModal'
 
 /**
  * Return type for the useAddFundsModal hook.

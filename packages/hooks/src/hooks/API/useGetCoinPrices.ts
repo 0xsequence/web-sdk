@@ -1,8 +1,8 @@
-import { SequenceAPIClient, Token } from '@0xsequence/api'
+import { SequenceAPIClient, type Token } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { HooksOptions } from '../../types'
+import { type HooksOptions } from '../../types'
 
 import { useAPIClient } from './useAPIClient'
 

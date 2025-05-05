@@ -1,7 +1,7 @@
-import { CreateConnectorFn } from 'wagmi'
-import { metaMask as metaMaskConnector, MetaMaskParameters } from 'wagmi/connectors'
+import { type CreateConnectorFn } from 'wagmi'
+import { metaMask as metaMaskConnector, type MetaMaskParameters } from 'wagmi/connectors'
 
-import { Wallet } from '../../types'
+import { type Wallet } from '../../types'
 
 import { MetaMaskLogo } from './MetaMaskLogo'
 

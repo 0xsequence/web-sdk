@@ -1,11 +1,11 @@
 import { formatDisplay } from '@0xsequence/connect'
 import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { compareAddress } from '@0xsequence/design-system'
-import { TokenBalance } from '@0xsequence/indexer'
-import { Chain, formatUnits } from 'viem'
+import { type TokenBalance } from '@0xsequence/indexer'
+import { type Chain, formatUnits } from 'viem'
 import { zeroAddress } from 'viem'
 
-import { TokenBalanceWithPrice } from './tokens'
+import { type TokenBalanceWithPrice } from './tokens'
 
 //TODO: rename these and maybe do a refactor
 

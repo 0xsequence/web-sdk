@@ -1,5 +1,5 @@
-import { Wallet } from '../../types'
-import { sequenceWallet, BaseSequenceConnectorOptions } from '../wagmiConnectors'
+import { type Wallet } from '../../types'
+import { sequenceWallet, type BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
 import { getDiscordLogo } from './DiscordLogo'
 

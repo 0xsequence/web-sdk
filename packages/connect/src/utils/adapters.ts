@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { type HttpTransport, Account, Chain, Client, Transport } from 'viem'
+import { type HttpTransport, type Account, type Chain, type Client, type Transport } from 'viem'
 
 export const walletClientToSigner = async (walletClient: Client<Transport, Chain, Account>) => {
   const { account, chain, transport } = walletClient

@@ -1,6 +1,6 @@
-import { Wallet, WalletProperties } from '../../types'
+import { type Wallet, type WalletProperties } from '../../types'
 
-import { ecosystemWallet as baseEcosystemWallet, BaseEcosystemConnectorOptions } from './ecosystemWallet'
+import { ecosystemWallet as baseEcosystemWallet, type BaseEcosystemConnectorOptions } from './ecosystemWallet'
 
 export type EcosystemWalletOptions = BaseEcosystemConnectorOptions &
   Pick<WalletProperties, 'logoDark' | 'logoLight'> & {

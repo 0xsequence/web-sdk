@@ -1,8 +1,8 @@
 import { cn, Text, TokenImage } from '@0xsequence/design-system'
-import React from 'react'
+import { type FC, useState } from 'react'
 import { formatUnits, parseUnits, zeroAddress } from 'viem'
 
-import { Alert, AlertProps } from './Alert'
+import { Alert, type AlertProps } from './Alert'
 
 export interface FeeOption {
   token: FeeToken
@@ -39,13 +39,13 @@ const isBalanceSufficient = (balance: string, fee: string, decimals: number) => 
   return balanceBN >= feeBN
 }
 
-export const FeeOptionSelector: React.FC<FeeOptionSelectorProps> = ({
+export const FeeOptionSelector: FC<FeeOptionSelectorProps> = ({
   txnFeeOptions,
   feeOptionBalances,
   selectedFeeOptionAddress,
   setSelectedFeeOptionAddress
 }) => {
-  const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>()
+  const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps | undefined>()
 
   const sortedOptions = [...txnFeeOptions].sort((a, b) => {
     const balanceA = feeOptionBalances.find(balance => balance.tokenName === a.token.name)

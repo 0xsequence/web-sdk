@@ -1,4 +1,4 @@
-import { IntentResponseAccountList, SequenceWaaS } from '@0xsequence/waas'
+import { type IntentResponseAccountList, SequenceWaaS } from '@0xsequence/waas'
 import { useQuery } from '@tanstack/react-query'
 import { useConnections } from 'wagmi'
 

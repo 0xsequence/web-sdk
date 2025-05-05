@@ -1,6 +1,6 @@
 'use client'
 
-import { Transaction } from '@0xsequence/indexer'
+import { type Transaction } from '@0xsequence/indexer'
 
 import { createGenericContext } from './genericContext'
 

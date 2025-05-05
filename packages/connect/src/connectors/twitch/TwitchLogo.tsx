@@ -1,6 +1,6 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
 interface GetTwitchLogo {
   isDarkMode?: boolean
@@ -14,7 +14,7 @@ export const getTwitchLogo = ({ isDarkMode }: GetTwitchLogo) => {
     fillColor = isDarkMode ? 'white' : 'black'
   }
 
-  const TwitchLogo: React.FunctionComponent = (props: LogoProps) => {
+  const TwitchLogo: FunctionComponent<LogoProps> = props => {
     return (
       <svg
         version="1.1"

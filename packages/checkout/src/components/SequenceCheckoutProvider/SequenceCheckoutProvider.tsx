@@ -3,26 +3,26 @@
 import { getModalPositionCss, ShadowRoot, useConnectConfigContext, useTheme } from '@0xsequence/connect'
 import { Modal } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, type ReactNode } from 'react'
 
 import {
-  History,
-  Navigation,
+  type History,
+  type Navigation,
   NavigationContextProvider,
   CheckoutModalContextProvider,
-  CheckoutSettings,
+  type CheckoutSettings,
   AddFundsContextProvider,
-  AddFundsSettings,
+  type AddFundsSettings,
   SelectPaymentContextProvider,
-  SelectPaymentSettings,
+  type SelectPaymentSettings,
   TransferFundsContextProvider,
-  TransferFundsSettings,
-  TransactionStatusSettings,
+  type TransferFundsSettings,
+  type TransactionStatusSettings,
   TransactionStatusModalContextProvider,
-  SwapModalSettings,
+  type SwapModalSettings,
   SwapModalContextProvider,
   EnvironmentContextProvider,
-  EnvironmentOverrides
+  type EnvironmentOverrides
 } from '../../contexts'
 import {
   PendingCreditCardTransaction,
@@ -42,7 +42,7 @@ export interface SequenceCheckoutConfig {
 }
 
 export type SequenceCheckoutProviderProps = {
-  children: React.ReactNode
+  children: ReactNode
   config?: SequenceCheckoutConfig
 }
 

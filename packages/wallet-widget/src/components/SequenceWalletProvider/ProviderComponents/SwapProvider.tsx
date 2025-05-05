@@ -1,14 +1,14 @@
-import { LifiSwapQuote } from '@0xsequence/api'
+import type { LifiSwapQuote } from '@0xsequence/api'
 import { getNativeTokenInfoByChainId, sendTransactions } from '@0xsequence/connect'
 import { compareAddress, useToast } from '@0xsequence/design-system'
 import { useAPIClient, useIndexerClient } from '@0xsequence/hooks'
-import { ReactNode, useEffect, useState } from 'react'
-import { formatUnits, Hex, zeroAddress } from 'viem'
+import { type ReactNode, useEffect, useState } from 'react'
+import { formatUnits, type Hex, zeroAddress } from 'viem'
 import { useAccount, useChainId, useChains, usePublicClient, useWalletClient } from 'wagmi'
 
 import { SwapContextProvider } from '../../../contexts/Swap'
 import { useNavigation } from '../../../hooks'
-import { TokenBalanceWithPrice } from '../../../utils'
+import { type TokenBalanceWithPrice } from '../../../utils'
 
 export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast()

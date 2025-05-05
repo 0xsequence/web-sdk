@@ -8,7 +8,7 @@ import { useConfig } from 'wagmi'
 
 import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helpers'
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
-import { DecodingType, TransferProps, AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
+import { DecodingType, type TransferProps, type AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../CollectibleTileImage'
 
 interface TxnDetailsProps {

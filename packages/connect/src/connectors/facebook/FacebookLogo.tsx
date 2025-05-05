@@ -1,8 +1,8 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
-export const FacebookLogo: React.FunctionComponent = (props: LogoProps) => {
+export const FacebookLogo: FunctionComponent<LogoProps> = props => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 40" fill="none" {...props}>
       <path
@@ -37,7 +37,7 @@ interface GetFacebookMonochromeLogo {
 export const getFacebookMonochromeLogo = ({ isDarkMode }: GetFacebookMonochromeLogo) => {
   const fillColor = isDarkMode ? '#FFFFFF' : '#000000'
 
-  const FacebookMonochromeLogo: React.FunctionComponent = (props: LogoProps) => {
+  const FacebookMonochromeLogo: FunctionComponent<LogoProps> = props => {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 40" fill="none" {...props}>
         <path

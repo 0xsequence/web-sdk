@@ -8,7 +8,7 @@ import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
 import { NFT_CHECKOUT_SOURCE } from '../constants'
-import { TransactionPendingNavigation, useEnvironmentContext } from '../contexts'
+import { type TransactionPendingNavigation, useEnvironmentContext } from '../contexts'
 import {
   useNavigation,
   useCheckoutModal,

@@ -1,11 +1,11 @@
-import { ETHAuthProof } from '@0xsequence/auth'
+import { type ETHAuthProof } from '@0xsequence/auth'
 import { ETHAuth, Proof } from '@0xsequence/ethauth'
 import { isValidTypedDataSignature } from '@0xsequence/provider'
-import { UsePublicClientReturnType, Storage } from 'wagmi'
-import { GetWalletClientData } from 'wagmi/query'
+import { type UsePublicClientReturnType, type Storage } from 'wagmi'
+import { type GetWalletClientData } from 'wagmi/query'
 
 import { LocalStorageKey, DEFAULT_SESSION_EXPIRATION } from '../constants'
-import { StorageItem } from '../types'
+import { type StorageItem } from '../types'
 
 import { publicClientToProvider, walletClientToSigner } from './adapters'
 

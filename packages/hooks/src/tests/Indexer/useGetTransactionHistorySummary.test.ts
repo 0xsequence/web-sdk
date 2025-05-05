@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../../constants'
 import {
-  GetTransactionHistorySummaryArgs,
+  type GetTransactionHistorySummaryArgs,
   useGetTransactionHistorySummary
 } from '../../hooks/Indexer/useGetTransactionHistorySummary'
 import { createWrapper } from '../createWrapper'

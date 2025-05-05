@@ -1,9 +1,9 @@
 import { compareAddress, useWallets } from '@0xsequence/connect'
 import { useGetExchangeRate, useGetCoinPrices } from '@0xsequence/hooks'
-import { useState, ReactNode, useEffect } from 'react'
+import { useState, type ReactNode, useEffect } from 'react'
 import { zeroAddress, getAddress } from 'viem'
 
-import { FiatWalletPair, FiatWalletsMapContextProvider } from '../../../contexts'
+import { type FiatWalletPair, FiatWalletsMapContextProvider } from '../../../contexts'
 import { useGetAllTokensDetails, useSettings } from '../../../hooks'
 import { computeBalanceFiat } from '../../../utils'
 

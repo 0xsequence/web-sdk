@@ -3,11 +3,11 @@ import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design
 import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapRoutes } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
-import { useState, useEffect, Fragment, SetStateAction, useMemo } from 'react'
+import { useState, useEffect, Fragment, type SetStateAction, useMemo } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 
-import { SelectPaymentSettings } from '../../../contexts'
+import { type SelectPaymentSettings } from '../../../contexts'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings

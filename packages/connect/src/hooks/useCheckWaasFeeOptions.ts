@@ -1,6 +1,6 @@
 'use client'
 
-import { FeeOption, Transaction } from '@0xsequence/waas'
+import { type FeeOption, type Transaction } from '@0xsequence/waas'
 import { useConnections } from 'wagmi'
 
 /**

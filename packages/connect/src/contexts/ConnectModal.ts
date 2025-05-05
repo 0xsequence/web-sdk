@@ -1,12 +1,12 @@
 'use client'
 
-import React from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
 import { createGenericContext } from './genericContext'
 
 type ConnectModalContext = {
   isConnectModalOpen: boolean
-  setOpenConnectModal: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenConnectModal: Dispatch<SetStateAction<boolean>>
   openConnectModalState: boolean
 }
 

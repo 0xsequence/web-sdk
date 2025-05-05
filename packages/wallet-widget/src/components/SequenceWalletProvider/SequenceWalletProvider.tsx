@@ -4,12 +4,18 @@ import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout
 import { getModalPositionCss, useTheme, ShadowRoot, useOpenConnectModal, useConnectConfigContext } from '@0xsequence/connect'
 import { Modal, Scroll, ToastProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, type ReactNode } from 'react'
 import { useAccount } from 'wagmi'
 
 import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { WALLET_WIDTH, WALLET_HEIGHT } from '../../constants'
-import { History, Navigation, NavigationContextProvider, WalletModalContextProvider, WalletOptions } from '../../contexts'
+import {
+  type History,
+  type Navigation,
+  NavigationContextProvider,
+  WalletModalContextProvider,
+  type WalletOptions
+} from '../../contexts'
 import { WalletContentRefProvider, WalletContentRefContext } from '../../contexts/WalletContentRef'
 
 import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider'
@@ -17,7 +23,7 @@ import { SwapProvider } from './ProviderComponents/SwapProvider'
 import { getHeader, getContent } from './utils'
 
 export type SequenceWalletProviderProps = {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 const DEFAULT_LOCATION: Navigation = {

@@ -1,5 +1,5 @@
 import { useChainId, useChains } from 'wagmi'
-import { Chain } from 'wagmi/chains'
+import { type Chain } from 'wagmi/chains'
 
 /**
  * Hook for retrieving chain configuration information from wagmi's chain configurations

@@ -1,4 +1,4 @@
-import { Token } from '@0xsequence/api'
+import { type Token } from '@0xsequence/api'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'

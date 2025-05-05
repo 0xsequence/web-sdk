@@ -1,10 +1,10 @@
-import { CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
+import { type CheckoutOptionsSalesContractArgs, TransactionSwapProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { Abi, Hex, encodeFunctionData, toHex, zeroAddress } from 'viem'
+import { type Abi, type Hex, encodeFunctionData, toHex, zeroAddress } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi'
-import { SelectPaymentSettings } from '../contexts/SelectPaymentModal'
+import { type SelectPaymentSettings } from '../contexts/SelectPaymentModal'
 
 import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
 import { useSelectPaymentModal } from './useSelectPaymentModal'

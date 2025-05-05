@@ -1,7 +1,7 @@
 import {
   getNativeTokenInfoByChainId,
   useAnalyticsContext,
-  ExtendedConnector,
+  type ExtendedConnector,
   truncateAtMiddle,
   useCheckWaasFeeOptions,
   useWaasFeeOptions,
@@ -25,9 +25,9 @@ import {
   useToast
 } from '@0xsequence/design-system'
 import { useClearCachedBalances, useIndexerClient, useGetSingleTokenBalance } from '@0xsequence/hooks'
-import { ContractType, TokenBalance } from '@0xsequence/indexer'
-import { useRef, useState, ChangeEvent, useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex, Hex } from 'viem'
+import { type ContractType, type TokenBalance } from '@0xsequence/indexer'
+import { useRef, useState, type ChangeEvent, useEffect } from 'react'
+import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect'

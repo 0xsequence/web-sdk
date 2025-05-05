@@ -1,10 +1,10 @@
-import { allNetworks, EIP1193Provider } from '@0xsequence/network'
+import { type EIP1193Provider, allNetworks } from '@0xsequence/network'
 import {
   SequenceWaaS,
-  SequenceConfig,
-  ExtendedSequenceConfig,
-  Transaction,
-  FeeOption,
+  type SequenceConfig,
+  type ExtendedSequenceConfig,
+  type Transaction,
+  type FeeOption,
   WebrpcEndpointError
 } from '@0xsequence/waas'
 import { ethers } from 'ethers'

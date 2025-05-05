@@ -1,8 +1,8 @@
-import { ConnectedWallet, useWallets, LocalStorageKey, useWalletSettings } from '@0xsequence/connect'
+import { type ConnectedWallet, useWallets, LocalStorageKey, useWalletSettings } from '@0xsequence/connect'
 import { Observable, observable } from 'micro-observables'
 import { useConfig } from 'wagmi'
 
-import { FiatCurrency, defaultFiatCurrency } from '../constants'
+import { type FiatCurrency, defaultFiatCurrency } from '../constants'
 
 interface MutableObservable<T> extends Observable<T> {
   set(value: T): void

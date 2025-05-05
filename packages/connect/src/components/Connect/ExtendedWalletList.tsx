@@ -12,7 +12,7 @@ import {
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 
-import { ExtendedConnector } from '../../types'
+import { type ExtendedConnector } from '../../types'
 import { getLogo } from '../ConnectButton'
 
 interface ExtendedWalletListProps {

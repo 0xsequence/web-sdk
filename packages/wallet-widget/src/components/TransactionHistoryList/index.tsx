@@ -1,5 +1,5 @@
 import { Spinner, Text } from '@0xsequence/design-system'
-import { Transaction } from '@0xsequence/indexer'
+import { type Transaction } from '@0xsequence/indexer'
 import { useMemo } from 'react'
 
 import { TransactionHistoryItem } from './TransactionHistoryItem'

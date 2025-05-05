@@ -1,7 +1,7 @@
 import { nativeTokenImageUrl } from '@0xsequence/design-system'
-import { ContractType, TokenBalance } from '@0xsequence/indexer'
+import { ContractType, type TokenBalance } from '@0xsequence/indexer'
 import { zeroAddress } from 'viem'
-import { Chain } from 'wagmi/chains'
+import { type Chain } from 'wagmi/chains'
 
 import { chains } from '../chains'
 

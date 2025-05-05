@@ -1,4 +1,4 @@
-import { SwapModalSettings, useSwapModalContext } from '../contexts/SwapModal'
+import { type SwapModalSettings, useSwapModalContext } from '../contexts/SwapModal'
 
 /**
  * Return type for the useSwapModal hook.

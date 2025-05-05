@@ -5,7 +5,7 @@ import { useChains } from 'wagmi'
 
 import { useSettings } from '../../../hooks'
 import { formatTokenInfo } from '../../../utils/formatBalance'
-import { TokenBalanceWithPrice } from '../../../utils/tokens'
+import { type TokenBalanceWithPrice } from '../../../utils/tokens'
 import { TokenImageCustom } from '../../Filter/TokenImageCustom'
 import { ListCardNav } from '../../ListCard/ListCardNav'
 

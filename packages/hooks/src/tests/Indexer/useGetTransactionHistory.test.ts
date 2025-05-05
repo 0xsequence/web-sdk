@@ -3,7 +3,7 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS, ZERO_ADDRESS } from '../../constants'
-import { UseGetTransactionHistoryArgs, useGetTransactionHistory } from '../../hooks/Indexer/useGetTransactionHistory'
+import { type UseGetTransactionHistoryArgs, useGetTransactionHistory } from '../../hooks/Indexer/useGetTransactionHistory'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 

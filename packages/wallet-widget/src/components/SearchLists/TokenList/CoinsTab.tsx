@@ -1,7 +1,7 @@
 import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
-import React from 'react'
+import { type FC } from 'react'
 
-import { TokenBalanceWithPrice } from '../../../utils/tokens'
+import { type TokenBalanceWithPrice } from '../../../utils/tokens'
 import { InfiniteScroll } from '../../InfiniteScroll'
 
 import { CoinRow } from './CoinRow'
@@ -16,7 +16,7 @@ interface CoinsTabProps {
   includeUserAddress?: boolean
 }
 
-export const CoinsTab: React.FC<CoinsTabProps> = ({
+export const CoinsTab: FC<CoinsTabProps> = ({
   displayedCoinBalances,
   fetchMoreCoinBalances,
   hasMoreCoinBalances,

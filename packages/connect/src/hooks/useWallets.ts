@@ -1,12 +1,12 @@
 'use client'
 
-import { SequenceAPIClient, GetLinkedWalletsArgs, LinkedWallet } from '@0xsequence/api'
+import { type GetLinkedWalletsArgs, type LinkedWallet, SequenceAPIClient } from '@0xsequence/api'
 import { useAPIClient } from '@0xsequence/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Connector, type UseConnectionsReturnType, useAccount, useConnect, useConnections, useDisconnect } from 'wagmi'
+import { useAccount, useConnect, useConnections, useDisconnect, type Connector, type UseConnectionsReturnType } from 'wagmi'
 
 import { SEQUENCE_UNIVERSAL_CONNECTOR_NAME } from '../components/Connect/Connect'
-import { ExtendedConnector } from '../types'
+import { type ExtendedConnector } from '../types'
 
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature'
 

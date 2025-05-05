@@ -1,4 +1,4 @@
-import { EIP1193Provider, allNetworks } from '@0xsequence/network'
+import { type EIP1193Provider, allNetworks } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { getAddress, TransactionRejectedRpcError } from 'viem'
 

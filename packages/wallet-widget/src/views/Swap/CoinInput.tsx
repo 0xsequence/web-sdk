@@ -1,5 +1,5 @@
 import { Button, NumericInput, Text } from '@0xsequence/design-system'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { type ChangeEvent, useEffect, useState } from 'react'
 import { formatUnits } from 'viem'
 
 import { useSettings, useSwap } from '../../hooks'

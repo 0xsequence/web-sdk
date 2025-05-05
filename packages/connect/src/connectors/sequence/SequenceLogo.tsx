@@ -1,8 +1,8 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
-export const SequenceLogo: React.FunctionComponent = (props: LogoProps) => {
+export const SequenceLogo: FunctionComponent<LogoProps> = props => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" style={{ fill: 'none' }} id="svg1316" version="1.1" viewBox="0 0 396 396" {...props}>
       <g transform="translate(0,38)" id="g1256" clipPath="url(#clip0_5_131)">

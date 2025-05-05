@@ -1,7 +1,7 @@
-import { ContractCall, SequenceAPIClient } from '@0xsequence/api'
+import { type ContractCall, SequenceAPIClient } from '@0xsequence/api'
 import { commons } from '@0xsequence/core'
 import { ContractType, TxnTransferType } from '@0xsequence/indexer'
-import { getAddress, encodeFunctionData, zeroAddress, Hex, slice, toHex } from 'viem'
+import { getAddress, encodeFunctionData, zeroAddress, type Hex, slice, toHex } from 'viem'
 
 interface TransactionEncodedWithCall extends commons.transaction.TransactionEncoded {
   call?: ContractCall

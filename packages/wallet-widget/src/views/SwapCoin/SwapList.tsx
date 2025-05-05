@@ -4,7 +4,7 @@ import {
   formatDisplay,
   sendTransactions,
   useAnalyticsContext,
-  ExtendedConnector,
+  type ExtendedConnector,
   ContractVerificationStatus
 } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
@@ -17,7 +17,7 @@ import {
   useGetTokenBalancesSummary
 } from '@0xsequence/hooks'
 import { useState, useMemo } from 'react'
-import { zeroAddress, formatUnits, Hex } from 'viem'
+import { zeroAddress, formatUnits, type Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'

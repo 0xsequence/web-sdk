@@ -20,7 +20,7 @@ import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/inde
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
-import { formatUnits, Hex, PublicClient } from 'viem'
+import { formatUnits, type Hex, type PublicClient } from 'viem'
 import { usePublicClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'

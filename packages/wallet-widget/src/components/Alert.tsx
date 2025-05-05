@@ -1,5 +1,5 @@
 import { Button, cn, Text } from '@0xsequence/design-system'
-import React, { ComponentProps } from 'react'
+import React, { type ComponentProps } from 'react'
 
 export type AlertProps = {
   title: string

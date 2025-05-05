@@ -1,7 +1,7 @@
 import { NetworkImage } from '@0xsequence/design-system'
 import { useGetTokenMetadata } from '@0xsequence/hooks'
 
-import { TokenBalanceWithPrice } from '../../../utils'
+import { type TokenBalanceWithPrice } from '../../../utils'
 import { CollectibleTileImage } from '../../CollectibleTileImage'
 
 const NETWORK_IMAGE_SIZE = '15%'

@@ -1,8 +1,8 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
-export const MetaMaskLogo: React.FunctionComponent<LogoProps> = props => (
+export const MetaMaskLogo: FunctionComponent<LogoProps> = props => (
   <svg viewBox="0 0 318.6 318.6" fill="none" {...props}>
     <path
       d="M274.1 35.5l-99.5 73.9L193 65.8z"

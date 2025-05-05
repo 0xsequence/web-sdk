@@ -1,6 +1,6 @@
 import { Image } from '@0xsequence/design-system'
 
-import { ConnectConfig } from '../../types'
+import { type ConnectConfig } from '../../types'
 
 interface BannerProps {
   config: ConnectConfig

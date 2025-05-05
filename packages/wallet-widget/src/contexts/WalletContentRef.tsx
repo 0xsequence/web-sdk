@@ -1,4 +1,4 @@
-import { createContext, useRef, RefObject } from 'react'
+import { createContext, useRef, type RefObject } from 'react'
 
 const WalletContentRefContext = createContext<RefObject<HTMLDivElement | null>>({ current: null })
 

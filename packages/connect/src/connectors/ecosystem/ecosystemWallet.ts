@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { getAddress } from 'viem'
-import { createConnector, Connector } from 'wagmi'
+import { createConnector, type Connector } from 'wagmi'
 
 import { normalizeChainId } from '../../utils/helpers'
 

@@ -1,6 +1,6 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
 interface GetEmailLogo {
   isDarkMode: boolean
@@ -9,7 +9,7 @@ interface GetEmailLogo {
 export const getEmailLogo = ({ isDarkMode }: GetEmailLogo) => {
   const fillColor = isDarkMode ? 'white' : 'black'
 
-  const EmailLogo: React.FunctionComponent = (props: LogoProps) => {
+  const EmailLogo: FunctionComponent<LogoProps> = props => {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 34" fill="none" {...props}>
         <path

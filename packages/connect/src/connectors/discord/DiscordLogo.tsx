@@ -1,6 +1,6 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
 interface GetDiscordLogo {
   isDarkMode: boolean
@@ -9,7 +9,7 @@ interface GetDiscordLogo {
 export const getDiscordLogo = ({ isDarkMode }: GetDiscordLogo) => {
   const fillColor = isDarkMode ? 'white' : 'black'
 
-  const DiscordLogo: React.FunctionComponent = (props: LogoProps) => {
+  const DiscordLogo: FunctionComponent<LogoProps> = props => {
     return (
       <svg viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
         <g id="discord-icon-svgrepo-com 1" clipPath="url(#clip0_193_26839)">

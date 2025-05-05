@@ -1,10 +1,10 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { Theme, ThemeProvider } from '@0xsequence/design-system'
+import { type Theme, ThemeProvider } from '@0xsequence/design-system'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
@@ -15,11 +15,17 @@ import { ThemeContextProvider } from '../../contexts/Theme'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
-import { ExtendedConnector, DisplayedAsset, EthAuthSettings, ConnectConfig, ModalPosition } from '../../types'
+import {
+  type ExtendedConnector,
+  type DisplayedAsset,
+  type EthAuthSettings,
+  type ConnectConfig,
+  type ModalPosition
+} from '../../types'
 import { Connect } from '../Connect/Connect'
 
 export type SequenceConnectProviderProps = {
-  children: React.ReactNode
+  children: ReactNode
   config: ConnectConfig
 }
 

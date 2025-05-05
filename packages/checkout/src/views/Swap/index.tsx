@@ -9,7 +9,7 @@ import {
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect, useMemo } from 'react'
-import { zeroAddress, formatUnits, Hex } from 'viem'
+import { zeroAddress, formatUnits, type Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'

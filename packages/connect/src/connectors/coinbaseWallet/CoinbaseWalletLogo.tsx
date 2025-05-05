@@ -1,8 +1,8 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
-export const CoinbaseWalletLogo: React.FunctionComponent<LogoProps> = props => {
+export const CoinbaseWalletLogo: FunctionComponent<LogoProps> = props => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none" {...props}>
       <rect width="100%" height="100%" fill="#0052FF" rx="100" />

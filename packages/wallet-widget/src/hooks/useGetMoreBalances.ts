@@ -1,8 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { UseInfiniteQueryResult } from '@tanstack/react-query'
-import { InfiniteData } from '@tanstack/react-query'
+import { type UseInfiniteQueryResult, type InfiniteData } from '@tanstack/react-query'
 
-import { TokenBalanceWithPrice } from '../utils'
+import { type TokenBalanceWithPrice } from '../utils'
 
 export const useGetMoreBalances = (
   balances: TokenBalanceWithPrice[],

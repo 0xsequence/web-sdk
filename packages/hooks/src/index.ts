@@ -1,5 +1,5 @@
 // Constants
-export { QUERY_KEYS } from './constants'
+export { QUERY_KEYS } from './constants.js'
 
 // Contexts
 export {
@@ -7,39 +7,39 @@ export {
   SequenceHooksProvider,
   type SequenceHooksConfig,
   type SequenceHooksEnv
-} from './contexts/ConfigContext'
-export { useConfig } from './hooks/useConfig'
+} from './contexts/ConfigContext.js'
+export { useConfig } from './hooks/useConfig.js'
 
 // API
-export { useAPIClient } from './hooks/API/useAPIClient'
-export { useGetCoinPrices } from './hooks/API/useGetCoinPrices'
-export { useGetCollectiblePrices } from './hooks/API/useGetCollectiblePrices'
-export { useGetExchangeRate } from './hooks/API/useGetExchangeRate'
+export { useAPIClient } from './hooks/API/useAPIClient.js'
+export { useGetCoinPrices } from './hooks/API/useGetCoinPrices.js'
+export { useGetCollectiblePrices } from './hooks/API/useGetCollectiblePrices.js'
+export { useGetExchangeRate } from './hooks/API/useGetExchangeRate.js'
 
 // Indexer
-export { useIndexerClient, useIndexerClients } from './hooks/Indexer/useIndexerClient'
-export { useGetTransactionHistory } from './hooks/Indexer/useGetTransactionHistory'
+export { useIndexerClient, useIndexerClients } from './hooks/Indexer/useIndexerClient.js'
+export { useGetTransactionHistory } from './hooks/Indexer/useGetTransactionHistory.js'
 export {
   useGetTransactionHistorySummary,
   type GetTransactionHistorySummaryArgs
-} from './hooks/Indexer/useGetTransactionHistorySummary'
+} from './hooks/Indexer/useGetTransactionHistorySummary.js'
 
 // IndexerGateway
-export { useIndexerGatewayClient } from './hooks/IndexerGateway/useIndexerGatewayClient'
-export { useGetNativeTokenBalance } from './hooks/IndexerGateway/useGetNativeTokenBalance'
-export { useGetSingleTokenBalance, type GetSingleTokenBalanceArgs } from './hooks/IndexerGateway/useGetSingleTokenBalance'
-export { useGetTokenBalancesByContract } from './hooks/IndexerGateway/useGetTokenBalancesByContract'
-export { useGetTokenBalancesDetails } from './hooks/IndexerGateway/useGetTokenBalancesDetails'
-export { useGetTokenBalancesSummary } from './hooks/IndexerGateway/useGetTokenBalancesSummary'
+export { useIndexerGatewayClient } from './hooks/IndexerGateway/useIndexerGatewayClient.js'
+export { useGetNativeTokenBalance } from './hooks/IndexerGateway/useGetNativeTokenBalance.js'
+export { useGetSingleTokenBalance, type GetSingleTokenBalanceArgs } from './hooks/IndexerGateway/useGetSingleTokenBalance.js'
+export { useGetTokenBalancesByContract } from './hooks/IndexerGateway/useGetTokenBalancesByContract.js'
+export { useGetTokenBalancesDetails } from './hooks/IndexerGateway/useGetTokenBalancesDetails.js'
+export { useGetTokenBalancesSummary } from './hooks/IndexerGateway/useGetTokenBalancesSummary.js'
 
 // Metadata
-export { useMetadataClient } from './hooks/Metadata/useMetadataClient'
-export { useGetContractInfo } from './hooks/Metadata/useGetContractInfo'
-export { useGetMultipleContractsInfo } from './hooks/Metadata/useGetMultipleContractsInfo'
-export { useGetTokenMetadata } from './hooks/Metadata/useGetTokenMetadata'
+export { useMetadataClient } from './hooks/Metadata/useMetadataClient.js'
+export { useGetContractInfo } from './hooks/Metadata/useGetContractInfo.js'
+export { useGetMultipleContractsInfo } from './hooks/Metadata/useGetMultipleContractsInfo.js'
+export { useGetTokenMetadata } from './hooks/Metadata/useGetTokenMetadata.js'
 
 export { useGetSwapQuote } from './hooks/Combination/useGetSwapQuote'
 export { useGetSwapRoutes } from './hooks/Combination/useGetSwapRoutes'
 
 // Etc
-export { useClearCachedBalances } from './hooks/useClearCachedBalances'
+export { useClearCachedBalances } from './hooks/useClearCachedBalances.js'

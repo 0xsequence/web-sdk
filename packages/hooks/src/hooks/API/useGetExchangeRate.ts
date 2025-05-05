@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { HooksOptions } from '../../types'
+import { type HooksOptions } from '../../types'
 
 import { useAPIClient } from './useAPIClient'
 

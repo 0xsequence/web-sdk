@@ -1,8 +1,8 @@
-import React from 'react'
+import { type FunctionComponent } from 'react'
 
-import { LogoProps } from '../../types'
+import { type LogoProps } from '../../types'
 
-export const GoogleLogo: React.FunctionComponent = (props: LogoProps) => {
+export const GoogleLogo: FunctionComponent = (props: LogoProps) => {
   return (
     <svg viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <g id="Frame 2114">
@@ -40,7 +40,7 @@ interface GetGoogleMonochromeLogo {
 export const getMonochromeGoogleLogo = ({ isDarkMode }: GetGoogleMonochromeLogo) => {
   const fillColor = isDarkMode ? 'white' : 'black'
 
-  const GoogleMonochromeLogo: React.FunctionComponent = (props: LogoProps) => {
+  const GoogleMonochromeLogo: FunctionComponent = (props: LogoProps) => {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 40" fill="none" {...props}>
         <path

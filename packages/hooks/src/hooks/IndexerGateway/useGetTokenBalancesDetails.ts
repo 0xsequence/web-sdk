@@ -1,8 +1,8 @@
-import { IndexerGateway, Page, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
+import { type IndexerGateway, type Page, SequenceIndexerGateway, type TokenBalance } from '@0xsequence/indexer'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { HooksOptions } from '../../types'
+import { type HooksOptions } from '../../types'
 import { createNativeTokenBalance, sortBalancesByType } from '../../utils/helpers'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'

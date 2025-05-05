@@ -4,7 +4,7 @@ import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { LocalStorageKey } from '../../constants'
 import { useStorage, useStorageItem } from '../../hooks/useStorage'
-import { ExtendedConnector, WalletProperties } from '../../types'
+import { type ExtendedConnector, type WalletProperties } from '../../types'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
