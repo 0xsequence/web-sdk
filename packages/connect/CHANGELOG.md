@@ -1,5 +1,15 @@
 # @0xsequence/connect
 
+## 5.2.2
+
+### Patch Changes
+
+- - Added nativeTokenAddress to SelectPaymentSettings to allow for custom native token addresses
+  - Added options to setOpenWalletModal
+  - Added config for disabling social login tooltips
+- Updated dependencies []:
+  - @0xsequence/hooks@5.2.2
+
 ## 5.2.1
 
 ### Patch Changes

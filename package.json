@@ -57,5 +57,5 @@
     "wagmi": "^2.15.1"
   },
   "resolutions": {},
-  "packageManager": "pnpm@10.6.4"
+  "packageManager": "pnpm@10.10.0"
 }

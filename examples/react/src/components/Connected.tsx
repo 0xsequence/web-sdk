@@ -517,6 +517,23 @@ export const Connected = () => {
               description="View your integrated wallet"
               onClick={() => setOpenWalletModal(true)}
             />
+            <CardButton
+              title="Wallet Widget Inventory"
+              description="Open the wallet widget with a specific collection"
+              onClick={() =>
+                setOpenWalletModal(true, {
+                  defaultNavigation: {
+                    location: 'search-collectibles',
+                    params: {
+                      selectedCollection: {
+                        chainId: 137,
+                        contractAddress: '0x92473261F2c26F2264429C451F70b0192f858795'
+                      }
+                    }
+                  }
+                })
+              }
+            />
             {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"

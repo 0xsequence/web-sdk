@@ -87,6 +87,17 @@ export interface SendCollectibleNavigation {
   params: SendCollectibleParams
 }
 
+export interface SearchCollectiblesParams {
+  selectedCollection: {
+    chainId: number
+    contractAddress: string
+  }
+}
+
+export interface SearchCollectiblesNavigation {
+  location: 'search-collectibles'
+  params?: SearchCollectiblesParams
+}
 export interface BasicNavigation {
   location:
     | 'home'
@@ -108,7 +119,6 @@ export interface BasicNavigation {
     | 'connect-dapp'
     | 'search'
     | 'search-tokens'
-    | 'search-collectibles'
 }
 
 export type Navigation =
@@ -116,6 +126,7 @@ export type Navigation =
   | CoinDetailsNavigation
   | CollectibleDetailsNavigation
   | TransactionDetailsNavigation
+  | SearchCollectiblesNavigation
   | SearchViewAllNavigation
   | SendCoinNavigation
   | SendCollectibleNavigation

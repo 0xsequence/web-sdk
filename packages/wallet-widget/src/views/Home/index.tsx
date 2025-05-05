@@ -374,7 +374,7 @@ export const Home = () => {
           </SlideupDrawer>
         )}
         {walletFilterOpen && (
-          <SlideupDrawer onClose={() => setWalletFilterOpen(false)} label="Select active wallet">
+          <SlideupDrawer onClose={() => setWalletFilterOpen(false)} label="Filter items by wallet">
             <WalletsFilter />
           </SlideupDrawer>
         )}

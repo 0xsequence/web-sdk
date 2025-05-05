@@ -48,6 +48,7 @@ export interface SelectPaymentSettings {
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
   skipNativeBalanceCheck?: boolean
   slippageBps?: number
+  nativeTokenAddress?: string
 }
 
 type SelectPaymentModalContext = {

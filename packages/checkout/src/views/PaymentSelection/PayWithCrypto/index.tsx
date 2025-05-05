@@ -29,7 +29,7 @@ export const PayWithCrypto = ({
   const [showMore, setShowMore] = useState(false)
   const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
 
-  const { chain, currencyAddress, price, skipNativeBalanceCheck } = settings
+  const { chain, currencyAddress, price, skipNativeBalanceCheck, nativeTokenAddress } = settings
   const { address: userAddress } = useAccount()
   const { clearCachedBalances } = useClearCachedBalances()
   const network = findSupportedNetwork(chain)
@@ -220,7 +220,7 @@ export const PayWithCrypto = ({
         {tokenPayOptions.map(swapOption => {
           const isMainCurrency = swapOption.currencyAddress === lowerCurrencyAddress
           const currentBalance = tokenBalancesMap.get(swapOption.currencyAddress) ?? 0n
-          const isNative = compareAddress(swapOption.currencyAddress, zeroAddress)
+          const isNative = compareAddress(swapOption.currencyAddress, nativeTokenAddress || zeroAddress)
           const isNativeBalanceCheckSkipped = isNative && skipNativeBalanceCheck
 
           if (isMainCurrency) {

@@ -51,7 +51,12 @@ export const getContent = (navigation: Navigation) => {
     case 'search-tokens':
       return <SearchTokens />
     case 'search-collectibles':
-      return <SearchCollectibles />
+      return (
+        <SearchCollectibles
+          contractAddress={navigation.params?.selectedCollection?.contractAddress}
+          chainId={navigation.params?.selectedCollection?.chainId}
+        />
+      )
     case 'settings':
       return <SettingsMenu />
     case 'settings-wallets':
