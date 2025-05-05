@@ -385,8 +385,8 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     } else if (protocolConfig.protocol == 'magiceden') {
       listingData = {
         protocol: protocolConfig.protocol,
-        auction_house: protocolConfig.auctionHouse,
-        token_address: nftName
+        auction_house: targetContractAddress,
+        token_address: nftAddress
       }
     }
 

@@ -365,14 +365,22 @@ export const Connected = () => {
 
     // const chainId = 137
 
-    // Forte payment testnet testing
+    // Forte payment testnet testing opensea
+    // const currencyAddress = zeroAddress
+    // const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
+    // const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
+    // const price = '600000000000000'
+    // const contractId = ''
+    // const chainId = 11155111
+
+    // Forte payment testnet testing magiceden
     const currencyAddress = zeroAddress
-    const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
-    const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
-    const price = '600000000000000'
+    const salesContractAddress = '0x0000000000000068F116a894984e2DB1123eB395'
+    const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
+    const price = '100000000000000'
     const contractId = ''
 
-    const chainId = 11155111
+    const chainId = 137
 
     const collectibles = [
       {
@@ -416,13 +424,17 @@ export const Connected = () => {
       //   protocol: 'mint'
       // },
       // Config for seaport testnet
+      // forteConfig: {
+      //   protocol: 'seaport',
+      //   orderHash: '0xa29984c1892bb28bc35170a0e7e4db64ceacfbd20dc5576bd67f1aae9dd678a3',
+      //   // listings with amount > 1 are bugged
+      //   // orderHash: '0x832b698e52508849fe533fdef53d6d9674be4f43eb1a2eb3415e46041f087af9',
+      //   seaportProtocolAddress: '0x0000000000000068F116a894984e2DB1123eB395',
+      //   sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
+      // },
       forteConfig: {
-        protocol: 'seaport',
-        orderHash: '0xa29984c1892bb28bc35170a0e7e4db64ceacfbd20dc5576bd67f1aae9dd678a3',
-        // listings with amount > 1 are bugged
-        // orderHash: '0x832b698e52508849fe533fdef53d6d9674be4f43eb1a2eb3415e46041f087af9',
-        seaportProtocolAddress: '0x0000000000000068F116a894984e2DB1123eB395',
-        sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
+        protocol: 'magiceden',
+        sellerAddress: '0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9'
       },
       copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash?: string) => {
