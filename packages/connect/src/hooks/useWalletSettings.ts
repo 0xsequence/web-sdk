@@ -17,10 +17,11 @@ import { useWalletConfigContext } from '../contexts/WalletConfig'
  * - `setDisplayedAssets` - Function to update the list of displayed assets
  * - `showExternalWallets` - Whether external wallets are visible on the Connect Modal
  * - `showConnectedWallets` - Whether linked wallets are visible on the Connect Modal
+ * - `showSocialWallets` - Whether social wallets are visible on the Connect Modal
  *
  * @example
  * ```tsx
- * const { displayedAssets, readOnlyNetworks, setDisplayedAssets, showExternalWallets, showConnectedWallets } = useWalletSettings()
+ * const { displayedAssets, readOnlyNetworks, setDisplayedAssets, showExternalWallets, showConnectedWallets, showSocialWallets } = useWalletSettings()
  *
  * // Check if a network is read-only
  * const isReadOnly = readOnlyNetworks?.includes(1) // true if Ethereum mainnet is read-only
