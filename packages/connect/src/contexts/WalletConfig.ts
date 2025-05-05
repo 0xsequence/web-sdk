@@ -8,9 +8,9 @@ type WalletConfigContext = {
   setDisplayedAssets: React.Dispatch<React.SetStateAction<DisplayedAsset[]>>
   displayedAssets: DisplayedAsset[]
   readOnlyNetworks?: number[]
-  showExternalWallets?: boolean
-  showConnectedWallets?: boolean
-  showSocialWallets?: boolean
+  hideExternalConnectOptions?: boolean
+  hideConnectedWallets?: boolean
+  hideSocialConnectOptions?: boolean
 }
 
 const [useWalletConfigContext, WalletConfigContextProvider] = createGenericContext<WalletConfigContext>()

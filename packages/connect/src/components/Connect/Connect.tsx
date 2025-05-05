@@ -40,7 +40,7 @@ export const Connect = (props: ConnectProps) => {
   useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
 
   const { analytics } = useAnalyticsContext()
-  const { showExternalWallets, showConnectedWallets, showSocialWallets } = useWalletSettings()
+  const { hideExternalConnectOptions, hideConnectedWallets, hideSocialConnectOptions } = useWalletSettings()
 
   const { onClose, emailConflictInfo, config = {} as ConnectConfig, isPreview = false } = props
   const { signIn = {} } = config
@@ -382,7 +382,7 @@ export const Connect = (props: ConnectProps) => {
         </div>
       ) : (
         <>
-          {showConnectedWallets && wallets.length > 0 && !showEmailWaasPinInput && (
+          {!hideConnectedWallets && wallets.length > 0 && !showEmailWaasPinInput && (
             <>
               <ConnectedWallets
                 wallets={wallets}
@@ -392,7 +392,7 @@ export const Connect = (props: ConnectProps) => {
               />
 
               <>
-                {showExternalWallets && (
+                {!hideExternalConnectOptions && (
                   <>
                     <Divider className="text-background-raised w-full" />
                     <div className="flex justify-center">
@@ -421,7 +421,7 @@ export const Connect = (props: ConnectProps) => {
 
                   <div className="flex mt-6 gap-6 flex-col">
                     <>
-                      {showSocialWallets && showSocialConnectorSection && (
+                      {!hideSocialConnectOptions && showSocialConnectorSection && (
                         <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
                           {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                             return (
@@ -456,7 +456,7 @@ export const Connect = (props: ConnectProps) => {
                           )}
                         </div>
                       )}
-                      {showSocialWallets && showSocialConnectorSection && showEmailInputSection && (
+                      {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
                         <div className="flex gap-4 flex-row justify-center items-center">
                           <Divider className="mx-0 my-0 text-background-secondary grow" />
                           <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">
@@ -492,7 +492,7 @@ export const Connect = (props: ConnectProps) => {
                   </div>
                 </>
               )}
-              {showExternalWallets && walletConnectors.length > 0 && (
+              {!hideExternalConnectOptions && walletConnectors.length > 0 && (
                 <>
                   <div
                     className={clsx(

@@ -15,13 +15,13 @@ import { useWalletConfigContext } from '../contexts/WalletConfig'
  * - `displayedAssets` - Array of assets to display, each with a contract address and chain ID
  * - `readOnlyNetworks` - Array of network IDs where transactions are disabled
  * - `setDisplayedAssets` - Function to update the list of displayed assets
- * - `showExternalWallets` - Whether external wallets are visible on the Connect Modal
- * - `showConnectedWallets` - Whether linked wallets are visible on the Connect Modal
- * - `showSocialWallets` - Whether social wallets are visible on the Connect Modal
+ * - `hideExternalConnectOptions` - Hide external wallets on the Connect Modal
+ * - `hideConnectedWallets` - Hide connected wallets on the Connect Modal
+ * - `hideSocialConnectOptions` - Hide social wallets on the Connect Modal
  *
  * @example
  * ```tsx
- * const { displayedAssets, readOnlyNetworks, setDisplayedAssets, showExternalWallets, showConnectedWallets, showSocialWallets } = useWalletSettings()
+ * const { displayedAssets, readOnlyNetworks, setDisplayedAssets, hideExternalConnectOptions, hideConnectedWallets, hideSocialConnectOptions } = useWalletSettings()
  *
  * // Check if a network is read-only
  * const isReadOnly = readOnlyNetworks?.includes(1) // true if Ethereum mainnet is read-only
@@ -34,15 +34,21 @@ import { useWalletConfigContext } from '../contexts/WalletConfig'
  * ```
  */
 export const useWalletSettings = () => {
-  const { setDisplayedAssets, displayedAssets, readOnlyNetworks, showExternalWallets, showConnectedWallets, showSocialWallets } =
-    useWalletConfigContext()
+  const {
+    setDisplayedAssets,
+    displayedAssets,
+    readOnlyNetworks,
+    hideExternalConnectOptions,
+    hideConnectedWallets,
+    hideSocialConnectOptions
+  } = useWalletConfigContext()
 
   return {
     displayedAssets,
     readOnlyNetworks,
     setDisplayedAssets,
-    showExternalWallets,
-    showConnectedWallets,
-    showSocialWallets
+    hideExternalConnectOptions,
+    hideConnectedWallets,
+    hideSocialConnectOptions
   }
 }

@@ -33,9 +33,9 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
     readOnlyNetworks,
     ethAuth = {} as EthAuthSettings,
     disableAnalytics = false,
-    showExternalWallets = true,
-    showConnectedWallets = true,
-    showSocialWallets = true
+    hideExternalConnectOptions = false,
+    hideConnectedWallets = false,
+    hideSocialConnectOptions = false
   } = config
 
   const defaultAppName = signIn.projectName || 'app'
@@ -130,9 +130,9 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
                 setDisplayedAssets,
                 displayedAssets,
                 readOnlyNetworks,
-                showExternalWallets,
-                showConnectedWallets,
-                showSocialWallets
+                hideExternalConnectOptions,
+                hideConnectedWallets,
+                hideSocialConnectOptions
               }}
             >
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
