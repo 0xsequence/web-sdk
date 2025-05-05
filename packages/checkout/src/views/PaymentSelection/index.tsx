@@ -65,7 +65,8 @@ export const PaymentSelectionContent = () => {
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
-    supplementaryAnalyticsInfo
+    supplementaryAnalyticsInfo,
+    slippageBps
   } = selectPaymentSettings
 
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
@@ -124,7 +125,7 @@ export const PaymentSelectionContent = () => {
         toTokenAmount: price,
         chainId: chainId,
         includeApprove: true,
-        slippageBps: 100
+        slippageBps: slippageBps || 100
       }
     },
     {
@@ -375,7 +376,9 @@ export const PaymentSelectionContent = () => {
     if (compareAddress(selectedCurrency || '', currencyAddress)) {
       onPurchaseMainCurrency()
     } else {
-      const foundSwap = swapRoutes.flatMap(route => route.fromTokens).find(fromToken => fromToken.address === selectedCurrency)
+      const foundSwap = swapRoutes
+        .flatMap(route => route.fromTokens)
+        .find(fromToken => fromToken.address.toLowerCase() === selectedCurrency?.toLowerCase())
       if (foundSwap) {
         onClickPurchaseSwap(foundSwap)
       }

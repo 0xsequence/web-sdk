@@ -30,6 +30,7 @@ export interface UseCryptoPaymentArgs {
   errorTokenMetadata: Error | null
   isLoadingCurrencyInfo: boolean
   errorCurrencyInfo: Error | null
+  slippageBps?: number
 }
 
 export interface UseCryptoPaymentReturn {
@@ -70,7 +71,8 @@ export const useCryptoPayment = ({
   onError,
   currencyInfo,
   isLoadingCurrencyInfo,
-  errorCurrencyInfo
+  errorCurrencyInfo,
+  slippageBps
 }: UseCryptoPaymentArgs): UseCryptoPaymentReturn => {
   const [selectedCurrencyAddress, setSelectedCurrencyAddress] = useState<string | undefined>(undefined)
   const { address: userAddress, connector } = useAccount()
@@ -140,7 +142,7 @@ export const useCryptoPayment = ({
         fromTokenAmount: '0',
         chainId: chainId,
         includeApprove: true,
-        slippageBps: 100
+        slippageBps: slippageBps || 100
       }
     },
     {

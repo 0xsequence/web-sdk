@@ -14,6 +14,7 @@ export interface SwapModalSettings {
   chainId: number
   toTokenAddress: string
   toTokenAmount: string
+  slippageBps?: number
   title?: string
   description?: string
   disableMainCurrency?: boolean

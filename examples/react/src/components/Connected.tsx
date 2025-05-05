@@ -321,7 +321,7 @@ export const Connected = () => {
   const onClickSwap = () => {
     const chainId = 137
     const toTokenAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const toTokenAmount = '20000'
+    const toTokenAmount = '200000'
     const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
     const swapModalSettings: SwapModalSettings = {

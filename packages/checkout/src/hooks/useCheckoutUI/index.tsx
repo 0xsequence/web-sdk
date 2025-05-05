@@ -19,6 +19,7 @@ interface UseCheckoutUIArgs {
   targetContractAddress: string
   txData: Hex
   transactionConfirmations?: number
+  slippageBps?: number
   creditCardProvider?: CreditCardProviders
   transakConfig?: TransakConfig
   onSuccess?: (txHash: string) => void
@@ -43,6 +44,7 @@ export const useCheckoutUI = ({
   transactionConfirmations,
   creditCardProvider,
   transakConfig,
+  slippageBps,
   onSuccess,
   onError
 }: UseCheckoutUIArgs): UseCheckoutUIReturn => {
@@ -138,7 +140,8 @@ export const useCheckoutUI = ({
     isLoadingTokenMetadatas,
     errorTokenMetadata,
     isLoadingCurrencyInfo,
-    errorCurrencyInfo
+    errorCurrencyInfo,
+    slippageBps
   })
 
   return {

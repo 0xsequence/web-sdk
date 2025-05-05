@@ -8,7 +8,7 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
@@ -24,6 +24,7 @@ export const Swap = () => {
     chainId,
     disableMainCurrency = true,
     description,
+    slippageBps,
     postSwapTransactions,
     blockConfirmations,
     customSwapErrorMessage,
@@ -62,21 +63,62 @@ export const Swap = () => {
     }
   })
 
-  const tokenBalancesMap = new Map<string, string>()
-  tokenBalances?.pages.forEach(page => {
-    page.balances.forEach(balance => {
-      tokenBalancesMap.set(balance.contractAddress, balance.balance)
+  const tokensBalancesMap = useMemo(() => {
+    const map = new Map<string, bigint>()
+    tokenBalances?.pages?.forEach(page => {
+      page.balances?.forEach(balanceData => {
+        if (balanceData.contractAddress && balanceData.balance) {
+          map.set(balanceData.contractAddress.toLowerCase(), BigInt(balanceData.balance))
+        }
+      })
     })
-  })
+    return map
+  }, [tokenBalances])
 
   useEffect(() => {
-    if (!disableMainCurrency) {
-      setSelectedCurrency(toTokenAddress)
-    } else if (!swapRoutesIsLoading) {
-      const firstOptionAddress = swapRoutes.flatMap(route => route.fromTokens)[0]?.address
-      setSelectedCurrency(firstOptionAddress)
+    // Only attempt to select a currency if none is currently selected
+    const selectedCurrencyBalance = tokensBalancesMap.get(selectedCurrency?.toLowerCase() || '')
+    if ((selectedCurrency && BigInt(selectedCurrencyBalance || '0') > 0) || isLoadingTokenBalances || swapRoutesIsLoading) {
+      return
     }
-  }, [swapRoutesIsLoading])
+
+    if (!disableMainCurrency) {
+      const balance = tokensBalancesMap.get(toTokenAddress.toLowerCase())
+      const mainCurrencyOptionPrice = toTokenAmount
+
+      if (mainCurrencyOptionPrice && balance && BigInt(balance) >= BigInt(mainCurrencyOptionPrice)) {
+        setSelectedCurrency(toTokenAddress)
+        return
+      }
+    }
+
+    const validSwapOptions = swapRoutes.flatMap(route => route.fromTokens)
+
+    if (!validSwapOptions.length) {
+      return
+    }
+
+    // Try to find the first token with sufficient balance
+    const optionWithSufficientBalance = validSwapOptions.find(option => {
+      if (!option.price) {
+        return false
+      }
+      const balance = tokensBalancesMap.get(option.address.toLowerCase())
+      return balance ? BigInt(balance) >= BigInt(option.price) : false
+    })
+
+    if (optionWithSufficientBalance) {
+      setSelectedCurrency(optionWithSufficientBalance.address)
+    }
+  }, [
+    swapRoutesIsLoading,
+    isLoadingTokenBalances,
+    swapRoutes,
+    tokensBalancesMap,
+    disableMainCurrency,
+    toTokenAddress,
+    selectedCurrency
+  ])
 
   const isNativeCurrency = compareAddress(toTokenAddress, zeroAddress)
   const network = findSupportedNetwork(chainId)
@@ -101,7 +143,7 @@ export const Swap = () => {
         fromTokenAddress: selectedCurrency || '',
         chainId: chainId,
         includeApprove: true,
-        slippageBps: 100
+        slippageBps: slippageBps || 100
       }
     },
     {
@@ -249,7 +291,7 @@ export const Swap = () => {
               .flatMap(route => route.fromTokens)
               .map(tokenOption => {
                 const displayPrice = formatUnits(BigInt(tokenOption.price || '0'), tokenOption.decimals || 0)
-                const balance = tokenBalancesMap.get(tokenOption.address.toLowerCase())
+                const balance = tokensBalancesMap.get(tokenOption.address.toLowerCase())
                 const insufficientFunds = balance ? BigInt(balance) < BigInt(tokenOption.price || '0') : false
 
                 return (
@@ -288,7 +330,7 @@ export const Swap = () => {
           <Button
             disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending || isErrorSwapQuote}
             variant="primary"
-            label={quoteFetchInProgress ? 'Preparing swap...' : 'Proceed'}
+            label={quoteFetchInProgress ? 'Preparing swap...' : isTxsPending ? 'Preparing transaction...' : 'Proceed'}
             onClick={onClickProceed}
           />
         </div>

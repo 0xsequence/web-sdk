@@ -4,7 +4,8 @@ import {
   formatDisplay,
   sendTransactions,
   useAnalyticsContext,
-  ExtendedConnector
+  ExtendedConnector,
+  ContractVerificationStatus
 } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
@@ -12,9 +13,10 @@ import {
   useClearCachedBalances,
   useGetContractInfo,
   useIndexerClient,
-  useGetSwapRoutes
+  useGetSwapRoutes,
+  useGetTokenBalancesSummary
 } from '@0xsequence/hooks'
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
@@ -25,9 +27,10 @@ interface SwapListProps {
   chainId: number
   contractAddress: string
   amount: string
+  slippageBps?: number
 }
 
-export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) => {
+export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: SwapListProps) => {
   const { clearCachedBalances } = useClearCachedBalances()
   const { setNavigation } = useNavigation()
   const { address: userAddress, connector } = useAccount()
@@ -63,12 +66,6 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
     contractAddress: contractAddress
   })
 
-  useEffect(() => {
-    if (!swapRoutesIsLoading && swapRoutes.flatMap(route => route.fromTokens).length > 0) {
-      setSelectedCurrency(swapRoutes.flatMap(route => route.fromTokens)[0].address)
-    }
-  }, [swapRoutesIsLoading])
-
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
 
   console.log('[SwapList] Evaluating useGetSwapQuote:', {
@@ -93,22 +90,44 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
         toTokenAddress: buyCurrencyAddress,
         toTokenAmount: amount,
         fromTokenAddress: sellCurrencyAddress,
-        fromTokenAmount: '0',
         chainId: chainId,
         includeApprove: true,
-        slippageBps: 100
+        slippageBps: slippageBps || 100
       }
     },
     {
-      disabled: false
+      disabled: disableSwapQuote
     }
   )
+
+  const { data: tokenBalancesData, isLoading: tokenBalancesIsLoading } = useGetTokenBalancesSummary({
+    chainIds: [chainId],
+    filter: {
+      accountAddresses: userAddress ? [userAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: swapRoutes.flatMap(route => route.fromTokens).map(fromToken => fromToken.address.toLowerCase()),
+      omitNativeBalances: false
+    },
+    omitMetadata: true
+  })
+
+  const tokenBalancesMap = useMemo(() => {
+    const map = new Map<string, bigint>()
+    tokenBalancesData?.pages?.forEach(page => {
+      page.balances?.forEach(balanceData => {
+        if (balanceData.contractAddress && balanceData.balance) {
+          map.set(balanceData.contractAddress.toLowerCase(), BigInt(balanceData.balance))
+        }
+      })
+    })
+    return map
+  }, [tokenBalancesData])
 
   const indexerClient = useIndexerClient(chainId)
 
   const quoteFetchInProgress = isLoadingSwapQuote
 
-  const isLoading = swapRoutesIsLoading || isLoadingCurrencyInfo || isLoadingSwapQuote
+  const isLoading = swapRoutesIsLoading || isLoadingCurrencyInfo || tokenBalancesIsLoading
 
   const onClickProceed = async () => {
     if (!userAddress || !publicClient || !walletClient || !connector) {
@@ -250,12 +269,16 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
               .flatMap(route => route.fromTokens)
               .map(swapOption => {
                 const sellCurrencyAddress = swapOption.address || ''
+                const currentBalance = tokenBalancesMap.get(swapOption.address.toLowerCase()) ?? 0n
+                const isInsufficientBalance = currentBalance < BigInt(swapOption.price || '0')
 
-                const displayPrice = formatDisplay(swapOption.priceUsd, {
+                const swapQuotePriceDisplay = formatUnits(BigInt(swapOption.price || 0), swapOption.decimals || 18)
+                const formattedPrice = formatDisplay(swapQuotePriceDisplay, {
                   disableScientificNotation: true,
                   disableCompactNotation: true,
                   significantDigits: 6
                 })
+
                 return (
                   <CryptoOption
                     key={sellCurrencyAddress}
@@ -264,12 +287,13 @@ export const SwapList = ({ chainId, contractAddress, amount }: SwapListProps) =>
                     symbol={swapOption.symbol || ''}
                     isSelected={compareAddress(selectedCurrency || '', sellCurrencyAddress)}
                     iconUrl={swapOption.logoUri}
-                    price={displayPrice}
+                    price={formattedPrice}
                     onClick={() => {
                       setIsErrorTx(false)
                       setSelectedCurrency(sellCurrencyAddress)
                     }}
-                    disabled={isTxsPending}
+                    disabled={isTxsPending || isInsufficientBalance}
+                    showInsufficientFundsWarning={isInsufficientBalance}
                   />
                 )
               })}
