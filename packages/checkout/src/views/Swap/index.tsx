@@ -291,8 +291,8 @@ export const Swap = () => {
               .flatMap(route => route.fromTokens)
               .map(tokenOption => {
                 const displayPrice = formatUnits(BigInt(tokenOption.price || '0'), tokenOption.decimals || 0)
-                const balance = tokensBalancesMap.get(tokenOption.address.toLowerCase())
-                const insufficientFunds = balance ? BigInt(balance) < BigInt(tokenOption.price || '0') : false
+                const balance = tokensBalancesMap.get(tokenOption.address.toLowerCase()) || BigInt(0)
+                const insufficientFunds = balance < BigInt(tokenOption.price || '0')
 
                 return (
                   <CryptoOption
