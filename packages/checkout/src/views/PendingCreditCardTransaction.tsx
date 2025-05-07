@@ -1,6 +1,5 @@
-import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
+import { useAnalyticsContext, useProjectAccessKey, useConfig, useGetTokenMetadata, useGetContractInfo } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useConfig, useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect, useRef } from 'react'

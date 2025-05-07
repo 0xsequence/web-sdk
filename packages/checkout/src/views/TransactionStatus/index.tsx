@@ -2,7 +2,10 @@ import {
   CollectibleTileImage,
   formatDisplay,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
-  waitForTransactionReceipt
+  waitForTransactionReceipt,
+  useGetTokenMetadata,
+  useGetContractInfo,
+  useIndexerClient
 } from '@0xsequence/connect'
 import {
   ArrowDownIcon,
@@ -15,7 +18,6 @@ import {
   CloseIcon,
   truncateAddress
 } from '@0xsequence/design-system'
-import { useGetTokenMetadata, useGetContractInfo, useIndexerClient } from '@0xsequence/hooks'
 import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect } from 'react'

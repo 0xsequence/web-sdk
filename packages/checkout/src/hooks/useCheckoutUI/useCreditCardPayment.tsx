@@ -1,6 +1,5 @@
-import { useProjectAccessKey } from '@0xsequence/connect'
+import { useProjectAccessKey, useConfig } from '@0xsequence/connect'
 import { compareAddress } from '@0xsequence/connect'
-import { useConfig } from '@0xsequence/hooks'
 import { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'

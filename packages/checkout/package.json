@@ -42,7 +42,6 @@
     "0xsequence": ">= 2.3.7",
     "@0xsequence/api": "2.3.11",
     "@0xsequence/connect": "workspace:*",
-    "@0xsequence/hooks": "workspace:*",
     "@0xsequence/indexer": ">= 2.3.7",
     "@0xsequence/metadata": ">= 2.3.7",
     "@0xsequence/network": ">= 2.3.7",

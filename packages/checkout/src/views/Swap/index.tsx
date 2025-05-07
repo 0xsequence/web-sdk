@@ -1,12 +1,15 @@
-import { CryptoOption, compareAddress, formatDisplay, sendTransactions } from '@0xsequence/connect'
-import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
+  CryptoOption,
+  compareAddress,
+  formatDisplay,
+  sendTransactions,
   useGetContractInfo,
   useGetSwapRoutes,
   useGetSwapQuote,
   useGetTokenBalancesSummary,
   useIndexerClient
-} from '@0xsequence/hooks'
+} from '@0xsequence/connect'
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState, useEffect, useMemo } from 'react'
 import { zeroAddress, formatUnits, Hex } from 'viem'
