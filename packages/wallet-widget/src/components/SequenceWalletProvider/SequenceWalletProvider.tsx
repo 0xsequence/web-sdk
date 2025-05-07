@@ -1,7 +1,7 @@
 'use client'
 
 import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout'
-import { getModalPositionCss, useTheme, ShadowRoot, useOpenConnectModal } from '@0xsequence/connect'
+import { getModalPositionCss, useTheme, ShadowRoot, useOpenConnectModal, useConnectConfigContext } from '@0xsequence/connect'
 import { Modal, Scroll, ToastProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import React, { useState, useContext, useEffect } from 'react'
@@ -39,6 +39,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const { isAddFundsModalOpen } = useAddFundsModal()
   const { isConnectModalOpen } = useOpenConnectModal()
   const { address } = useAccount()
+  const { customCSS } = useConnectConfigContext()
 
   useEffect(() => {
     if (!address) {
@@ -94,7 +95,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
         <FiatWalletsMapProvider>
           <ToastProvider>
             <SwapProvider>
-              <ShadowRoot theme={theme}>
+              <ShadowRoot theme={theme} customCSS={customCSS}>
                 <AnimatePresence>
                   {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
                     <Modal

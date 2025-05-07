@@ -82,6 +82,7 @@ export interface ConnectConfig {
   hideExternalConnectOptions?: boolean
   hideSocialConnectOptions?: boolean
   hideConnectedWallets?: boolean
+  customCSS?: string
 }
 
 export type StorageItem = {

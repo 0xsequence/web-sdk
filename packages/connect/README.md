@@ -41,6 +41,7 @@ interface CreateConfigOptions {
   disableAnalytics?: boolean
   defaultTheme?: Theme
   position?: ModalPosition
+  customCSS?: string // Injected into shadow dom
   signIn?: {
     logoUrl?: string
     projectName?: string

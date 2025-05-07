@@ -48,7 +48,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     disableAnalytics = false,
     hideExternalConnectOptions = false,
     hideConnectedWallets = false,
-    hideSocialConnectOptions = false
+    hideSocialConnectOptions = false,
+    customCSS
   } = config
 
   const defaultAppName = signIn.projectName || 'app'
@@ -182,7 +183,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                 }}
               >
                 <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                  <ShadowRoot theme={theme}>
+                  <ShadowRoot theme={theme} customCSS={customCSS}>
                     <AnimatePresence>
                       {openConnectModal && (
                         <Modal

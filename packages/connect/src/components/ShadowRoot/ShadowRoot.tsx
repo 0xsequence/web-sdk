@@ -8,10 +8,10 @@ import { styles } from '../../styles'
 
 // Create a stylesheet which is shared by all ShadowRoot components
 let sheet: CSSStyleSheet
-const getCSSStyleSheet = () => {
+const getCSSStyleSheet = (customCSS?: string) => {
   if (!sheet) {
     sheet = new CSSStyleSheet()
-    sheet.replaceSync(styles)
+    sheet.replaceSync(styles + (customCSS ? `\n\n${customCSS}` : ''))
   }
 
   return sheet
@@ -20,10 +20,11 @@ const getCSSStyleSheet = () => {
 interface ShadowRootProps {
   theme?: Theme
   children: ReactNode
+  customCSS?: string
 }
 
 export const ShadowRoot = (props: ShadowRootProps) => {
-  const { theme, children } = props
+  const { theme, children, customCSS } = props
   const hostRef = useRef<HTMLDivElement>(null)
   const [container, setContainer] = useState<HTMLDivElement | null>(null)
   const [windowDocument, setWindowDocument] = useState<Document | null>(null)
@@ -38,7 +39,7 @@ export const ShadowRoot = (props: ShadowRootProps) => {
       const shadowRoot = hostRef.current.attachShadow({ mode: 'open' })
 
       // Attach the stylesheet
-      shadowRoot.adoptedStyleSheets = [getCSSStyleSheet()]
+      shadowRoot.adoptedStyleSheets = [getCSSStyleSheet(customCSS)]
 
       // Create a container
       const container = document.createElement('div')

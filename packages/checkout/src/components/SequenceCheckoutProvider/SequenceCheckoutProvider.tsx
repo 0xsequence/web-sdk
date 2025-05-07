@@ -1,6 +1,6 @@
 'use client'
 
-import { getModalPositionCss, ShadowRoot, useTheme } from '@0xsequence/connect'
+import { getModalPositionCss, ShadowRoot, useConnectConfigContext, useTheme } from '@0xsequence/connect'
 import { Modal } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import React, { useState, useEffect } from 'react'
@@ -61,6 +61,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   const [transactionStatusSettings, setTransactionStatusSettings] = useState<TransactionStatusSettings>()
   const [swapModalSettings, setSwapModalSettings] = useState<SwapModalSettings>()
   const [history, setHistory] = useState<History>([])
+  const { customCSS } = useConnectConfigContext()
 
   const getDefaultLocation = (): Navigation => {
     // skip the order summary for credit card checkout if no items provided
@@ -253,7 +254,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                   }}
                 >
                   <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>
-                    <ShadowRoot theme={theme}>
+                    <ShadowRoot theme={theme} customCSS={customCSS}>
                       <AnimatePresence>
                         {openCheckoutModal && (
                           <Modal
