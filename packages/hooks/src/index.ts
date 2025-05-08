@@ -42,4 +42,5 @@ export { useGetSwapQuote } from './hooks/Combination/useGetSwapQuote'
 export { useGetSwapRoutes } from './hooks/Combination/useGetSwapRoutes'
 
 // Etc
-export { useClearCachedBalances } from './hooks/useClearCachedBalances.js'
+export { useClearCachedBalances } from './hooks/useClearCachedBalances'
+export { useClipboard } from './hooks/useClipboard'
