@@ -1,3 +1,5 @@
+'use client'
+
 import copy from 'copy-to-clipboard'
 import { useEffect, useState } from 'react'
 
