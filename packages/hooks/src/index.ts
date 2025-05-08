@@ -38,9 +38,9 @@ export { useGetContractInfo } from './hooks/Metadata/useGetContractInfo.js'
 export { useGetMultipleContractsInfo } from './hooks/Metadata/useGetMultipleContractsInfo.js'
 export { useGetTokenMetadata } from './hooks/Metadata/useGetTokenMetadata.js'
 
-export { useGetSwapQuote } from './hooks/Combination/useGetSwapQuote'
-export { useGetSwapRoutes } from './hooks/Combination/useGetSwapRoutes'
+export { useGetSwapQuote } from './hooks/Combination/useGetSwapQuote.js'
+export { useGetSwapRoutes } from './hooks/Combination/useGetSwapRoutes.js'
 
 // Etc
-export { useClearCachedBalances } from './hooks/useClearCachedBalances'
-export { useClipboard } from './hooks/useClipboard'
+export { useClearCachedBalances } from './hooks/useClearCachedBalances.js'
+export { useClipboard } from './hooks/useClipboard.js'

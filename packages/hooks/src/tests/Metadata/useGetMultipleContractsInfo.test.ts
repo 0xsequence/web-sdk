@@ -3,9 +3,9 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { useGetMultipleContractsInfo } from '../../hooks/Metadata/useGetMultipleContractsInfo'
-import { createWrapper } from '../createWrapper'
-import { server } from '../setup'
+import { useGetMultipleContractsInfo } from '../../hooks/Metadata/useGetMultipleContractsInfo.js'
+import { createWrapper } from '../createWrapper.js'
+import { server } from '../setup.js'
 
 const getMultipleContractsInfoArgs: GetContractInfoArgs[] = [
   {

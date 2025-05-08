@@ -3,9 +3,9 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { useGetContractInfo } from '../../hooks/Metadata/useGetContractInfo'
-import { createWrapper } from '../createWrapper'
-import { server } from '../setup'
+import { useGetContractInfo } from '../../hooks/Metadata/useGetContractInfo.js'
+import { createWrapper } from '../createWrapper.js'
+import { server } from '../setup.js'
 
 const getContractInfoArgs: GetContractInfoArgs = {
   chainID: '1',

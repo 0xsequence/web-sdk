@@ -2,10 +2,10 @@ import { SequenceIndexer, type Page } from '@0xsequence/indexer'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { getAddress } from 'viem'
 
-import { QUERY_KEYS, time } from '../../constants'
-import type { HooksOptions } from '../../types'
+import { QUERY_KEYS, time } from '../../constants.js'
+import type { HooksOptions } from '../../types/hooks.js'
 
-import { useIndexerClient } from './useIndexerClient'
+import { useIndexerClient } from './useIndexerClient.js'
 
 interface GetTransactionHistoryArgs {
   accountAddresses: string[]

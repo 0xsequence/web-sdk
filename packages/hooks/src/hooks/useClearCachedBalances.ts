@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { QUERY_KEYS } from '../constants'
+import { QUERY_KEYS } from '../constants.js'
 
 export const useClearCachedBalances = () => {
   const queryClient = useQueryClient()

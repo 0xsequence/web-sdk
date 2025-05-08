@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { SequenceHooksContext } from '../contexts/ConfigContext'
+import { SequenceHooksContext } from '../contexts/ConfigContext.js'
 
 /**
  * Hook to access the Sequence configuration context.

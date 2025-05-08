@@ -1,7 +1,7 @@
 import { SequenceAPIClient } from '@0xsequence/api'
 import { useMemo } from 'react'
 
-import { useConfig } from '../useConfig'
+import { useConfig } from '../useConfig.js'
 
 /**
  * Hook to access the Sequence API client instance.

@@ -1,7 +1,7 @@
 import { SequenceIndexerGateway } from '@0xsequence/indexer'
 import { useMemo } from 'react'
 
-import { useConfig } from '../useConfig'
+import { useConfig } from '../useConfig.js'
 
 /**
  * Hook that provides an indexer gateway client for querying token balances across multiple chains.

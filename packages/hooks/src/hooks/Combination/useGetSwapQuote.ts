@@ -1,10 +1,10 @@
 import type { GetLifiSwapQuoteArgs } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants'
-import type { HooksOptions } from '../../types'
-import { compareAddress } from '../../utils/helpers'
-import { useAPIClient } from '../API/useAPIClient'
+import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants.js'
+import type { HooksOptions } from '../../types/hooks.js'
+import { compareAddress } from '../../utils/helpers.js'
+import { useAPIClient } from '../API/useAPIClient.js'
 
 /**
  * Hook to fetch a swap quote for exchanging between two currencies.
