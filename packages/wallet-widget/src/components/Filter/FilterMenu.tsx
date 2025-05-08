@@ -3,7 +3,7 @@ import { Text, TokenImage } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
-import { useSettings, useGetCollections } from '../../hooks'
+import { useGetCollections, useSettings } from '../../hooks'
 import { StackedIconTag } from '../IconWrappers'
 import { ListCardNav } from '../ListCard'
 import { SlideupDrawer } from '../Select/SlideupDrawer'

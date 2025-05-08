@@ -1,4 +1,4 @@
-import { cn, cardVariants, Text, ChevronDownIcon, TokenImage } from '@0xsequence/design-system'
+import { cardVariants, ChevronDownIcon, cn, Text, TokenImage } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 import { useChains } from 'wagmi'

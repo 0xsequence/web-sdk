@@ -1,4 +1,4 @@
-import { type GetTokenMetadataArgs, SequenceMetadata } from '@0xsequence/metadata'
+import { SequenceMetadata, type GetTokenMetadataArgs } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'

@@ -24,4 +24,4 @@ export interface SwapContext {
 
 const [useSwapContext, SwapContextProvider] = createGenericContext<SwapContext>()
 
-export { useSwapContext, SwapContextProvider }
+export { SwapContextProvider, useSwapContext }

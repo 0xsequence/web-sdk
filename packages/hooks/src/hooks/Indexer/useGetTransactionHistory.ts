@@ -1,4 +1,4 @@
-import { type Page, SequenceIndexer } from '@0xsequence/indexer'
+import { SequenceIndexer, type Page } from '@0xsequence/indexer'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { getAddress } from 'viem'
 

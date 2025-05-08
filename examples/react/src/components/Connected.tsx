@@ -1,26 +1,26 @@
 import {
-  useCheckoutModal,
+  TransactionOnRampProvider,
   useAddFundsModal,
+  useCheckoutModal,
   useSelectPaymentModal,
-  useSwapModal,
-  TransactionOnRampProvider
+  useSwapModal
 } from '@0xsequence/checkout'
 import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
+  getModalPositionCss,
+  signEthAuthProof,
+  useOpenConnectModal,
   useStorage,
   useWaasFeeOptions,
-  signEthAuthProof,
-  validateEthProof,
-  getModalPositionCss,
-  useOpenConnectModal,
-  useWallets
+  useWallets,
+  validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, Modal, Scroll, Select, Switch, Text, TextInput, cn } from '@0xsequence/design-system'
+import { Button, Card, cn, Modal, Scroll, Select, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
-import React, { type ComponentProps, useEffect } from 'react'
+import React, { useEffect, type ComponentProps } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, toHex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 

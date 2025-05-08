@@ -1,7 +1,7 @@
 import type { GetLifiSwapQuoteArgs } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS, ZERO_ADDRESS, time } from '../../constants'
+import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants'
 import type { HooksOptions } from '../../types'
 import { compareAddress } from '../../utils/helpers'
 import { useAPIClient } from '../API/useAPIClient'

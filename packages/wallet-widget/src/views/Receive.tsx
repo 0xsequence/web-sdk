@@ -1,7 +1,7 @@
 import { getNetwork } from '@0xsequence/connect'
-import { Button, Text, CopyIcon, ShareIcon, Image } from '@0xsequence/design-system'
+import { Button, CopyIcon, Image, ShareIcon, Text } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount } from 'wagmi'
 

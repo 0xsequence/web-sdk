@@ -1,4 +1,4 @@
-import { type UseQueryResult, useQuery } from '@tanstack/react-query'
+import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { useConfig, type Storage } from 'wagmi'
 
 import type { StorageItem } from '../types'

@@ -1,6 +1,6 @@
-import { TokenImage, Text } from '@0xsequence/design-system'
+import { Text, TokenImage } from '@0xsequence/design-system'
 
-import { useSettings, useGetCollections } from '../../hooks'
+import { useGetCollections, useSettings } from '../../hooks'
 import { MediaIconWrapper } from '../IconWrappers'
 import { ListCardSelect } from '../ListCard/ListCardSelect'
 

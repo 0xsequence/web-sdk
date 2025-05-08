@@ -1,9 +1,9 @@
 import { renderHook, waitFor } from '@testing-library/react'
-import { HttpResponse, http } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS, ZERO_ADDRESS } from '../../constants'
-import { type GetSingleTokenBalanceArgs, useGetSingleTokenBalance } from '../../hooks/IndexerGateway/useGetSingleTokenBalance'
+import { useGetSingleTokenBalance, type GetSingleTokenBalanceArgs } from '../../hooks/IndexerGateway/useGetSingleTokenBalance'
 import { createWrapper } from '../createWrapper'
 import { server } from '../setup'
 

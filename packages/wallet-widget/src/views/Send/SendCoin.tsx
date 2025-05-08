@@ -1,47 +1,47 @@
 import {
   compareAddress,
   getNativeTokenInfoByChainId,
-  useAnalyticsContext,
-  type ExtendedConnector,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
+  useAnalyticsContext,
   useCheckWaasFeeOptions,
   useWaasFeeOptions,
+  useWallets,
   waitForTransactionReceipt,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  useWallets
+  type ExtendedConnector
 } from '@0xsequence/connect'
 import {
   Button,
-  ChevronRightIcon,
-  CopyIcon,
-  CloseIcon,
-  GradientAvatar,
-  Text,
-  NumericInput,
-  TextInput,
-  Spinner,
   Card,
+  ChevronRightIcon,
+  CloseIcon,
+  CopyIcon,
+  GradientAvatar,
+  NumericInput,
+  Spinner,
+  Text,
+  TextInput,
   useToast
 } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
   useGetCoinPrices,
   useGetExchangeRate,
-  useIndexerClient,
-  useGetSingleTokenBalance
+  useGetSingleTokenBalance,
+  useIndexerClient
 } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
-import { useState, type ChangeEvent, useRef, useEffect } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect'
 import { SendItemInfo } from '../../components/SendItemInfo'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation'
 import { ERC_20_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { useNavigationContext } from '../../contexts/Navigation'
-import { useSettings, useNavigation } from '../../hooks'
-import { computeBalanceFiat, limitDecimals, isEthAddress } from '../../utils'
+import { useNavigation, useSettings } from '../../hooks'
+import { computeBalanceFiat, isEthAddress, limitDecimals } from '../../utils'
 
 interface SendCoinProps {
   chainId: number

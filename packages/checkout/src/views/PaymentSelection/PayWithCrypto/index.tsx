@@ -1,9 +1,9 @@
-import { CryptoOption, compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/connect'
-import { AddIcon, Button, SubtractIcon, Text, Spinner } from '@0xsequence/design-system'
-import { useClearCachedBalances, useGetTokenBalancesSummary, useGetContractInfo, useGetSwapRoutes } from '@0xsequence/hooks'
+import { compareAddress, ContractVerificationStatus, CryptoOption, formatDisplay } from '@0xsequence/connect'
+import { AddIcon, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
+import { useClearCachedBalances, useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
-import { useState, useEffect, Fragment, type SetStateAction, useMemo } from 'react'
+import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 

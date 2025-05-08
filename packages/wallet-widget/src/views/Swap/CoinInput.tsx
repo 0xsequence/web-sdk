@@ -1,9 +1,9 @@
 import { Button, NumericInput, Text } from '@0xsequence/design-system'
-import { type ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 import { formatUnits } from 'viem'
 
 import { useSettings, useSwap } from '../../hooks'
-import { formatFiatBalance, decimalsToWei } from '../../utils/formatBalance'
+import { decimalsToWei, formatFiatBalance } from '../../utils/formatBalance'
 
 export const CoinInput = ({ type, disabled }: { type: 'from' | 'to'; disabled?: boolean }) => {
   const { toCoin, fromCoin, amount, nonRecentAmount, recentInput, setAmount } = useSwap()

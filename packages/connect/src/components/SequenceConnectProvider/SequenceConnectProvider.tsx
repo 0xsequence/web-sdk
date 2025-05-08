@@ -7,11 +7,11 @@ import { ChainId } from '@0xsequence/network'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
-import React, { useState, useEffect } from 'react'
-import { type Hex, hexToString } from 'viem'
-import { type Connector, useAccount, useConfig, useConnections } from 'wagmi'
+import React, { useEffect, useState } from 'react'
+import { hexToString, type Hex } from 'viem'
+import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
 
-import { DEFAULT_SESSION_EXPIRATION, WEB_SDK_VERSION, LocalStorageKey } from '../../constants'
+import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants'
 import { AnalyticsContextProvider } from '../../contexts/Analytics'
 import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal'
@@ -21,10 +21,10 @@ import { useStorage } from '../../hooks/useStorage'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import {
-  type ExtendedConnector,
+  type ConnectConfig,
   type DisplayedAsset,
   type EthAuthSettings,
-  type ConnectConfig,
+  type ExtendedConnector,
   type ModalPosition
 } from '../../types'
 import { isJSON } from '../../utils/helpers'

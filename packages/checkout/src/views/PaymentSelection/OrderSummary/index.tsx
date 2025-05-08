@@ -1,6 +1,6 @@
-import { formatDisplay, NetworkBadge, CollectibleTileImage } from '@0xsequence/connect'
-import { Spinner, NetworkImage, Text } from '@0xsequence/design-system'
-import { useGetTokenMetadata, useGetContractInfo, useGetCoinPrices } from '@0xsequence/hooks'
+import { CollectibleTileImage, formatDisplay, NetworkBadge } from '@0xsequence/connect'
+import { NetworkImage, Spinner, Text } from '@0xsequence/design-system'
+import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 

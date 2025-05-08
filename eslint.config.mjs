@@ -45,6 +45,10 @@ export default tseslint.config(
             order: 'asc',
             caseInsensitive: true
           },
+          named: {
+	    enabled: true,
+            types: "types-last"
+          },
           pathGroups: [
             {
               pattern: '~/**',

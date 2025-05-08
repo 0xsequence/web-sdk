@@ -1,4 +1,4 @@
-import { type IndexerGateway, type Page, SequenceIndexerGateway, type TokenBalance } from '@0xsequence/indexer'
+import { SequenceIndexerGateway, type IndexerGateway, type Page, type TokenBalance } from '@0xsequence/indexer'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'

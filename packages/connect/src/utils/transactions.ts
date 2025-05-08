@@ -1,6 +1,6 @@
 import { sequence } from '0xsequence'
-import { SequenceIndexer, type TransactionReceipt, TransactionStatus } from '@0xsequence/indexer'
-import { type FeeOption, SequenceWaaS } from '@0xsequence/waas'
+import { SequenceIndexer, TransactionStatus, type TransactionReceipt } from '@0xsequence/indexer'
+import { SequenceWaaS, type FeeOption } from '@0xsequence/waas'
 import type { Hex, PublicClient, WalletClient } from 'viem'
 import type { Connector } from 'wagmi'
 

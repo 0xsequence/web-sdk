@@ -3,7 +3,7 @@ import { useObservable } from 'micro-observables'
 import { useEffect } from 'react'
 
 import { CollectiblesList } from '../../components/SearchLists/CollectiblesList'
-import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
+import { useGetAllTokensDetails, useNavigation, useSettings } from '../../hooks'
 import type { TokenBalanceWithPrice } from '../../utils'
 
 export const SearchCollectibles = ({

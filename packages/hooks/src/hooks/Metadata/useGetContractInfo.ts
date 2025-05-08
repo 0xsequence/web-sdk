@@ -1,8 +1,8 @@
 import type { ContractInfo, GetContractInfoArgs } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { type UseQueryResult, useQuery } from '@tanstack/react-query'
+import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 
-import { QUERY_KEYS, ZERO_ADDRESS, time } from '../../constants'
+import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants'
 import type { HooksOptions } from '../../types'
 import { compareAddress } from '../../utils/helpers'
 

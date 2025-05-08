@@ -56,4 +56,4 @@ type NavigationContext = {
 
 const [useNavigationContext, NavigationContextProvider] = createGenericContext<NavigationContext>()
 
-export { useNavigationContext, NavigationContextProvider }
+export { NavigationContextProvider, useNavigationContext }

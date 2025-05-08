@@ -33,4 +33,4 @@ type SwapModalContext = {
 
 const [useSwapModalContext, SwapModalContextProvider] = createGenericContext<SwapModalContext>()
 
-export { useSwapModalContext, SwapModalContextProvider }
+export { SwapModalContextProvider, useSwapModalContext }

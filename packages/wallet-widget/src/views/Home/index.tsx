@@ -1,15 +1,15 @@
 import { useAddFundsModal } from '@0xsequence/checkout'
-import { compareAddress, formatAddress, useWallets, useOpenConnectModal, getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { compareAddress, formatAddress, getNativeTokenInfoByChainId, useOpenConnectModal, useWallets } from '@0xsequence/connect'
 import {
-  Button,
-  ArrowUpIcon,
-  SwapIcon,
-  ScanIcon,
   AddIcon,
+  ArrowUpIcon,
+  Button,
   ChevronUpDownIcon,
-  Text,
   EllipsisIcon,
-  Skeleton
+  ScanIcon,
+  Skeleton,
+  SwapIcon,
+  Text
 } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { ethers } from 'ethers'
@@ -26,7 +26,7 @@ import { ListCardNavTable } from '../../components/ListCardTable/ListCardNavTabl
 import { SelectWalletRow } from '../../components/Select/SelectWalletRow'
 import { SlideupDrawer } from '../../components/Select/SlideupDrawer'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient'
-import { useNavigation, useSettings, useGetAllTokensDetails, useFiatWalletsMap } from '../../hooks'
+import { useFiatWalletsMap, useGetAllTokensDetails, useNavigation, useSettings } from '../../hooks'
 import { computeBalanceFiat } from '../../utils'
 
 import { OperationButtonTemplate } from './OperationButtonTemplate'

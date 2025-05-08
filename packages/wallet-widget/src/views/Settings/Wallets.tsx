@@ -1,5 +1,5 @@
 import { formatAddress, useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { cardVariants, cn, Text, Divider, IconButton, CheckmarkIcon, CloseIcon, Spinner } from '@0xsequence/design-system'
+import { cardVariants, CheckmarkIcon, CloseIcon, cn, Divider, IconButton, Spinner, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
 import { CopyButton } from '../../components/CopyButton'

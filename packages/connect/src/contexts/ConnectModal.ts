@@ -12,4 +12,4 @@ type ConnectModalContext = {
 
 const [useConnectModalContext, ConnectModalContextProvider] = createGenericContext<ConnectModalContext>()
 
-export { useConnectModalContext, ConnectModalContextProvider }
+export { ConnectModalContextProvider, useConnectModalContext }

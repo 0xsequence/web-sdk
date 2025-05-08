@@ -1,10 +1,10 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { type Theme, ThemeProvider } from '@0xsequence/design-system'
+import { ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { useState, useEffect, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey } from '../../constants'
@@ -16,10 +16,10 @@ import { WalletConfigContextProvider } from '../../contexts/WalletConfig'
 import { useStorage } from '../../hooks/useStorage'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict'
 import {
-  type ExtendedConnector,
+  type ConnectConfig,
   type DisplayedAsset,
   type EthAuthSettings,
-  type ConnectConfig,
+  type ExtendedConnector,
   type ModalPosition
 } from '../../types'
 import { Connect } from '../Connect/Connect'

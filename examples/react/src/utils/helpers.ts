@@ -1,5 +1,5 @@
 import { CheckoutSettings } from '@0xsequence/checkout'
-import { Hex, encodeFunctionData } from 'viem'
+import { encodeFunctionData, Hex } from 'viem'
 
 import { orderbookAbi } from '../constants/orderbook-abi'
 

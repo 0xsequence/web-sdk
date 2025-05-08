@@ -1,5 +1,5 @@
 import { formatAddress } from '@0xsequence/connect'
-import { Text, GradientAvatar, ChevronUpDownIcon, Card } from '@0xsequence/design-system'
+import { Card, ChevronUpDownIcon, GradientAvatar, Text } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
 
 interface AccountInformationProps {

@@ -6,4 +6,4 @@ import { createGenericContext } from './genericContext'
 
 const [useConnectConfigContext, ConnectConfigContextProvider] = createGenericContext<ConnectConfig>()
 
-export { useConnectConfigContext, ConnectConfigContextProvider }
+export { ConnectConfigContextProvider, useConnectConfigContext }

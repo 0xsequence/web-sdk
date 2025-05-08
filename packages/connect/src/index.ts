@@ -6,57 +6,57 @@ export { SequenceConnectPreviewProvider } from './components/SequenceConnectPrev
 
 // Types
 export type {
+  ConnectConfig,
+  DisplayedAsset,
+  EthAuthSettings,
+  ExtendedConnector,
+  LogoProps,
+  ModalPosition,
+  StorageItem,
   Wallet,
   WalletField,
   WalletProperties,
-  WalletType,
-  DisplayedAsset,
-  ExtendedConnector,
-  EthAuthSettings,
-  ModalPosition,
-  ConnectConfig,
-  StorageItem,
-  LogoProps
+  WalletType
 } from './types'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig'
 export {
   getDefaultConnectors,
-  getDefaultWaasConnectors,
   getDefaultUniversalConnectors,
+  getDefaultWaasConnectors,
   type DefaultConnectorOptions,
-  type DefaultWaasConnectorOptions,
-  type DefaultUniversalConnectorOptions
+  type DefaultUniversalConnectorOptions,
+  type DefaultWaasConnectorOptions
 } from './config/defaultConnectors'
 export { getDefaultChains } from './config/defaultChains'
 export { getDefaultTransports } from './config/defaultTransports'
 
 // Constants
 export {
-  LocalStorageKey,
   DEFAULT_SESSION_EXPIRATION,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  LocalStorageKey,
   NATIVE_TOKEN_ADDRESS_0X,
   QUERY_KEYS,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
   WEB_SDK_VERSION
 } from './constants'
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets'
-export { isEmailValid, compareAddress, formatDisplay, capitalize, truncateAtMiddle, formatAddress } from './utils/helpers'
-export { getNativeTokenInfoByChainId, createNativeTokenBalance } from './utils/tokens'
+export { capitalize, compareAddress, formatAddress, formatDisplay, isEmailValid, truncateAtMiddle } from './utils/helpers'
+export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens'
 export { getModalPositionCss } from './utils/styling'
-export { getNetwork, getNetworkColor, getNetworkBackgroundColor } from './utils/networks'
-export { walletClientToSigner, publicClientToProvider } from './utils/adapters'
+export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks'
+export { publicClientToProvider, walletClientToSigner } from './utils/adapters'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth'
 export { sendTransactions, waitForTransactionReceipt } from './utils/transactions'
 
 // Contexts
-export { useConnectConfigContext, ConnectConfigContextProvider } from './contexts/ConnectConfig'
-export { useAnalyticsContext, AnalyticsContextProvider } from './contexts/Analytics'
-export { useConnectModalContext, ConnectModalContextProvider } from './contexts/ConnectModal'
-export { useThemeContext, ThemeContextProvider } from './contexts/Theme'
+export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig'
+export { AnalyticsContextProvider, useAnalyticsContext } from './contexts/Analytics'
+export { ConnectModalContextProvider, useConnectModalContext } from './contexts/ConnectModal'
+export { ThemeContextProvider, useThemeContext } from './contexts/Theme'
 export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/WalletConfig'
 
 // Connectors
@@ -75,8 +75,8 @@ export { twitch, type TwitchOptions } from './connectors/twitch'
 export { walletConnect } from './connectors/walletConnect'
 export { ecosystemWallet, type EcosystemWalletOptions } from './connectors/ecosystem'
 export {
-  sequenceWallet,
   sequenceWaasWallet,
+  sequenceWallet,
   type BaseSequenceConnectorOptions,
   type BaseSequenceWaasConnectorOptions
 } from './connectors/wagmiConnectors'

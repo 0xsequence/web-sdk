@@ -1,4 +1,4 @@
-import { cn, ChevronRightIcon } from '@0xsequence/design-system'
+import { ChevronRightIcon, cn } from '@0xsequence/design-system'
 
 export const ListCardNav = ({
   children,

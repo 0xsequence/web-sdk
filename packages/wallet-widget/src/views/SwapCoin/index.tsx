@@ -1,5 +1,5 @@
 import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
-import { Button, ChevronRightIcon, Text, NumericInput } from '@0xsequence/design-system'
+import { Button, ChevronRightIcon, NumericInput, Text } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalance } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, type ChangeEvent } from 'react'
@@ -8,7 +8,7 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { SendItemInfo } from '../../components/SendItemInfo'
 import { HEADER_HEIGHT } from '../../constants'
-import { useSettings, useNavigation } from '../../hooks'
+import { useNavigation, useSettings } from '../../hooks'
 import { computeBalanceFiat, limitDecimals } from '../../utils'
 
 export interface SwapCoinProps {

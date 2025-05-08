@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react'
-import { HttpResponse, http } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { useGetExchangeRate } from '../../hooks/API/useGetExchangeRate'

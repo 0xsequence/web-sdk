@@ -1,4 +1,4 @@
-import { type SelectPaymentSettings, useSelectPaymentContext } from '../contexts/SelectPaymentModal'
+import { useSelectPaymentContext, type SelectPaymentSettings } from '../contexts/SelectPaymentModal'
 
 /**
  * Return type for the useSelectPaymentModal hook.

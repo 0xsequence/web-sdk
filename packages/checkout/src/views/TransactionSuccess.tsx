@@ -1,5 +1,5 @@
 import { CheckmarkIcon, Text } from '@0xsequence/design-system'
-import { ChainId, allNetworks } from '@0xsequence/network'
+import { allNetworks, ChainId } from '@0xsequence/network'
 import React, { useEffect } from 'react'
 
 import type { TransactionSuccessNavigation } from '../contexts'

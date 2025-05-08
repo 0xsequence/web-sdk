@@ -1,7 +1,7 @@
 'use client'
 
 import { SequenceWaaS } from '@0xsequence/waas'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { Address } from 'viem'
 import type { Connector } from 'wagmi'
 

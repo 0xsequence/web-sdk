@@ -1,15 +1,15 @@
-import { CryptoOption, compareAddress, formatDisplay, sendTransactions } from '@0xsequence/connect'
+import { compareAddress, CryptoOption, formatDisplay, sendTransactions } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useGetContractInfo,
-  useGetSwapRoutes,
   useGetSwapQuote,
+  useGetSwapRoutes,
   useGetTokenBalancesSummary,
   useIndexerClient
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useState, useEffect, useMemo } from 'react'
-import { zeroAddress, formatUnits, type Hex } from 'viem'
+import { useEffect, useMemo, useState } from 'react'
+import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'

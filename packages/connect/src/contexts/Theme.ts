@@ -16,4 +16,4 @@ type ThemeContext = {
 
 const [useThemeContext, ThemeContextProvider] = createGenericContext<ThemeContext>()
 
-export { useThemeContext, ThemeContextProvider }
+export { ThemeContextProvider, useThemeContext }

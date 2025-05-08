@@ -1,4 +1,4 @@
-import { type GetLifiSwapRoutesArgs, type LifiSwapRoute, SequenceAPIClient } from '@0xsequence/api'
+import { SequenceAPIClient, type GetLifiSwapRoutesArgs, type LifiSwapRoute } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'

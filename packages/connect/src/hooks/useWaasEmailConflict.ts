@@ -1,4 +1,4 @@
-import { IdentityType, type EmailConflictInfo, SequenceWaaS } from '@0xsequence/waas'
+import { IdentityType, SequenceWaaS, type EmailConflictInfo } from '@0xsequence/waas'
 import { useEffect, useRef, useState } from 'react'
 import { useConnect } from 'wagmi'
 

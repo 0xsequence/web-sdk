@@ -1,4 +1,4 @@
-import { type WalletOptions, useWalletModalContext } from '../contexts/WalletModal'
+import { useWalletModalContext, type WalletOptions } from '../contexts/WalletModal'
 
 /**
  * Return type for the useOpenWalletModal hook.

@@ -12,7 +12,7 @@ import {
   TokenImage
 } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetCollectiblePrices, useGetExchangeRate } from '@0xsequence/hooks'
-import { type Transaction, type TxnTransfer, TxnTransferType } from '@0xsequence/indexer'
+import { TxnTransferType, type Transaction, type TxnTransfer } from '@0xsequence/indexer'
 import dayjs from 'dayjs'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'

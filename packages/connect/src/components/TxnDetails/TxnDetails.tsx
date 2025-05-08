@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { compareAddress, capitalize, truncateAtMiddle } from '../../utils/helpers'
+import { capitalize, compareAddress, truncateAtMiddle } from '../../utils/helpers'
 import { getNativeTokenInfoByChainId } from '../../utils/tokens'
-import { DecodingType, type TransferProps, type AwardItemProps, decodeTransactions } from '../../utils/txnDecoding'
+import { decodeTransactions, DecodingType, type AwardItemProps, type TransferProps } from '../../utils/txnDecoding'
 import { CollectibleTileImage } from '../CollectibleTileImage'
 
 interface TxnDetailsProps {

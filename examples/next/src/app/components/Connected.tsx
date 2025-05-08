@@ -1,19 +1,19 @@
 import type { CheckoutSettings } from '@0xsequence/checkout'
 import {
+  ContractVerificationStatus,
   signEthAuthProof,
-  useWallets,
+  useOpenConnectModal,
   useStorage,
   useWaasFeeOptions,
-  validateEthProof,
-  ContractVerificationStatus,
-  useOpenConnectModal
+  useWallets,
+  validateEthProof
 } from '@0xsequence/connect'
-import { Text, Card, Button, Select, cn } from '@0xsequence/design-system'
+import { Button, Card, cn, Select, Text } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/hooks'
-import { ChainId, allNetworks } from '@0xsequence/network'
+import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
-import { type ComponentProps, useEffect, useState } from 'react'
+import { useEffect, useState, type ComponentProps } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, parseUnits } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 

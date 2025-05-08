@@ -1,7 +1,7 @@
 'use client'
 
-import { useWallets, useOpenConnectModal } from '@0xsequence/connect'
-import { Image, Button } from '@0xsequence/design-system'
+import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
+import { Button, Image } from '@0xsequence/design-system'
 import { Footer } from 'example-shared-components'
 
 import { Connected } from './components/Connected'

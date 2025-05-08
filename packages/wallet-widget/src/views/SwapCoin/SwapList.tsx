@@ -1,23 +1,23 @@
 import {
-  CryptoOption,
   compareAddress,
+  ContractVerificationStatus,
+  CryptoOption,
   formatDisplay,
   sendTransactions,
   useAnalyticsContext,
-  type ExtendedConnector,
-  ContractVerificationStatus
+  type ExtendedConnector
 } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
-  useGetSwapQuote,
   useClearCachedBalances,
   useGetContractInfo,
-  useIndexerClient,
+  useGetSwapQuote,
   useGetSwapRoutes,
-  useGetTokenBalancesSummary
+  useGetTokenBalancesSummary,
+  useIndexerClient
 } from '@0xsequence/hooks'
-import { useState, useMemo } from 'react'
-import { zeroAddress, formatUnits, type Hex } from 'viem'
+import { useMemo, useState } from 'react'
+import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants'

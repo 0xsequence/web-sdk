@@ -1,34 +1,34 @@
 import {
   getNativeTokenInfoByChainId,
-  useAnalyticsContext,
-  type ExtendedConnector,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
+  useAnalyticsContext,
   useCheckWaasFeeOptions,
   useWaasFeeOptions,
+  useWallets,
   waitForTransactionReceipt,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  useWallets
+  type ExtendedConnector
 } from '@0xsequence/connect'
 import {
-  Button,
-  ChevronRightIcon,
-  CopyIcon,
-  CloseIcon,
-  GradientAvatar,
   AddIcon,
+  Button,
+  Card,
+  ChevronRightIcon,
+  CloseIcon,
+  CopyIcon,
+  GradientAvatar,
+  NumericInput,
+  Spinner,
   SubtractIcon,
   Text,
-  NumericInput,
   TextInput,
-  Spinner,
-  Card,
   useToast
 } from '@0xsequence/design-system'
-import { useClearCachedBalances, useIndexerClient, useGetSingleTokenBalance } from '@0xsequence/hooks'
+import { useClearCachedBalances, useGetSingleTokenBalance, useIndexerClient } from '@0xsequence/hooks'
 import type { ContractType, TokenBalance } from '@0xsequence/indexer'
-import { useRef, useState, type ChangeEvent, useEffect } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
-import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect'
 import { SendItemInfo } from '../../components/SendItemInfo'
@@ -36,7 +36,7 @@ import { TransactionConfirmation } from '../../components/TransactionConfirmatio
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
 import { useNavigationContext } from '../../contexts/Navigation'
 import { useNavigation } from '../../hooks'
-import { limitDecimals, isEthAddress } from '../../utils'
+import { isEthAddress, limitDecimals } from '../../utils'
 
 interface SendCollectibleProps {
   chainId: number

@@ -1,7 +1,7 @@
 import { formatAddress, type ConnectedWallet } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 
-import { useSettings, useFiatWalletsMap } from '../../hooks'
+import { useFiatWalletsMap, useSettings } from '../../hooks'
 import { CopyButton } from '../CopyButton'
 import { ListCardSelect } from '../ListCard/ListCardSelect'
 import { WalletAccountGradient } from '../WalletAccountGradient'

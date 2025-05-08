@@ -59,4 +59,4 @@ type SelectPaymentModalContext = {
 
 const [useSelectPaymentContext, SelectPaymentContextProvider] = createGenericContext<SelectPaymentModalContext>()
 
-export { useSelectPaymentContext, SelectPaymentContextProvider }
+export { SelectPaymentContextProvider, useSelectPaymentContext }

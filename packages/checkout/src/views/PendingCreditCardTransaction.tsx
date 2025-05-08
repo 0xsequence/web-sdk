@@ -1,6 +1,6 @@
 import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useConfig, useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
+import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect, useRef } from 'react'
@@ -8,13 +8,13 @@ import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api'
 import { NFT_CHECKOUT_SOURCE } from '../constants'
-import { type TransactionPendingNavigation, useEnvironmentContext } from '../contexts'
+import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts'
 import {
-  useNavigation,
   useCheckoutModal,
+  useNavigation,
   useSardineClientToken,
-  useTransactionStatusModal,
-  useSkipOnCloseCallback
+  useSkipOnCloseCallback,
+  useTransactionStatusModal
 } from '../hooks'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
 

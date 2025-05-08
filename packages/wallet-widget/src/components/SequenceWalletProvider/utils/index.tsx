@@ -2,26 +2,26 @@ import type { Navigation } from '../../../contexts'
 import {
   CoinDetails,
   CollectibleDetails,
+  History,
   Home,
   Receive,
+  SearchCollectibles,
+  SearchTokens,
   SendCoin,
   SendCollectible,
-  History,
-  TransactionDetails,
-  SwapCoin,
-  SwapList,
   SendGeneral,
-  SearchTokens,
-  SearchCollectibles,
-  SettingsWallets,
   SettingsApps,
   SettingsCurrency,
   SettingsMenu,
   SettingsNetworks,
   SettingsPreferences,
   SettingsProfiles,
+  SettingsWallets,
   // QrScan,
-  Swap
+  Swap,
+  SwapCoin,
+  SwapList,
+  TransactionDetails
 } from '../../../views'
 import { NavigationHeader } from '../../NavigationHeader'
 import { WalletHeader } from '../../WalletHeader'

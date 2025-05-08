@@ -5,7 +5,7 @@ import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import React, { useEffect, useRef } from 'react'
-import { type Hex, formatUnits, zeroAddress } from 'viem'
+import { formatUnits, zeroAddress, type Hex } from 'viem'
 
 import { fetchSardineOrderStatus } from '../../api'
 import { useEnvironmentContext } from '../../contexts'

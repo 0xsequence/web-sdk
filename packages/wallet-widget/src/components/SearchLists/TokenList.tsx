@@ -4,10 +4,10 @@ import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useSettings, useGetMoreBalances } from '../../hooks'
+import { useGetMoreBalances, useSettings } from '../../hooks'
 import { computeBalanceFiat, type TokenBalanceWithPrice } from '../../utils'
 import { FilterButton } from '../Filter/FilterButton'
 

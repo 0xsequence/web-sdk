@@ -1,5 +1,5 @@
 import { formatAddress } from '@0xsequence/connect'
-import { Text, GradientAvatar } from '@0xsequence/design-system'
+import { GradientAvatar, Text } from '@0xsequence/design-system'
 import { getAddress } from 'viem'
 import { useChains } from 'wagmi'
 

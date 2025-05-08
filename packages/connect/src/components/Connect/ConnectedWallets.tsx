@@ -1,6 +1,6 @@
 import type { LinkedWallet } from '@0xsequence/api'
-import { motion, AnimatePresence } from 'motion/react'
-import { type JSX, useMemo, useEffect, useRef } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { useEffect, useMemo, useRef, type JSX } from 'react'
 
 import type { ConnectedWallet } from '../../hooks/useWallets'
 

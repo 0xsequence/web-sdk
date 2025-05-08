@@ -1,6 +1,6 @@
 'use client'
 
-import { type GetLinkedWalletsArgs, type LinkedWallet, SequenceAPIClient } from '@0xsequence/api'
+import { SequenceAPIClient, type GetLinkedWalletsArgs, type LinkedWallet } from '@0xsequence/api'
 import { useAPIClient } from '@0xsequence/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAccount, useConnect, useConnections, useDisconnect, type Connector, type UseConnectionsReturnType } from 'wagmi'

@@ -2,11 +2,11 @@ import { SequenceCheckoutProvider } from '@0xsequence/checkout'
 import { SequenceConnect } from '@0xsequence/connect'
 import { ThemeProvider } from '@0xsequence/design-system'
 import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { Homepage } from './components/Homepage'
 import { ImmutableCallback } from './components/ImmutableCallback'
-import { config, checkoutConfig } from './config'
+import { checkoutConfig, config } from './config'
 
 export const App = () => {
   return (

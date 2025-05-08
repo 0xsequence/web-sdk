@@ -1,10 +1,10 @@
 import { formatDisplay, useWallets } from '@0xsequence/connect'
 import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
 import {
-  useGetTransactionHistory,
   useGetCollectiblePrices,
   useGetExchangeRate,
-  useGetSingleTokenBalance
+  useGetSingleTokenBalance,
+  useGetTransactionHistory
 } from '@0xsequence/hooks'
 import { useEffect } from 'react'
 import { formatUnits } from 'viem'
@@ -14,7 +14,7 @@ import { CollectibleTileImage } from '../../components/CollectibleTileImage'
 import { InfiniteScroll } from '../../components/InfiniteScroll'
 import { TransactionHistoryList } from '../../components/TransactionHistoryList'
 import { HEADER_HEIGHT } from '../../constants'
-import { useSettings, useNavigation } from '../../hooks'
+import { useNavigation, useSettings } from '../../hooks'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
 
 import { CollectibleDetailsSkeleton } from './Skeleton'

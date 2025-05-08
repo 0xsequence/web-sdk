@@ -1,9 +1,9 @@
 'use client'
 
-import { ArrowRightIcon, Divider, Text, TextInput, Spinner, Image, IconButton, ModalPrimitive } from '@0xsequence/design-system'
+import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
-import { useState, useEffect, type ReactNode, type ChangeEventHandler } from 'react'
+import { useEffect, useState, type ChangeEventHandler, type ReactNode } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
@@ -16,7 +16,7 @@ import type { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflic
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet'
 import { useWallets } from '../../hooks/useWallets'
 import { useWalletSettings } from '../../hooks/useWalletSettings'
-import type { ExtendedConnector, ConnectConfig, LogoProps } from '../../types'
+import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types'
 import { isEmailValid } from '../../utils/helpers'
 import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton'
 import type { SequenceConnectProviderProps } from '../SequenceConnectProvider'

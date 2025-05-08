@@ -12,4 +12,4 @@ export interface FiatWalletsMapContext {
 
 const [useFiatWalletsMapContext, FiatWalletsMapContextProvider] = createGenericContext<FiatWalletsMapContext>()
 
-export { useFiatWalletsMapContext, FiatWalletsMapContextProvider }
+export { FiatWalletsMapContextProvider, useFiatWalletsMapContext }

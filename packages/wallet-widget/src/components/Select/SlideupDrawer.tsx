@@ -1,4 +1,4 @@
-import { cardVariants, cn, Divider, Text, ChevronLeftIcon, Button } from '@0xsequence/design-system'
+import { Button, cardVariants, ChevronLeftIcon, cn, Divider, Text } from '@0xsequence/design-system'
 import { motion } from 'motion/react'
 import { useContext, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'

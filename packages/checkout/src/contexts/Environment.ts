@@ -12,4 +12,4 @@ export interface EnvironmentOverrides {
 
 const [useEnvironmentContext, EnvironmentContextProvider] = createGenericContext<EnvironmentOverrides>()
 
-export { useEnvironmentContext, EnvironmentContextProvider }
+export { EnvironmentContextProvider, useEnvironmentContext }

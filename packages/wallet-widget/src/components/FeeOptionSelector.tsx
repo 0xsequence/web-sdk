@@ -1,5 +1,5 @@
 import { cn, Text, TokenImage } from '@0xsequence/design-system'
-import { type FC, useState } from 'react'
+import { useState, type FC } from 'react'
 import { formatUnits, parseUnits, zeroAddress } from 'viem'
 
 import { Alert, type AlertProps } from './Alert'

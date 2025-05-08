@@ -1,9 +1,9 @@
 import { useWallets } from '@0xsequence/connect'
-import { TabsHeader, TabsContent, TabsRoot } from '@0xsequence/design-system'
+import { TabsContent, TabsHeader, TabsRoot } from '@0xsequence/design-system'
 import { useState } from 'react'
 
 import { CollectiblesList, TokenList } from '../../components/SearchLists'
-import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
+import { useGetAllTokensDetails, useNavigation, useSettings } from '../../hooks'
 import type { TokenBalanceWithPrice } from '../../utils/tokens'
 
 export const SendGeneral = () => {

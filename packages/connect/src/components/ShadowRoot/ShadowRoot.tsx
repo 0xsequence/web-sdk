@@ -1,7 +1,7 @@
 'use client'
 
 import { ThemeProvider, type Theme } from '@0xsequence/design-system'
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 import { styles } from '../../styles'

@@ -1,6 +1,6 @@
 import { Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
 import { QRCodeCanvas } from 'qrcode.react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount } from 'wagmi'
 

@@ -1,6 +1,6 @@
 import type { SequenceAPIClient } from '@0xsequence/api'
 import type { TokenMetadata } from '@0xsequence/metadata'
-import { type ChainId, networks } from '@0xsequence/network'
+import { networks, type ChainId } from '@0xsequence/network'
 
 import type { CreditCardCheckout } from '../contexts'
 

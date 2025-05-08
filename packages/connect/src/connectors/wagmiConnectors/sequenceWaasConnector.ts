@@ -1,22 +1,22 @@
-import { type EIP1193Provider, allNetworks } from '@0xsequence/network'
+import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
 import {
   SequenceWaaS,
-  type SequenceConfig,
+  WebrpcEndpointError,
   type ExtendedSequenceConfig,
-  type Transaction,
   type FeeOption,
-  WebrpcEndpointError
+  type SequenceConfig,
+  type Transaction
 } from '@0xsequence/waas'
 import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 import {
+  getAddress,
   InternalRpcError,
   ProviderDisconnectedError,
+  toHex,
   TransactionRejectedRpcError,
   UserRejectedRequestError,
-  getAddress,
-  zeroAddress,
-  toHex
+  zeroAddress
 } from 'viem'
 import { createConnector } from 'wagmi'
 

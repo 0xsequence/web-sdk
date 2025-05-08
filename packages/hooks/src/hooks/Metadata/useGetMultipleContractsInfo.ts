@@ -1,4 +1,4 @@
-import { type ContractInfo, SequenceMetadata, type GetContractInfoArgs } from '@0xsequence/metadata'
+import { SequenceMetadata, type ContractInfo, type GetContractInfoArgs } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
