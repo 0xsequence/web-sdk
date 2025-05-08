@@ -1,7 +1,7 @@
 import { Spinner, Skeleton, Text } from '@0xsequence/design-system'
-import { type FC } from 'react'
+import type { FC } from 'react'
 
-import { type TokenBalanceWithPrice } from '../../../utils'
+import type { TokenBalanceWithPrice } from '../../../utils'
 import { InfiniteScroll } from '../../InfiniteScroll'
 
 import { CollectibleTile } from './CollectibleTile'

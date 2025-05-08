@@ -8,7 +8,7 @@ import { useAccount, useChainId, useChains, usePublicClient, useWalletClient } f
 
 import { SwapContextProvider } from '../../../contexts/Swap'
 import { useNavigation } from '../../../hooks'
-import { type TokenBalanceWithPrice } from '../../../utils'
+import type { TokenBalanceWithPrice } from '../../../utils'
 
 export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast()

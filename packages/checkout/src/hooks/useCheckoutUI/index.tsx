@@ -1,9 +1,9 @@
 import { useGetTokenMetadata, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { type Hex } from 'viem'
+import type { Hex } from 'viem'
 
-import { type TransakConfig } from '../../contexts/CheckoutModal'
-import { type Collectible, type CreditCardProviders } from '../../contexts/SelectPaymentModal'
+import type { TransakConfig } from '../../contexts/CheckoutModal'
+import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
 
 import { useCreditCardPayment, type UseCreditCardPaymentReturn } from './useCreditCardPayment'
 import { useCryptoPayment, type UseCryptoPaymentReturn } from './useCryptoPayment'

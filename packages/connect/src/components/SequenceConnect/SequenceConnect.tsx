@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { type State, WagmiProvider } from 'wagmi'
 
-import { type SequenceConnectConfig } from '../../config/createConfig'
+import type { SequenceConnectConfig } from '../../config/createConfig'
 import { SequenceConnectProvider } from '../SequenceConnectProvider'
 
 const defaultQueryClient = new QueryClient()

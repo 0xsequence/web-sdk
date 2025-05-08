@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 import { CollectiblesList } from '../../components/SearchLists/CollectiblesList'
 import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
-import { type TokenBalanceWithPrice } from '../../utils'
+import type { TokenBalanceWithPrice } from '../../utils'
 
 export const SearchCollectibles = ({
   contractAddress,

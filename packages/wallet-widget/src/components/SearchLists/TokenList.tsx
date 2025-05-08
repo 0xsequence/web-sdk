@@ -1,7 +1,7 @@
 import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { SearchIcon, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
-import { type TokenBalance } from '@0xsequence/indexer'
+import type { TokenBalance } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useState, useMemo } from 'react'

@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react'
 
 import { HEADER_HEIGHT } from '../constants'
 import { useEnvironmentContext } from '../contexts'
-import { type AddFundsSettings } from '../contexts/AddFundsModal'
+import type { AddFundsSettings } from '../contexts/AddFundsModal'
 import { useAddFundsModal, useSardineOnRampLink } from '../hooks'
 import { getTransakLink } from '../utils/transak'
 

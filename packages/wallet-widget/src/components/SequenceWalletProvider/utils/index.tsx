@@ -1,4 +1,4 @@
-import { type Navigation } from '../../../contexts'
+import type { Navigation } from '../../../contexts'
 import {
   CoinDetails,
   CollectibleDetails,

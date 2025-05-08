@@ -25,7 +25,7 @@ import {
   useToast
 } from '@0xsequence/design-system'
 import { useClearCachedBalances, useIndexerClient, useGetSingleTokenBalance } from '@0xsequence/hooks'
-import { type ContractType, type TokenBalance } from '@0xsequence/indexer'
+import type { ContractType, TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, type ChangeEvent, useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
 import { useAccount, useChainId, useSwitchChain, useConfig, usePublicClient, useWalletClient } from 'wagmi'

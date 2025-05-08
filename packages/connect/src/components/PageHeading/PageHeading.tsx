@@ -1,5 +1,5 @@
 import { cn, Text } from '@0xsequence/design-system'
-import { type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface PageHeadingProps {
   children: ReactNode

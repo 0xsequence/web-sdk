@@ -1,4 +1,4 @@
-import { type TokenPrice } from '@0xsequence/api'
+import type { TokenPrice } from '@0xsequence/api'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import { ArrowRightIcon, Text, TransactionIcon, Skeleton, NetworkImage, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'

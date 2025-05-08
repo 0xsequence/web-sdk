@@ -1,5 +1,5 @@
 import { cardVariants, cn, Text, type IconProps } from '@0xsequence/design-system'
-import { type ComponentType } from 'react'
+import type { ComponentType } from 'react'
 
 export const OperationButtonTemplate = ({
   label,

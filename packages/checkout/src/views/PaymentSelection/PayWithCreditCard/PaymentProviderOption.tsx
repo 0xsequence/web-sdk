@@ -1,5 +1,5 @@
 import { Card, cn, Text } from '@0xsequence/design-system'
-import { type JSX } from 'react'
+import type { JSX } from 'react'
 
 interface PaymentProviderOptionProps {
   name: string

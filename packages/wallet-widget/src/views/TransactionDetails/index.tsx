@@ -1,4 +1,4 @@
-import { type Token } from '@0xsequence/api'
+import type { Token } from '@0xsequence/api'
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
 import {
   ArrowRightIcon,

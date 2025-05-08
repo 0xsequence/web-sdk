@@ -1,13 +1,13 @@
 import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/connect'
 import { useIndexerClient, useGetTokenBalancesSummary, useGetSwapQuote, useGetSwapRoutes } from '@0xsequence/hooks'
-import { type ContractInfo, type TokenMetadata } from '@0xsequence/metadata'
+import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
 import { type Hex, encodeFunctionData, formatUnits, zeroAddress } from 'viem'
 import { usePublicClient, useAccount, useReadContract, useWalletClient } from 'wagmi'
 
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { type Collectible } from '../../contexts/SelectPaymentModal'
+import type { Collectible } from '../../contexts/SelectPaymentModal'
 
 export interface UseCryptoPaymentArgs {
   chain: string | number

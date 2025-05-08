@@ -16,7 +16,7 @@ import { usePublicClient, useWalletClient, useReadContract, useAccount } from 'w
 import { NavigationHeader } from '../../components/NavigationHeader'
 import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import { type SelectPaymentSettings } from '../../contexts/SelectPaymentModal'
+import type { SelectPaymentSettings } from '../../contexts/SelectPaymentModal'
 import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../hooks'
 
 import { Footer } from './Footer'

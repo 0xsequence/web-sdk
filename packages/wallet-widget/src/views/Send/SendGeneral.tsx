@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { CollectiblesList, TokenList } from '../../components/SearchLists'
 import { useSettings, useNavigation, useGetAllTokensDetails } from '../../hooks'
-import { type TokenBalanceWithPrice } from '../../utils/tokens'
+import type { TokenBalanceWithPrice } from '../../utils/tokens'
 
 export const SendGeneral = () => {
   const { setNavigation } = useNavigation()

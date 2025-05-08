@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { AppleLogo } from './AppleLogo'
 import { CoinbaseWalletLogo } from './CoinbaseWalletLogo'

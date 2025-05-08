@@ -1,10 +1,10 @@
 import { SearchIcon, TextInput, TokenImage } from '@0xsequence/design-system' // Import TokenImage from design-system
-import { type TokenBalance } from '@0xsequence/indexer'
+import type { TokenBalance } from '@0xsequence/indexer'
 import Fuse from 'fuse.js'
 import { useState, useMemo } from 'react'
 
 import { useGetMoreBalances } from '../../hooks'
-import { type TokenBalanceWithPrice } from '../../utils'
+import type { TokenBalanceWithPrice } from '../../utils'
 import { FilterButton } from '../Filter/FilterButton'
 import { NetworkBadge } from '../NetworkBadge'
 

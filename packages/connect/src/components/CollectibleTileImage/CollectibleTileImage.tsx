@@ -1,5 +1,5 @@
 import { Card, Image } from '@0xsequence/design-system'
-import { type FC } from 'react'
+import type { FC } from 'react'
 
 interface CollectibleTileImageProps {
   imageUrl?: string
