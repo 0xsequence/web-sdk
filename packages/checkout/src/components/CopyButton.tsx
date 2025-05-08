@@ -1,5 +1,5 @@
-import { Button, CheckmarkIcon, CopyIcon } from '@0xsequence/design-system'
 import { useClipboard } from '@0xsequence/connect'
+import { Button, CheckmarkIcon, CopyIcon } from '@0xsequence/design-system'
 import React, { type ComponentProps } from 'react'
 
 type ButtonProps = ComponentProps<typeof Button>
