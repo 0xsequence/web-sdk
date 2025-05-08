@@ -18,7 +18,7 @@ interface OrderSummaryItem {
 }
 
 export interface TransakConfig {
-  apiKey: string
+  apiKey?: string
   contractId: string
   callDataOverride?: string
 }

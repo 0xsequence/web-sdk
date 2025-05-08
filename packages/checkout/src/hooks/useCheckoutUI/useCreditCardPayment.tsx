@@ -82,7 +82,7 @@ export const useCreditCardPayment = ({
   const { env } = useConfig()
   const disableSardineClientTokenFetch =
     isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
-  const { transakApiUrl, sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
+  const { transakApiUrl, sardineCheckoutUrl: sardineProxyUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
   const network = findSupportedNetwork(chain)
   const error = errorCollectionInfo || errorTokenMetadata || errorCurrencyInfo
   const isLoading = isLoadingCollectionInfo || isLoadingTokenMetadatas || isLoadingCurrencyInfo
@@ -121,6 +121,7 @@ export const useCreditCardPayment = ({
 
   const missingCreditCardProvider = !creditCardProvider
   const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
+  const transakApiKey = transakConfig?.apiKey || transakGlobalApiKey
 
   if (missingCreditCardProvider || missingTransakConfig) {
     return {
@@ -183,7 +184,7 @@ export const useCreditCardPayment = ({
     // Note: the network name might not always line up with Transak. A conversion function might be necessary
     const network = findSupportedNetwork(chain)
     const networkName = network?.name.toLowerCase()
-    const transakLink = `${transakApiUrl}?apiKey=${transakConfig?.apiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+    const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
 
     return {
       error: null,

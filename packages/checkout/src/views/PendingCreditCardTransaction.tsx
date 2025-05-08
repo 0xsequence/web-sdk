@@ -44,7 +44,7 @@ export const PendingCreditCardTransaction = () => {
 }
 
 export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
-  const { transakApiUrl } = useEnvironmentContext()
+  const { transakApiUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -80,6 +80,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
+  const transakApiKey = transakConfig?.apiKey || transakGlobalApiKey
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -121,7 +122,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   // Note: the network name might not always line up with Transak. A conversion function might be necessary
   const networkName = network?.name.toLowerCase()
 
-  const transakLink = `${transakApiUrl}?apiKey=${transakConfig?.apiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+  const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
 
   const isLoading = isLoadingTokenMetadata || isLoadingCollectionInfo
   const isError = isErrorTokenMetadata || isErrorCollectionInfo
