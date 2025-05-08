@@ -10,6 +10,7 @@ export { useCheckoutWhitelistStatus } from './hooks/useCheckoutWhitelistStatus'
 export { useSwapModal } from './hooks/useSwapModal'
 export { useERC1155SaleContractCheckout, useERC1155SaleContractPaymentModal } from './hooks/useERC1155SaleContractCheckout'
 export { useCheckoutUI } from './hooks/useCheckoutUI'
+export { useEnvironmentContext } from './contexts/Environment'
 
 export { type CheckoutSettings } from './contexts/CheckoutModal'
 export { type AddFundsSettings } from './contexts/AddFundsModal'
