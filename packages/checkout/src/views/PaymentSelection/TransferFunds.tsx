@@ -1,7 +1,6 @@
 import { Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
+import { useClipboard } from '@0xsequence/hooks'
 import { QRCodeCanvas } from 'qrcode.react'
-import { useEffect, useState } from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount } from 'wagmi'
 
 import { useSelectPaymentModal, useTransferFundsModal } from '../../hooks'
@@ -10,19 +9,7 @@ export const TransferFunds = () => {
   const { openTransferFundsModal } = useTransferFundsModal()
   const { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
   const { address: userAddress } = useAccount()
-  const [isCopied, setCopy] = useState(false)
-
-  useEffect(() => {
-    if (isCopied) {
-      setTimeout(() => {
-        setCopy(false)
-      }, 4000)
-    }
-  }, [isCopied])
-
-  const handleCopy = () => {
-    setCopy(true)
-  }
+  const [isCopied, setCopied] = useClipboard({ timeout: 4000 })
 
   const onClickQrCode = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -83,14 +70,13 @@ export const TransferFunds = () => {
             e.preventDefault()
           }}
         >
-          <CopyToClipboard text={userAddress || ''} onCopy={handleCopy}>
-            <IconButton
-              className="text-muted"
-              variant="base"
-              size="md"
-              icon={isCopied ? () => <CheckmarkIcon size="lg" /> : () => <CopyIcon size="lg" />}
-            />
-          </CopyToClipboard>
+          <IconButton
+            className="text-muted"
+            variant="base"
+            size="md"
+            icon={isCopied ? () => <CheckmarkIcon size="lg" /> : () => <CopyIcon size="lg" />}
+            onClick={() => setCopied(userAddress || '')}
+          />
         </div>
       </Card>
     </div>

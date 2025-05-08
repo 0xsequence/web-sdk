@@ -1,8 +1,7 @@
 import { getNetwork } from '@0xsequence/connect'
 import { Button, CopyIcon, Image, ShareIcon, Text } from '@0xsequence/design-system'
+import { useClipboard } from '@0xsequence/hooks'
 import { QRCodeCanvas } from 'qrcode.react'
-import { useEffect, useState } from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useAccount } from 'wagmi'
 
 import { NetworkSelect } from '../components/Select/NetworkSelect'
@@ -12,22 +11,10 @@ const isVowel = (char: string) => ['a', 'e', 'i', 'o', 'u'].includes(char.toLowe
 
 export const Receive = () => {
   const { address, chain } = useAccount()
-  const [isCopied, setCopied] = useState<boolean>(false)
+  const [isCopied, setCopied] = useClipboard({ timeout: 4000 })
 
   const networkInfo = getNetwork(chain?.id || 1)
   const networkName = networkInfo.title || networkInfo.name
-
-  useEffect(() => {
-    if (isCopied) {
-      setTimeout(() => {
-        setCopied(false)
-      }, 4000)
-    }
-  }, [isCopied])
-
-  const onClickCopy = () => {
-    setCopied(true)
-  }
 
   const onClickShare = () => {
     if (typeof window !== 'undefined') {
@@ -64,9 +51,7 @@ export const Receive = () => {
           </div>
         </div>
         <div className="flex gap-3">
-          <CopyToClipboard text={address || ''}>
-            <Button onClick={onClickCopy} leftIcon={CopyIcon} label={isCopied ? 'Copied!' : 'Copy'} />
-          </CopyToClipboard>
+          <Button onClick={() => setCopied(address || '')} leftIcon={CopyIcon} label={isCopied ? 'Copied!' : 'Copy'} />
           <Button onClick={onClickShare} leftIcon={ShareIcon} label="Share" />
         </div>
         <div className="flex justify-center items-center" style={{ maxWidth: '260px', textAlign: 'center' }}>

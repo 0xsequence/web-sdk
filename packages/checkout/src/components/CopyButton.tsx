@@ -1,32 +1,27 @@
 import { Button, CheckmarkIcon, CopyIcon } from '@0xsequence/design-system'
-import React, { useEffect, useState, type ComponentProps } from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useClipboard } from '@0xsequence/hooks'
+import React, { type ComponentProps } from 'react'
 
 type ButtonProps = ComponentProps<typeof Button>
 
 interface CopyButtonProps extends ButtonProps {
   text: string
+  inline?: boolean
 }
 
 export const CopyButton = (props: CopyButtonProps) => {
-  const { text, size = 'xs', ...rest } = props
-  const [isCopied, setCopy] = useState(false)
+  const { text, size = 'xs', inline = false, ...rest } = props
+  const [isCopied, setCopied] = useClipboard({ timeout: 4000 })
 
-  useEffect(() => {
-    if (isCopied) {
-      setTimeout(() => {
-        setCopy(false)
-      }, 4000)
-    }
-  }, [isCopied])
-
-  const handleCopy = () => {
-    setCopy(true)
-  }
-
-  return (
-    <CopyToClipboard text={text} onCopy={handleCopy}>
-      <Button size={size} leftIcon={isCopied ? CheckmarkIcon : CopyIcon} label={isCopied ? 'Copied' : 'Copy'} {...rest} />
-    </CopyToClipboard>
+  return inline ? (
+    <Button size={size} variant="text" leftIcon={isCopied ? CheckmarkIcon : CopyIcon} onClick={() => setCopied(text)} />
+  ) : (
+    <Button
+      size={size}
+      leftIcon={isCopied ? CheckmarkIcon : CopyIcon}
+      label={isCopied ? 'Copied' : 'Copy'}
+      onClick={() => setCopied(text)}
+      {...rest}
+    />
   )
 }
