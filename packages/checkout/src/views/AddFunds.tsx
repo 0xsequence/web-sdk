@@ -1,5 +1,5 @@
+import { useAPIClient } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useAPIClient } from '@0xsequence/hooks'
 import React, { useEffect, useRef } from 'react'
 
 import { HEADER_HEIGHT } from '../constants'

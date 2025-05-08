@@ -1,5 +1,5 @@
+import { useClipboard } from '@0xsequence/connect'
 import { Card, CheckmarkIcon, CopyIcon, IconButton, Text, truncateAddress } from '@0xsequence/design-system'
-import { useClipboard } from '@0xsequence/hooks'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useAccount } from 'wagmi'
 

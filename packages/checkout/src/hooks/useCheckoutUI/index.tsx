@@ -1,4 +1,4 @@
-import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
+import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/connect'
 import { findSupportedNetwork } from '@0xsequence/network'
 import type { Hex } from 'viem'
 

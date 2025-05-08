@@ -1,6 +1,14 @@
-import { compareAddress, ContractVerificationStatus, CryptoOption, formatDisplay } from '@0xsequence/connect'
+import {
+  compareAddress,
+  ContractVerificationStatus,
+  CryptoOption,
+  formatDisplay,
+  useClearCachedBalances,
+  useGetContractInfo,
+  useGetSwapRoutes,
+  useGetTokenBalancesSummary
+} from '@0xsequence/connect'
 import { AddIcon, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
-import { useClearCachedBalances, useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
 import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'react'

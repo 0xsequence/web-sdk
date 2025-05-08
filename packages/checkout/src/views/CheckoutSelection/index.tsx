@@ -1,4 +1,11 @@
-import { compareAddress, ContractVerificationStatus, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import {
+  compareAddress,
+  ContractVerificationStatus,
+  formatDisplay,
+  getNativeTokenInfoByChainId,
+  useGetContractInfo,
+  useGetTokenBalancesSummary
+} from '@0xsequence/connect'
 import {
   Button,
   ChevronRightIcon,
@@ -10,7 +17,6 @@ import {
   TokenImage,
   Tooltip
 } from '@0xsequence/design-system'
-import { useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'

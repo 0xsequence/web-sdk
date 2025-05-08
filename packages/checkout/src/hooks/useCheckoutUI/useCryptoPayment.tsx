@@ -1,5 +1,13 @@
-import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/connect'
-import { useGetSwapQuote, useGetSwapRoutes, useGetTokenBalancesSummary, useIndexerClient } from '@0xsequence/hooks'
+import {
+  compareAddress,
+  ContractVerificationStatus,
+  formatDisplay,
+  sendTransactions,
+  useGetSwapQuote,
+  useGetSwapRoutes,
+  useGetTokenBalancesSummary,
+  useIndexerClient
+} from '@0xsequence/connect'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'

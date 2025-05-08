@@ -1,5 +1,4 @@
-import { useProjectAccessKey } from '@0xsequence/connect'
-import { useConfig } from '@0xsequence/hooks'
+import { useConfig, useProjectAccessKey } from '@0xsequence/connect'
 import { useQuery } from '@tanstack/react-query'
 
 import { checkSardineWhitelistStatus, type CheckSardineWhitelistStatusArgs } from '../utils'

@@ -1,13 +1,16 @@
 import type { LifiToken } from '@0xsequence/api'
-import { compareAddress, sendTransactions, TRANSACTION_CONFIRMATIONS_DEFAULT, useAnalyticsContext } from '@0xsequence/connect'
-import { Button, Divider, Spinner, Text } from '@0xsequence/design-system'
 import {
+  compareAddress,
+  sendTransactions,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  useAnalyticsContext,
   useClearCachedBalances,
   useGetContractInfo,
   useGetSwapQuote,
   useGetSwapRoutes,
   useIndexerClient
-} from '@0xsequence/hooks'
+} from '@0xsequence/connect'
+import { Button, Divider, Spinner, Text } from '@0xsequence/design-system'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
 import { encodeFunctionData, zeroAddress, type Hex } from 'viem'

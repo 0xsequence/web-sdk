@@ -1,6 +1,5 @@
-import { compareAddress, formatDisplay, NetworkBadge } from '@0xsequence/connect'
+import { compareAddress, formatDisplay, NetworkBadge, useGetCoinPrices } from '@0xsequence/connect'
 import { networkImageUrl } from '@0xsequence/design-system'
-import { useGetCoinPrices } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import type { ReactNode } from 'react'
