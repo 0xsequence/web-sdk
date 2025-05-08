@@ -1,6 +1,6 @@
 'use client'
 
-import { type DisplayedAsset } from '../types'
+import type { DisplayedAsset } from '../types'
 
 import { createGenericContext } from './genericContext'
 

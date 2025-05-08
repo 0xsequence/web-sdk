@@ -1,6 +1,6 @@
 import { allNetworks } from '@0xsequence/network'
 import { defineChain } from 'viem'
-import { type Chain } from 'viem/chains'
+import type { Chain } from 'viem/chains'
 
 // Sequence supported Chain configs
 export const chains = allNetworks.reduce<Record<number, Chain>>((acc, network) => {

@@ -1,8 +1,8 @@
-import { type ETHAuthProof } from '@0xsequence/auth'
-import { type Theme } from '@0xsequence/design-system'
-import { type SequenceHooksEnv } from '@0xsequence/hooks'
-import { type FunctionComponent } from 'react'
-import { type Connector, type CreateConnectorFn } from 'wagmi'
+import type { ETHAuthProof } from '@0xsequence/auth'
+import type { Theme } from '@0xsequence/design-system'
+import type { SequenceHooksEnv } from '@0xsequence/hooks'
+import type { FunctionComponent } from 'react'
+import type { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from './constants'
 

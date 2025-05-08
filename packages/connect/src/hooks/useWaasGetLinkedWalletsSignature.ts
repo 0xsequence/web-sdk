@@ -2,8 +2,8 @@
 
 import { SequenceWaaS } from '@0xsequence/waas'
 import { useState, useEffect } from 'react'
-import { type Address } from 'viem'
-import { type Connector } from 'wagmi'
+import type { Address } from 'viem'
+import type { Connector } from 'wagmi'
 
 import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
 

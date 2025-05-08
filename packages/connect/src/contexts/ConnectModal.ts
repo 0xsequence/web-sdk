@@ -1,6 +1,6 @@
 'use client'
 
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
 import { createGenericContext } from './genericContext'
 

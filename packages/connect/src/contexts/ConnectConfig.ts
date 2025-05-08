@@ -1,6 +1,6 @@
 'use client'
 
-import { type ConnectConfig } from '../types'
+import type { ConnectConfig } from '../types'
 
 import { createGenericContext } from './genericContext'
 

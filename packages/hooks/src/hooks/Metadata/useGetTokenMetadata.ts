@@ -2,7 +2,7 @@ import { type GetTokenMetadataArgs, SequenceMetadata } from '@0xsequence/metadat
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { type HooksOptions } from '../../types'
+import type { HooksOptions } from '../../types'
 import { splitEvery } from '../../utils/helpers'
 import { useConfig } from '../useConfig'
 

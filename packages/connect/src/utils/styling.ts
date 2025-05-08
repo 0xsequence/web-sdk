@@ -1,4 +1,4 @@
-import { type ModalPosition } from '../types'
+import type { ModalPosition } from '../types'
 
 export interface modalPositionCss {
   top?: string

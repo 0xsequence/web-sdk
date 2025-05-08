@@ -3,7 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { getAddress } from 'viem'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { type HooksOptions } from '../../types'
+import type { HooksOptions } from '../../types'
 
 import { useIndexerClient } from './useIndexerClient'
 

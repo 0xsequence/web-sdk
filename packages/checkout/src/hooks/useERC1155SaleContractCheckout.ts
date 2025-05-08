@@ -4,7 +4,7 @@ import { type Abi, type Hex, encodeFunctionData, toHex, zeroAddress } from 'viem
 import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi'
-import { type SelectPaymentSettings } from '../contexts/SelectPaymentModal'
+import type { SelectPaymentSettings } from '../contexts/SelectPaymentModal'
 
 import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
 import { useSelectPaymentModal } from './useSelectPaymentModal'

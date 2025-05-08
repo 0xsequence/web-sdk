@@ -1,4 +1,4 @@
-import { type Wallet, type WalletProperties } from '../../types'
+import type { Wallet, WalletProperties } from '../../types'
 
 import { ecosystemWallet as baseEcosystemWallet, type BaseEcosystemConnectorOptions } from './ecosystemWallet'
 

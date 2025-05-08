@@ -1,5 +1,5 @@
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
-import { type Hex } from 'viem'
+import type { Hex } from 'viem'
 
 import { createGenericContext } from './genericContext'
 

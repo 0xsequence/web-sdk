@@ -2,7 +2,7 @@ import { type IndexerGateway, SequenceIndexerGateway, type TokenBalance } from '
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { type HooksOptions } from '../../types'
+import type { HooksOptions } from '../../types'
 import { createNativeTokenBalance } from '../../utils/helpers'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'

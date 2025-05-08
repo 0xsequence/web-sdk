@@ -1,4 +1,4 @@
-import { type TokenBalanceWithPrice } from '../utils'
+import type { TokenBalanceWithPrice } from '../utils'
 
 import { createGenericContext } from './genericContext'
 

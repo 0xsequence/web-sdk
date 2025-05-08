@@ -1,4 +1,4 @@
-import { type Wallet } from '../../types'
+import type { Wallet } from '../../types'
 import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
 
 import { getEmailLogo } from './EmailLogo'

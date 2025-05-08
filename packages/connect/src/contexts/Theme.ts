@@ -1,9 +1,9 @@
 'use client'
 
-import { type Theme } from '@0xsequence/design-system'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Theme } from '@0xsequence/design-system'
+import type { Dispatch, SetStateAction } from 'react'
 
-import { type ModalPosition } from '../index'
+import type { ModalPosition } from '../index'
 
 import { createGenericContext } from './genericContext'
 

@@ -1,7 +1,7 @@
-import { type CreateConnectorFn } from 'wagmi'
+import type { CreateConnectorFn } from 'wagmi'
 import { coinbaseWallet as coinbaseWalletBase, type CoinbaseWalletParameters } from 'wagmi/connectors'
 
-import { type Wallet } from '../../types'
+import type { Wallet } from '../../types'
 
 import { CoinbaseWalletLogo } from './CoinbaseWalletLogo'
 

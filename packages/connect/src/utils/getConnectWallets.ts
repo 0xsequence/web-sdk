@@ -1,6 +1,6 @@
-import { type CreateConnectorFn } from 'wagmi'
+import type { CreateConnectorFn } from 'wagmi'
 
-import { type ExtendedConnector, type Wallet } from '../types'
+import type { ExtendedConnector, Wallet } from '../types'
 
 export const getConnectWallets = (projectAccessKey: string, wallets: Wallet[]): CreateConnectorFn[] => {
   const connectors: CreateConnectorFn[] = []

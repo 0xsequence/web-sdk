@@ -1,4 +1,4 @@
-import { type commons } from '@0xsequence/core'
+import type { commons } from '@0xsequence/core'
 import { useState, useEffect } from 'react'
 
 import { Deferred } from '../utils/deferred'

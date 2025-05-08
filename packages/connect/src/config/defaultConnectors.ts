@@ -1,4 +1,4 @@
-import { type CreateConnectorFn } from 'wagmi'
+import type { CreateConnectorFn } from 'wagmi'
 
 import { apple } from '../connectors/apple'
 import { appleWaas } from '../connectors/apple/appleWaas'
@@ -13,7 +13,7 @@ import { metaMask } from '../connectors/metaMask'
 import { sequence } from '../connectors/sequence'
 import { twitch } from '../connectors/twitch'
 import { walletConnect } from '../connectors/walletConnect'
-import { type Wallet, type WalletType } from '../types'
+import type { Wallet, WalletType } from '../types'
 import { getConnectWallets } from '../utils/getConnectWallets'
 
 export interface CommonConnectorOptions {

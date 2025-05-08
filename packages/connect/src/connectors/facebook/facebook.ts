@@ -1,4 +1,4 @@
-import { type Wallet } from '../../types'
+import type { Wallet } from '../../types'
 import { sequenceWallet, type BaseSequenceConnectorOptions } from '../wagmiConnectors'
 
 import { FacebookLogo, getFacebookMonochromeLogo } from './FacebookLogo'

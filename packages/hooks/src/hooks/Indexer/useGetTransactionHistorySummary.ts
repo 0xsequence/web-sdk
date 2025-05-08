@@ -1,9 +1,9 @@
-import { type SequenceIndexer, type Transaction } from '@0xsequence/indexer'
+import type { SequenceIndexer, Transaction } from '@0xsequence/indexer'
 import { useQuery } from '@tanstack/react-query'
 import { getAddress } from 'viem'
 
 import { QUERY_KEYS, time } from '../../constants'
-import { type HooksOptions } from '../../types'
+import type { HooksOptions } from '../../types'
 
 import { useIndexerClients } from './useIndexerClient'
 

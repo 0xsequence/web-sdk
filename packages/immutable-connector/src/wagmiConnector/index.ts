@@ -1,6 +1,6 @@
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
-import { type Address } from 'viem'
+import type { Address } from 'viem'
 import { createConnector } from 'wagmi'
 
 export interface BaseImmutableConnectorOptions {

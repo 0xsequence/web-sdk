@@ -1,12 +1,12 @@
 import { sequence } from '0xsequence'
-import { type ETHAuthProof } from '@0xsequence/auth'
-import { type ChainIdLike } from '@0xsequence/network'
-import { type ConnectOptions, type SequenceProvider } from '@0xsequence/provider'
+import type { ETHAuthProof } from '@0xsequence/auth'
+import type { ChainIdLike } from '@0xsequence/network'
+import type { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
 import { UserRejectedRequestError, getAddress } from 'viem'
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage'
-import { type EthAuthSettings } from '../../types'
+import type { EthAuthSettings } from '../../types'
 import { normalizeChainId } from '../../utils/helpers'
 
 export interface BaseSequenceConnectorOptions {

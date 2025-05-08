@@ -1,6 +1,6 @@
 'use client'
 
-import { type Hex } from 'viem'
+import type { Hex } from 'viem'
 
 import { createGenericContext } from './genericContext'
 

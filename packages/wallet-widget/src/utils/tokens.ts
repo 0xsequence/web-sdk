@@ -1,7 +1,7 @@
-import { type Price, type TokenPrice } from '@0xsequence/api'
+import type { Price, TokenPrice } from '@0xsequence/api'
 import { compareAddress } from '@0xsequence/connect'
-import { type TokenBalance, type GetTransactionHistoryReturn, type Transaction } from '@0xsequence/indexer'
-import { type InfiniteData } from '@tanstack/react-query'
+import type { TokenBalance, GetTransactionHistoryReturn, Transaction } from '@0xsequence/indexer'
+import type { InfiniteData } from '@tanstack/react-query'
 import { formatUnits, zeroAddress } from 'viem'
 
 export interface TokenBalanceWithPrice extends TokenBalance {

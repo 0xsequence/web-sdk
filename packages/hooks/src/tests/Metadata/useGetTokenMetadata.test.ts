@@ -1,4 +1,4 @@
-import { type GetTokenMetadataArgs } from '@0xsequence/metadata'
+import type { GetTokenMetadataArgs } from '@0xsequence/metadata'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'

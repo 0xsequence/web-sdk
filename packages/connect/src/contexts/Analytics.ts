@@ -1,7 +1,7 @@
 'use client'
 
-import { type SequenceClient } from '@0xsequence/provider'
-import { type Dispatch, type SetStateAction } from 'react'
+import type { SequenceClient } from '@0xsequence/provider'
+import type { Dispatch, SetStateAction } from 'react'
 
 import { createGenericContext } from './genericContext'
 

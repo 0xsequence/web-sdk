@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 // import { EmailWaasOptions } from '../connectors/email/emailWaas'
 import { randomName } from '../connectors/wagmiConnectors'
-import { type ExtendedConnector } from '../types'
+import type { ExtendedConnector } from '../types'
 
 interface SuccessResultV1 {
   version: 1
