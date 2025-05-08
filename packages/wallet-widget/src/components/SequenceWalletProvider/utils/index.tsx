@@ -1,4 +1,4 @@
-import type { Navigation } from '../../../contexts'
+import type { Navigation } from '../../../contexts/index.js'
 import {
   CoinDetails,
   CollectibleDetails,
@@ -22,9 +22,9 @@ import {
   SwapCoin,
   SwapList,
   TransactionDetails
-} from '../../../views'
-import { NavigationHeader } from '../../NavigationHeader'
-import { WalletHeader } from '../../WalletHeader'
+} from '../../../views/index.js'
+import { NavigationHeader } from '../../NavigationHeader/index.js'
+import { WalletHeader } from '../../WalletHeader/index.js'
 
 export const getContent = (navigation: Navigation) => {
   const { location } = navigation

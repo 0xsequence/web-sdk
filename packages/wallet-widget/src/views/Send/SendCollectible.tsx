@@ -30,13 +30,13 @@ import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
 import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
-import { WalletSelect } from '../../components/Select/WalletSelect'
-import { SendItemInfo } from '../../components/SendItemInfo'
-import { TransactionConfirmation } from '../../components/TransactionConfirmation'
-import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
-import { useNavigationContext } from '../../contexts/Navigation'
-import { useNavigation } from '../../hooks'
-import { isEthAddress, limitDecimals } from '../../utils'
+import { WalletSelect } from '../../components/Select/WalletSelect.js'
+import { SendItemInfo } from '../../components/SendItemInfo.js'
+import { TransactionConfirmation } from '../../components/TransactionConfirmation.js'
+import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
+import { useNavigationContext } from '../../contexts/Navigation.js'
+import { useNavigation } from '../../hooks/index.js'
+import { isEthAddress, limitDecimals } from '../../utils/index.js'
 
 interface SendCollectibleProps {
   chainId: number

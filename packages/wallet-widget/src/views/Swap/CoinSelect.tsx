@@ -3,11 +3,11 @@ import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 import { useChains } from 'wagmi'
 
-import { CoinRow } from '../../components/SearchLists/TokenList/CoinRow'
-import { SlideupDrawer } from '../../components/Select/SlideupDrawer'
-import { useSettings, useSwap } from '../../hooks'
-import type { TokenBalanceWithPrice } from '../../utils'
-import { formatTokenInfo } from '../../utils/formatBalance'
+import { CoinRow } from '../../components/SearchLists/TokenList/CoinRow.js'
+import { SlideupDrawer } from '../../components/Select/SlideupDrawer.js'
+import { useSettings, useSwap } from '../../hooks/index.js'
+import { formatTokenInfo } from '../../utils/formatBalance.js'
+import type { TokenBalanceWithPrice } from '../../utils/index.js'
 
 export const CoinSelect = ({
   selectType,

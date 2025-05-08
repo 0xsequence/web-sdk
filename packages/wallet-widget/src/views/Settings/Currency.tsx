@@ -1,9 +1,9 @@
 import { Text } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 
-import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
-import { supportedFiatCurrencies } from '../../constants'
-import { useSettings } from '../../hooks'
+import { ListCardSelect } from '../../components/ListCard/ListCardSelect.js'
+import { supportedFiatCurrencies } from '../../constants/index.js'
+import { useSettings } from '../../hooks/index.js'
 
 export const SettingsCurrency = () => {
   const { fiatCurrencyObservable, setFiatCurrency } = useSettings()

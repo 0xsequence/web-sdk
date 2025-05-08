@@ -1,12 +1,12 @@
 import { formatAddress, useWallets } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 
-import { useSettings } from '../../hooks'
-import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap'
-import { CopyButton } from '../CopyButton'
-import { MediaIconWrapper } from '../IconWrappers'
-import { ListCardSelect } from '../ListCard/ListCardSelect'
-import { WalletAccountGradient } from '../WalletAccountGradient'
+import { useSettings } from '../../hooks/index.js'
+import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap.js'
+import { CopyButton } from '../CopyButton.js'
+import { MediaIconWrapper } from '../IconWrappers/index.js'
+import { ListCardSelect } from '../ListCard/ListCardSelect.js'
+import { WalletAccountGradient } from '../WalletAccountGradient.js'
 
 export const WalletsFilter = () => {
   const { selectedWalletsObservable, setSelectedWallets, fiatCurrency } = useSettings()

@@ -1,9 +1,9 @@
 import { Switch, Text } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 
-import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
-import { HEADER_HEIGHT } from '../../constants'
-import { useSettings } from '../../hooks'
+import { ListCardSelect } from '../../components/ListCard/ListCardSelect.js'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useSettings } from '../../hooks/index.js'
 
 export const SettingsPreferences = () => {
   const { hideUnlistedTokensObservable, setHideUnlistedTokens } = useSettings()

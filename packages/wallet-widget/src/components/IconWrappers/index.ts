@@ -1,2 +1,2 @@
-export { StackedIconTag } from './StackedIconTag'
-export { MediaIconWrapper } from './MediaIconWrapper'
+export { StackedIconTag } from './StackedIconTag.js'
+export { MediaIconWrapper } from './MediaIconWrapper.js'

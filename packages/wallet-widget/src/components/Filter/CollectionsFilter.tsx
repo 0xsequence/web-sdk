@@ -1,8 +1,8 @@
 import { Text, TokenImage } from '@0xsequence/design-system'
 
-import { useGetCollections, useSettings } from '../../hooks'
-import { MediaIconWrapper } from '../IconWrappers'
-import { ListCardSelect } from '../ListCard/ListCardSelect'
+import { useGetCollections, useSettings } from '../../hooks/index.js'
+import { MediaIconWrapper } from '../IconWrappers/index.js'
+import { ListCardSelect } from '../ListCard/ListCardSelect.js'
 
 export const CollectionsFilter = () => {
   const { selectedCollectionsObservable, selectedNetworks, selectedWallets, setSelectedCollections } = useSettings()

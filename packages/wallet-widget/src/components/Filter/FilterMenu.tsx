@@ -3,15 +3,15 @@ import { Text, TokenImage } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 import { useState } from 'react'
 
-import { useGetCollections, useSettings } from '../../hooks'
-import { StackedIconTag } from '../IconWrappers'
-import { ListCardNav } from '../ListCard'
-import { SlideupDrawer } from '../Select/SlideupDrawer'
+import { useGetCollections, useSettings } from '../../hooks/index.js'
+import { StackedIconTag } from '../IconWrappers/index.js'
+import { ListCardNav } from '../ListCard/index.js'
+import { SlideupDrawer } from '../Select/SlideupDrawer.js'
 
-import { CollectionsFilter } from './CollectionsFilter'
-import { NetworkImageCustom } from './NetworkImageCustom'
-import { NetworksFilter } from './NetworksFilter'
-import { WalletsFilter } from './WalletsFilter'
+import { CollectionsFilter } from './CollectionsFilter.js'
+import { NetworkImageCustom } from './NetworkImageCustom.js'
+import { NetworksFilter } from './NetworksFilter.js'
+import { WalletsFilter } from './WalletsFilter.js'
 
 enum FilterType {
   menu = 'Filters',

@@ -3,12 +3,12 @@ import { ChevronLeftIcon, IconButton, Text } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 
-import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
-import { useNavigation } from '../../hooks'
-import { SelectWalletRow } from '../Select/SelectWalletRow'
-import { SlideupDrawer } from '../Select/SlideupDrawer'
+import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
+import { useNavigation } from '../../hooks/index.js'
+import { SelectWalletRow } from '../Select/SelectWalletRow.js'
+import { SlideupDrawer } from '../Select/SlideupDrawer.js'
 
-import { AccountInformation } from './components/AccountInformation'
+import { AccountInformation } from './components/AccountInformation.js'
 
 export const WalletHeader = ({
   primaryText,

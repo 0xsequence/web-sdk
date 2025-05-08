@@ -1,10 +1,10 @@
 import { formatAddress, type ConnectedWallet } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 
-import { useFiatWalletsMap, useSettings } from '../../hooks'
-import { CopyButton } from '../CopyButton'
-import { ListCardSelect } from '../ListCard/ListCardSelect'
-import { WalletAccountGradient } from '../WalletAccountGradient'
+import { useFiatWalletsMap, useSettings } from '../../hooks/index.js'
+import { CopyButton } from '../CopyButton.js'
+import { ListCardSelect } from '../ListCard/ListCardSelect.js'
+import { WalletAccountGradient } from '../WalletAccountGradient.js'
 
 export const SelectWalletRow = ({
   wallet,

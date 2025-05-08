@@ -2,7 +2,7 @@
 
 import type { Transaction } from '@0xsequence/indexer'
 
-import { createGenericContext } from './genericContext'
+import { createGenericContext } from './genericContext.js'
 
 export interface CoinDetailsParams {
   contractAddress: string

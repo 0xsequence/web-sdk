@@ -6,10 +6,10 @@ import { useRef, useState, type ChangeEvent } from 'react'
 import { parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
-import { SendItemInfo } from '../../components/SendItemInfo'
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation, useSettings } from '../../hooks'
-import { computeBalanceFiat, limitDecimals } from '../../utils'
+import { SendItemInfo } from '../../components/SendItemInfo.js'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useNavigation, useSettings } from '../../hooks/index.js'
+import { computeBalanceFiat, limitDecimals } from '../../utils/index.js'
 
 export interface SwapCoinProps {
   contractAddress: string

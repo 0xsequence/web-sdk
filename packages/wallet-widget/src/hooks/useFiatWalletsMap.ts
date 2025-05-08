@@ -1,4 +1,4 @@
-import { useFiatWalletsMapContext } from '../contexts/FiatWalletsMap'
+import { useFiatWalletsMapContext } from '../contexts/FiatWalletsMap.js'
 
 export const useFiatWalletsMap = () => {
   const { fiatWalletsMap, setFiatWalletsMap } = useFiatWalletsMapContext()

@@ -2,7 +2,7 @@ import { LocalStorageKey, useWallets, useWalletSettings, type ConnectedWallet } 
 import { Observable, observable } from 'micro-observables'
 import { useConfig } from 'wagmi'
 
-import { defaultFiatCurrency, type FiatCurrency } from '../constants'
+import { defaultFiatCurrency, type FiatCurrency } from '../constants/index.js'
 
 interface MutableObservable<T> extends Observable<T> {
   set(value: T): void

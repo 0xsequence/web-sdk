@@ -5,14 +5,14 @@ import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { InfiniteScroll } from '../../components/InfiniteScroll'
-import { NetworkBadge } from '../../components/NetworkBadge'
-import { TransactionHistoryList } from '../../components/TransactionHistoryList'
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation, useSettings } from '../../hooks'
-import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
+import { InfiniteScroll } from '../../components/InfiniteScroll.js'
+import { NetworkBadge } from '../../components/NetworkBadge.js'
+import { TransactionHistoryList } from '../../components/TransactionHistoryList/index.js'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useNavigation, useSettings } from '../../hooks/index.js'
+import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils/index.js'
 
-import { CoinDetailsSkeleton } from './Skeleton'
+import { CoinDetailsSkeleton } from './Skeleton.js'
 
 export interface CoinDetailsProps {
   contractAddress: string

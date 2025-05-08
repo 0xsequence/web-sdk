@@ -1,4 +1,4 @@
-import { MediaIconWrapper } from './MediaIconWrapper'
+import { MediaIconWrapper } from './MediaIconWrapper.js'
 
 export const StackedIconTag = ({
   iconList,

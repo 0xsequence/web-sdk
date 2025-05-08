@@ -20,8 +20,8 @@ import { useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation } from '../../hooks'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useNavigation } from '../../hooks/index.js'
 
 interface SwapListProps {
   chainId: number

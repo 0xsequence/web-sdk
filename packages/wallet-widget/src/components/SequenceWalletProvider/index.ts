@@ -1,1 +1,1 @@
-export * from './SequenceWalletProvider'
+export * from './SequenceWalletProvider.js'

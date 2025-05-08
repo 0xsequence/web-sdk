@@ -1,4 +1,4 @@
-// import { useWalletConnectContext } from '../contexts/WalletConnect'
+// import { useWalletConnectContext } from '../contexts/WalletConnect.js'
 
 // export const useWalletConnect = () => {
 //   const context = useWalletConnectContext()

@@ -8,9 +8,9 @@ import { useMemo, useState } from 'react'
 import { zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { FilterButton } from '../components/Filter/FilterButton'
-import { TransactionHistoryList } from '../components/TransactionHistoryList'
-import { useSettings } from '../hooks'
+import { FilterButton } from '../components/Filter/FilterButton.js'
+import { TransactionHistoryList } from '../components/TransactionHistoryList/index.js'
+import { useSettings } from '../hooks/index.js'
 
 export const History = () => {
   const { chains } = useConfig()

@@ -1,4 +1,4 @@
-import { useSwapContext } from '../contexts/Swap'
+import { useSwapContext } from '../contexts/Swap.js'
 
 export const useSwap = () => {
   const {

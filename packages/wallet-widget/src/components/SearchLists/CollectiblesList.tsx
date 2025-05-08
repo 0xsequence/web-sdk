@@ -3,12 +3,12 @@ import type { TokenBalance } from '@0xsequence/indexer'
 import Fuse from 'fuse.js'
 import { useMemo, useState } from 'react'
 
-import { useGetMoreBalances } from '../../hooks'
-import type { TokenBalanceWithPrice } from '../../utils'
-import { FilterButton } from '../Filter/FilterButton'
-import { NetworkBadge } from '../NetworkBadge'
+import { useGetMoreBalances } from '../../hooks/index.js'
+import type { TokenBalanceWithPrice } from '../../utils/index.js'
+import { FilterButton } from '../Filter/FilterButton.js'
+import { NetworkBadge } from '../NetworkBadge.js'
 
-import { CollectiblesTab } from './CollectiblesList/CollectiblesTab'
+import { CollectiblesTab } from './CollectiblesList/CollectiblesTab.js'
 
 export const CollectiblesList = ({
   tokenBalancesData,

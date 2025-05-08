@@ -3,12 +3,12 @@ import { useGetCoinPrices, useGetExchangeRate, useGetTokenBalancesSummary } from
 import { useEffect } from 'react'
 import { useAccount, useChainId } from 'wagmi'
 
-import { NetworkSelect } from '../../components/Select/NetworkSelect'
-import { HEADER_HEIGHT_WITH_LABEL } from '../../constants'
-import { useSettings, useSwap } from '../../hooks'
+import { NetworkSelect } from '../../components/Select/NetworkSelect.js'
+import { HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
+import { useSettings, useSwap } from '../../hooks/index.js'
 
-import { CoinInput } from './CoinInput'
-import { CoinSelect } from './CoinSelect'
+import { CoinInput } from './CoinInput.js'
+import { CoinSelect } from './CoinSelect.js'
 
 export const Swap = () => {
   const {

@@ -6,9 +6,9 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, useChainId, useChains, usePublicClient, useWalletClient } from 'wagmi'
 
-import { SwapContextProvider } from '../../../contexts/Swap'
-import { useNavigation } from '../../../hooks'
-import type { TokenBalanceWithPrice } from '../../../utils'
+import { SwapContextProvider } from '../../../contexts/Swap.js'
+import { useNavigation } from '../../../hooks/index.js'
+import type { TokenBalanceWithPrice } from '../../../utils/index.js'
 
 export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast()

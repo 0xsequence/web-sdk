@@ -1,2 +1,2 @@
-export * from './SearchTokens'
-export * from './SearchCollectibles'
+export * from './SearchTokens.js'
+export * from './SearchCollectibles.js'

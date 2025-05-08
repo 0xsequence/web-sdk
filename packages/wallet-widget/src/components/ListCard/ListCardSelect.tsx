@@ -1,6 +1,6 @@
 import { cn } from '@0xsequence/design-system'
 
-import { RadioSelector } from './RadioSelector'
+import { RadioSelector } from './RadioSelector.js'
 
 export const ListCardSelect = ({
   children,

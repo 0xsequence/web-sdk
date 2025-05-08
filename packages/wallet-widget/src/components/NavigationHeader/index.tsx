@@ -1,8 +1,8 @@
 import { ChevronLeftIcon, IconButton, ModalPrimitive, Text } from '@0xsequence/design-system'
 
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigationContext } from '../../contexts/Navigation'
-import { useNavigation } from '../../hooks'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useNavigationContext } from '../../contexts/Navigation.js'
+import { useNavigation } from '../../hooks/index.js'
 
 interface NavigationHeaderProps {
   primaryText?: string

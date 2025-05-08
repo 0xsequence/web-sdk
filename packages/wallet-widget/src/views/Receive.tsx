@@ -4,8 +4,8 @@ import { useClipboard } from '@0xsequence/hooks'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useAccount } from 'wagmi'
 
-import { NetworkSelect } from '../components/Select/NetworkSelect'
-import { HEADER_HEIGHT_WITH_LABEL } from '../constants'
+import { NetworkSelect } from '../components/Select/NetworkSelect.js'
+import { HEADER_HEIGHT_WITH_LABEL } from '../constants/index.js'
 
 const isVowel = (char: string) => ['a', 'e', 'i', 'o', 'u'].includes(char.toLowerCase())
 

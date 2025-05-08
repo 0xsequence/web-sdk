@@ -1,8 +1,8 @@
 import { NetworkImage } from '@0xsequence/design-system'
 import { useGetTokenMetadata } from '@0xsequence/hooks'
 
-import type { TokenBalanceWithPrice } from '../../../utils'
-import { CollectibleTileImage } from '../../CollectibleTileImage'
+import type { TokenBalanceWithPrice } from '../../../utils/index.js'
+import { CollectibleTileImage } from '../../CollectibleTileImage.js'
 
 const NETWORK_IMAGE_SIZE = '15%'
 const NETWORK_IMAGE_OFFSET = '2%'
