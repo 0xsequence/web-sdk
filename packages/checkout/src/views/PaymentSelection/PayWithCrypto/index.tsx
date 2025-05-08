@@ -7,7 +7,7 @@ import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'rea
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 
-import type { SelectPaymentSettings } from '../../../contexts'
+import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings

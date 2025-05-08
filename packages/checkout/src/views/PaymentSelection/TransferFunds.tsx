@@ -3,7 +3,7 @@ import { useClipboard } from '@0xsequence/hooks'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useAccount } from 'wagmi'
 
-import { useSelectPaymentModal, useTransferFundsModal } from '../../hooks'
+import { useSelectPaymentModal, useTransferFundsModal } from '../../hooks/index.js'
 
 export const TransferFunds = () => {
   const { openTransferFundsModal } = useTransferFundsModal()

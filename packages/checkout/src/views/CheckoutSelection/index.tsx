@@ -15,10 +15,10 @@ import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../constants'
-import { useCheckoutModal, useNavigation } from '../../hooks'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useCheckoutModal, useNavigation } from '../../hooks/index.js'
 
-import { OrderSummaryItem } from './component/OrderSummaryItem'
+import { OrderSummaryItem } from './component/OrderSummaryItem.js'
 
 export const CheckoutSelection = () => {
   const { chains } = useConfig()

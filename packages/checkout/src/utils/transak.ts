@@ -1,4 +1,4 @@
-import type { AddFundsSettings } from '../contexts'
+import type { AddFundsSettings } from '../contexts/AddFundsModal.js'
 
 export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a'
 

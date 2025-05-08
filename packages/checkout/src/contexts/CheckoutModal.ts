@@ -2,8 +2,8 @@
 
 import type { Theme } from '@0xsequence/design-system'
 
-import { createGenericContext } from './genericContext'
-import type { SupplementaryAnalyticsInfo } from './SelectPaymentModal'
+import { createGenericContext } from './genericContext.js'
+import type { SupplementaryAnalyticsInfo } from './SelectPaymentModal.js'
 
 interface CoinQuantity {
   contractAddress: string

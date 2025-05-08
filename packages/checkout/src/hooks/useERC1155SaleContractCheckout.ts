@@ -3,11 +3,11 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import { encodeFunctionData, toHex, zeroAddress, type Abi, type Hex } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 
-import { ERC_1155_SALE_CONTRACT } from '../constants/abi'
-import type { SelectPaymentSettings } from '../contexts/SelectPaymentModal'
+import { ERC_1155_SALE_CONTRACT } from '../constants/abi.js'
+import type { SelectPaymentSettings } from '../contexts/SelectPaymentModal.js'
 
-import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract'
-import { useSelectPaymentModal } from './useSelectPaymentModal'
+import { useCheckoutOptionsSalesContract } from './useCheckoutOptionsSalesContract.js'
+import { useSelectPaymentModal } from './useSelectPaymentModal.js'
 
 /**
  * Return type for the useERC1155SaleContractCheckout hook.

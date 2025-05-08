@@ -1,4 +1,4 @@
-import { CARD_HEIGHT, CARD_HEIGHT_MOBILE } from '../constants'
+import { CARD_HEIGHT, CARD_HEIGHT_MOBILE } from '../constants/index.js'
 
 export const getCardHeight = (isMobile: boolean) => {
   if (isMobile) {

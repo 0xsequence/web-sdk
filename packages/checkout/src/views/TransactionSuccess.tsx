@@ -2,8 +2,8 @@ import { CheckmarkIcon, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import React, { useEffect } from 'react'
 
-import type { TransactionSuccessNavigation } from '../contexts'
-import { useCheckoutModal, useNavigation } from '../hooks'
+import type { TransactionSuccessNavigation } from '../contexts/index.js'
+import { useCheckoutModal, useNavigation } from '../hooks/index.js'
 
 export const TransactionSuccess = () => {
   const { settings } = useCheckoutModal()

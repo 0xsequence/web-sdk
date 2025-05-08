@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { fetchSardineClientToken, type FetchSardineClientTokenArgs } from '../api/data'
+import { fetchSardineClientToken, type FetchSardineClientTokenArgs } from '../api/data.js'
 
 export const useSardineClientToken = (args: FetchSardineClientTokenArgs, disabled?: boolean) => {
   return useQuery({

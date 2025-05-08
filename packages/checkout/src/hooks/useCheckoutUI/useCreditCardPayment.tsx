@@ -7,12 +7,12 @@ import pako from 'pako'
 import React, { useEffect, useRef } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 
-import { fetchSardineOrderStatus } from '../../api'
-import { useEnvironmentContext } from '../../contexts'
-import type { TransakConfig } from '../../contexts/CheckoutModal'
-import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal'
-import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak'
-import { useSardineClientToken } from '../useSardineClientToken'
+import { fetchSardineOrderStatus } from '../../api/data.js'
+import type { TransakConfig } from '../../contexts/CheckoutModal.js'
+import { useEnvironmentContext } from '../../contexts/Environment.js'
+import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal.js'
+import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak.js'
+import { useSardineClientToken } from '../useSardineClientToken.js'
 
 const POLLING_TIME = 10 * 1000
 const TRANSAK_IFRAME_ID = 'credit-card-payment-transak-iframe'

@@ -292,6 +292,9 @@ importers:
       '@0xsequence/waas':
         specifier: '>= 2.3.7'
         version: 2.3.11(ethers@6.13.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       motion:
         specifier: ^12.9.2
         version: 12.9.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -301,9 +304,6 @@ importers:
       qrcode.react:
         specifier: ^4.2.0
         version: 4.2.0(react@19.1.0)
-      timeago-react:
-        specifier: ^3.0.7
-        version: 3.0.7(react@19.1.0)
     devDependencies:
       '@0xsequence/connect':
         specifier: workspace:*
@@ -4292,6 +4292,9 @@ packages:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
     engines: {node: '>=0.11'}
 
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
@@ -6989,14 +6992,6 @@ packages:
 
   thread-stream@0.15.2:
     resolution: {integrity: sha512-UkEhKIg2pD+fjkHQKyJO3yoIvAP3N6RlNFt2dUhcS1FGvCD1cQa1M/PGknCLFIyZdtJOWQjejp7bdNqmN7zwdA==}
-
-  timeago-react@3.0.7:
-    resolution: {integrity: sha512-5LSQuq+mzfEpMHkJQgMWnOs27dGh25aUQhffQpAW6q431vVVmHP194KYsM4bhzli0XfohUgN8+r3Pq6GVprN4A==}
-    peerDependencies:
-      react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  timeago.js@4.0.2:
-    resolution: {integrity: sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==}
 
   timers-browserify@2.0.12:
     resolution: {integrity: sha512-9phl76Cqm6FhSX9Xe1ZUAMLtm1BLkKj2Qd5ApyWkXzsMRaA7dgr81kf4wJmQf/hAvg8EEyJxDo3du/0KlhPiKQ==}
@@ -13403,6 +13398,8 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.27.1
 
+  date-fns@4.1.0: {}
+
   dayjs@1.11.13: {}
 
   debug@3.2.7:
@@ -16622,13 +16619,6 @@ snapshots:
   thread-stream@0.15.2:
     dependencies:
       real-require: 0.1.0
-
-  timeago-react@3.0.7(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      timeago.js: 4.0.2
-
-  timeago.js@4.0.2: {}
 
   timers-browserify@2.0.12:
     dependencies:

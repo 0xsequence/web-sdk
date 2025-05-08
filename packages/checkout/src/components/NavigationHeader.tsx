@@ -1,8 +1,8 @@
 import { ChevronLeftIcon, IconButton, ModalPrimitive, Text } from '@0xsequence/design-system'
 import React from 'react'
 
-import { HEADER_HEIGHT } from '../constants'
-import { useNavigation } from '../hooks/useNavigation'
+import { HEADER_HEIGHT } from '../constants/index.js'
+import { useNavigation } from '../hooks/useNavigation.js'
 
 interface NavigationHeaderProps {
   primaryText?: string

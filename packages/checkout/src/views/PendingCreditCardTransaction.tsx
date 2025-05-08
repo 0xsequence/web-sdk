@@ -6,17 +6,17 @@ import pako from 'pako'
 import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 
-import { fetchSardineOrderStatus } from '../api'
-import { NFT_CHECKOUT_SOURCE } from '../constants'
-import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts'
+import { fetchSardineOrderStatus } from '../api/data.js'
+import { NFT_CHECKOUT_SOURCE } from '../constants/index.js'
+import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
   useCheckoutModal,
   useNavigation,
   useSardineClientToken,
   useSkipOnCloseCallback,
   useTransactionStatusModal
-} from '../hooks'
-import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
+} from '../hooks/index.js'
+import { TRANSAK_PROXY_ADDRESS } from '../utils/transak.js'
 
 const POLLING_TIME = 10 * 1000
 

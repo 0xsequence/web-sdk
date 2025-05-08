@@ -4,9 +4,9 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 
-import type { SelectPaymentSettings } from '../../../contexts'
-import type { CheckoutSettings } from '../../../contexts/CheckoutModal'
-import { useCheckoutModal, useSelectPaymentModal } from '../../../hooks'
+import type { CheckoutSettings } from '../../../contexts/CheckoutModal.js'
+import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
+import { useCheckoutModal, useSelectPaymentModal } from '../../../hooks/index.js'
 
 interface PayWithCreditCardProps {
   settings: SelectPaymentSettings

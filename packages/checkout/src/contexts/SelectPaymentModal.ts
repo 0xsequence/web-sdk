@@ -1,9 +1,9 @@
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import type { Hex } from 'viem'
 
-import type { TransakConfig } from '../contexts/CheckoutModal'
+import type { TransakConfig } from '../contexts/CheckoutModal.js'
 
-import { createGenericContext } from './genericContext'
+import { createGenericContext } from './genericContext.js'
 
 export type CreditCardProviders = 'sardine' | 'transak'
 
