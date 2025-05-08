@@ -1,1 +1,1 @@
-export { ShadowRoot } from './ShadowRoot'
+export { ShadowRoot } from './ShadowRoot.js'

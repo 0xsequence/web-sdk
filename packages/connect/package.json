@@ -26,8 +26,8 @@
   ],
   "scripts": {
     "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm && pnpm build:cjs",
-    "build:cjs": "tsc --module commonjs --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
-    "build:esm": "tsc --module es2022 --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:css": "rimraf ./src/styles.ts && tailwindcss -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`\" > ./src/styles.ts",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
@@ -53,7 +53,7 @@
     "@0xsequence/waas": "^2.3.10",
     "@tailwindcss/cli": "^4.1.4",
     "clsx": "^2.1.1",
-    "fuse.js": "^6.6.2",
+    "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
     "tailwindcss": "^4.1.4",
     "uuid": "^10.0.0"

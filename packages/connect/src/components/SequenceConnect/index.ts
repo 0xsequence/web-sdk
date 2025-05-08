@@ -1,1 +1,1 @@
-export { SequenceConnect } from './SequenceConnect'
+export { SequenceConnect } from './SequenceConnect.js'

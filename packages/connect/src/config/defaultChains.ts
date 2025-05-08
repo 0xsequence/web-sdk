@@ -1,6 +1,6 @@
 import type { Chain } from 'viem'
 
-import { chains } from '../chains'
+import { chains } from '../chains/index.js'
 
 // Sequence supported Chain configs
 // you may filter list of chains by passing chainIdsFilter

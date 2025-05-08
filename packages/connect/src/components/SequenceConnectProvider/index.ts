@@ -1,1 +1,1 @@
-export { SequenceConnectProvider, type SequenceConnectProviderProps } from './SequenceConnectProvider'
+export { SequenceConnectProvider, type SequenceConnectProviderProps } from './SequenceConnectProvider.js'

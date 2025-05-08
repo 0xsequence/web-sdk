@@ -2,9 +2,9 @@ import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { getAddress, TransactionRejectedRpcError } from 'viem'
 
-import { normalizeChainId } from '../../utils/helpers'
+import { normalizeChainId } from '../../utils/helpers.js'
 
-import { ProviderTransport } from './providerTransport'
+import { ProviderTransport } from './providerTransport.js'
 
 export class EcosystemWalletTransportProvider extends ethers.AbstractProvider implements EIP1193Provider {
   jsonRpcProvider: ethers.JsonRpcProvider

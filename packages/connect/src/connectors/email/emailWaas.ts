@@ -1,7 +1,7 @@
-import type { Wallet } from '../../types'
-import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector'
+import type { Wallet } from '../../types.js'
+import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector.js'
 
-import { getEmailLogo } from './EmailLogo'
+import { getEmailLogo } from './EmailLogo.js'
 
 export type EmailWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType'>
 

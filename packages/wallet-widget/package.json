@@ -34,7 +34,7 @@
     "@0xsequence/hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.1.11",
     "dayjs": "^1.11.13",
-    "fuse.js": "^6.6.2",
+    "fuse.js": "^7.1.0",
     "micro-observables": "1.7.2",
     "motion": "^12.9.2",
     "qrcode.react": "^4.2.0"

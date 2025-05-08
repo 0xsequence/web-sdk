@@ -1,4 +1,4 @@
-import { useThemeContext } from '../contexts/Theme'
+import { useThemeContext } from '../contexts/Theme.js'
 
 /**
  * Hook to access and modify the theme and modal position settings.

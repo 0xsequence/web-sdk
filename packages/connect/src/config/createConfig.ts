@@ -1,10 +1,10 @@
 import { createConfig as createWagmiConfig, type Config, type CreateConfigParameters } from 'wagmi'
 
-import type { ConnectConfig, WalletType } from '../types'
+import type { ConnectConfig, WalletType } from '../types.js'
 
-import { getDefaultChains } from './defaultChains'
-import { getDefaultConnectors, type DefaultConnectorOptions } from './defaultConnectors'
-import { getDefaultTransports } from './defaultTransports'
+import { getDefaultChains } from './defaultChains.js'
+import { getDefaultConnectors, type DefaultConnectorOptions } from './defaultConnectors.js'
+import { getDefaultTransports } from './defaultTransports.js'
 
 export type CreateConfigOptions<T extends WalletType> = ConnectConfig &
   DefaultConnectorOptions<T> & {

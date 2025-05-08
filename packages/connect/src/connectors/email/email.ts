@@ -1,7 +1,7 @@
-import type { Wallet } from '../../types'
-import { sequenceWallet, type BaseSequenceConnectorOptions } from '../wagmiConnectors'
+import type { Wallet } from '../../types.js'
+import { sequenceWallet, type BaseSequenceConnectorOptions } from '../wagmiConnectors/index.js'
 
-import { getEmailLogo } from './EmailLogo'
+import { getEmailLogo } from './EmailLogo.js'
 
 export interface EmailOptions extends BaseSequenceConnectorOptions {}
 

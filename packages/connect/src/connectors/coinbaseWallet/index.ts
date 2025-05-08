@@ -1,1 +1,1 @@
-export * from './coinbaseWallet'
+export * from './coinbaseWallet.js'

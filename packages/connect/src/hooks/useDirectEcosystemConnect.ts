@@ -1,6 +1,6 @@
 import { useConnect } from 'wagmi'
 
-import type { EcosystemConnector } from '../connectors/ecosystem/ecosystemWallet'
+import type { EcosystemConnector } from '../connectors/ecosystem/ecosystemWallet.js'
 
 /**
  * Hook to directly connect to an ecosystem wallet with email

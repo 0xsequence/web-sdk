@@ -1,1 +1,1 @@
-export * from './walletConnect'
+export * from './walletConnect.js'

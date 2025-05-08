@@ -1,1 +1,1 @@
-export { NetworkBadge } from './NetworkBadge'
+export { NetworkBadge } from './NetworkBadge.js'

@@ -1,7 +1,7 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { useConfig, type Storage } from 'wagmi'
 
-import type { StorageItem } from '../types'
+import type { StorageItem } from '../types.js'
 
 /**
  * Hook to access the storage instance configured in the Sequence Connect client.

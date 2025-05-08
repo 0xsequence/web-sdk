@@ -2,9 +2,9 @@ import { ethers } from 'ethers'
 import { getAddress } from 'viem'
 import { createConnector, type Connector } from 'wagmi'
 
-import { normalizeChainId } from '../../utils/helpers'
+import { normalizeChainId } from '../../utils/helpers.js'
 
-import { EcosystemWalletTransportProvider } from './provider'
+import { EcosystemWalletTransportProvider } from './provider.js'
 
 export interface EcosystemConnector extends Connector {
   type: 'ecosystem-wallet'

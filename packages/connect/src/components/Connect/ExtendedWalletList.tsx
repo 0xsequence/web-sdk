@@ -12,8 +12,8 @@ import {
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 
-import type { ExtendedConnector } from '../../types'
-import { getLogo } from '../ConnectButton'
+import type { ExtendedConnector } from '../../types.js'
+import { getLogo } from '../ConnectButton/index.js'
 
 interface ExtendedWalletListProps {
   onConnect: (connector: ExtendedConnector) => void

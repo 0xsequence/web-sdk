@@ -1,1 +1,1 @@
-export * from './SequenceConnectPreviewProvider'
+export * from './SequenceConnectPreviewProvider.js'

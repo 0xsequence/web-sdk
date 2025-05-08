@@ -1,4 +1,4 @@
-import { useWalletConfigContext } from '../contexts/WalletConfig'
+import { useWalletConfigContext } from '../contexts/WalletConfig.js'
 
 /**
  * Hook to access and modify wallet configuration settings.

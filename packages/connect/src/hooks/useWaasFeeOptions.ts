@@ -9,7 +9,7 @@ import { formatUnits } from 'viem'
 import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
 
-import { Deferred } from '../utils/deferred'
+import { Deferred } from '../utils/deferred.js'
 
 /**
  * Extended FeeOption type that includes balance information
