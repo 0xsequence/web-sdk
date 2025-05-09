@@ -15,7 +15,7 @@ import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'w
 
 import { NavigationHeader } from '../../components/NavigationHeader.js'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi.js'
-import { HEADER_HEIGHT, EVENT_SOURCE } from '../../constants/index.js'
+import { EVENT_SOURCE, HEADER_HEIGHT } from '../../constants/index.js'
 import type { SelectPaymentSettings } from '../../contexts/SelectPaymentModal.js'
 import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks/index.js'
 
