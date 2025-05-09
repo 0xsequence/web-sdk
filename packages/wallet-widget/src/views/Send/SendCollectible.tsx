@@ -33,6 +33,7 @@ import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, use
 import { WalletSelect } from '../../components/Select/WalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation.js'
+import { EVENT_SOURCE, EVENT_TYPES } from '../../constants/analytics.js'
 import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
 import { useNavigation } from '../../hooks/index.js'
@@ -240,14 +241,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       await switchChainAsync({ chainId })
     }
 
-    analytics?.track({
-      event: 'SEND_TRANSACTION_REQUEST',
-      props: {
-        walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-        source: 'sequence-kit/wallet'
-      }
-    })
-
     if (!walletClient) {
       console.error('Wallet client not found')
       toast({
@@ -309,6 +302,24 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           title: 'Transaction sent',
           description: `Successfully sent ${amountToSendFormatted} ${name} to ${toAddress}`,
           variant: 'success'
+        })
+
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            source: EVENT_SOURCE,
+            type: EVENT_TYPES.SEND_NFT,
+            chainId: String(chainId),
+            origin: window.location.origin,
+            collectibleAddress: contractAddress,
+            collectibleId: tokenId,
+            txHash: txHash
+          },
+          nums: {
+            collectibleAmount: Number(amountRaw),
+            collectibleAmountDecimal: Number(amountToSendFormatted)
+          }
         })
 
         // Wait for receipt in the background

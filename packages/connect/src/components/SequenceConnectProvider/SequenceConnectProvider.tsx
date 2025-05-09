@@ -93,7 +93,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
         if (event && typeof event === 'object' && 'props' in event) {
           event.props = {
             ...event.props,
-            sdkType: 'sequence kit',
+            sdkType: 'sequence web sdk',
             version: WEB_SDK_VERSION
           }
         }

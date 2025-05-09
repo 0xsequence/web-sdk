@@ -10,12 +10,12 @@ import {
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
-import { encodeFunctionData, zeroAddress, type Hex } from 'viem'
+import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
 import { NavigationHeader } from '../../components/NavigationHeader.js'
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi.js'
-import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants/index.js'
+import { EVENT_SOURCE, HEADER_HEIGHT } from '../../constants/index.js'
 import type { SelectPaymentSettings } from '../../contexts/SelectPaymentModal.js'
 import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks/index.js'
 
@@ -200,7 +200,7 @@ export const PaymentSelectionContent = () => {
         props: {
           ...supplementaryAnalyticsInfo,
           type: 'crypto',
-          source: NFT_CHECKOUT_SOURCE,
+          source: EVENT_SOURCE,
           chainId: String(chainId),
           listedCurrency: currencyAddress,
           purchasedCurrency: currencyAddress,
@@ -209,7 +209,12 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          currencySymbol: _currencyInfoData?.symbol || '',
           txHash
+        },
+        nums: {
+          currencyValue: Number(price),
+          currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
         }
       })
 
@@ -327,7 +332,7 @@ export const PaymentSelectionContent = () => {
         props: {
           ...supplementaryAnalyticsInfo,
           type: 'crypto',
-          source: NFT_CHECKOUT_SOURCE,
+          source: EVENT_SOURCE,
           chainId: String(chainId),
           listedCurrency: swapTokenOption.address,
           purchasedCurrency: currencyAddress,
@@ -336,7 +341,12 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          currencySymbol: _currencyInfoData?.symbol || '',
           txHash
+        },
+        nums: {
+          currencyValue: Number(price),
+          currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
         }
       })
 
