@@ -7,6 +7,7 @@ import { useEffect, useState, type ChangeEventHandler, type ReactNode } from 're
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
 import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
+import { EVENT_SOURCE } from '../../constants/analytics.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { CHAIN_ID_FOR_SIGNATURE } from '../../constants/walletLinking.js'
 import { useAnalyticsContext } from '../../contexts/Analytics.js'
@@ -86,7 +87,7 @@ export const Connect = (props: ConnectProps) => {
             parentWalletAddress: parentWallet ? getUserIdForEvent(parentWallet) : '',
             linkedWalletAddress: getUserIdForEvent(address),
             linkedWalletType: linkedWallets?.find(lw => lw.linkedWalletAddress === address)?.walletType || '',
-            source: 'sequence-kit/core'
+            source: EVENT_SOURCE
           }
         })
       } catch (e) {
@@ -144,7 +145,7 @@ export const Connect = (props: ConnectProps) => {
                 parentWalletAddress: getUserIdForEvent(waasWalletAddress),
                 linkedWalletAddress: getUserIdForEvent(childWalletAddress),
                 linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
-                source: 'sequence-kit/core'
+                source: EVENT_SOURCE
               }
             })
           } catch (e) {

@@ -38,6 +38,7 @@ import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, use
 import { WalletSelect } from '../../components/Select/WalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation.js'
+import { EVENT_SOURCE, EVENT_TYPES } from '../../constants/analytics.js'
 import { ERC_20_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
@@ -217,14 +218,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       await switchChainAsync({ chainId })
     }
 
-    analytics?.track({
-      event: 'SEND_TRANSACTION_REQUEST',
-      props: {
-        walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-        source: 'sequence-kit/wallet'
-      }
-    })
-
     if (!walletClient) {
       console.error('Wallet client not found')
       toast({
@@ -274,6 +267,24 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           variant: 'success'
         })
 
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            source: EVENT_SOURCE,
+            type: EVENT_TYPES.SEND_CURRENCY,
+            chainId: String(chainId),
+            origin: window.location.origin,
+            currencySymbol: symbol,
+            currencyAddress: contractAddress,
+            txHash: txHash
+          },
+          nums: {
+            currencyValue: Number(amountRaw),
+            currencyValueDecimal: Number(amountToSendFormatted)
+          }
+        })
+
         // Wait for receipt in the background
         if (publicClient) {
           waitForTransactionReceipt({
@@ -284,7 +295,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           })
             .then(() => {
               clearCachedBalances()
-              console.log('Transaction confirmed and balances cleared:', txHash)
             })
             .catch(error => {
               console.error('Error waiting for transaction receipt:', error)

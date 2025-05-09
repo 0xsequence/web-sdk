@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api/data.js'
-import { NFT_CHECKOUT_SOURCE } from '../constants/index.js'
+import { EVENT_SOURCE } from '../constants/index.js'
 import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
   useCheckoutModal,
@@ -145,7 +145,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             ...creditCardCheckout.supplementaryAnalyticsInfo,
             type: 'credit_card',
             provider: 'transak',
-            source: NFT_CHECKOUT_SOURCE,
+            source: EVENT_SOURCE,
             chainId: String(creditCardCheckout.chainId),
             listedCurrency: creditCardCheckout.currencyAddress,
             purchasedCurrency: creditCardCheckout.currencyAddress,
@@ -318,7 +318,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
             ...creditCardCheckout.supplementaryAnalyticsInfo,
             type: 'credit_card',
             provider: 'sardine',
-            source: NFT_CHECKOUT_SOURCE,
+            source: EVENT_SOURCE,
             chainId: String(creditCardCheckout.chainId),
             listedCurrency: creditCardCheckout.currencyAddress,
             purchasedCurrency: creditCardCheckout.currencyAddress,
