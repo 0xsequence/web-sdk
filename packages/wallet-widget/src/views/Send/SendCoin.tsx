@@ -38,7 +38,7 @@ import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, use
 import { WalletSelect } from '../../components/Select/WalletSelect'
 import { SendItemInfo } from '../../components/SendItemInfo'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation'
-import { ERC_20_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
+import { ERC_20_ABI, HEADER_HEIGHT_WITH_LABEL, EVENT_SOURCE, EVENT_TYPES } from '../../constants'
 import { useNavigationContext } from '../../contexts/Navigation'
 import { useNavigation, useSettings } from '../../hooks'
 import { computeBalanceFiat, isEthAddress, limitDecimals } from '../../utils'
@@ -217,14 +217,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       await switchChainAsync({ chainId })
     }
 
-    analytics?.track({
-      event: 'SEND_TRANSACTION_REQUEST',
-      props: {
-        walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-        source: 'sequence-kit/wallet'
-      }
-    })
-
     if (!walletClient) {
       console.error('Wallet client not found')
       toast({
@@ -291,6 +283,24 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               // Optionally show another toast for confirmation failure
             })
         }
+
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            source: EVENT_SOURCE,
+            type: EVENT_TYPES.SEND_CURRENCY,
+            chainId: String(chainId),
+            origin: window.location.origin,
+            currencySymbol: symbol,
+            currencyAddress: contractAddress,
+            txHash: txHash
+          },
+          nums: {
+            currencyValue: Number(amountRaw),
+            currencyValueDecimal: Number(amountToSendFormatted)
+          }
+        })
       } else {
         // Handle case where txHash is unexpectedly undefined
         setIsSendTxnPending(false)

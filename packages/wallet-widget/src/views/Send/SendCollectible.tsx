@@ -33,10 +33,11 @@ import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, use
 import { WalletSelect } from '../../components/Select/WalletSelect'
 import { SendItemInfo } from '../../components/SendItemInfo'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation'
-import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
+import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL, EVENT_SOURCE, EVENT_TYPES } from '../../constants'
 import { useNavigationContext } from '../../contexts/Navigation'
 import { useNavigation } from '../../hooks'
 import { isEthAddress, limitDecimals } from '../../utils'
+import { m } from 'motion/dist/react'
 
 interface SendCollectibleProps {
   chainId: number
@@ -240,14 +241,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       await switchChainAsync({ chainId })
     }
 
-    analytics?.track({
-      event: 'SEND_TRANSACTION_REQUEST',
-      props: {
-        walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-        source: 'sequence-kit/wallet'
-      }
-    })
-
     if (!walletClient) {
       console.error('Wallet client not found')
       toast({
@@ -327,6 +320,24 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
               console.error('Error waiting for transaction receipt:', error)
             })
         }
+
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            source: EVENT_SOURCE,
+            type: EVENT_TYPES.SEND_NFT,
+            chainId: String(chainId),
+            origin: window.location.origin,
+            collectibleAddress: contractAddress,
+            collectibleId: tokenId,
+            txHash: txHash
+          },
+          nums: {
+            collectibleAmount: Number(amountRaw),
+            collectibleAmountDecimal: Number(amountToSendFormatted)
+          }
+        })
       } else {
         // Handle case where txHash is unexpectedly undefined
         setIsSendTxnPending(false)
