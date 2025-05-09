@@ -210,11 +210,11 @@ export const PaymentSelectionContent = () => {
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
           currencySymbol: _currencyInfoData?.symbol || '',
-          txHash,
-          nums: {
-            currencyValue: Number(price),
-            currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
-          }
+          txHash
+        },
+        nums: {
+          currencyValue: Number(price),
+          currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
         }
       })
 
@@ -342,11 +342,11 @@ export const PaymentSelectionContent = () => {
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
           currencySymbol: _currencyInfoData?.symbol || '',
-          txHash,
-          nums: {
-            currencyValue: Number(price),
-            currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
-          }
+          txHash
+        },
+        nums: {
+          currencyValue: Number(price),
+          currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
         }
       })
 
