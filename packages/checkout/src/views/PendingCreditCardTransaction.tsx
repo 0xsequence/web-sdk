@@ -154,7 +154,12 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             to: creditCardCheckout.contractAddress,
             item_ids: JSON.stringify([creditCardCheckout.nftId]),
             item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
-            txHash
+            currencySymbol: creditCardCheckout.currencySymbol,
+            txHash,
+            nums: {
+              currencyValue: Number(price),
+              currencyValueDecimal: Number(formatUnits(BigInt(price), Number(creditCardCheckout.currencyDecimals)))
+            }
           }
         })
 

@@ -10,7 +10,7 @@ import {
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
-import { encodeFunctionData, zeroAddress, type Hex } from 'viem'
+import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
 import { NavigationHeader } from '../../components/NavigationHeader.js'
@@ -209,7 +209,12 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
-          txHash
+          currencySymbol: _currencyInfoData?.symbol || '',
+          txHash,
+          nums: {
+            currencyValue: Number(price),
+            currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
+          }
         }
       })
 
@@ -336,7 +341,12 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
-          txHash
+          currencySymbol: _currencyInfoData?.symbol || '',
+          txHash,
+          nums: {
+            currencyValue: Number(price),
+            currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
+          }
         }
       })
 
