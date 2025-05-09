@@ -46,6 +46,7 @@ export const PaymentSelectionContent = () => {
 
   const [disableButtons, setDisableButtons] = useState(false)
   const [isError, setIsError] = useState<boolean>(false)
+  const [isBuildingPurchaseTx, setIsBuildingPurchaseTx] = useState<boolean>(false)
 
   const {
     chain,
@@ -146,6 +147,7 @@ export const PaymentSelectionContent = () => {
       return
     }
 
+    setIsBuildingPurchaseTx(true)
     setIsError(false)
     setDisableButtons(true)
 
@@ -213,6 +215,7 @@ export const PaymentSelectionContent = () => {
         }
       })
 
+      setIsBuildingPurchaseTx(false)
       closeSelectPaymentModal()
 
       skipOnCloseCallback()
@@ -248,6 +251,7 @@ export const PaymentSelectionContent = () => {
       return
     }
 
+    setIsBuildingPurchaseTx(true)
     setIsError(false)
     setDisableButtons(true)
 
@@ -340,6 +344,7 @@ export const PaymentSelectionContent = () => {
         }
       })
 
+      setIsBuildingPurchaseTx(false)
       closeSelectPaymentModal()
 
       skipOnCloseCallback()
@@ -473,7 +478,7 @@ export const PaymentSelectionContent = () => {
                 }
                 shape="square"
                 variant="primary"
-                label="Complete Purchase"
+                label={isBuildingPurchaseTx ? 'Building Transaction...' : 'Complete Purchase'}
               />
               <div className="flex w-full justify-center items-center gap-0.5 my-2">
                 {/* Replace by icon from design-system once new release is out */}
