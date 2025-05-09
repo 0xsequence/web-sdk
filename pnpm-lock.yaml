@@ -350,9 +350,6 @@ importers:
       '@0xsequence/ethauth':
         specifier: ^1.0.0
         version: 1.0.0(ethers@6.13.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@0xsequence/indexer':
         specifier: ^2.3.10
         version: 2.3.11
@@ -402,6 +399,9 @@ importers:
       0xsequence:
         specifier: ^2.3.10
         version: 2.3.11(ethers@6.13.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@tanstack/react-query':
         specifier: ^5.74.11
         version: 5.75.2(react@19.1.0)
