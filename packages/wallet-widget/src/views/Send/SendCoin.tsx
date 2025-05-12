@@ -236,7 +236,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     try {
       if (isNativeCoin) {
-        console.log('Sending native coin via walletClient')
         txHash = await walletClient.sendTransaction({
           account: accountAddress as `0x${string}`,
           to: toAddress as `0x${string}`,
@@ -244,7 +243,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           chain: chains.find(c => c.id === chainId)
         })
       } else {
-        console.log('Sending ERC20 coin via walletClient')
         txHash = await walletClient.sendTransaction({
           account: accountAddress as `0x${string}`,
           to: tokenBalance?.contractAddress as `0x${string}`,

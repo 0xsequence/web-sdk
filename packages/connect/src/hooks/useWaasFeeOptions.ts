@@ -4,12 +4,19 @@ import { useIndexerClient } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import type { FeeOption } from '@0xsequence/waas'
 import type { ethers } from 'ethers'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formatUnits } from 'viem'
 import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
 
 import { Deferred } from '../utils/deferred.js'
+
+// --- Shared State Management ---
+let sharedPendingConfirmation: WaasFeeOptionConfirmation | undefined = undefined
+let sharedDeferred: Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | undefined = undefined
+let listeners: React.Dispatch<React.SetStateAction<WaasFeeOptionConfirmation | undefined>>[] = []
+
+const notifyListeners = (state: WaasFeeOptionConfirmation | undefined) => listeners.forEach(listener => listener(state))
 
 /**
  * Extended FeeOption type that includes balance information
@@ -94,28 +101,20 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
   const { skipFeeBalanceCheck = false } = options || {}
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find((c: any) => c.connector.id.includes('waas'))?.connector
-  const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>()
-  const pendingConfirmationRef = useRef<
-    Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | undefined
-  >(undefined)
+  const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>(
+    sharedPendingConfirmation
+  )
   const indexerClient = useIndexerClient(connections[0]?.chainId ?? 1)
-
-  // Reset state when chainId changes
-  useEffect(() => {
-    setPendingFeeOptionConfirmation(undefined)
-    pendingConfirmationRef.current = undefined
-  }, [])
-
   /**
    * Confirms the selected fee option
    * @param id - The fee confirmation ID
    * @param feeTokenAddress - The address of the token to use for fee payment (null for native token)
    */
   function confirmPendingFeeOption(id: string, feeTokenAddress: string | null) {
-    if (pendingConfirmationRef.current) {
-      pendingConfirmationRef.current.resolve({ id, feeTokenAddress, confirmed: true })
-      setPendingFeeOptionConfirmation(undefined)
-      pendingConfirmationRef.current = undefined
+    if (sharedDeferred && sharedPendingConfirmation?.id === id) {
+      sharedDeferred.resolve({ id, feeTokenAddress, confirmed: true })
+      sharedDeferred = undefined
+      notifyListeners(undefined)
     }
   }
 
@@ -124,12 +123,23 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
    * @param id - The fee confirmation ID to reject
    */
   function rejectPendingFeeOption(id: string) {
-    if (pendingConfirmationRef.current) {
-      pendingConfirmationRef.current.resolve({ id, feeTokenAddress: undefined, confirmed: false })
-      setPendingFeeOptionConfirmation(undefined)
-      pendingConfirmationRef.current = undefined
+    if (sharedDeferred && sharedPendingConfirmation?.id === id) {
+      sharedDeferred.resolve({ id, feeTokenAddress: undefined, confirmed: false })
+      sharedDeferred = undefined
+      notifyListeners(undefined)
     }
   }
+
+  useEffect(() => {
+    // Subscribe to shared state changes
+    listeners.push(setPendingFeeOptionConfirmation)
+    // Set initial state in case it changed between component initialization and effect execution
+    setPendingFeeOptionConfirmation(sharedPendingConfirmation)
+
+    return () => {
+      listeners = listeners.filter(l => l !== setPendingFeeOptionConfirmation)
+    }
+  }, [])
 
   useEffect(() => {
     if (!waasConnector) {
@@ -151,7 +161,12 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
         chainId: number
       ): Promise<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> {
         const pending = new Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>()
-        pendingConfirmationRef.current = pending
+        // Store the deferred promise in the shared scope
+        sharedDeferred = pending
+        // Clear any previous stale state immediately
+        sharedPendingConfirmation = undefined
+        notifyListeners(undefined)
+
         const accountAddress = connections[0]?.accounts[0]
         if (!accountAddress) {
           throw new Error('No account address available')
@@ -188,9 +203,11 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
               }
             })
           )
-          setPendingFeeOptionConfirmation({ id, options: optionsWithBalances, chainId })
+          sharedPendingConfirmation = { id, options: optionsWithBalances, chainId }
+          notifyListeners(sharedPendingConfirmation)
         } else {
-          setPendingFeeOptionConfirmation({ id, options, chainId })
+          sharedPendingConfirmation = { id, options, chainId }
+          notifyListeners(sharedPendingConfirmation)
         }
         return pending.promise
       }
