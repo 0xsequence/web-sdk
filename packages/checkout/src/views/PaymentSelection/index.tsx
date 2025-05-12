@@ -111,7 +111,7 @@ export const PaymentSelectionContent = () => {
       toTokenAmount: price,
       toTokenAddress: currencyAddress
     },
-    { disabled: !enableSwapPayments }
+    { disabled: !enableSwapPayments, retry: 3 }
   )
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
@@ -412,6 +412,8 @@ export const PaymentSelectionContent = () => {
               selectedCurrency={selectedCurrency}
               setSelectedCurrency={setSelectedCurrency}
               isLoading={isLoading}
+              swapRoutes={swapRoutes}
+              swapRoutesIsLoading={swapRoutesIsLoading}
             />
           </>
         )}
@@ -464,13 +466,7 @@ export const PaymentSelectionContent = () => {
               <Button
                 className="mt-6 w-full"
                 onClick={onClickPurchase}
-                disabled={
-                  isLoading ||
-                  disableButtons ||
-                  !selectedCurrency ||
-                  swapRoutesIsLoading ||
-                  (!disableSwapQuote && isLoadingSwapQuote)
-                }
+                disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
                 shape="square"
                 variant="primary"
                 label="Complete Purchase"
