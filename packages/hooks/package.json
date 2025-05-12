@@ -25,7 +25,7 @@
     "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
-    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
+    "dev": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
     "test": "vitest --run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"

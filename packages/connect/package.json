@@ -32,7 +32,7 @@
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
     "dev": "pnpm run writeVersion && concurrently \"pnpm dev:tsc\"  \"pnpm watch-css\"",
-    "dev:tsc": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
+    "dev:tsc": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
     "watch-css": "node scripts/watch-css.js",
     "writeVersion": "node scripts/writeVersion.js",
     "test": "echo",
