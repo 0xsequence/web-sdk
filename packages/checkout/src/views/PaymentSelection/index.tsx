@@ -374,7 +374,8 @@ export const PaymentSelectionContent = () => {
           clearCachedBalances()
           onSuccess(txHash)
         },
-        onClose
+        onClose,
+        statusOverride: 'success'
       })
     } catch (e) {
       console.error('Failed to purchase...', e)
