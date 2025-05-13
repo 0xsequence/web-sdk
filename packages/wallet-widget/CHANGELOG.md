@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.3.1
+
+### Patch Changes
+
+- Fix for effective price used by sale contract utility functions
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.3.1
+  - @0xsequence/connect@5.3.1
+  - @0xsequence/hooks@5.3.1
+
 ## 5.3.0
 
 ### Minor Changes

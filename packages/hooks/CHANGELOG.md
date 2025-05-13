@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.1
+
+### Patch Changes
+
+- Fix for effective price used by sale contract utility functions
+
 ## 5.3.0
 
 ### Minor Changes
