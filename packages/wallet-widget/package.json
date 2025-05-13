@@ -40,7 +40,7 @@
     "qrcode.react": "^4.2.0"
   },
   "peerDependencies": {
-    "@0xsequence/api": "2.3.11",
+    "@0xsequence/api": ">=2.3.11",
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
     "@0xsequence/hooks": "workspace:*",

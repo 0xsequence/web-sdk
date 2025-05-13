@@ -269,7 +269,7 @@ importers:
         specifier: '>= 2.3.7'
         version: 2.3.11(ethers@6.13.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/api':
-        specifier: 2.3.11
+        specifier: '>=2.3.11'
         version: 2.3.11
       '@0xsequence/design-system':
         specifier: 2.1.11
@@ -336,7 +336,7 @@ importers:
   packages/connect:
     dependencies:
       '@0xsequence/api':
-        specifier: 2.3.11
+        specifier: '>=2.3.11'
         version: 2.3.11
       '@0xsequence/auth':
         specifier: ^2.3.10
@@ -518,7 +518,7 @@ importers:
   packages/wallet-widget:
     dependencies:
       '@0xsequence/api':
-        specifier: 2.3.11
+        specifier: '>=2.3.11'
         version: 2.3.11
       '@0xsequence/design-system':
         specifier: 2.1.11
