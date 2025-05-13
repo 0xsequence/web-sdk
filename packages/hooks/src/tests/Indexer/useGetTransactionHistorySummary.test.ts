@@ -2,13 +2,13 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { ACCOUNT_ADDRESS } from '../../constants'
+import { ACCOUNT_ADDRESS } from '../../constants.js'
 import {
   useGetTransactionHistorySummary,
   type GetTransactionHistorySummaryArgs
-} from '../../hooks/Indexer/useGetTransactionHistorySummary'
-import { createWrapper } from '../createWrapper'
-import { server } from '../setup'
+} from '../../hooks/Indexer/useGetTransactionHistorySummary.js'
+import { createWrapper } from '../createWrapper.js'
+import { server } from '../setup.js'
 
 const getTransactionHistorySummaryArgs: GetTransactionHistorySummaryArgs = {
   accountAddresses: [ACCOUNT_ADDRESS],

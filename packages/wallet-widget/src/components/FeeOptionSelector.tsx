@@ -2,7 +2,7 @@ import { cn, Text, TokenImage } from '@0xsequence/design-system'
 import { useState, type FC } from 'react'
 import { formatUnits, parseUnits, zeroAddress } from 'viem'
 
-import { Alert, type AlertProps } from './Alert'
+import { Alert, type AlertProps } from './Alert.js'
 
 export interface FeeOption {
   token: FeeToken

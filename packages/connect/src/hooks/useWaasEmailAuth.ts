@@ -2,8 +2,8 @@ import { SequenceWaaS, type SignInResponse } from '@0xsequence/waas'
 import { useState } from 'react'
 
 // import { EmailWaasOptions } from '../connectors/email/emailWaas'
-import { randomName } from '../connectors/wagmiConnectors'
-import type { ExtendedConnector } from '../types'
+import { randomName } from '../connectors/wagmiConnectors/index.js'
+import type { ExtendedConnector } from '../types.js'
 
 interface SuccessResultV1 {
   version: 1

@@ -23,7 +23,7 @@ import {
   type SwapModalSettings,
   type TransactionStatusSettings,
   type TransferFundsSettings
-} from '../../contexts'
+} from '../../contexts/index.js'
 import {
   AddFundsContent,
   CheckoutSelection,
@@ -34,8 +34,8 @@ import {
   TransactionStatus,
   TransactionSuccess,
   TransferToWallet
-} from '../../views'
-import { NavigationHeader } from '../NavigationHeader'
+} from '../../views/index.js'
+import { NavigationHeader } from '../NavigationHeader.js'
 
 export interface SequenceCheckoutConfig {
   env?: Partial<EnvironmentOverrides>

@@ -1,3 +1,3 @@
-export * from './SendGeneral'
-export * from './SendCoin'
-export * from './SendCollectible'
+export * from './SendGeneral.js'
+export * from './SendCoin.js'
+export * from './SendCollectible.js'

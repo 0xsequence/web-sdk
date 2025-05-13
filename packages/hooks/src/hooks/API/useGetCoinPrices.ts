@@ -1,10 +1,10 @@
 import { SequenceAPIClient, type Token } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS, time } from '../../constants'
-import type { HooksOptions } from '../../types'
+import { QUERY_KEYS, time } from '../../constants.js'
+import type { HooksOptions } from '../../types/hooks.js'
 
-import { useAPIClient } from './useAPIClient'
+import { useAPIClient } from './useAPIClient.js'
 
 /**
  * Helper function to fetch coin prices from the Sequence API.

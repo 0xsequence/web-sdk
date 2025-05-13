@@ -1,9 +1,9 @@
 import type { CreateConnectorFn } from 'wagmi'
 import { metaMask as metaMaskConnector, type MetaMaskParameters } from 'wagmi/connectors'
 
-import type { Wallet } from '../../types'
+import type { Wallet } from '../../types.js'
 
-import { MetaMaskLogo } from './MetaMaskLogo'
+import { MetaMaskLogo } from './MetaMaskLogo.js'
 
 export const metaMask = (params: MetaMaskParameters): Wallet => ({
   id: 'metamask-wallet',

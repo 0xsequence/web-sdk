@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import type { Address } from 'viem'
 import type { Connector } from 'wagmi'
 
-import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
+import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking.js'
 
 /**
  * Result object returned by the useWaasGetLinkedWalletsSignature hook.

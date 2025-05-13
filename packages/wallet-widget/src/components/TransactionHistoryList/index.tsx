@@ -2,8 +2,8 @@ import { Spinner, Text } from '@0xsequence/design-system'
 import type { Transaction } from '@0xsequence/indexer'
 import { useMemo } from 'react'
 
-import { TransactionHistoryItem } from './TransactionHistoryItem'
-import { TransactionHistorySkeleton } from './TransactionHistorySkeleton'
+import { TransactionHistoryItem } from './TransactionHistoryItem.js'
+import { TransactionHistorySkeleton } from './TransactionHistorySkeleton.js'
 
 interface TransactionHistoryListProps {
   transactions: Transaction[]

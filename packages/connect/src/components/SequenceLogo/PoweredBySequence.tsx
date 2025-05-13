@@ -1,6 +1,6 @@
 import { Text } from '@0xsequence/design-system'
 
-import { SequenceLogo } from './SequenceLogo'
+import { SequenceLogo } from './SequenceLogo.js'
 
 export const PoweredBySequence = () => {
   return (

@@ -17,9 +17,9 @@ import dayjs from 'dayjs'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { CopyButton } from '../../components/CopyButton'
-import { NetworkBadge } from '../../components/NetworkBadge'
-import { useSettings } from '../../hooks'
+import { CopyButton } from '../../components/CopyButton.js'
+import { NetworkBadge } from '../../components/NetworkBadge.js'
+import { useSettings } from '../../hooks/index.js'
 
 interface TransactionDetailProps {
   transaction: Transaction

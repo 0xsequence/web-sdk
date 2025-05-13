@@ -6,17 +6,17 @@ import pako from 'pako'
 import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 
-import { fetchSardineOrderStatus } from '../api'
-import { NFT_CHECKOUT_SOURCE } from '../constants'
-import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts'
+import { fetchSardineOrderStatus } from '../api/data.js'
+import { EVENT_SOURCE } from '../constants/index.js'
+import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
   useCheckoutModal,
   useNavigation,
   useSardineClientToken,
   useSkipOnCloseCallback,
   useTransactionStatusModal
-} from '../hooks'
-import { TRANSAK_PROXY_ADDRESS } from '../utils/transak'
+} from '../hooks/index.js'
+import { TRANSAK_PROXY_ADDRESS } from '../utils/transak.js'
 
 const POLLING_TIME = 10 * 1000
 
@@ -44,7 +44,7 @@ export const PendingCreditCardTransaction = () => {
 }
 
 export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
-  const { transakApiUrl } = useEnvironmentContext()
+  const { transakApiUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -80,6 +80,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
+  const transakApiKey = transakConfig?.apiKey || transakGlobalApiKey
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -121,7 +122,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   // Note: the network name might not always line up with Transak. A conversion function might be necessary
   const networkName = network?.name.toLowerCase()
 
-  const transakLink = `${transakApiUrl}?apiKey=${transakConfig?.apiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+  const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
 
   const isLoading = isLoadingTokenMetadata || isLoadingCollectionInfo
   const isError = isErrorTokenMetadata || isErrorCollectionInfo
@@ -145,7 +146,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             ...creditCardCheckout.supplementaryAnalyticsInfo,
             type: 'credit_card',
             provider: 'transak',
-            source: NFT_CHECKOUT_SOURCE,
+            source: EVENT_SOURCE,
             chainId: String(creditCardCheckout.chainId),
             listedCurrency: creditCardCheckout.currencyAddress,
             purchasedCurrency: creditCardCheckout.currencyAddress,
@@ -154,7 +155,12 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             to: creditCardCheckout.contractAddress,
             item_ids: JSON.stringify([creditCardCheckout.nftId]),
             item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
+            currencySymbol: creditCardCheckout.currencySymbol,
             txHash
+          },
+          nums: {
+            currencyValue: Number(price),
+            currencyValueDecimal: Number(formatUnits(BigInt(price), Number(creditCardCheckout.currencyDecimals)))
           }
         })
 
@@ -318,7 +324,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
             ...creditCardCheckout.supplementaryAnalyticsInfo,
             type: 'credit_card',
             provider: 'sardine',
-            source: NFT_CHECKOUT_SOURCE,
+            source: EVENT_SOURCE,
             chainId: String(creditCardCheckout.chainId),
             listedCurrency: creditCardCheckout.currencyAddress,
             purchasedCurrency: creditCardCheckout.currencyAddress,

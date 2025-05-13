@@ -4,7 +4,7 @@ import type { SequenceHooksEnv } from '@0xsequence/hooks'
 import type { FunctionComponent } from 'react'
 import type { Connector, CreateConnectorFn } from 'wagmi'
 
-import { LocalStorageKey } from './constants'
+import { LocalStorageKey } from './constants/localStorage.js'
 
 export interface LogoProps {
   className?: string

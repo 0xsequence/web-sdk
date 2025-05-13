@@ -1,4 +1,4 @@
 export interface HooksOptions {
   disabled?: boolean
-  retry?: boolean
+  retry?: boolean | number
 }

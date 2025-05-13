@@ -3,10 +3,10 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { ACCOUNT_ADDRESS } from '../../constants'
-import { useGetTokenBalancesDetails } from '../../hooks/IndexerGateway/useGetTokenBalancesDetails'
-import { createWrapper } from '../createWrapper'
-import { server } from '../setup'
+import { ACCOUNT_ADDRESS } from '../../constants.js'
+import { useGetTokenBalancesDetails } from '../../hooks/IndexerGateway/useGetTokenBalancesDetails.js'
+import { createWrapper } from '../createWrapper.js'
+import { server } from '../setup.js'
 
 const getTokenBalancesDetailsArgs: IndexerGateway.GetTokenBalancesDetailsArgs = {
   filter: {

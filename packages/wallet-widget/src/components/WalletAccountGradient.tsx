@@ -1,7 +1,7 @@
 import { useWallets } from '@0xsequence/connect'
 import { GradientAvatar } from '@0xsequence/design-system'
 
-import { getConnectorLogo } from './ConnectorLogos/getConnectorLogos'
+import { getConnectorLogo } from './ConnectorLogos/getConnectorLogos.js'
 
 export const WalletAccountGradient = ({
   accountAddress,

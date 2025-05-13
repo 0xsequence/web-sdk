@@ -1,6 +1,6 @@
 import { Text } from '@0xsequence/design-system'
 
-import { useSelectPaymentModal } from '../../hooks'
+import { useSelectPaymentModal } from '../../hooks/useSelectPaymentModal.js'
 
 export const Footer = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()

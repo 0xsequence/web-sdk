@@ -1,7 +1,7 @@
 import { mock as mockBase, type MockParameters } from 'wagmi/connectors'
 
-import type { Wallet } from '../../types'
-import { SequenceLogo } from '../sequence/SequenceLogo'
+import type { Wallet } from '../../types.js'
+import { SequenceLogo } from '../sequence/SequenceLogo.js'
 
 export const mock = (options: MockParameters): Wallet => ({
   id: 'mock',

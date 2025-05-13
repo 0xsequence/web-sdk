@@ -1,2 +1,2 @@
-export { SequenceLogo } from './SequenceLogo'
-export { PoweredBySequence } from './PoweredBySequence'
+export { PoweredBySequence } from './PoweredBySequence.js'
+export { SequenceLogo } from './SequenceLogo.js'

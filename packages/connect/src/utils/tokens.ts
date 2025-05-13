@@ -3,7 +3,7 @@ import { ContractType, type TokenBalance } from '@0xsequence/indexer'
 import { zeroAddress } from 'viem'
 import type { Chain } from 'wagmi/chains'
 
-import { chains } from '../chains'
+import { chains } from '../chains/index.js'
 
 export interface NativeTokenInfo {
   chainId: number

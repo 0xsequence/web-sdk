@@ -5,17 +5,37 @@ import type { TokenBalance } from '@0xsequence/indexer'
 import { formatUnits, type Chain } from 'viem'
 import { zeroAddress } from 'viem'
 
-import type { TokenBalanceWithPrice } from './tokens'
+import type { TokenBalanceWithPrice } from './tokens.js'
 
 //TODO: rename these and maybe do a refactor
+
+interface NativeTokenInfo {
+  chainId: number
+  name: string
+  symbol: string
+  logoURI: string
+  decimals: number
+  blockExplorerUrl?: string
+  blockExplorerName?: string
+}
+
+interface TokenInfo {
+  name: string
+  logo?: string
+  symbol?: string
+  isNativeToken: boolean
+  nativeTokenInfo?: NativeTokenInfo
+  displayBalance: string
+  fiatBalance: string
+}
 
 export const formatTokenInfo = (
   balance: TokenBalanceWithPrice | undefined,
   fiatSign: string,
   chains: readonly [Chain, ...Chain[]]
-) => {
+): TokenInfo => {
   if (!balance) {
-    return { logo: '', name: '', symbol: '', displayBalance: '', fiatBalance: '' }
+    return { isNativeToken: false, logo: '', name: '', symbol: '', displayBalance: '', fiatBalance: '' }
   }
 
   const isNativeToken = compareAddress(balance?.contractAddress || '', zeroAddress)

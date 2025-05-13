@@ -3,9 +3,9 @@ import { NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-sys
 import React from 'react'
 import { formatUnits } from 'viem'
 
-import { useSettings } from '../hooks'
+import { useSettings } from '../hooks/index.js'
 
-import { CollectibleTileImage } from './CollectibleTileImage'
+import { CollectibleTileImage } from './CollectibleTileImage.js'
 
 interface SendItemInfoProps {
   name: string

@@ -1,4 +1,4 @@
-import { useConnectModalContext } from '../contexts/ConnectModal'
+import { useConnectModalContext } from '../contexts/ConnectModal.js'
 
 /**
  * Return type for the useOpenConnectModal hook.

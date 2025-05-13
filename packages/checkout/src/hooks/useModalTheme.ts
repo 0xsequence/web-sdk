@@ -1,4 +1,4 @@
-import { useCheckoutModalContext } from '../contexts/CheckoutModal'
+import { useCheckoutModalContext } from '../contexts/CheckoutModal.js'
 
 export const useModalTheme = () => {
   const { theme } = useCheckoutModalContext()

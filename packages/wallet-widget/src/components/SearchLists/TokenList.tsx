@@ -7,11 +7,11 @@ import Fuse from 'fuse.js'
 import { useMemo, useState } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useGetMoreBalances, useSettings } from '../../hooks'
-import { computeBalanceFiat, type TokenBalanceWithPrice } from '../../utils'
-import { FilterButton } from '../Filter/FilterButton'
+import { useGetMoreBalances, useSettings } from '../../hooks/index.js'
+import { computeBalanceFiat, type TokenBalanceWithPrice } from '../../utils/index.js'
+import { FilterButton } from '../Filter/FilterButton.js'
 
-import { CoinsTab } from './TokenList/CoinsTab'
+import { CoinsTab } from './TokenList/CoinsTab.js'
 
 export const TokenList = ({
   tokenBalancesData,

@@ -1,9 +1,9 @@
 import { getNetwork } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 
-import { ListCardSelect } from '../ListCard'
+import { ListCardSelect } from '../ListCard/index.js'
 
-import { NetworkImageCustom } from './NetworkImageCustom'
+import { NetworkImageCustom } from './NetworkImageCustom.js'
 
 export const NetworkRow = ({ chainId, isSelected, onClick }: { chainId: number; isSelected: boolean; onClick: () => void }) => {
   const network = getNetwork(chainId)

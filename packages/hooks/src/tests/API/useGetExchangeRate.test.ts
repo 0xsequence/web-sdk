@@ -2,9 +2,9 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { useGetExchangeRate } from '../../hooks/API/useGetExchangeRate'
-import { createWrapper } from '../createWrapper'
-import { server } from '../setup'
+import { useGetExchangeRate } from '../../hooks/API/useGetExchangeRate.js'
+import { createWrapper } from '../createWrapper.js'
+import { server } from '../setup.js'
 
 describe('useGetExchangeRate', () => {
   it('should return data with a balance', async () => {

@@ -20,8 +20,8 @@ import {
 } from 'viem'
 import { createConnector } from 'wagmi'
 
-import { LocalStorageKey } from '../../constants/localStorage'
-import { normalizeChainId } from '../../utils/helpers'
+import { LocalStorageKey } from '../../constants/localStorage.js'
+import { normalizeChainId } from '../../utils/helpers.js'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string

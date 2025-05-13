@@ -5,8 +5,8 @@ import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { useAccount } from 'wagmi'
 
-import { FeeOptionSelector, type FeeOption } from './FeeOptionSelector'
-import { SendItemInfo } from './SendItemInfo'
+import { FeeOptionSelector, type FeeOption } from './FeeOptionSelector.js'
+import { SendItemInfo } from './SendItemInfo.js'
 
 interface TransactionConfirmationProps {
   // Display data

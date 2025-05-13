@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/hooks",
-  "version": "5.2.3",
+  "version": "5.3.0",
   "description": "React hooks for Sequence Web SDK",
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/hooks",
   "author": "Horizon Blockchain Games",
@@ -21,11 +21,11 @@
   ],
   "scripts": {
     "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs",
-    "build:cjs": "tsc --module commonjs --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
-    "build:esm": "tsc --module es2022 --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
-    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
+    "dev": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
     "test": "vitest --run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
@@ -58,8 +58,5 @@
     "viem": "^2.28.1",
     "vite": "^6.3.4",
     "vitest": "^2.1.9"
-  },
-  "dependencies": {
-    "copy-to-clipboard": "^3.3.3"
   }
 }

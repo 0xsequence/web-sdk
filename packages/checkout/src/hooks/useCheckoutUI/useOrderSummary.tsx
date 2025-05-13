@@ -6,7 +6,7 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import type { ReactNode } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 
-import type { Collectible } from '../../contexts/SelectPaymentModal'
+import type { Collectible } from '../../contexts/SelectPaymentModal.js'
 
 export interface UseOrderSummaryArgs {
   chain: string | number

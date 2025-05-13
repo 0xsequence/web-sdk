@@ -7,20 +7,20 @@ import { AnimatePresence } from 'motion/react'
 import React, { useContext, useEffect, useState, type ReactNode } from 'react'
 import { useAccount } from 'wagmi'
 
-import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
-import { WALLET_HEIGHT, WALLET_WIDTH } from '../../constants'
+import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
+import { WALLET_HEIGHT, WALLET_WIDTH } from '../../constants/index.js'
 import {
   NavigationContextProvider,
   WalletModalContextProvider,
   type History,
   type Navigation,
   type WalletOptions
-} from '../../contexts'
-import { WalletContentRefContext, WalletContentRefProvider } from '../../contexts/WalletContentRef'
+} from '../../contexts/index.js'
+import { WalletContentRefContext, WalletContentRefProvider } from '../../contexts/WalletContentRef.js'
 
-import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider'
-import { SwapProvider } from './ProviderComponents/SwapProvider'
-import { getContent, getHeader } from './utils'
+import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider.js'
+import { SwapProvider } from './ProviderComponents/SwapProvider.js'
+import { getContent, getHeader } from './utils/index.js'
 
 export type SequenceWalletProviderProps = {
   children: ReactNode

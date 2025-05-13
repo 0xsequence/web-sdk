@@ -1,2 +1,2 @@
-export * from './TokenList'
-export * from './CollectiblesList'
+export * from './TokenList.js'
+export * from './CollectiblesList.js'

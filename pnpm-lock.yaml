@@ -292,6 +292,9 @@ importers:
       '@0xsequence/waas':
         specifier: '>= 2.3.7'
         version: 2.3.11(ethers@6.13.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       motion:
         specifier: ^12.9.2
         version: 12.9.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -301,9 +304,6 @@ importers:
       qrcode.react:
         specifier: ^4.2.0
         version: 4.2.0(react@19.1.0)
-      timeago-react:
-        specifier: ^3.0.7
-        version: 3.0.7(react@19.1.0)
     devDependencies:
       '@0xsequence/connect':
         specifier: workspace:*
@@ -350,9 +350,6 @@ importers:
       '@0xsequence/ethauth':
         specifier: ^1.0.0
         version: 1.0.0(ethers@6.13.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@0xsequence/indexer':
         specifier: ^2.3.10
         version: 2.3.11
@@ -384,8 +381,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       fuse.js:
-        specifier: ^6.6.2
-        version: 6.6.2
+        specifier: ^7.1.0
+        version: 7.1.0
       motion:
         specifier: ^12.9.2
         version: 12.9.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -402,6 +399,9 @@ importers:
       0xsequence:
         specifier: ^2.3.10
         version: 2.3.11(ethers@6.13.7(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@tanstack/react-query':
         specifier: ^5.74.11
         version: 5.75.2(react@19.1.0)
@@ -428,10 +428,6 @@ importers:
         version: 2.15.2(@tanstack/query-core@5.75.0)(@tanstack/react-query@5.75.2(react@19.1.0))(@types/react@19.1.2)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.28.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(zod@3.24.4)
 
   packages/hooks:
-    dependencies:
-      copy-to-clipboard:
-        specifier: ^3.3.3
-        version: 3.3.3
     devDependencies:
       '@0xsequence/api':
         specifier: 2.3.11
@@ -542,8 +538,8 @@ importers:
         specifier: ^1.11.13
         version: 1.11.13
       fuse.js:
-        specifier: ^6.6.2
-        version: 6.6.2
+        specifier: ^7.1.0
+        version: 7.1.0
       micro-observables:
         specifier: 1.7.2
         version: 1.7.2(react@19.1.0)
@@ -4200,9 +4196,6 @@ packages:
     resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
     engines: {node: '>=18'}
 
-  copy-to-clipboard@3.3.3:
-    resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
-
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
@@ -4291,6 +4284,9 @@ packages:
   date-fns@2.30.0:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
     engines: {node: '>=0.11'}
+
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
@@ -4979,8 +4975,8 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  fuse.js@6.6.2:
-    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
+  fuse.js@7.1.0:
+    resolution: {integrity: sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ==}
     engines: {node: '>=10'}
 
   gensync@1.0.0-beta.2:
@@ -6990,14 +6986,6 @@ packages:
   thread-stream@0.15.2:
     resolution: {integrity: sha512-UkEhKIg2pD+fjkHQKyJO3yoIvAP3N6RlNFt2dUhcS1FGvCD1cQa1M/PGknCLFIyZdtJOWQjejp7bdNqmN7zwdA==}
 
-  timeago-react@3.0.7:
-    resolution: {integrity: sha512-5LSQuq+mzfEpMHkJQgMWnOs27dGh25aUQhffQpAW6q431vVVmHP194KYsM4bhzli0XfohUgN8+r3Pq6GVprN4A==}
-    peerDependencies:
-      react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  timeago.js@4.0.2:
-    resolution: {integrity: sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==}
-
   timers-browserify@2.0.12:
     resolution: {integrity: sha512-9phl76Cqm6FhSX9Xe1ZUAMLtm1BLkKj2Qd5ApyWkXzsMRaA7dgr81kf4wJmQf/hAvg8EEyJxDo3du/0KlhPiKQ==}
     engines: {node: '>=0.6.0'}
@@ -7054,9 +7042,6 @@ packages:
 
   toformat@2.0.0:
     resolution: {integrity: sha512-03SWBVop6nU8bpyZCx7SodpYznbZF5R4ljwNLBcTQzKOD9xuihRo/psX58llS1BMFhhAI08H3luot5GoXJz2pQ==}
-
-  toggle-selection@1.0.6:
-    resolution: {integrity: sha512-BiZS+C1OS8g/q2RRbJmy59xpyghNBqrr6k5L/uKBGRsTfxmu3ffiRnd8mlGPUVayg8pvfi5urfnu8TU7DVOkLQ==}
 
   toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
@@ -13278,10 +13263,6 @@ snapshots:
 
   cookie@1.0.2: {}
 
-  copy-to-clipboard@3.3.3:
-    dependencies:
-      toggle-selection: 1.0.6
-
   core-util-is@1.0.3: {}
 
   cors@2.8.5:
@@ -13402,6 +13383,8 @@ snapshots:
   date-fns@2.30.0:
     dependencies:
       '@babel/runtime': 7.27.1
+
+  date-fns@4.1.0: {}
 
   dayjs@1.11.13: {}
 
@@ -14368,7 +14351,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  fuse.js@6.6.2: {}
+  fuse.js@7.1.0: {}
 
   gensync@1.0.0-beta.2: {}
 
@@ -16623,13 +16606,6 @@ snapshots:
     dependencies:
       real-require: 0.1.0
 
-  timeago-react@3.0.7(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      timeago.js: 4.0.2
-
-  timeago.js@4.0.2: {}
-
   timers-browserify@2.0.12:
     dependencies:
       setimmediate: 1.0.5
@@ -16672,8 +16648,6 @@ snapshots:
       is-number: 7.0.0
 
   toformat@2.0.0: {}
-
-  toggle-selection@1.0.6: {}
 
   toidentifier@1.0.1: {}
 

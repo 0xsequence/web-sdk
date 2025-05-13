@@ -6,8 +6,8 @@ import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
-import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import type { Collectible } from '../../contexts/SelectPaymentModal'
+import { ERC_20_CONTRACT_ABI } from '../../constants/abi.js'
+import type { Collectible } from '../../contexts/SelectPaymentModal.js'
 
 export interface UseCryptoPaymentArgs {
   chain: string | number

@@ -1,4 +1,4 @@
-import { useTransferFundsModalContext } from '../contexts/TransferFundsModal'
+import { useTransferFundsModalContext } from '../contexts/TransferFundsModal.js'
 
 export const useTransferFundsModal = () => {
   const { openTransferFundsModal, closeTransferFundsModal, transferFundsSettings } = useTransferFundsModalContext()

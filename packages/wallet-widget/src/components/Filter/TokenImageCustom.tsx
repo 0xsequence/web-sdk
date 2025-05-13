@@ -1,6 +1,6 @@
 import { TokenImage } from '@0xsequence/design-system'
 
-import { NetworkImageCustom } from './NetworkImageCustom'
+import { NetworkImageCustom } from './NetworkImageCustom.js'
 
 const NETWORK_IMAGE_SIZE = '45%'
 const NETWORK_IMAGE_OFFSET = '-1px'

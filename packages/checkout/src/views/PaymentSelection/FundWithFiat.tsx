@@ -2,7 +2,7 @@ import { ArrowRightIcon, Card, CurrencyIcon, Text } from '@0xsequence/design-sys
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
 
-import { useAddFundsModal, useSelectPaymentModal } from '../../hooks'
+import { useAddFundsModal, useSelectPaymentModal } from '../../hooks/index.js'
 
 interface FundWithFiatProps {
   cryptoSymbol?: string

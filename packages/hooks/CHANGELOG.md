@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.0
+
+### Minor Changes
+
+- Conversion to nodeNext, various fixes
+
 ## 5.2.3
 
 ### Patch Changes

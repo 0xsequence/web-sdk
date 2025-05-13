@@ -1,1 +1,1 @@
-export { TxnDetails } from './TxnDetails'
+export { TxnDetails } from './TxnDetails.js'

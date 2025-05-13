@@ -1,12 +1,12 @@
 import { Text } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 
-import { useSettings } from '../../hooks'
-import { MediaIconWrapper } from '../IconWrappers'
-import { ListCardSelect } from '../ListCard/ListCardSelect'
+import { useSettings } from '../../hooks/index.js'
+import { MediaIconWrapper } from '../IconWrappers/index.js'
+import { ListCardSelect } from '../ListCard/ListCardSelect.js'
 
-import { NetworkImageCustom } from './NetworkImageCustom'
-import { NetworkRow } from './NetworkRow'
+import { NetworkImageCustom } from './NetworkImageCustom.js'
+import { NetworkRow } from './NetworkRow.js'
 
 export const NetworksFilter = () => {
   const { selectedNetworksObservable, setSelectedNetworks, allNetworks } = useSettings()

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { fetchSardineOnRampLink, type SardineLinkOnRampArgs } from '../api/data'
+import { fetchSardineOnRampLink, type SardineLinkOnRampArgs } from '../api/data.js'
 
 export const useSardineOnRampLink = (args: SardineLinkOnRampArgs, disabled?: boolean) => {
   return useQuery({

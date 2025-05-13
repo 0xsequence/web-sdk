@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { useNavigation, useSettings } from '../../hooks'
+import { useNavigation, useSettings } from '../../hooks/index.js'
 
 interface TransactionHistoryItemProps {
   transaction: Transaction

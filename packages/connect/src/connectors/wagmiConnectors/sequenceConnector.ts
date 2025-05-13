@@ -5,9 +5,9 @@ import type { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
 import { getAddress, UserRejectedRequestError } from 'viem'
 import { createConnector } from 'wagmi'
 
-import { LocalStorageKey } from '../../constants/localStorage'
-import type { EthAuthSettings } from '../../types'
-import { normalizeChainId } from '../../utils/helpers'
+import { LocalStorageKey } from '../../constants/localStorage.js'
+import type { EthAuthSettings } from '../../types.js'
+import { normalizeChainId } from '../../utils/helpers.js'
 
 export interface BaseSequenceConnectorOptions {
   walletAppURL?: string

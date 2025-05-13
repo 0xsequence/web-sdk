@@ -2,10 +2,10 @@ import { formatAddress, useOpenConnectModal, useWallets } from '@0xsequence/conn
 import { cardVariants, CheckmarkIcon, CloseIcon, cn, Divider, IconButton, Spinner, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
-import { CopyButton } from '../../components/CopyButton'
-import { MediaIconWrapper } from '../../components/IconWrappers'
-import { ListCardSelect } from '../../components/ListCard/ListCardSelect'
-import { WalletAccountGradient } from '../../components/WalletAccountGradient'
+import { CopyButton } from '../../components/CopyButton.js'
+import { MediaIconWrapper } from '../../components/IconWrappers/index.js'
+import { ListCardSelect } from '../../components/ListCard/ListCardSelect.js'
+import { WalletAccountGradient } from '../../components/WalletAccountGradient.js'
 
 export const SettingsWallets = () => {
   const { wallets, disconnectWallet } = useWallets()

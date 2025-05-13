@@ -3,10 +3,10 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { ZERO_ADDRESS } from '../../constants'
-import { useGetCoinPrices } from '../../hooks/API/useGetCoinPrices'
-import { createWrapper } from '../createWrapper'
-import { server } from '../setup'
+import { ZERO_ADDRESS } from '../../constants.js'
+import { useGetCoinPrices } from '../../hooks/API/useGetCoinPrices.js'
+import { createWrapper } from '../createWrapper.js'
+import { server } from '../setup.js'
 
 const getCoinPricesArgs: Token[] = [
   {

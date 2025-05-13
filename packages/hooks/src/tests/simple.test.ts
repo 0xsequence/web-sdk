@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { createWrapper } from './createWrapper'
+import { createWrapper } from './createWrapper.js'
 
 const useSimpleHook = () => {
   return { data: 'ok' }

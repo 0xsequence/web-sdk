@@ -1,10 +1,10 @@
 import { Skeleton, Spinner, Text } from '@0xsequence/design-system'
 import type { FC } from 'react'
 
-import type { TokenBalanceWithPrice } from '../../../utils'
-import { InfiniteScroll } from '../../InfiniteScroll'
+import type { TokenBalanceWithPrice } from '../../../utils/index.js'
+import { InfiniteScroll } from '../../InfiniteScroll.js'
 
-import { CollectibleTile } from './CollectibleTile'
+import { CollectibleTile } from './CollectibleTile.js'
 
 interface CollectiblesTabProps {
   displayedCollectibleBalances: TokenBalanceWithPrice[] | undefined

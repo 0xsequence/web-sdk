@@ -2,9 +2,9 @@ import { cardVariants, ChevronUpDownIcon, cn, NetworkImage, Text } from '@0xsequ
 import { useState } from 'react'
 import { useChainId, useChains, useSwitchChain } from 'wagmi'
 
-import { NetworkRow } from '../Filter/NetworkRow'
+import { NetworkRow } from '../Filter/NetworkRow.js'
 
-import { SlideupDrawer } from './SlideupDrawer'
+import { SlideupDrawer } from './SlideupDrawer.js'
 
 const NETWORK_SELECT_HEIGHT = '70px'
 

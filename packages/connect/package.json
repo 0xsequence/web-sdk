@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/connect",
-  "version": "5.2.3",
+  "version": "5.3.0",
   "description": "Connect package for Sequence Web SDK",
   "keywords": [
     "sequence",
@@ -26,13 +26,13 @@
   ],
   "scripts": {
     "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm && pnpm build:cjs",
-    "build:cjs": "tsc --module commonjs --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
-    "build:esm": "tsc --module es2022 --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:css": "rimraf ./src/styles.ts && tailwindcss -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`\" > ./src/styles.ts",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
     "dev": "pnpm run writeVersion && concurrently \"pnpm dev:tsc\"  \"pnpm watch-css\"",
-    "dev:tsc": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
+    "dev:tsc": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
     "watch-css": "node scripts/watch-css.js",
     "writeVersion": "node scripts/writeVersion.js",
     "test": "echo",
@@ -44,7 +44,6 @@
     "@0xsequence/core": "^2.3.10",
     "@0xsequence/design-system": "2.1.11",
     "@0xsequence/ethauth": "^1.0.0",
-    "@0xsequence/hooks": "workspace:*",
     "@0xsequence/indexer": "^2.3.10",
     "@0xsequence/metadata": "^2.3.10",
     "@0xsequence/network": "^2.3.10",
@@ -53,13 +52,14 @@
     "@0xsequence/waas": "^2.3.10",
     "@tailwindcss/cli": "^4.1.4",
     "clsx": "^2.1.1",
-    "fuse.js": "^6.6.2",
+    "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
     "tailwindcss": "^4.1.4",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
     "0xsequence": ">= 2.3.7",
+    "@0xsequence/hooks": "workspace:*",
     "@databeat/tracker": "^0.9.3",
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-query": ">= 5",
@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "0xsequence": "^2.3.10",
+    "@0xsequence/hooks": "workspace:*",
     "@tanstack/react-query": "^5.74.11",
     "@types/uuid": "^9.0.8",
     "concurrently": "^9.1.2",

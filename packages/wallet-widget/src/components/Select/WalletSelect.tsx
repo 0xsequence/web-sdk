@@ -2,8 +2,8 @@ import { useWallets } from '@0xsequence/connect'
 import { ChevronUpDownIcon, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
-import { SelectWalletRow } from './SelectWalletRow'
-import { SlideupDrawer } from './SlideupDrawer'
+import { SelectWalletRow } from './SelectWalletRow.js'
+import { SlideupDrawer } from './SlideupDrawer.js'
 
 const WALLET_SELECT_HEIGHT = '60px'
 

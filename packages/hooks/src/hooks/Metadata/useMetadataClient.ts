@@ -1,7 +1,7 @@
 import { SequenceMetadata } from '@0xsequence/metadata'
 import { useMemo } from 'react'
 
-import { useConfig } from '../useConfig'
+import { useConfig } from '../useConfig.js'
 
 /**
  * Hook that provides a memoized instance of the Sequence Metadata client.

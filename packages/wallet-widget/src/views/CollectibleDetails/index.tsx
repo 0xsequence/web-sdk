@@ -10,14 +10,14 @@ import { useEffect } from 'react'
 import { formatUnits } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { CollectibleTileImage } from '../../components/CollectibleTileImage'
-import { InfiniteScroll } from '../../components/InfiniteScroll'
-import { TransactionHistoryList } from '../../components/TransactionHistoryList'
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation, useSettings } from '../../hooks'
-import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils'
+import { CollectibleTileImage } from '../../components/CollectibleTileImage.js'
+import { InfiniteScroll } from '../../components/InfiniteScroll.js'
+import { TransactionHistoryList } from '../../components/TransactionHistoryList/index.js'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useNavigation, useSettings } from '../../hooks/index.js'
+import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils/index.js'
 
-import { CollectibleDetailsSkeleton } from './Skeleton'
+import { CollectibleDetailsSkeleton } from './Skeleton.js'
 export interface CollectibleDetailsProps {
   contractAddress: string
   chainId: number

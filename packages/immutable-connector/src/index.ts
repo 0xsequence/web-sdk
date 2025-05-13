@@ -1,1 +1,1 @@
-export { immutable, type ImmutableOptions } from './connectConnector/immutable'
+export { immutable, type ImmutableOptions } from './connectConnector/immutable.js'

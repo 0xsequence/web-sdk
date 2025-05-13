@@ -1,5 +1,16 @@
 # @0xsequence/immutable-connector
 
+## 5.3.0
+
+### Minor Changes
+
+- Conversion to nodeNext, various fixes
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.0
+
 ## 5.2.3
 
 ### Patch Changes

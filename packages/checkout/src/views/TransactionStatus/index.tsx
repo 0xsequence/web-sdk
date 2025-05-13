@@ -18,13 +18,13 @@ import {
 import { useGetContractInfo, useGetTokenMetadata, useIndexerClient } from '@0xsequence/hooks'
 import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
-import TimeAgo from 'timeago-react'
 import { formatUnits, type Hex, type PublicClient } from 'viem'
 import { usePublicClient } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../constants'
-import { useTransactionStatusModal } from '../../hooks'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useTransactionStatusModal } from '../../hooks/index.js'
 
 export type TxStatus = 'pending' | 'success' | 'error'
 
@@ -293,7 +293,7 @@ export const TransactionStatus = () => {
         </div>
         <div>
           <Text color="muted" variant="small" fontWeight="medium">
-            <TimeAgo datetime={startTime} />
+            {formatDistanceToNow(startTime)}
           </Text>
         </div>
       </div>

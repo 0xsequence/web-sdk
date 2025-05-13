@@ -3,7 +3,7 @@ import { MarketplaceIndexer } from '@0xsequence/marketplace'
 import { networks } from '@0xsequence/network'
 import { useMemo } from 'react'
 
-import { useEnvironmentContext } from '../contexts/Environment'
+import { useEnvironmentContext } from '../contexts/Environment.js'
 
 export interface UseMarketplaceClientArgs {
   chain: ChainNameOrId

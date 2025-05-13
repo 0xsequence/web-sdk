@@ -2,9 +2,9 @@ import { useGetContractInfo } from '@0xsequence/hooks'
 import { useObservable } from 'micro-observables'
 import { useEffect } from 'react'
 
-import { CollectiblesList } from '../../components/SearchLists/CollectiblesList'
-import { useGetAllTokensDetails, useNavigation, useSettings } from '../../hooks'
-import type { TokenBalanceWithPrice } from '../../utils'
+import { CollectiblesList } from '../../components/SearchLists/CollectiblesList.js'
+import { useGetAllTokensDetails, useNavigation, useSettings } from '../../hooks/index.js'
+import type { TokenBalanceWithPrice } from '../../utils/index.js'
 
 export const SearchCollectibles = ({
   contractAddress,

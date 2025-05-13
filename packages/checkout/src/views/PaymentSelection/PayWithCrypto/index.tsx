@@ -1,13 +1,14 @@
+import type { LifiSwapRoute } from '@0xsequence/api'
 import { compareAddress, ContractVerificationStatus, CryptoOption, formatDisplay } from '@0xsequence/connect'
 import { AddIcon, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
-import { useClearCachedBalances, useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
+import { useClearCachedBalances, useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
 import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 
-import type { SelectPaymentSettings } from '../../../contexts'
+import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings
@@ -15,6 +16,8 @@ interface PayWithCryptoProps {
   selectedCurrency: string | undefined
   setSelectedCurrency: React.Dispatch<SetStateAction<string | undefined>>
   isLoading: boolean
+  swapRoutes: LifiSwapRoute[]
+  swapRoutesIsLoading: boolean
 }
 
 const MAX_OPTIONS = 3
@@ -24,7 +27,9 @@ export const PayWithCrypto = ({
   disableButtons,
   selectedCurrency,
   setSelectedCurrency,
-  isLoading
+  isLoading,
+  swapRoutes,
+  swapRoutesIsLoading
 }: PayWithCryptoProps) => {
   const [showMore, setShowMore] = useState(false)
   const { enableSwapPayments = true, enableMainCurrencyPayment = true } = settings
@@ -39,16 +44,6 @@ export const PayWithCrypto = ({
     chainID: String(chainId),
     contractAddress: currencyAddress
   })
-
-  const { data: swapRoutes = [], isLoading: swapRoutesIsLoading } = useGetSwapRoutes(
-    {
-      walletAddress: userAddress ?? '',
-      chainId,
-      toTokenAmount: price,
-      toTokenAddress: currencyAddress
-    },
-    { disabled: !enableSwapPayments || !userAddress }
-  )
 
   const tokenAddressesToFetch = useMemo(() => {
     const addresses = new Set<string>()

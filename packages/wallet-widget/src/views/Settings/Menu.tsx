@@ -1,10 +1,10 @@
 import { useWallets } from '@0xsequence/connect'
 import { CurrencyIcon, NetworkIcon, Text, WalletIcon } from '@0xsequence/design-system'
 
-import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag'
-import { ListCardNav } from '../../components/ListCard/ListCardNav'
-import { HEADER_HEIGHT } from '../../constants'
-import { useNavigation, useSettings } from '../../hooks'
+import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag.js'
+import { ListCardNav } from '../../components/ListCard/ListCardNav.js'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useNavigation, useSettings } from '../../hooks/index.js'
 
 export const SettingsMenu = () => {
   const { wallets } = useWallets()

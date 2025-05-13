@@ -5,7 +5,7 @@ import type { SequenceWaaS } from '@0xsequence/waas'
 import { useState } from 'react'
 import type { Connector } from 'wagmi'
 
-import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking'
+import { CHAIN_ID_FOR_SIGNATURE } from '../constants/walletLinking.js'
 
 /**
  * Parameters required for linking a child wallet to a parent WaaS wallet.

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 
-import { SequenceHooksProvider } from '../contexts/ConfigContext'
+import { SequenceHooksProvider } from '../contexts/ConfigContext.js'
 
 interface CreateWrapperProps {
   children: React.ReactNode

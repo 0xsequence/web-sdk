@@ -1,4 +1,4 @@
-import { useTransactionStatusContext } from '../contexts/TransactionStatusModal'
+import { useTransactionStatusContext } from '../contexts/TransactionStatusModal.js'
 
 export const useTransactionStatusModal = () => {
   const { openTransactionStatusModal, closeTransactionStatusModal, transactionStatusSettings } = useTransactionStatusContext()

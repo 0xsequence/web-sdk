@@ -1,10 +1,10 @@
 import { SequenceMetadata, type ContractInfo, type GetContractInfoArgs } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS, time } from '../../constants'
-import type { HooksOptions } from '../../types'
+import { QUERY_KEYS, time } from '../../constants.js'
+import type { HooksOptions } from '../../types/hooks.js'
 
-import { useMetadataClient } from './useMetadataClient'
+import { useMetadataClient } from './useMetadataClient.js'
 
 const getMultipleContractsInfo = async (
   metadataClient: SequenceMetadata,

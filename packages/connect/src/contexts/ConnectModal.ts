@@ -2,7 +2,7 @@
 
 import type { Dispatch, SetStateAction } from 'react'
 
-import { createGenericContext } from './genericContext'
+import { createGenericContext } from './genericContext.js'
 
 type ConnectModalContext = {
   isConnectModalOpen: boolean

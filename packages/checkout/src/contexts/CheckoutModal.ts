@@ -2,8 +2,8 @@
 
 import type { Theme } from '@0xsequence/design-system'
 
-import { createGenericContext } from './genericContext'
-import type { SupplementaryAnalyticsInfo } from './SelectPaymentModal'
+import { createGenericContext } from './genericContext.js'
+import type { SupplementaryAnalyticsInfo } from './SelectPaymentModal.js'
 
 interface CoinQuantity {
   contractAddress: string
@@ -18,7 +18,7 @@ interface OrderSummaryItem {
 }
 
 export interface TransakConfig {
-  apiKey: string
+  apiKey?: string
   contractId: string
   callDataOverride?: string
 }

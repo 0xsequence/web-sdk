@@ -12,8 +12,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
-import { HEADER_HEIGHT } from '../../constants'
-import { useSwapModal, useTransactionStatusModal } from '../../hooks'
+import { HEADER_HEIGHT } from '../../constants/index.js'
+import { useSwapModal, useTransactionStatusModal } from '../../hooks/index.js'
 
 export const Swap = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()

@@ -1,9 +1,9 @@
 import { SequenceAPIClient, type GetLifiSwapRoutesArgs, type LifiSwapRoute } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
-import { QUERY_KEYS, time } from '../../constants'
-import type { HooksOptions } from '../../types'
-import { useAPIClient } from '../API/useAPIClient'
+import { QUERY_KEYS, time } from '../../constants.js'
+import type { HooksOptions } from '../../types/hooks.js'
+import { useAPIClient } from '../API/useAPIClient.js'
 
 /**
  * Arguments for the useGetSwapRoutes hook

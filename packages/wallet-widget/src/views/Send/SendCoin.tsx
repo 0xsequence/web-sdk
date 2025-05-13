@@ -35,13 +35,14 @@ import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, type Hex } from 'viem'
 import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
-import { WalletSelect } from '../../components/Select/WalletSelect'
-import { SendItemInfo } from '../../components/SendItemInfo'
-import { TransactionConfirmation } from '../../components/TransactionConfirmation'
-import { ERC_20_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants'
-import { useNavigationContext } from '../../contexts/Navigation'
-import { useNavigation, useSettings } from '../../hooks'
-import { computeBalanceFiat, isEthAddress, limitDecimals } from '../../utils'
+import { WalletSelect } from '../../components/Select/WalletSelect.js'
+import { SendItemInfo } from '../../components/SendItemInfo.js'
+import { TransactionConfirmation } from '../../components/TransactionConfirmation.js'
+import { EVENT_SOURCE, EVENT_TYPES } from '../../constants/analytics.js'
+import { ERC_20_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
+import { useNavigationContext } from '../../contexts/Navigation.js'
+import { useNavigation, useSettings } from '../../hooks/index.js'
+import { computeBalanceFiat, isEthAddress, limitDecimals } from '../../utils/index.js'
 
 interface SendCoinProps {
   chainId: number
@@ -217,14 +218,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       await switchChainAsync({ chainId })
     }
 
-    analytics?.track({
-      event: 'SEND_TRANSACTION_REQUEST',
-      props: {
-        walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
-        source: 'sequence-kit/wallet'
-      }
-    })
-
     if (!walletClient) {
       console.error('Wallet client not found')
       toast({
@@ -243,7 +236,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     try {
       if (isNativeCoin) {
-        console.log('Sending native coin via walletClient')
         txHash = await walletClient.sendTransaction({
           account: accountAddress as `0x${string}`,
           to: toAddress as `0x${string}`,
@@ -251,7 +243,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           chain: chains.find(c => c.id === chainId)
         })
       } else {
-        console.log('Sending ERC20 coin via walletClient')
         txHash = await walletClient.sendTransaction({
           account: accountAddress as `0x${string}`,
           to: tokenBalance?.contractAddress as `0x${string}`,
@@ -274,6 +265,24 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           variant: 'success'
         })
 
+        analytics?.track({
+          event: 'SEND_TRANSACTION_REQUEST',
+          props: {
+            walletClient: (connector as ExtendedConnector | undefined)?._wallet?.id || 'unknown',
+            source: EVENT_SOURCE,
+            type: EVENT_TYPES.SEND_CURRENCY,
+            chainId: String(chainId),
+            origin: window.location.origin,
+            currencySymbol: symbol,
+            currencyAddress: contractAddress,
+            txHash: txHash
+          },
+          nums: {
+            currencyValue: Number(amountRaw),
+            currencyValueDecimal: Number(amountToSendFormatted)
+          }
+        })
+
         // Wait for receipt in the background
         if (publicClient) {
           waitForTransactionReceipt({
@@ -284,7 +293,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           })
             .then(() => {
               clearCachedBalances()
-              console.log('Transaction confirmed and balances cleared:', txHash)
             })
             .catch(error => {
               console.error('Error waiting for transaction receipt:', error)

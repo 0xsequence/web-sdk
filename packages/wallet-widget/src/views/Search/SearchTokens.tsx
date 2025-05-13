@@ -1,9 +1,9 @@
 import { useObservable } from 'micro-observables'
 
-import { TokenList } from '../../components/SearchLists'
-import { useNavigation, useSettings } from '../../hooks'
-import { useGetAllTokensDetails } from '../../hooks'
-import type { TokenBalanceWithPrice } from '../../utils'
+import { TokenList } from '../../components/SearchLists/index.js'
+import { useNavigation, useSettings } from '../../hooks/index.js'
+import { useGetAllTokensDetails } from '../../hooks/index.js'
+import type { TokenBalanceWithPrice } from '../../utils/index.js'
 
 export const SearchTokens = () => {
   const { setNavigation } = useNavigation()

@@ -1,4 +1,4 @@
-import { useNavigationContext, type History, type Navigation } from '../contexts/Navigation'
+import { useNavigationContext, type History, type Navigation } from '../contexts/Navigation.js'
 
 interface UseNavigation {
   setNavigation: (navigation: Navigation) => void

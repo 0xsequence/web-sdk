@@ -1,1 +1,1 @@
-export { CollectibleTileImage } from './CollectibleTileImage'
+export { CollectibleTileImage } from './CollectibleTileImage.js'

@@ -10,21 +10,21 @@ import {
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState } from 'react'
-import { encodeFunctionData, zeroAddress, type Hex } from 'viem'
+import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
-import { NavigationHeader } from '../../components/NavigationHeader'
-import { HEADER_HEIGHT, NFT_CHECKOUT_SOURCE } from '../../constants'
-import { ERC_20_CONTRACT_ABI } from '../../constants/abi'
-import type { SelectPaymentSettings } from '../../contexts/SelectPaymentModal'
-import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks'
+import { NavigationHeader } from '../../components/NavigationHeader.js'
+import { ERC_20_CONTRACT_ABI } from '../../constants/abi.js'
+import { EVENT_SOURCE, HEADER_HEIGHT } from '../../constants/index.js'
+import type { SelectPaymentSettings } from '../../contexts/SelectPaymentModal.js'
+import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks/index.js'
 
-import { Footer } from './Footer'
-import { FundWithFiat } from './FundWithFiat'
-import { OrderSummary } from './OrderSummary'
-import { PayWithCreditCard } from './PayWithCreditCard'
-import { PayWithCrypto } from './PayWithCrypto/index'
-import { TransferFunds } from './TransferFunds'
+import { Footer } from './Footer.js'
+import { FundWithFiat } from './FundWithFiat.js'
+import { OrderSummary } from './OrderSummary/index.js'
+import { PayWithCreditCard } from './PayWithCreditCard/index.js'
+import { PayWithCrypto } from './PayWithCrypto/index.js'
+import { TransferFunds } from './TransferFunds.js'
 
 export const PaymentSelection = () => {
   return (
@@ -112,7 +112,7 @@ export const PaymentSelectionContent = () => {
       toTokenAmount: price,
       toTokenAddress: currencyAddress
     },
-    { disabled: !enableSwapPayments }
+    { disabled: !enableSwapPayments, retry: 3 }
   )
 
   const disableSwapQuote = !selectedCurrency || compareAddress(selectedCurrency, buyCurrencyAddress)
@@ -202,7 +202,7 @@ export const PaymentSelectionContent = () => {
         props: {
           ...supplementaryAnalyticsInfo,
           type: 'crypto',
-          source: NFT_CHECKOUT_SOURCE,
+          source: EVENT_SOURCE,
           chainId: String(chainId),
           listedCurrency: currencyAddress,
           purchasedCurrency: currencyAddress,
@@ -211,7 +211,12 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          currencySymbol: _currencyInfoData?.symbol || '',
           txHash
+        },
+        nums: {
+          currencyValue: Number(price),
+          currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
         }
       })
 
@@ -331,7 +336,7 @@ export const PaymentSelectionContent = () => {
         props: {
           ...supplementaryAnalyticsInfo,
           type: 'crypto',
-          source: NFT_CHECKOUT_SOURCE,
+          source: EVENT_SOURCE,
           chainId: String(chainId),
           listedCurrency: swapTokenOption.address,
           purchasedCurrency: currencyAddress,
@@ -340,7 +345,12 @@ export const PaymentSelectionContent = () => {
           to: targetContractAddress,
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
+          currencySymbol: _currencyInfoData?.symbol || '',
           txHash
+        },
+        nums: {
+          currencyValue: Number(price),
+          currencyValueDecimal: Number(formatUnits(BigInt(price), _currencyInfoData?.decimals || 18))
         }
       })
 
@@ -417,6 +427,8 @@ export const PaymentSelectionContent = () => {
               selectedCurrency={selectedCurrency}
               setSelectedCurrency={setSelectedCurrency}
               isLoading={isLoading}
+              swapRoutes={swapRoutes}
+              swapRoutesIsLoading={swapRoutesIsLoading}
             />
           </>
         )}
@@ -469,13 +481,7 @@ export const PaymentSelectionContent = () => {
               <Button
                 className="mt-6 w-full"
                 onClick={onClickPurchase}
-                disabled={
-                  isLoading ||
-                  disableButtons ||
-                  !selectedCurrency ||
-                  swapRoutesIsLoading ||
-                  (!disableSwapQuote && isLoadingSwapQuote)
-                }
+                disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
                 shape="square"
                 variant="primary"
                 label={isPreparingTransaction ? 'Preparing Transaction...' : 'Complete Purchase'}

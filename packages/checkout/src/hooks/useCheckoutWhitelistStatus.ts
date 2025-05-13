@@ -2,7 +2,7 @@ import { useProjectAccessKey } from '@0xsequence/connect'
 import { useConfig } from '@0xsequence/hooks'
 import { useQuery } from '@tanstack/react-query'
 
-import { checkSardineWhitelistStatus, type CheckSardineWhitelistStatusArgs } from '../utils'
+import { checkSardineWhitelistStatus, type CheckSardineWhitelistStatusArgs } from '../utils/sardine.js'
 
 export const useCheckoutWhitelistStatus = (args: CheckSardineWhitelistStatusArgs, disabled?: boolean) => {
   const projectAccessKey = useProjectAccessKey()

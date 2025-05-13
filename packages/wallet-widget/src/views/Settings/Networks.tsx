@@ -1,4 +1,4 @@
-import { NetworksFilter } from '../../components/Filter/NetworksFilter'
+import { NetworksFilter } from '../../components/Filter/NetworksFilter.js'
 
 export const SettingsNetworks = () => {
   return (

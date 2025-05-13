@@ -1,4 +1,4 @@
-import { createGenericContext } from './genericContext'
+import { createGenericContext } from './genericContext.js'
 
 interface Item {
   tokenId: string

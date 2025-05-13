@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/immutable-connector",
-  "version": "5.2.3",
+  "version": "5.3.0",
   "description": "Immutable connector for Sequence Kit",
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/immutable-connector",
   "author": "Horizon Blockchain Games",
@@ -21,11 +21,11 @@
   ],
   "scripts": {
     "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs",
-    "build:cjs": "tsc --module commonjs --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
-    "build:esm": "tsc --module es2022 --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
-    "dev": "tsc --watch --module es2022 --declaration --declarationMap --outDir dist/esm",
+    "dev": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },

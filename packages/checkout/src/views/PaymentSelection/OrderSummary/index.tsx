@@ -4,7 +4,7 @@ import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xse
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 
-import { useSelectPaymentModal } from '../../../hooks'
+import { useSelectPaymentModal } from '../../../hooks/useSelectPaymentModal.js'
 
 export const OrderSummary = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()

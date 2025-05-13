@@ -1,1 +1,1 @@
-export { Connect } from './Connect'
+export { Connect } from './Connect.js'

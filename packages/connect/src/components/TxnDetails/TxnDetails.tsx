@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { capitalize, compareAddress, truncateAtMiddle } from '../../utils/helpers'
-import { getNativeTokenInfoByChainId } from '../../utils/tokens'
-import { decodeTransactions, DecodingType, type AwardItemProps, type TransferProps } from '../../utils/txnDecoding'
-import { CollectibleTileImage } from '../CollectibleTileImage'
+import { capitalize, compareAddress, truncateAtMiddle } from '../../utils/helpers.js'
+import { getNativeTokenInfoByChainId } from '../../utils/tokens.js'
+import { decodeTransactions, DecodingType, type AwardItemProps, type TransferProps } from '../../utils/txnDecoding.js'
+import { CollectibleTileImage } from '../CollectibleTileImage/index.js'
 
 interface TxnDetailsProps {
   address: string
