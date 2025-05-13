@@ -120,6 +120,10 @@ export const sendTransactions = async ({
       throw new Error(response.data.error)
     }
 
+    if (response.data.receipt.status === TransactionStatus.FAILED) {
+      throw new Error('Transaction failed')
+    }
+
     const txnHash = response.data.txHash
 
     if (waitConfirmationForLastTransaction) {

@@ -7,6 +7,8 @@ interface Item {
   price: string
 }
 
+export type TxStatus = 'pending' | 'success' | 'error'
+
 export interface TransactionStatusSettings {
   collectionAddress?: string
   currencyAddress?: string
@@ -17,6 +19,7 @@ export interface TransactionStatusSettings {
   onError?: (error: Error) => void
   onClose?: () => void
   txHash: string
+  statusOverride?: TxStatus
 }
 
 type TransactionStatusContext = {

@@ -80,13 +80,14 @@ export const TransactionStatus = () => {
     blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess,
     onError,
-    onClose = () => {}
+    onClose = () => {},
+    statusOverride
   } = transactionStatusSettings!
   const networkConfig = findSupportedNetwork(chainId)
   const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}tx/${txHash}`
 
   const [startTime] = useState(new Date())
-  const [status, setStatus] = useState<TxStatus>('pending')
+  const [status, setStatus] = useState<TxStatus>(statusOverride || 'pending')
   const noItemsToDisplay = !items || !collectionAddress
   const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useGetTokenMetadata(
     {
