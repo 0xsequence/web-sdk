@@ -91,6 +91,7 @@ export const Connected = () => {
   )
 
   const chainId = useChainId()
+
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()

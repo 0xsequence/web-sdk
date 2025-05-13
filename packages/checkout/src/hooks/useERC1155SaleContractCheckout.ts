@@ -296,19 +296,28 @@ export const useSaleContractConfig = ({
       return saleInfos
     }
 
-    // In the sale contract, the global sale has priority over the token sale
-    // So we need to check if the global sale is set, and if it is, use that
-    // Otherwise, we use the token sale
-    const { cost: globalCost, startTime, endTime } = globalSaleDetailsERC1155 as SaleDetailsERC1155
-    const isGlobalSaleInvalid =
-      endTime === BigInt(0) ||
-      BigInt(Math.floor(Date.now() / 1000)) <= startTime ||
-      BigInt(Math.floor(Date.now() / 1000)) >= endTime
+    const { cost: globalCost } = globalSaleDetailsERC1155 as SaleDetailsERC1155
+
     saleInfos = tokenIds.map((tokenId, index) => {
-      const tokenPrice = (tokenSaleDetailsERC1155?.[index].result as SaleDetailsERC1155)['cost'] || BigInt(0)
+      const tokenSaleDetails = tokenSaleDetailsERC1155?.[index].result as SaleDetailsERC1155
+      const tokenPrice = tokenSaleDetails['cost'] || BigInt(0)
+      const startTime = tokenSaleDetails['startTime'] || BigInt(0)
+      const endTime = tokenSaleDetails['endTime'] || BigInt(0)
+
+      // In the sale contract, the token sale has priority over the global sale
+      // So we need to check if the token sale is set, and if it is, use that
+      // Otherwise, we use the global sale
+
+      const isTokenSaleInvalid =
+        endTime === BigInt(0) ||
+        BigInt(Math.floor(Date.now() / 1000)) <= startTime ||
+        BigInt(Math.floor(Date.now() / 1000)) >= endTime
+
+      const effectivePrice = isTokenSaleInvalid ? globalCost : tokenPrice
+
       return {
         tokenId,
-        price: (!isGlobalSaleInvalid ? globalCost : tokenPrice).toString()
+        price: effectivePrice.toString()
       }
     })
 
