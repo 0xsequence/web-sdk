@@ -210,6 +210,7 @@ export const PaymentSelectionContent = () => {
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
           currencySymbol: _currencyInfoData?.symbol || '',
+          collectionAddress,
           txHash
         },
         nums: {
@@ -342,6 +343,7 @@ export const PaymentSelectionContent = () => {
           item_ids: JSON.stringify(collectibles.map(c => c.tokenId)),
           item_quantities: JSON.stringify(collectibles.map(c => c.quantity)),
           currencySymbol: _currencyInfoData?.symbol || '',
+          collectionAddress,
           txHash
         },
         nums: {
