@@ -52,7 +52,7 @@ const getTokenMetadata = async (metadataClient: SequenceMetadata, args: GetToken
  * @param getTokenMetadataArgs.tokenIDs - Array of token IDs to fetch metadata for. Each ID represents a specific token
  * @param options - Optional configuration for the query behavior
  * @param options.disabled - If true, disables the query from automatically running
- * @param options.retry - If true (default), retries failed queries
+ * @param options.retry - If true, retries failed queries
  *
  * Query configuration:
  * - Marks data as stale after 1 hour
@@ -127,7 +127,7 @@ export const useGetTokenMetadata = (args: GetTokenMetadataArgs, options?: HooksO
   return useQuery({
     queryKey: [QUERY_KEYS.useGetTokenMetadata, args, options],
     queryFn: () => getTokenMetadata(metadataClient, args, env.imageProxyUrl),
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneHour,
     enabled: !!args.chainID && !!args.contractAddress && !options?.disabled
   })

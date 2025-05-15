@@ -40,7 +40,7 @@ const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens: Token[
  *   - tokenId: The specific token ID within the collection
  *
  * @param options - Optional configuration options:
- *   - retry: Whether to retry failed requests (defaults to true)
+ *   - retry: Whether to retry failed requests (defaults to false)
  *   - disabled: Whether to disable the query
  *
  * @returns React Query result object containing:
@@ -80,7 +80,7 @@ export const useGetCollectiblePrices = (tokens: Token[], options?: HooksOptions)
   return useQuery({
     queryKey: [QUERY_KEYS.useGetCollectiblePrices, tokens, options],
     queryFn: () => getCollectiblePrices(apiClient, tokens),
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneMinute,
     enabled: tokens.length > 0 && !options?.disabled
   })

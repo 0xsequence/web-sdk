@@ -143,7 +143,7 @@ export const useGetTransactionHistory = (args: UseGetTransactionHistoryArgs, opt
       return page?.more ? page : undefined
     },
     initialPageParam: { pageSize: args.page?.pageSize } as Page,
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneSecond * 30,
     enabled: !!args.chainId && args.accountAddresses.length > 0 && !options?.disabled
   })

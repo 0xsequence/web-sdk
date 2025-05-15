@@ -35,7 +35,7 @@ const getMultipleContractsInfo = async (
  * @param useGetMultipleContractsInfoArgs[].contractAddress - Contract address to fetch info for
  * @param options - Optional configuration for the query behavior
  * @param options.disabled - If true, disables the query from automatically running
- * @param options.retry - If true (default), retries failed queries
+ * @param options.retry - If true, retries failed queries
  *
  * Query configuration:
  * - Uses a 1 hour stale time (compared to 10 minutes for single contract info)
@@ -116,7 +116,7 @@ export const useGetMultipleContractsInfo = (args: GetContractInfoArgs[], options
   return useQuery({
     queryKey: [QUERY_KEYS.useGetMultipleContractInfo, args, options],
     queryFn: async () => await getMultipleContractsInfo(metadataClient, args),
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneHour,
     enabled: !options?.disabled
   })

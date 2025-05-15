@@ -37,7 +37,7 @@ const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
  *   - contractAddress: The token's contract address (use ZERO_ADDRESS for native tokens)
  *
  * @param options - Optional configuration options:
- *   - retry: Whether to retry failed requests (defaults to true)
+ *   - retry: Whether to retry failed requests (defaults to false)
  *   - disabled: Whether to disable the query
  *
  * @returns React Query result object containing:
@@ -75,7 +75,7 @@ export const useGetCoinPrices = (tokens: Token[], options?: HooksOptions) => {
   return useQuery({
     queryKey: [QUERY_KEYS.useGetCoinPrices, tokens, options],
     queryFn: () => getCoinPrices(apiClient, tokens),
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneMinute,
     enabled: tokens.length > 0 && !options?.disabled
   })

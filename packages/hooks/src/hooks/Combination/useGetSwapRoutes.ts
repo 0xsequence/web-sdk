@@ -57,7 +57,7 @@ const getSwapRoutes = async (
  *   - toTokenAmount: The amount of the token to buy
  *
  * @param options - Optional configuration options:
- *   - retry: Whether to retry failed requests (defaults to true)
+ *   - retry: Whether to retry failed requests (defaults to false)
  *   - disabled: Whether to disable the query
  *
  * @returns React Query result object containing:
@@ -93,7 +93,7 @@ export const useGetSwapRoutes = (args: UseGetSwapRoutesArgs, options?: HooksOpti
   return useQuery({
     queryKey: [QUERY_KEYS.useGetSwapRoutes, args, options],
     queryFn: () => getSwapRoutes(apiClient, args),
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     // We must keep a long staletime to avoid the list of quotes being refreshed while the user is doing the transactions
     // Instead, we will invalidate the query manually
     staleTime: time.oneHour,

@@ -111,7 +111,7 @@ export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteArgs, options?
         currencyAddress: compareAddress(res.quote.currencyAddress, ZERO_ADDRESS) ? ZERO_ADDRESS : res.quote.currencyAddress
       }
     },
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneMinute * 1,
     enabled:
       !options?.disabled &&

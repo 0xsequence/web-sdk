@@ -96,7 +96,6 @@ export const useStorageItem = <K extends keyof StorageItem>(key: K): UseQueryRes
     queryFn: async () => {
       return storage?.getItem(key)
     },
-    retry: true,
     enabled: !!storage
   })
 }

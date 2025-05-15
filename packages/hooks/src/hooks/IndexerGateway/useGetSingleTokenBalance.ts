@@ -83,7 +83,7 @@ export const useGetSingleTokenBalance = (args: GetSingleTokenBalanceArgs, option
     queryFn: async () => {
       return await getSingleTokenBalance(args, indexerGatewayClient)
     },
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneSecond * 30,
     enabled: !!args.chainId && !!args.accountAddress && !options?.disabled
   })

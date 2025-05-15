@@ -70,8 +70,7 @@ const { data, isLoading, error } = useGetCoinPrices(
   ],
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -91,8 +90,7 @@ const { data, isLoading, error } = useGetCollectiblePrices(
   ],
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -104,8 +102,7 @@ import { useGetExchangeRate } from '@0xsequence/hooks'
 
 const { data, isLoading, error } = useGetExchangeRate('CAD', {
   // options param is optional and default values are below
-  disabled: false,
-  retry: true
+  disabled: false
 })
 ```
 
@@ -125,7 +122,6 @@ const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error }
   {
     // options param is optional and default values are below
     disabled: false,
-    retry: true
   }
 })
 ```
@@ -142,8 +138,7 @@ const { data, isLoading, error } = useGetTransactionHistorySummary(
   },
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -161,8 +156,7 @@ const { data, isLoading, error } = useGetNativeTokenBalance(
   },
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -192,8 +186,7 @@ const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error }
   },
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -223,8 +216,7 @@ const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error }
   },
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -254,8 +246,7 @@ const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error }
   },
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -284,8 +275,7 @@ const { data, isLoading, error } = useGetContractInfo(
   },
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -302,8 +292,7 @@ const { data, isLoading, error } = useGetMultipleContractInfo(
   ],
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```
@@ -321,8 +310,7 @@ const { data, isLoading, error } = useGetTokenMetadata(
   },
   {
     // options param is optional and default values are below
-    disabled: false,
-    retry: true
+    disabled: false
   }
 )
 ```

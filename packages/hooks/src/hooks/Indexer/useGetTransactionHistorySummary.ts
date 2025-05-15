@@ -60,7 +60,7 @@ const getTransactionHistorySummary = async (
  * @param getTransactionHistorySummaryArgs.chainIds - Array of chain IDs to fetch transactions from. Each chain ID will be queried in parallel.
  * @param options - Optional configuration for the hook behavior
  * @param options.disabled - If true, disables the query
- * @param options.retry - If true (default), retries failed requests
+ * @param options.retry - If false, retries failed requests
  *
  * @returns A React Query result object containing:
  * - data: Array of Transaction objects combined from all specified chains, each containing:
@@ -125,7 +125,7 @@ export const useGetTransactionHistorySummary = (
     queryFn: async () => {
       return await getTransactionHistorySummary(indexerClients, getTransactionHistorySummaryArgs)
     },
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneSecond * 30,
     refetchOnMount: true,
     enabled:

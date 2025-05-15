@@ -22,7 +22,7 @@ import { useMetadataClient } from './useMetadataClient.js'
  * @param getContractInfoArgs.contractAddress - Contract address or ZERO_ADDRESS for native token
  * @param options - Optional configuration for the query behavior
  * @param options.disabled - If true, disables the query from automatically running
- * @param options.retry - If true (default), retries failed queries
+ * @param options.retry - If true, retries failed queries
  *
  * Query configuration:
  * - Marks data as stale after 10 minutes
@@ -92,7 +92,7 @@ export const useGetContractInfo = (args: GetContractInfoArgs, options?: HooksOpt
           : {})
       }
     },
-    retry: options?.retry ?? true,
+    retry: options?.retry ?? false,
     staleTime: time.oneMinute * 10,
     enabled: !!args.chainID && !!args.contractAddress && !options?.disabled
   })
