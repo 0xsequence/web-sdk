@@ -27,7 +27,7 @@ import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletC
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
-import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
+// import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
