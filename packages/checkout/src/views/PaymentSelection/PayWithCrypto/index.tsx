@@ -168,13 +168,6 @@ export const PayWithCrypto = ({
 
     if (enableMainCurrencyPayment && lowerCaseCurrencyAddress && mainCurrencySufficient) {
       setSelectedCurrency(lowerCaseCurrencyAddress)
-    } else {
-      const firstSwapCoin = tokenPayOptions.find(c => c.currencyAddress !== lowerCaseCurrencyAddress)
-      if (firstSwapCoin) {
-        setSelectedCurrency(firstSwapCoin.currencyAddress)
-      } else if (enableMainCurrencyPayment && lowerCaseCurrencyAddress) {
-        setSelectedCurrency(lowerCaseCurrencyAddress)
-      }
     }
   }, [
     tokenPayOptions,
@@ -220,6 +213,8 @@ export const PayWithCrypto = ({
 
           if (isMainCurrency) {
             const priceBigInt = BigInt(swapOption.price || 0)
+            console.log('priceBigInt', priceBigInt)
+            console.log('currentBalance', currentBalance)
             const hasInsufficientFunds = priceBigInt > currentBalance
 
             return (
