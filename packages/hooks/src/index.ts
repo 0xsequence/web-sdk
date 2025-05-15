@@ -15,6 +15,7 @@ export { useAPIClient } from './hooks/API/useAPIClient.js'
 export { useGetCoinPrices } from './hooks/API/useGetCoinPrices.js'
 export { useGetCollectiblePrices } from './hooks/API/useGetCollectiblePrices.js'
 export { useGetExchangeRate } from './hooks/API/useGetExchangeRate.js'
+export { useGetWaasStatus } from './hooks/API/useGetWaasStatus.js'
 
 // Indexer
 export { useIndexerClient, useIndexerClients } from './hooks/Indexer/useIndexerClient.js'

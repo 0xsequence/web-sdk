@@ -88,13 +88,13 @@ export const useStorage = (): Storage<StorageItem> | null => {
  * }
  * ```
  */
-export const useStorageItem = <K extends keyof StorageItem>(key: K): UseQueryResult<StorageItem[K]> => {
+export const useStorageItem = <K extends keyof StorageItem>(key: K): UseQueryResult<StorageItem[K] | null> => {
   const storage = useStorage()
 
   return useQuery({
     queryKey: ['storage', key],
     queryFn: async () => {
-      return storage?.getItem(key)
+      return storage?.getItem(key) ?? null
     },
     retry: true,
     enabled: !!storage

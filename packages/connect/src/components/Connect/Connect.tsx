@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
+import { useGetWaasStatus } from '@0xsequence/hooks'
 import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
 import { useEffect, useState, type ChangeEventHandler, type ReactNode } from 'react'
@@ -59,6 +60,7 @@ export const Connect = (props: ConnectProps) => {
   const connections = useConnections()
   const { signMessageAsync } = useSignMessage()
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
+  const { data: waasStatusData } = useGetWaasStatus()
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
@@ -348,6 +350,41 @@ export const Connect = (props: ConnectProps) => {
         connectors={connectors}
         title={showExtendedList === 'social' ? 'Continue with a social account' : 'Choose a wallet'}
       />
+    )
+  }
+
+  if (waasStatusData?.errorResponse) {
+    const errorMessage =
+      waasStatusData.errorResponse.status === 451
+        ? 'Unavailable For Legal Reasons'
+        : `Something went wrong. (${waasStatusData.errorResponse.msg})`
+
+    return (
+      <div className="p-4">
+        <div
+          className="flex flex-col justify-center text-primary items-center font-medium"
+          style={{
+            marginTop: '2px'
+          }}
+        >
+          <TitleWrapper isPreview={isPreview}>
+            <Text color="secondary">
+              {isLoading
+                ? `Connecting...`
+                : hasConnectedSocialOrSequenceUniversal
+                  ? 'Wallets'
+                  : `Connect ${projectName ? `to ${projectName}` : ''}`}
+            </Text>
+          </TitleWrapper>
+          <div className="relative flex flex-col items-center justify-center p-8">
+            <div className="flex flex-col items-center gap-4 mt-2 mb-2">
+              <Text color="secondary" className="text-center text-lg font-medium text-negative">
+                {errorMessage}
+              </Text>
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
 
