@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.3.2
+
+### Patch Changes
+
+- added error message for geoblocked waas connections; more fields added to events
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.2
+
 ## 5.3.1
 
 ### Patch Changes
