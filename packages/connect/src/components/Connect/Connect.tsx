@@ -356,7 +356,7 @@ export const Connect = (props: ConnectProps) => {
   if (waasStatusData?.errorResponse) {
     const errorMessage =
       waasStatusData.errorResponse.status === 451
-        ? 'Unavailable For Legal Reasons'
+        ? 'Service unavailable due to legal and geographic restrictions'
         : `Something went wrong. (${waasStatusData.errorResponse.msg})`
 
     return (
