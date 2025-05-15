@@ -8,7 +8,7 @@ import { createGenericContext } from './genericContext.js'
 export type CreditCardProviders = 'sardine' | 'transak'
 
 export interface Collectible {
-  tokenId: string
+  tokenId?: string
   quantity: string
   decimals?: number
   price?: string

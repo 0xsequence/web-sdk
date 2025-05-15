@@ -106,7 +106,7 @@ export const useCreditCardPayment = ({
         currencySymbol: currencyInfo?.symbol || 'POL',
         currencyDecimals: String(currencyDecimals || 18),
         currencyAddress,
-        nftId: collectible.tokenId,
+        nftId: collectible.tokenId ?? '',
         nftAddress: collectionAddress,
         nftQuantity: collectible.quantity,
         nftDecimals: String(dataCollectionInfo?.decimals || 18),

@@ -87,12 +87,12 @@ export const TransactionStatus = () => {
 
   const [startTime] = useState(new Date())
   const [status, setStatus] = useState<TxStatus>('pending')
-  const noItemsToDisplay = !items || !collectionAddress
+  const noItemsToDisplay = !items || !collectionAddress || items.some(i => i.tokenId === undefined)
   const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useGetTokenMetadata(
     {
       chainID: String(chainId),
       contractAddress: collectionAddress || '',
-      tokenIDs: items?.map(i => i.tokenId) || []
+      tokenIDs: noItemsToDisplay ? [] : items?.map(i => i.tokenId || '')
     },
     {
       disabled: noItemsToDisplay

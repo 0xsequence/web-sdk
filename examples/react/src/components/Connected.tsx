@@ -27,6 +27,7 @@ import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletC
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
+import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
@@ -363,8 +364,6 @@ export const Connected = () => {
     const price = '200000'
     const contractId = '674eb5613d739107bbd18ed2'
 
-    const chainId = 137
-
     const collectibles = [
       {
         tokenId: '1',
@@ -386,6 +385,28 @@ export const Connected = () => {
         [toHex(0, { size: 32 })]
       ]
     })
+
+    // ERC-721 contract
+    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
+    // const salesContractAddress = '0xa0284905d29cbeb19f4be486f9091fac215b7a6a'
+    // const collectionAddress = '0xd705db0a96075b98758c4bdafe8161d8566a68f8'
+    // const price = '1'
+    // const contractId = '674eb5613d739107bbd18ed2'
+
+    // const chainId = 137
+
+    // const collectibles = [
+    //   {
+    //     quantity: '1'
+    //   }
+    // ]
+
+    // const purchaseTransactionData = encodeFunctionData({
+    //   abi: ERC_721_SALE_CONTRACT,
+    //   functionName: 'mint',
+    //   // [to, amount, expectedPaymentToken, maxTotal, proof]
+    //   args: [address, BigInt(1), currencyAddress, price, [toHex(0, { size: 32 })]]
+    // })
 
     openSelectPaymentModal({
       collectibles,

@@ -100,7 +100,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         currencySymbol: currencyInfoData.symbol,
         currencyAddress,
         currencyDecimals: String(currencyInfoData?.decimals || 0),
-        nftId: collectible.tokenId,
+        nftId: collectible.tokenId ?? '',
         nftAddress: collectionAddress,
         nftQuantity: collectible.quantity,
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),

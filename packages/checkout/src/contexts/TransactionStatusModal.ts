@@ -1,7 +1,7 @@
 import { createGenericContext } from './genericContext.js'
 
 interface Item {
-  tokenId: string
+  tokenId?: string
   quantity: string
   decimals?: number
   price: string

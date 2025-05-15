@@ -12,16 +12,22 @@ export const OrderSummary = () => {
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
   const collectionAddress = selectPaymentSettings!.collectionAddress
-  const tokenIds = selectPaymentSettings?.collectibles.map(c => c.tokenId) || []
-  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useGetTokenMetadata({
-    chainID: String(chainId),
-    contractAddress: collectionAddress,
-    tokenIDs: tokenIds
-  })
+  const tokenIds = selectPaymentSettings?.collectibles.map(c => c.tokenId || '') || []
+  const { data: tokenMetadatas, isLoading: isLoadingTokenMetadatas } = useGetTokenMetadata(
+    {
+      chainID: String(chainId),
+      contractAddress: collectionAddress,
+      tokenIDs: tokenIds.some(id => id === '') ? [] : tokenIds
+    },
+    {
+      disabled: tokenIds.some(id => id === '')
+    }
+  )
   const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useGetContractInfo({
     chainID: String(chainId),
     contractAddress: selectPaymentSettings!.collectionAddress
   })
+
   const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
     chainID: String(chainId),
     contractAddress: selectPaymentSettings!.currencyAddress
@@ -33,7 +39,10 @@ export const OrderSummary = () => {
     }
   ])
 
-  const isLoading = isLoadingTokenMetadatas || isLoadingCollectionInfo || isLoadingCurrencyInfo || isLoadingCoinPrices
+  const isTokenIdUnknown = tokenIds.some(id => id === '')
+
+  const isLoading =
+    (isLoadingTokenMetadatas && !isTokenIdUnknown) || isLoadingCollectionInfo || isLoadingCurrencyInfo || isLoadingCoinPrices
 
   if (isLoading) {
     return (
@@ -82,15 +91,23 @@ export const OrderSummary = () => {
                   width: '36px'
                 }}
               >
-                <CollectibleTileImage imageUrl={tokenMetadata?.image} />
+                <CollectibleTileImage
+                  imageUrl={
+                    isTokenIdUnknown
+                      ? dataCollectionInfo?.extensions?.ogImage || dataCollectionInfo?.logoURI
+                      : tokenMetadata?.image
+                  }
+                />
               </div>
               <div className="flex flex-col gap-0.5">
                 <Text variant="small" color="secondary" fontWeight="medium">
                   {dataCollectionInfo?.name || null}
                 </Text>
-                <Text variant="small" color="primary" fontWeight="bold">
-                  {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
-                </Text>
+                {!isTokenIdUnknown && (
+                  <Text variant="small" color="primary" fontWeight="bold">
+                    {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
+                  </Text>
+                )}
               </div>
             </div>
           )

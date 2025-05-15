@@ -404,6 +404,8 @@ export const PaymentSelectionContent = () => {
     return true
   })
 
+  const isTokenIdUnknown = collectibles.some(collectible => !collectible.tokenId)
+
   return (
     <>
       <div
@@ -429,7 +431,7 @@ export const PaymentSelectionContent = () => {
             />
           </>
         )}
-        {validCreditCardProviders.length > 0 && (
+        {validCreditCardProviders.length > 0 && !isTokenIdUnknown && (
           <>
             <Divider className="w-full my-3" />
             <PayWithCreditCard

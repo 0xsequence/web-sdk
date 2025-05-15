@@ -46,7 +46,7 @@ export const getERC1155SaleContractConfig = ({
     // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
     args: [
       recipientAddress,
-      collectibles.map(c => BigInt(c.tokenId)),
+      collectibles.map(c => BigInt(c.tokenId || '')),
       collectibles.map(c => BigInt(c.quantity)),
       toHex(0),
       currencyAddress,

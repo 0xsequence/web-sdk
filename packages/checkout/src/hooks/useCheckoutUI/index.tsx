@@ -55,11 +55,16 @@ export const useCheckoutUI = ({
     data: tokenMetadatas,
     isLoading: isLoadingTokenMetadatas,
     error: errorTokenMetadata
-  } = useGetTokenMetadata({
-    chainID: String(chainId),
-    contractAddress: collectionAddress,
-    tokenIDs: [collectible.tokenId]
-  })
+  } = useGetTokenMetadata(
+    {
+      chainID: String(chainId),
+      contractAddress: collectionAddress,
+      tokenIDs: [collectible.tokenId ?? '']
+    },
+    {
+      disabled: !collectible.tokenId
+    }
+  )
 
   const {
     data: dataCollectionInfo,
