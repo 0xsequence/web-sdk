@@ -337,6 +337,7 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
               noOptionsFound ||
               !selectedCurrency ||
               quoteFetchInProgress ||
+              isErrorSwapQuote ||
               isTxsPending ||
               (!isCorrectChainId && !isConnectorSequenceBased) ||
               showSwitchNetwork
