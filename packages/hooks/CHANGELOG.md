@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.3
+
+### Patch Changes
+
+- made the tokenId field optional
+
 ## 5.3.2
 
 ### Patch Changes

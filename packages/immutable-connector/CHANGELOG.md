@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.3.3
+
+### Patch Changes
+
+- made the tokenId field optional
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.3
+
 ## 5.3.2
 
 ### Patch Changes
