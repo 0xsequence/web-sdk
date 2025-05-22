@@ -160,15 +160,15 @@ export const PayWithCrypto = ({
       return
     }
 
-    const lowerCaseCurrencyAddress = currencyAddress?.toLowerCase()
-
-    const mainCurrencyBalance = tokenBalancesMap.get(lowerCaseCurrencyAddress || '') ?? 0n
-    const priceBigInt = BigInt(price || '0')
-    const mainCurrencySufficient = priceBigInt <= mainCurrencyBalance
-
-    if (enableMainCurrencyPayment && lowerCaseCurrencyAddress && mainCurrencySufficient) {
-      setSelectedCurrency(lowerCaseCurrencyAddress)
+    // Find the first token option where the balance is sufficient
+    const firstSufficientToken = tokenPayOptions.find(option => {
+      const balance = tokenBalancesMap.get(option.currencyAddress) ?? 0n
+      return option.price && balance >= BigInt(option.price)
+    })
+    if (firstSufficientToken) {
+      setSelectedCurrency(firstSufficientToken.currencyAddress)
     }
+    // If none found, do not select anything
   }, [
     tokenPayOptions,
     selectedCurrency,
@@ -213,8 +213,6 @@ export const PayWithCrypto = ({
 
           if (isMainCurrency) {
             const priceBigInt = BigInt(swapOption.price || 0)
-            console.log('priceBigInt', priceBigInt)
-            console.log('currentBalance', currentBalance)
             const hasInsufficientFunds = priceBigInt > currentBalance
 
             return (
