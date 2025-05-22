@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { useAccount, useChainId } from 'wagmi'
 
 import { NetworkSelect } from '../../components/Select/NetworkSelect.js'
-import { HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
 import { useSettings, useSwap } from '../../hooks/index.js'
 
 import { CoinInput } from './CoinInput.js'
@@ -76,7 +75,7 @@ export const Swap = () => {
   })
 
   return (
-    <div className="flex flex-col justify-center items-center px-4 pb-4 gap-4" style={{ paddingTop: HEADER_HEIGHT_WITH_LABEL }}>
+    <div className="flex flex-col justify-center items-center px-4 pb-4 gap-4">
       <NetworkSelect />
       <div className="flex gap-1 flex-col w-full">
         <Card className="flex flex-col rounded-b-none rounded-t-xl relative pb-6" style={{ overflow: 'visible' }}>

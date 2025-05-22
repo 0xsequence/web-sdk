@@ -112,34 +112,36 @@ export const getContent = (navigation: Navigation) => {
 export const getHeader = (navigation: Navigation) => {
   const { location } = navigation
   switch (location) {
+    case 'home':
+      return <NavigationHeader type="home" />
     case 'search-tokens':
-      return <NavigationHeader primaryText="Tokens" />
+      return <NavigationHeader type="home" />
     case 'search-collectibles':
-      return <NavigationHeader primaryText="Collectibles" />
+      return <NavigationHeader type="home" />
     case 'settings':
-      return <NavigationHeader primaryText="Settings" />
+      return <NavigationHeader type="home" />
     case 'settings-wallets':
-      return <NavigationHeader primaryText="Wallets" />
+      return <NavigationHeader type="home" />
     case 'settings-networks':
-      return <NavigationHeader primaryText="Networks" />
+      return <NavigationHeader type="home" />
     case 'settings-currency':
-      return <NavigationHeader primaryText="Currency" />
+      return <NavigationHeader type="home" />
     case 'settings-profiles':
-      return <NavigationHeader primaryText="Profiles" />
+      return <NavigationHeader type="home" />
     case 'settings-preferences':
-      return <NavigationHeader primaryText="Preferences" />
+      return <NavigationHeader type="home" />
     case 'settings-apps':
-      return <NavigationHeader primaryText="Apps" />
+      return <NavigationHeader type="home" />
     case 'connect-dapp':
-      return <NavigationHeader primaryText="Connect an App" />
+      return <NavigationHeader type="home" />
     case 'history':
-      return <NavigationHeader primaryText="Transaction History" />
+      return <NavigationHeader type="home" />
     case 'coin-details':
       return <WalletHeader />
     case 'collectible-details':
       return <WalletHeader />
     case 'transaction-details':
-      return <NavigationHeader secondaryText="" primaryText="" />
+      return <NavigationHeader type="home" />
     case 'send-general':
       return <WalletHeader primaryText="Send" enableAccountSelector />
     case 'send-coin':
@@ -150,7 +152,7 @@ export const getHeader = (navigation: Navigation) => {
       return <WalletHeader primaryText="Swap" enableAccountSelector />
     case 'swap-coin':
     case 'swap-coin-list':
-      return <NavigationHeader secondaryText="Wallet / " primaryText="Buy" />
+      return <NavigationHeader type="home" />
     case 'receive':
       return <WalletHeader primaryText="Receive" enableAccountSelector />
   }

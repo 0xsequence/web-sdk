@@ -3,7 +3,6 @@ import { ChevronLeftIcon, IconButton, Text } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 
-import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
 import { useNavigation } from '../../hooks/index.js'
 import { SelectWalletRow } from '../Select/SelectWalletRow.js'
 import { SlideupDrawer } from '../Select/SlideupDrawer.js'
@@ -37,12 +36,7 @@ export const WalletHeader = ({
   }
 
   return (
-    <div
-      className="flex flex-col justify-between items-center fixed bg-background-primary w-full p-4 z-20"
-      style={{
-        height: primaryText ? HEADER_HEIGHT_WITH_LABEL : HEADER_HEIGHT
-      }}
-    >
+    <div className="flex flex-col justify-between items-center fixed bg-background-primary w-full p-4 z-20">
       <div className="flex flex-row justify-between items-center w-full">
         <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="xs" />
         <AccountInformation onClickAccount={enableAccountSelector ? onClickSelector : undefined} />

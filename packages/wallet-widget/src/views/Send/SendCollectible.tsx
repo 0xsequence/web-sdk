@@ -33,7 +33,7 @@ import { WalletSelect } from '../../components/Select/WalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation.js'
 import { EVENT_SOURCE, EVENT_TYPES } from '../../constants/analytics.js'
-import { ERC_1155_ABI, ERC_721_ABI, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
+import { ERC_1155_ABI, ERC_721_ABI } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
 import { useNavigation } from '../../hooks/index.js'
 import { isEthAddress, limitDecimals } from '../../utils/index.js'
@@ -362,13 +362,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const isMaximum = Number(amount) >= Number(maxAmount)
 
   return (
-    <form
-      className="flex px-4 pb-4 gap-2 flex-col"
-      style={{
-        marginTop: HEADER_HEIGHT_WITH_LABEL
-      }}
-      onSubmit={handleSendClick}
-    >
+    <form className="flex px-4 pb-4 gap-2 flex-col" onSubmit={handleSendClick}>
       {!showConfirmation && (
         <>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
