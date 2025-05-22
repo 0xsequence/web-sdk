@@ -162,7 +162,7 @@ export const PayWithCrypto = ({
 
     // Find the first token option where the balance is sufficient
     const firstSufficientToken = tokenPayOptions.find(option => {
-      const balance = tokenBalancesMap.get(option.currencyAddress) ?? 0n
+      const balance = tokenBalancesMap.get(option.currencyAddress.toLowerCase()) ?? 0n
       return option.price && balance >= BigInt(option.price)
     })
     if (firstSufficientToken) {
