@@ -46,7 +46,7 @@ export const PaymentSelectionContent = () => {
 
   const [disableButtons, setDisableButtons] = useState(false)
   const [isError, setIsError] = useState<boolean>(false)
-
+  const [isPurchasing, setIsPurchasing] = useState<boolean>(false)
   const {
     chain,
     collectibles,
@@ -146,6 +146,7 @@ export const PaymentSelectionContent = () => {
       return
     }
 
+    setIsPurchasing(true)
     setIsError(false)
     setDisableButtons(true)
 
@@ -247,6 +248,7 @@ export const PaymentSelectionContent = () => {
     }
 
     setDisableButtons(false)
+    setIsPurchasing(false)
   }
 
   const onClickPurchaseSwap = async (swapTokenOption: LifiToken) => {
@@ -254,6 +256,7 @@ export const PaymentSelectionContent = () => {
       return
     }
 
+    setIsPurchasing(true)
     setIsError(false)
     setDisableButtons(true)
 
@@ -380,6 +383,7 @@ export const PaymentSelectionContent = () => {
     }
 
     setDisableButtons(false)
+    setIsPurchasing(false)
   }
 
   const onClickPurchase = () => {
@@ -409,7 +413,7 @@ export const PaymentSelectionContent = () => {
   return (
     <>
       <div
-        className="flex flex-col gap-2 items-start w-full pb-0 px-6 h-full"
+        className={`flex flex-col gap-2 items-start w-full pb-0 px-6 h-full transition-opacity duration-200 ${isPurchasing ? 'opacity-50 pointer-events-none' : ''}`}
         style={{
           paddingTop: HEADER_HEIGHT
         }}
@@ -483,7 +487,7 @@ export const PaymentSelectionContent = () => {
                 disabled={isLoading || disableButtons || !selectedCurrency || (!disableSwapQuote && isLoadingSwapQuote)}
                 shape="square"
                 variant="primary"
-                label="Complete Purchase"
+                label={isPurchasing ? <Spinner /> : 'Complete Purchase'}
               />
               <div className="flex w-full justify-center items-center gap-0.5 my-2">
                 {/* Replace by icon from design-system once new release is out */}
