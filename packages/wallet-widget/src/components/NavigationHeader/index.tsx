@@ -1,15 +1,35 @@
-import { ChevronLeftIcon, IconButton, ModalPrimitive, Text } from '@0xsequence/design-system'
+import { ChevronLeftIcon, IconButton } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
 import { useNavigation } from '../../hooks/index.js'
 
+import { Home } from './content/home.js'
+
 interface NavigationHeaderProps {
-  primaryText?: string
-  secondaryText?: string
+  type: 'home' | 'search' | 'settings' | 'token' | 'collectible' | 'collection'
+  imgSrc?: string
+  imgLabel?: string
 }
 
-export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeaderProps) => {
+const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, imgLabel?: string) => {
+  switch (type) {
+    case 'home':
+      return <Home />
+    case 'search':
+      return <div />
+    case 'settings':
+      return <div />
+    case 'token':
+      return <div />
+    case 'collectible':
+      return <div />
+    case 'collection':
+      return <div />
+  }
+}
+
+export const NavigationHeader = ({ type, imgSrc, imgLabel }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
   const { isBackButtonEnabled } = useNavigationContext()
 
@@ -21,12 +41,7 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
   }
 
   return (
-    <div
-      className="flex flex-row justify-between items-center fixed bg-background-primary w-full p-4 z-20"
-      style={{
-        height: HEADER_HEIGHT
-      }}
-    >
+    <div className="flex flex-row justify-between items-center w-full" style={{ minHeight: HEADER_HEIGHT }}>
       {history.length > 0 ? (
         <IconButton
           onClick={onClickBack}
@@ -38,21 +53,10 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
       ) : (
         <div />
       )}
-      <div>
-        <Text fontWeight="medium" variant="small" color="muted">
-          {secondaryText}
-        </Text>
-        <ModalPrimitive.Title asChild>
-          <Text variant="medium" color="primary">
-            {primaryText}
-          </Text>
-        </ModalPrimitive.Title>
-      </div>
-      <div
-        style={{
-          width: '28px'
-        }}
-      />
+
+      {getHeaderContent(type, imgSrc, imgLabel)}
+
+      {/* <div style={{ width: '28px' }} /> */}
     </div>
   )
 }
