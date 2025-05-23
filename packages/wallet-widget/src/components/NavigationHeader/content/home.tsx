@@ -9,7 +9,7 @@ export const Home = () => {
         <IconButton className="bg-background-secondary" icon={SearchIcon} size="sm" />
         <IconButton className="bg-background-secondary" icon={SettingsIcon} size="sm" />
       </div>
-      <Divider className="my-0 w-full" />
+      <Divider className="my-0 w-full" style={{ position: 'absolute', bottom: 0 }} />
     </div>
   )
 }

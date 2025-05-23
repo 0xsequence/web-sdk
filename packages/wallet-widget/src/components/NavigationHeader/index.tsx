@@ -4,7 +4,12 @@ import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
 import { useNavigation } from '../../hooks/index.js'
 
-import { Home } from './content/home.js'
+import { Collectible } from './content/Collectible.js'
+import { Collection } from './content/Collection.js'
+import { Home } from './content/Home.js'
+import { Search } from './content/Search.js'
+import { Settings } from './content/Settings.js'
+import { Token } from './content/Token.js'
 
 interface NavigationHeaderProps {
   type: 'home' | 'search' | 'settings' | 'token' | 'collectible' | 'collection'
@@ -17,15 +22,15 @@ const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, 
     case 'home':
       return <Home />
     case 'search':
-      return <div />
+      return <Search />
     case 'settings':
-      return <div />
+      return <Settings />
     case 'token':
-      return <div />
+      return <Token /> // TODO: add imgSrc and imgLabel?
     case 'collectible':
-      return <div />
+      return <Collectible imgSrc={imgSrc} imgLabel={imgLabel} />
     case 'collection':
-      return <div />
+      return <Collection imgSrc={imgSrc} imgLabel={imgLabel} />
   }
 }
 
@@ -46,9 +51,9 @@ export const NavigationHeader = ({ type, imgSrc, imgLabel }: NavigationHeaderPro
         <IconButton
           onClick={onClickBack}
           icon={ChevronLeftIcon}
-          size="xs"
+          size="sm"
           disabled={!isBackButtonEnabled}
-          style={{ opacity: isBackButtonEnabled ? 1 : 0.5 }}
+          style={{ opacity: isBackButtonEnabled ? 1 : 0.5, marginLeft: '16px' }}
         />
       ) : (
         <div />
@@ -56,7 +61,7 @@ export const NavigationHeader = ({ type, imgSrc, imgLabel }: NavigationHeaderPro
 
       {getHeaderContent(type, imgSrc, imgLabel)}
 
-      {/* <div style={{ width: '28px' }} /> */}
+      {type !== 'search' && history.length > 0 ? <div style={{ width: '52px' }} /> : <div />}
     </div>
   )
 }

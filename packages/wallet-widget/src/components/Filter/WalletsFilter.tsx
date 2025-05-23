@@ -50,7 +50,7 @@ export const WalletsFilter = () => {
           }
           onClick={() => setSelectedWallets([wallet])}
         >
-          <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
+          <WalletAccountGradient accountAddress={wallet.address} />
           <Text className="flex flex-row gap-1 items-center" nowrap color="primary" fontWeight="medium" variant="normal">
             {formatAddress(wallet.address)}
             <CopyButton text={wallet.address} buttonVariant="icon" onClick={e => e.stopPropagation()} />
