@@ -96,7 +96,9 @@ export const config =
           ChainId.ARBITRUM_SEPOLIA,
           ChainId.POLYGON,
           ChainId.IMMUTABLE_ZKEVM,
-          ChainId.IMMUTABLE_ZKEVM_TESTNET
+          ChainId.IMMUTABLE_ZKEVM_TESTNET,
+          ChainId.BASE_SEPOLIA,
+          ChainId.BASE
         ],
         defaultChainId: ChainId.ARBITRUM_NOVA,
         waasConfigKey: isDebugMode
@@ -132,7 +134,9 @@ export const config =
           ChainId.ARBITRUM_SEPOLIA,
           ChainId.POLYGON,
           ChainId.IMMUTABLE_ZKEVM,
-          ChainId.IMMUTABLE_ZKEVM_TESTNET
+          ChainId.IMMUTABLE_ZKEVM_TESTNET,
+          ChainId.BASE_SEPOLIA,
+          ChainId.BASE
         ],
         defaultChainId: ChainId.ARBITRUM_NOVA,
 
