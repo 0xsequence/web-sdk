@@ -1,15 +1,40 @@
-import { ChevronLeftIcon, IconButton, ModalPrimitive, Text } from '@0xsequence/design-system'
+import { ChevronLeftIcon, IconButton } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
 import { useNavigation } from '../../hooks/index.js'
 
+import { Collectible } from './content/Collectible.js'
+import { Collection } from './content/Collection.js'
+import { Home } from './content/Home.js'
+import { Search } from './content/Search.js'
+import { Settings } from './content/Settings.js'
+import { Token } from './content/Token.js'
+
 interface NavigationHeaderProps {
-  primaryText?: string
-  secondaryText?: string
+  type: 'home' | 'search' | 'settings' | 'token' | 'collectible' | 'collection'
+  imgSrc?: string
+  imgLabel?: string
 }
 
-export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeaderProps) => {
+const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, imgLabel?: string) => {
+  switch (type) {
+    case 'home':
+      return <Home />
+    case 'search':
+      return <Search />
+    case 'settings':
+      return <Settings />
+    case 'token':
+      return <Token /> // TODO: add imgSrc and imgLabel?
+    case 'collectible':
+      return <Collectible imgSrc={imgSrc} imgLabel={imgLabel} />
+    case 'collection':
+      return <Collection imgSrc={imgSrc} imgLabel={imgLabel} />
+  }
+}
+
+export const NavigationHeader = ({ type, imgSrc, imgLabel }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
   const { isBackButtonEnabled } = useNavigationContext()
 
@@ -21,38 +46,22 @@ export const NavigationHeader = ({ secondaryText, primaryText }: NavigationHeade
   }
 
   return (
-    <div
-      className="flex flex-row justify-between items-center fixed bg-background-primary w-full p-4 z-20"
-      style={{
-        height: HEADER_HEIGHT
-      }}
-    >
+    <div className="flex flex-row justify-between items-center w-full" style={{ minHeight: HEADER_HEIGHT }}>
       {history.length > 0 ? (
         <IconButton
           onClick={onClickBack}
           icon={ChevronLeftIcon}
-          size="xs"
+          size="sm"
           disabled={!isBackButtonEnabled}
-          style={{ opacity: isBackButtonEnabled ? 1 : 0.5 }}
+          style={{ opacity: isBackButtonEnabled ? 1 : 0.5, marginLeft: '16px' }}
         />
       ) : (
         <div />
       )}
-      <div>
-        <Text fontWeight="medium" variant="small" color="muted">
-          {secondaryText}
-        </Text>
-        <ModalPrimitive.Title asChild>
-          <Text variant="medium" color="primary">
-            {primaryText}
-          </Text>
-        </ModalPrimitive.Title>
-      </div>
-      <div
-        style={{
-          width: '28px'
-        }}
-      />
+
+      {getHeaderContent(type, imgSrc, imgLabel)}
+
+      {type !== 'search' && history.length > 0 ? <div style={{ width: '52px' }} /> : <div />}
     </div>
   )
 }

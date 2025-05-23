@@ -4,10 +4,9 @@ import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout
 import { getModalPositionCss, ShadowRoot, useConnectConfigContext, useOpenConnectModal, useTheme } from '@0xsequence/connect'
 import { Modal, Scroll, ToastProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
-import React, { useContext, useEffect, useState, type ReactNode } from 'react'
+import { useContext, useEffect, useState, type ReactNode } from 'react'
 import { useAccount } from 'wagmi'
 
-import { HEADER_HEIGHT, HEADER_HEIGHT_WITH_LABEL } from '../../constants/index.js'
 import { WALLET_HEIGHT, WALLET_WIDTH } from '../../constants/index.js'
 import {
   NavigationContextProvider,
@@ -84,15 +83,6 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
     navigation.location === 'search-tokens' ||
     navigation.location === 'search-collectibles'
 
-  let paddingTop = '0px'
-  switch (navigation.location) {
-    case 'send-general':
-      paddingTop = HEADER_HEIGHT_WITH_LABEL
-      break
-    default:
-      paddingTop = HEADER_HEIGHT
-  }
-
   const walletContentRef = useContext(WalletContentRefContext)
 
   return (
@@ -106,6 +96,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                   {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
                     <Modal
                       contentProps={{
+                        className: 'border border-border-normal',
                         style: {
                           maxWidth: WALLET_WIDTH,
                           height: 'fit-content',
@@ -117,14 +108,10 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                       scroll={false}
                       onClose={() => setOpenWalletModal(false)}
                     >
-                      <div id="sequence-kit-wallet-content" ref={walletContentRef}>
+                      <div id="sequence-kit-wallet-content" ref={walletContentRef} style={{ height: WALLET_HEIGHT }}>
                         {getHeader(navigation)}
 
-                        {displayScrollbar ? (
-                          <Scroll style={{ paddingTop: paddingTop, height: WALLET_HEIGHT }}>{getContent(navigation)}</Scroll>
-                        ) : (
-                          getContent(navigation)
-                        )}
+                        {displayScrollbar ? <Scroll>{getContent(navigation)}</Scroll> : getContent(navigation)}
                       </div>
                     </Modal>
                   )}

@@ -38,7 +38,7 @@ export const SelectWalletRow = ({
       onClick={onSelectWallet}
       isSelected={wallet.isActive || isSelected}
     >
-      <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
+      <WalletAccountGradient accountAddress={wallet.address} />
       <div className="flex flex-col">
         <Text className="flex flex-row gap-1 items-center" nowrap color="primary" fontWeight="medium" variant="normal">
           {formatAddress(wallet.address)}
