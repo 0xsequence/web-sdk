@@ -1,14 +1,23 @@
 import { useAddFundsModal } from '@0xsequence/checkout'
-import { compareAddress, formatAddress, getNativeTokenInfoByChainId, useOpenConnectModal, useWallets } from '@0xsequence/connect'
+import {
+  compareAddress,
+  getNativeTokenInfoByChainId,
+  truncateAtIndex,
+  useOpenConnectModal,
+  useWallets
+} from '@0xsequence/connect'
 import {
   AddIcon,
   ArrowUpIcon,
   Button,
   ChevronUpDownIcon,
+  Divider,
   EllipsisIcon,
   ScanIcon,
   Skeleton,
   SwapIcon,
+  TabsContent,
+  TabsPrimitive,
   Text
 } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
@@ -231,6 +240,10 @@ export const Home = () => {
     })
   }
 
+  type AssetType = 'tokens' | 'collectibles' | 'history'
+
+  const [selectedAssetType, setSelectedAssetType] = useState<AssetType>('tokens')
+
   const homeNavTableItems = [
     <ListCardNav
       onClick={onClickTokens}
@@ -292,26 +305,95 @@ export const Home = () => {
   ]
 
   return (
-    <div className="flex flex-col items-center p-4">
-      <div className="flex flex-row gap-2 items-center">
-        <WalletAccountGradient accountAddress={accountAddress || ''} />
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-1 items-center">
-            <Text color="primary" fontWeight="medium" variant="normal">
-              {formatAddress(accountAddress || '')}
-            </Text>
-            <CopyButton text={accountAddress || ''} buttonVariant="icon" />
+    <div className="flex flex-col items-center px-4 pb-4">
+      <div className="flex flex-col items-center w-full">
+        <div className="flex flew-row justify-between items-center w-full py-4">
+          <div className="flex flex-row items-center w-full gap-2">
+            <WalletAccountGradient accountAddress={accountAddress || ''} />
+            <div className="flex flex-col">
+              <div className="flex flex-row gap-1 items-center">
+                <Text color="primary" fontWeight="medium" variant="normal">
+                  {truncateAtIndex(accountAddress || '', 8)}
+                </Text>
+                <CopyButton text={accountAddress || ''} buttonVariant="icon" />
+              </div>
+              {signInDisplay && (
+                <Text color="muted" fontWeight="medium" variant="small">
+                  {signInDisplay}
+                </Text>
+              )}
+            </div>
+            <Button variant="text" onClick={onClickAccountSelector}>
+              <ChevronUpDownIcon color="white" />
+            </Button>
           </div>
-          {signInDisplay && (
-            <Text color="muted" fontWeight="medium" variant="small">
-              {signInDisplay}
+          <div className="flex flex-col items-end">
+            <Text color="muted" variant="small">
+              Balance
             </Text>
-          )}
+            <Text color="primary" variant="xlarge">
+              {fiatCurrency.symbol}
+              {fiatCurrency.sign}
+              {isLoading ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
+            </Text>
+          </div>
         </div>
-        <Button variant="text" onClick={onClickAccountSelector}>
-          <ChevronUpDownIcon color="white" />
-        </Button>
+
+        <TabsPrimitive.Root
+          className="w-full"
+          value={selectedAssetType}
+          onValueChange={value => setSelectedAssetType(value as AssetType)}
+        >
+          <div className="flex flex-col w-full relative">
+            <TabsPrimitive.TabsList>
+              <TabsPrimitive.TabsTrigger className="h-10 relative" value="tokens">
+                <Text className="px-4" variant="medium" color={selectedAssetType === 'tokens' ? 'primary' : 'muted'}>
+                  Coins
+                </Text>
+                {selectedAssetType === 'tokens' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
+              </TabsPrimitive.TabsTrigger>
+              <TabsPrimitive.TabsTrigger className="h-10 relative" value="collectibles">
+                <Text className="px-4" variant="medium" color={selectedAssetType === 'collectibles' ? 'primary' : 'muted'}>
+                  Collectibles
+                </Text>
+                {selectedAssetType === 'collectibles' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
+              </TabsPrimitive.TabsTrigger>
+              <TabsPrimitive.TabsTrigger className="h-10 relative" value="history">
+                <Text className="px-4" variant="medium" color={selectedAssetType === 'history' ? 'primary' : 'muted'}>
+                  Transactions
+                </Text>
+                {selectedAssetType === 'history' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
+              </TabsPrimitive.TabsTrigger>
+            </TabsPrimitive.TabsList>
+            <Divider className="absolute bottom-0 my-0 left-[-16px]" style={{ width: 'calc(100% + 32px)' }} />
+          </div>
+
+          <div>
+            <TabsContent value="tokens">
+              <div>
+                <Text color="primary" fontWeight="medium" variant="normal">
+                  Tokens
+                </Text>
+              </div>
+            </TabsContent>
+            <TabsContent value="collectibles">
+              <div>
+                <Text color="primary" fontWeight="medium" variant="normal">
+                  Collectibles
+                </Text>
+              </div>
+            </TabsContent>
+            <TabsContent value="history">
+              <div>
+                <Text color="primary" fontWeight="medium" variant="normal">
+                  History
+                </Text>
+              </div>
+            </TabsContent>
+          </div>
+        </TabsPrimitive.Root>
       </div>
+
       <div className="flex flex-row gap-2 w-full mt-3">
         <OperationButtonTemplate label="Send" onClick={onClickSend} icon={ArrowUpIcon} />
         <OperationButtonTemplate label="Swap" onClick={onClickSwap} icon={SwapIcon} />

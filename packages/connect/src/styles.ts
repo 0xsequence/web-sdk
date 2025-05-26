@@ -241,6 +241,9 @@ export const styles = String.raw`
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
+  .left-\[-16px\] {
+    left: -16px;
+  }
   .z-1 {
     z-index: 1;
   }
@@ -432,6 +435,9 @@ export const styles = String.raw`
   }
   .h-\[1px\] {
     height: 1px;
+  }
+  .h-\[2px\] {
+    height: 2px;
   }
   .h-\[52px\] {
     height: 52px;

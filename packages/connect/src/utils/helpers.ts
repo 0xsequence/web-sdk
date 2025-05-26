@@ -107,6 +107,16 @@ export const truncateAtMiddle = (text: string, truncateAt: number) => {
   return finalText
 }
 
+export const truncateAtIndex = (text: string, truncateIndex: number) => {
+  let finalText = text
+
+  if (text.length >= truncateIndex) {
+    finalText = text.slice(0, truncateIndex) + '...' + text.slice(text.length - 4, text.length)
+  }
+
+  return finalText
+}
+
 export const formatAddress = (text: string) => {
   return `0x${truncateAtMiddle(text?.substring(2) || '', 8)}`
 }
