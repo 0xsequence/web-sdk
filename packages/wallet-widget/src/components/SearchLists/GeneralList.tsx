@@ -1,13 +1,17 @@
 import { compareAddress, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
 import { Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
-import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
+import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'
+import type { Transaction, TxnTransfer } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
+import { useObservable } from 'micro-observables'
 import { useMemo, useState } from 'react'
 import { useConfig } from 'wagmi'
 
 import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings } from '../../hooks/index.js'
 import { computeBalanceFiat, type TokenBalanceWithPrice } from '../../utils/index.js'
+import { FilterMenu } from '../Filter/FilterMenu.js'
+import { TransactionHistoryList } from '../TransactionHistoryList/index.js'
 
 import { CollectiblesTab } from './CollectiblesList/CollectiblesTab.js'
 import { CoinsTab } from './TokenList/CoinsTab.js'
@@ -15,11 +19,22 @@ import { CoinsTab } from './TokenList/CoinsTab.js'
 export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'send' }) => {
   const { setNavigation } = useNavigation()
   const { chains } = useConfig()
-  const { fiatCurrency, allNetworks, hideUnlistedTokens } = useSettings()
+  const {
+    fiatCurrency,
+    allNetworks,
+    hideUnlistedTokens,
+    selectedNetworksObservable,
+    selectedWalletsObservable,
+    selectedCollectionsObservable
+  } = useSettings()
   const { wallets } = useWallets()
 
   const [search, setSearch] = useState('')
   const [selectedTab, setSelectedTab] = useState<'tokens' | 'collectibles' | 'history'>('tokens')
+
+  const selectedNetworks = useObservable(selectedNetworksObservable)
+  const selectedWallets = useObservable(selectedWalletsObservable)
+  const selectedCollections = useObservable(selectedCollectionsObservable)
 
   const activeWallet = wallets.find(wallet => wallet.isActive)
 
@@ -27,9 +42,9 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
   const COLLECTIBLE_PAGE_SIZE = 8
 
   const { data: tokenBalancesData = [], isLoading: isLoadingTokenBalances } = useGetAllTokensDetails({
-    accountAddresses: [activeWallet?.address || ''],
-    chainIds: allNetworks,
-    contractWhitelist: [],
+    accountAddresses: variant === 'default' ? selectedWallets.map(wallet => wallet.address) : [activeWallet?.address || ''],
+    chainIds: variant === 'default' ? selectedNetworks : allNetworks,
+    contractWhitelist: variant === 'default' ? selectedCollections.map(collection => collection.contractAddress) : [],
     hideUnlistedTokens
   })
 
@@ -100,8 +115,6 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     _type: 'collectible'
   }))
 
-  const combinedBalances = [...coinBalancesWithPrice, ...collectibleBalancesWithPrice]
-
   const fuseOptions = {
     threshold: 0.1,
     ignoreLocation: true,
@@ -137,73 +150,87 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
           }
           return ''
         }
+      },
+      // Transaction: Contract Name
+      {
+        name: 'contractName',
+        getFn: (item: any) => {
+          if (item._type === 'transaction') {
+            return item.transfers?.map((transfer: TxnTransfer) => transfer.contractInfo?.name).join(', ') || ''
+          }
+          return ''
+        }
+      },
+      // Transaction: Token Symbol
+      {
+        name: 'tokenSymbol',
+        getFn: (item: any) => {
+          if (item._type === 'transaction') {
+            const hasNativeToken = item.transfers?.some((transfer: TxnTransfer) =>
+              compareAddress(transfer.contractInfo?.address || '', ethers.ZeroAddress)
+            )
+            if (hasNativeToken) {
+              const nativeTokenInfo = getNativeTokenInfoByChainId(item.chainId, chains)
+              return nativeTokenInfo.symbol
+            }
+            return item.transfers?.map((transfer: TxnTransfer) => transfer.contractInfo?.symbol).join(', ') || ''
+          }
+          return ''
+        }
+      },
+      // Transaction: Collectible Name
+      {
+        name: 'collectibleName',
+        getFn: (item: any) => {
+          if (item._type === 'transaction') {
+            return (
+              item.transfers
+                ?.map((transfer: TxnTransfer) => {
+                  return Object.values(transfer.tokenMetadata || {})
+                    .map(tokenMetadata => tokenMetadata?.name)
+                    .join(', ')
+                })
+                .join(', ') || ''
+            )
+          }
+          return ''
+        }
+      },
+      // Transaction: Date
+      {
+        name: 'date',
+        getFn: (item: any) => {
+          if (item._type === 'transaction') {
+            const date = new Date(item.timestamp)
+            const day = date.getDate()
+            const month = date.toLocaleString('en-US', { month: 'long' })
+            const year = date.getFullYear()
+            return `
+              ${day} ${month} ${year}
+              ${day} ${year} ${month}
+              ${month} ${day} ${year}
+              ${month} ${year} ${day}
+              ${year} ${day} ${month}
+              ${year} ${month} ${day}
+            `
+          }
+          return ''
+        }
       }
-      // // Transaction: Contract Name
-      // {
-      //   name: 'contractName',
-      //   getFn: (item: any) => {
-      //     if (item._type === 'transaction') {
-      //       return item.transfers?.map(transfer => transfer.contractInfo?.name).join(', ') || ''
-      //     }
-      //     return ''
-      //   }
-      // },
-      // // Transaction: Token Symbol
-      // {
-      //   name: 'tokenSymbol',
-      //   getFn: (item: any) => {
-      //     if (item._type === 'transaction') {
-      //       const hasNativeToken = item.transfers?.some(transfer => compareAddress(transfer.contractInfo?.address, zeroAddress))
-      //       if (hasNativeToken) {
-      //         const nativeTokenInfo = getNativeTokenInfoByChainId(item.chainId, chains)
-      //         return nativeTokenInfo.symbol
-      //       }
-      //       return item.transfers?.map(transfer => transfer.contractInfo?.symbol).join(', ') || ''
-      //     }
-      //     return ''
-      //   }
-      // },
-      // // Transaction: Collectible Name
-      // {
-      //   name: 'collectibleName',
-      //   getFn: (item: any) => {
-      //     if (item._type === 'transaction') {
-      //       return (
-      //         item.transfers
-      //           ?.map(transfer => {
-      //             return Object.values(transfer.tokenMetadata || {})
-      //               .map(tokenMetadata => tokenMetadata?.name)
-      //               .join(', ')
-      //           })
-      //           .join(', ') || ''
-      //       )
-      //     }
-      //     return ''
-      //   }
-      // },
-      // // Transaction: Date
-      // {
-      //   name: 'date',
-      //   getFn: (item: any) => {
-      //     if (item._type === 'transaction') {
-      //       const date = new Date(item.timestamp)
-      //       const day = date.getDate()
-      //       const month = date.toLocaleString('en-US', { month: 'long' })
-      //       const year = date.getFullYear()
-      //       return `
-      //         ${day} ${month} ${year}
-      //         ${day} ${year} ${month}
-      //         ${month} ${day} ${year}
-      //         ${month} ${year} ${day}
-      //         ${year} ${day} ${month}
-      //         ${year} ${month} ${day}
-      //       `
-      //     }
-      //     return ''
-      //   }
-      // }
     ]
   }
+
+  const { data: transactionHistoryData = [], isLoading: isLoadingTransactionHistory } = useGetTransactionHistorySummary({
+    accountAddresses: selectedWallets.map(wallet => wallet.address),
+    chainIds: selectedNetworks
+  })
+
+  const transactionHistory = transactionHistoryData.map(transaction => ({
+    ...transaction,
+    _type: 'transaction'
+  }))
+
+  const combinedBalances = [...coinBalancesWithPrice, ...collectibleBalancesWithPrice, ...transactionHistory]
 
   const fuse = useMemo(() => {
     return new Fuse(combinedBalances, fuseOptions)
@@ -228,11 +255,9 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     fetchNextPage: fetchMoreSearchBalancesTokens,
     hasNextPage: hasMoreSearchBalancesTokens,
     isFetching: isFetchingMoreSearchBalancesTokens
-  } = useGetMoreBalances(
-    searchResults.filter(item => item._type === 'coin'),
-    TOKEN_PAGE_SIZE,
-    { enabled: search.trim() !== '' }
-  )
+  } = useGetMoreBalances(searchResults.filter(item => item._type === 'coin') as TokenBalanceWithPrice[], TOKEN_PAGE_SIZE, {
+    enabled: search.trim() !== ''
+  })
 
   const {
     data: infiniteBalancesCollectibles,
@@ -247,7 +272,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     hasNextPage: hasMoreSearchBalancesCollectibles,
     isFetching: isFetchingMoreSearchBalancesCollectibles
   } = useGetMoreBalances(
-    searchResults.filter(item => item._type === 'collectible'),
+    searchResults.filter(item => item._type === 'collectible') as TokenBalanceWithPrice[],
     COLLECTIBLE_PAGE_SIZE,
     {
       enabled: search.trim() !== ''
@@ -350,7 +375,9 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
           </div>
         )}
 
-        <div className="p-4">
+        <div className="flex flex-col p-4 gap-4">
+          <FilterMenu filterMenuType={selectedTab} />
+
           <TabsContent value="tokens">
             <div>
               <CoinsTab
@@ -382,9 +409,15 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
           </TabsContent>
           <TabsContent value="history">
             <div>
-              <Text color="primary" fontWeight="medium" variant="normal">
-                History
-              </Text>
+              <TransactionHistoryList
+                transactions={
+                  search
+                    ? (searchResults.filter(item => item._type === 'transaction') as unknown as Transaction[])
+                    : transactionHistory
+                }
+                isLoading={isLoadingTransactionHistory}
+                isFetchingNextPage={false}
+              />
             </div>
           </TabsContent>
         </div>
