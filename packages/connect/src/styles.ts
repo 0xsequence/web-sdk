@@ -7,7 +7,6 @@ export const styles = String.raw`
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --color-violet-600: oklch(54.1% 0.281 293.009);
-    --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -240,9 +239,6 @@ export const styles = String.raw`
   }
   .left-4 {
     left: calc(var(--spacing) * 4);
-  }
-  .left-\[-16px\] {
-    left: -16px;
   }
   .z-1 {
     z-index: 1;
@@ -1182,9 +1178,6 @@ export const styles = String.raw`
   }
   .text-black {
     color: var(--color-black);
-  }
-  .text-gray-500 {
-    color: var(--color-gray-500);
   }
   .text-info {
     color: var(--seq-color-info);

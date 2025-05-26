@@ -32,6 +32,7 @@ import { WalletsFilter } from '../../components/Filter/WalletsFilter.js'
 import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag.js'
 import { ListCardNav } from '../../components/ListCard/ListCardNav.js'
 import { ListCardNavTable } from '../../components/ListCardTable/ListCardNavTable.js'
+import { GeneralList } from '../../components/SearchLists/index.js'
 import { SelectWalletRow } from '../../components/Select/SelectWalletRow.js'
 import { SlideupDrawer } from '../../components/Select/SlideupDrawer.js'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient.js'
@@ -219,16 +220,16 @@ export const Home = () => {
   const onClickWalletSelector = () => {
     setWalletFilterOpen(true)
   }
-  const onClickTokens = () => {
-    setNavigation({
-      location: 'search-tokens'
-    })
-  }
-  const onClickCollectibles = () => {
-    setNavigation({
-      location: 'search-collectibles'
-    })
-  }
+  // const onClickTokens = () => {
+  //   setNavigation({
+  //     location: 'search-tokens'
+  //   })
+  // }
+  // const onClickCollectibles = () => {
+  //   setNavigation({
+  //     location: 'search-collectibles'
+  //   })
+  // }
   const onClickTransactions = () => {
     setNavigation({
       location: 'history'
@@ -240,73 +241,69 @@ export const Home = () => {
     })
   }
 
-  type AssetType = 'tokens' | 'collectibles' | 'history'
-
-  const [selectedAssetType, setSelectedAssetType] = useState<AssetType>('tokens')
-
-  const homeNavTableItems = [
-    <ListCardNav
-      onClick={onClickTokens}
-      rightChildren={
-        coinBalances.length > 0 ? (
-          <div className="flex flex-row gap-1 items-center">
-            <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
-              {fiatCurrency.sign}
-              {isLoading ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
-            </Text>
-            <StackedIconTag
-              iconList={coinBalancesIcons}
-              onClick={onClickWalletSelector}
-              label={
-                <Text color="muted" fontWeight="medium" variant="normal">
-                  {coinBalances.length}
-                </Text>
-              }
-            />
-          </div>
-        ) : (
-          <Text color="muted" fontWeight="medium" variant="normal" nowrap>
-            No Tokens
-          </Text>
-        )
-      }
-      shape="square"
-    >
-      <Text color="primary" fontWeight="medium" variant="normal">
-        Tokens
-      </Text>
-    </ListCardNav>,
-    <ListCardNav
-      onClick={onClickCollectibles}
-      rightChildren={
-        collectibleBalances.length > 0 ? (
-          <StackedIconTag
-            iconList={collectibleBalancesIcons}
-            onClick={onClickWalletSelector}
-            label={
-              <Text color="muted" fontWeight="medium" variant="normal">
-                {collectibleBalances.length}
-              </Text>
-            }
-            shape="square"
-          />
-        ) : (
-          <Text color="muted" fontWeight="medium" variant="normal" nowrap>
-            No Collectibles
-          </Text>
-        )
-      }
-      shape="square"
-    >
-      <Text color="primary" fontWeight="medium" variant="normal">
-        Collectibles
-      </Text>
-    </ListCardNav>
-  ]
+  // const homeNavTableItems = [
+  //   <ListCardNav
+  //     onClick={onClickTokens}
+  //     rightChildren={
+  //       coinBalances.length > 0 ? (
+  //         <div className="flex flex-row gap-1 items-center">
+  //           <Text className="flex flex-row items-center" color="muted" fontWeight="medium" variant="normal">
+  //             {fiatCurrency.sign}
+  //             {isLoading ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
+  //           </Text>
+  //           <StackedIconTag
+  //             iconList={coinBalancesIcons}
+  //             onClick={onClickWalletSelector}
+  //             label={
+  //               <Text color="muted" fontWeight="medium" variant="normal">
+  //                 {coinBalances.length}
+  //               </Text>
+  //             }
+  //           />
+  //         </div>
+  //       ) : (
+  //         <Text color="muted" fontWeight="medium" variant="normal" nowrap>
+  //           No Tokens
+  //         </Text>
+  //       )
+  //     }
+  //     shape="square"
+  //   >
+  //     <Text color="primary" fontWeight="medium" variant="normal">
+  //       Tokens
+  //     </Text>
+  //   </ListCardNav>,
+  //   <ListCardNav
+  //     onClick={onClickCollectibles}
+  //     rightChildren={
+  //       collectibleBalances.length > 0 ? (
+  //         <StackedIconTag
+  //           iconList={collectibleBalancesIcons}
+  //           onClick={onClickWalletSelector}
+  //           label={
+  //             <Text color="muted" fontWeight="medium" variant="normal">
+  //               {collectibleBalances.length}
+  //             </Text>
+  //           }
+  //           shape="square"
+  //         />
+  //       ) : (
+  //         <Text color="muted" fontWeight="medium" variant="normal" nowrap>
+  //           No Collectibles
+  //         </Text>
+  //       )
+  //     }
+  //     shape="square"
+  //   >
+  //     <Text color="primary" fontWeight="medium" variant="normal">
+  //       Collectibles
+  //     </Text>
+  //   </ListCardNav>
+  // ]
 
   return (
-    <div className="flex flex-col items-center px-4 pb-4">
-      <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-full px-4">
         <div className="flex flew-row justify-between items-center w-full py-4">
           <div className="flex flex-row items-center w-full gap-2">
             <WalletAccountGradient accountAddress={accountAddress || ''} />
@@ -338,63 +335,11 @@ export const Home = () => {
             </Text>
           </div>
         </div>
-
-        <TabsPrimitive.Root
-          className="w-full"
-          value={selectedAssetType}
-          onValueChange={value => setSelectedAssetType(value as AssetType)}
-        >
-          <div className="flex flex-col w-full relative">
-            <TabsPrimitive.TabsList>
-              <TabsPrimitive.TabsTrigger className="h-10 relative" value="tokens">
-                <Text className="px-4" variant="medium" color={selectedAssetType === 'tokens' ? 'primary' : 'muted'}>
-                  Coins
-                </Text>
-                {selectedAssetType === 'tokens' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
-              </TabsPrimitive.TabsTrigger>
-              <TabsPrimitive.TabsTrigger className="h-10 relative" value="collectibles">
-                <Text className="px-4" variant="medium" color={selectedAssetType === 'collectibles' ? 'primary' : 'muted'}>
-                  Collectibles
-                </Text>
-                {selectedAssetType === 'collectibles' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
-              </TabsPrimitive.TabsTrigger>
-              <TabsPrimitive.TabsTrigger className="h-10 relative" value="history">
-                <Text className="px-4" variant="medium" color={selectedAssetType === 'history' ? 'primary' : 'muted'}>
-                  Transactions
-                </Text>
-                {selectedAssetType === 'history' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
-              </TabsPrimitive.TabsTrigger>
-            </TabsPrimitive.TabsList>
-            <Divider className="absolute bottom-0 my-0 left-[-16px]" style={{ width: 'calc(100% + 32px)' }} />
-          </div>
-
-          <div>
-            <TabsContent value="tokens">
-              <div>
-                <Text color="primary" fontWeight="medium" variant="normal">
-                  Tokens
-                </Text>
-              </div>
-            </TabsContent>
-            <TabsContent value="collectibles">
-              <div>
-                <Text color="primary" fontWeight="medium" variant="normal">
-                  Collectibles
-                </Text>
-              </div>
-            </TabsContent>
-            <TabsContent value="history">
-              <div>
-                <Text color="primary" fontWeight="medium" variant="normal">
-                  History
-                </Text>
-              </div>
-            </TabsContent>
-          </div>
-        </TabsPrimitive.Root>
       </div>
 
-      <div className="flex flex-row gap-2 w-full mt-3">
+      <GeneralList variant="default" />
+
+      {/* <div className="flex flex-row gap-2 w-full mt-3">
         <OperationButtonTemplate label="Send" onClick={onClickSend} icon={ArrowUpIcon} />
         <OperationButtonTemplate label="Swap" onClick={onClickSwap} icon={SwapIcon} />
         <OperationButtonTemplate label="Receive" onClick={onClickReceive} icon={ScanIcon} />
@@ -432,7 +377,7 @@ export const Home = () => {
             Settings
           </Text>
         </ListCardNav>
-      </div>
+      </div> */}
 
       <AnimatePresence>
         {accountSelectorModalOpen && (
