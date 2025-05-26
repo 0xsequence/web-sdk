@@ -250,6 +250,8 @@ export const styles = String.raw`
   }
   .left-\[50\%\] {
     left: 50%;
+  .left-\[-16px\] {
+    left: -16px;
   }
   .z-1 {
     z-index: 1;
@@ -451,6 +453,8 @@ export const styles = String.raw`
   }
   .h-\[17px\] {
     height: 17px;
+  .h-\[2px\] {
+    height: 2px;
   }
   .h-\[52px\] {
     height: 52px;

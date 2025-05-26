@@ -95,7 +95,7 @@ export const SettingsWallets = () => {
               )
             }
           >
-            <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
+            <WalletAccountGradient accountAddress={wallet.address} />
             <Text className="flex flex-row gap-1 items-center" color="primary" fontWeight="medium" variant="normal">
               {formatAddress(wallet.address)}
               <CopyButton text={wallet.address} buttonVariant="icon" />

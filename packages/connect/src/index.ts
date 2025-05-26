@@ -44,7 +44,15 @@ export {
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
-export { capitalize, compareAddress, formatAddress, formatDisplay, isEmailValid, truncateAtMiddle } from './utils/helpers.js'
+export {
+  capitalize,
+  compareAddress,
+  formatAddress,
+  formatDisplay,
+  isEmailValid,
+  truncateAtIndex,
+  truncateAtMiddle
+} from './utils/helpers.js'
 export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
 export { getModalPositionCss } from './utils/styling.js'
 export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'

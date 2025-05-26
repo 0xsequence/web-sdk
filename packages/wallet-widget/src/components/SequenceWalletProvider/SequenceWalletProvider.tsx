@@ -96,6 +96,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                   {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && (
                     <Modal
                       contentProps={{
+                        className: 'border border-border-normal',
                         style: {
                           maxWidth: WALLET_WIDTH,
                           height: 'fit-content',
@@ -107,14 +108,10 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                       scroll={false}
                       onClose={() => setOpenWalletModal(false)}
                     >
-                      <div id="sequence-kit-wallet-content" ref={walletContentRef}>
+                      <div id="sequence-kit-wallet-content" ref={walletContentRef} style={{ height: WALLET_HEIGHT }}>
                         {getHeader(navigation)}
 
-                        {displayScrollbar ? (
-                          <Scroll style={{ height: WALLET_HEIGHT }}>{getContent(navigation)}</Scroll>
-                        ) : (
-                          getContent(navigation)
-                        )}
+                        {displayScrollbar ? <Scroll>{getContent(navigation)}</Scroll> : getContent(navigation)}
                       </div>
                     </Modal>
                   )}
