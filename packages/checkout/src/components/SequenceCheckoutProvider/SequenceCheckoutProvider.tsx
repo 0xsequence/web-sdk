@@ -252,7 +252,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
         forteWidgetUrl: config?.env?.forteWidgetUrl ?? 'https://client.payments.forte.io/forte-payments-widget.js'
       }}
     >
-      <FortePaymentControllerProvider>
+      <ForteController>
         <SwapModalContextProvider
           value={{
             isSwapModalOpen: isOpenSwapModal,
@@ -421,7 +421,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
             </SelectPaymentContextProvider>
           </TransactionStatusModalContextProvider>
         </SwapModalContextProvider>
-      </FortePaymentControllerProvider>
+      </ForteController>
     </EnvironmentContextProvider>
   )
 }
