@@ -8,7 +8,6 @@ import { useMemo, useState } from 'react'
 import { zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { FilterButton } from '../components/Filter/FilterButton.js'
 import { TransactionHistoryList } from '../components/TransactionHistoryList/index.js'
 import { useSettings } from '../hooks/index.js'
 
@@ -141,7 +140,6 @@ export const History = () => {
             data-1p-ignore
           />
         </div>
-        <FilterButton label="Transaction Filters" type="transactions" />
       </div>
       <TransactionHistoryList
         transactions={search ? searchResults : transactionHistory}
