@@ -68,20 +68,18 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const navigation = history.length > 0 ? history[history.length - 1] : DEFAULT_LOCATION
 
   const displayScrollbar =
+    navigation.location === 'home' ||
     navigation.location === 'send-general' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||
     navigation.location === 'history' ||
     navigation.location === 'search' ||
-    navigation.location === 'search-view-all' ||
     navigation.location === 'settings-wallets' ||
     navigation.location === 'settings-networks' ||
     navigation.location === 'settings-currency' ||
     navigation.location === 'settings-profiles' ||
     navigation.location === 'settings-apps' ||
-    navigation.location === 'legacy-settings-currency' ||
-    navigation.location === 'search-tokens' ||
-    navigation.location === 'search-collectibles'
+    navigation.location === 'legacy-settings-currency'
 
   const walletContentRef = useContext(WalletContentRefContext)
 
@@ -97,9 +95,10 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                     <Modal
                       contentProps={{
                         className: 'border border-border-normal',
+                        // className: 'border-2 border-violet-600',
                         style: {
                           maxWidth: WALLET_WIDTH,
-                          height: 'fit-content',
+                          height: WALLET_HEIGHT,
                           ...getModalPositionCss(position),
                           scrollbarColor: 'gray black',
                           scrollbarWidth: 'thin'
@@ -108,10 +107,17 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                       scroll={false}
                       onClose={() => setOpenWalletModal(false)}
                     >
-                      <div id="sequence-kit-wallet-content" ref={walletContentRef} style={{ height: WALLET_HEIGHT }}>
-                        {getHeader(navigation)}
+                      <div
+                        className="flex flex-col"
+                        id="sequence-kit-wallet-content"
+                        ref={walletContentRef}
+                        style={{ height: WALLET_HEIGHT }}
+                      >
+                        <div>{getHeader(navigation)}</div>
 
-                        {displayScrollbar ? <Scroll>{getContent(navigation)}</Scroll> : getContent(navigation)}
+                        <div style={{ flex: 1, minHeight: 0 }}>
+                          {displayScrollbar ? <Scroll>{getContent(navigation)}</Scroll> : getContent(navigation)}
+                        </div>
                       </div>
                     </Modal>
                   )}
