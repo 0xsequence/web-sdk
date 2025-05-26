@@ -13,7 +13,6 @@ interface CollectiblesTabProps {
   isFetchingMoreCollectibleBalances: boolean
   isFetchingInitialBalances: boolean
   onTokenClick: (token: TokenBalanceWithPrice) => void
-  gridColumns?: number
 }
 
 export const CollectiblesTab: FC<CollectiblesTabProps> = ({
@@ -22,12 +21,11 @@ export const CollectiblesTab: FC<CollectiblesTabProps> = ({
   hasMoreCollectibleBalances,
   isFetchingMoreCollectibleBalances,
   isFetchingInitialBalances,
-  onTokenClick,
-  gridColumns
+  onTokenClick
 }) => {
   return (
     <div>
-      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)`, width: '100%' }}>
+      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(3, 1fr)`, width: '100%' }}>
         {isFetchingInitialBalances ? (
           <>
             {Array(6)
