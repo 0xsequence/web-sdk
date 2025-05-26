@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import { fetchFortePaymentStatus } from '../../api'
-import { FortePaymentControllerProvider, FortePaymentData } from '../../contexts'
-import { useEnvironmentContext } from '../../contexts/Environment'
+import { fetchFortePaymentStatus } from '../../api/data.js'
+import { useEnvironmentContext, FortePaymentControllerProvider, type FortePaymentData } from '../../contexts/index.js'
 
 const POLLING_TIME = 10 * 1000
 
