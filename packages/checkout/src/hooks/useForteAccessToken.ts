@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { fetchForteAccessToken } from '../api/data'
-import { useEnvironmentContext } from '../contexts/Environment'
+import { fetchForteAccessToken } from '../api/data.js'
+import { useEnvironmentContext } from '../contexts/Environment.js'
 
 export const useForteAccessToken = () => {
   const { fortePaymentUrl } = useEnvironmentContext()
