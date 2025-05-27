@@ -15,7 +15,7 @@ export const CoinInput = ({ type, disabled }: { type: 'from' | 'to'; disabled?: 
 
   const fiatBalance = formatFiatBalance(
     type === recentInput ? amount : nonRecentAmount,
-    coin?.price.value || 0,
+    coin?.price?.value || 0,
     coin?.contractInfo?.decimals || 18,
     fiatCurrency.sign
   )

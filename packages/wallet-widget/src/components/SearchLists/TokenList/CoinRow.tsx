@@ -5,14 +5,14 @@ import { useChains } from 'wagmi'
 
 import { useSettings } from '../../../hooks/index.js'
 import { formatTokenInfo } from '../../../utils/formatBalance.js'
-import type { TokenBalanceWithPrice } from '../../../utils/tokens.js'
+import type { TokenBalanceWithDetails } from '../../../utils/tokens.js'
 import { TokenImageCustom } from '../../Filter/TokenImageCustom.js'
 import { ListCardNav } from '../../ListCard/ListCardNav.js'
 
 interface BalanceItemProps {
-  balance: TokenBalanceWithPrice
+  balance: TokenBalanceWithDetails
   includeUserAddress?: boolean
-  onTokenClick: (token: TokenBalanceWithPrice) => void
+  onTokenClick: (token: TokenBalanceWithDetails) => void
 }
 
 export const CoinRow = ({ balance, onTokenClick, includeUserAddress = false }: BalanceItemProps) => {

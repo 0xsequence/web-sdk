@@ -4,8 +4,9 @@ import type { GetTransactionHistoryReturn, TokenBalance, Transaction } from '@0x
 import type { InfiniteData } from '@tanstack/react-query'
 import { formatUnits, zeroAddress } from 'viem'
 
-export interface TokenBalanceWithPrice extends TokenBalance {
-  price: Price
+export interface TokenBalanceWithDetails extends TokenBalance {
+  price?: Price
+  _type?: 'coin' | 'collectible' | 'collection'
 }
 
 export const getPercentageColor = (value: number) => {

@@ -1,8 +1,8 @@
-import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
+import { useGetMultipleContractsInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useEffect } from 'react'
 
-export const useGetAllTokensDetails = ({
+export const useGetAllCollections = ({
   accountAddresses,
   chainIds,
   hideUnlistedTokens
@@ -17,7 +17,7 @@ export const useGetAllTokensDetails = ({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useGetTokenBalancesDetails({
+  } = useGetTokenBalancesSummary({
     chainIds,
     filter: {
       accountAddresses,
@@ -33,8 +33,19 @@ export const useGetAllTokensDetails = ({
     }
   }, [hasNextPage, isFetchingNextPage])
 
+  const collections = tokenBalancesData?.pages.flatMap(page =>
+    page.balances.filter(balance => balance.contractType === 'ERC721' || balance.contractType === 'ERC1155')
+  )
+
+  const { data: collectionsWithMetadata } = useGetMultipleContractsInfo(
+    collections?.map(collection => ({
+      chainID: collection.chainId.toString(),
+      contractAddress: collection.contractAddress
+    })) || []
+  )
+
   return {
-    data: tokenBalancesData?.pages.flatMap(page => page.balances) || [],
+    data: collectionsWithMetadata || [],
     isLoading: isLoading
   }
 }

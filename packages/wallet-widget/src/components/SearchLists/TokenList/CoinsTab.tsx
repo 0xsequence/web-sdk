@@ -1,18 +1,18 @@
 import { Skeleton, Spinner, Text } from '@0xsequence/design-system'
 import type { FC } from 'react'
 
-import type { TokenBalanceWithPrice } from '../../../utils/tokens.js'
+import type { TokenBalanceWithDetails } from '../../../utils/tokens.js'
 import { InfiniteScroll } from '../../InfiniteScroll.js'
 
 import { CoinRow } from './CoinRow.js'
 
 interface CoinsTabProps {
-  displayedCoinBalances: TokenBalanceWithPrice[] | undefined
+  displayedCoinBalances: TokenBalanceWithDetails[] | undefined
   fetchMoreCoinBalances: () => Promise<any>
   hasMoreCoinBalances: boolean
   isFetchingMoreCoinBalances: boolean
   isFetchingInitialBalances: boolean
-  onTokenClick: (token: TokenBalanceWithPrice) => void
+  onTokenClick: (token: TokenBalanceWithDetails) => void
   includeUserAddress?: boolean
 }
 
