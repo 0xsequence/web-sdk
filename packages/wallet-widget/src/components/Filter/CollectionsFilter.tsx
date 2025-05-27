@@ -1,55 +1,24 @@
-import { Text, TokenImage } from '@0xsequence/design-system'
+import { Text } from '@0xsequence/design-system'
 
-import { useGetCollections, useSettings } from '../../hooks/index.js'
-import { MediaIconWrapper } from '../IconWrappers/index.js'
+import { useSettings } from '../../hooks/index.js'
 import { ListCardSelect } from '../ListCard/ListCardSelect.js'
 
 export const CollectionsFilter = () => {
-  const { selectedCollectionsObservable, selectedNetworks, selectedWallets, setSelectedCollections } = useSettings()
-  const selectedCollections = selectedCollectionsObservable.get()
-
-  const { data: collections } = useGetCollections({
-    accountAddresses: selectedWallets.map(wallet => wallet.address),
-    chainIds: selectedNetworks,
-    hideUnlistedTokens: true
-  })
+  const { showCollectionsObservable, setShowCollections } = useSettings()
+  const showCollections = showCollectionsObservable.get()
 
   return (
     <div className="flex flex-col bg-background-primary gap-3">
-      {collections?.length && collections.length > 1 && (
-        <ListCardSelect
-          key="all"
-          isSelected={selectedCollectionsObservable.get().length === 0}
-          onClick={() => setSelectedCollections([])}
-        >
-          <MediaIconWrapper
-            iconList={collections.map(collection => (
-              <div className="bg-background-backdrop rounded-full">
-                <TokenImage src={collection.logoURI} symbol={collection.name} />
-              </div>
-            ))}
-            size="sm"
-          />
-          <Text color="primary" fontWeight="medium" variant="normal">
-            All
-          </Text>
-        </ListCardSelect>
-      )}
-      {collections?.map(collection => (
-        <ListCardSelect
-          key={collection.contractAddress}
-          isSelected={
-            selectedCollections.some(c => c.contractAddress === collection.contractAddress && c.chainId === collection.chainId) ||
-            collections.length === 1
-          }
-          onClick={collections.length > 1 ? () => setSelectedCollections([collection]) : undefined}
-        >
-          <TokenImage src={collection.logoURI} symbol={collection.name} withNetwork={collection.chainId} />
-          <Text color="primary" fontWeight="medium" variant="normal">
-            {collection.name}
-          </Text>
-        </ListCardSelect>
-      ))}
+      <ListCardSelect key="Items" isSelected={!showCollections} onClick={() => setShowCollections(false)}>
+        <Text color="primary" fontWeight="medium" variant="normal">
+          Items
+        </Text>
+      </ListCardSelect>
+      <ListCardSelect key="Collections" isSelected={showCollections} onClick={() => setShowCollections(true)}>
+        <Text color="primary" fontWeight="medium" variant="normal">
+          Collections
+        </Text>
+      </ListCardSelect>
     </div>
   )
 }

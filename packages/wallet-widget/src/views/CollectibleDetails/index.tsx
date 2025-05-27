@@ -10,8 +10,8 @@ import { useEffect } from 'react'
 import { formatUnits } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { CollectibleTileImage } from '../../components/CollectibleTileImage.js'
 import { InfiniteScroll } from '../../components/InfiniteScroll.js'
+import { TokenTileImage } from '../../components/TokenTileImage.js'
 import { TransactionHistoryList } from '../../components/TransactionHistoryList/index.js'
 import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
@@ -140,7 +140,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
           </div>
         </div>
         <div>
-          <CollectibleTileImage imageUrl={tokenBalance?.tokenMetadata?.image} />
+          <TokenTileImage src={tokenBalance?.tokenMetadata?.image} symbol={tokenBalance?.tokenMetadata?.name} />
         </div>
         <div>
           {/* balance */}

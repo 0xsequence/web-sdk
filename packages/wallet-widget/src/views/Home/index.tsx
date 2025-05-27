@@ -43,7 +43,7 @@ import { OperationButtonTemplate } from './OperationButtonTemplate.js'
 
 export const Home = () => {
   const { setNavigation } = useNavigation()
-  const { selectedWalletsObservable, selectedNetworks, hideUnlistedTokens, fiatCurrency, selectedCollections } = useSettings()
+  const { selectedWalletsObservable, selectedNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
   const { fiatWalletsMap } = useFiatWalletsMap()
   const { connector } = useAccount()
 
@@ -80,40 +80,6 @@ export const Home = () => {
     fetchSignInDisplay()
   }, [connector])
 
-  const { data: tokenBalancesData, isLoading: isLoadingTokenBalances } = useGetAllTokensDetails({
-    accountAddresses: [accountAddress || ''],
-    chainIds: selectedNetworks,
-    contractWhitelist: selectedCollections.map(collection => collection.contractAddress),
-    hideUnlistedTokens
-  })
-
-  const coinBalancesUnordered =
-    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
-
-  const isSingleCollectionSelected = selectedCollections.length === 1
-
-  const collectibleBalancesUnordered =
-    tokenBalancesData?.filter(token => {
-      if (token.contractType !== 'ERC721' && token.contractType !== 'ERC1155') {
-        return false
-      }
-      if (isSingleCollectionSelected) {
-        return token.chainId === selectedCollections[0].chainId
-      }
-      return true
-    }) || []
-
-  const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useGetCoinPrices(
-    coinBalancesUnordered.map(token => ({
-      chainId: token.chainId,
-      contractAddress: token.contractAddress
-    }))
-  )
-
-  const { data: conversionRate, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
-
-  const isLoading = isLoadingTokenBalances || isLoadingCoinPrices || isLoadingConversionRate
-
   const totalFiatValue = fiatWalletsMap
     .reduce((acc, wallet) => {
       if (selectedWallets.some(selectedWallet => selectedWallet.address === wallet.accountAddress)) {
@@ -123,74 +89,6 @@ export const Home = () => {
       return acc
     }, 0)
     .toFixed(2)
-
-  const coinBalances = coinBalancesUnordered.sort((a, b) => {
-    const isHigherFiat =
-      Number(
-        computeBalanceFiat({
-          balance: b,
-          prices: coinPrices,
-          conversionRate: conversionRate || 1,
-          decimals: b.contractInfo?.decimals || 18
-        })
-      ) -
-      Number(
-        computeBalanceFiat({
-          balance: a,
-          prices: coinPrices,
-          conversionRate: conversionRate || 1,
-          decimals: a.contractInfo?.decimals || 18
-        })
-      )
-    return isHigherFiat
-  })
-
-  const collectibleBalances = collectibleBalancesUnordered.sort((a, b) => {
-    return Number(b.balance) - Number(a.balance)
-  })
-
-  const coinBalancesIconSet = new Set()
-  const coinBalancesIcons = useMemo(
-    () =>
-      coinBalances
-        .map(coin => {
-          const isNativeToken = compareAddress(coin.contractAddress, ethers.ZeroAddress)
-          const nativeTokenInfo = getNativeTokenInfoByChainId(coin.chainId, chains)
-          const logoURI = isNativeToken ? nativeTokenInfo.logoURI : coin.contractInfo?.logoURI
-          const tokenName = isNativeToken ? nativeTokenInfo.name : coin.contractInfo?.name
-
-          if (coinBalancesIconSet.has(tokenName) || !logoURI) {
-            return
-          }
-
-          coinBalancesIconSet.add(tokenName)
-          if (coinBalancesIconSet.size <= 3) {
-            return logoURI
-          }
-        })
-        .filter(Boolean) as string[],
-    [coinBalances, selectedWallets, selectedNetworks, hideUnlistedTokens, selectedCollections]
-  )
-
-  const collectibleBalancesIconSet = new Set()
-  const collectibleBalancesIcons = useMemo(
-    () =>
-      collectibleBalances
-        .map(collectible => {
-          const logoURI = collectible.tokenMetadata?.image
-
-          if (collectibleBalancesIconSet.has(logoURI) || !logoURI) {
-            return
-          }
-
-          collectibleBalancesIconSet.add(logoURI)
-          if (collectibleBalancesIconSet.size <= 3) {
-            return logoURI
-          }
-        })
-        .filter(Boolean) as string[],
-    [collectibleBalances, selectedWallets, selectedNetworks, hideUnlistedTokens, selectedCollections]
-  )
 
   const onClickAccountSelector = () => {
     setAccountSelectorModalOpen(true)
@@ -330,8 +228,7 @@ export const Home = () => {
             </Text>
             <Text color="primary" variant="xlarge">
               {fiatCurrency.symbol}
-              {fiatCurrency.sign}
-              {isLoading ? <Skeleton className="w-4 h-4" /> : `${totalFiatValue}`}
+              {fiatCurrency.sign} ${totalFiatValue}
             </Text>
           </div>
         </div>

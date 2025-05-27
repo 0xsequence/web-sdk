@@ -1,21 +1,21 @@
 import { Skeleton, Spinner, Text } from '@0xsequence/design-system'
+import type { ContractInfo } from '@0xsequence/indexer'
 import type { FC } from 'react'
 
-import type { TokenBalanceWithDetails } from '../../../utils/index.js'
 import { InfiniteScroll } from '../../InfiniteScroll.js'
 
-import { CollectibleTile } from './CollectibleTile.js'
+import { CollectionTile } from './CollectionTile.js'
 
-interface CollectiblesTabProps {
-  displayedCollectibleBalances: TokenBalanceWithDetails[] | undefined
+interface CollectionsTabProps {
+  displayedCollectibleBalances: ContractInfo[] | undefined
   fetchMoreCollectibleBalances: () => Promise<any>
   hasMoreCollectibleBalances: boolean
   isFetchingMoreCollectibleBalances: boolean
   isFetchingInitialBalances: boolean
-  onTokenClick: (token: TokenBalanceWithDetails) => void
+  onTokenClick: (token: ContractInfo) => void
 }
 
-export const CollectiblesTab: FC<CollectiblesTabProps> = ({
+export const CollectionsTab: FC<CollectionsTabProps> = ({
   displayedCollectibleBalances,
   fetchMoreCollectibleBalances,
   hasMoreCollectibleBalances,
@@ -39,7 +39,7 @@ export const CollectiblesTab: FC<CollectiblesTabProps> = ({
             {displayedCollectibleBalances && displayedCollectibleBalances.length > 0 && (
               <InfiniteScroll onLoad={() => fetchMoreCollectibleBalances()} hasMore={hasMoreCollectibleBalances}>
                 {displayedCollectibleBalances?.map((balance, index) => {
-                  return <CollectibleTile key={index} balance={balance} onTokenClick={onTokenClick} />
+                  return <CollectionTile key={index} balance={balance} onTokenClick={onTokenClick} />
                 })}
               </InfiniteScroll>
             )}
