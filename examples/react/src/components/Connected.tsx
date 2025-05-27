@@ -350,14 +350,14 @@ export const Connected = () => {
       return
     }
 
-    // NATIVE token sale
+    // NATIVE erc-1155 token sale mainnet
     // const currencyAddress = zeroAddress
     // const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
     // const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
     // const price = '200000000000000'
     // const contractId = '674eb55a3d739107bbd18ecb'
 
-    // // ERC-20 contract
+    // // ERC-20 erc-1155 token sale mainnet
     // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     // const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
     // const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
@@ -365,6 +365,14 @@ export const Connected = () => {
     // const contractId = '674eb5613d739107bbd18ed2'
 
     // const chainId = 137
+
+    // NATIVE erc-1155 token sale testnet
+    // const currencyAddress = zeroAddress
+    // const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
+    // const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
+    // const price = '1'
+    // const contractId = ''
+    // const chainId = 11155111
 
     // Forte payment testnet testing opensea
     // const currencyAddress = zeroAddress
@@ -443,9 +451,9 @@ export const Connected = () => {
       transakConfig: {
         contractId
       },
-      // forteConfig: {
-      //   protocol: 'mint'
-      // },
+      forteConfig: {
+        protocol: 'mint'
+      },
       // Config for seaport testnet
       // forteConfig: {
       //   protocol: 'seaport',
@@ -455,10 +463,10 @@ export const Connected = () => {
       //   seaportProtocolAddress: '0x0000000000000068F116a894984e2DB1123eB395',
       //   sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
       // },
-      forteConfig: {
-        protocol: 'magiceden',
-        sellerAddress: '0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9'
-      },
+      // forteConfig: {
+      //   protocol: 'magiceden',
+      //   sellerAddress: '0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9'
+      // },
       copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)
