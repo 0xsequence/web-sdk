@@ -5,7 +5,7 @@ import { formatUnits } from 'viem'
 
 import { useSettings } from '../hooks/index.js'
 
-import { CollectibleTileImage } from './CollectibleTileImage.js'
+import { TokenTileImage } from './TokenTileImage.js'
 
 interface SendItemInfoProps {
   name: string
@@ -57,7 +57,7 @@ export const SendItemInfo = ({
       <div className="flex justify-between items-center gap-2">
         {showSquareImage ? (
           <div style={{ width: '40px' }}>
-            <CollectibleTileImage imageUrl={imageUrl} />
+            <TokenTileImage src={imageUrl} symbol={name} />
           </div>
         ) : (
           <TokenImage src={imageUrl} size="lg" />

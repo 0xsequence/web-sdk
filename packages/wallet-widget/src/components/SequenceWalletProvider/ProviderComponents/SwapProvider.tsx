@@ -8,7 +8,7 @@ import { useAccount, useChainId, useChains, usePublicClient, useWalletClient } f
 
 import { SwapContextProvider } from '../../../contexts/Swap.js'
 import { useNavigation } from '../../../hooks/index.js'
-import type { TokenBalanceWithPrice } from '../../../utils/index.js'
+import type { TokenBalanceWithDetails } from '../../../utils/index.js'
 
 export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast()
@@ -17,8 +17,8 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
   const apiClient = useAPIClient()
   const connectedChainId = useChainId()
   const chains = useChains()
-  const [fromCoin, _setFromCoin] = useState<TokenBalanceWithPrice>()
-  const [toCoin, _setToCoin] = useState<TokenBalanceWithPrice>()
+  const [fromCoin, _setFromCoin] = useState<TokenBalanceWithDetails>()
+  const [toCoin, _setToCoin] = useState<TokenBalanceWithDetails>()
   const [amount, _setAmount] = useState<number>(0)
   const [nonRecentAmount, setNonRecentAmount] = useState<number>(0)
   const [recentInput, setRecentInput] = useState<'from' | 'to'>('from')
@@ -112,7 +112,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
     fetchSwapQuote()
   }, [fromCoin, toCoin, amount])
 
-  const setFromCoin = (coin: TokenBalanceWithPrice | undefined) => {
+  const setFromCoin = (coin: TokenBalanceWithDetails | undefined) => {
     if (coin?.chainId === toCoin?.chainId && coin?.contractAddress === toCoin?.contractAddress) {
       switchCoinOrder()
     } else {
@@ -120,7 +120,7 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const setToCoin = (coin: TokenBalanceWithPrice | undefined) => {
+  const setToCoin = (coin: TokenBalanceWithDetails | undefined) => {
     if (coin?.chainId === fromCoin?.chainId && coin?.contractAddress === fromCoin?.contractAddress) {
       switchCoinOrder()
     } else {

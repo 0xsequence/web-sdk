@@ -7,7 +7,7 @@ import { CoinRow } from '../../components/SearchLists/TokenList/CoinRow.js'
 import { SlideupDrawer } from '../../components/Select/SlideupDrawer.js'
 import { useSettings, useSwap } from '../../hooks/index.js'
 import { formatTokenInfo } from '../../utils/formatBalance.js'
-import type { TokenBalanceWithPrice } from '../../utils/index.js'
+import type { TokenBalanceWithDetails } from '../../utils/index.js'
 
 export const CoinSelect = ({
   selectType,
@@ -15,7 +15,7 @@ export const CoinSelect = ({
   disabled
 }: {
   selectType: 'from' | 'to'
-  coinList: TokenBalanceWithPrice[]
+  coinList: TokenBalanceWithDetails[]
   disabled?: boolean
 }) => {
   const { fromCoin, toCoin, setFromCoin, setToCoin } = useSwap()
@@ -29,7 +29,7 @@ export const CoinSelect = ({
 
   const { logo, name, symbol, displayBalance } = formatTokenInfo(selectedCoin, fiatCurrency.sign, chains)
 
-  const handleSelect = (coin: TokenBalanceWithPrice) => {
+  const handleSelect = (coin: TokenBalanceWithDetails) => {
     setSelectedCoin(coin)
     setIsSelectorOpen(false)
   }

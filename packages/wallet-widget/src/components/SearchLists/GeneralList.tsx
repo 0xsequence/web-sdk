@@ -1,7 +1,7 @@
 import { compareAddress, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
 import { Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'
-import type { Transaction, TxnTransfer } from '@0xsequence/indexer'
+import type { ContractInfo, Transaction, TxnTransfer } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useObservable } from 'micro-observables'
@@ -9,11 +9,13 @@ import { useMemo, useState } from 'react'
 import { useConfig } from 'wagmi'
 
 import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings } from '../../hooks/index.js'
-import { computeBalanceFiat, type TokenBalanceWithPrice } from '../../utils/index.js'
+import { useGetAllCollections } from '../../hooks/useGetAllCollections.js'
+import { computeBalanceFiat, type TokenBalanceWithDetails } from '../../utils/index.js'
 import { FilterMenu } from '../Filter/FilterMenu.js'
 import { TransactionHistoryList } from '../TransactionHistoryList/index.js'
 
 import { CollectiblesTab } from './CollectiblesList/CollectiblesTab.js'
+import { CollectionsTab } from './CollectionsList/CollectionsTab.js'
 import { CoinsTab } from './TokenList/CoinsTab.js'
 
 export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'send' }) => {
@@ -25,7 +27,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     hideUnlistedTokens,
     selectedNetworksObservable,
     selectedWalletsObservable,
-    selectedCollectionsObservable
+    showCollectionsObservable
   } = useSettings()
   const { wallets } = useWallets()
 
@@ -34,19 +36,30 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
 
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedWallets = useObservable(selectedWalletsObservable)
-  const selectedCollections = useObservable(selectedCollectionsObservable)
+  const showCollections = useObservable(showCollectionsObservable)
 
   const activeWallet = wallets.find(wallet => wallet.isActive)
 
   const TOKEN_PAGE_SIZE = 10
-  const COLLECTIBLE_PAGE_SIZE = 8
+  const COLLECTIBLE_PAGE_SIZE = 9
+  const COLLECTION_PAGE_SIZE = 9
 
   const { data: tokenBalancesData = [], isLoading: isLoadingTokenBalances } = useGetAllTokensDetails({
     accountAddresses: variant === 'default' ? selectedWallets.map(wallet => wallet.address) : [activeWallet?.address || ''],
     chainIds: variant === 'default' ? selectedNetworks : allNetworks,
-    contractWhitelist: variant === 'default' ? selectedCollections.map(collection => collection.contractAddress) : [],
     hideUnlistedTokens
   })
+
+  const { data: collectionsData = [] } = useGetAllCollections({
+    accountAddresses: variant === 'default' ? selectedWallets.map(wallet => wallet.address) : [activeWallet?.address || ''],
+    chainIds: variant === 'default' ? selectedNetworks : allNetworks,
+    hideUnlistedTokens
+  })
+
+  const collectionsDataWithDetails = collectionsData.map(collection => ({
+    ...collection,
+    _type: 'collection' as const
+  }))
 
   const coinBalancesUnordered =
     tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
@@ -93,7 +106,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     return {
       ...balance,
       price: { value: priceValue, currency: priceCurrency },
-      _type: 'coin'
+      _type: 'coin' as const
     }
   })
 
@@ -112,7 +125,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
       value: 0,
       currency: 'USD'
     },
-    _type: 'collectible'
+    _type: 'collectible' as const
   }))
 
   const fuseOptions = {
@@ -146,6 +159,16 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
         name: 'collectionName',
         getFn: (item: any) => {
           if (item._type === 'collectible') {
+            return item.contractInfo?.name || ''
+          }
+          return ''
+        }
+      },
+      // Collection: Name
+      {
+        name: 'collectionName',
+        getFn: (item: any) => {
+          if (item._type === 'collection') {
             return item.contractInfo?.name || ''
           }
           return ''
@@ -227,10 +250,15 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
 
   const transactionHistory = transactionHistoryData.map(transaction => ({
     ...transaction,
-    _type: 'transaction'
+    _type: 'transaction' as const
   }))
 
-  const combinedBalances = [...coinBalancesWithPrice, ...collectibleBalancesWithPrice, ...transactionHistory]
+  const combinedBalances = [
+    ...coinBalancesWithPrice,
+    ...collectibleBalancesWithPrice,
+    ...collectionsDataWithDetails,
+    ...transactionHistory
+  ]
 
   const fuse = useMemo(() => {
     return new Fuse(combinedBalances, fuseOptions)
@@ -243,6 +271,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     return fuse.search(search).map(result => result.item)
   }, [search, fuse])
 
+  // infinite scroll for tokens
   const {
     data: infiniteBalancesTokens,
     fetchNextPage: fetchMoreBalancesTokens,
@@ -255,9 +284,11 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     fetchNextPage: fetchMoreSearchBalancesTokens,
     hasNextPage: hasMoreSearchBalancesTokens,
     isFetching: isFetchingMoreSearchBalancesTokens
-  } = useGetMoreBalances(searchResults.filter(item => item._type === 'coin') as TokenBalanceWithPrice[], TOKEN_PAGE_SIZE, {
+  } = useGetMoreBalances(searchResults.filter(item => item._type === 'coin') as TokenBalanceWithDetails[], TOKEN_PAGE_SIZE, {
     enabled: search.trim() !== ''
   })
+
+  // infinite scroll for collectibles
 
   const {
     data: infiniteBalancesCollectibles,
@@ -272,14 +303,36 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     hasNextPage: hasMoreSearchBalancesCollectibles,
     isFetching: isFetchingMoreSearchBalancesCollectibles
   } = useGetMoreBalances(
-    searchResults.filter(item => item._type === 'collectible') as TokenBalanceWithPrice[],
+    searchResults.filter(item => item._type === 'collectible') as TokenBalanceWithDetails[],
     COLLECTIBLE_PAGE_SIZE,
     {
       enabled: search.trim() !== ''
     }
   )
 
-  const handleTokenClickDefault = (balance: TokenBalanceWithPrice) => {
+  // infinite scroll for collections
+
+  const {
+    data: infiniteBalancesCollections,
+    fetchNextPage: fetchMoreBalancesCollections,
+    hasNextPage: hasMoreBalancesCollections,
+    isFetching: isFetchingMoreBalancesCollections
+  } = useGetMoreBalances(collectionsDataWithDetails, COLLECTION_PAGE_SIZE, { enabled: search.trim() === '' })
+
+  const {
+    data: infiniteSearchBalancesCollections,
+    fetchNextPage: fetchMoreSearchBalancesCollections,
+    hasNextPage: hasMoreSearchBalancesCollections,
+    isFetching: isFetchingMoreSearchBalancesCollections
+  } = useGetMoreBalances(
+    searchResults.filter(item => item._type === 'collection'),
+    COLLECTION_PAGE_SIZE,
+    {
+      enabled: search.trim() !== ''
+    }
+  )
+
+  const handleTokenClickDefault = (balance: TokenBalanceWithDetails) => {
     setNavigation({
       location: 'coin-details',
       params: {
@@ -290,7 +343,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     })
   }
 
-  const handleTokenClickSend = (token: TokenBalanceWithPrice) => {
+  const handleTokenClickSend = (token: TokenBalanceWithDetails) => {
     setNavigation({
       location: 'send-coin',
       params: {
@@ -300,7 +353,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     })
   }
 
-  const handleCollectibleClickDefault = (balance: TokenBalanceWithPrice) => {
+  const handleCollectibleClickDefault = (balance: TokenBalanceWithDetails) => {
     setNavigation({
       location: 'collectible-details',
       params: {
@@ -312,7 +365,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     })
   }
 
-  const handleCollectibleClickSend = (token: TokenBalanceWithPrice) => {
+  const handleCollectibleClickSend = (token: TokenBalanceWithDetails) => {
     setNavigation({
       location: 'send-collectible',
       params: {
@@ -321,6 +374,16 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
         tokenId: token.tokenID || ''
       }
     })
+  }
+
+  const handleCollectionClick = (collection: ContractInfo) => {
+    // setNavigation({
+    //   location: 'collection-details',
+    //   params: {
+    //     contractAddress: collection.address,
+    //     chainId: collection.chainId
+    //   }
+    // })
   }
 
   return (
@@ -393,18 +456,33 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
           </TabsContent>
           <TabsContent value="collectibles">
             <div>
-              <CollectiblesTab
-                displayedCollectibleBalances={
-                  search ? infiniteSearchBalancesCollectibles?.pages.flat() : infiniteBalancesCollectibles?.pages.flat()
-                }
-                fetchMoreCollectibleBalances={search ? fetchMoreSearchBalancesCollectibles : fetchMoreBalancesCollectibles}
-                hasMoreCollectibleBalances={search ? hasMoreSearchBalancesCollectibles : hasMoreBalancesCollectibles}
-                isFetchingMoreCollectibleBalances={
-                  search ? isFetchingMoreSearchBalancesCollectibles : isFetchingMoreBalancesCollectibles
-                }
-                isFetchingInitialBalances={isLoading}
-                onTokenClick={variant === 'default' ? handleCollectibleClickDefault : handleCollectibleClickSend}
-              />
+              {showCollections ? (
+                <CollectionsTab
+                  displayedCollectibleBalances={
+                    search ? infiniteSearchBalancesCollections?.pages.flat() : infiniteBalancesCollections?.pages.flat()
+                  }
+                  fetchMoreCollectibleBalances={search ? fetchMoreSearchBalancesCollections : fetchMoreBalancesCollections}
+                  hasMoreCollectibleBalances={search ? hasMoreSearchBalancesCollections : hasMoreBalancesCollections}
+                  isFetchingMoreCollectibleBalances={
+                    search ? isFetchingMoreSearchBalancesCollections : isFetchingMoreBalancesCollections
+                  }
+                  isFetchingInitialBalances={isLoading}
+                  onTokenClick={handleCollectionClick}
+                />
+              ) : (
+                <CollectiblesTab
+                  displayedCollectibleBalances={
+                    search ? infiniteSearchBalancesCollectibles?.pages.flat() : infiniteBalancesCollectibles?.pages.flat()
+                  }
+                  fetchMoreCollectibleBalances={search ? fetchMoreSearchBalancesCollectibles : fetchMoreBalancesCollectibles}
+                  hasMoreCollectibleBalances={search ? hasMoreSearchBalancesCollectibles : hasMoreBalancesCollectibles}
+                  isFetchingMoreCollectibleBalances={
+                    search ? isFetchingMoreSearchBalancesCollectibles : isFetchingMoreBalancesCollectibles
+                  }
+                  isFetchingInitialBalances={isLoading}
+                  onTokenClick={variant === 'default' ? handleCollectibleClickDefault : handleCollectibleClickSend}
+                />
+              )}
             </div>
           </TabsContent>
           <TabsContent value="history">
