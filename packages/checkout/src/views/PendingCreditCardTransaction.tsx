@@ -450,15 +450,10 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
   const { initializeWidget } = useFortePaymentController()
   const { data: accessTokenData, isLoading: isLoadingAccessToken, isError: isErrorAccessToken } = useForteAccessToken()
-  const { data: signatureData, signMessage } = useSignMessage()
-  const { address } = useAccount()
   const nav = useNavigation()
   const {
     params: { creditCardCheckout }
   } = nav.navigation as TransactionPendingNavigation
-  const publicClient = usePublicClient({ chainId: creditCardCheckout.chainId })
-  const isMessageSigned = signatureData !== undefined
-  const isSignatureRequired = creditCardCheckout.forteConfig?.protocol === 'mint'
   const { closeCheckout } = useCheckoutModal()
 
   const {
@@ -486,7 +481,6 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       nftQuantity,
       recipientAddress: creditCardCheckout.recipientAddress,
       chainId: creditCardCheckout.chainId.toString(),
-      signature: signatureData || '',
       nftAddress: creditCardCheckout.nftAddress,
       currencyAddress: creditCardCheckout.currencyAddress,
       targetContractAddress: creditCardCheckout.contractAddress,
@@ -494,10 +488,11 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       imageUrl: tokenMetadata?.image || '',
       tokenId: creditCardCheckout.nftId,
       protocolConfig: creditCardCheckout.forteConfig || { protocol: 'mint' },
-      currencyQuantity
+      currencyQuantity,
+      calldata: creditCardCheckout.calldata
     },
     {
-      disabled: (!isMessageSigned && isSignatureRequired) || isLoadingTokenMetadata || isLoadingAccessToken
+      disabled: isLoadingTokenMetadata || isLoadingAccessToken
     }
   )
 
@@ -518,29 +513,6 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
   }, [paymentIntentData])
 
   const isError = isErrorTokenMetadata || isErrorAccessToken || isErrorPaymentIntent
-
-  const onClickSignMessage = async () => {
-    if (!publicClient || !address) {
-      console.error('No public client or address')
-      return
-    }
-
-    try {
-      await signMessage({ message: creditCardCheckout.calldata })
-    } catch (e) {
-      console.error('An error occurred while signing the message')
-    }
-  }
-
-  if (!isMessageSigned && isSignatureRequired) {
-    return (
-      <div className="flex items-center justify-center" style={{ height: '770px' }}>
-        <Button variant="primary" onClick={onClickSignMessage}>
-          Approve and purchase
-        </Button>
-      </div>
-    )
-  }
 
   if (isError) {
     return (

@@ -286,9 +286,10 @@ export interface CreateFortePaymentIntentArgs {
   targetContractAddress: string
   nftName: string
   imageUrl: string
-  tokenId: string
+  tokenId?: string
   currencyQuantity: string
   protocolConfig: ForteConfig
+  calldata: string
 }
 
 const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
@@ -315,7 +316,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     tokenType,
     recipientAddress,
     chainId,
-    signature,
+    calldata,
     targetContractAddress,
     nftName,
     nftAddress,
@@ -353,7 +354,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     body = {
       ...body,
       transaction_type: 'BUY_NFT_MINT',
-      currency: 'USD',
+      currency: getForteCurrency(chainId, currencyAddress),
       items: [
         {
           name: nftName,
@@ -363,11 +364,11 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
             image_url: imageUrl,
             title: nftName,
             mint_data: {
-              nonce: `${targetContractAddress}-${Date.now()}`,
-              signature: signature,
-              token_ids: [tokenId],
+              token_contract_address: nftAddress,
+              token_ids: tokenId ? [tokenId] : [],
               protocol_address: targetContractAddress,
-              protocol: 'protocol-mint'
+              protocol: 'custom_evm_call',
+              calldata
             }
           }
         }
