@@ -367,12 +367,12 @@ export const Connected = () => {
     // const chainId = 137
 
     // NATIVE erc-1155 token sale testnet
-    // const currencyAddress = zeroAddress
-    // const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
-    // const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
-    // const price = '1'
-    // const contractId = ''
-    // const chainId = 11155111
+    const currencyAddress = zeroAddress
+    const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
+    const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
+    const price = '1'
+    const contractId = ''
+    const chainId = 11155111
 
     // Forte payment testnet testing opensea
     // const currencyAddress = zeroAddress
@@ -383,13 +383,13 @@ export const Connected = () => {
     // const chainId = 11155111
 
     // Forte payment testnet testing magiceden
-    const currencyAddress = zeroAddress
-    const salesContractAddress = '0x0000000000000068F116a894984e2DB1123eB395'
-    const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
-    const price = '100000000000000'
-    const contractId = ''
+    // const currencyAddress = zeroAddress
+    // const salesContractAddress = '0x0000000000000068F116a894984e2DB1123eB395'
+    // const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
+    // const price = '100000000000000'
+    // const contractId = ''
 
-    const chainId = 137
+    // const chainId = 137
 
     const collectibles = [
       {
