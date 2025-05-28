@@ -447,12 +447,15 @@ export const Connected = () => {
       ]
     })
 
+    // Forte payment contract address (temporary will be replaced in new api inputs)
+    const forteContractAddress = '0xa6abee70242d53841417586bb9d3fa31ef3cbae1'
+
     const forteTransactionData = encodeFunctionData({
       abi: ERC_1155_SALE_CONTRACT,
       functionName: 'mint',
       // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
       args: [
-        address, // replace with forte address
+        forteContractAddress,
         collectibles.map(c => BigInt(c.tokenId)),
         collectibles.map(c => BigInt(c.quantity)),
         toHex(0),
