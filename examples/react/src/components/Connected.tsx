@@ -375,7 +375,7 @@ export const Connected = () => {
     // const price = '1'
     // const contractId = ''
 
-    const chainId = 137
+    // const chainId = 137
 
     const collectibles = [
       {
