@@ -466,9 +466,14 @@ export const Connected = () => {
       transakConfig: {
         contractId
       },
+      // forteConfig: {
+      //   protocol: 'mint',
+      //   calldata: forteTransactionData,
+      // },
       forteConfig: {
-        protocol: 'mint',
-        calldata: forteTransactionData
+        protocol: 'custom_evm_call',
+        calldata: forteTransactionData,
+        sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
       },
       // forteConfig: {
       //   protocol: 'seaport',
