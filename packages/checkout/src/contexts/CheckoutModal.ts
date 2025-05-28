@@ -27,6 +27,7 @@ export type ForteProtocolType = 'seaport' | 'magiceden' | 'mint'
 
 export interface ForteMintConfig {
   protocol: 'mint'
+  calldata: string
 }
 
 export interface ForteSeaportConfig {

@@ -447,6 +447,21 @@ export const Connected = () => {
       ]
     })
 
+    const forteTransactionData = encodeFunctionData({
+      abi: ERC_1155_SALE_CONTRACT,
+      functionName: 'mint',
+      // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
+      args: [
+        address, // replace with forte address
+        collectibles.map(c => BigInt(c.tokenId)),
+        collectibles.map(c => BigInt(c.quantity)),
+        toHex(0),
+        currencyAddress,
+        price,
+        [toHex(0, { size: 32 })]
+      ]
+    })
+
     // ERC-721 contract
     // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
     // const salesContractAddress = '0xa0284905d29cbeb19f4be486f9091fac215b7a6a'
