@@ -27,7 +27,7 @@ export const CoinsTab: FC<CoinsTabProps> = ({
   includeUserAddress = false
 }) => {
   return (
-    <div className="h-full">
+    <div>
       <div className="flex flex-col items-center gap-2">
         {isFetchingInitialBalances ? (
           <>
@@ -51,11 +51,7 @@ export const CoinsTab: FC<CoinsTabProps> = ({
           </>
         )}
       </div>
-      {(!displayedCoinBalances || displayedCoinBalances.length === 0) && !isFetchingMoreCoinBalances && (
-        <div className="h-full">
-          <NoResults />
-        </div>
-      )}
+      {(!displayedCoinBalances || displayedCoinBalances.length === 0) && !isFetchingMoreCoinBalances && <NoResults />}
       {isFetchingMoreCoinBalances && <Spinner className="flex self-center mt-3" />}
     </div>
   )

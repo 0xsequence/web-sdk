@@ -10,13 +10,14 @@ import { computeBalanceFiat } from '../../../utils/index.js'
 // Define the provider component
 export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) => {
   const { wallets } = useWallets()
-  const { selectedNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
+  const { allNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
 
   const [fiatWalletsMap, setFiatWalletsMap] = useState<FiatWalletPair[]>([])
+  const [totalFiatValue, setTotalFiatValue] = useState<number>(0)
 
   const { data: tokenBalancesData, isLoading: isTokenBalancesLoading } = useGetAllTokensDetails({
     accountAddresses: wallets.map(wallet => wallet.address),
-    chainIds: selectedNetworks,
+    chainIds: allNetworks,
     hideUnlistedTokens
   })
 
@@ -64,9 +65,11 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
 
       if (JSON.stringify(newFiatWalletsMap) !== JSON.stringify(fiatWalletsMap)) {
         setFiatWalletsMap(newFiatWalletsMap)
+        const totalFiatValue = newFiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0).toFixed(2)
+        setTotalFiatValue(Number(totalFiatValue))
       }
     }
   }, [coinBalancesUnordered, coinPrices, conversionRate])
 
-  return <FiatWalletsMapContextProvider value={{ fiatWalletsMap, setFiatWalletsMap }}>{children}</FiatWalletsMapContextProvider>
+  return <FiatWalletsMapContextProvider value={{ fiatWalletsMap, totalFiatValue }}>{children}</FiatWalletsMapContextProvider>
 }
