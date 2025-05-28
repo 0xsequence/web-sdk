@@ -5,12 +5,11 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
 import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
-import { useSignMessage, usePublicClient, useAccount } from 'wagmi'
 
 import { fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
-import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
-import { useFortePaymentController } from '../contexts/index.js'
+import { useEnvironmentContext, useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
+import { type ForteMintConfig, type ForteSeaportConfig } from '../contexts/index.js'
 import {
   useCheckoutModal,
   useForteAccessToken,
@@ -487,9 +486,12 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       nftName: tokenMetadata?.name || '',
       imageUrl: tokenMetadata?.image || '',
       tokenId: creditCardCheckout.nftId,
-      protocolConfig: creditCardCheckout.forteConfig || { protocol: 'mint' },
+      protocolConfig: creditCardCheckout.forteConfig!,
       currencyQuantity,
-      calldata: creditCardCheckout.calldata
+      calldata:
+        creditCardCheckout.forteConfig!.protocol === 'mint'
+          ? creditCardCheckout.forteConfig!.calldata
+          : creditCardCheckout.calldata
     },
     {
       disabled: isLoadingTokenMetadata || isLoadingAccessToken
