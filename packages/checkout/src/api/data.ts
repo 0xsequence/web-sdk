@@ -389,6 +389,12 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
         auction_house: targetContractAddress,
         token_address: nftAddress
       }
+    } else if (protocolConfig.protocol == 'custom_evm_call') {
+      listingData = {
+        protocol: protocolConfig.protocol,
+        calldata: protocolConfig.calldata,
+        protocol_address: targetContractAddress
+      }
     }
 
     body = {
