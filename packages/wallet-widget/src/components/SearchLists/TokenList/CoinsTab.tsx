@@ -1,8 +1,9 @@
-import { Skeleton, Spinner, Text } from '@0xsequence/design-system'
+import { Skeleton, Spinner } from '@0xsequence/design-system'
 import type { FC } from 'react'
 
 import type { TokenBalanceWithDetails } from '../../../utils/tokens.js'
 import { InfiniteScroll } from '../../InfiniteScroll.js'
+import { NoResults } from '../../NoResults.js'
 
 import { CoinRow } from './CoinRow.js'
 
@@ -26,7 +27,7 @@ export const CoinsTab: FC<CoinsTabProps> = ({
   includeUserAddress = false
 }) => {
   return (
-    <div>
+    <div className="h-full">
       <div className="flex flex-col items-center gap-2">
         {isFetchingInitialBalances ? (
           <>
@@ -38,9 +39,7 @@ export const CoinsTab: FC<CoinsTabProps> = ({
           </>
         ) : (
           <>
-            {(!displayedCoinBalances || displayedCoinBalances.length === 0) && !isFetchingMoreCoinBalances ? (
-              <Text color="primary">No Coins Found</Text>
-            ) : (
+            {displayedCoinBalances && displayedCoinBalances.length > 0 && (
               <InfiniteScroll onLoad={() => fetchMoreCoinBalances()} hasMore={hasMoreCoinBalances}>
                 {displayedCoinBalances?.map((balance, index) => {
                   return (
@@ -51,8 +50,13 @@ export const CoinsTab: FC<CoinsTabProps> = ({
             )}
           </>
         )}
-        {isFetchingMoreCoinBalances && <Spinner className="flex self-center mt-3" />}
       </div>
+      {(!displayedCoinBalances || displayedCoinBalances.length === 0) && !isFetchingMoreCoinBalances && (
+        <div className="h-full">
+          <NoResults />
+        </div>
+      )}
+      {isFetchingMoreCoinBalances && <Spinner className="flex self-center mt-3" />}
     </div>
   )
 }
