@@ -200,7 +200,7 @@ export const Home = () => {
   // ]
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center h-full">
       <div className="flex flex-col items-center w-full px-4">
         <div className="flex flew-row justify-between items-center w-full py-4">
           <div className="flex flex-row items-center w-full gap-2">
@@ -226,9 +226,9 @@ export const Home = () => {
             <Text color="muted" variant="small">
               Balance
             </Text>
-            <Text color="primary" variant="xlarge">
-              {fiatCurrency.symbol}
-              {fiatCurrency.sign} ${totalFiatValue}
+            <Text color="primary" variant="xlarge" nowrap>
+              {fiatCurrency.symbol} {fiatCurrency.sign}
+              {totalFiatValue}
             </Text>
           </div>
         </div>
