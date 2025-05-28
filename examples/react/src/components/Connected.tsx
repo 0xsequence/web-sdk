@@ -368,11 +368,11 @@ export const Connected = () => {
 
     // NATIVE erc-1155 token sale testnet
     const currencyAddress = zeroAddress
-    const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
-    const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
+    const salesContractAddress = '0xe240703f039dabffdad3359afd1fbee44bf82808'
+    const collectionAddress = '0xb92e29e426e82390304e20a70c2e82542c22c3a3'
     const price = '1'
     const contractId = ''
-    const chainId = 11155111
+    const chainId = 84532
 
     // Forte payment testnet testing opensea
     // const currencyAddress = zeroAddress
@@ -413,12 +413,15 @@ export const Connected = () => {
       ]
     })
 
+    // Forte payment contract address (temporary will be replaced in new api inputs)
+    const forteContractAddress = '0xa6abee70242d53841417586bb9d3fa31ef3cbae1'
+
     const forteTransactionData = encodeFunctionData({
       abi: ERC_1155_SALE_CONTRACT,
       functionName: 'mint',
       // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
       args: [
-        address, // replace with forte address
+        forteContractAddress,
         collectibles.map(c => BigInt(c.tokenId)),
         collectibles.map(c => BigInt(c.quantity)),
         toHex(0),
@@ -466,15 +469,15 @@ export const Connected = () => {
       transakConfig: {
         contractId
       },
-      // forteConfig: {
-      //   protocol: 'mint',
-      //   calldata: forteTransactionData,
-      // },
       forteConfig: {
-        protocol: 'custom_evm_call',
-        calldata: forteTransactionData,
-        sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
+        protocol: 'mint',
+        calldata: forteTransactionData
       },
+      // forteConfig: {
+      //   protocol: 'custom_evm_call',
+      //   calldata: forteTransactionData,
+      //   sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
+      // },
       // forteConfig: {
       //   protocol: 'seaport',
       //   orderHash: '0xa29984c1892bb28bc35170a0e7e4db64ceacfbd20dc5576bd67f1aae9dd678a3',
