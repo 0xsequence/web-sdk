@@ -69,7 +69,7 @@ export const WalletsFilter = ({ onClose }: { onClose?: () => void }) => {
             onClick={e => e.stopPropagation}
           >
             {formatAddress(wallet.address)}
-            <CopyButton text={wallet.address} buttonVariant="icon" onClick={e => e.stopPropagation()} />
+            <CopyButton text={wallet.address} onClick={e => e.stopPropagation()} />
           </Text>
         </ListCardSelect>
       ))}

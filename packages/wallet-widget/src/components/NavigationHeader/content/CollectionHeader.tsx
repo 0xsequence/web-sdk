@@ -1,6 +1,6 @@
 import { Image, Text } from '@0xsequence/design-system'
 
-export const Collectible = ({ imgSrc, imgLabel }: { imgSrc?: string; imgLabel?: string }) => {
+export const CollectionHeader = ({ imgSrc, imgLabel }: { imgSrc?: string; imgLabel?: string }) => {
   return (
     <div className="flex flex-row items-center h-full w-full">
       <div className="px-3">

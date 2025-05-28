@@ -25,7 +25,7 @@ export const CollectiblesTab: FC<CollectiblesTabProps> = ({
   onTokenClick
 }) => {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(3, 1fr)`, width: '100%' }}>
         {isFetchingInitialBalances ? (
           <>
@@ -48,9 +48,7 @@ export const CollectiblesTab: FC<CollectiblesTabProps> = ({
         )}
       </div>
       {(!displayedCollectibleBalances || displayedCollectibleBalances.length === 0) && !isFetchingMoreCollectibleBalances && (
-        <div className="h-full">
-          <NoResults />
-        </div>
+        <NoResults />
       )}
       {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
     </div>

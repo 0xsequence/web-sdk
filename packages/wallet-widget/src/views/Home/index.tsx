@@ -44,7 +44,7 @@ import { OperationButtonTemplate } from './OperationButtonTemplate.js'
 export const Home = () => {
   const { setNavigation } = useNavigation()
   const { selectedWalletsObservable, selectedNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
-  const { fiatWalletsMap } = useFiatWalletsMap()
+  const { totalFiatValue } = useFiatWalletsMap()
   const { connector } = useAccount()
 
   const selectedWallets = useObservable(selectedWalletsObservable)
@@ -79,16 +79,6 @@ export const Home = () => {
     }
     fetchSignInDisplay()
   }, [connector])
-
-  const totalFiatValue = fiatWalletsMap
-    .reduce((acc, wallet) => {
-      if (selectedWallets.some(selectedWallet => selectedWallet.address === wallet.accountAddress)) {
-        const walletFiatValue = Number(wallet.fiatValue)
-        return acc + walletFiatValue
-      }
-      return acc
-    }, 0)
-    .toFixed(2)
 
   const onClickAccountSelector = () => {
     setAccountSelectorModalOpen(true)
@@ -200,7 +190,7 @@ export const Home = () => {
   // ]
 
   return (
-    <div className="flex flex-col items-center h-full">
+    <div className="flex flex-col items-center">
       <div className="flex flex-col items-center w-full px-4">
         <div className="flex flew-row justify-between items-center w-full py-4">
           <div className="flex flex-row items-center w-full gap-2">
@@ -210,7 +200,7 @@ export const Home = () => {
                 <Text color="primary" fontWeight="medium" variant="normal">
                   {truncateAtIndex(accountAddress || '', 8)}
                 </Text>
-                <CopyButton text={accountAddress || ''} buttonVariant="icon" />
+                <CopyButton text={accountAddress || ''} />
               </div>
               {signInDisplay && (
                 <Text color="muted" fontWeight="medium" variant="small">

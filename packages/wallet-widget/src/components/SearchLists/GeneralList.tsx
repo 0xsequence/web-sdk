@@ -387,9 +387,9 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <TabsPrimitive.Root
-        className="w-full h-full"
+        className="w-full"
         value={selectedTab}
         onValueChange={value => setSelectedTab(value as 'tokens' | 'collectibles' | 'history')}
       >
@@ -438,11 +438,11 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
           </div>
         )}
 
-        <div className="flex flex-col p-4 gap-4 h-full">
+        <div className="flex flex-col p-4 gap-4">
           <FilterMenu filterMenuType={selectedTab} />
 
-          <TabsContent className="h-full" value="tokens">
-            <div className="h-full">
+          <TabsContent value="tokens">
+            <div>
               <CoinsTab
                 displayedCoinBalances={search ? infiniteSearchBalancesTokens?.pages.flat() : infiniteBalancesTokens?.pages.flat()}
                 fetchMoreCoinBalances={search ? fetchMoreSearchBalancesTokens : fetchMoreBalancesTokens}
@@ -454,8 +454,8 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
               />
             </div>
           </TabsContent>
-          <TabsContent className="h-full" value="collectibles">
-            <div className="h-full">
+          <TabsContent value="collectibles">
+            <div>
               {showCollections ? (
                 <CollectionsTab
                   displayedCollectibleBalances={
