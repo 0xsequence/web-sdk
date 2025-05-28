@@ -1,8 +1,9 @@
-import { Skeleton, Spinner, Text } from '@0xsequence/design-system'
+import { Skeleton, Spinner } from '@0xsequence/design-system'
 import type { ContractInfo } from '@0xsequence/indexer'
 import type { FC } from 'react'
 
 import { InfiniteScroll } from '../../InfiniteScroll.js'
+import { NoResults } from '../../NoResults.js'
 
 import { CollectionTile } from './CollectionTile.js'
 
@@ -24,7 +25,7 @@ export const CollectionsTab: FC<CollectionsTabProps> = ({
   onTokenClick
 }) => {
   return (
-    <div>
+    <div className="h-full">
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(3, 1fr)`, width: '100%' }}>
         {isFetchingInitialBalances ? (
           <>
@@ -47,7 +48,9 @@ export const CollectionsTab: FC<CollectionsTabProps> = ({
         )}
       </div>
       {(!displayedCollectibleBalances || displayedCollectibleBalances.length === 0) && !isFetchingMoreCollectibleBalances && (
-        <Text color="primary">No Collectibles Found</Text>
+        <div className="h-full">
+          <NoResults />
+        </div>
       )}
       {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
     </div>
