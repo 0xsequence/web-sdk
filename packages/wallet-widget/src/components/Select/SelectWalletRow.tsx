@@ -41,8 +41,8 @@ export const SelectWalletRow = ({
       <WalletAccountGradient accountAddress={wallet.address} />
       <div className="flex flex-col">
         <Text className="flex flex-row gap-1 items-center" nowrap color="primary" fontWeight="medium" variant="normal">
-          {formatAddress(wallet.address)}
-          <CopyButton text={wallet.address} buttonVariant="icon" onClick={e => e.stopPropagation()} />
+          <div className="flex flex-col">{formatAddress(wallet.address)}</div>
+          <CopyButton text={wallet.address} onClick={e => e.stopPropagation()} />
         </Text>
       </div>
     </ListCardSelect>

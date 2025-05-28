@@ -7,7 +7,7 @@ export interface FiatWalletPair {
 
 export interface FiatWalletsMapContext {
   fiatWalletsMap: FiatWalletPair[]
-  setFiatWalletsMap: (fiatWalletsMap: FiatWalletPair[]) => void
+  totalFiatValue: number
 }
 
 const [useFiatWalletsMapContext, FiatWalletsMapContextProvider] = createGenericContext<FiatWalletsMapContext>()

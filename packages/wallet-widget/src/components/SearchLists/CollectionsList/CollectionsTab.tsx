@@ -25,7 +25,7 @@ export const CollectionsTab: FC<CollectionsTabProps> = ({
   onTokenClick
 }) => {
   return (
-    <div className="h-full">
+    <div>
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(3, 1fr)`, width: '100%' }}>
         {isFetchingInitialBalances ? (
           <>
@@ -48,9 +48,7 @@ export const CollectionsTab: FC<CollectionsTabProps> = ({
         )}
       </div>
       {(!displayedCollectibleBalances || displayedCollectibleBalances.length === 0) && !isFetchingMoreCollectibleBalances && (
-        <div className="h-full">
-          <NoResults />
-        </div>
+        <NoResults />
       )}
       {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
     </div>

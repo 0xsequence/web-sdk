@@ -1,7 +1,7 @@
 import { useFiatWalletsMapContext } from '../contexts/FiatWalletsMap.js'
 
 export const useFiatWalletsMap = () => {
-  const { fiatWalletsMap, setFiatWalletsMap } = useFiatWalletsMapContext()
+  const { fiatWalletsMap, totalFiatValue } = useFiatWalletsMapContext()
 
-  return { fiatWalletsMap, setFiatWalletsMap }
+  return { fiatWalletsMap, totalFiatValue }
 }

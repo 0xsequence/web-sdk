@@ -4,12 +4,12 @@ import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
 import { useNavigation } from '../../hooks/index.js'
 
-import { Collectible } from './content/Collectible.js'
-import { Collection } from './content/Collection.js'
-import { Home } from './content/Home.js'
-import { Search } from './content/Search.js'
-import { Settings } from './content/Settings.js'
-import { Token } from './content/Token.js'
+import { CollectibleHeader } from './content/CollectibleHeader.js'
+import { CollectionHeader } from './content/CollectionHeader.js'
+import { HomeHeader } from './content/HomeHeader.js'
+import { SearchHeader } from './content/SearchHeader.js'
+import { SettingsHeader } from './content/SettingsHeader.js'
+import { TokenHeader } from './content/TokenHeader.js'
 
 interface NavigationHeaderProps {
   type: 'home' | 'search' | 'settings' | 'token' | 'collectible' | 'collection'
@@ -20,17 +20,17 @@ interface NavigationHeaderProps {
 const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, imgLabel?: string) => {
   switch (type) {
     case 'home':
-      return <Home />
+      return <HomeHeader />
     case 'search':
-      return <Search />
+      return <SearchHeader />
     case 'settings':
-      return <Settings />
+      return <SettingsHeader />
     case 'token':
-      return <Token /> // TODO: add imgSrc and imgLabel?
+      return <TokenHeader /> // TODO: add imgSrc and imgLabel?
     case 'collectible':
-      return <Collectible imgSrc={imgSrc} imgLabel={imgLabel} />
+      return <CollectibleHeader imgSrc={imgSrc} imgLabel={imgLabel} />
     case 'collection':
-      return <Collection imgSrc={imgSrc} imgLabel={imgLabel} />
+      return <CollectionHeader imgSrc={imgSrc} imgLabel={imgLabel} />
   }
 }
 
