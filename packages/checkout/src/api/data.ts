@@ -249,8 +249,8 @@ export interface FetchForteAccessTokenReturn {
 }
 
 export const fetchForteAccessToken = async (forteApiUrl: string): Promise<FetchForteAccessTokenReturn> => {
-  const clientId = '5tpnj5869vs3jpgtpif2ci8v08'
-  const clientSecret = 'jpkbg3e2ho9rbd0959qe5l6ke238d4bca2nptstfga2i9hant5e'
+  const clientId = 'l5cnnjctaugcn7b7rg0fglpk'
+  const clientSecret = '1l9acapjnrclfl4ld5po6vcquicch2v7jdn6v1249cht9uu878t4'
 
   const url = `${forteApiUrl}/auth/v1/oauth2/token`
 
