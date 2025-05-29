@@ -270,10 +270,12 @@ export const Home = () => {
         {accountSelectorModalOpen && (
           <SlideupDrawer
             onClose={() => setAccountSelectorModalOpen(false)}
-            label="Select main wallet"
-            buttonLabel="+ Add new wallet"
-            handleButtonPress={handleAddNewWallet}
-            dragHandleWidth={74}
+            header="Select main wallet"
+            footer={
+              <Button variant="text" onClick={handleAddNewWallet}>
+                Add Wallet
+              </Button>
+            }
           >
             <div className="flex flex-col gap-2 bg-background-primary">
               {wallets.map((wallet, index) => (
@@ -288,7 +290,7 @@ export const Home = () => {
           </SlideupDrawer>
         )}
         {walletFilterOpen && (
-          <SlideupDrawer onClose={() => setWalletFilterOpen(false)} label="Filter items by wallet">
+          <SlideupDrawer onClose={() => setWalletFilterOpen(false)} header="Filter items by wallet">
             <WalletsFilter />
           </SlideupDrawer>
         )}

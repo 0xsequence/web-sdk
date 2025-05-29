@@ -89,7 +89,7 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
         {openType !== 'closed' && (
           <SlideupDrawer
             onClose={() => setOpenType('closed')}
-            label={filterType === 'networks' ? 'Networks' : filterType === 'collections' ? 'Collections' : 'Wallets'}
+            header={filterType === 'networks' ? 'Networks' : filterType === 'collections' ? 'Collections' : 'Wallets'}
           >
             {filterType === 'networks' && <NetworksFilter />}
             {filterType === 'collections' && <CollectionsFilter />}
