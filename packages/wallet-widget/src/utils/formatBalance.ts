@@ -49,6 +49,7 @@ export const formatTokenInfo = (
   const bal = formatUnits(BigInt(balance?.balance || 0), decimals || 18)
   const displayBalance = formatDisplay(bal)
   const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
+  const fiatBalance = (balance?.price?.value || 0) * Number(bal)
 
   return {
     isNativeToken,
@@ -57,7 +58,7 @@ export const formatTokenInfo = (
     name: selectedCoinName,
     symbol: selectedCoinSymbol,
     displayBalance: `${displayBalance} ${symbol}`,
-    fiatBalance: `${fiatSign}${(balance?.price?.value || 0 * Number(bal)).toFixed(2)}`
+    fiatBalance: `${fiatSign}${fiatBalance.toFixed(2)}`
   }
 }
 

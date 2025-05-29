@@ -29,7 +29,7 @@ export const ListCard = ({
         shape === 'rounded' ? 'rounded-lg' : 'rounded-none',
         isSelected && 'border-2 border-violet-600'
       )}
-      style={{ height: '68px', ...(disabled ? { opacity: 0.6 } : {}), ...style }}
+      style={{ height: '68px', ...style }}
       onClick={disabled ? undefined : onClick}
     >
       <div className="flex flex-row gap-2 items-center w-full">{children}</div>

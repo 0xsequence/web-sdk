@@ -26,7 +26,9 @@ export const WalletAccountGradient = ({ accountAddress }: { accountAddress: stri
             width: '20px'
           }}
         >
-          <div style={{ width: '14px', height: '14px' }}>{LoginIcon}</div>
+          <div className="flex items-center justify-center" style={{ width: '14px', height: '14px' }}>
+            {LoginIcon}
+          </div>
         </div>
       </div>
     </div>

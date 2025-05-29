@@ -43,6 +43,7 @@ export const ListCardWallet = ({ wallet }: { wallet: ConnectedWallet }) => {
 
   return (
     <ListCard
+      disabled
       rightChildren={
         <div className="flex flex-row gap-3 items-center">
           <div className="flex flex-row gap-1 items-center">
