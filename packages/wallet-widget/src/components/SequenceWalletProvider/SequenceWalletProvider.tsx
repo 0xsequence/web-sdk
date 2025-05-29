@@ -95,7 +95,6 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                     <Modal
                       contentProps={{
                         className: 'border border-border-normal',
-                        // className: 'border-2 border-violet-600',
                         style: {
                           maxWidth: WALLET_WIDTH,
                           height: WALLET_HEIGHT,

@@ -67,7 +67,7 @@ export const CoinSelect = ({
 
       <AnimatePresence>
         {isSelectorOpen && (
-          <SlideupDrawer label="Select Coin" onClose={() => setIsSelectorOpen(false)}>
+          <SlideupDrawer header="Select Coin" onClose={() => setIsSelectorOpen(false)}>
             <div className="flex flex-col gap-2">
               {coinList.map((coin, index) => (
                 <CoinRow key={index} balance={coin} onTokenClick={handleSelect} />
