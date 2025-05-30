@@ -357,7 +357,8 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
       currency: getForteCurrency(chainId, currencyAddress),
       items: [
         {
-          amount: nftQuantity,
+          id: '1',
+          amount: currencyQuantity,
           image_url: imageUrl,
           title: nftName,
           mint_data: {
