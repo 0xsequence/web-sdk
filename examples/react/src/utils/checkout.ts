@@ -159,9 +159,9 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
         quantity: '1'
       }
     ]
-    const price = '100000000000000'
+    const price = '100000000000000000'
     return {
-      chain: 10143,
+      chain: 137,
       currencyAddress: zeroAddress,
       targetContractAddress: '0x0000000000000068F116a894984e2DB1123eB395',
       collectionAddress: '0xdeb398f41ccd290ee5114df7e498cf04fac916cb',
