@@ -4,6 +4,7 @@ import { zeroAddress } from 'viem'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { encodeFunctionData, toHex } from 'viem'
+import { orderbookAbi } from '../constants/orderbook-abi'
 
 // Forte payment contract address (temporary will be replaced in new api inputs)
 const FORTE_CONTRACT_ADDRESS = '0xa6abee70242d53841417586bb9d3fa31ef3cbae1'
@@ -52,6 +53,20 @@ const getPurchaseTransactionERC1155Sale = ({
       price,
       [toHex(0, { size: 32 })]
     ]
+  }) as `0x${string}`
+}
+
+interface GetOrderbookTransactionDataArgs {
+  recipientAddress: string
+  requestId: string
+  quantity: string
+}
+
+const getOrderbookTransactionData = ({ recipientAddress, requestId, quantity }: GetOrderbookTransactionDataArgs) => {
+  return encodeFunctionData({
+    abi: orderbookAbi,
+    functionName: 'acceptRequest',
+    args: [requestId, quantity, recipientAddress, [], []]
   }) as `0x${string}`
 }
 
@@ -236,6 +251,11 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       }
     ]
     const price = '10000000000000000'
+    const txData = getOrderbookTransactionData({
+      recipientAddress,
+      requestId: '1',
+      quantity: collectibles[0].quantity
+    })
     return {
       chain: 11155111,
       currencyAddress: zeroAddress,
@@ -243,10 +263,10 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       collectionAddress: '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b',
       price,
       collectibles,
-      txData: '0x',
+      txData,
       forteConfig: {
         protocol: 'custom_evm_call',
-        calldata: '0x',
+        calldata: txData,
         sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
       }
     }
