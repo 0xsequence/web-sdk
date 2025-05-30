@@ -115,7 +115,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                         <div>{getHeader(navigation)}</div>
 
                         <div style={{ flex: 1, minHeight: 0 }}>
-                          {displayScrollbar ? <Scroll>{getContent(navigation)}</Scroll> : getContent(navigation)}
+                          {displayScrollbar ? <Scroll shadows={false}>{getContent(navigation)}</Scroll> : getContent(navigation)}
                         </div>
                       </div>
                     </Modal>

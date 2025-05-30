@@ -1,19 +1,19 @@
-import { getNetwork } from '@0xsequence/connect'
-import { Button, CopyIcon, Image, ShareIcon, Text } from '@0xsequence/design-system'
+import { useWallets } from '@0xsequence/connect'
+import { Button, CopyIcon, ShareIcon, Text } from '@0xsequence/design-system'
 import { useClipboard } from '@0xsequence/hooks'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useAccount } from 'wagmi'
 
-import { NetworkSelect } from '../components/Select/NetworkSelect.js'
-
-const isVowel = (char: string) => ['a', 'e', 'i', 'o', 'u'].includes(char.toLowerCase())
+import { WalletSelect } from '../../components/Select/WalletSelect.js'
 
 export const Receive = () => {
-  const { address, chain } = useAccount()
+  const { address } = useAccount()
+  const { setActiveWallet } = useWallets()
   const [isCopied, setCopied] = useClipboard({ timeout: 4000 })
 
-  const networkInfo = getNetwork(chain?.id || 1)
-  const networkName = networkInfo.title || networkInfo.name
+  const onClickWallet = (address: string) => {
+    setActiveWallet(address)
+  }
 
   const onClickShare = () => {
     if (typeof window !== 'undefined') {
@@ -23,7 +23,7 @@ export const Receive = () => {
 
   return (
     <div className="flex flex-col justify-center items-center px-4 pb-6 gap-4">
-      <NetworkSelect />
+      <WalletSelect selectedWallet={address || ''} onClick={onClickWallet} />
       <div className="flex mt-1 w-fit bg-white rounded-xl items-center justify-center p-4">
         <QRCodeCanvas value={address || ''} size={200} bgColor="white" fgColor="black" data-id="receiveQR" />
       </div>
@@ -32,7 +32,6 @@ export const Receive = () => {
           <Text className="text-center leading-[inherit]" variant="medium" color="primary" style={{ fontWeight: '700' }}>
             My Wallet
           </Text>
-          <Image className="w-5 rounded-xs" src={networkInfo.logoURI} alt="icon" />
         </div>
         <div className="mt-2" style={{ maxWidth: '180px', textAlign: 'center' }}>
           <Text
@@ -51,18 +50,6 @@ export const Receive = () => {
       <div className="flex gap-3">
         <Button onClick={() => setCopied(address || '')} leftIcon={CopyIcon} label={isCopied ? 'Copied!' : 'Copy'} />
         <Button onClick={onClickShare} leftIcon={ShareIcon} label="Share" />
-      </div>
-      <div className="flex justify-center items-center" style={{ maxWidth: '260px', textAlign: 'center' }}>
-        <Text
-          color="primary"
-          variant="small"
-          style={{
-            maxWidth: '260px',
-            overflowWrap: 'anywhere'
-          }}
-        >
-          {`This is a${isVowel(networkName[0]) ? 'n' : ''} ${networkName} address. Please only send assets on the ${networkName} network.`}
-        </Text>
       </div>
     </div>
   )
