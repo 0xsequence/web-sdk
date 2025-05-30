@@ -1,11 +1,12 @@
 import {
-  TransactionOnRampProvider,
   useAddFundsModal,
   useCheckoutModal,
   useSelectPaymentModal,
-  useSwapModal
+  useSwapModal,
+  TransactionOnRampProvider,
+  type ForteConfig,
+  type SwapModalSettings
 } from '@0xsequence/checkout'
-import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
@@ -21,7 +22,7 @@ import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, type ComponentProps } from 'react'
-import { encodeFunctionData, formatUnits, parseAbi, toHex } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi, toHex, zeroAddress } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
@@ -30,6 +31,7 @@ import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 // import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
+import { checkoutPresets } from '../utils/checkout'
 
 import { CustomCheckout } from './CustomCheckout'
 
@@ -38,6 +40,7 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 const checkoutProvider = searchParams.get('checkoutProvider')
 const onRampProvider = searchParams.get('onRampProvider')
+const checkoutPreset = searchParams.get('checkoutPreset') || 'erc1155-sale-erc20-token-polygon'
 
 export const Connected = () => {
   const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
@@ -350,80 +353,18 @@ export const Connected = () => {
       return
     }
 
-    // NATIVE token sale
-    // const currencyAddress = zeroAddress
-    // const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
-    // const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
-    // const price = '200000000000000'
-    // const contractId = '674eb55a3d739107bbd18ecb'
-
-    // // ERC-20 contract
-    const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-    const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
-    const price = '200000'
-    const contractId = '674eb5613d739107bbd18ed2'
-
-    const collectibles = [
-      {
-        tokenId: '1',
-        quantity: '1'
-      }
-    ]
-
-    const purchaseTransactionData = encodeFunctionData({
-      abi: ERC_1155_SALE_CONTRACT,
-      functionName: 'mint',
-      // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
-      args: [
-        address,
-        collectibles.map(c => BigInt(c.tokenId)),
-        collectibles.map(c => BigInt(c.quantity)),
-        toHex(0),
-        currencyAddress,
-        price,
-        [toHex(0, { size: 32 })]
-      ]
-    })
-
-    // ERC-721 contract
-    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    // const salesContractAddress = '0xa0284905d29cbeb19f4be486f9091fac215b7a6a'
-    // const collectionAddress = '0xd705db0a96075b98758c4bdafe8161d8566a68f8'
-    // const price = '1'
-    // const contractId = '674eb5613d739107bbd18ed2'
-
-    // const chainId = 137
-
-    // const collectibles = [
-    //   {
-    //     quantity: '1'
-    //   }
-    // ]
-
-    // const purchaseTransactionData = encodeFunctionData({
-    //   abi: ERC_721_SALE_CONTRACT,
-    //   functionName: 'mint',
-    //   // [to, amount, expectedPaymentToken, maxTotal, proof]
-    //   args: [address, BigInt(1), currencyAddress, price, [toHex(0, { size: 32 })]]
-    // })
+    const creditCardProvider = checkoutProvider || 'transak'
 
     openSelectPaymentModal({
-      collectibles,
-      chain: chainId,
-      price,
-      targetContractAddress: salesContractAddress,
       enableMainCurrencyPayment: true,
       recipientAddress: address,
-      currencyAddress,
-      collectionAddress,
-      creditCardProviders: [checkoutProvider || 'transak'],
+      creditCardProviders: [creditCardProvider],
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
       transakConfig: {
-        contractId
+        contractId: '674eb5613d739107bbd18ed2'
       },
       copyrightText: 'ⓒ2024 Sequence',
-      onSuccess: (txnHash: string) => {
+      onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)
       },
       onError: (error: Error) => {
@@ -432,7 +373,7 @@ export const Connected = () => {
       onClose: () => {
         console.log('modal closed!')
       },
-      txData: purchaseTransactionData
+      ...checkoutPresets[checkoutPreset as keyof typeof checkoutPresets](address || '')
     })
   }
 
