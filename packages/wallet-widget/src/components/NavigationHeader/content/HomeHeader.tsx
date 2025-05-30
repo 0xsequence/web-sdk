@@ -1,5 +1,17 @@
 import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { AddIcon, Divider, IconButton, SearchIcon, SettingsIcon, SwapIcon, Text, WalletIcon } from '@0xsequence/design-system'
+import {
+  AddIcon,
+  ArrowUpIcon,
+  Divider,
+  IconButton,
+  ScanIcon,
+  SearchIcon,
+  SettingsIcon,
+  SwapIcon,
+  Text,
+  WalletIcon
+} from '@0xsequence/design-system'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 
@@ -10,22 +22,118 @@ import { ListCardWallet } from '../../ListCard/ListCardWallet.js'
 import { SlideupDrawer } from '../../Select/SlideupDrawer.js'
 
 export const HomeHeader = () => {
+  const { setOpenConnectModal } = useOpenConnectModal()
+
   const { fiatCurrency } = useSettings()
   const { totalFiatValue } = useFiatWalletsMap()
   const { wallets } = useWallets()
   const [isWalletViewOpen, setIsWalletViewOpen] = useState(false)
+  const [isOperationMenuOpen, setIsOperationMenuOpen] = useState(false)
 
-  const { setOpenConnectModal } = useOpenConnectModal()
+  const { setNavigation } = useNavigation()
 
-  const onClickWalletIcon = () => {}
+  const onClickWallets = () => {
+    setOpenConnectModal(true)
+  }
 
-  const onClickSwapIcon = () => {}
+  const onClickSend = () => {
+    setIsOperationMenuOpen(false)
+    setNavigation({
+      location: 'send-general'
+    })
+  }
+
+  const onClickSwap = () => {
+    setIsOperationMenuOpen(false)
+    setNavigation({
+      location: 'swap'
+    })
+  }
+
+  const onClickReceive = () => {
+    setIsOperationMenuOpen(false)
+    setNavigation({
+      location: 'receive'
+    })
+  }
+
+  const onClickBuy = () => {
+    setIsOperationMenuOpen(false)
+    setNavigation({
+      location: 'buy'
+    })
+  }
 
   return (
     <div className="flex flex-col justify-between h-full w-full" style={{ position: 'relative' }}>
       <div className="flex flex-row items-start p-4 gap-3">
-        <IconButton className="bg-background-secondary" icon={WalletIcon} size="sm" onClick={() => setIsWalletViewOpen(true)} />
-        <IconButton className="bg-background-secondary" icon={SwapIcon} size="sm" />
+        <IconButton className="bg-background-secondary" icon={WalletIcon} size="sm" onClick={() => onClickWallets()} />
+
+        <PopoverPrimitive.Root open={isOperationMenuOpen} onOpenChange={setIsOperationMenuOpen}>
+          <PopoverPrimitive.Trigger asChild>
+            <IconButton className="bg-background-secondary" icon={SwapIcon} size="sm" />
+          </PopoverPrimitive.Trigger>
+
+          {isOperationMenuOpen && (
+            <PopoverPrimitive.Content
+              className="flex flex-col p-2 gap-2 z-20 rounded-xl border border-border-normal"
+              style={{ background: '#262626' }}
+              asChild
+              side="bottom"
+              sideOffset={8}
+              alignOffset={-8}
+              align="start"
+            >
+              <div>
+                <div
+                  className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
+                  onClick={() => {
+                    onClickSend()
+                  }}
+                >
+                  <ArrowUpIcon color="white" />
+                  <Text variant="normal" fontWeight="bold" color="primary">
+                    Send
+                  </Text>
+                </div>
+                <div
+                  className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
+                  onClick={() => {
+                    onClickSwap()
+                  }}
+                >
+                  <SwapIcon color="white" />
+                  <Text variant="normal" fontWeight="bold" color="primary">
+                    Swap
+                  </Text>
+                </div>
+                <div
+                  className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
+                  onClick={() => {
+                    onClickReceive()
+                  }}
+                >
+                  <ScanIcon color="white" />
+                  <Text variant="normal" fontWeight="bold" color="primary">
+                    Receive
+                  </Text>
+                </div>
+                <div
+                  className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
+                  onClick={() => {
+                    onClickBuy()
+                  }}
+                >
+                  <AddIcon color="white" />
+                  <Text variant="normal" fontWeight="bold" color="primary">
+                    Buy
+                  </Text>
+                </div>
+              </div>
+            </PopoverPrimitive.Content>
+          )}
+        </PopoverPrimitive.Root>
+
         <IconButton className="bg-background-secondary" icon={SearchIcon} size="sm" />
         <IconButton className="bg-background-secondary" icon={SettingsIcon} size="sm" />
       </div>
@@ -49,15 +157,18 @@ export const HomeHeader = () => {
             footer={
               <div className="flex flex-row w-full gap-3">
                 <div
-                  onClick={() => setOpenConnectModal(true)}
                   className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer"
+                  onClick={() => setOpenConnectModal(true)}
                 >
                   <AddIcon color="white" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Add Wallet
                   </Text>
                 </div>
-                <div className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer">
+                <div
+                  className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer"
+                  onClick={() => setOpenConnectModal(true)}
+                >
                   <SettingsIcon color="white" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Manage

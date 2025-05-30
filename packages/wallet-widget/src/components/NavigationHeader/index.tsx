@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, IconButton } from '@0xsequence/design-system'
+import { ChevronLeftIcon, IconButton, Text } from '@0xsequence/design-system'
 
 import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigationContext } from '../../contexts/Navigation.js'
@@ -12,12 +12,13 @@ import { SettingsHeader } from './content/SettingsHeader.js'
 import { TokenHeader } from './content/TokenHeader.js'
 
 interface NavigationHeaderProps {
-  type: 'home' | 'search' | 'settings' | 'token' | 'collectible' | 'collection'
+  type?: 'home' | 'search' | 'settings' | 'token' | 'collectible' | 'collection' | 'default'
   imgSrc?: string
   imgLabel?: string
+  label?: string
 }
 
-const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, imgLabel?: string) => {
+const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, imgLabel?: string, label?: string) => {
   switch (type) {
     case 'home':
       return <HomeHeader />
@@ -31,10 +32,16 @@ const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, 
       return <CollectibleHeader imgSrc={imgSrc} imgLabel={imgLabel} />
     case 'collection':
       return <CollectionHeader imgSrc={imgSrc} imgLabel={imgLabel} />
+    case 'default':
+      return (
+        <Text variant="medium" color="primary">
+          {label}
+        </Text>
+      )
   }
 }
 
-export const NavigationHeader = ({ type, imgSrc, imgLabel }: NavigationHeaderProps) => {
+export const NavigationHeader = ({ type = 'default', imgSrc, imgLabel, label }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
   const { isBackButtonEnabled } = useNavigationContext()
 
@@ -59,7 +66,7 @@ export const NavigationHeader = ({ type, imgSrc, imgLabel }: NavigationHeaderPro
         <div />
       )}
 
-      {getHeaderContent(type, imgSrc, imgLabel)}
+      {getHeaderContent(type, imgSrc, imgLabel, label)}
 
       {type !== 'search' && history.length > 0 ? <div style={{ width: '52px' }} /> : <div />}
     </div>

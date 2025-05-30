@@ -1,5 +1,6 @@
 import type { Navigation } from '../../../contexts/index.js'
 import {
+  Buy,
   CoinDetails,
   CollectibleDetails,
   History,
@@ -43,6 +44,8 @@ export const getContent = (navigation: Navigation) => {
       return <Swap />
     case 'receive':
       return <Receive />
+    case 'buy':
+      return <Buy />
     case 'history':
       return <History />
     case 'settings':
@@ -127,17 +130,19 @@ export const getHeader = (navigation: Navigation) => {
     case 'transaction-details':
       return <NavigationHeader type="home" />
     case 'send-general':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Send" />
     case 'send-coin':
       return <NavigationHeader type="home" />
     case 'send-collectible':
       return <NavigationHeader type="home" />
     case 'swap':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Swap" />
     case 'swap-coin':
     case 'swap-coin-list':
       return <NavigationHeader type="home" />
     case 'receive':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Receive" />
+    case 'buy':
+      return <NavigationHeader label="Buy" />
   }
 }
