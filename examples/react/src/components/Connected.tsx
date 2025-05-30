@@ -368,11 +368,11 @@ export const Connected = () => {
 
     // NATIVE erc-1155 token sale testnet
     const currencyAddress = zeroAddress
-    const salesContractAddress = '0xe240703f039dabffdad3359afd1fbee44bf82808'
-    const collectionAddress = '0xb92e29e426e82390304e20a70c2e82542c22c3a3'
-    const price = '1'
+    const salesContractAddress = '0x1130e2e03f682f05f298fd702787d9bd0bf94316'
+    const collectionAddress = '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b'
+    const price = '10000000000000000'
     const contractId = ''
-    const chainId = 84532
+    const chainId = 11155111
 
     // Forte payment testnet testing opensea
     // const currencyAddress = zeroAddress
