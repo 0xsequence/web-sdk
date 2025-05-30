@@ -11,6 +11,7 @@ export { useSwapModal } from './hooks/useSwapModal.js'
 export { useERC1155SaleContractCheckout, useERC1155SaleContractPaymentModal } from './hooks/useERC1155SaleContractCheckout.js'
 export { useCheckoutUI } from './hooks/useCheckoutUI/index.js'
 
+export { type ForteConfig } from './contexts/CheckoutModal.js'
 export { type AddFundsSettings } from './contexts/AddFundsModal.js'
 export { type CheckoutSettings } from './contexts/CheckoutModal.js'
 export { type CreditCardProviders } from './contexts/SelectPaymentModal.js'
