@@ -2,7 +2,7 @@ import { cardVariants, ChevronUpDownIcon, cn, NetworkImage, Text } from '@0xsequ
 import { useState } from 'react'
 import { useChainId, useChains, useSwitchChain } from 'wagmi'
 
-import { NetworkRow } from '../Filter/NetworkRow.js'
+import { ListCardNetwork } from '../ListCard/ListCardNetwork.js'
 
 import { SlideupDrawer } from './SlideupDrawer.js'
 
@@ -40,7 +40,7 @@ export const NetworkSelect = () => {
         <SlideupDrawer header="Network" onClose={() => setIsOpen(false)}>
           <div className="flex flex-col gap-2" style={{ overflowY: 'auto' }}>
             {chains.map(chain => (
-              <NetworkRow
+              <ListCardNetwork
                 key={chain.id}
                 chainId={chain.id}
                 isSelected={chain.id === chainId}

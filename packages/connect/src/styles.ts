@@ -950,6 +950,9 @@ export const styles = String.raw`
   .bg-transparent {
     background-color: transparent;
   }
+  .bg-violet-600 {
+    background-color: var(--color-violet-600);
+  }
   .bg-warning {
     background-color: var(--seq-color-warning);
   }

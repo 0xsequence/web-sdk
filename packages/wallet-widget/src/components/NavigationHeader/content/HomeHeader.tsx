@@ -165,10 +165,7 @@ export const HomeHeader = () => {
                     Add Wallet
                   </Text>
                 </div>
-                <div
-                  className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer"
-                  onClick={() => {}}
-                >
+                <div className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer">
                   <SettingsIcon color="white" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Manage
@@ -179,7 +176,7 @@ export const HomeHeader = () => {
           >
             <div className="flex flex-col gap-4">
               {wallets.map(wallet => (
-                <ListCardWallet key={wallet.address} wallet={wallet} />
+                <ListCardWallet disabled key={wallet.address} wallet={wallet} />
               ))}
             </div>
           </SlideupDrawer>

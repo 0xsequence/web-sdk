@@ -125,9 +125,7 @@ export const useSettings = (): Settings => {
           }
         })
 
-        const hasInvalidNetworksSelection = selectedNetworks.length > 1 && selectedNetworks.length !== allNetworks.length
-
-        if (hasInvalidNetworks || hasInvalidNetworksSelection) {
+        if (hasInvalidNetworks) {
           selectedNetworks = allNetworks
           localStorage.setItem(LocalStorageKey.Settings, JSON.stringify({ ...settings, selectedNetworks: allNetworks }))
         }
@@ -151,16 +149,13 @@ export const useSettings = (): Settings => {
   const resetSettings = () => {
     if (settingsObservables) {
       const selectedWallets = settingsObservables.selectedWalletsObservable.get()
-      const selectedNetworks = settingsObservables.selectedNetworksObservable.get()
 
       const isPartialSelection = selectedWallets.length > 1 && selectedWallets.length !== allWallets.length
       const hasInvalidWallets =
         selectedWallets.some(wallet => !allWallets.some((w: ConnectedWallet) => w.address === wallet.address)) ||
         isPartialSelection
 
-      const hasInvalidNetworksSelection = selectedNetworks.length > 1 && selectedNetworks.length !== allNetworks.length
-
-      if (hasInvalidWallets || hasInvalidNetworksSelection || !selectedWallets.length) {
+      if (hasInvalidWallets || !selectedWallets.length) {
         return true
       }
     }

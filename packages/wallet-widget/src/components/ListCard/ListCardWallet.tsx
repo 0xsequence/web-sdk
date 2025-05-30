@@ -1,5 +1,5 @@
 import type { ConnectedWallet } from '@0xsequence/connect'
-import { formatAddress } from '@0xsequence/connect'
+import { truncateAtIndex } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 import { useEffect, useState } from 'react'
 import { useConnections } from 'wagmi'
@@ -10,8 +10,19 @@ import { CopyButton } from '../CopyButton.js'
 import { WalletAccountGradient } from '../WalletAccountGradient.js'
 
 import { ListCard } from './ListCard.js'
+import { RadioSelector } from './RadioSelector.js'
 
-export const ListCardWallet = ({ wallet }: { wallet: ConnectedWallet }) => {
+export const ListCardWallet = ({
+  wallet,
+  disabled = false,
+  isSelected = false,
+  onClick = () => {}
+}: {
+  wallet: ConnectedWallet
+  disabled?: boolean
+  isSelected?: boolean
+  onClick?: () => void
+}) => {
   const { fiatCurrency } = useSettings()
   const { fiatWalletsMap } = useFiatWalletsMap()
 
@@ -43,7 +54,9 @@ export const ListCardWallet = ({ wallet }: { wallet: ConnectedWallet }) => {
 
   return (
     <ListCard
-      disabled
+      disabled={disabled}
+      onClick={onClick}
+      isSelected={isSelected}
       rightChildren={
         <div className="flex flex-row gap-3 items-center">
           <div className="flex flex-row gap-1 items-center">
@@ -55,14 +68,18 @@ export const ListCardWallet = ({ wallet }: { wallet: ConnectedWallet }) => {
               {fiatCurrency.symbol}
             </Text>
           </div>
-          <CopyButton variant="text" size="md" text={wallet.address} onClick={e => e.stopPropagation()} />
+          {disabled ? (
+            <CopyButton variant="text" size="md" text={wallet.address} onClick={e => e.stopPropagation()} />
+          ) : (
+            isSelected && <RadioSelector isSelected={isSelected} />
+          )}
         </div>
       }
     >
       <WalletAccountGradient accountAddress={wallet.address} />
       <div className="flex flex-col">
         <Text className="flex flex-row gap-1 items-center" nowrap color="primary" fontWeight="medium" variant="normal">
-          {formatAddress(wallet.address)}
+          {truncateAtIndex(wallet.address, 13)}
         </Text>
         {signInDisplay && (
           <Text color="muted" variant="small">
