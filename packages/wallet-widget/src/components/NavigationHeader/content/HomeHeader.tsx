@@ -33,7 +33,7 @@ export const HomeHeader = () => {
   const { setNavigation } = useNavigation()
 
   const onClickWallets = () => {
-    setOpenConnectModal(true)
+    setIsWalletViewOpen(true)
   }
 
   const onClickSend = () => {
@@ -167,7 +167,7 @@ export const HomeHeader = () => {
                 </div>
                 <div
                   className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer"
-                  onClick={() => setOpenConnectModal(true)}
+                  onClick={() => {}}
                 >
                   <SettingsIcon color="white" />
                   <Text variant="normal" fontWeight="bold" color="primary">
