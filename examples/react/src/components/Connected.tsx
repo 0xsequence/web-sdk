@@ -4,6 +4,7 @@ import {
   useSelectPaymentModal,
   useSwapModal,
   TransactionOnRampProvider,
+  type ForteConfig,
   type SwapModalSettings
 } from '@0xsequence/checkout'
 import {
@@ -32,6 +33,7 @@ import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 // import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
+import { checkoutPresets } from '../utils/checkout'
 
 import { CustomCheckout } from './CustomCheckout'
 
@@ -40,6 +42,7 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 const checkoutProvider = searchParams.get('checkoutProvider')
 const onRampProvider = searchParams.get('onRampProvider')
+const checkoutPreset = searchParams.get('checkoutPreset') || 'erc1155-sale-erc20-token-polygon'
 
 export const Connected = () => {
   const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
@@ -495,12 +498,10 @@ export const Connected = () => {
       price,
       targetContractAddress: salesContractAddress,
       recipientAddress: address,
-      currencyAddress,
-      collectionAddress,
       creditCardProviders: [creditCardProvider],
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
       transakConfig: {
-        contractId
+        contractId: '674eb5613d739107bbd18ed2'
       },
       onSuccess: (txnHash: string) => {
         console.log('success!', txnHash)
@@ -511,7 +512,7 @@ export const Connected = () => {
       onClose: () => {
         console.log('modal closed!')
       },
-      txData: purchaseTransactionData
+      ...checkoutPresets[checkoutPreset as keyof typeof checkoutPresets](address || '')
     })
   }
 
