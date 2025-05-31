@@ -64,6 +64,20 @@ export const HomeHeader = () => {
     })
   }
 
+  const onClickSearch = () => {
+    setIsOperationMenuOpen(false)
+    setNavigation({
+      location: 'search'
+    })
+  }
+
+  const onClickSettings = () => {
+    setIsOperationMenuOpen(false)
+    setNavigation({
+      location: 'settings'
+    })
+  }
+
   return (
     <div className="flex flex-col justify-between h-full w-full" style={{ position: 'relative' }}>
       <div className="flex flex-row items-start p-4 gap-3">
@@ -134,8 +148,8 @@ export const HomeHeader = () => {
           )}
         </PopoverPrimitive.Root>
 
-        <IconButton className="bg-background-secondary" icon={SearchIcon} size="sm" />
-        <IconButton className="bg-background-secondary" icon={SettingsIcon} size="sm" />
+        <IconButton className="bg-background-secondary" icon={SearchIcon} size="sm" onClick={() => onClickSearch()} />
+        <IconButton className="bg-background-secondary" icon={SettingsIcon} size="sm" onClick={() => onClickSettings()} />
       </div>
       <Divider className="my-0 w-full" style={{ position: 'absolute', bottom: 0 }} />
 

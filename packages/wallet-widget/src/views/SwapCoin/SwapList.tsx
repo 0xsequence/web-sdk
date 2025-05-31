@@ -21,7 +21,6 @@ import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { EVENT_SOURCE, EVENT_TYPES } from '../../constants/analytics.js'
-import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigation } from '../../hooks/index.js'
 
 interface SwapListProps {
@@ -353,7 +352,7 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
   }
 
   return (
-    <div className="flex p-5 gap-2 flex-col" style={{ marginTop: HEADER_HEIGHT }}>
+    <div className="flex p-5 gap-2 flex-col">
       <SwapContent />
     </div>
   )

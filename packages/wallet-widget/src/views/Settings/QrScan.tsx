@@ -2,7 +2,6 @@
 // import { Scanner } from '@yudiel/react-qr-scanner'
 // import { ChangeEvent, useState } from 'react'
 
-// import { HEADER_HEIGHT } from '../../constants'
 // // import { useWalletConnectContext } from '../../contexts/WalletConnect'
 // import { useNavigation } from '../../hooks'
 
@@ -26,7 +25,7 @@
 //   }
 
 //   return (
-//     <div className="flex flex-col px-4 pb-4 gap-4" style={{ paddingTop: HEADER_HEIGHT }}>
+//     <div className="flex flex-col px-4 pb-4 gap-4">
 //       <Text variant="large" fontWeight="bold" color="text80">
 //         Connect to a DApp using WalletConnect
 //       </Text>

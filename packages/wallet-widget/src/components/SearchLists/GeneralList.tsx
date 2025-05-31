@@ -5,11 +5,12 @@ import type { ContractInfo, Transaction, TxnTransfer } from '@0xsequence/indexer
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useObservable } from 'micro-observables'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useConfig } from 'wagmi'
 
 import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings } from '../../hooks/index.js'
 import { useGetAllCollections } from '../../hooks/useGetAllCollections.js'
+import { useNavigationHeader } from '../../hooks/useNavigationHeader.js'
 import { computeBalanceFiat, type TokenBalanceWithDetails } from '../../utils/index.js'
 import { FilterMenu } from '../Filter/FilterMenu.js'
 import { TransactionHistoryList } from '../TransactionHistoryList/index.js'
@@ -30,13 +31,17 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     showCollectionsObservable
   } = useSettings()
   const { wallets } = useWallets()
-
-  const [search, setSearch] = useState('')
-  const [selectedTab, setSelectedTab] = useState<'tokens' | 'collectibles' | 'history'>('tokens')
+  const { search, selectedTab, setSearch, setSelectedTab } = useNavigationHeader()
 
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedWallets = useObservable(selectedWalletsObservable)
   const showCollections = useObservable(showCollectionsObservable)
+
+  useEffect(() => {
+    return () => {
+      setSearch('')
+    }
+  }, [variant])
 
   const activeWallet = wallets.find(wallet => wallet.isActive)
 
@@ -438,7 +443,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
           </div>
         )}
 
-        <div className="flex flex-col p-4 gap-4">
+        <div className="flex flex-col p-4 pb-2 gap-4">
           <FilterMenu filterMenuType={selectedTab} />
 
           <TabsContent value="tokens">

@@ -6,13 +6,13 @@ import {
   History,
   Home,
   Receive,
+  Search,
   SendCoin,
   SendCollectible,
   SendGeneral,
   SettingsApps,
   SettingsCurrency,
   SettingsMenu,
-  SettingsNetworks,
   SettingsPreferences,
   SettingsProfiles,
   SettingsWallets,
@@ -46,14 +46,14 @@ export const getContent = (navigation: Navigation) => {
       return <Receive />
     case 'buy':
       return <Buy />
+    case 'search':
+      return <Search />
     case 'history':
       return <History />
     case 'settings':
       return <SettingsMenu />
     case 'settings-wallets':
       return <SettingsWallets />
-    case 'settings-networks':
-      return <SettingsNetworks />
     case 'settings-currency':
       return <SettingsCurrency />
     case 'settings-profiles':
@@ -106,17 +106,15 @@ export const getHeader = (navigation: Navigation) => {
     case 'home':
       return <NavigationHeader type="home" />
     case 'settings':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Settings" />
     case 'settings-wallets':
-      return <NavigationHeader type="home" />
-    case 'settings-networks':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Wallets" />
     case 'settings-currency':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Currency" />
     case 'settings-profiles':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Profiles" />
     case 'settings-preferences':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader label="Preferences" />
     case 'settings-apps':
       return <NavigationHeader type="home" />
     case 'connect-dapp':
@@ -144,5 +142,7 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader label="Receive" />
     case 'buy':
       return <NavigationHeader label="Buy" />
+    case 'search':
+      return <NavigationHeader type="search" />
   }
 }
