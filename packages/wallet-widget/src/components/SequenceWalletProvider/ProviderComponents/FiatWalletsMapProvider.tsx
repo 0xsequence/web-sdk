@@ -13,7 +13,7 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
   const { allNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
 
   const [fiatWalletsMap, setFiatWalletsMap] = useState<FiatWalletPair[]>([])
-  const [totalFiatValue, setTotalFiatValue] = useState<number>(0)
+  const [totalFiatValue, setTotalFiatValue] = useState<string>('0')
 
   const { data: tokenBalancesData, isLoading: isTokenBalancesLoading } = useGetAllTokensDetails({
     accountAddresses: wallets.map(wallet => wallet.address),
@@ -66,7 +66,7 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
       if (JSON.stringify(newFiatWalletsMap) !== JSON.stringify(fiatWalletsMap)) {
         setFiatWalletsMap(newFiatWalletsMap)
         const totalFiatValue = newFiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0).toFixed(2)
-        setTotalFiatValue(Number(totalFiatValue))
+        setTotalFiatValue(totalFiatValue)
       }
     }
   }, [coinBalancesUnordered, coinPrices, conversionRate])

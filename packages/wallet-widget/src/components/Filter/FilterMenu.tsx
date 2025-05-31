@@ -6,7 +6,7 @@ export const FilterMenu = ({ filterMenuType }: { filterMenuType: 'tokens' | 'col
   const { wallets } = useWallets()
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-row gap-2 w-full overflow-x-auto hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
       {filterMenuType === 'collectibles' && <FilterOptions filterType="collections" />}
       <FilterOptions filterType="networks" />
       {wallets.length > 1 && <FilterOptions filterType="wallets" />}

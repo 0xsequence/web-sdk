@@ -8,7 +8,6 @@ import { useConfig } from 'wagmi'
 import { InfiniteScroll } from '../../components/InfiniteScroll.js'
 import { NetworkBadge } from '../../components/NetworkBadge.js'
 import { TransactionHistoryList } from '../../components/TransactionHistoryList/index.js'
-import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils/index.js'
 
@@ -104,7 +103,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
     })
   }
   return (
-    <div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div>
       <div className="flex flex-col gap-10 pb-5 px-4 pt-0" style={{ marginTop: '-20px' }}>
         <div className="flex mb-10 gap-2 items-center justify-center flex-col">
           <TokenImage src={logo} size="xl" />

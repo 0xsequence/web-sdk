@@ -77,49 +77,44 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
     if (filterType === 'networks') {
       if (selectedNetworks.length === allNetworks.length) {
         return (
-          <Text variant="normal" fontWeight="bold" color="primary">
-            All Networks
+          <Text className="truncate" variant="small" fontWeight="bold" color="primary" nowrap>
+            All networks
           </Text>
         )
       }
       return (
         <div className="flex flex-row gap-1">
-          <Text variant="normal" fontWeight="bold" color="primary">
+          <Text variant="small" fontWeight="bold" color="primary">
             Networks
           </Text>
-          <Text variant="normal" fontWeight="bold" color="muted">
+          <Text variant="small" fontWeight="bold" color="muted">
             {`(${selectedNetworks.length})`}
           </Text>
         </div>
       )
     } else if (filterType === 'wallets') {
-      if (selectedWallets.length === wallets.length) {
-        return (
-          <Text variant="normal" fontWeight="bold" color="primary">
-            All Wallets
-          </Text>
-        )
-      }
       return (
         <div className="flex flex-row gap-1">
-          <Text variant="normal" fontWeight="bold" color="primary">
+          <Text variant="small" fontWeight="bold" color="primary">
             Wallets
           </Text>
-          <Text variant="normal" fontWeight="bold" color="muted">
-            {`(${selectedWallets.length})`}
-          </Text>
+          {selectedWallets.length !== wallets.length && (
+            <Text variant="small" fontWeight="bold" color="muted">
+              {`(${selectedWallets.length})`}
+            </Text>
+          )}
         </div>
       )
     } else if (filterType === 'collections') {
       if (showCollections) {
         return (
-          <Text variant="normal" fontWeight="bold" color="primary">
+          <Text variant="small" fontWeight="bold" color="primary">
             Collections
           </Text>
         )
       }
       return (
-        <Text variant="normal" fontWeight="bold" color="primary">
+        <Text variant="small" fontWeight="bold" color="primary">
           Items
         </Text>
       )

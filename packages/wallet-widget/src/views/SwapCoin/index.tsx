@@ -7,7 +7,6 @@ import { parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
 import { SendItemInfo } from '../../components/SendItemInfo.js'
-import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
 import { computeBalanceFiat, limitDecimals } from '../../utils/index.js'
 
@@ -89,13 +88,7 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const isNonZeroAmount = amountRaw > 0n
 
   return (
-    <form
-      className="flex p-5 gap-2 flex-col"
-      onSubmit={handleFindQuotesClick}
-      style={{
-        marginTop: HEADER_HEIGHT
-      }}
-    >
+    <form className="flex p-5 gap-2 flex-col" onSubmit={handleFindQuotesClick}>
       <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
         <SendItemInfo
           imageUrl={imageUrl}

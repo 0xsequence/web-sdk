@@ -2,7 +2,6 @@ import { Switch, Text } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 
 import { ListCardSelect } from '../../components/ListCard/ListCardSelect.js'
-import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useSettings } from '../../hooks/index.js'
 
 export const SettingsPreferences = () => {
@@ -10,7 +9,7 @@ export const SettingsPreferences = () => {
   const hideUnlistedTokens = useObservable(hideUnlistedTokensObservable)
 
   return (
-    <div className="px-4 pb-4" style={{ paddingTop: HEADER_HEIGHT }}>
+    <div className="px-4 pb-4">
       <ListCardSelect
         isSelected={hideUnlistedTokens}
         rightChildren={<Switch checked={hideUnlistedTokens} />}
