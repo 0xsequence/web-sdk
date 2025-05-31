@@ -1,7 +1,6 @@
 import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
 
 import { TransactionHistorySkeleton } from '../../components/TransactionHistoryList/TransactionHistorySkeleton.js'
-import { HEADER_HEIGHT } from '../../constants/index.js'
 
 interface CollectibleDetailsSkeletonProps {
   isReadOnly: boolean
@@ -9,7 +8,7 @@ interface CollectibleDetailsSkeletonProps {
 
 export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSkeletonProps) => {
   return (
-    <div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div>
       <div
         className="flex flex-col gap-10 pb-5 px-4 pt-0"
         style={{

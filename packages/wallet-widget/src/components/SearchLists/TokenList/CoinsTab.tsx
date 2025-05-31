@@ -1,18 +1,19 @@
-import { Skeleton, Spinner, Text } from '@0xsequence/design-system'
+import { Skeleton, Spinner } from '@0xsequence/design-system'
 import type { FC } from 'react'
 
-import type { TokenBalanceWithPrice } from '../../../utils/tokens.js'
+import type { TokenBalanceWithDetails } from '../../../utils/tokens.js'
 import { InfiniteScroll } from '../../InfiniteScroll.js'
+import { NoResults } from '../../NoResults.js'
 
 import { CoinRow } from './CoinRow.js'
 
 interface CoinsTabProps {
-  displayedCoinBalances: TokenBalanceWithPrice[] | undefined
+  displayedCoinBalances: TokenBalanceWithDetails[] | undefined
   fetchMoreCoinBalances: () => Promise<any>
   hasMoreCoinBalances: boolean
   isFetchingMoreCoinBalances: boolean
   isFetchingInitialBalances: boolean
-  onTokenClick: (token: TokenBalanceWithPrice) => void
+  onTokenClick: (token: TokenBalanceWithDetails) => void
   includeUserAddress?: boolean
 }
 
@@ -38,9 +39,7 @@ export const CoinsTab: FC<CoinsTabProps> = ({
           </>
         ) : (
           <>
-            {(!displayedCoinBalances || displayedCoinBalances.length === 0) && !isFetchingMoreCoinBalances ? (
-              <Text color="primary">No Coins Found</Text>
-            ) : (
+            {displayedCoinBalances && displayedCoinBalances.length > 0 && (
               <InfiniteScroll onLoad={() => fetchMoreCoinBalances()} hasMore={hasMoreCoinBalances}>
                 {displayedCoinBalances?.map((balance, index) => {
                   return (
@@ -51,8 +50,9 @@ export const CoinsTab: FC<CoinsTabProps> = ({
             )}
           </>
         )}
-        {isFetchingMoreCoinBalances && <Spinner className="flex self-center mt-3" />}
       </div>
+      {(!displayedCoinBalances || displayedCoinBalances.length === 0) && !isFetchingMoreCoinBalances && <NoResults />}
+      {isFetchingMoreCoinBalances && <Spinner className="flex self-center mt-3" />}
     </div>
   )
 }

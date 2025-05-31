@@ -36,15 +36,6 @@ export interface TransactionDetailsNavigation {
   params: TransactionDetailsParams
 }
 
-export interface SearchViewAllParams {
-  defaultTab: 'coins' | 'collections'
-}
-
-export interface SearchViewAllNavigation {
-  location: 'search-view-all'
-  params: SearchViewAllParams
-}
-
 export interface SendCoinParams {
   chainId: number
   contractAddress: string
@@ -87,38 +78,22 @@ export interface SendCollectibleNavigation {
   params: SendCollectibleParams
 }
 
-export interface SearchCollectiblesParams {
-  selectedCollection: {
-    chainId: number
-    contractAddress: string
-  }
-}
-
-export interface SearchCollectiblesNavigation {
-  location: 'search-collectibles'
-  params?: SearchCollectiblesParams
-}
 export interface BasicNavigation {
   location:
     | 'home'
     | 'send-general'
     | 'swap'
     | 'receive'
+    | 'buy'
     | 'history'
-    | 'legacy-settings'
-    | 'legacy-settings-general'
-    | 'legacy-settings-currency'
-    | 'legacy-settings-networks'
     | 'settings'
     | 'settings-wallets'
-    | 'settings-networks'
     | 'settings-currency'
     | 'settings-profiles'
     | 'settings-apps'
     | 'settings-preferences'
     | 'connect-dapp'
     | 'search'
-    | 'search-tokens'
 }
 
 export type Navigation =
@@ -126,8 +101,6 @@ export type Navigation =
   | CoinDetailsNavigation
   | CollectibleDetailsNavigation
   | TransactionDetailsNavigation
-  | SearchCollectiblesNavigation
-  | SearchViewAllNavigation
   | SendCoinNavigation
   | SendCollectibleNavigation
   | SwapCoinNavigation

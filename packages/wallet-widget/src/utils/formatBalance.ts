@@ -5,7 +5,7 @@ import type { TokenBalance } from '@0xsequence/indexer'
 import { formatUnits, type Chain } from 'viem'
 import { zeroAddress } from 'viem'
 
-import type { TokenBalanceWithPrice } from './tokens.js'
+import type { TokenBalanceWithDetails } from './tokens.js'
 
 //TODO: rename these and maybe do a refactor
 
@@ -30,7 +30,7 @@ interface TokenInfo {
 }
 
 export const formatTokenInfo = (
-  balance: TokenBalanceWithPrice | undefined,
+  balance: TokenBalanceWithDetails | undefined,
   fiatSign: string,
   chains: readonly [Chain, ...Chain[]]
 ): TokenInfo => {
@@ -49,6 +49,7 @@ export const formatTokenInfo = (
   const bal = formatUnits(BigInt(balance?.balance || 0), decimals || 18)
   const displayBalance = formatDisplay(bal)
   const symbol = isNativeToken ? nativeTokenInfo.symbol : balance?.contractInfo?.symbol
+  const fiatBalance = (balance?.price?.value || 0) * Number(bal)
 
   return {
     isNativeToken,
@@ -57,7 +58,7 @@ export const formatTokenInfo = (
     name: selectedCoinName,
     symbol: selectedCoinSymbol,
     displayBalance: `${displayBalance} ${symbol}`,
-    fiatBalance: `${fiatSign}${(balance.price.value * Number(bal)).toFixed(2)}`
+    fiatBalance: `${fiatSign}${fiatBalance.toFixed(2)}`
   }
 }
 

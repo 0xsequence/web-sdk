@@ -1,10 +1,10 @@
-import type { TokenBalanceWithPrice } from '../utils/index.js'
+import type { TokenBalanceWithDetails } from '../utils/index.js'
 
 import { createGenericContext } from './genericContext.js'
 
 export interface SwapContext {
-  fromCoin: TokenBalanceWithPrice | undefined
-  toCoin: TokenBalanceWithPrice | undefined
+  fromCoin: TokenBalanceWithDetails | undefined
+  toCoin: TokenBalanceWithDetails | undefined
   amount: number
   nonRecentAmount: number
   recentInput: 'from' | 'to'
@@ -14,8 +14,8 @@ export interface SwapContext {
   isErrorSwapQuote: boolean
   isTxnPending: boolean
   isErrorTxn: boolean
-  setFromCoin: (coin: TokenBalanceWithPrice | undefined) => void
-  setToCoin: (coin: TokenBalanceWithPrice | undefined) => void
+  setFromCoin: (coin: TokenBalanceWithDetails | undefined) => void
+  setToCoin: (coin: TokenBalanceWithDetails | undefined) => void
   setAmount: (amount: number, type: 'from' | 'to') => void
   switchCoinOrder: () => void
   onSubmitSwap: () => void

@@ -275,7 +275,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           <Text variant="normal" color="primary" fontWeight="medium" style={{ overflowWrap: 'anywhere' }}>
             {transaction.txnHash}
           </Text>
-          <CopyButton className="mt-2" buttonVariant="with-label" text={transaction.txnHash} />
+          <CopyButton className="mt-2" includeLabel text={transaction.txnHash} />
         </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ export const ListCardNav = ({
   shape?: 'rounded' | 'square'
   style?: React.CSSProperties
   type?: 'chevron' | 'custom'
-  onClick: () => void
+  onClick?: () => void
   disabled?: boolean
 }) => {
   return (
