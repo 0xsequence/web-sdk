@@ -13,7 +13,6 @@ import { useConfig } from 'wagmi'
 import { InfiniteScroll } from '../../components/InfiniteScroll.js'
 import { TokenTileImage } from '../../components/TokenTileImage.js'
 import { TransactionHistoryList } from '../../components/TransactionHistoryList/index.js'
-import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
 import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils/index.js'
 
@@ -104,7 +103,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
     : '0'
 
   return (
-    <div style={{ paddingTop: HEADER_HEIGHT }}>
+    <div>
       <div
         className="flex flex-col gap-10 pb-5 px-4 pt-0"
         style={{
