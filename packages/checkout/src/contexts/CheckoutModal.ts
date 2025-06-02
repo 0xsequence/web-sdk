@@ -23,7 +23,7 @@ export interface TransakConfig {
   callDataOverride?: string
 }
 
-export type ForteProtocolType = 'seaport' | 'magiceden' | 'mint' | 'custom_evm_call'
+export type ForteProtocolType = 'seaport' | 'mint' | 'custom_evm_call'
 
 export interface ForteMintConfig {
   protocol: 'mint'
@@ -37,18 +37,13 @@ export interface ForteSeaportConfig {
   sellerAddress: string
 }
 
-export interface ForteMagicedenConfig {
-  protocol: 'magiceden'
-  sellerAddress: string
-}
-
 export interface ForteCustomEvmCallConfig {
   protocol: 'custom_evm_call'
   calldata: string
   sellerAddress: string
 }
 
-export type ForteConfig = ForteMintConfig | ForteSeaportConfig | ForteMagicedenConfig | ForteCustomEvmCallConfig
+export type ForteConfig = ForteMintConfig | ForteSeaportConfig | ForteCustomEvmCallConfig
 
 export interface CreditCardCheckout {
   chainId: number
