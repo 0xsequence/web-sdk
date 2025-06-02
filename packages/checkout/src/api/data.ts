@@ -8,8 +8,7 @@ import {
   type ForteProtocolType,
   type ForteConfig,
   type ForteMintConfig,
-  type ForteSeaportConfig,
-  type ForteMagicedenConfig
+  type ForteSeaportConfig
 } from '../contexts/index.js'
 
 export interface FetchSardineClientTokenReturn {
@@ -379,12 +378,6 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
         protocol: protocolConfig.protocol,
         order_hash: protocolConfig.orderHash,
         protocol_address: protocolConfig.seaportProtocolAddress
-      }
-    } else if (protocolConfig.protocol == 'magiceden') {
-      listingData = {
-        protocol: protocolConfig.protocol,
-        auction_house: targetContractAddress,
-        token_address: nftAddress
       }
     } else if (protocolConfig.protocol == 'custom_evm_call') {
       listingData = {
