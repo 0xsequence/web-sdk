@@ -45,7 +45,7 @@ export interface ForteSeaportConfig {
 
 export interface ForteCustomEvmCallConfig {
   protocol: 'custom_evm_call'
-  calldata: string
+  calldata: string | StructuredCalldata
   sellerAddress: string
 }
 
