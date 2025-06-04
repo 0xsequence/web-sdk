@@ -152,33 +152,6 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       })
     }
   },
-  'forte-payment-testnet-testing-magiceden': (recipientAddress: string) => {
-    const collectibles = [
-      {
-        tokenId: '1',
-        quantity: '1'
-      }
-    ]
-    const price = '100000000000000000'
-    return {
-      chain: 137,
-      currencyAddress: zeroAddress,
-      targetContractAddress: '0x0000000000000068F116a894984e2DB1123eB395',
-      collectionAddress: '0xdeb398f41ccd290ee5114df7e498cf04fac916cb',
-      price,
-      collectibles,
-      txData: getPurchaseTransactionERC1155Sale({
-        recipientAddress,
-        currencyAddress: zeroAddress,
-        price,
-        collectibles
-      }),
-      forteConfig: {
-        protocol: 'magiceden',
-        sellerAddress: '0xCb88b6315507e9d8c35D81AFB7F190aB6c3227C9'
-      }
-    }
-  },
   'forte-payment-testnet-testing-opensea': (recipientAddress: string) => {
     const collectibles = [
       {
@@ -218,6 +191,41 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       }
     ]
     const price = '10000000000000000'
+
+    const structuredCalldata = {
+      functionName: 'mint',
+      arguments: [
+        {
+          type: 'address',
+          value: '${receiver_address}'
+        },
+        {
+          type: 'uint256[]',
+          value: ['1']
+        },
+        {
+          type: 'uint256[]',
+          value: ['1']
+        },
+        {
+          type: 'bytes',
+          value: toHex(0)
+        },
+        {
+          type: 'address',
+          value: zeroAddress
+        },
+        {
+          type: 'uint256',
+          value: price
+        },
+        {
+          type: 'bytes32[]',
+          value: [toHex(0, { size: 32 })]
+        }
+      ]
+    }
+
     return {
       chain: 11155111,
       currencyAddress: zeroAddress,
@@ -233,12 +241,7 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       }),
       forteConfig: {
         protocol: 'mint',
-        calldata: getPurchaseTransactionERC1155Sale({
-          recipientAddress: FORTE_CONTRACT_ADDRESS,
-          currencyAddress: zeroAddress,
-          price,
-          collectibles
-        }),
+        calldata: structuredCalldata,
         sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
       }
     }
