@@ -25,9 +25,14 @@ export interface TransakConfig {
 
 export type ForteProtocolType = 'seaport' | 'mint' | 'custom_evm_call'
 
+export interface StructuredCalldata {
+  functionName: string
+  arguments: any[]
+}
+
 export interface ForteMintConfig {
   protocol: 'mint'
-  calldata: string
+  calldata: string | StructuredCalldata
 }
 
 export interface ForteSeaportConfig {
