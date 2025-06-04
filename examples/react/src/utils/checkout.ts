@@ -190,7 +190,7 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
         quantity: '1'
       }
     ]
-    const price = '10000000000000000'
+    const price = '1000000000000000'
 
     const structuredCalldata = {
       functionName: 'mint',
@@ -246,30 +246,58 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       }
     }
   },
-  'forte-payment-custom-evm-call-testnet': (recipientAddress: string) => {
+  'forte-payment-custom-evm-call-native-token-testnet': (recipientAddress: string) => {
     const collectibles = [
       {
         tokenId: '1',
         quantity: '1'
       }
     ]
-    const price = '10000000000000000'
+    const price = '1000000000000000'
+    const requestId = '28'
     const txData = getOrderbookTransactionData({
-      recipientAddress,
-      requestId: '1',
+      recipientAddress: recipientAddress,
+      requestId,
       quantity: collectibles[0].quantity
     })
+
+    const structuredCalldata = {
+      functionName: 'acceptRequest',
+      arguments: [
+        {
+          type: 'uint256',
+          value: requestId
+        },
+        {
+          type: 'uint256',
+          value: collectibles[0].quantity
+        },
+        {
+          type: 'address',
+          value: '${receiver_address}'
+        },
+        {
+          type: 'uint256[]',
+          value: []
+        },
+        {
+          type: 'address[]',
+          value: []
+        }
+      ]
+    }
+
     return {
       chain: 11155111,
       currencyAddress: zeroAddress,
-      targetContractAddress: '0x1130e2e03f682f05f298fd702787d9bd0bf94316',
+      targetContractAddress: '0xfdb42A198a932C8D3B506Ffa5e855bC4b348a712',
       collectionAddress: '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b',
       price,
       collectibles,
       txData,
       forteConfig: {
         protocol: 'custom_evm_call',
-        calldata: txData,
+        calldata: structuredCalldata,
         sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
       }
     }
