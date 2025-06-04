@@ -8,7 +8,8 @@ import {
   type ForteProtocolType,
   type ForteConfig,
   type ForteMintConfig,
-  type ForteSeaportConfig
+  type ForteSeaportConfig,
+  type StructuredCalldata
 } from '../contexts/index.js'
 
 export interface FetchSardineClientTokenReturn {
@@ -248,8 +249,8 @@ export interface FetchForteAccessTokenReturn {
 }
 
 export const fetchForteAccessToken = async (forteApiUrl: string): Promise<FetchForteAccessTokenReturn> => {
-  const clientId = 'l5cnnjctaugcn7b7rg0fglpk'
-  const clientSecret = '1l9acapjnrclfl4ld5po6vcquicch2v7jdn6v1249cht9uu878t4'
+  const clientId = ''
+  const clientSecret = ''
 
   const url = `${forteApiUrl}/auth/v1/oauth2/token`
 
@@ -288,7 +289,7 @@ export interface CreateFortePaymentIntentArgs {
   tokenId?: string
   currencyQuantity: string
   protocolConfig: ForteConfig
-  calldata: string
+  calldata: string | StructuredCalldata
 }
 
 const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
@@ -365,7 +366,16 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
             token_ids: tokenId ? [tokenId] : [],
             protocol_address: targetContractAddress,
             protocol: 'custom_evm_call',
-            calldata
+            ...(typeof calldata === 'string'
+              ? {
+                  calldata: calldata
+                }
+              : {
+                  structured_calldata: {
+                    function_name: calldata.functionName,
+                    arguments: calldata.arguments
+                  }
+                })
           }
         }
       ]
