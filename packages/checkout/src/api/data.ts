@@ -392,8 +392,15 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     } else if (protocolConfig.protocol == 'custom_evm_call') {
       listingData = {
         protocol: protocolConfig.protocol,
-        calldata: protocolConfig.calldata,
-        protocol_address: targetContractAddress
+        protocol_address: targetContractAddress,
+        ...(typeof protocolConfig.calldata === 'string'
+          ? { calldata: protocolConfig.calldata }
+          : {
+              structured_calldata: {
+                function_name: protocolConfig.calldata.functionName,
+                arguments: protocolConfig.calldata.arguments
+              }
+            })
       }
     }
 
