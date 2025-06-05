@@ -15,7 +15,7 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 const isDebugMode = searchParams.has('debug')
 // @ts-ignore
 const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
-const projectAccessKey = isDev ? 'AQAAAAAAAKRDqJ2F3lcWgpcQfLVVxgbXqZk' : 'AQAAAAAAAKRDqJ2F3lcWgpcQfLVVxgbXqZk'
+const projectAccessKey = isDev ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
@@ -102,8 +102,8 @@ export const config =
         ],
         defaultChainId: ChainId.ARBITRUM_NOVA,
         waasConfigKey: isDebugMode
-          ? 'eyJwcm9qZWN0SWQiOjQyMDUxLCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
-          : 'eyJwcm9qZWN0SWQiOjQyMDUxLCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0=',
+          ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
+          : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9',
         enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
 
         google: {
