@@ -15,7 +15,7 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 const isDebugMode = searchParams.has('debug')
 // @ts-ignore
 const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
-const projectAccessKey = isDev ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+const projectAccessKey = isDev ? 'AQAAAAAAAKRDqJ2F3lcWgpcQfLVVxgbXqZk' : 'AQAAAAAAAKRDqJ2F3lcWgpcQfLVVxgbXqZk'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
@@ -102,14 +102,17 @@ export const config =
         ],
         defaultChainId: ChainId.ARBITRUM_NOVA,
         waasConfigKey: isDebugMode
-          ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
-          : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9',
+          ? 'eyJwcm9qZWN0SWQiOjQyMDUxLCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0='
+          : 'eyJwcm9qZWN0SWQiOjQyMDUxLCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0=',
         enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
 
         google: {
           clientId: isDebugMode
             ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
             : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
+        },
+        epic: {
+          authUrl: 'http://localhost:8787/login'
         },
         apple: {
           clientId: 'com.horizon.sequence.waas',

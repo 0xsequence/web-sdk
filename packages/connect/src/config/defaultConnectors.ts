@@ -6,6 +6,7 @@ import { coinbaseWallet } from '../connectors/coinbaseWallet/coinbaseWallet.js'
 import { ecosystemWallet, type EcosystemWalletOptions } from '../connectors/ecosystem/index.js'
 import { email } from '../connectors/email/email.js'
 import { emailWaas } from '../connectors/email/emailWaas.js'
+import { epicWaas } from '../connectors/epic/epicWaas.js'
 import { facebook } from '../connectors/facebook/facebook.js'
 import { google } from '../connectors/google/google.js'
 import { googleWaas } from '../connectors/google/googleWaas.js'
@@ -39,6 +40,13 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
         clientId: string
         redirectURI: string
       }
+
+  epic?:
+    | false
+    | {
+        authUrl: string
+      }
+
   ecosystem?: false | Omit<EcosystemWalletOptions, 'projectAccessKey' | 'defaultNetwork'>
   coinbase?: boolean
   metaMask?: boolean
@@ -144,6 +152,18 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         waasConfigKey,
         appleClientId,
         appleRedirectURI,
+        enableConfirmationModal,
+        network: defaultChainId
+      })
+    )
+  }
+
+  if (options.epic) {
+    wallets.push(
+      epicWaas({
+        projectAccessKey,
+        waasConfigKey,
+        epicAuthUrl: options.epic.authUrl,
         enableConfirmationModal,
         network: defaultChainId
       })

@@ -62,6 +62,7 @@ export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/
 // Connectors
 export { apple, type AppleOptions } from './connectors/apple/apple.js'
 export { appleWaas, type AppleWaasOptions } from './connectors/apple/appleWaas.js'
+export { epicWaas, type EpicWaasOptions } from './connectors/epic/epicWaas.js'
 export { coinbaseWallet } from './connectors/coinbaseWallet/coinbaseWallet.js'
 export { discord, type DiscordOptions } from './connectors/discord/discord.js'
 export { email, type EmailOptions } from './connectors/email/email.js'

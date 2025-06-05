@@ -26,10 +26,11 @@ import { normalizeChainId } from '../../utils/helpers.js'
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
   appleClientId?: string
+  epicAuthUrl?: string
   appleRedirectURI?: string
   enableConfirmationModal?: boolean
   nodesUrl?: string
-  loginType: 'email' | 'google' | 'apple'
+  loginType: 'email' | 'google' | 'apple' | 'epic'
 }
 
 export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
@@ -51,6 +52,8 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasGoogleClientID]: string
     [LocalStorageKey.WaasAppleClientID]: string
     [LocalStorageKey.WaasAppleRedirectURI]: string
+    [LocalStorageKey.WaasEpicAuthUrl]: string
+    [LocalStorageKey.WaasEpicIdToken]: string
     [LocalStorageKey.WaasSignInEmail]: string
   }
 
@@ -89,6 +92,9 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       if (params.appleRedirectURI) {
         await config.storage?.setItem(LocalStorageKey.WaasAppleRedirectURI, params.appleRedirectURI)
       }
+      if (params.epicAuthUrl) {
+        await config.storage?.setItem(LocalStorageKey.WaasEpicAuthUrl, params.epicAuthUrl)
+      }
 
       sequenceWaasProvider.on('error', error => {
         if (isSessionInvalidOrNotFoundError(error)) {
@@ -105,6 +111,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         const googleIdToken = await config.storage?.getItem(LocalStorageKey.WaasGoogleIdToken)
         const emailIdToken = await config.storage?.getItem(LocalStorageKey.WaasEmailIdToken)
         const appleIdToken = await config.storage?.getItem(LocalStorageKey.WaasAppleIdToken)
+        const epicIdToken = await config.storage?.getItem(LocalStorageKey.WaasEpicIdToken)
 
         let idToken: string | undefined
 
@@ -114,11 +121,14 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           idToken = emailIdToken
         } else if (params.loginType === 'apple' && appleIdToken) {
           idToken = appleIdToken
+        } else if (params.loginType === 'epic' && epicIdToken) {
+          idToken = epicIdToken
         }
 
         await config.storage?.removeItem(LocalStorageKey.WaasGoogleIdToken)
         await config.storage?.removeItem(LocalStorageKey.WaasEmailIdToken)
         await config.storage?.removeItem(LocalStorageKey.WaasAppleIdToken)
+        await config.storage?.removeItem(LocalStorageKey.WaasEpicIdToken)
 
         if (idToken) {
           try {

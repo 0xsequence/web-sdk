@@ -91,6 +91,8 @@ export type StorageItem = {
   [LocalStorageKey.WaasEmailIdToken]: string
   [LocalStorageKey.WaasGoogleClientID]: string
   [LocalStorageKey.WaasGoogleIdToken]: string
+  [LocalStorageKey.WaasEpicAuthUrl]: string
+  [LocalStorageKey.WaasEpicIdToken]: string
   [LocalStorageKey.WaasAppleClientID]: string
   [LocalStorageKey.WaasAppleIdToken]: string
   [LocalStorageKey.WaasAppleRedirectURI]: string

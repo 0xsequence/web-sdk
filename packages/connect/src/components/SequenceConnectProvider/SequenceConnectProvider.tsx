@@ -9,7 +9,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, useState } from 'react'
 import { hexToString, type Hex } from 'viem'
-import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
+import { useAccount, useConfig, useConnect, useConnections, type Connector } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants/index.js'
 import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
@@ -102,6 +102,41 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     }
     setAnalytics(sequenceAnalytics)
   }
+
+  const { connectors, connect } = useConnect()
+
+  const socialAuthConnectors = (connectors as ExtendedConnector[])
+    .filter(c => c._wallet?.type === 'social')
+    .filter(c => !c._wallet.id.includes('email'))
+
+  // UseEffect to handle the redirect back from the worker for Epic login
+  useEffect(() => {
+    const hash = window.location.hash
+    const searchParams = new URLSearchParams(window.location.search)
+    const loginError = searchParams.get('epic_login_error')
+
+    // Check for errors first
+    if (loginError) {
+      console.log(`Epic Login Failed: ${loginError}`)
+      // Clear the error query parameters from the URL
+      window.history.replaceState(null, '', window.location.pathname + window.location.hash)
+    }
+    // Handle successful login via hash
+    if (hash.startsWith('#epic_jwt=')) {
+      const epicJwt = hash.substring('#epic_jwt='.length)
+      // Clear the hash from the URL
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+      const signInWithEpic = async (token: string) => {
+        try {
+          storage?.setItem(LocalStorageKey.WaasEpicIdToken, token)
+          connect({ connector: socialAuthConnectors.find(c => c._wallet.id === 'epic-waas')! })
+        } catch (err) {
+          console.error('Sequence WaaS sign in failed:', err)
+        }
+      }
+      signInWithEpic(epicJwt)
+    }
+  }, [])
 
   useEffect(() => {
     if (!isConnected) {
