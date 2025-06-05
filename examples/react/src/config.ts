@@ -112,7 +112,7 @@ export const config =
             : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
         },
         epic: {
-          authUrl: 'http://localhost:8787/login'
+          authUrl: 'https://epic-eos-auth-worker.tpin.workers.dev/login'
         },
         apple: {
           clientId: 'com.horizon.sequence.waas',
