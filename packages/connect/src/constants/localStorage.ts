@@ -12,6 +12,8 @@ const WAAS_EMAIL_ID_TOKEN = 'waasEmailIdToken'
 const WAAS_ACTIVE_LOGIN_TYPE = 'waasActiveLoginType'
 const WAAS_SIGN_IN_EMAIL = 'waasSignInEmail'
 const SIGN_IN_EMAIL = 'signInEmail'
+const WAAS_AUTH_URL = 'WaasEpicAuthUrl'
+const WAAS_EPIC_ID_TOKEN = 'waasEpicIdToken'
 
 // TODO: remove all of this.. we should not be storing these in local storage
 export enum LocalStorageKey {
@@ -27,5 +29,7 @@ export enum LocalStorageKey {
   WaasActiveLoginType = `${PREFIX}.${WAAS_ACTIVE_LOGIN_TYPE}`,
   WaasEmailIdToken = `${PREFIX}.${WAAS_EMAIL_ID_TOKEN}`,
   WaasSignInEmail = `${PREFIX}.${WAAS_SIGN_IN_EMAIL}`,
-  SignInEmail = `${PREFIX}.${SIGN_IN_EMAIL}`
+  SignInEmail = `${PREFIX}.${SIGN_IN_EMAIL}`,
+  WaasEpicAuthUrl = `${PREFIX}.${WAAS_AUTH_URL}`,
+  WaasEpicIdToken = `${PREFIX}.${WAAS_EPIC_ID_TOKEN}`
 }

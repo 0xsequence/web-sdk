@@ -189,3 +189,20 @@ export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
     />
   ) : null
 }
+
+export const EpicWaasConnectButton = (props: ConnectButtonProps) => {
+  const { connector } = props
+
+  const { data: authUrl } = useStorageItem(LocalStorageKey.WaasEpicAuthUrl)
+
+  return authUrl ? (
+    <ConnectButton
+      {...props}
+      connector={connector}
+      onConnect={() => {
+        window.location.href = authUrl
+      }}
+      disableTooltip
+    />
+  ) : null
+}

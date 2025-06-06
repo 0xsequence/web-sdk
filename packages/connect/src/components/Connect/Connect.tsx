@@ -20,7 +20,13 @@ import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
 import { isEmailValid } from '../../utils/helpers.js'
-import { AppleWaasConnectButton, ConnectButton, GoogleWaasConnectButton, ShowAllWalletsButton } from '../ConnectButton/index.js'
+import {
+  AppleWaasConnectButton,
+  ConnectButton,
+  EpicWaasConnectButton,
+  GoogleWaasConnectButton,
+  ShowAllWalletsButton
+} from '../ConnectButton/index.js'
 import type { SequenceConnectProviderProps } from '../SequenceConnectProvider/index.js'
 import { PoweredBySequence } from '../SequenceLogo/index.js'
 
@@ -472,6 +478,12 @@ export const Connect = (props: ConnectProps) => {
                                   />
                                 ) : connector._wallet.id === 'apple-waas' ? (
                                   <AppleWaasConnectButton
+                                    isDescriptive={descriptiveSocials}
+                                    connector={connector}
+                                    onConnect={onConnect}
+                                  />
+                                ) : connector._wallet.id === 'epic-waas' ? (
+                                  <EpicWaasConnectButton
                                     isDescriptive={descriptiveSocials}
                                     connector={connector}
                                     onConnect={onConnect}
