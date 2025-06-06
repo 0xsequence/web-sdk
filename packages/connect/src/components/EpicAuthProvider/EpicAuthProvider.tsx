@@ -1,6 +1,8 @@
+import { Modal, ModalPrimitive, Spinner } from '@0xsequence/design-system'
 import { useEffect } from 'react'
 import { useConnect } from 'wagmi'
 
+import { EpicLogo } from '../../connectors/epic/EpicLogo.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import type { ExtendedConnector } from '../../types.js'
@@ -8,7 +10,8 @@ import type { ExtendedConnector } from '../../types.js'
 // EpicAuthProvider handles Epic Games OAuth login redirects.
 // On mount, it checks the URL for Epic login results, stores the Epic JWT in storage, and triggers a connection with the Epic connector if found.
 export const EpicAuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { connectors, connect } = useConnect()
+  const { connectors, connect, isPending } = useConnect()
+
   const storage = useStorage()
 
   const socialAuthConnectors = (connectors as ExtendedConnector[])
@@ -44,5 +47,24 @@ export const EpicAuthProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }, [])
 
-  return <>{children}</>
+  return (
+    <>
+      {isPending && (
+        <Modal size="sm" scroll={false} isDismissible={false} contentProps={{ style: { maxWidth: '320px', padding: '20px' } }}>
+          <div className="flex flex-col items-center text-black rounded-lg">
+            <div className="w-12 h-12 mb-4" aria-label="Epic Games">
+              <EpicLogo />
+            </div>
+            <ModalPrimitive.Title asChild>
+              <div className="flex items-center gap-4 mt-4 mb-2 flex-row">
+                <h2 className="text-white text-lg font-semibold text-center w-full">Logging in with Epic Games…</h2>
+                <Spinner />
+              </div>
+            </ModalPrimitive.Title>
+          </div>
+        </Modal>
+      )}
+      {children}
+    </>
+  )
 }
