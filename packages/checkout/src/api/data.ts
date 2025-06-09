@@ -1,8 +1,16 @@
 import type { SequenceAPIClient } from '@0xsequence/api'
 import type { TokenMetadata } from '@0xsequence/metadata'
-import { networks, type ChainId } from '@0xsequence/network'
+import { findSupportedNetwork, networks, type ChainId } from '@0xsequence/network'
+import { zeroAddress } from 'viem'
 
-import type { CreditCardCheckout } from '../contexts/CheckoutModal.js'
+import {
+  type CreditCardCheckout,
+  type ForteProtocolType,
+  type ForteConfig,
+  type ForteMintConfig,
+  type ForteSeaportConfig,
+  type StructuredCalldata
+} from '../contexts/index.js'
 
 export interface FetchSardineClientTokenReturn {
   token: string
@@ -232,4 +240,248 @@ export const fetchSardineOnRampLink = async ({
   })
 
   return url.href
+}
+
+export interface FetchForteAccessTokenReturn {
+  accessToken: string
+  expiresIn: number
+  tokenType: string
+}
+
+export const fetchForteAccessToken = async (forteApiUrl: string): Promise<FetchForteAccessTokenReturn> => {
+  const clientId = ''
+  const clientSecret = ''
+
+  const url = `${forteApiUrl}/auth/v1/oauth2/token`
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret
+    })
+  })
+
+  const { data } = await res.json()
+
+  return {
+    accessToken: data.access_token,
+    expiresIn: data.expires_in,
+    tokenType: data.token_type
+  }
+}
+
+export interface CreateFortePaymentIntentArgs {
+  accessToken: string
+  tokenType: string
+  nftQuantity: string
+  recipientAddress: string
+  chainId: string
+  signature?: string
+  nftAddress: string
+  currencyAddress: string
+  targetContractAddress: string
+  nftName: string
+  imageUrl: string
+  tokenId?: string
+  currencyQuantity: string
+  protocolConfig: ForteConfig
+  calldata: string | StructuredCalldata
+}
+
+const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
+  '1': {
+    [zeroAddress]: 'ETH',
+    ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase()]: 'USDC_ETH'
+  },
+  '137': {
+    [zeroAddress]: 'POL',
+    ['0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'.toLowerCase()]: 'USDC_POLYGON'
+  },
+  '8453': {
+    [zeroAddress]: 'BASE_ETH'
+  }
+}
+
+const getForteCurrency = (chainId: string, currencyAddress: string) => {
+  return forteCurrencyMap[chainId]?.[currencyAddress.toLowerCase()] || 'ETH'
+}
+
+export const createFortePaymentIntent = async (forteApiUrl: string, args: CreateFortePaymentIntentArgs): Promise<any> => {
+  const {
+    accessToken,
+    tokenType,
+    recipientAddress,
+    chainId,
+    calldata,
+    targetContractAddress,
+    nftName,
+    nftAddress,
+    nftQuantity,
+    imageUrl,
+    tokenId,
+    protocolConfig,
+    currencyAddress,
+    currencyQuantity
+  } = args
+
+  const network = findSupportedNetwork(chainId)
+
+  if (!network) {
+    throw new Error('Invalid chainId')
+  }
+
+  const url = `${forteApiUrl}/payments/v2/intent`
+  const forteBlockchainName = network.name.toLowerCase().replace('-', '_')
+  const idempotencyKey = `${recipientAddress}-${tokenId}-${targetContractAddress}-${nftName}-${new Date().getTime()}`
+
+  let body: { [key: string]: any } = {
+    blockchain: forteBlockchainName,
+    idempotency_key: idempotencyKey,
+    buyer: {
+      id: recipientAddress,
+      wallet: {
+        address: recipientAddress,
+        blockchain: forteBlockchainName
+      }
+    }
+  }
+
+  if (protocolConfig.protocol == 'mint') {
+    body = {
+      ...body,
+      transaction_type: 'BUY_NFT_MINT',
+      currency: getForteCurrency(chainId, currencyAddress),
+      items: [
+        {
+          id: '1',
+          amount: currencyQuantity,
+          image_url: imageUrl,
+          title: nftName,
+          mint_data: {
+            token_contract_address: nftAddress,
+            token_ids: tokenId ? [tokenId] : [],
+            protocol_address: targetContractAddress,
+            protocol: 'custom_evm_call',
+            ...(typeof calldata === 'string'
+              ? {
+                  calldata: calldata
+                }
+              : {
+                  structured_calldata: {
+                    function_name: calldata.functionName,
+                    arguments: calldata.arguments
+                  }
+                })
+          }
+        }
+      ]
+    }
+  } else {
+    let listingData: { [key: string]: any } = {}
+
+    if (protocolConfig.protocol == 'seaport') {
+      listingData = {
+        protocol: protocolConfig.protocol,
+        order_hash: protocolConfig.orderHash,
+        protocol_address: protocolConfig.seaportProtocolAddress
+      }
+    } else if (protocolConfig.protocol == 'custom_evm_call') {
+      listingData = {
+        protocol: protocolConfig.protocol,
+        protocol_address: targetContractAddress,
+        ...(typeof protocolConfig.calldata === 'string'
+          ? { calldata: protocolConfig.calldata }
+          : {
+              structured_calldata: {
+                function_name: protocolConfig.calldata.functionName,
+                arguments: protocolConfig.calldata.arguments
+              }
+            })
+      }
+    }
+
+    body = {
+      ...body,
+      transaction_type: 'BUY_NFT',
+      currency: getForteCurrency(chainId, currencyAddress),
+      items: [
+        {
+          amount: currencyQuantity,
+          id: '1',
+          image_url: imageUrl,
+          listing_data: listingData,
+          nft_data: {
+            contract_address: nftAddress,
+            token_id: tokenId
+          },
+          title: nftName
+        }
+      ],
+      seller: {
+        wallet: {
+          address: protocolConfig.sellerAddress || '',
+          blockchain: forteBlockchainName
+        }
+      }
+    }
+  }
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${tokenType} ${accessToken}`
+    },
+    body: JSON.stringify(body)
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch widget data, with status: ${res.status}`)
+  }
+
+  const data = await res.json()
+
+  return data.data
+}
+
+export interface FetchFortePaymentStatusArgs {
+  accessToken: string
+  tokenType: string
+  paymentIntentId: string
+}
+
+export type FortePaymentStatus = 'Expired' | 'Created' | 'Declined' | 'Approved'
+
+export interface FetchFortePaymentStatusReturn {
+  status: FortePaymentStatus
+}
+
+export const fetchFortePaymentStatus = async (
+  forteApiUrl: string,
+  args: FetchFortePaymentStatusArgs
+): Promise<FetchFortePaymentStatusReturn> => {
+  const { accessToken, tokenType, paymentIntentId } = args
+
+  const url = `${forteApiUrl}/payments/v1/payments/statuses`
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${tokenType} ${accessToken}`
+    },
+    body: JSON.stringify({
+      payment_intent_ids: [paymentIntentId]
+    })
+  })
+
+  const { data } = await res.json()
+
+  return {
+    status: (data[0]?.status as FortePaymentStatus) || ''
+  }
 }
