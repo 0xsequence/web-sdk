@@ -1,13 +1,15 @@
 import { Image, Text } from '@0xsequence/design-system'
 
-export const CollectionHeader = ({ imgSrc, imgLabel }: { imgSrc?: string; imgLabel?: string }) => {
+import type { TokenInfo } from '../index.js'
+
+export const CollectionHeader = ({ contractAddress, chainId, tokenId, accountAddress }: TokenInfo) => {
   return (
     <div className="flex flex-row items-center h-full w-full">
       <div className="px-3">
         <Image
           className="w-9 h-9"
-          src={imgSrc}
-          alt={imgLabel}
+          src={''}
+          alt={''}
           style={{
             objectFit: 'cover'
           }}
@@ -15,7 +17,7 @@ export const CollectionHeader = ({ imgSrc, imgLabel }: { imgSrc?: string; imgLab
       </div>
       <div className="flex flex-col">
         <Text variant="medium" color="text100">
-          {imgLabel}
+          {''}
         </Text>
       </div>
     </div>
