@@ -70,13 +70,6 @@ export const OrderSummary = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div>
-        <Text
-          variant="small"
-          fontWeight="bold"
-          color="primary"
-        >{`${totalQuantity} ${totalQuantity > 1 ? 'items' : 'item'}`}</Text>
-      </div>
       <div className="flex flex-row gap-1">
         {selectPaymentSettings!.collectibles.map(collectible => {
           const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
@@ -87,8 +80,8 @@ export const OrderSummary = () => {
               <div
                 className="rounded-xl"
                 style={{
-                  height: '36px',
-                  width: '36px'
+                  height: '56px',
+                  width: '56px'
                 }}
               >
                 <CollectibleTileImage
@@ -97,17 +90,18 @@ export const OrderSummary = () => {
                       ? dataCollectionInfo?.extensions?.ogImage || dataCollectionInfo?.logoURI
                       : tokenMetadata?.image
                   }
+                  networkImage={chainId}
                 />
               </div>
               <div className="flex flex-col gap-0.5">
+                {!isTokenIdUnknown && (
+                  <Text variant="small" color="primary" fontWeight="bold">
+                    {`${tokenMetadata?.name || 'Collectible'}(${collectibleQuantity > 1 ? `${collectibleQuantity} items` : '1 item'})`}
+                  </Text>
+                )}
                 <Text variant="small" color="secondary" fontWeight="medium">
                   {dataCollectionInfo?.name || null}
                 </Text>
-                {!isTokenIdUnknown && (
-                  <Text variant="small" color="primary" fontWeight="bold">
-                    {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
-                  </Text>
-                )}
               </div>
             </div>
           )
