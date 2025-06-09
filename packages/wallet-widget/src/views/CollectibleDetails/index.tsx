@@ -1,33 +1,30 @@
-import { formatDisplay, useWallets } from '@0xsequence/connect'
-import { Button, Image, NetworkImage, SendIcon, Text } from '@0xsequence/design-system'
+import { formatDisplay, truncateAtIndex, useWallets } from '@0xsequence/connect'
 import {
-  useGetCollectiblePrices,
-  useGetExchangeRate,
-  useGetSingleTokenBalance,
-  useGetTransactionHistory
-} from '@0xsequence/hooks'
+  ArrowUpIcon,
+  Button,
+  Divider,
+  ExternalLinkIcon,
+  GradientAvatar,
+  Image,
+  NetworkImage,
+  Text
+} from '@0xsequence/design-system'
+import { useGetSingleTokenBalance } from '@0xsequence/hooks'
 import { useEffect } from 'react'
-import { formatUnits } from 'viem'
+import { formatUnits, getAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
-import { InfiniteScroll } from '../../components/InfiniteScroll.js'
+import type { TokenInfo } from '../../components/NavigationHeader/index.js'
 import { TokenTileImage } from '../../components/TokenTileImage.js'
-import { TransactionHistoryList } from '../../components/TransactionHistoryList/index.js'
-import { useNavigation, useSettings } from '../../hooks/index.js'
-import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../utils/index.js'
+import { useNavigation } from '../../hooks/index.js'
 
+import { InfoBadge } from './InfoBadge.js'
+import { PropertiesBadge } from './PropertiesBadge.js'
 import { CollectibleDetailsSkeleton } from './Skeleton.js'
-export interface CollectibleDetailsProps {
-  contractAddress: string
-  chainId: number
-  tokenId: string
-  accountAddress: string
-}
 
-export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountAddress }: CollectibleDetailsProps) => {
+export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountAddress }: TokenInfo) => {
   const { chains } = useConfig()
   const { setActiveWallet } = useWallets()
-  const { fiatCurrency } = useSettings()
   const { setNavigation } = useNavigation()
 
   useEffect(() => {
@@ -36,21 +33,6 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 
-  const {
-    data: dataTransactionHistory,
-    isLoading: isLoadingTransactionHistory,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage
-  } = useGetTransactionHistory({
-    chainId,
-    accountAddresses: [accountAddress || ''],
-    contractAddresses: [contractAddress],
-    tokenId
-  })
-
-  const transactionHistory = flattenPaginatedTransactionHistory(dataTransactionHistory)
-
   const { data: tokenBalance, isLoading: isLoadingCollectibleBalance } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
@@ -58,17 +40,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
     tokenId
   })
 
-  const { data: dataCollectiblePrices, isLoading: isLoadingCollectiblePrices } = useGetCollectiblePrices([
-    {
-      chainId,
-      contractAddress,
-      tokenId
-    }
-  ])
-
-  const { data: conversionRate = 1, isLoading: isLoadingConversionRate } = useGetExchangeRate(fiatCurrency.symbol)
-
-  const isLoading = isLoadingCollectibleBalance || isLoadingCollectiblePrices || isLoadingConversionRate
+  const isLoading = isLoadingCollectibleBalance
 
   if (isLoading) {
     return <CollectibleDetailsSkeleton isReadOnly={isReadOnly} />
@@ -80,7 +52,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
       params: {
         chainId,
         contractAddress,
-        tokenId
+        tokenId: tokenId || ''
       }
     })
   }
@@ -93,88 +65,76 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
   const balance = formatUnits(BigInt(rawBalance), decimals)
   const formattedBalance = formatDisplay(Number(balance))
 
-  const valueFiat = tokenBalance
-    ? computeBalanceFiat({
-        balance: tokenBalance,
-        prices: dataCollectiblePrices || [],
-        conversionRate,
-        decimals: decimals
-      })
-    : '0'
-
   return (
     <div>
-      <div
-        className="flex flex-col gap-10 pb-5 px-4 pt-0"
-        style={{
-          marginTop: '-20px'
-        }}
-      >
-        <div className="flex gap-3 items-center justify-center flex-col">
-          <div className="flex flex-row gap-2 justify-center items-center">
-            {collectionLogo && (
-              <Image
-                className="rounded-full w-8"
-                src={collectionLogo}
-                alt="collection logo"
-                style={{
-                  objectFit: 'cover'
-                }}
-              />
-            )}
-            <div className="flex gap-1 flex-row justify-center items-center">
-              <Text variant="small" fontWeight="bold" color="primary">
-                {collectionName}
-              </Text>
-              <NetworkImage chainId={chainId} size="xs" />
-            </div>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <Text variant="large" color="primary" fontWeight="bold">
-              {tokenBalance?.tokenMetadata?.name || 'Unknown Collectible'}
+      <div className="flex flex-col p-4 gap-4">
+        <TokenTileImage src={tokenBalance?.tokenMetadata?.image} symbol={tokenBalance?.tokenMetadata?.name} />
+        <div className="flex flex-row gap-4">
+          <Button className="text-primary w-full" variant="glass" leftIcon={ArrowUpIcon} label="Send" onClick={onClickSend} />
+          <Button
+            className="text-primary w-full"
+            variant="glass"
+            leftIcon={ExternalLinkIcon}
+            label="Open in..."
+            // onClick={onClickSend}
+          />
+        </div>
+        <Text variant="xxlarge" color="primary" fontWeight="bold">
+          {tokenBalance?.tokenMetadata?.name || 'Unknown Collectible'}
+        </Text>
+        <div className="flex flex-row justify-between items-center">
+          <Text variant="normal" color="primary">
+            Network
+          </Text>
+          <InfoBadge
+            leftIcon={<NetworkImage chainId={chainId} size="xs" />}
+            label={chains.find(chain => chain.id === chainId)?.name || 'Unknown Network'}
+          />
+        </div>
+        <Divider className="my-0" />
+        <div className="flex flex-row justify-between items-center">
+          <Text variant="normal" color="primary">
+            Collection
+          </Text>
+          <InfoBadge
+            leftIcon={<Image src={collectionLogo} alt="collection logo" className="rounded-full w-4" />}
+            label={collectionName}
+          />
+        </div>
+        <Divider className="my-0" />
+        <div className="flex flex-row justify-between items-center">
+          <Text variant="normal" color="primary">
+            Owner
+          </Text>
+          <InfoBadge
+            leftIcon={<GradientAvatar address={getAddress(tokenBalance?.accountAddress || '')} size="xs" />}
+            label={truncateAtIndex(tokenBalance?.accountAddress || '', 6) || 'Unknown Owner'}
+          />
+        </div>
+        <Divider className="my-0" />
+        <div className="flex flex-row justify-between items-center">
+          <Text variant="normal" color="primary">
+            Balance
+          </Text>
+          <Text variant="normal" color="primary">
+            {formattedBalance}
+          </Text>
+        </div>
+        <Divider className="my-0" />
+        <Text variant="normal" color="primary">
+          {tokenBalance?.tokenMetadata?.description}
+        </Text>
+        {tokenBalance?.tokenMetadata?.properties?.length > 0 && (
+          <>
+            <Divider className="my-0" />
+            <Text variant="normal" color="primary">
+              Properties
             </Text>
-            <Text variant="small" color="muted" fontWeight="medium">
-              {`#${tokenId}`}
-            </Text>
-          </div>
-        </div>
-        <div>
-          <TokenTileImage src={tokenBalance?.tokenMetadata?.image} symbol={tokenBalance?.tokenMetadata?.name} />
-        </div>
-        <div>
-          {/* balance */}
-          <div>
-            <Text variant="normal" fontWeight="medium" color="muted">
-              Balance
-            </Text>
-            <div className="flex flex-row items-end justify-between">
-              <Text variant="xlarge" fontWeight="bold" color="primary">
-                {formattedBalance}
-              </Text>
-              {dataCollectiblePrices && dataCollectiblePrices[0].price?.value && (
-                <Text variant="normal" fontWeight="medium" color="muted">{`${fiatCurrency.symbol} ${valueFiat}`}</Text>
-              )}
-            </div>
-          </div>
-          {!isReadOnly && (
-            <Button
-              className="text-primary mt-4 w-full"
-              variant="primary"
-              leftIcon={SendIcon}
-              label="Send"
-              onClick={onClickSend}
-            />
-          )}
-        </div>
-        <div>
-          <InfiniteScroll onLoad={() => fetchNextPage()} hasMore={hasNextPage}>
-            <TransactionHistoryList
-              transactions={transactionHistory}
-              isLoading={isLoadingTransactionHistory}
-              isFetchingNextPage={isFetchingNextPage}
-            />
-          </InfiniteScroll>
-        </div>
+            {tokenBalance?.tokenMetadata?.properties?.map((property: any) => (
+              <PropertiesBadge name={property.name} value={property.value} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   )
