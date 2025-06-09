@@ -111,9 +111,6 @@ export const config =
             ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
             : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
         },
-        epic: {
-          authUrl: 'https://epic-auth-worker-websdk.0xsequence.workers.dev/login'
-        },
         apple: {
           clientId: 'com.horizon.sequence.waas',
           redirectURI: window.location.origin + window.location.pathname
