@@ -413,12 +413,12 @@ export const PaymentSelectionContent = () => {
   return (
     <>
       <div
-        className={`flex flex-col gap-2 items-start w-full pb-0 px-6 h-full transition-opacity duration-200 ${isPurchasing ? 'opacity-50 pointer-events-none' : ''}`}
+        className={`flex flex-col gap-2 items-start w-full pb-0 px-3 h-full transition-opacity duration-200 ${isPurchasing ? 'opacity-50 pointer-events-none' : ''}`}
         style={{
           paddingTop: HEADER_HEIGHT
         }}
       >
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full gap-2 pt-2">
           <OrderSummary />
         </div>
         {(enableMainCurrencyPayment || enableSwapPayments) && (

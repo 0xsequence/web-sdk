@@ -296,7 +296,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                           <Modal
                             contentProps={{
                               style: {
-                                maxWidth: '420px',
+                                maxWidth: '320px',
                                 ...getModalPositionCss(position),
                                 scrollbarColor: 'gray black',
                                 scrollbarWidth: 'thin'
