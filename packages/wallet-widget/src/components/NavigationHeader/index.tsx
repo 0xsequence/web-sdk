@@ -13,12 +13,18 @@ import { TokenHeader } from './content/TokenHeader.js'
 
 interface NavigationHeaderProps {
   type?: 'home' | 'search' | 'settings' | 'token' | 'collectible' | 'collection' | 'default'
-  imgSrc?: string
-  imgLabel?: string
+  info?: TokenInfo
   label?: string
 }
 
-const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, imgLabel?: string, label?: string) => {
+export interface TokenInfo {
+  accountAddress: string
+  chainId: number
+  contractAddress: string
+  tokenId?: string
+}
+
+const getHeaderContent = (type: NavigationHeaderProps['type'], info?: TokenInfo, label?: string) => {
   switch (type) {
     case 'home':
       return <HomeHeader />
@@ -27,11 +33,11 @@ const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, 
     case 'settings':
       return <SettingsHeader />
     case 'token':
-      return <TokenHeader /> // TODO: add imgSrc and imgLabel?
+      return <TokenHeader {...info!} /> // TODO: add imgSrc and imgLabel?
     case 'collectible':
-      return <CollectibleHeader imgSrc={imgSrc} imgLabel={imgLabel} />
+      return <CollectibleHeader {...info!} />
     case 'collection':
-      return <CollectionHeader imgSrc={imgSrc} imgLabel={imgLabel} />
+      return <CollectionHeader {...info!} />
     case 'default':
       return (
         <Text variant="medium" color="primary">
@@ -41,7 +47,7 @@ const getHeaderContent = (type: NavigationHeaderProps['type'], imgSrc?: string, 
   }
 }
 
-export const NavigationHeader = ({ type = 'default', imgSrc, imgLabel, label }: NavigationHeaderProps) => {
+export const NavigationHeader = ({ type = 'default', info, label }: NavigationHeaderProps) => {
   const { goBack, history } = useNavigation()
   const { isBackButtonEnabled } = useNavigationContext()
 
@@ -66,7 +72,7 @@ export const NavigationHeader = ({ type = 'default', imgSrc, imgLabel, label }: 
         <div />
       )}
 
-      {getHeaderContent(type, imgSrc, imgLabel, label)}
+      {getHeaderContent(type, info, label)}
 
       {type !== 'search' && history.length > 0 ? <div style={{ width: '52px' }} /> : <div />}
     </div>

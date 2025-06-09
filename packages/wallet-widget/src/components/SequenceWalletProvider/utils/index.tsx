@@ -82,6 +82,14 @@ export const getContent = (navigation: Navigation) => {
           accountAddress={navigation.params.accountAddress}
         />
       )
+    // case 'collection-details':
+    //   return (
+    //     <CollectionDetails
+    //       contractAddress={navigation.params.contractAddress}
+    //       chainId={navigation.params.chainId}
+    //       accountAddress={navigation.params.accountAddress}
+    //     />
+    //   )
     case 'transaction-details':
       return <TransactionDetails transaction={navigation.params.transaction} />
     case 'swap-coin':
@@ -122,9 +130,34 @@ export const getHeader = (navigation: Navigation) => {
     case 'history':
       return <NavigationHeader type="home" />
     case 'coin-details':
-      return <NavigationHeader type="home" />
+      return (
+        <NavigationHeader
+          type="token"
+          info={{
+            accountAddress: navigation.params.accountAddress,
+            chainId: navigation.params.chainId,
+            contractAddress: navigation.params.contractAddress
+          }}
+        />
+      )
     case 'collectible-details':
-      return <NavigationHeader type="home" />
+      return (
+        <NavigationHeader
+          type="collectible"
+          info={{
+            accountAddress: navigation.params.accountAddress,
+            chainId: navigation.params.chainId,
+            contractAddress: navigation.params.contractAddress,
+            tokenId: navigation.params.tokenId
+          }}
+        />
+      )
+    // case 'collection-details':
+    //   return <NavigationHeader type="collection" info={{
+    //     accountAddress: navigation.params.accountAddress,
+    //     chainId: navigation.params.chainId,
+    //     contractAddress: navigation.params.contractAddress,
+    //   }} />
     case 'transaction-details':
       return <NavigationHeader type="home" />
     case 'send-general':
