@@ -2,7 +2,7 @@ import { Text } from '@0xsequence/design-system'
 
 import { useGetAllTokensDetails, useSettings } from '../../hooks/index.js'
 import { useGetAllCollections } from '../../hooks/useGetAllCollections.js'
-import { ListCardSelect } from '../ListCard/ListCardSelect.js'
+import { ListCard } from '../ListCard/ListCard.js'
 
 export const CollectionsFilter = ({ onClose }: { onClose: () => void }) => {
   const { selectedWallets, selectedNetworks, showCollectionsObservable, setShowCollections, hideUnlistedTokens } = useSettings()
@@ -30,7 +30,7 @@ export const CollectionsFilter = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className="flex flex-col bg-background-primary gap-3">
-      <ListCardSelect key="Items" isSelected={!showCollections} onClick={() => onClickItems(false)}>
+      <ListCard key="Items" type="radio" isSelected={!showCollections} onClick={() => onClickItems(false)}>
         <div>
           <Text color="primary" variant="normal">
             Items{' '}
@@ -39,8 +39,8 @@ export const CollectionsFilter = ({ onClose }: { onClose: () => void }) => {
             ({itemsCount})
           </Text>
         </div>
-      </ListCardSelect>
-      <ListCardSelect key="Collections" isSelected={showCollections} onClick={() => onClickItems(true)}>
+      </ListCard>
+      <ListCard key="Collections" type="radio" isSelected={showCollections} onClick={() => onClickItems(true)}>
         <div>
           <Text color="primary" variant="normal">
             Collections{' '}
@@ -49,7 +49,7 @@ export const CollectionsFilter = ({ onClose }: { onClose: () => void }) => {
             ({collectionsCount})
           </Text>
         </div>
-      </ListCardSelect>
+      </ListCard>
     </div>
   )
 }

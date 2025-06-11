@@ -29,7 +29,7 @@ import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
 import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
-import { ConnectedWalletSelect } from '../../components/Select/ConnectedWalletSelect.js'
+import { AllButActiveWalletSelect } from '../../components/Select/AllButActiveWalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
 import { TransactionConfirmation } from '../../components/TransactionConfirmation.js'
 import { EVENT_SOURCE, EVENT_TYPES } from '../../constants/analytics.js'
@@ -436,7 +436,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                     />
                   }
                 />
-                {wallets.length > 1 && <ConnectedWalletSelect selectedWallet={toAddress} onClick={setToAddress} />}
+                {wallets.length > 1 && <AllButActiveWalletSelect onClick={setToAddress} />}
               </>
             )}
           </div>

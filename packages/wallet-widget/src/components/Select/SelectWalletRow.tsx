@@ -3,7 +3,7 @@ import { Text } from '@0xsequence/design-system'
 
 import { useFiatWalletsMap, useSettings } from '../../hooks/index.js'
 import { CopyButton } from '../CopyButton.js'
-import { ListCardSelect } from '../ListCard/ListCardSelect.js'
+import { ListCard } from '../ListCard/ListCard.js'
 import { WalletAccountGradient } from '../WalletAccountGradient.js'
 
 export const SelectWalletRow = ({
@@ -28,7 +28,8 @@ export const SelectWalletRow = ({
   const fiatValue = fiatWalletsMap.find(w => w.accountAddress === wallet.address)?.fiatValue
 
   return (
-    <ListCardSelect
+    <ListCard
+      type="radio"
       rightChildren={
         <Text color="muted" fontWeight="medium" variant="normal">
           {fiatCurrency.sign}
@@ -45,6 +46,6 @@ export const SelectWalletRow = ({
           <CopyButton text={wallet.address} onClick={e => e.stopPropagation()} />
         </Text>
       </div>
-    </ListCardSelect>
+    </ListCard>
   )
 }

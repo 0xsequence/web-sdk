@@ -37,7 +37,14 @@ export const NetworkSelect = () => {
 
       <ChevronUpDownIcon className="text-muted" />
       {isOpen && (
-        <SlideupDrawer header="Network" onClose={() => setIsOpen(false)}>
+        <SlideupDrawer
+          header={
+            <Text variant="medium" color="primary">
+              Network
+            </Text>
+          }
+          onClose={() => setIsOpen(false)}
+        >
           <div className="flex flex-col gap-2" style={{ overflowY: 'auto' }}>
             {chains.map(chain => (
               <ListCardNetwork

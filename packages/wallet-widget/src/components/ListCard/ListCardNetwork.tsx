@@ -4,7 +4,6 @@ import { Text } from '@0xsequence/design-system'
 import { NetworkImageCustom } from '../Filter/NetworkImageCustom.js'
 
 import { ListCard } from './ListCard.js'
-import { RadioSelector } from './RadioSelector.js'
 
 export const ListCardNetwork = ({
   chainId,
@@ -19,7 +18,7 @@ export const ListCardNetwork = ({
   const title = network.title
 
   return (
-    <ListCard onClick={onClick} isSelected={isSelected} rightChildren={isSelected && <RadioSelector isSelected={isSelected} />}>
+    <ListCard type={isSelected ? 'radio' : 'default'} onClick={onClick} isSelected={isSelected}>
       <div className="flex gap-2 justify-center items-center">
         <NetworkImageCustom chainId={chainId} style={{ width: '32px', height: '32px' }} />
         <Text color="primary" variant="normal" fontWeight="bold">

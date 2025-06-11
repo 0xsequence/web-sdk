@@ -1,7 +1,6 @@
 export * from './Home/index.js'
 export * from './Receive/index.js'
 export * from './Send/index.js'
-export * from './History.js'
 export * from './Settings/index.js'
 export * from './CoinDetails/index.js'
 export * from './CollectibleDetails/index.js'
