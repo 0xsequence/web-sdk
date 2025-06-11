@@ -1,4 +1,4 @@
-import type { SequenceIndexerGateway } from '@0xsequence/indexer'
+import { ContractVerificationStatus, type SequenceIndexerGateway } from '@0xsequence/indexer'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants.js'
@@ -12,6 +12,7 @@ export interface GetSingleTokenBalanceArgs {
   accountAddress: string
   contractAddress: string
   tokenId?: string
+  hideUnlistedTokens?: boolean
 }
 
 const getSingleTokenBalance = async (args: GetSingleTokenBalanceArgs, indexerGatewayClient: SequenceIndexerGateway) => {
@@ -20,7 +21,8 @@ const getSingleTokenBalance = async (args: GetSingleTokenBalanceArgs, indexerGat
     filter: {
       accountAddresses: [args.accountAddress],
       contractWhitelist: [args.contractAddress],
-      omitNativeBalances: false
+      omitNativeBalances: false,
+      contractStatus: args.hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL
     }
   })
 

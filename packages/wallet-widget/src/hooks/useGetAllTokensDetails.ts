@@ -35,6 +35,6 @@ export const useGetAllTokensDetails = ({
 
   return {
     data: tokenBalancesData?.pages.flatMap(page => page.balances) || [],
-    isLoading: isLoading
+    isLoading: isLoading || isFetchingNextPage
   }
 }

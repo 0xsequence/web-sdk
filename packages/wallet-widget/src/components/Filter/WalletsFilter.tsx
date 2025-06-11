@@ -4,7 +4,7 @@ import { useObservable } from 'micro-observables'
 import { useSettings } from '../../hooks/index.js'
 import { ListCardWallet } from '../ListCard/ListCardWallet.js'
 
-export const WalletsFilter = () => {
+export const WalletsFilter = ({ onClose }: { onClose: () => void }) => {
   const { selectedWalletsObservable, setSelectedWallets } = useSettings()
   const { wallets } = useWallets()
 
@@ -16,6 +16,7 @@ export const WalletsFilter = () => {
     } else {
       setSelectedWallets([])
     }
+    onClose()
   }
 
   return (

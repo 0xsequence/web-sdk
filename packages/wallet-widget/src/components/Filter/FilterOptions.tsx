@@ -77,17 +77,17 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
     if (filterType === 'networks') {
       if (selectedNetworks.length === allNetworks.length) {
         return (
-          <Text className="truncate" variant="small" fontWeight="bold" color="primary" nowrap>
+          <Text className="truncate" variant="small-bold" color="primary" nowrap>
             All networks
           </Text>
         )
       }
       return (
         <div className="flex flex-row gap-1">
-          <Text variant="small" fontWeight="bold" color="primary">
+          <Text variant="small-bold" color="primary">
             Networks
           </Text>
-          <Text variant="small" fontWeight="bold" color="muted">
+          <Text variant="small-bold" color="muted">
             {`(${selectedNetworks.length})`}
           </Text>
         </div>
@@ -95,11 +95,11 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
     } else if (filterType === 'wallets') {
       return (
         <div className="flex flex-row gap-1">
-          <Text variant="small" fontWeight="bold" color="primary">
+          <Text variant="small-bold" color="primary">
             Wallets
           </Text>
           {selectedWallets.length !== wallets.length && (
-            <Text variant="small" fontWeight="bold" color="muted">
+            <Text variant="small-bold" color="muted">
               {`(${selectedWallets.length})`}
             </Text>
           )}
@@ -108,13 +108,13 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
     } else if (filterType === 'collections') {
       if (showCollections) {
         return (
-          <Text variant="small" fontWeight="bold" color="primary">
+          <Text variant="small-bold" color="primary">
             Collections
           </Text>
         )
       }
       return (
-        <Text variant="small" fontWeight="bold" color="primary">
+        <Text variant="small-bold" color="primary">
           Items
         </Text>
       )
@@ -147,7 +147,10 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
                 fewSelectedText="Networks"
                 fewSelectedCount={selectedNetworks.length}
                 clearCondition={selectedNetworks.length !== allNetworks.length}
-                onClickClear={() => setSelectedNetworks([])}
+                onClickClear={() => {
+                  setSelectedNetworks([])
+                  setOpenType('closed')
+                }}
               />
             }
             onClose={() => setOpenType('closed')}
@@ -163,12 +166,15 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
                 fewSelectedText="Wallets"
                 fewSelectedCount={selectedWallets.length}
                 clearCondition={selectedWallets.length !== wallets.length}
-                onClickClear={() => setSelectedWallets([])}
+                onClickClear={() => {
+                  setSelectedWallets([])
+                  setOpenType('closed')
+                }}
               />
             }
             onClose={() => setOpenType('closed')}
           >
-            <WalletsFilter />
+            <WalletsFilter onClose={() => setOpenType('closed')} />
           </SlideupDrawer>
         )}
         {openType === 'collections' && (
@@ -180,7 +186,7 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
             }
             onClose={() => setOpenType('closed')}
           >
-            <CollectionsFilter />
+            <CollectionsFilter onClose={() => setOpenType('closed')} />
           </SlideupDrawer>
         )}
       </AnimatePresence>

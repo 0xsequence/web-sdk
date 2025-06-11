@@ -27,6 +27,16 @@ export interface CollectibleDetailsNavigation {
   params: CollectibleDetailsParams
 }
 
+export interface CollectionDetailsParams {
+  contractAddress: string
+  chainId: number
+}
+
+export interface CollectionDetailsNavigation {
+  location: 'collection-details'
+  params: CollectionDetailsParams
+}
+
 export interface TransactionDetailsParams {
   transaction: Transaction
 }
@@ -100,6 +110,7 @@ export type Navigation =
   | BasicNavigation
   | CoinDetailsNavigation
   | CollectibleDetailsNavigation
+  | CollectionDetailsNavigation
   | TransactionDetailsNavigation
   | SendCoinNavigation
   | SendCollectibleNavigation

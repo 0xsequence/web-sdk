@@ -1,4 +1,5 @@
 import type { Navigation } from '../../../contexts/index.js'
+import { CollectionDetails } from '../../../views/CollectionDetails/index.js'
 import {
   Buy,
   CoinDetails,
@@ -82,14 +83,8 @@ export const getContent = (navigation: Navigation) => {
           accountAddress={navigation.params.accountAddress}
         />
       )
-    // case 'collection-details':
-    //   return (
-    //     <CollectionDetails
-    //       contractAddress={navigation.params.contractAddress}
-    //       chainId={navigation.params.chainId}
-    //       accountAddress={navigation.params.accountAddress}
-    //     />
-    //   )
+    case 'collection-details':
+      return <CollectionDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
     case 'transaction-details':
       return <TransactionDetails transaction={navigation.params.transaction} />
     case 'swap-coin':
@@ -124,17 +119,16 @@ export const getHeader = (navigation: Navigation) => {
     case 'settings-preferences':
       return <NavigationHeader label="Preferences" />
     case 'settings-apps':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader />
     case 'connect-dapp':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader />
     case 'history':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader />
     case 'coin-details':
       return (
         <NavigationHeader
           type="token"
           info={{
-            accountAddress: navigation.params.accountAddress,
             chainId: navigation.params.chainId,
             contractAddress: navigation.params.contractAddress
           }}
@@ -145,32 +139,35 @@ export const getHeader = (navigation: Navigation) => {
         <NavigationHeader
           type="collectible"
           info={{
-            accountAddress: navigation.params.accountAddress,
             chainId: navigation.params.chainId,
             contractAddress: navigation.params.contractAddress,
             tokenId: navigation.params.tokenId
           }}
         />
       )
-    // case 'collection-details':
-    //   return <NavigationHeader type="collection" info={{
-    //     accountAddress: navigation.params.accountAddress,
-    //     chainId: navigation.params.chainId,
-    //     contractAddress: navigation.params.contractAddress,
-    //   }} />
+    case 'collection-details':
+      return (
+        <NavigationHeader
+          type="collection"
+          info={{
+            chainId: navigation.params.chainId,
+            contractAddress: navigation.params.contractAddress
+          }}
+        />
+      )
     case 'transaction-details':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader />
     case 'send-general':
       return <NavigationHeader label="Send" />
     case 'send-coin':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader />
     case 'send-collectible':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader />
     case 'swap':
       return <NavigationHeader label="Swap" />
     case 'swap-coin':
     case 'swap-coin-list':
-      return <NavigationHeader type="home" />
+      return <NavigationHeader />
     case 'receive':
       return <NavigationHeader label="Receive" />
     case 'buy':

@@ -1,4 +1,4 @@
-import { formatDisplay, truncateAtIndex, useWallets } from '@0xsequence/connect'
+import { formatDisplay, truncateAtIndex } from '@0xsequence/connect'
 import {
   ArrowUpIcon,
   Button,
@@ -18,7 +18,7 @@ import { useConfig } from 'wagmi'
 
 import type { TokenInfo } from '../../components/NavigationHeader/index.js'
 import { TokenTileImage } from '../../components/TokenTileImage.js'
-import { useNavigation } from '../../hooks/index.js'
+import { useNavigation, useSettings } from '../../hooks/index.js'
 
 import { InfoBadge } from './InfoBadge.js'
 import { PropertiesBadge } from './PropertiesBadge.js'
@@ -26,9 +26,9 @@ import { CollectibleDetailsSkeleton } from './Skeleton.js'
 
 export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountAddress }: TokenInfo) => {
   const { chains } = useConfig()
-  const { setActiveWallet } = useWallets()
   const { setNavigation } = useNavigation()
   const network = findSupportedNetwork(chainId)
+  const { hideUnlistedTokens } = useSettings()
 
   const triggerRef = useRef<HTMLButtonElement>(null)
   const [triggerWidth, setTriggerWidth] = useState<number>(0)
@@ -42,17 +42,14 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
     }
   }, [isExternalPopoverOpen])
 
-  useEffect(() => {
-    setActiveWallet(accountAddress || '')
-  }, [accountAddress])
-
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 
   const { data: tokenBalance, isLoading: isLoadingCollectibleBalance } = useGetSingleTokenBalance({
     chainId,
     contractAddress,
     accountAddress: accountAddress || '',
-    tokenId
+    tokenId,
+    hideUnlistedTokens: hideUnlistedTokens
   })
 
   const isLoading = isLoadingCollectibleBalance
@@ -170,7 +167,9 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
             Owner
           </Text>
           <InfoBadge
-            leftIcon={<GradientAvatar address={getAddress(tokenBalance?.accountAddress || '')} size="xs" />}
+            leftIcon={
+              tokenBalance?.accountAddress && <GradientAvatar address={getAddress(tokenBalance?.accountAddress)} size="xs" />
+            }
             label={truncateAtIndex(tokenBalance?.accountAddress || '', 6) || 'Unknown Owner'}
           />
         </div>

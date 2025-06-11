@@ -11,7 +11,7 @@ interface CoinDetailsSkeletonProps {
 export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeletonProps) => {
   return (
     <div>
-      <div className="flex flex-col gap-10 pb-5 px-4 pt-0" style={{ marginTop: '-20px' }}>
+      <div className="flex flex-col gap-10 pb-5 px-4 pt-0">
         <div className="flex mb-10 gap-2 items-center justify-center flex-col">
           <Skeleton style={{ width: '64px', height: '64px' }} />
           <Skeleton style={{ height: '28px', width: '70px' }} />

@@ -18,10 +18,10 @@ interface NavigationHeaderProps {
 }
 
 export interface TokenInfo {
-  accountAddress: string
   chainId: number
   contractAddress: string
   tokenId?: string
+  accountAddress?: string
 }
 
 const getHeaderContent = (type: NavigationHeaderProps['type'], info?: TokenInfo, label?: string) => {

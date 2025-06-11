@@ -26,32 +26,22 @@ export const CoinsTab: FC<CoinsTabProps> = ({
   onTokenClick,
   includeUserAddress = false
 }) => {
+  const hasBalances = displayedCoinBalances && displayedCoinBalances.length > 0
+
   return (
     <div>
       <div className="flex flex-col items-center gap-2">
-        {isFetchingInitialBalances ? (
-          <>
-            {Array(7)
-              .fill(null)
-              .map((_, i) => (
-                <Skeleton className="w-full" key={i} style={{ height: '60px' }} />
-              ))}
-          </>
-        ) : (
-          <>
-            {displayedCoinBalances && displayedCoinBalances.length > 0 && (
-              <InfiniteScroll onLoad={() => fetchMoreCoinBalances()} hasMore={hasMoreCoinBalances}>
-                {displayedCoinBalances?.map((balance, index) => {
-                  return (
-                    <CoinRow key={index} balance={balance} onTokenClick={onTokenClick} includeUserAddress={includeUserAddress} />
-                  )
-                })}
+        {isFetchingInitialBalances
+          ? Array.from({ length: 7 }).map((_, i) => <Skeleton className="w-full" key={i} style={{ height: '68px' }} />)
+          : hasBalances && (
+              <InfiniteScroll onLoad={fetchMoreCoinBalances} hasMore={hasMoreCoinBalances}>
+                {displayedCoinBalances!.map((balance, index) => (
+                  <CoinRow key={index} balance={balance} onTokenClick={onTokenClick} includeUserAddress={includeUserAddress} />
+                ))}
               </InfiniteScroll>
             )}
-          </>
-        )}
       </div>
-      {(!displayedCoinBalances || displayedCoinBalances.length === 0) && !isFetchingMoreCoinBalances && <NoResults />}
+      {!isFetchingInitialBalances && !hasBalances && !isFetchingMoreCoinBalances && <NoResults />}
       {isFetchingMoreCoinBalances && <Spinner className="flex self-center mt-3" />}
     </div>
   )

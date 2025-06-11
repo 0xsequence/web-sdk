@@ -51,6 +51,6 @@ export const useGetCollections = ({
 
   return {
     data: uniqueCollections,
-    isLoading
+    isLoading: isLoading || isFetchingNextPage
   }
 }
