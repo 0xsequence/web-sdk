@@ -39,7 +39,7 @@ export const CollectiblesTab: FC<CollectiblesTabProps> = ({
               </InfiniteScroll>
             )}
       </div>
-      {!isFetchingInitialBalances && !hasBalances && !isFetchingMoreCollectibleBalances && <NoResults />}
+      {!isFetchingInitialBalances && !hasBalances && !isFetchingMoreCollectibleBalances && <NoResults hasInstructions />}
       {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
     </div>
   )

@@ -130,7 +130,8 @@ export const getHeader = (navigation: Navigation) => {
           type="token"
           info={{
             chainId: navigation.params.chainId,
-            contractAddress: navigation.params.contractAddress
+            contractAddress: navigation.params.contractAddress,
+            accountAddress: navigation.params.accountAddress
           }}
         />
       )
