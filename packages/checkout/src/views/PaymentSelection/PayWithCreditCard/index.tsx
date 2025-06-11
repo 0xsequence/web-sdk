@@ -18,6 +18,16 @@ type BasePaymentProviderOptions = 'sardine' | 'transak'
 type CustomPaymentProviderOptions = 'custom'
 type PaymentProviderOptions = BasePaymentProviderOptions | CustomPaymentProviderOptions
 
+export const PayWithCreditCardTab = () => {
+  return (
+    <div className="flex flex-col justify-center items-center gap-2 w-full">
+      <Text variant="xsmall" color="text50" className="relative top-[-2px]" fontWeight="normal">
+        Pay with credit or debit card
+      </Text>
+    </div>
+  )
+}
+
 export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallback }: PayWithCreditCardProps) => {
   const {
     chain,

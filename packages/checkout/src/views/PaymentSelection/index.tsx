@@ -1,6 +1,6 @@
 import type { LifiToken } from '@0xsequence/api'
 import { compareAddress, sendTransactions, TRANSACTION_CONFIRMATIONS_DEFAULT, useAnalyticsContext } from '@0xsequence/connect'
-import { Button, Divider, Spinner, Text } from '@0xsequence/design-system'
+import { Button, Divider, Spinner, Tabs, TabsContent, TabsHeader, TabsRoot, Text } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
   useGetContractInfo,
@@ -9,7 +9,7 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
@@ -22,8 +22,8 @@ import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModa
 import { Footer } from './Footer.js'
 import { FundWithFiat } from './FundWithFiat.js'
 import { OrderSummary } from './OrderSummary/index.js'
-import { PayWithCreditCard } from './PayWithCreditCard/index.js'
-import { PayWithCrypto } from './PayWithCrypto/index.js'
+import { PayWithCreditCard, PayWithCreditCardTab } from './PayWithCreditCard/index.js'
+import { PayWithCrypto, PayWithCryptoTab } from './PayWithCrypto/index.js'
 import { TransferFunds } from './TransferFunds.js'
 
 export const PaymentSelection = () => {
@@ -39,14 +39,23 @@ export const PaymentSelectionHeader = () => {
   return <NavigationHeader primaryText="Checkout" />
 }
 
+type Tab = 'crypto' | 'credit-card'
+
+const TABS: { label: string; value: Tab }[] = [
+  { label: 'Crypto', value: 'crypto' },
+  { label: 'Credit Card', value: 'credit-card' }
+]
+
 export const PaymentSelectionContent = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const { selectPaymentSettings = {} as SelectPaymentSettings } = useSelectPaymentModal()
   const { analytics } = useAnalyticsContext()
 
+  const [selectedTab, setSelectedTab] = useState<Tab>('crypto')
   const [disableButtons, setDisableButtons] = useState(false)
   const [isError, setIsError] = useState<boolean>(false)
   const [isPurchasing, setIsPurchasing] = useState<boolean>(false)
+  const isFirstRender = useRef<boolean>(true)
   const {
     chain,
     collectibles,
@@ -410,6 +419,10 @@ export const PaymentSelectionContent = () => {
 
   const isTokenIdUnknown = collectibles.some(collectible => !collectible.tokenId)
 
+  const TabWrapper = ({ children }: { children: React.ReactNode }) => {
+    return <div className="w-full bg-background-secondary mt-2 p-3 rounded-xl h-[128px]">{children}</div>
+  }
+
   return (
     <>
       <div
@@ -421,6 +434,40 @@ export const PaymentSelectionContent = () => {
         <div className="flex flex-col w-full gap-2 pt-2">
           <OrderSummary />
         </div>
+        <div className="w-full relative">
+          <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 bg-background-primary px-2">
+            <Text variant="xsmall" color="text50" className="relative top-[-2px]" fontWeight="normal">
+              Pay with
+            </Text>
+          </div>
+          <Divider className="w-full" />
+        </div>
+        <TabsRoot
+          className="w-full"
+          value={selectedTab}
+          onValueChange={value => {
+            // There is a bug with the tabs components which causes the tabs
+            // to change to the credit card tab upon initial mount.
+            if (isFirstRender.current) {
+              isFirstRender.current = false
+              return
+            } else {
+              setSelectedTab(value as Tab)
+            }
+          }}
+        >
+          <TabsHeader tabs={TABS} value={selectedTab} />
+          <TabsContent value="crypto">
+            <TabWrapper>
+              <PayWithCryptoTab />
+            </TabWrapper>
+          </TabsContent>
+          <TabsContent value="credit-card">
+            <TabWrapper>
+              <PayWithCreditCardTab />
+            </TabWrapper>
+          </TabsContent>
+        </TabsRoot>
         {/* {(enableMainCurrencyPayment || enableSwapPayments) && (
           <>
             <Divider className="w-full my-3" />

@@ -227,6 +227,12 @@ export const styles = String.raw`
   .top-4 {
     top: calc(var(--spacing) * 4);
   }
+  .top-\[-2px\] {
+    top: -2px;
+  }
+  .top-\[50\%\] {
+    top: 50%;
+  }
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
@@ -253,6 +259,9 @@ export const styles = String.raw`
   }
   .left-4 {
     left: calc(var(--spacing) * 4);
+  }
+  .left-\[50\%\] {
+    left: 50%;
   }
   .z-1 {
     z-index: 1;
@@ -476,6 +485,9 @@ export const styles = String.raw`
   .h-\[64px\] {
     height: 64px;
   }
+  .h-\[128px\] {
+    height: 128px;
+  }
   .h-\[calc\(100dvh-70px\)\] {
     height: calc(100dvh - 70px);
   }
@@ -636,12 +648,20 @@ export const styles = String.raw`
     --tw-translate-x: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
+  .-translate-x-1\/2 {
+    --tw-translate-x: calc(calc(1/2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
   .translate-x-0 {
     --tw-translate-x: calc(var(--spacing) * 0);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1 {
     --tw-translate-y: calc(var(--spacing) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .-translate-y-1\/2 {
+    --tw-translate-y: calc(calc(1/2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .transform {

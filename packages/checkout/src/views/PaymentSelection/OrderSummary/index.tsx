@@ -1,4 +1,4 @@
-import { CollectibleTileImage, formatDisplay, NetworkBadge } from '@0xsequence/connect'
+import { CollectibleTileImage, formatDisplay } from '@0xsequence/connect'
 import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
@@ -76,7 +76,7 @@ export const OrderSummary = () => {
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
-            <div className="flex gap-3 items-center" key={collectible.tokenId}>
+            <div className="flex gap-2 items-center" key={collectible.tokenId}>
               <div
                 className="rounded-xl"
                 style={{
@@ -95,11 +95,11 @@ export const OrderSummary = () => {
               </div>
               <div className="flex flex-col gap-0.25">
                 {!isTokenIdUnknown && (
-                  <Text variant="small" color="secondary" fontWeight="bold">
+                  <Text variant="xsmall" color="secondary" fontWeight="bold">
                     {`${tokenMetadata?.name || 'Collectible'}(${collectibleQuantity > 1 ? `${collectibleQuantity} items` : '1 item'})`}
                   </Text>
                 )}
-                <Text variant="small" color="secondary" fontWeight="normal">
+                <Text variant="xsmall" color="secondary" fontWeight="normal">
                   {dataCollectionInfo?.name || null}
                 </Text>
                 <div className="flex flex-row gap-1 items-center">
@@ -108,7 +108,7 @@ export const OrderSummary = () => {
                     {`${displayPrice} ${dataCurrencyInfo?.symbol} on ${network?.title}`}
                   </Text>
                 </div>
-                <Text color="text50" variant="xsmall">
+                <Text color="text50" variant="xsmall" fontWeight="normal">
                   {`$${priceFiat} USD`}
                 </Text>
               </div>
