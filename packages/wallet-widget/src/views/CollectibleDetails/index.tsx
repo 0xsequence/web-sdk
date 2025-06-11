@@ -10,7 +10,9 @@ import {
   Text
 } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
-import { useEffect } from 'react'
+import { findSupportedNetwork } from '@0xsequence/network'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
+import { useEffect, useRef, useState } from 'react'
 import { formatUnits, getAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
@@ -26,6 +28,19 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
   const { chains } = useConfig()
   const { setActiveWallet } = useWallets()
   const { setNavigation } = useNavigation()
+  const network = findSupportedNetwork(chainId)
+
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const [triggerWidth, setTriggerWidth] = useState<number>(0)
+
+  const [isExternalPopoverOpen, setIsExternalPopoverOpen] = useState(false)
+  const [foundMarketplaceURL, setFoundMarketplaceURL] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (triggerRef.current) {
+      setTriggerWidth(triggerRef.current.offsetWidth)
+    }
+  }, [isExternalPopoverOpen])
 
   useEffect(() => {
     setActiveWallet(accountAddress || '')
@@ -57,6 +72,13 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
     })
   }
 
+  const onClickOpenScan = () => {
+    // window.open(`${network?.blockExplorer?.rootUrl}token/${contractAddress}?a=${tokenId}`, '_blank')
+    window.open(`${network?.blockExplorer?.rootUrl}nft/${contractAddress}/${tokenId}`, '_blank')
+  }
+
+  const onClickOpenMarketplace = () => {}
+
   const collectionLogo = tokenBalance?.contractInfo?.logoURI
   const collectionName = tokenBalance?.contractInfo?.name || 'Unknown Collection'
 
@@ -71,13 +93,54 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
         <TokenTileImage src={tokenBalance?.tokenMetadata?.image} symbol={tokenBalance?.tokenMetadata?.name} />
         <div className="flex flex-row gap-4">
           <Button className="text-primary w-full" variant="glass" leftIcon={ArrowUpIcon} label="Send" onClick={onClickSend} />
-          <Button
-            className="text-primary w-full"
-            variant="glass"
-            leftIcon={ExternalLinkIcon}
-            label="Open in..."
-            // onClick={onClickSend}
-          />
+
+          <PopoverPrimitive.Root open={isExternalPopoverOpen} onOpenChange={setIsExternalPopoverOpen}>
+            <PopoverPrimitive.Trigger asChild>
+              <Button
+                ref={triggerRef}
+                className="text-primary w-full"
+                variant="glass"
+                leftIcon={ExternalLinkIcon}
+                label="Open in..."
+              />
+            </PopoverPrimitive.Trigger>
+
+            {isExternalPopoverOpen && (
+              <PopoverPrimitive.Content
+                className="flex flex-col p-2 gap-2 z-20 rounded-2xl border border-border-normal"
+                style={{ background: '#262626', minWidth: triggerWidth }}
+                asChild
+                side="bottom"
+                sideOffset={-44}
+                align="end"
+              >
+                <div>
+                  <div
+                    className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
+                    onClick={() => {
+                      onClickOpenScan()
+                    }}
+                  >
+                    <Text variant="normal" fontWeight="bold" color="primary">
+                      Open in {network?.blockExplorer?.name}
+                    </Text>
+                  </div>
+                  {foundMarketplaceURL && (
+                    <div
+                      className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
+                      onClick={() => {
+                        onClickOpenMarketplace()
+                      }}
+                    >
+                      <Text variant="normal" fontWeight="bold" color="primary">
+                        Open in Marketplace
+                      </Text>
+                    </div>
+                  )}
+                </div>
+              </PopoverPrimitive.Content>
+            )}
+          </PopoverPrimitive.Root>
         </div>
         <Text variant="xxlarge" color="primary" fontWeight="bold">
           {tokenBalance?.tokenMetadata?.name || 'Unknown Collectible'}
