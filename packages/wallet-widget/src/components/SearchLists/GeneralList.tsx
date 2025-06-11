@@ -443,7 +443,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
           </div>
         )}
 
-        <div className="flex flex-col p-4 pb-2 gap-4">
+        <div className="flex flex-col p-4 gap-4">
           <FilterMenu filterMenuType={selectedTab} />
 
           <TabsContent value="tokens">

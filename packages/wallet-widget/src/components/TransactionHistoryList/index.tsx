@@ -2,6 +2,8 @@ import { Spinner, Text } from '@0xsequence/design-system'
 import type { Transaction } from '@0xsequence/indexer'
 import { useMemo } from 'react'
 
+import { NoResults } from '../NoResults.js'
+
 import { TransactionHistoryItem } from './TransactionHistoryItem.js'
 import { TransactionHistorySkeleton } from './TransactionHistorySkeleton.js'
 
@@ -121,7 +123,7 @@ export const TransactionHistoryList = ({ transactions, isLoading, isFetchingNext
       <div className="flex flex-col gap-2">
         {transactions.map((transaction, index) => {
           return (
-            <div className="flex flex-col gap-2" key={`${transaction.txnHash}-${index}`}>
+            <div className="flex flex-col" key={`${transaction.txnHash}-${index}`}>
               <TransactionHistoryItem transaction={transaction} />
             </div>
           )
@@ -144,12 +146,7 @@ export const TransactionHistoryList = ({ transactions, isLoading, isFetchingNext
           </div>
         )
       })}
-      {transactions.length === 0 && (
-        <div className="flex flex-col gap-3">
-          <TimeLabel label={'History'} />
-          <Text color="primary">No Recent Transaction History Found</Text>
-        </div>
-      )}
+      {transactions.length === 0 && <NoResults />}
       {isFetchingNextPage && (
         <div className="flex m-4 items-center justify-center">
           <Spinner />

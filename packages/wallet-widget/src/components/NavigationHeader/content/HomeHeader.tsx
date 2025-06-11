@@ -91,7 +91,7 @@ export const HomeHeader = () => {
           {isOperationMenuOpen && (
             <PopoverPrimitive.Content
               className="flex flex-col p-2 gap-2 z-20 rounded-xl border border-border-normal"
-              style={{ background: '#262626' }}
+              style={{ background: 'rgb(25, 25, 25)' }}
               asChild
               side="bottom"
               sideOffset={8}
