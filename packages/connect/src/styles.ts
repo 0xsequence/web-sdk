@@ -722,6 +722,9 @@ export const styles = String.raw`
   .gap-0\.5 {
     gap: calc(var(--spacing) * 0.5);
   }
+  .gap-0\.25 {
+    gap: calc(var(--spacing) * 0.25);
+  }
   .gap-1 {
     gap: calc(var(--spacing) * 1);
   }
