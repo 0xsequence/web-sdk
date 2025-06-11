@@ -297,10 +297,11 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                             contentProps={{
                               style: {
                                 maxWidth: '320px',
-                                height: '360px',
+                                height: '368px',
                                 ...getModalPositionCss(position)
                               }
                             }}
+                            scroll={false}
                             onClose={() => setOpenPaymentSelectionModal(false)}
                           >
                             <div id="sequence-kit-payment-selection-content">

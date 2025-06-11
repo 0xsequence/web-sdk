@@ -1,5 +1,12 @@
 import type { LifiSwapRoute } from '@0xsequence/api'
-import { compareAddress, ContractVerificationStatus, CryptoOption, formatDisplay } from '@0xsequence/connect'
+import {
+  compareAddress,
+  ContractVerificationStatus,
+  CryptoOption,
+  formatDisplay,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  useAnalyticsContext
+} from '@0xsequence/connect'
 import { AddIcon, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
 import { useClearCachedBalances, useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
@@ -9,6 +16,7 @@ import { formatUnits, zeroAddress } from 'viem'
 import { useAccount } from 'wagmi'
 
 import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
+import { useSelectPaymentModal, useTransactionStatusModal } from '../../../hooks/index.js'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings
@@ -21,6 +29,83 @@ interface PayWithCryptoProps {
 }
 
 const MAX_OPTIONS = 3
+
+export const PayWithCryptoTab = () => {
+  const [isPurchasing, setIsPurchasing] = useState<boolean>(false)
+  const { openTransactionStatusModal } = useTransactionStatusModal()
+  const { selectPaymentSettings = {} as SelectPaymentSettings } = useSelectPaymentModal()
+  const { analytics } = useAnalyticsContext()
+
+  const {
+    chain,
+    collectibles,
+    collectionAddress,
+    currencyAddress,
+    targetContractAddress,
+    approvedSpenderAddress,
+    price,
+    txData,
+    enableTransferFunds = true,
+    enableMainCurrencyPayment = true,
+    enableSwapPayments = true,
+    creditCardProviders = [],
+    transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onRampProvider,
+    onSuccess = () => {},
+    onError = () => {},
+    onClose = () => {},
+    supplementaryAnalyticsInfo,
+    slippageBps
+  } = selectPaymentSettings
+
+  return (
+    <div className="flex flex-col justify-center items-center h-full w-full gap-3">
+      <div className="flex flex-row justify-between items-center w-full">
+        <div className="flex flex-col gap-0">
+          <Text
+            variant="xsmall"
+            color="text100"
+            fontWeight="bold"
+            style={{
+              fontSize: '24px'
+            }}
+          >
+            Price raw
+          </Text>
+          <div>
+            <Text color="text50" variant="xsmall" fontWeight="normal">
+              ~price info
+            </Text>
+            <Text
+              color="text50"
+              fontWeight="bold"
+              style={{
+                fontSize: '10px'
+              }}
+            >
+              (fees included)
+            </Text>
+          </div>
+        </div>
+        <div>
+          <Text variant="xsmall" color="text50" fontWeight="normal">
+            selector
+          </Text>
+        </div>
+      </div>
+
+      <Button
+        label="Confirm payment"
+        className="w-full"
+        shape="square"
+        variant="primary"
+        onClick={() => {
+          console.log('purchase logic')
+        }}
+      ></Button>
+    </div>
+  )
+}
 
 export const PayWithCrypto = ({
   settings,
