@@ -4,7 +4,6 @@ import {
   Buy,
   CoinDetails,
   CollectibleDetails,
-  History,
   Home,
   Receive,
   Search,
@@ -49,8 +48,6 @@ export const getContent = (navigation: Navigation) => {
       return <Buy />
     case 'search':
       return <Search />
-    case 'history':
-      return <History />
     case 'settings':
       return <SettingsMenu />
     case 'settings-wallets':

@@ -2,7 +2,8 @@ import { truncateAtIndex, useWallets } from '@0xsequence/connect'
 import { ChevronUpDownIcon, GradientAvatar, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
-import { SelectWalletRow } from './SelectWalletRow.js'
+import { ListCardWallet } from '../ListCard/ListCardWallet.js'
+
 import { SlideupDrawer } from './SlideupDrawer.js'
 
 const WALLET_SELECT_HEIGHT = '60px'
@@ -40,15 +41,21 @@ export const WalletSelect = ({ selectedWallet, onClick }: { selectedWallet: stri
 
       <ChevronUpDownIcon className="text-muted" />
       {isOpen && (
-        <SlideupDrawer header="Wallets" onClose={() => setIsOpen(false)}>
+        <SlideupDrawer
+          header={
+            <Text variant="medium" color="primary">
+              Wallets
+            </Text>
+          }
+          onClose={() => setIsOpen(false)}
+        >
           <div className="flex flex-col gap-2" style={{ overflowY: 'auto' }}>
             {walletOptions.map(wallet => (
-              <SelectWalletRow
+              <ListCardWallet
                 key={wallet.address}
                 wallet={wallet}
                 isSelected={wallet.address === selectedWallet}
-                onClick={handleClick}
-                onClose={() => setIsOpen(false)}
+                onClick={() => handleClick(wallet.address)}
               />
             ))}
           </div>

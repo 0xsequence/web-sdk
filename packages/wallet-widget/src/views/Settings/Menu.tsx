@@ -2,7 +2,7 @@ import { useWallets } from '@0xsequence/connect'
 import { CurrencyIcon, Text, WalletIcon } from '@0xsequence/design-system'
 
 import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag.js'
-import { ListCardNav } from '../../components/ListCard/ListCardNav.js'
+import { ListCard } from '../../components/ListCard/ListCard.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
 
 export const SettingsMenu = () => {
@@ -61,30 +61,30 @@ export const SettingsMenu = () => {
   return (
     <div className="px-4 pb-4">
       <div className="flex flex-col gap-2">
-        <ListCardNav rightChildren={walletsPreview} onClick={onClickWallets} style={{ height: '64px' }}>
+        <ListCard type="chevron" rightChildren={walletsPreview} onClick={onClickWallets}>
           <WalletIcon className="text-primary w-6 h-6" />
           <Text color="primary" fontWeight="medium" variant="normal">
             Manage Wallets
           </Text>
-        </ListCardNav>
-        <ListCardNav rightChildren={currencyPreview} onClick={onClickCurrency} style={{ height: '64px' }}>
+        </ListCard>
+        <ListCard type="chevron" rightChildren={currencyPreview} onClick={onClickCurrency}>
           <CurrencyIcon className="text-primary w-6 h-6" />
           <Text color="primary" fontWeight="medium" variant="normal">
             Manage Currency
           </Text>
-        </ListCardNav>
+        </ListCard>
         {/* {isEmbedded && (
-          <ListCardNav onClick={onClickProfiles} style={{ height: '64px' }}>
+          <ListCard type="chevron" onClick={onClickProfiles}>
             <Text color="primary" fontWeight="medium" variant="normal">
               Manage Profiles
             </Text>
-          </ListCardNav>
+          </ListCard>
         )} */}
-        <ListCardNav onClick={onClickPreferences} style={{ height: '64px' }}>
+        <ListCard type="chevron" onClick={onClickPreferences}>
           <Text color="primary" fontWeight="medium" variant="normal">
             Preferences
           </Text>
-        </ListCardNav>
+        </ListCard>
       </div>
     </div>
   )

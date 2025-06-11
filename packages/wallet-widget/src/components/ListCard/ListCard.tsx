@@ -34,8 +34,8 @@ export const ListCard = ({
     >
       <div className="flex flex-row gap-2 items-center w-full">{children}</div>
 
-      {(rightChildren || type === 'chevron') && (
-        <div className="flex flex-row gap-1 items-center">
+      {(rightChildren || type === 'chevron' || type === 'radio') && (
+        <div className="flex flex-row gap-3 items-center">
           {rightChildren}
           {type === 'chevron' ? (
             <ChevronRightIcon color="white" size="md" />
