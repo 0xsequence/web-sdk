@@ -421,7 +421,7 @@ export const PaymentSelectionContent = () => {
         <div className="flex flex-col w-full gap-2 pt-2">
           <OrderSummary />
         </div>
-        {(enableMainCurrencyPayment || enableSwapPayments) && (
+        {/* {(enableMainCurrencyPayment || enableSwapPayments) && (
           <>
             <Divider className="w-full my-3" />
             <PayWithCrypto
@@ -434,8 +434,8 @@ export const PaymentSelectionContent = () => {
               swapRoutesIsLoading={swapRoutesIsLoading}
             />
           </>
-        )}
-        {validCreditCardProviders.length > 0 && !isTokenIdUnknown && (
+        )} */}
+        {/* {validCreditCardProviders.length > 0 && !isTokenIdUnknown && (
           <>
             <Divider className="w-full my-3" />
             <PayWithCreditCard
@@ -490,7 +490,6 @@ export const PaymentSelectionContent = () => {
                 label={isPurchasing ? <Spinner /> : 'Complete Purchase'}
               />
               <div className="flex w-full justify-center items-center gap-0.5 my-2">
-                {/* Replace by icon from design-system once new release is out */}
                 <svg width="13" height="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 12" fill="none">
                   <path
                     fillRule="evenodd"
@@ -505,10 +504,8 @@ export const PaymentSelectionContent = () => {
               </div>
             </div>
           </>
-        )}
+        )} */}
       </div>
-      <Divider className="my-0" />
-      <Footer />
     </>
   )
 }

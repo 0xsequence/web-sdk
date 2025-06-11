@@ -1,5 +1,5 @@
 import { CollectibleTileImage, formatDisplay, NetworkBadge } from '@0xsequence/connect'
-import { NetworkImage, Spinner, Text } from '@0xsequence/design-system'
+import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
@@ -93,32 +93,29 @@ export const OrderSummary = () => {
                   networkImage={chainId}
                 />
               </div>
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col gap-0.25">
                 {!isTokenIdUnknown && (
-                  <Text variant="small" color="primary" fontWeight="bold">
+                  <Text variant="small" color="secondary" fontWeight="bold">
                     {`${tokenMetadata?.name || 'Collectible'}(${collectibleQuantity > 1 ? `${collectibleQuantity} items` : '1 item'})`}
                   </Text>
                 )}
-                <Text variant="small" color="secondary" fontWeight="medium">
+                <Text variant="small" color="secondary" fontWeight="normal">
                   {dataCollectionInfo?.name || null}
+                </Text>
+                <div className="flex flex-row gap-1 items-center">
+                  <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" />
+                  <Text color="white" variant="xsmall" fontWeight="normal">
+                    {`${displayPrice} ${dataCurrencyInfo?.symbol} on ${network?.title}`}
+                  </Text>
+                </div>
+                <Text color="text50" variant="xsmall">
+                  {`$${priceFiat} USD`}
                 </Text>
               </div>
             </div>
           )
         })}
       </div>
-      <div className="flex gap-1 flex-col">
-        <div className="flex flex-row gap-2 items-center">
-          <NetworkImage chainId={chainId} size="sm" />
-          <Text color="white" variant="large" fontWeight="bold">{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
-        </div>
-        <div>
-          <Text color="muted" variant="normal" fontWeight="normal">
-            {`$${priceFiat} estimated total`}
-          </Text>
-        </div>
-      </div>
-      <NetworkBadge chainId={chainId} />
     </div>
   )
 }

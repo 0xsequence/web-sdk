@@ -20,7 +20,6 @@ export const CollectibleTileImage: FC<CollectibleTileImageProps> = ({ imageUrl, 
             <div className="absolute inset-0 flex items-center justify-center">
               <NetworkImage
                 className={'object-cover'}
-                disableAnimation
                 chainId={networkImage}
                 style={{
                   width: NETWORK_IMAGE_SIZE,
