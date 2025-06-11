@@ -121,6 +121,7 @@ export const TransactionHistoryItem = ({ transaction }: TransactionHistoryItemPr
   const getTransfer = ({ transfer, isFirstItem }: GetTransfer) => {
     const { amounts } = transfer
     const date = dayjs(transaction.timestamp).format('MMM DD, YYYY')
+
     return (
       <div className="flex gap-2 w-full flex-col justify-between">
         <div className="flex flex-row justify-between">

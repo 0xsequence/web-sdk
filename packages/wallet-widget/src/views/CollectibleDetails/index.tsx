@@ -7,6 +7,7 @@ import {
   GradientAvatar,
   Image,
   NetworkImage,
+  Skeleton,
   Text
 } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
@@ -84,18 +85,34 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
   const balance = formatUnits(BigInt(rawBalance), decimals)
   const formattedBalance = formatDisplay(Number(balance))
 
+  const onClickCollection = () => {
+    setNavigation({
+      location: 'collection-details',
+      params: {
+        chainId,
+        contractAddress
+      }
+    })
+  }
+
   return (
     <div>
       <div className="flex flex-col p-4 gap-4">
         <TokenTileImage src={tokenBalance?.tokenMetadata?.image} symbol={tokenBalance?.tokenMetadata?.name} />
         <div className="flex flex-row gap-4">
-          <Button className="text-primary w-full" variant="glass" leftIcon={ArrowUpIcon} label="Send" onClick={onClickSend} />
+          <Button
+            className="text-primary w-full bg-background-secondary"
+            variant="glass"
+            leftIcon={ArrowUpIcon}
+            label="Send"
+            onClick={onClickSend}
+          />
 
           <PopoverPrimitive.Root open={isExternalPopoverOpen} onOpenChange={setIsExternalPopoverOpen}>
             <PopoverPrimitive.Trigger asChild>
               <Button
                 ref={triggerRef}
-                className="text-primary w-full"
+                className="text-primary w-full bg-background-secondary"
                 variant="glass"
                 leftIcon={ExternalLinkIcon}
                 label="Open in..."
@@ -105,7 +122,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
             {isExternalPopoverOpen && (
               <PopoverPrimitive.Content
                 className="flex flex-col p-2 gap-2 z-20 rounded-2xl border border-border-normal"
-                style={{ background: '#262626', minWidth: triggerWidth }}
+                style={{ background: 'rgb(25, 25, 25)', minWidth: triggerWidth }}
                 asChild
                 side="bottom"
                 sideOffset={-44}
@@ -157,8 +174,17 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
             Collection
           </Text>
           <InfoBadge
-            leftIcon={<Image src={collectionLogo} alt="collection logo" className="rounded-full w-4" />}
+            leftIcon={
+              collectionLogo ? (
+                <Image src={collectionLogo} alt="collection logo" className="rounded-sm w-4" />
+              ) : (
+                <Skeleton className="w-4 h-4 rounded-sm" />
+              )
+            }
             label={collectionName}
+            onClick={() => {
+              onClickCollection()
+            }}
           />
         </div>
         <Divider className="my-0" />

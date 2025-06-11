@@ -62,6 +62,7 @@ export const NavigationHeader = ({ type = 'default', info, label }: NavigationHe
     <div className="flex flex-row justify-between items-center w-full" style={{ minHeight: HEADER_HEIGHT }}>
       {history.length > 0 ? (
         <IconButton
+          className="bg-background-secondary"
           onClick={onClickBack}
           icon={ChevronLeftIcon}
           size="sm"

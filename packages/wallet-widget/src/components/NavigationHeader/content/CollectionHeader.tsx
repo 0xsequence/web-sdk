@@ -9,6 +9,8 @@ export const CollectionHeader = ({ contractAddress, chainId }: TokenInfo) => {
     contractAddress
   })
 
+  console.log(collectionData)
+
   return (
     <div className="flex flex-row items-center h-full w-full">
       <div className="px-3">
