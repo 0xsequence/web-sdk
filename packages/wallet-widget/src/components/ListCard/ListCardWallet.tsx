@@ -10,17 +10,18 @@ import { CopyButton } from '../CopyButton.js'
 import { WalletAccountGradient } from '../WalletAccountGradient.js'
 
 import { ListCard } from './ListCard.js'
-import { RadioSelector } from './RadioSelector.js'
 
 export const ListCardWallet = ({
   wallet,
   disabled = false,
   isSelected = false,
+  rightChildren = null,
   onClick = () => {}
 }: {
   wallet: ConnectedWallet
   disabled?: boolean
   isSelected?: boolean
+  rightChildren?: React.ReactNode
   onClick?: () => void
 }) => {
   const { fiatCurrency } = useSettings()
@@ -55,25 +56,26 @@ export const ListCardWallet = ({
   return (
     <ListCard
       disabled={disabled}
+      type={isSelected ? 'radio' : 'default'}
       onClick={onClick}
       isSelected={isSelected}
       rightChildren={
-        <div className="flex flex-row gap-3 items-center">
-          <div className="flex flex-row gap-1 items-center">
-            <Text color="muted" variant="small">
-              {fiatCurrency.sign}
-              {fiatWalletsMap.find(w => w.accountAddress === wallet.address)?.fiatValue}
-            </Text>
-            <Text color="muted" variant="small">
-              {fiatCurrency.symbol}
-            </Text>
+        rightChildren ? (
+          rightChildren
+        ) : (
+          <div className="flex flex-row gap-3 items-center">
+            <div className="flex flex-row gap-1 items-center">
+              <Text color="muted" variant="small">
+                {fiatCurrency.sign}
+                {fiatWalletsMap.find(w => w.accountAddress === wallet.address)?.fiatValue}
+              </Text>
+              <Text color="muted" variant="small">
+                {fiatCurrency.symbol}
+              </Text>
+            </div>
+            {disabled && <CopyButton variant="text" size="md" text={wallet.address} onClick={e => e.stopPropagation()} />}
           </div>
-          {disabled ? (
-            <CopyButton variant="text" size="md" text={wallet.address} onClick={e => e.stopPropagation()} />
-          ) : (
-            isSelected && <RadioSelector isSelected={isSelected} />
-          )}
-        </div>
+        )
       }
     >
       <WalletAccountGradient accountAddresses={[wallet.address]} />
