@@ -4,7 +4,7 @@ import { useGetAllTokensDetails, useSettings } from '../../hooks/index.js'
 import { useGetAllCollections } from '../../hooks/useGetAllCollections.js'
 import { ListCardSelect } from '../ListCard/ListCardSelect.js'
 
-export const CollectionsFilter = () => {
+export const CollectionsFilter = ({ onClose }: { onClose: () => void }) => {
   const { selectedWallets, selectedNetworks, showCollectionsObservable, setShowCollections, hideUnlistedTokens } = useSettings()
   const showCollections = showCollectionsObservable.get()
 
@@ -23,9 +23,14 @@ export const CollectionsFilter = () => {
   const collectionsCount = collections.length
   const itemsCount = tokens.filter(token => token.contractType === 'ERC721' || token.contractType === 'ERC1155').length
 
+  const onClickItems = (showCollections: boolean) => {
+    setShowCollections(showCollections)
+    onClose()
+  }
+
   return (
     <div className="flex flex-col bg-background-primary gap-3">
-      <ListCardSelect key="Items" isSelected={!showCollections} onClick={() => setShowCollections(false)}>
+      <ListCardSelect key="Items" isSelected={!showCollections} onClick={() => onClickItems(false)}>
         <div>
           <Text color="primary" variant="normal">
             Items{' '}
@@ -35,7 +40,7 @@ export const CollectionsFilter = () => {
           </Text>
         </div>
       </ListCardSelect>
-      <ListCardSelect key="Collections" isSelected={showCollections} onClick={() => setShowCollections(true)}>
+      <ListCardSelect key="Collections" isSelected={showCollections} onClick={() => onClickItems(true)}>
         <div>
           <Text color="primary" variant="normal">
             Collections{' '}

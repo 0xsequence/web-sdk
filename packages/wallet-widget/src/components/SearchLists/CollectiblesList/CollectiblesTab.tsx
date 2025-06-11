@@ -24,32 +24,22 @@ export const CollectiblesTab: FC<CollectiblesTabProps> = ({
   isFetchingInitialBalances,
   onTokenClick
 }) => {
+  const hasBalances = displayedCollectibleBalances && displayedCollectibleBalances.length > 0
+
   return (
     <div className="flex flex-col">
       <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(3, 1fr)`, width: '100%' }}>
-        {isFetchingInitialBalances ? (
-          <>
-            {Array(6)
-              .fill(null)
-              .map((_, i) => (
-                <Skeleton className="w-full" key={i} style={{ height: '180px' }} />
-              ))}
-          </>
-        ) : (
-          <>
-            {displayedCollectibleBalances && displayedCollectibleBalances.length > 0 && (
-              <InfiniteScroll onLoad={() => fetchMoreCollectibleBalances()} hasMore={hasMoreCollectibleBalances}>
-                {displayedCollectibleBalances?.map((balance, index) => {
-                  return <CollectibleTile key={index} balance={balance} onTokenClick={onTokenClick} />
-                })}
+        {isFetchingInitialBalances
+          ? Array.from({ length: 6 }).map((_, i) => <Skeleton className="w-full aspect-square rounded-lg" key={i} />)
+          : hasBalances && (
+              <InfiniteScroll onLoad={fetchMoreCollectibleBalances} hasMore={hasMoreCollectibleBalances}>
+                {displayedCollectibleBalances!.map((balance, index) => (
+                  <CollectibleTile key={index} balance={balance} onTokenClick={onTokenClick} />
+                ))}
               </InfiniteScroll>
             )}
-          </>
-        )}
       </div>
-      {(!displayedCollectibleBalances || displayedCollectibleBalances.length === 0) && !isFetchingMoreCollectibleBalances && (
-        <NoResults />
-      )}
+      {!isFetchingInitialBalances && !hasBalances && !isFetchingMoreCollectibleBalances && <NoResults />}
       {isFetchingMoreCollectibleBalances && <Spinner className="flex justify-self-center mt-3" />}
     </div>
   )

@@ -6,6 +6,7 @@ import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { InfiniteScroll } from '../../components/InfiniteScroll.js'
+import type { TokenInfo } from '../../components/NavigationHeader/index.js'
 import { NetworkBadge } from '../../components/NetworkBadge.js'
 import { TransactionHistoryList } from '../../components/TransactionHistoryList/index.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
@@ -13,13 +14,7 @@ import { computeBalanceFiat, flattenPaginatedTransactionHistory } from '../../ut
 
 import { CoinDetailsSkeleton } from './Skeleton.js'
 
-export interface CoinDetailsProps {
-  contractAddress: string
-  chainId: number
-  accountAddress: string
-}
-
-export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDetailsProps) => {
+export const CoinDetails = ({ contractAddress, chainId, accountAddress = '' }: TokenInfo) => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
   const { fiatCurrency } = useSettings()
@@ -104,7 +99,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress }: CoinDe
   }
   return (
     <div>
-      <div className="flex flex-col gap-10 pb-5 px-4 pt-0" style={{ marginTop: '-20px' }}>
+      <div className="flex flex-col gap-10 pb-5 px-4 pt-0">
         <div className="flex mb-10 gap-2 items-center justify-center flex-col">
           <TokenImage src={logo} size="xl" />
           <Text variant="large" color="primary" fontWeight="bold">
