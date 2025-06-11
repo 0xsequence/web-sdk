@@ -297,9 +297,8 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                             contentProps={{
                               style: {
                                 maxWidth: '320px',
-                                ...getModalPositionCss(position),
-                                scrollbarColor: 'gray black',
-                                scrollbarWidth: 'thin'
+                                height: '360px',
+                                ...getModalPositionCss(position)
                               }
                             }}
                             onClose={() => setOpenPaymentSelectionModal(false)}
