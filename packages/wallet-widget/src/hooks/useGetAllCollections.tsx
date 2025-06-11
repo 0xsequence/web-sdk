@@ -46,6 +46,6 @@ export const useGetAllCollections = ({
 
   return {
     data: collectionsWithMetadata || [],
-    isLoading: isLoading
+    isLoading: isLoading || isFetchingNextPage
   }
 }

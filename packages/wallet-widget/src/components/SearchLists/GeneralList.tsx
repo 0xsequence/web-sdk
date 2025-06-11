@@ -19,6 +19,10 @@ import { CollectiblesTab } from './CollectiblesList/CollectiblesTab.js'
 import { CollectionsTab } from './CollectionsList/CollectionsTab.js'
 import { CoinsTab } from './TokenList/CoinsTab.js'
 
+const TOKEN_PAGE_SIZE = 10
+const COLLECTIBLE_PAGE_SIZE = 9
+const COLLECTION_PAGE_SIZE = 9
+
 export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'send' }) => {
   const { setNavigation } = useNavigation()
   const { chains } = useConfig()
@@ -44,10 +48,6 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
   }, [variant])
 
   const activeWallet = wallets.find(wallet => wallet.isActive)
-
-  const TOKEN_PAGE_SIZE = 10
-  const COLLECTIBLE_PAGE_SIZE = 9
-  const COLLECTION_PAGE_SIZE = 9
 
   const { data: tokenBalancesData = [], isLoading: isLoadingTokenBalances } = useGetAllTokensDetails({
     accountAddresses: variant === 'default' ? selectedWallets.map(wallet => wallet.address) : [activeWallet?.address || ''],
@@ -382,13 +382,13 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
   }
 
   const handleCollectionClick = (collection: ContractInfo) => {
-    // setNavigation({
-    //   location: 'collection-details',
-    //   params: {
-    //     contractAddress: collection.address,
-    //     chainId: collection.chainId
-    //   }
-    // })
+    setNavigation({
+      location: 'collection-details',
+      params: {
+        contractAddress: collection.address,
+        chainId: collection.chainId
+      }
+    })
   }
 
   return (
@@ -400,7 +400,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
       >
         {variant === 'default' ? (
           <div className="flex flex-col w-full relative">
-            <TabsPrimitive.TabsList>
+            <TabsPrimitive.TabsList className="px-4">
               <TabsPrimitive.TabsTrigger className="h-10 relative cursor-pointer" value="tokens">
                 <Text className="px-4" variant="medium" color={selectedTab === 'tokens' ? 'primary' : 'muted'}>
                   Coins

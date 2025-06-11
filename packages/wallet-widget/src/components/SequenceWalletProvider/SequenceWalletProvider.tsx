@@ -77,6 +77,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
     navigation.location === 'send-general' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||
+    navigation.location === 'collection-details' ||
     navigation.location === 'history' ||
     navigation.location === 'search' ||
     navigation.location === 'settings-wallets' ||
