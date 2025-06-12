@@ -1,4 +1,3 @@
-import { ThemeProvider } from '@0xsequence/design-system'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { headers } from 'next/headers'
@@ -27,9 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider theme="dark">
-          <Providers initialState={initialState}>{children}</Providers>
-        </ThemeProvider>
+        <Providers initialState={initialState}>{children}</Providers>
       </body>
     </html>
   )

@@ -176,22 +176,22 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
           }}
         >
           <GoogleOAuthProvider clientId={googleClientId}>
-            <EpicAuthProvider>
-              <ConnectModalContextProvider
-                value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+            <ConnectModalContextProvider
+              value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+            >
+              <WalletConfigContextProvider
+                value={{
+                  setDisplayedAssets,
+                  displayedAssets,
+                  readOnlyNetworks,
+                  hideExternalConnectOptions,
+                  hideConnectedWallets,
+                  hideSocialConnectOptions
+                }}
               >
-                <WalletConfigContextProvider
-                  value={{
-                    setDisplayedAssets,
-                    displayedAssets,
-                    readOnlyNetworks,
-                    hideExternalConnectOptions,
-                    hideConnectedWallets,
-                    hideSocialConnectOptions
-                  }}
-                >
-                  <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                    <ShadowRoot theme={theme} customCSS={customCSS}>
+                <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
+                  <ShadowRoot theme={theme} customCSS={customCSS}>
+                    <EpicAuthProvider>
                       <AnimatePresence>
                         {openConnectModal && (
                           <Modal
@@ -356,12 +356,12 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                           </Modal>
                         )}
                       </AnimatePresence>
-                    </ShadowRoot>
-                    {children}
-                  </AnalyticsContextProvider>
-                </WalletConfigContextProvider>
-              </ConnectModalContextProvider>
-            </EpicAuthProvider>
+                    </EpicAuthProvider>
+                  </ShadowRoot>
+                  {children}
+                </AnalyticsContextProvider>
+              </WalletConfigContextProvider>
+            </ConnectModalContextProvider>
           </GoogleOAuthProvider>
         </ThemeContextProvider>
       </ConnectConfigContextProvider>

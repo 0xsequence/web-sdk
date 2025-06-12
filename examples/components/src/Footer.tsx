@@ -58,8 +58,6 @@ export const socialLinks: SocialLinks[] = [
 ]
 
 export const Footer = () => {
-  const { theme } = useTheme()
-
   const onClickLinkUrl = (url: string) => {
     if (typeof window !== 'undefined') {
       window.open(url)
@@ -96,15 +94,7 @@ export const Footer = () => {
                 }
               }}
             >
-              <Image
-                className="h-3"
-                src={socialLink.icon}
-                alt={socialLink.id}
-                style={{
-                  filter: theme === 'dark' ? 'invert(0)' : 'invert(1)'
-                }}
-                disableAnimation
-              />
+              <Image className="h-3" src={socialLink.icon} alt={socialLink.id} disableAnimation />
             </div>
           )
         })}

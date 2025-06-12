@@ -70,7 +70,7 @@ export const config = createConfig('waas', {
     clientId: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
   },
   epic: {
-    authUrl: 'https://epic-auth-worker-websdk.0xsequence.workers.dev/login'
+    authUrl: 'http://localhost:8787/login'
   },
   apple: {
     clientId: 'com.horizon.sequence.waas',

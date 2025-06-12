@@ -1,6 +1,6 @@
 import { Modal, ModalPrimitive, Spinner } from '@0xsequence/design-system'
 import { useEffect } from 'react'
-import { useConnect } from 'wagmi'
+import { useAccount, useConnect } from 'wagmi'
 
 import { EpicLogo } from '../../connectors/epic/EpicLogo.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
@@ -11,6 +11,7 @@ import type { ExtendedConnector } from '../../types.js'
 // On mount, it checks the URL for Epic login results, stores the Epic JWT in storage, and triggers a connection with the Epic connector if found.
 export const EpicAuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { connectors, connect, isPending } = useConnect()
+  const { isConnected } = useAccount()
 
   const storage = useStorage()
 
@@ -49,7 +50,7 @@ export const EpicAuthProvider = ({ children }: { children: React.ReactNode }) =>
 
   return (
     <>
-      {isPending && (
+      {isPending && !isConnected && (
         <Modal size="sm" scroll={false} isDismissible={false} contentProps={{ style: { maxWidth: '320px', padding: '20px' } }}>
           <div className="flex flex-col items-center text-black rounded-lg">
             <div className="w-12 h-12 mb-4" aria-label="Epic Games">
