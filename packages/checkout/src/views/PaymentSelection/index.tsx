@@ -41,11 +41,6 @@ export const PaymentSelectionHeader = () => {
 
 type Tab = 'crypto' | 'credit-card'
 
-const TABS: { label: string; value: Tab }[] = [
-  { label: 'Crypto', value: 'crypto' },
-  { label: 'Credit Card', value: 'credit-card' }
-]
-
 export const PaymentSelectionContent = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const { selectPaymentSettings = {} as SelectPaymentSettings } = useSelectPaymentModal()
@@ -419,6 +414,13 @@ export const PaymentSelectionContent = () => {
 
   const isTokenIdUnknown = collectibles.some(collectible => !collectible.tokenId)
 
+  const showCreditCardPayment = validCreditCardProviders.length > 0 && !isTokenIdUnknown
+
+  const tabs: { label: string; value: Tab }[] = [
+    { label: 'Crypto', value: 'crypto' as Tab },
+    ...(showCreditCardPayment ? [{ label: 'Credit Card', value: 'credit-card' as Tab }] : [])
+  ]
+
   const TabWrapper = ({ children }: { children: React.ReactNode }) => {
     return <div className="w-full bg-background-secondary mt-2 p-3 rounded-xl h-[128px]">{children}</div>
   }
@@ -456,7 +458,7 @@ export const PaymentSelectionContent = () => {
             }
           }}
         >
-          <TabsHeader tabs={TABS} value={selectedTab} />
+          <TabsHeader tabs={tabs} value={selectedTab} />
           <TabsContent value="crypto">
             <TabWrapper>
               <PayWithCryptoTab />
