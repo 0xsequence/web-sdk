@@ -1,43 +1,10 @@
 import { useSwapContext } from '../contexts/Swap.js'
 
 export const useSwap = () => {
-  const {
-    fromCoin,
-    toCoin,
-    amount,
-    nonRecentAmount,
-    recentInput,
-    isSwapReady,
-    isSwapQuotePending,
-    hasInsufficientFunds,
-    isErrorSwapQuote,
-    isTxnPending,
-    isErrorTxn,
-    setFromCoin,
-    setToCoin,
-    setAmount,
-    switchCoinOrder,
-    onSubmitSwap,
-    resetSwapStates
-  } = useSwapContext()
+  const { lifiChains, lifiTokens } = useSwapContext()
 
   return {
-    fromCoin,
-    toCoin,
-    amount,
-    nonRecentAmount,
-    recentInput,
-    isSwapReady,
-    isSwapQuotePending,
-    hasInsufficientFunds,
-    isErrorSwapQuote,
-    isTxnPending,
-    isErrorTxn,
-    setFromCoin,
-    setToCoin,
-    setAmount,
-    switchCoinOrder,
-    onSubmitSwap,
-    resetSwapStates
+    lifiChains,
+    lifiTokens
   }
 }

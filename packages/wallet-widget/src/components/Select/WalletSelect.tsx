@@ -1,5 +1,5 @@
 import { truncateAtIndex, useWallets } from '@0xsequence/connect'
-import { ChevronUpDownIcon, GradientAvatar, Text } from '@0xsequence/design-system'
+import { ChevronUpDownIcon, cn, GradientAvatar, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
 import { ListCardWallet } from '../ListCard/ListCardWallet.js'
@@ -8,7 +8,15 @@ import { SlideupDrawer } from './SlideupDrawer.js'
 
 const WALLET_SELECT_HEIGHT = '60px'
 
-export const WalletSelect = ({ selectedWallet, onClick }: { selectedWallet: string; onClick: (address: string) => void }) => {
+export const WalletSelect = ({
+  selectedWallet,
+  disabled = false,
+  onClick
+}: {
+  selectedWallet: string
+  disabled?: boolean
+  onClick: (address: string) => void
+}) => {
   const { wallets } = useWallets()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -23,9 +31,12 @@ export const WalletSelect = ({ selectedWallet, onClick }: { selectedWallet: stri
 
   return (
     <div
-      className="flex bg-background-secondary justify-between items-center hover:opacity-80 cursor-pointer rounded-xl px-4 py-3 gap-2 select-none w-full"
+      className={cn(
+        'flex bg-background-secondary justify-between items-center rounded-xl px-4 py-3 gap-2 select-none w-full',
+        disabled ? 'opacity-75' : 'hover:opacity-80 cursor-pointer'
+      )}
       style={{ height: WALLET_SELECT_HEIGHT }}
-      onClick={() => setIsOpen(true)}
+      onClick={() => !disabled && setIsOpen(true)}
     >
       <div className="flex flex-col gap-2">
         <Text variant="small" fontWeight="bold" color="muted">

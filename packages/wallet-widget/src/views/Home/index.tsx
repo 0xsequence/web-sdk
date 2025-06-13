@@ -6,12 +6,12 @@ import { useAccount } from 'wagmi'
 import { CopyButton } from '../../components/CopyButton.js'
 import { GeneralList } from '../../components/SearchLists/index.js'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient.js'
-import { useFiatWalletsMap, useSettings } from '../../hooks/index.js'
+import { useSettings, useValueRegistry } from '../../hooks/index.js'
 
 export const Home = () => {
   const { wallets: allWallets } = useWallets()
   const { fiatCurrency } = useSettings()
-  const { totalFiatValue } = useFiatWalletsMap()
+  const { totalValue } = useValueRegistry()
   const { connector } = useAccount()
 
   const { address: accountAddress } = useAccount()
@@ -69,7 +69,7 @@ export const Home = () => {
             </Text>
             <Text color="primary" variant="xlarge" nowrap>
               {fiatCurrency.symbol} {fiatCurrency.sign}
-              {totalFiatValue}
+              {totalValue}
             </Text>
           </div>
         </div>

@@ -3,17 +3,16 @@ import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { useEffect, useState, type ReactNode } from 'react'
 import { getAddress, zeroAddress } from 'viem'
 
-import { FiatWalletsMapContextProvider, type FiatWalletPair } from '../../../contexts/index.js'
+import { ValueRegistryContextProvider, type ValueRegistryPair } from '../../../contexts/index.js'
 import { useGetAllTokensDetails, useSettings } from '../../../hooks/index.js'
 import { computeBalanceFiat } from '../../../utils/index.js'
 
-// Define the provider component
-export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) => {
+export const ValueRegistryProvider = ({ children }: { children: ReactNode }) => {
   const { wallets } = useWallets()
   const { allNetworks, hideUnlistedTokens, fiatCurrency } = useSettings()
 
-  const [fiatWalletsMap, setFiatWalletsMap] = useState<FiatWalletPair[]>([])
-  const [totalFiatValue, setTotalFiatValue] = useState<string>('0')
+  const [valueRegistryMap, setValueRegistryMap] = useState<ValueRegistryPair[]>([])
+  const [totalValue, setTotalValue] = useState<string>('0')
 
   const { data: tokenBalancesData, isLoading: isTokenBalancesLoading } = useGetAllTokensDetails({
     accountAddresses: wallets.map(wallet => wallet.address),
@@ -42,7 +41,7 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
       coinPrices.length > 0 &&
       conversionRate
     ) {
-      const newFiatWalletsMap = wallets.map(wallet => {
+      const newValueRegistryMap = wallets.map(wallet => {
         const walletBalances = coinBalancesUnordered.filter(b => getAddress(b.accountAddress) === getAddress(wallet.address))
         const walletFiatValue = walletBalances.reduce((acc, coin) => {
           return (
@@ -59,17 +58,17 @@ export const FiatWalletsMapProvider = ({ children }: { children: ReactNode }) =>
         }, 0)
         return {
           accountAddress: wallet.address,
-          fiatValue: walletFiatValue.toFixed(2)
-        } as FiatWalletPair
+          value: walletFiatValue.toFixed(2)
+        } as ValueRegistryPair
       })
 
-      if (JSON.stringify(newFiatWalletsMap) !== JSON.stringify(fiatWalletsMap)) {
-        setFiatWalletsMap(newFiatWalletsMap)
-        const totalFiatValue = newFiatWalletsMap.reduce((acc, wallet) => acc + Number(wallet.fiatValue), 0).toFixed(2)
-        setTotalFiatValue(totalFiatValue)
+      if (JSON.stringify(newValueRegistryMap) !== JSON.stringify(valueRegistryMap)) {
+        setValueRegistryMap(newValueRegistryMap)
+        const totalValue = newValueRegistryMap.reduce((acc, wallet) => acc + Number(wallet.value), 0).toFixed(2)
+        setTotalValue(totalValue)
       }
     }
   }, [coinBalancesUnordered, coinPrices, conversionRate])
 
-  return <FiatWalletsMapContextProvider value={{ fiatWalletsMap, totalFiatValue }}>{children}</FiatWalletsMapContextProvider>
+  return <ValueRegistryContextProvider value={{ valueRegistryMap, totalValue }}>{children}</ValueRegistryContextProvider>
 }

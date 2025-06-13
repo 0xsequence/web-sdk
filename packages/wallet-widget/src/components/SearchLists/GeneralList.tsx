@@ -1,5 +1,5 @@
 import { compareAddress, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
-import { Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
+import { cn, Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'
 import type { ContractInfo, Transaction, TxnTransfer } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
@@ -8,7 +8,7 @@ import { useObservable } from 'micro-observables'
 import { useEffect, useMemo } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings } from '../../hooks/index.js'
+import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings, useSwap } from '../../hooks/index.js'
 import { useGetAllCollections } from '../../hooks/useGetAllCollections.js'
 import { useNavigationHeader } from '../../hooks/useNavigationHeader.js'
 import { computeBalanceFiat, type TokenBalanceWithDetails } from '../../utils/index.js'
@@ -23,7 +23,7 @@ const TOKEN_PAGE_SIZE = 10
 const COLLECTIBLE_PAGE_SIZE = 9
 const COLLECTION_PAGE_SIZE = 9
 
-export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'send' }) => {
+export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'send' | 'swap' }) => {
   const { setNavigation } = useNavigation()
   const { chains } = useConfig()
   const {
@@ -34,14 +34,18 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     selectedWalletsObservable,
     showCollectionsObservable
   } = useSettings()
-  const { wallets } = useWallets()
+  const { wallets, setActiveWallet } = useWallets()
   const { search, selectedTab, setSearch, setSelectedTab } = useNavigationHeader()
+  const { lifiTokens } = useSwap()
 
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedWallets = useObservable(selectedWalletsObservable)
   const showCollections = useObservable(showCollectionsObservable)
 
   useEffect(() => {
+    if (variant === 'send' || variant === 'swap') {
+      setSelectedTab('tokens')
+    }
     return () => {
       setSearch('')
     }
@@ -50,8 +54,9 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
   const activeWallet = wallets.find(wallet => wallet.isActive)
 
   const { data: tokenBalancesData = [], isLoading: isLoadingTokenBalances } = useGetAllTokensDetails({
-    accountAddresses: variant === 'default' ? selectedWallets.map(wallet => wallet.address) : [activeWallet?.address || ''],
-    chainIds: variant === 'default' ? selectedNetworks : allNetworks,
+    accountAddresses:
+      variant === 'default' || variant === 'swap' ? selectedWallets.map(wallet => wallet.address) : [activeWallet?.address || ''],
+    chainIds: variant === 'default' || variant === 'swap' ? selectedNetworks : allNetworks,
     hideUnlistedTokens
   })
 
@@ -66,8 +71,14 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     _type: 'collection' as const
   }))
 
+  const tokenBalancesWithLifiSupport = tokenBalancesData?.filter(b =>
+    lifiTokens.some(token => token.chainId === b.chainId && token.contractAddress === b.contractAddress)
+  )
+
   const coinBalancesUnordered =
-    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
+    (variant === 'swap' ? tokenBalancesWithLifiSupport : tokenBalancesData)?.filter(
+      b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)
+    ) || []
 
   const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
@@ -258,6 +269,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     _type: 'transaction' as const
   }))
 
+  // combinedBalances is used for search
   const combinedBalances = [
     ...coinBalancesWithPrice,
     ...collectibleBalancesWithPrice,
@@ -358,6 +370,17 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     })
   }
 
+  const handleTokenClickSwap = async (token: TokenBalanceWithDetails) => {
+    await setActiveWallet(token.accountAddress)
+    setNavigation({
+      location: 'swap-coin',
+      params: {
+        chainId: token.chainId,
+        contractAddress: token.contractAddress
+      }
+    })
+  }
+
   const handleCollectibleClickDefault = (balance: TokenBalanceWithDetails) => {
     setNavigation({
       location: 'collectible-details',
@@ -423,14 +446,17 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
             <Divider className="absolute bottom-0 my-0 w-full" />
           </div>
         ) : (
-          <div className="flex flex-col px-4 pt-4 gap-4">
-            <TabsHeader
-              tabs={[
-                { label: 'Coins', value: 'tokens' },
-                { label: 'Collectibles', value: 'collectibles' }
-              ]}
-              value={selectedTab}
-            />
+          <div className={cn('flex flex-col px-4 gap-4', `${variant === 'send' && 'pt-4'}`)}>
+            {variant === 'send' && (
+              <TabsHeader
+                tabs={[
+                  { label: 'Coins', value: 'tokens' },
+                  { label: 'Collectibles', value: 'collectibles' }
+                ]}
+                value={selectedTab}
+              />
+            )}
+
             <div>
               <TextInput
                 name="search"
@@ -444,7 +470,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
         )}
 
         <div className="flex flex-col p-4 gap-4">
-          <FilterMenu filterMenuType={selectedTab} />
+          {(variant === 'default' || variant === 'swap') && <FilterMenu filterMenuType={selectedTab} />}
 
           <TabsContent value="tokens">
             <div>
@@ -454,8 +480,14 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
                 hasMoreCoinBalances={search ? hasMoreSearchBalancesTokens : hasMoreBalancesTokens}
                 isFetchingMoreCoinBalances={search ? isFetchingMoreSearchBalancesTokens : isFetchingMoreBalancesTokens}
                 isFetchingInitialBalances={isLoading}
-                onTokenClick={variant === 'default' ? handleTokenClickDefault : handleTokenClickSend}
-                includeUserAddress={variant === 'default'}
+                onTokenClick={
+                  variant === 'default'
+                    ? handleTokenClickDefault
+                    : variant === 'send'
+                      ? handleTokenClickSend
+                      : handleTokenClickSwap
+                }
+                includeUserAddress={variant === 'default' || variant === 'swap'}
               />
             </div>
           </TabsContent>

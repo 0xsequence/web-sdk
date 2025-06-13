@@ -15,9 +15,9 @@ import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 
-import { useFiatWalletsMap } from '../../../hooks/useFiatWalletsMap.js'
 import { useNavigation } from '../../../hooks/useNavigation.js'
 import { useSettings } from '../../../hooks/useSettings.js'
+import { useValueRegistry } from '../../../hooks/useValueRegistry.js'
 import { ListCardWallet } from '../../ListCard/ListCardWallet.js'
 import { SlideupDrawer } from '../../Select/SlideupDrawer.js'
 
@@ -25,7 +25,7 @@ export const HomeHeader = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
 
   const { fiatCurrency } = useSettings()
-  const { totalFiatValue } = useFiatWalletsMap()
+  const { totalValue } = useValueRegistry()
   const { wallets } = useWallets()
   const [isWalletViewOpen, setIsWalletViewOpen] = useState(false)
   const [isOperationMenuOpen, setIsOperationMenuOpen] = useState(false)
@@ -164,7 +164,7 @@ export const HomeHeader = () => {
                 </Text>
                 <Text variant="small" color="muted">
                   {fiatCurrency.sign}
-                  {totalFiatValue} {fiatCurrency.symbol}
+                  {totalValue} {fiatCurrency.symbol}
                 </Text>
               </div>
             }
