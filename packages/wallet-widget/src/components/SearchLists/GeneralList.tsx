@@ -421,57 +421,60 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
         value={selectedTab}
         onValueChange={value => setSelectedTab(value as 'tokens' | 'collectibles' | 'history')}
       >
-        {variant === 'default' ? (
-          <div className="flex flex-col w-full relative">
-            <TabsPrimitive.TabsList className="px-4">
-              <TabsPrimitive.TabsTrigger className="h-10 relative cursor-pointer" value="tokens">
-                <Text className="px-4" variant="medium" color={selectedTab === 'tokens' ? 'primary' : 'muted'}>
-                  Coins
-                </Text>
-                {selectedTab === 'tokens' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
-              </TabsPrimitive.TabsTrigger>
-              <TabsPrimitive.TabsTrigger className="h-10 relative cursor-pointer" value="collectibles">
-                <Text className="px-4" variant="medium" color={selectedTab === 'collectibles' ? 'primary' : 'muted'}>
-                  Collectibles
-                </Text>
-                {selectedTab === 'collectibles' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
-              </TabsPrimitive.TabsTrigger>
-              <TabsPrimitive.TabsTrigger className="h-10 relative cursor-pointer" value="history">
-                <Text className="px-4" variant="medium" color={selectedTab === 'history' ? 'primary' : 'muted'}>
-                  Transactions
-                </Text>
-                {selectedTab === 'history' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
-              </TabsPrimitive.TabsTrigger>
-            </TabsPrimitive.TabsList>
-            <Divider className="absolute bottom-0 my-0 w-full" />
-          </div>
-        ) : (
-          <div className={cn('flex flex-col px-4 gap-4', `${variant === 'send' && 'pt-4'}`)}>
-            {variant === 'send' && (
-              <TabsHeader
-                tabs={[
-                  { label: 'Coins', value: 'tokens' },
-                  { label: 'Collectibles', value: 'collectibles' }
-                ]}
-                value={selectedTab}
-              />
-            )}
-
-            <div>
-              <TextInput
-                name="search"
-                leftIcon={SearchIcon}
-                value={search}
-                onChange={ev => setSearch(ev.target.value)}
-                placeholder="Search your wallet"
-              />
+        <div className="sticky top-0 z-20 bg-background-primary shadow-sm gap-4">
+          {variant === 'default' ? (
+            <div className="flex flex-col w-full relative">
+              <TabsPrimitive.TabsList className="px-4">
+                <TabsPrimitive.TabsTrigger className="h-10 relative cursor-pointer" value="tokens">
+                  <Text className="px-4" variant="medium" color={selectedTab === 'tokens' ? 'primary' : 'muted'}>
+                    Coins
+                  </Text>
+                  {selectedTab === 'tokens' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
+                </TabsPrimitive.TabsTrigger>
+                <TabsPrimitive.TabsTrigger className="h-10 relative cursor-pointer" value="collectibles">
+                  <Text className="px-4" variant="medium" color={selectedTab === 'collectibles' ? 'primary' : 'muted'}>
+                    Collectibles
+                  </Text>
+                  {selectedTab === 'collectibles' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
+                </TabsPrimitive.TabsTrigger>
+                <TabsPrimitive.TabsTrigger className="h-10 relative cursor-pointer" value="history">
+                  <Text className="px-4" variant="medium" color={selectedTab === 'history' ? 'primary' : 'muted'}>
+                    Transactions
+                  </Text>
+                  {selectedTab === 'history' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
+                </TabsPrimitive.TabsTrigger>
+              </TabsPrimitive.TabsList>
+              <Divider className="absolute bottom-0 my-0 w-full" />
             </div>
+          ) : (
+            <div className={cn('flex flex-col px-4 gap-4', `${variant === 'send' && 'pt-4'}`)}>
+              {variant === 'send' && (
+                <TabsHeader
+                  tabs={[
+                    { label: 'Coins', value: 'tokens' },
+                    { label: 'Collectibles', value: 'collectibles' }
+                  ]}
+                  value={selectedTab}
+                />
+              )}
+
+              <div>
+                <TextInput
+                  name="search"
+                  leftIcon={SearchIcon}
+                  value={search}
+                  onChange={ev => setSearch(ev.target.value)}
+                  placeholder="Search your wallet"
+                />
+              </div>
+            </div>
+          )}
+          <div className="flex flex-col p-4">
+            {(variant === 'default' || variant === 'swap') && <FilterMenu filterMenuType={selectedTab} />}
           </div>
-        )}
+        </div>
 
-        <div className="flex flex-col p-4 gap-4">
-          {(variant === 'default' || variant === 'swap') && <FilterMenu filterMenuType={selectedTab} />}
-
+        <div className="flex flex-col p-4 pt-0">
           <TabsContent value="tokens">
             <div>
               <CoinsTab
