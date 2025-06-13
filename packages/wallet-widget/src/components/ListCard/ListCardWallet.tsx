@@ -4,8 +4,8 @@ import { Text } from '@0xsequence/design-system'
 import { useEffect, useState } from 'react'
 import { useConnections } from 'wagmi'
 
-import { useFiatWalletsMap } from '../../hooks/useFiatWalletsMap.js'
 import { useSettings } from '../../hooks/useSettings.js'
+import { useValueRegistry } from '../../hooks/useValueRegistry.js'
 import { CopyButton } from '../CopyButton.js'
 import { WalletAccountGradient } from '../WalletAccountGradient.js'
 
@@ -25,7 +25,7 @@ export const ListCardWallet = ({
   onClick?: () => void
 }) => {
   const { fiatCurrency } = useSettings()
-  const { fiatWalletsMap } = useFiatWalletsMap()
+  const { valueRegistryMap } = useValueRegistry()
 
   const [signInDisplay, setSignInDisplay] = useState('')
 
@@ -67,7 +67,7 @@ export const ListCardWallet = ({
             <div className="flex flex-row gap-1 items-center">
               <Text color="muted" variant="small">
                 {fiatCurrency.sign}
-                {fiatWalletsMap.find(w => w.accountAddress === wallet.address)?.fiatValue}
+                {valueRegistryMap.find(w => w.accountAddress === wallet.address)?.value}
               </Text>
               <Text color="muted" variant="small">
                 {fiatCurrency.symbol}
