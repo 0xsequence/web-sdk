@@ -7,8 +7,8 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext
 } from '@0xsequence/connect'
-import { AddIcon, Button, Spinner, SubtractIcon, Text } from '@0xsequence/design-system'
-import { useClearCachedBalances, useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
+import { AddIcon, Button, ChevronDownIcon, Spinner, SubtractIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { useClearCachedBalances, useGetCoinPrices, useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
 import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'react'
@@ -58,6 +58,52 @@ export const PayWithCryptoTab = () => {
     slippageBps
   } = selectPaymentSettings
 
+  const network = findSupportedNetwork(chain)
+  const chainId = network?.chainId || 137
+
+  const [selectedCurrency, setSelectedCurrency] = useState<{
+    currencyAddress: string
+    chainId: number
+  }>({
+    currencyAddress,
+    chainId
+  })
+
+  const { data: coinPricesData, isLoading: isLoadingCoinPrice } = useGetCoinPrices([
+    {
+      chainId,
+      contractAddress: selectedCurrency.currencyAddress
+    }
+  ])
+
+  const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
+    chainID: String(chainId),
+    contractAddress: selectPaymentSettings!.currencyAddress
+  })
+
+  const isLoading = isLoadingCoinPrice || isLoadingCurrencyInfo
+
+  const formattedPrice = formatUnits(BigInt(selectPaymentSettings!.price), dataCurrencyInfo?.decimals || 0)
+  const displayPrice = formatDisplay(formattedPrice, {
+    disableScientificNotation: true,
+    disableCompactNotation: true,
+    significantDigits: 6
+  })
+
+  const fiatExchangeRate = coinPricesData?.[0].price?.value || 0
+  const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-3 justify-center items-center h-full">
+        <Spinner />
+        <Text color="text50" fontWeight="medium" variant="xsmall">
+          Fetching best crypto price for this purchase
+        </Text>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col justify-center items-center h-full w-full gap-3">
       <div className="flex flex-row justify-between items-center w-full">
@@ -70,11 +116,11 @@ export const PayWithCryptoTab = () => {
               fontSize: '24px'
             }}
           >
-            Price raw
+            {displayPrice}
           </Text>
           <div>
             <Text color="text50" variant="xsmall" fontWeight="normal">
-              ~price info
+              ~${priceFiat} USD
             </Text>
             <Text
               color="text50"
@@ -83,18 +129,28 @@ export const PayWithCryptoTab = () => {
                 fontSize: '10px'
               }}
             >
-              (fees included)
+              &nbsp;(fees included)
             </Text>
           </div>
         </div>
         <div>
-          <Text variant="xsmall" color="text50" fontWeight="normal">
-            selector
-          </Text>
+          <div
+            onClick={() => console.log('to currency selector')}
+            className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
+          >
+            <TokenImage disableAnimation size="sm" src={dataCurrencyInfo?.logoURI} withNetwork={selectedCurrency.chainId} />
+            <Text color="text100" fontWeight="bold">
+              {dataCurrencyInfo?.symbol}
+            </Text>
+            <div className="text-primary">
+              <ChevronDownIcon size="md" />
+            </div>
+          </div>
         </div>
       </div>
 
       <Button
+        disabled={isPurchasing}
         label="Confirm payment"
         className="w-full"
         shape="square"

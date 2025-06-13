@@ -799,6 +799,9 @@ export const styles = String.raw`
   .rounded {
     border-radius: 0.25rem;
   }
+  .rounded-2xl {
+    border-radius: var(--radius-2xl);
+  }
   .rounded-full {
     border-radius: calc(infinity * 1px);
   }
@@ -943,6 +946,9 @@ export const styles = String.raw`
   }
   .bg-info {
     background-color: var(--seq-color-info);
+  }
+  .bg-muted {
+    background-color: var(--seq-color-muted);
   }
   .bg-negative {
     background-color: var(--seq-color-negative);
