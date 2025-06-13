@@ -75,7 +75,9 @@ export const Home = () => {
         </div>
       </div>
 
-      <GeneralList variant="default" />
+      <div className="w-full relative">
+        <GeneralList variant="default" />
+      </div>
     </div>
   )
 }
