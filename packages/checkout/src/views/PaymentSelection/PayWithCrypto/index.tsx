@@ -8,7 +8,7 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext
 } from '@0xsequence/connect'
-import { AddIcon, Button, ChevronDownIcon, Spinner, SubtractIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { AddIcon, Button, ChevronDownIcon, Spinner, SubtractIcon, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
   useGetCoinPrices,
@@ -18,11 +18,14 @@ import {
   useGetSwapRoutes,
   useGetSwapQuote
 } from '@0xsequence/hooks'
+import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { motion } from 'motion/react'
 import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, useWalletClient, usePublicClient, useReadContract } from 'wagmi'
+
+import { useAddFundsModal } from '../../../hooks/index.js'
 
 import { EVENT_SOURCE } from '../../../constants/index.js'
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi.js'
@@ -42,6 +45,7 @@ interface PayWithCryptoProps {
 const MAX_OPTIONS = 3
 
 export const PayWithCryptoTab = () => {
+  const { triggerAddFunds } = useAddFundsModal()
   const { clearCachedBalances } = useClearCachedBalances()
   const [isPurchasing, setIsPurchasing] = useState<boolean>(false)
   const { openTransactionStatusModal } = useTransactionStatusModal()
@@ -91,6 +95,19 @@ export const PayWithCryptoTab = () => {
     chainId
   })
 
+  const isNativeToken = compareAddress(selectedCurrency.currencyAddress, zeroAddress)
+
+  const { data: tokenBalancesData, isLoading: tokenBalancesIsLoading } = useGetTokenBalancesSummary({
+    chainIds: [chainId],
+    filter: {
+      accountAddresses: userAddress ? [userAddress] : [],
+      contractStatus: ContractVerificationStatus.ALL,
+      contractWhitelist: [selectedCurrency.currencyAddress],
+      omitNativeBalances: !isNativeToken
+    },
+    omitMetadata: true
+  })
+
   const { data: coinPricesData, isLoading: isLoadingCoinPrice } = useGetCoinPrices([
     {
       chainId,
@@ -134,7 +151,6 @@ export const PayWithCryptoTab = () => {
     }
   )
 
-  const isNativeToken = compareAddress(selectedCurrency.currencyAddress, zeroAddress)
   const { data: allowanceData, isLoading: allowanceIsLoading } = useReadContract({
     abi: ERC_20_CONTRACT_ABI,
     functionName: 'allowance',
@@ -151,7 +167,14 @@ export const PayWithCryptoTab = () => {
     isLoadingCurrencyInfo ||
     (allowanceIsLoading && !isNativeToken) ||
     swapRoutesIsLoading ||
-    isLoadingSwapQuote
+    isLoadingSwapQuote ||
+    tokenBalancesIsLoading
+
+  const tokenBalance = tokenBalancesData?.pages?.[0]?.balances?.find(balance =>
+    compareAddress(balance.contractAddress, selectedCurrency.currencyAddress)
+  )
+
+  const isInsufficientBalance = tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(price)
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
@@ -419,6 +442,42 @@ export const PayWithCryptoTab = () => {
     }
   }
 
+  const onClickAddFunds = () => {
+    const getNetworks = (): string | undefined => {
+      const network = findSupportedNetwork(chainId)
+      return network?.name?.toLowerCase()
+    }
+
+    skipOnCloseCallback()
+    closeSelectPaymentModal()
+    triggerAddFunds({
+      walletAddress: userAddress || '',
+      provider: onRampProvider || TransactionOnRampProvider.sardine,
+      networks: getNetworks(),
+      defaultCryptoCurrency: dataCurrencyInfo?.symbol || '',
+      onClose: selectPaymentSettings?.onClose
+    })
+  }
+
+  const TokenSelector = () => {
+    return (
+      <div
+        onClick={() => {
+          console.log('on click currency selector')
+        }}
+        className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
+      >
+        <TokenImage disableAnimation size="sm" src={dataCurrencyInfo?.logoURI} withNetwork={selectedCurrency.chainId} />
+        <Text variant="small" color="text100" fontWeight="bold">
+          {dataCurrencyInfo?.symbol}
+        </Text>
+        <div className="text-primary">
+          <ChevronDownIcon size="md" />
+        </div>
+      </div>
+    )
+  }
+
   if (isLoading) {
     return (
       <div className="flex flex-col gap-3 justify-center items-center h-full">
@@ -426,6 +485,56 @@ export const PayWithCryptoTab = () => {
         <Text color="text50" fontWeight="medium" variant="xsmall">
           Fetching best crypto price for this purchase
         </Text>
+      </div>
+    )
+  }
+
+  if (isInsufficientBalance) {
+    const formattedBalance = formatUnits(BigInt(tokenBalance?.balance || '0'), dataCurrencyInfo?.decimals || 18)
+    const displayBalance = formatDisplay(formattedBalance, {
+      disableScientificNotation: true,
+      disableCompactNotation: true,
+      significantDigits: 6
+    })
+
+    return (
+      <div className="flex flex-col justify-center items-center h-full w-full gap-3">
+        <div className="flex flex-row justify-between items-center w-full">
+          <div className="flex flex-col gap-0.5">
+            <Text
+              variant="xsmall"
+              color="negative"
+              fontWeight="bold"
+              style={{
+                fontSize: '24px'
+              }}
+            >
+              {displayPrice}
+            </Text>
+            <div className="flex flex-row gap-1 items-center">
+              <div className="text-negative">
+                <WarningIcon style={{ width: '14px', height: '14px' }} />
+              </div>
+              <Text color="negative" variant="xsmall" fontWeight="normal">
+                Insufficient funds
+              </Text>
+            </div>
+            <Text color="negative" variant="xsmall" fontWeight="normal">
+              Balance: {displayBalance} {dataCurrencyInfo?.symbol}
+            </Text>
+          </div>
+          <div>
+            <TokenSelector />
+          </div>
+        </div>
+        <Button
+          label="Add Funds"
+          className="w-full"
+          shape="square"
+          variant="glass"
+          leftIcon={() => <AddIcon size="md" />}
+          onClick={onClickAddFunds}
+        ></Button>
       </div>
     )
   }
@@ -460,18 +569,7 @@ export const PayWithCryptoTab = () => {
           </div>
         </div>
         <div>
-          <div
-            onClick={() => console.log('to currency selector')}
-            className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
-          >
-            <TokenImage disableAnimation size="sm" src={dataCurrencyInfo?.logoURI} withNetwork={selectedCurrency.chainId} />
-            <Text variant="small" color="text100" fontWeight="bold">
-              {dataCurrencyInfo?.symbol}
-            </Text>
-            <div className="text-primary">
-              <ChevronDownIcon size="md" />
-            </div>
-          </div>
+          <TokenSelector />
         </div>
       </div>
 
