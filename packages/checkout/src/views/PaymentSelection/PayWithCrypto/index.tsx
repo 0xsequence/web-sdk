@@ -139,7 +139,7 @@ export const PayWithCryptoTab = () => {
             className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
           >
             <TokenImage disableAnimation size="sm" src={dataCurrencyInfo?.logoURI} withNetwork={selectedCurrency.chainId} />
-            <Text color="text100" fontWeight="bold">
+            <Text variant="small" color="text100" fontWeight="bold">
               {dataCurrencyInfo?.symbol}
             </Text>
             <div className="text-primary">
