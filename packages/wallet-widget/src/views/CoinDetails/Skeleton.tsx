@@ -1,4 +1,4 @@
-import { Button, SendIcon, Skeleton, Text } from '@0xsequence/design-system'
+import { Button, SendIcon, Skeleton, SwapIcon, Text } from '@0xsequence/design-system'
 
 import { NetworkBadge } from '../../components/NetworkBadge.js'
 import { TransactionHistorySkeleton } from '../../components/TransactionHistoryList/TransactionHistorySkeleton.js'
@@ -27,14 +27,22 @@ export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeleton
           </div>
         </div>
         {!isReadOnly && (
-          <Button
-            className="w-full text-primary"
-            variant="primary"
-            leftIcon={SendIcon}
-            label="Send"
-            disabled
-            onClick={() => {}}
-          />
+          <div className="flex gap-2">
+            <Button
+              className="w-full text-primary bg-background-secondary"
+              leftIcon={SendIcon}
+              label="Send"
+              disabled
+              onClick={() => {}}
+            />
+            <Button
+              className="w-full text-primary bg-background-secondary"
+              leftIcon={SwapIcon}
+              label="Swap"
+              disabled
+              onClick={() => {}}
+            />
+          </div>
         )}
         <div>
           <TransactionHistorySkeleton />
