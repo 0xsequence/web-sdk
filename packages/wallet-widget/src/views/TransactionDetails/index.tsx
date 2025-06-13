@@ -227,8 +227,8 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
   }
 
   return (
-    <div className="flex p-5 pt-3 flex-col items-center justify-center gap-10 mt-5">
-      <div className="flex mt-6 flex-col justify-center items-center gap-1">
+    <div className="flex p-4 pt-3 flex-col items-center justify-center gap-10">
+      <div className="flex flex-col justify-center items-center gap-1">
         <Text variant="normal" fontWeight="medium" color="primary">
           Transaction details
         </Text>
@@ -275,7 +275,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           <Text variant="normal" color="primary" fontWeight="medium" style={{ overflowWrap: 'anywhere' }}>
             {transaction.txnHash}
           </Text>
-          <CopyButton className="mt-2" buttonVariant="with-label" text={transaction.txnHash} />
+          <CopyButton className="mt-2" includeLabel text={transaction.txnHash} />
         </div>
       </div>
     </div>

@@ -1,15 +1,15 @@
 import { NetworkImage } from '@0xsequence/design-system'
 import { useGetTokenMetadata } from '@0xsequence/hooks'
 
-import type { TokenBalanceWithPrice } from '../../../utils/index.js'
-import { CollectibleTileImage } from '../../CollectibleTileImage.js'
+import type { TokenBalanceWithDetails } from '../../../utils/index.js'
+import { TokenTileImage } from '../../TokenTileImage.js'
 
 const NETWORK_IMAGE_SIZE = '15%'
 const NETWORK_IMAGE_OFFSET = '2%'
 
 interface CollectibleTileProps {
-  balance: TokenBalanceWithPrice
-  onTokenClick: (token: TokenBalanceWithPrice) => void
+  balance: TokenBalanceWithDetails
+  onTokenClick: (token: TokenBalanceWithDetails) => void
 }
 
 export const CollectibleTile = ({ balance, onTokenClick }: CollectibleTileProps) => {
@@ -24,10 +24,11 @@ export const CollectibleTile = ({ balance, onTokenClick }: CollectibleTileProps)
   })
 
   const imageUrl = tokenMetadata?.[0]?.image
+  const symbol = tokenMetadata?.[0]?.name
 
   return (
     <div className="select-none cursor-pointer aspect-square relative" onClick={onClick}>
-      <CollectibleTileImage imageUrl={imageUrl} />
+      <TokenTileImage src={imageUrl} symbol={symbol} />
       <NetworkImage
         chainId={balance.chainId}
         className={`absolute z-1`}

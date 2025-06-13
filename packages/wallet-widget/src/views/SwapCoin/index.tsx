@@ -6,8 +6,8 @@ import { useRef, useState, type ChangeEvent } from 'react'
 import { parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
+import { WalletSelect } from '../../components/Select/WalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
-import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
 import { computeBalanceFiat, limitDecimals } from '../../utils/index.js'
 
@@ -19,7 +19,7 @@ export interface SwapCoinProps {
 export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const { setNavigation } = useNavigation()
   const { chains } = useConfig()
-  const { address: accountAddress = '' } = useAccount()
+  const { address: accountAddress } = useAccount()
 
   const amountInputRef = useRef<HTMLInputElement>(null)
   const { fiatCurrency } = useSettings()
@@ -89,13 +89,8 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const isNonZeroAmount = amountRaw > 0n
 
   return (
-    <form
-      className="flex p-5 gap-2 flex-col"
-      onSubmit={handleFindQuotesClick}
-      style={{
-        marginTop: HEADER_HEIGHT
-      }}
-    >
+    <form className="flex p-4 pt-0 gap-4 flex-col" onSubmit={handleFindQuotesClick}>
+      <WalletSelect selectedWallet={String(accountAddress)} onClick={() => {}} disabled />
       <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
         <SendItemInfo
           imageUrl={imageUrl}
@@ -129,9 +124,9 @@ export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
           }
         />
       </div>
-      <div className="flex items-center justify-center" style={{ height: '52px' }}>
+      <div className="flex items-center justify-center">
         <Button
-          className="text-primary mt-3 w-full"
+          className="text-primary w-full h-11"
           variant="primary"
           size="lg"
           type="submit"

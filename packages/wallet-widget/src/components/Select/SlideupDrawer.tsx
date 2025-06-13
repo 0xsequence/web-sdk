@@ -1,4 +1,4 @@
-import { Button, cardVariants, ChevronLeftIcon, cn, Divider, Text } from '@0xsequence/design-system'
+import { Divider } from '@0xsequence/design-system'
 import { motion } from 'motion/react'
 import { useContext, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
@@ -7,21 +7,15 @@ import { WALLET_WIDTH } from '../../constants/index.js'
 import { WalletContentRefContext } from '../../contexts/WalletContentRef.js'
 
 export const SlideupDrawer = ({
-  label,
+  header,
   children,
-  buttonLabel,
-  dragHandleWidth = 64,
-  onClose,
-  handleButtonPress,
-  onBackPress
+  footer,
+  onClose
 }: {
-  label: string
+  header: React.ReactNode
   children: React.ReactNode
-  buttonLabel?: string
-  dragHandleWidth?: number
+  footer?: React.ReactNode
   onClose: () => void
-  handleButtonPress?: () => void
-  onBackPress?: () => void
 }) => {
   const [walletContentHeight, setWalletContentHeight] = useState(0)
   const walletContentRef = useContext(WalletContentRefContext)
@@ -85,49 +79,17 @@ export const SlideupDrawer = ({
         onClick={e => e.stopPropagation()}
       >
         <div className="bg-background-primary p-0 rounded-xl" style={{ flex: 1 }}>
-          <div className={`flex flex-row rounded-none p-4 ${onBackPress ? 'justify-between' : 'justify-center'}`}>
-            {onBackPress && (
-              <Button variant="text" className="pt-2" onClick={onBackPress}>
-                <ChevronLeftIcon color="white" />
-              </Button>
-            )}
-            <div className="flex flex-col">
-              <div className="flex justify-center items-center rounded-none p-0">
-                <div
-                  className="rounded-full"
-                  style={{ width: dragHandleWidth, height: '4px', backgroundColor: 'white', cursor: 'grab' }}
-                />
-              </div>
-              <div className="flex flex-col items-center w-full rounded-none pt-2">
-                <Text color="primary" fontWeight="bold" variant="medium" style={{ display: 'flex', justifyContent: 'center' }}>
-                  {label}
-                </Text>
-              </div>
-            </div>
-            {onBackPress && <div style={{ width: '20px' }}></div>}
-          </div>
+          <div className="flex flex-row justify-start p-4">{header}</div>
           <div
             className="rounded-none bg-background-primary px-4 pb-4"
             style={{ height: 'auto', maxHeight: `calc(${walletContentHeight}px / 2)`, overflowY: 'auto' }}
           >
             {children}
           </div>
-          {buttonLabel && (
+          {footer && (
             <>
               <Divider className="my-0" />
-              <div className="rounded-none m-4">
-                <div
-                  className={cn(
-                    cardVariants({ clickable: true }),
-                    'flex justify-center items-center bg-gradient-primary rounded-full gap-2 p-3'
-                  )}
-                  onClick={handleButtonPress}
-                >
-                  <Text color="primary" fontWeight="bold" variant="normal">
-                    {buttonLabel}
-                  </Text>
-                </div>
-              </div>
+              <div className="flex flex-row justify-start p-4">{footer}</div>
             </>
           )}
         </div>
