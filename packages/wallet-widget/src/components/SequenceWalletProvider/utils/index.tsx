@@ -119,8 +119,6 @@ export const getHeader = (navigation: Navigation) => {
       return <NavigationHeader />
     case 'connect-dapp':
       return <NavigationHeader />
-    case 'history':
-      return <NavigationHeader />
     case 'coin-details':
       return (
         <NavigationHeader
@@ -156,16 +154,13 @@ export const getHeader = (navigation: Navigation) => {
     case 'transaction-details':
       return <NavigationHeader />
     case 'send-general':
-      return <NavigationHeader label="Send" />
     case 'send-coin':
-      return <NavigationHeader />
     case 'send-collectible':
-      return <NavigationHeader />
+      return <NavigationHeader label="Send" />
     case 'swap':
-      return <NavigationHeader label="Swap" />
     case 'swap-coin':
     case 'swap-coin-list':
-      return <NavigationHeader />
+      return <NavigationHeader label="Swap" />
     case 'receive':
       return <NavigationHeader label="Receive" />
     case 'buy':

@@ -18,8 +18,8 @@ import {
 import { NavigationHeaderContextProvider } from '../../contexts/NavigationHeader.js'
 import { WalletContentRefContext, WalletContentRefProvider } from '../../contexts/WalletContentRef.js'
 
-import { FiatWalletsMapProvider } from './ProviderComponents/FiatWalletsMapProvider.js'
 import { SwapProvider } from './ProviderComponents/SwapProvider.js'
+import { ValueRegistryProvider } from './ProviderComponents/ValueRegistryProvider.js'
 import { getContent, getHeader } from './utils/index.js'
 
 export type SequenceWalletProviderProps = {
@@ -79,7 +79,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
     navigation.location === 'coin-details' ||
     navigation.location === 'collection-details' ||
     navigation.location === 'transaction-details' ||
-    navigation.location === 'history' ||
+    navigation.location === 'swap' ||
     navigation.location === 'search' ||
     navigation.location === 'settings-wallets' ||
     navigation.location === 'settings-currency' ||
@@ -91,7 +91,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   return (
     <WalletModalContextProvider value={{ setOpenWalletModal, openWalletModalState: openWalletModal }}>
       <NavigationContextProvider value={{ setHistory, history, isBackButtonEnabled, setIsBackButtonEnabled }}>
-        <FiatWalletsMapProvider>
+        <ValueRegistryProvider>
           <NavigationHeaderContextProvider value={{ search, selectedTab, setSearch, setSelectedTab }}>
             <ToastProvider>
               <SwapProvider>
@@ -137,7 +137,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
               </SwapProvider>
             </ToastProvider>
           </NavigationHeaderContextProvider>
-        </FiatWalletsMapProvider>
+        </ValueRegistryProvider>
       </NavigationContextProvider>
     </WalletModalContextProvider>
   )
