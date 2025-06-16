@@ -81,6 +81,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
     }
   }
 
+  // TODO: remove this navigation logic and all associated code, including components, once flows are migrated to updated checkout ui
   const navigation = history.length > 0 ? history[history.length - 1] : getDefaultLocation()
 
   const triggerCheckout = (settings: CheckoutSettings) => {
