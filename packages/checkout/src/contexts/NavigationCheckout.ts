@@ -16,12 +16,12 @@ export interface PaymentMehodSelection {
 
 export type NavigationCheckout = PaymentMehodSelection
 
-export type History = NavigationCheckout[]
+export type HistoryCheckout = NavigationCheckout[]
 
 type NavigationCheckoutContext = {
-  setHistory: (history: History) => void
-  history: History
-  defaultLocation: PaymentMehodSelection
+  setHistory: (history: HistoryCheckout) => void
+  history: HistoryCheckout
+  defaultLocation: NavigationCheckout
 }
 
 const [useNavigationCheckoutContext, NavigationCheckoutContextProvider] = createGenericContext<NavigationCheckoutContext>()
