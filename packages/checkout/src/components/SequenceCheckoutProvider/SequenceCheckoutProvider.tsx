@@ -30,7 +30,6 @@ import {
 import {
   AddFundsContent,
   CheckoutSelection,
-  PaymentSelection,
   PendingCreditCardTransaction,
   Swap,
   TransactionError,
@@ -38,7 +37,8 @@ import {
   TransactionSuccess,
   TransferToWallet,
   PaymentSelectionHeader,
-  PaymentSelectionContent
+  PaymentSelectionContent,
+  TokenSelectionContent
 } from '../../views/index.js'
 import { NavigationHeader } from '../NavigationHeader.js'
 
@@ -210,7 +210,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   }
 
   const getCheckoutFlowHeader = () => {
-    const { location } = navigation
+    const { location } = checkoutNavigation
     switch (location) {
       default:
         return <PaymentSelectionHeader />
@@ -218,10 +218,12 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   }
 
   const getCheckoutFlowContent = () => {
-    const { location } = navigation
+    const { location } = checkoutNavigation
     switch (location) {
+      case 'token-selection':
+        return <TokenSelectionContent />
       default:
-        return <PaymentSelection />
+        return <PaymentSelectionContent />
     }
   }
 

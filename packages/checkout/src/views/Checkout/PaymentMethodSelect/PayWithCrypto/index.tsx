@@ -31,6 +31,7 @@ import { EVENT_SOURCE } from '../../../../constants/index.js'
 import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentModal.js'
 import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../../../hooks/index.js'
+import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings
@@ -52,6 +53,7 @@ export const PayWithCryptoTab = () => {
   const { selectPaymentSettings = {} as SelectPaymentSettings, closeSelectPaymentModal } = useSelectPaymentModal()
   const { analytics } = useAnalyticsContext()
   const [isError, setIsError] = useState<boolean>(false)
+  const { setNavigation } = useNavigationCheckout()
 
   const {
     chain,
@@ -463,7 +465,10 @@ export const PayWithCryptoTab = () => {
     return (
       <div
         onClick={() => {
-          console.log('on click currency selector')
+          setNavigation({
+            location: 'token-selection',
+            params: {}
+          })
         }}
         className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
       >
