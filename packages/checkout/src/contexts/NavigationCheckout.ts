@@ -14,7 +14,12 @@ export interface PaymentMehodSelection {
   params: PaymentMethodSelectionParams
 }
 
-export type NavigationCheckout = PaymentMehodSelection
+export interface TokenSelection {
+  location: 'token-selection'
+  params: {}
+}
+
+export type NavigationCheckout = PaymentMehodSelection | TokenSelection
 
 export type HistoryCheckout = NavigationCheckout[]
 
