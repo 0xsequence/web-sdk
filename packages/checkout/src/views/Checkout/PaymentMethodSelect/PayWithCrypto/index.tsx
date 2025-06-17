@@ -25,12 +25,12 @@ import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'rea
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, useWalletClient, usePublicClient, useReadContract } from 'wagmi'
 
-import { useAddFundsModal } from '../../../hooks/index.js'
+import { useAddFundsModal } from '../../../../hooks/index.js'
 
-import { EVENT_SOURCE } from '../../../constants/index.js'
-import { ERC_20_CONTRACT_ABI } from '../../../constants/abi.js'
-import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
-import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../../hooks/index.js'
+import { EVENT_SOURCE } from '../../../../constants/index.js'
+import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
+import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentModal.js'
+import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../../../hooks/index.js'
 
 interface PayWithCryptoProps {
   settings: SelectPaymentSettings

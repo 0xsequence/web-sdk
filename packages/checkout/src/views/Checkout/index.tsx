@@ -19,12 +19,12 @@ import { EVENT_SOURCE, HEADER_HEIGHT } from '../../constants/index.js'
 import type { SelectPaymentSettings } from '../../contexts/SelectPaymentModal.js'
 import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../hooks/index.js'
 
-import { Footer } from './Footer.js'
-import { FundWithFiat } from './FundWithFiat.js'
-import { OrderSummary } from './OrderSummary/index.js'
-import { PayWithCreditCard, PayWithCreditCardTab } from './PayWithCreditCard/index.js'
-import { PayWithCrypto, PayWithCryptoTab } from './PayWithCrypto/index.js'
-import { TransferFunds } from './TransferFunds.js'
+import { Footer } from './PaymentMethodSelect/Footer.js'
+import { FundWithFiat } from './PaymentMethodSelect/FundWithFiat.js'
+import { OrderSummary } from './PaymentMethodSelect/OrderSummary/index.js'
+import { PayWithCreditCard, PayWithCreditCardTab } from './PaymentMethodSelect/PayWithCreditCard/index.js'
+import { PayWithCrypto, PayWithCryptoTab } from './PaymentMethodSelect/PayWithCrypto/index.js'
+import { TransferFunds } from './PaymentMethodSelect/TransferFunds.js'
 
 export const PaymentSelection = () => {
   return (
