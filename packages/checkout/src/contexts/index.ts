@@ -1,6 +1,7 @@
 export * from './AddFundsModal.js'
 export * from './CheckoutModal.js'
 export * from './Navigation.js'
+export * from './NavigationCheckout.js'
 export * from './SelectPaymentModal.js'
 export * from './SwapModal.js'
 export * from './TransferFundsModal.js'
