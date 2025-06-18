@@ -81,7 +81,15 @@ export const useGetSingleTokenBalance = (args: GetSingleTokenBalanceArgs, option
   return useQuery({
     queryKey: [QUERY_KEYS.useGetSingleTokenBalance, args, options],
     queryFn: async () => {
-      return await getSingleTokenBalance(args, indexerGatewayClient)
+      const tokenBalance = await getSingleTokenBalance(args, indexerGatewayClient)
+
+      if (!tokenBalance) {
+        throw new Error(
+          `Token balance not found for ${args.accountAddress} on chain ${args.chainId} for contract ${args.contractAddress}`
+        )
+      }
+
+      return tokenBalance
     },
     retry: options?.retry ?? false,
     staleTime: time.oneSecond * 30,
