@@ -82,7 +82,6 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
 }
 
 export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions {
-  guest?: boolean
   sequence?: boolean
   email?: boolean
   google?: boolean
@@ -121,7 +120,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
 
   const wallets: Wallet[] = []
 
-  if (options.guest !== false) {
+  if (options.guest) {
     wallets.push(
       guestWaas({
         projectAccessKey,
@@ -132,7 +131,7 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
     )
   }
 
-  if (options.email !== false) {
+  if (options.email) {
     wallets.push(
       emailWaas({
         projectAccessKey,

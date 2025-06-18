@@ -66,6 +66,8 @@ export const config = createConfig('waas', {
   waasConfigKey: 'eyJwcm9qZWN0SWQiOjE2ODE1LCJycGNTZXJ2ZXIiOiJodHRwczovL3dhYXMuc2VxdWVuY2UuYXBwIn0=',
   enableConfirmationModal: false,
 
+  guest: true,
+  email: true,
   google: {
     clientId: '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
   },
