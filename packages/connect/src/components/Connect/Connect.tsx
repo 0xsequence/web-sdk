@@ -2,6 +2,7 @@
 
 import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { useGetWaasStatus } from '@0xsequence/hooks'
+import { SequenceWaaS } from '@0xsequence/waas'
 import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
 import { useEffect, useState, type ChangeEventHandler, type ReactNode } from 'react'
@@ -20,6 +21,7 @@ import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
 import { isEmailValid } from '../../utils/helpers.js'
+import { GuestWaasConnectButton } from '../ConnectButton/ConnectButton.js'
 import {
   AppleWaasConnectButton,
   ConnectButton,
@@ -75,6 +77,13 @@ export const Connect = (props: ConnectProps) => {
     connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social') || hasConnectedSequenceUniversal
 
   const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
+  const waasConfigKey = config.waasConfigKey ?? ''
+
+  // Guest login setup
+  const sequenceWaaS = new SequenceWaaS({
+    projectAccessKey: config.projectAccessKey,
+    waasConfigKey: waasConfigKey
+  })
 
   // Setup wallet linking
   const { linkWallet, removeLinkedWallet } = useWaasLinkWallet(waasConnection?.connector)
@@ -242,6 +251,10 @@ export const Connect = (props: ConnectProps) => {
   }, [status])
 
   const handleConnect = async (connector: ExtendedConnector) => {
+    if (connector._wallet.id === 'guest-waas') {
+      await sequenceWaaS.signIn({ guest: true }, 'Guest')
+    }
+
     connect(
       { connector },
       {
@@ -470,7 +483,14 @@ export const Connect = (props: ConnectProps) => {
                           {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                             return (
                               <div className="w-full" key={connector.uid}>
-                                {connector._wallet.id === 'google-waas' ? (
+                                {connector._wallet.id === 'guest-waas' ? (
+                                  <GuestWaasConnectButton
+                                    isDescriptive={descriptiveSocials}
+                                    connector={connector}
+                                    onConnect={onConnect}
+                                    setIsLoading={setIsLoading}
+                                  />
+                                ) : connector._wallet.id === 'google-waas' ? (
                                   <GoogleWaasConnectButton
                                     isDescriptive={descriptiveSocials}
                                     connector={connector}

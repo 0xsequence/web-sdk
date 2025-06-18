@@ -30,7 +30,7 @@ export interface SequenceWaasConnectConfig {
   appleRedirectURI?: string
   enableConfirmationModal?: boolean
   nodesUrl?: string
-  loginType: 'email' | 'google' | 'apple' | 'epic'
+  loginType: 'email' | 'google' | 'apple' | 'epic' | 'guest'
 }
 
 export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>

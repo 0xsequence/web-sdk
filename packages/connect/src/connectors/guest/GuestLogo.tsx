@@ -1,0 +1,35 @@
+import { Text } from '@0xsequence/design-system'
+import React from 'react'
+
+import type { LogoProps } from '../../types.js'
+
+interface GetGuestLogo {
+  isDarkMode: boolean
+}
+
+export const getGuestLogo = ({ isDarkMode }: GetGuestLogo) => {
+  const fillColor = isDarkMode ? 'white' : 'black'
+
+  const GuestLogo: React.FunctionComponent = (props: LogoProps) => {
+    // TODO: Add Guest Logo SVG
+    // return (
+    //   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 40" fill="none" {...props}>
+    //     <path
+    //       d="M27.166 20.8774C27.1338 17.335 30.0617 15.633 30.1936 15.5493C28.5463 13.1395 25.9852 12.8113 25.0714 12.7727C22.8932 12.5507 20.8179 14.0565 19.7111 14.0565C18.6043 14.0565 16.8991 12.8049 15.0909 12.8403C12.7131 12.8757 10.5221 14.2205 9.2962 16.3505C6.8284 20.6297 8.66557 26.9777 11.0722 30.4557C12.2498 32.1545 13.6494 34.0689 15.493 33.9981C17.2691 33.9273 17.9383 32.8495 20.0811 32.8495C22.224 32.8495 22.8289 33.9981 24.7014 33.9627C26.6094 33.9241 27.8191 32.2253 28.9871 30.5201C30.3352 28.5478 30.8918 26.6366 30.924 26.5369C30.8822 26.5208 27.2046 25.1116 27.166 20.8774Z"
+    //       fill={fillColor}
+    //     />
+    //     <path
+    //       d="M23.6429 10.4722C24.621 9.28822 25.2806 7.64089 25.1004 6C23.6911 6.05791 21.9859 6.93949 20.9756 8.12351C20.0715 9.16917 19.2768 10.8455 19.4923 12.4542C21.0592 12.5764 22.6648 11.653 23.6429 10.4722Z"
+    //       fill={fillColor}
+    //     />
+    //   </svg>
+    // )
+
+    return (
+      <Text variant="normal-bold" color={fillColor}>
+        Guest
+      </Text>
+    )
+  }
+  return GuestLogo
+}

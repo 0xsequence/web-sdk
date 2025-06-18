@@ -87,6 +87,22 @@ export const ShowAllWalletsButton = ({ onClick }: ShowAllWalletsButtonProps) => 
   )
 }
 
+export const GuestWaasConnectButton = (props: ConnectButtonProps & { setIsLoading: (isLoading: boolean) => void }) => {
+  const { connector, onConnect, setIsLoading } = props
+
+  return (
+    <ConnectButton
+      {...props}
+      connector={connector}
+      onConnect={() => {
+        setIsLoading(true)
+        onConnect(connector)
+      }}
+      disableTooltip
+    />
+  )
+}
+
 export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const { connector, onConnect, isDescriptive = false } = props
   const storage = useStorage()
