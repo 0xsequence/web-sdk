@@ -2,6 +2,7 @@ import { compareAddress, ContractVerificationStatus, formatDisplay } from '@0xse
 import { cn, Card, SearchInput, Spinner, Text, TokenImage, Scroll } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import Fuse from 'fuse.js'
 import { useState } from 'react'
 import { formatUnits } from 'viem'
 
@@ -50,11 +51,80 @@ export const TokenSelectionContent = () => {
 
   const currencyBalanceData = currencyBalanceDataPaginated?.pages?.flatMap(page => page.balances)
 
-  console.log('swapRoutes', swapRoutes)
-
   const isLoading = isLoadingCurrencyInfo || swapRoutesIsLoading || currencyBalanceIsLoading
 
   const mainCurrencyBalance = currencyBalanceData?.find(balance => compareAddress(balance.contractAddress, currencyAddress))
+
+  interface Token {
+    name: string
+    symbol: string
+    chainId: number
+    contractAddress: string
+  }
+  const allTokens: Token[] = [
+    {
+      name: currencyInfoData?.name || '',
+      symbol: currencyInfoData?.symbol || '',
+      chainId,
+      contractAddress: currencyAddress
+    },
+    ...(swapRoutes?.[0]?.fromTokens?.map(token => ({
+      name: token.name,
+      symbol: token.symbol,
+      chainId: token.chainId,
+      contractAddress: token.address
+    })) || [])
+  ]
+
+  const fuzzyTokens = new Fuse(allTokens, {
+    keys: ['name', 'symbol']
+  })
+  const foundTokens = fuzzyTokens.search(search)
+  const displayedTokens = search === '' ? allTokens : foundTokens.map(token => token.item)
+
+  const TokenOptions = () => {
+    if (displayedTokens.length == 0) {
+      return (
+        <div className="flex flex-col gap-[6px] mt-4 justify-center items-center">
+          <Text color="text100" variant="small" fontWeight="normal">
+            No tokens found
+          </Text>
+        </div>
+      )
+    }
+
+    return (
+      <div className="flex flex-col gap-[6px]">
+        {displayedTokens.map(token => {
+          const isMainToken = compareAddress(token.contractAddress, currencyAddress)
+          const tokenInfo = isMainToken
+            ? currencyInfoData
+            : swapRoutes[0].fromTokens.find(t => compareAddress(t.address, token.contractAddress))
+
+          const logoUrl = tokenInfo && 'logoURI' in tokenInfo ? tokenInfo.logoURI : tokenInfo?.logoUri
+
+          const isSelected =
+            chainId == selectedCurrency.chainId && compareAddress(selectedCurrency.address, token.contractAddress)
+          const balanceRaw =
+            currencyBalanceData?.find(balance => compareAddress(balance.contractAddress, token.contractAddress))?.balance || '0'
+
+          return (
+            <TokenOption
+              key={token.contractAddress}
+              tokenName={tokenInfo?.name || ''}
+              chainId={token.chainId}
+              balanceRaw={balanceRaw}
+              decimals={tokenInfo?.decimals || 0}
+              logoUrl={logoUrl || ''}
+              symbol={tokenInfo?.symbol || ''}
+              isSelected={isSelected}
+              onClick={() => {}}
+            />
+          )
+        })}
+      </div>
+    )
+  }
 
   return (
     <div
@@ -91,8 +161,8 @@ export const TokenSelectionContent = () => {
               scrollbarWidth: 'thin'
             }}
           >
-            <div className="flex flex-col gap-[6px]">
-              <TokenOption
+            <TokenOptions />
+            {/* <TokenOption
                 tokenName={currencyInfoData?.name || ''}
                 chainId={chainId}
                 balanceRaw={mainCurrencyBalance?.balance || '0'}
@@ -140,8 +210,7 @@ export const TokenSelectionContent = () => {
                     />
                   </div>
                 )
-              })}
-            </div>
+              })} */}
           </Scroll>
         )}
       </div>
@@ -160,7 +229,7 @@ interface TokenOptionProps {
   onClick: () => void
 }
 
-const TokenOption = ({ tokenName, chainId, balanceRaw, decimals, logoUrl, symbol, isSelected, onClick }: TokenOptionProps) => {
+const TokenOption = ({ tokenName, chainId, balanceRaw, decimals, logoUrl, symbol, onClick }: TokenOptionProps) => {
   const network = findSupportedNetwork(chainId)
   const formattedBalance = formatUnits(BigInt(balanceRaw), decimals)
   const displayBalance = formatDisplay(formattedBalance, {
@@ -176,14 +245,14 @@ const TokenOption = ({ tokenName, chainId, balanceRaw, decimals, logoUrl, symbol
       onClick={onClick}
     >
       <div className="flex flex-row gap-2 items-center">
-        <TokenImage src={logoUrl} withNetwork={chainId} className="w-6 h-6" />
+        <TokenImage disableAnimation src={logoUrl} withNetwork={chainId} className="w-6 h-6" />
         <div className="flex flex-col gap-0">
           <div className="flex flex-row gap-1">
             <Text color="text80" variant="small" fontWeight="bold">
               {tokenName}
             </Text>
             <Text color="text50" variant="xsmall" fontWeight="bold">
-              on {network?.name}
+              on {network?.title}
             </Text>
           </div>
           <Text color="text50" variant="xsmall" fontWeight="normal">

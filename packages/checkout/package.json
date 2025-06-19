@@ -33,6 +33,7 @@
     "@0xsequence/design-system": "2.1.11",
     "@0xsequence/marketplace": "^2.3.10",
     "date-fns": "^4.1.0",
+    "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
     "pako": "^2.1.0",
     "qrcode.react": "^4.2.0"
