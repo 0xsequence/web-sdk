@@ -13,7 +13,7 @@ import { useEffect, useState, useRef } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
-import { NavigationHeader } from '../../../components/NavigationHeader.js'
+import { NavigationHeaderCheckout } from '../../../components/NavigationHeaderCheckout.js'
 import { ERC_20_CONTRACT_ABI } from '../../../constants/abi.js'
 import { EVENT_SOURCE, HEADER_HEIGHT } from '../../../constants/index.js'
 import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
@@ -36,7 +36,7 @@ export const PaymentSelection = () => {
 }
 
 export const PaymentSelectionHeader = () => {
-  return <NavigationHeader primaryText="Checkout" />
+  return <NavigationHeaderCheckout primaryText="Checkout" />
 }
 
 type Tab = 'crypto' | 'credit-card'

@@ -6,6 +6,7 @@ export const styles = String.raw`
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-violet-600: oklch(54.1% 0.281 293.009);
     --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-black: #000;
@@ -741,6 +742,9 @@ export const styles = String.raw`
   .gap-10 {
     gap: calc(var(--spacing) * 10);
   }
+  .gap-\[6px\] {
+    gap: 6px;
+  }
   .self-center {
     align-self: center;
   }
@@ -859,6 +863,12 @@ export const styles = String.raw`
   .border-border-normal {
     border-color: var(--seq-color-border-normal);
   }
+  .border-primary {
+    border-color: var(--seq-color-primary);
+  }
+  .border-red-500 {
+    border-color: var(--color-red-500);
+  }
   .border-transparent {
     border-color: transparent;
   }
@@ -924,6 +934,10 @@ export const styles = String.raw`
   }
   .bg-white {
     background-color: var(--color-white);
+  }
+  .bg-gradient-to-r {
+    --tw-gradient-position: to right in oklab;
+    background-image: linear-gradient(var(--tw-gradient-stops));
   }
   .bg-gradient-primary {
     background-image: var(--seq-color-gradient-primary);
@@ -1720,6 +1734,13 @@ export const styles = String.raw`
   .focus-within\:ring-inset {
     &:focus-within {
       --tw-ring-inset: inset;
+    }
+  }
+  .hover\:border-\[var\(--seq-color-border-normal\)\] {
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--seq-color-border-normal);
+      }
     }
   }
   .hover\:bg-button-glass {

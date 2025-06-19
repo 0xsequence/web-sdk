@@ -41,6 +41,7 @@ import {
   TokenSelectionContent
 } from '../../views/index.js'
 import { NavigationHeader } from '../NavigationHeader.js'
+import { NavigationHeaderCheckout } from '../NavigationHeaderCheckout.js'
 
 export interface SequenceCheckoutConfig {
   env?: Partial<EnvironmentOverrides>
