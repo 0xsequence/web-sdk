@@ -1,10 +1,11 @@
-import { CollectibleTileImage, formatDisplay, NetworkBadge } from '@0xsequence/connect'
-import { NetworkImage, Spinner, Text } from '@0xsequence/design-system'
+import type { LifiSwapRoute } from '@0xsequence/api'
+import { CollectibleTileImage, formatDisplay } from '@0xsequence/connect'
+import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatUnits } from 'viem'
 
-import { useSelectPaymentModal } from '../../../hooks/useSelectPaymentModal.js'
+import { useSelectPaymentModal } from '../../../../hooks/useSelectPaymentModal.js'
 
 export const OrderSummary = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
@@ -70,25 +71,18 @@ export const OrderSummary = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div>
-        <Text
-          variant="small"
-          fontWeight="bold"
-          color="primary"
-        >{`${totalQuantity} ${totalQuantity > 1 ? 'items' : 'item'}`}</Text>
-      </div>
       <div className="flex flex-row gap-1">
         {selectPaymentSettings!.collectibles.map(collectible => {
           const collectibleQuantity = Number(formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0)))
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === collectible.tokenId)
 
           return (
-            <div className="flex gap-3 items-center" key={collectible.tokenId}>
+            <div className="flex gap-2 items-center" key={collectible.tokenId}>
               <div
                 className="rounded-xl"
                 style={{
-                  height: '36px',
-                  width: '36px'
+                  height: '56px',
+                  width: '56px'
                 }}
               >
                 <CollectibleTileImage
@@ -97,34 +91,32 @@ export const OrderSummary = () => {
                       ? dataCollectionInfo?.extensions?.ogImage || dataCollectionInfo?.logoURI
                       : tokenMetadata?.image
                   }
+                  networkImage={chainId}
                 />
               </div>
-              <div className="flex flex-col gap-0.5">
-                <Text variant="small" color="secondary" fontWeight="medium">
-                  {dataCollectionInfo?.name || null}
-                </Text>
+              <div className="flex flex-col gap-0.25">
                 {!isTokenIdUnknown && (
-                  <Text variant="small" color="primary" fontWeight="bold">
-                    {`${tokenMetadata?.name || 'Collectible'} ${collectibleQuantity > 1 ? `x${collectibleQuantity}` : ''}`}
+                  <Text variant="xsmall" color="secondary" fontWeight="bold">
+                    {`${tokenMetadata?.name || 'Collectible'}(${collectibleQuantity > 1 ? `${collectibleQuantity} items` : '1 item'})`}
                   </Text>
                 )}
+                <Text variant="xsmall" color="secondary" fontWeight="normal">
+                  {dataCollectionInfo?.name || null}
+                </Text>
+                <div className="flex flex-row gap-1 items-center">
+                  <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" />
+                  <Text color="white" variant="xsmall" fontWeight="normal">
+                    {`${displayPrice} ${dataCurrencyInfo?.symbol} on ${network?.title}`}
+                  </Text>
+                </div>
+                <Text color="text50" variant="xsmall" fontWeight="normal">
+                  {`$${priceFiat} USD`}
+                </Text>
               </div>
             </div>
           )
         })}
       </div>
-      <div className="flex gap-1 flex-col">
-        <div className="flex flex-row gap-2 items-center">
-          <NetworkImage chainId={chainId} size="sm" />
-          <Text color="white" variant="large" fontWeight="bold">{`${displayPrice} ${dataCurrencyInfo?.symbol}`}</Text>
-        </div>
-        <div>
-          <Text color="muted" variant="normal" fontWeight="normal">
-            {`$${priceFiat} estimated total`}
-          </Text>
-        </div>
-      </div>
-      <NetworkBadge chainId={chainId} />
     </div>
   )
 }
