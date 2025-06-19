@@ -118,7 +118,17 @@ export const TokenSelectionContent = () => {
               logoUrl={logoUrl || ''}
               symbol={tokenInfo?.symbol || ''}
               isSelected={isSelected}
-              onClick={() => {}}
+              onClick={() => {
+                setNavigation({
+                  location: 'payment-method-selection',
+                  params: {
+                    selectedCurrency: {
+                      address: token.contractAddress,
+                      chainId: token.chainId
+                    }
+                  }
+                })
+              }}
             />
           )
         })}
@@ -162,55 +172,6 @@ export const TokenSelectionContent = () => {
             }}
           >
             <TokenOptions />
-            {/* <TokenOption
-                tokenName={currencyInfoData?.name || ''}
-                chainId={chainId}
-                balanceRaw={mainCurrencyBalance?.balance || '0'}
-                decimals={currencyInfoData?.decimals || 0}
-                logoUrl={currencyInfoData?.logoURI || ''}
-                symbol={currencyInfoData?.symbol || ''}
-                isSelected={chainId == selectedCurrency.chainId && compareAddress(selectedCurrency.address, currencyAddress)}
-                onClick={() => {
-                  setNavigation({
-                    location: 'payment-method-selection',
-                    params: {
-                      selectedCurrency: {
-                        address: currencyAddress,
-                        chainId
-                      }
-                    }
-                  })
-                }}
-              />
-              {swapRoutes[0].fromTokens.map(token => {
-                const isSelected = chainId == selectedCurrency.chainId && compareAddress(selectedCurrency.address, token.address)
-                const balanceRaw =
-                  currencyBalanceData?.find(balance => compareAddress(balance.contractAddress, token.address))?.balance || '0'
-                return (
-                  <div key={token.address} className="flex flex-row justify-between items-center">
-                    <TokenOption
-                      tokenName={token.name}
-                      chainId={token.chainId}
-                      balanceRaw={balanceRaw}
-                      decimals={token.decimals}
-                      logoUrl={token.logoUri}
-                      symbol={token.symbol}
-                      isSelected={isSelected}
-                      onClick={() => {
-                        setNavigation({
-                          location: 'payment-method-selection',
-                          params: {
-                            selectedCurrency: {
-                              address: token.address,
-                              chainId: token.chainId
-                            }
-                          }
-                        })
-                      }}
-                    />
-                  </div>
-                )
-              })} */}
           </Scroll>
         )}
       </div>
