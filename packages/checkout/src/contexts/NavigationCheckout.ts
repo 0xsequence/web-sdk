@@ -16,7 +16,12 @@ export interface PaymentMehodSelection {
 
 export interface TokenSelection {
   location: 'token-selection'
-  params: {}
+  params: {
+    selectedCurrency: {
+      address: string
+      chainId: number
+    }
+  }
 }
 
 export type NavigationCheckout = PaymentMehodSelection | TokenSelection

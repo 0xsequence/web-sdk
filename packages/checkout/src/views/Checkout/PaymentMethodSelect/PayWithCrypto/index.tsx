@@ -467,7 +467,12 @@ export const PayWithCryptoTab = () => {
         onClick={() => {
           setNavigation({
             location: 'token-selection',
-            params: {}
+            params: {
+              selectedCurrency: {
+                address: selectedCurrency.currencyAddress,
+                chainId: selectedCurrency.chainId
+              }
+            }
           })
         }}
         className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
