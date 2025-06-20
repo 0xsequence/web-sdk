@@ -94,7 +94,8 @@ export const PayWithCryptoTab = () => {
     chainId: chain
   }
 
-  const isNativeToken = compareAddress(selectedCurrency.address, zeroAddress)
+  const isNativeToken = compareAddress(currencyAddress, zeroAddress)
+  const isNativeTokenSelectedCurrency = compareAddress(selectedCurrency.address, zeroAddress)
 
   const { data: tokenBalancesData, isLoading: tokenBalancesIsLoading } = useGetTokenBalancesSummary({
     chainIds: [chainId],
@@ -102,7 +103,7 @@ export const PayWithCryptoTab = () => {
       accountAddresses: userAddress ? [userAddress] : [],
       contractStatus: ContractVerificationStatus.ALL,
       contractWhitelist: [selectedCurrency.address],
-      omitNativeBalances: !isNativeToken
+      omitNativeBalances: !isNativeTokenSelectedCurrency
     },
     omitMetadata: true
   })
@@ -116,22 +117,23 @@ export const PayWithCryptoTab = () => {
 
   const { data: dataCurrencyInfo, isLoading: isLoadingCurrencyInfo } = useGetContractInfo({
     chainID: String(chainId),
-    contractAddress: selectPaymentSettings!.currencyAddress
+    contractAddress: currencyAddress
   })
+  const isSwapTransaction = !compareAddress(selectedCurrency.address, currencyAddress)
 
-  const buyCurrencyAddress = currencyAddress
-
-  const { data: swapRoutes = [], isLoading: swapRoutesIsLoading } = useGetSwapRoutes(
+  const { data: dataSelectedCurrencyInfo, isLoading: isLoadingSelectedCurrencyInfo } = useGetContractInfo(
     {
-      walletAddress: userAddress ?? '',
-      chainId,
-      toTokenAmount: price,
-      toTokenAddress: currencyAddress
+      chainID: String(chainId),
+      contractAddress: selectedCurrency.address
     },
-    { disabled: !enableSwapPayments, retry: 3 }
+    {
+      disabled: !isSwapTransaction
+    }
   )
 
-  const disableSwapQuote = compareAddress(selectedCurrency.address, buyCurrencyAddress)
+  const selectedCurrencyInfo = isSwapTransaction ? dataSelectedCurrencyInfo : dataCurrencyInfo
+
+  const buyCurrencyAddress = currencyAddress
 
   const { data: swapQuote, isLoading: isLoadingSwapQuote } = useGetSwapQuote(
     {
@@ -146,9 +148,11 @@ export const PayWithCryptoTab = () => {
       }
     },
     {
-      disabled: disableSwapQuote
+      disabled: !isSwapTransaction
     }
   )
+
+  const selectedCurrencyPrice = isSwapTransaction ? swapQuote?.maxPrice || 0 : price || 0
 
   const { data: allowanceData, isLoading: allowanceIsLoading } = useReadContract({
     abi: ERC_20_CONTRACT_ABI,
@@ -157,27 +161,27 @@ export const PayWithCryptoTab = () => {
     address: currencyAddress as Hex,
     args: [userAddress, approvedSpenderAddress || targetContractAddress],
     query: {
-      enabled: !!userAddress && !isNativeToken
+      enabled: !!userAddress && !isNativeTokenSelectedCurrency
     }
   })
 
   const isLoading =
     isLoadingCoinPrice ||
     isLoadingCurrencyInfo ||
-    (allowanceIsLoading && !isNativeToken) ||
-    swapRoutesIsLoading ||
+    (allowanceIsLoading && !isNativeTokenSelectedCurrency) ||
     isLoadingSwapQuote ||
-    tokenBalancesIsLoading
+    tokenBalancesIsLoading ||
+    isLoadingSelectedCurrencyInfo
 
   const tokenBalance = tokenBalancesData?.pages?.[0]?.balances?.find(balance =>
     compareAddress(balance.contractAddress, selectedCurrency.address)
   )
 
-  const isInsufficientBalance = tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(price)
+  const isInsufficientBalance = tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice)
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
-  const formattedPrice = formatUnits(BigInt(selectPaymentSettings!.price), dataCurrencyInfo?.decimals || 0)
+  const formattedPrice = formatUnits(BigInt(selectedCurrencyPrice), selectedCurrencyInfo?.decimals || 0)
   const displayPrice = formatDisplay(formattedPrice, {
     disableScientificNotation: true,
     disableCompactNotation: true,
@@ -221,7 +225,7 @@ export const PayWithCryptoTab = () => {
           to: targetContractAddress as Hex,
           data: txData,
           chainId,
-          ...(isNativeToken
+          ...(isNativeTokenSelectedCurrency
             ? {
                 value: BigInt(price)
               }
@@ -248,8 +252,8 @@ export const PayWithCryptoTab = () => {
           type: 'crypto',
           source: EVENT_SOURCE,
           chainId: String(chainId),
-          listedCurrency: currencyAddress,
-          purchasedCurrency: currencyAddress,
+          listedCurrency: selectedCurrency.address,
+          purchasedCurrency: selectedCurrency.address,
           origin: window.location.origin,
           from: userAddress,
           to: targetContractAddress,
@@ -271,7 +275,7 @@ export const PayWithCryptoTab = () => {
 
       openTransactionStatusModal({
         chainId,
-        currencyAddress,
+        currencyAddress: selectedCurrency.address,
         collectionAddress,
         txHash,
         items: collectibles.map(collectible => ({
@@ -340,7 +344,7 @@ export const PayWithCryptoTab = () => {
             : {})
         },
         // Actual transaction optional approve step
-        ...(isApproved || isNativeToken
+        ...(isApproved || isNativeTokenSelectedCurrency
           ? []
           : [
               {
@@ -404,7 +408,7 @@ export const PayWithCryptoTab = () => {
 
       openTransactionStatusModal({
         chainId,
-        currencyAddress,
+        currencyAddress: selectedCurrency.address,
         collectionAddress,
         txHash,
         items: collectibles.map(collectible => ({
@@ -469,9 +473,14 @@ export const PayWithCryptoTab = () => {
         }}
         className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
       >
-        <TokenImage disableAnimation size="sm" src={dataCurrencyInfo?.logoURI} withNetwork={Number(selectedCurrency.chainId)} />
+        <TokenImage
+          disableAnimation
+          size="sm"
+          src={selectedCurrencyInfo?.logoURI}
+          withNetwork={Number(selectedCurrency.chainId)}
+        />
         <Text variant="small" color="text100" fontWeight="bold">
-          {dataCurrencyInfo?.symbol}
+          {selectedCurrencyInfo?.symbol}
         </Text>
         <div className="text-primary">
           <ChevronDownIcon size="md" />
@@ -492,7 +501,7 @@ export const PayWithCryptoTab = () => {
   }
 
   if (isInsufficientBalance) {
-    const formattedBalance = formatUnits(BigInt(tokenBalance?.balance || '0'), dataCurrencyInfo?.decimals || 18)
+    const formattedBalance = formatUnits(BigInt(tokenBalance?.balance || '0'), selectedCurrencyInfo?.decimals || 18)
     const displayBalance = formatDisplay(formattedBalance, {
       disableScientificNotation: true,
       disableCompactNotation: true,
@@ -522,7 +531,7 @@ export const PayWithCryptoTab = () => {
               </Text>
             </div>
             <Text color="negative" variant="xsmall" fontWeight="normal">
-              Balance: {displayBalance} {dataCurrencyInfo?.symbol}
+              Balance: {displayBalance} {selectedCurrencyInfo?.symbol}
             </Text>
           </div>
           <div>
