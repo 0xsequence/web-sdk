@@ -40,6 +40,6 @@ export const getConnectorLogo = (connectorId: string, isDarkMode = false): React
     case 'wallet-connect':
       return <WalletConnectLogo />
     default:
-      return <></>
+      return null
   }
 }

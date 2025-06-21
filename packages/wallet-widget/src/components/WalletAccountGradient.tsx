@@ -25,24 +25,27 @@ const WalletAccountGradientItem = ({ address, index }: { address: string; index:
   return (
     <div className="relative inline-block" style={{ marginLeft: index === 0 ? '0px' : '-8px', zIndex: wallets.length - index }}>
       <GradientAvatar className="w-11 h-11" size="xl" address={address || ''} />
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          backgroundColor: 'black',
-          borderRadius: '50%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '20px',
-          width: '20px'
-        }}
-      >
-        <div className="flex items-center justify-center" style={{ width: '14px', height: '14px' }}>
-          {LoginIcon}
+
+      {LoginIcon && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            backgroundColor: 'black',
+            borderRadius: '50%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '20px',
+            width: '20px'
+          }}
+        >
+          <div className="flex items-center justify-center" style={{ width: '14px', height: '14px' }}>
+            {LoginIcon}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

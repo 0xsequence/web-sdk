@@ -1,42 +1,22 @@
 import { truncateAtIndex, useWallets } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
-import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { CopyButton } from '../../components/CopyButton.js'
 import { GeneralList } from '../../components/SearchLists/index.js'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient.js'
 import { useSettings, useValueRegistry } from '../../hooks/index.js'
+import { useShared } from '../../hooks/useShared.js'
 
 export const Home = () => {
+  const { isGuest, signInDisplay } = useShared()
   const { wallets: allWallets } = useWallets()
   const { fiatCurrency } = useSettings()
   const { totalValue } = useValueRegistry()
-  const { connector } = useAccount()
 
   const { address: accountAddress } = useAccount()
-  const [signInDisplay, setSignInDisplay] = useState('')
 
-  useEffect(() => {
-    const fetchSignInDisplay = async () => {
-      const sequenceWaas = (await connector?.sequenceWaas) as {
-        listAccounts: () => Promise<{ accounts: { email: string; type: string }[] }>
-      }
-
-      if (sequenceWaas) {
-        const sequenceWaasAccounts = await sequenceWaas.listAccounts()
-        const waasEmail = sequenceWaasAccounts.accounts.find(account => account.type === 'OIDC')?.email
-        let backupEmail = ''
-        if (sequenceWaasAccounts.accounts.length > 0) {
-          backupEmail = sequenceWaasAccounts.accounts[0].email
-        }
-        setSignInDisplay(waasEmail || backupEmail)
-      } else {
-        setSignInDisplay(connector?.name || '')
-      }
-    }
-    fetchSignInDisplay()
-  }, [connector])
+  const onClickLinkGuestAccount = () => {}
 
   return (
     <div className="flex flex-col items-center">
@@ -73,6 +53,19 @@ export const Home = () => {
             </Text>
           </div>
         </div>
+        {isGuest && (
+          <Text
+            className="cursor-pointer hover:opacity-80 w-full"
+            color="warning"
+            variant="medium"
+            nowrap
+            onClick={() => {
+              onClickLinkGuestAccount()
+            }}
+          >
+            Click here to link your guest account
+          </Text>
+        )}
       </div>
 
       <div className="w-full relative">

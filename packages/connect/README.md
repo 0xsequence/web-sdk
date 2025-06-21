@@ -64,6 +64,8 @@ interface CreateConfigOptions {
         projectId: string
       }
 
+  guest?: boolean
+
   google?:
     | boolean
     | {
@@ -97,6 +99,8 @@ const config = createConfig('waas', {
   appName: 'Demo Dapp',
   waasConfigKey: '<your-waas-config-key>',
 
+  guest: true,
+
   google: {
     clientId: '<your-google-client-id>'
   },
@@ -108,7 +112,9 @@ const config = createConfig('waas', {
 
   walletConnect: {
     projectId: '<your-wallet-connect-id>'
-  }
+  },
+
+  email: true
 })
 
 function App() {
