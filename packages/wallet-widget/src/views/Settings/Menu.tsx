@@ -4,10 +4,12 @@ import { CurrencyIcon, Text, WalletIcon } from '@0xsequence/design-system'
 import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag.js'
 import { ListCard } from '../../components/ListCard/ListCard.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
+import { useShared } from '../../hooks/useShared.js'
 
 export const SettingsMenu = () => {
   const { wallets } = useWallets()
   const { fiatCurrency } = useSettings()
+  const { isGuest } = useShared()
   // const activeWallet = wallets.find(wallet => wallet.isActive)
   // const isEmbedded = activeWallet?.id.includes('waas')
 
@@ -36,6 +38,8 @@ export const SettingsMenu = () => {
       location: 'settings-currency'
     })
   }
+
+  const onClickGuest = () => {}
 
   const onClickPreferences = () => {
     setNavigation({
@@ -80,6 +84,13 @@ export const SettingsMenu = () => {
             </Text>
           </ListCard>
         )} */}
+        {isGuest && (
+          <ListCard type="chevron" onClick={onClickGuest}>
+            <Text color="primary" fontWeight="medium" variant="normal">
+              Link Guest Account
+            </Text>
+          </ListCard>
+        )}
         <ListCard type="chevron" onClick={onClickPreferences}>
           <Text color="primary" fontWeight="medium" variant="normal">
             Preferences

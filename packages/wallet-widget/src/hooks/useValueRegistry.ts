@@ -1,4 +1,4 @@
-import { useValueRegistryContext } from '../contexts/valueRegistry.js'
+import { useValueRegistryContext } from '../contexts/ValueRegistry.js'
 
 export const useValueRegistry = () => {
   const { valueRegistryMap, totalValue } = useValueRegistryContext()

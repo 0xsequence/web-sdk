@@ -102,7 +102,7 @@ export const SettingsWallets = () => {
           <div
             className={cn(
               cardVariants({ clickable: true }),
-              'flex justify-center items-center bg-gradient-primary rounded-full gap-2 p-3'
+              'flex bg-background-secondary justify-center items-center rounded-full gap-2 p-3'
             )}
             onClick={() => onClickAddWallet()}
           >
