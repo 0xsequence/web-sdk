@@ -55,7 +55,7 @@ export const InfiniteScroll = (props: PropsWithChildren<InfiniteScrollProps>) =>
   return (
     <>
       {children}
-      <div ref={bottomRef} />
+      <span ref={bottomRef} />
     </>
   )
 }

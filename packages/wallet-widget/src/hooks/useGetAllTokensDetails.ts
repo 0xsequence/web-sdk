@@ -5,12 +5,10 @@ import { useEffect } from 'react'
 export const useGetAllTokensDetails = ({
   accountAddresses,
   chainIds,
-  contractWhitelist,
   hideUnlistedTokens
 }: {
   accountAddresses: string[]
   chainIds: number[]
-  contractWhitelist?: string[]
   hideUnlistedTokens: boolean
 }) => {
   const {
@@ -24,7 +22,6 @@ export const useGetAllTokensDetails = ({
     filter: {
       accountAddresses,
       contractStatus: hideUnlistedTokens ? ContractVerificationStatus.VERIFIED : ContractVerificationStatus.ALL,
-      contractWhitelist: contractWhitelist ?? [],
       omitNativeBalances: false
     },
     page: { pageSize: 40 }
@@ -38,6 +35,6 @@ export const useGetAllTokensDetails = ({
 
   return {
     data: tokenBalancesData?.pages.flatMap(page => page.balances) || [],
-    isLoading: isLoading
+    isLoading: isLoading || isFetchingNextPage
   }
 }

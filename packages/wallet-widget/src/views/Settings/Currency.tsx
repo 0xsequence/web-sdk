@@ -1,7 +1,7 @@
 import { Text } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 
-import { ListCardSelect } from '../../components/ListCard/ListCardSelect.js'
+import { ListCard } from '../../components/ListCard/ListCard.js'
 import { supportedFiatCurrencies } from '../../constants/index.js'
 import { useSettings } from '../../hooks/index.js'
 
@@ -14,7 +14,8 @@ export const SettingsCurrency = () => {
       <div className="flex flex-col gap-2">
         {supportedFiatCurrencies.map((currency, index) => {
           return (
-            <ListCardSelect
+            <ListCard
+              type="radio"
               key={index}
               isSelected={currency.symbol === fiatCurrency.symbol}
               onClick={() => setFiatCurrency && setFiatCurrency(currency)}
@@ -23,7 +24,7 @@ export const SettingsCurrency = () => {
                 {currency.symbol}
               </Text>
               <Text color="muted">{currency.name.message}</Text>
-            </ListCardSelect>
+            </ListCard>
           )
         })}
       </div>

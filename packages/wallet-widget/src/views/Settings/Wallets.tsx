@@ -1,10 +1,9 @@
-import { formatAddress, useOpenConnectModal, useWallets } from '@0xsequence/connect'
+import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
 import { cardVariants, CheckmarkIcon, CloseIcon, cn, Divider, IconButton, Spinner, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
-import { CopyButton } from '../../components/CopyButton.js'
-import { MediaIconWrapper } from '../../components/IconWrappers/index.js'
-import { ListCardSelect } from '../../components/ListCard/ListCardSelect.js'
+import { ListCard } from '../../components/ListCard/ListCard.js'
+import { ListCardWallet } from '../../components/ListCard/ListCardWallet.js'
 import { WalletAccountGradient } from '../../components/WalletAccountGradient.js'
 
 export const SettingsWallets = () => {
@@ -24,7 +23,7 @@ export const SettingsWallets = () => {
         className={cn(cardVariants({ clickable: true }), 'flex flex-row justify-between items-center rounded-full h-9')}
         onClick={onClick}
       >
-        <Text color="primary" fontWeight="bold" variant="normal">
+        <Text color="primary" fontWeight="bold" variant="normal" nowrap>
           {label}
         </Text>
       </div>
@@ -51,12 +50,11 @@ export const SettingsWallets = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between" style={{ height: '100%' }}>
-      <div className="flex flex-col px-4 pb-4 gap-2" style={{ paddingBottom: 'calc(77px + 1px + 16px)' }}>
+    <div className="flex flex-col justify-between">
+      <div className="flex flex-col px-4 pb-4 gap-2">
         {wallets.length > 1 && (
-          <ListCardSelect
+          <ListCard
             key="all"
-            type="custom"
             disabled
             rightChildren={
               isUnlinking ? (
@@ -71,17 +69,17 @@ export const SettingsWallets = () => {
               )
             }
           >
-            <MediaIconWrapper iconList={wallets.map(wallet => wallet.address)} size="sm" isAccount />
+            <WalletAccountGradient accountAddresses={wallets.map(wallet => wallet.address)} />
             <Text color="primary" fontWeight="medium" variant="normal">
               All
             </Text>
-          </ListCardSelect>
+          </ListCard>
         )}
         {wallets.map(wallet => (
-          <ListCardSelect
-            key={wallet.address}
-            type="custom"
+          <ListCardWallet
+            key="all"
             disabled
+            wallet={wallet}
             rightChildren={
               isUnlinking && disconnectConfirm === wallet.address ? (
                 <Spinner />
@@ -94,13 +92,7 @@ export const SettingsWallets = () => {
                 <DisconnectButton label="Disconnect" onClick={() => confirmDisconnect(wallet.address)} />
               )
             }
-          >
-            <WalletAccountGradient accountAddress={wallet.address} size={'small'} />
-            <Text className="flex flex-row gap-1 items-center" color="primary" fontWeight="medium" variant="normal">
-              {formatAddress(wallet.address)}
-              <CopyButton text={wallet.address} buttonVariant="icon" />
-            </Text>
-          </ListCardSelect>
+          />
         ))}
       </div>
 
@@ -110,7 +102,7 @@ export const SettingsWallets = () => {
           <div
             className={cn(
               cardVariants({ clickable: true }),
-              'flex justify-center items-center bg-gradient-primary rounded-full gap-2 p-3'
+              'flex bg-background-secondary justify-center items-center rounded-full gap-2 p-3'
             )}
             onClick={() => onClickAddWallet()}
           >
