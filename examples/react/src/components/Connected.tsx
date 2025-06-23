@@ -10,6 +10,7 @@ import {
   getModalPositionCss,
   signEthAuthProof,
   useOpenConnectModal,
+  useSocialLink,
   useStorage,
   useWaasFeeOptions,
   useWallets,
@@ -48,6 +49,7 @@ export const Connected = () => {
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
   const { openSelectPaymentModal } = useSelectPaymentModal()
+  const { setIsSocialLinkOpen } = useSocialLink()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -477,6 +479,10 @@ export const Connected = () => {
     setOpenConnectModal(true)
   }
 
+  const onClickSocialLink = () => {
+    setIsSocialLinkOpen(true)
+  }
+
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
@@ -697,6 +703,8 @@ export const Connected = () => {
               description="Purchase an NFT through various purchase methods"
               onClick={onClickSelectPayment}
             />
+
+            <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
           </div>
 
           {pendingFeeOptionConfirmation && (

@@ -2,6 +2,7 @@
 
 import { sequence } from '0xsequence'
 import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
+import { ToastProvider } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient } from '@0xsequence/provider'
@@ -15,6 +16,7 @@ import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '..
 import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
 import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal.js'
+import { SocialLinkContextProvider } from '../../contexts/SocialLink.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
@@ -36,6 +38,7 @@ import { NetworkBadge } from '../NetworkBadge/index.js'
 import { PageHeading } from '../PageHeading/index.js'
 import { PoweredBySequence } from '../SequenceLogo/index.js'
 import { ShadowRoot } from '../ShadowRoot/index.js'
+import { SocialLink } from '../SocialLink/SocialLink.js'
 import { TxnDetails } from '../TxnDetails/index.js'
 
 export type SequenceConnectProviderProps = {
@@ -56,7 +59,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     hideExternalConnectOptions = false,
     hideConnectedWallets = false,
     hideSocialConnectOptions = false,
-    customCSS
+    customCSS,
+    waasConfigKey = ''
   } = config
 
   const defaultAppName = signIn.projectName || 'app'
@@ -159,6 +163,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
 
   const { isEmailConflictOpen, emailConflictInfo, toggleEmailConflictModal } = useEmailConflict()
 
+  const [isSocialLinkOpen, setIsSocialLinkOpen] = useState<boolean>(false)
+
   return (
     <SequenceHooksProvider
       config={{
@@ -190,175 +196,186 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                 }}
               >
                 <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                  <ShadowRoot theme={theme} customCSS={customCSS}>
-                    <EpicAuthProvider>
-                      <AnimatePresence>
-                        {openConnectModal && (
-                          <Modal
-                            scroll={false}
-                            size="sm"
-                            contentProps={{
-                              style: {
-                                maxWidth: '390px',
-                                overflow: 'visible',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            onClose={() => setOpenConnectModal(false)}
-                          >
-                            <Connect
-                              onClose={() => setOpenConnectModal(false)}
-                              emailConflictInfo={emailConflictInfo}
-                              {...props}
-                            />
-                          </Modal>
-                        )}
+                  <ToastProvider>
+                    <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey, setIsSocialLinkOpen }}>
+                      <ShadowRoot theme={theme} customCSS={customCSS}>
+                        <EpicAuthProvider>
+                          <AnimatePresence>
+                            {openConnectModal && (
+                              <Modal
+                                scroll={false}
+                                size="sm"
+                                contentProps={{
+                                  style: {
+                                    maxWidth: '390px',
+                                    overflow: 'visible',
+                                    ...getModalPositionCss(position)
+                                  }
+                                }}
+                                onClose={() => setOpenConnectModal(false)}
+                              >
+                                <Connect
+                                  onClose={() => setOpenConnectModal(false)}
+                                  emailConflictInfo={emailConflictInfo}
+                                  {...props}
+                                />
+                              </Modal>
+                            )}
 
-                        {pendingRequestConfirmation && (
-                          <Modal
-                            scroll={false}
-                            size="sm"
-                            contentProps={{
-                              style: {
-                                maxWidth: '390px',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            isDismissible={false}
-                            onClose={() => {
-                              rejectPendingRequest('')
-                            }}
-                          >
-                            <div className="px-4 pt-4 pb-2">
-                              <div
-                                className="flex flex-col justify-center text-primary items-center font-medium"
-                                style={{
-                                  marginTop: '4px'
+                            {pendingRequestConfirmation && (
+                              <Modal
+                                scroll={false}
+                                size="sm"
+                                contentProps={{
+                                  style: {
+                                    maxWidth: '390px',
+                                    ...getModalPositionCss(position)
+                                  }
+                                }}
+                                isDismissible={false}
+                                onClose={() => {
+                                  rejectPendingRequest('')
                                 }}
                               >
-                                <ModalPrimitive.Title asChild>
-                                  <Text className="mb-5" variant="large" asChild>
-                                    <h1>
-                                      Confirm{' '}
-                                      {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
-                                    </h1>
-                                  </Text>
-                                </ModalPrimitive.Title>
-
-                                {pendingRequestConfirmation.type === 'signMessage' && pendingRequestConfirmation.message && (
-                                  <div className="flex flex-col w-full">
-                                    <Text variant="normal" color="muted" fontWeight="medium">
-                                      Message
-                                    </Text>
-                                    <Card className="mt-2 py-2 overflow-scroll max-h-[200px]">
-                                      <Text className="mb-4" variant="normal">
-                                        {isJSON(pendingRequestConfirmation.message) ? (
-                                          <JsonTreeViewer data={JSON.parse(pendingRequestConfirmation.message)} />
-                                        ) : (
-                                          hexToString(pendingRequestConfirmation.message as unknown as Hex)
-                                        )}
+                                <div className="px-4 pt-4 pb-2">
+                                  <div
+                                    className="flex flex-col justify-center text-primary items-center font-medium"
+                                    style={{
+                                      marginTop: '4px'
+                                    }}
+                                  >
+                                    <ModalPrimitive.Title asChild>
+                                      <Text className="mb-5" variant="large" asChild>
+                                        <h1>
+                                          Confirm{' '}
+                                          {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
+                                        </h1>
                                       </Text>
-                                    </Card>
-                                  </div>
-                                )}
+                                    </ModalPrimitive.Title>
 
-                                {pendingRequestConfirmation.type === 'signTransaction' && (
-                                  <div className="flex flex-col w-full">
-                                    <TxnDetails
-                                      address={address ?? ''}
-                                      txs={pendingRequestConfirmation.txs ?? []}
-                                      chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
-                                    />
-
-                                    <Collapsible className="mt-4" label="Transaction data">
-                                      <Card className="overflow-x-scroll my-3">
-                                        <Text className="mb-4" variant="code">
-                                          {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
+                                    {pendingRequestConfirmation.type === 'signMessage' && pendingRequestConfirmation.message && (
+                                      <div className="flex flex-col w-full">
+                                        <Text variant="normal" color="muted" fontWeight="medium">
+                                          Message
                                         </Text>
-                                      </Card>
-                                    </Collapsible>
-                                  </div>
-                                )}
+                                        <Card className="mt-2 py-2 overflow-scroll max-h-[200px]">
+                                          <Text className="mb-4" variant="normal">
+                                            {isJSON(pendingRequestConfirmation.message) ? (
+                                              <JsonTreeViewer data={JSON.parse(pendingRequestConfirmation.message)} />
+                                            ) : (
+                                              hexToString(pendingRequestConfirmation.message as unknown as Hex)
+                                            )}
+                                          </Text>
+                                        </Card>
+                                      </div>
+                                    )}
 
-                                {pendingRequestConfirmation.chainId && (
-                                  <div className="flex w-full mt-3 justify-end items-center">
-                                    <div className="flex w-1/2 justify-start">
-                                      <Text variant="small" color="muted">
-                                        Network
-                                      </Text>
+                                    {pendingRequestConfirmation.type === 'signTransaction' && (
+                                      <div className="flex flex-col w-full">
+                                        <TxnDetails
+                                          address={address ?? ''}
+                                          txs={pendingRequestConfirmation.txs ?? []}
+                                          chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
+                                        />
+
+                                        <Collapsible className="mt-4" label="Transaction data">
+                                          <Card className="overflow-x-scroll my-3">
+                                            <Text className="mb-4" variant="code">
+                                              {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
+                                            </Text>
+                                          </Card>
+                                        </Collapsible>
+                                      </div>
+                                    )}
+
+                                    {pendingRequestConfirmation.chainId && (
+                                      <div className="flex w-full mt-3 justify-end items-center">
+                                        <div className="flex w-1/2 justify-start">
+                                          <Text variant="small" color="muted">
+                                            Network
+                                          </Text>
+                                        </div>
+                                        <div className="flex w-1/2 justify-end">
+                                          <NetworkBadge chainId={pendingRequestConfirmation.chainId} />
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    <div className="flex flex-row gap-2 w-full mt-5">
+                                      <Button
+                                        className="w-full"
+                                        shape="square"
+                                        size="lg"
+                                        label="Reject"
+                                        onClick={() => {
+                                          rejectPendingRequest(pendingRequestConfirmation?.id)
+                                        }}
+                                      />
+                                      <Button
+                                        className="flex items-center text-center w-full"
+                                        shape="square"
+                                        size="lg"
+                                        label="Confirm"
+                                        variant="primary"
+                                        onClick={() => {
+                                          confirmPendingRequest(pendingRequestConfirmation?.id)
+                                        }}
+                                      />
                                     </div>
-                                    <div className="flex w-1/2 justify-end">
-                                      <NetworkBadge chainId={pendingRequestConfirmation.chainId} />
+                                  </div>
+
+                                  <div className="mt-4">
+                                    <PoweredBySequence />
+                                  </div>
+                                </div>
+                              </Modal>
+                            )}
+
+                            {isEmailConflictOpen && emailConflictInfo && (
+                              <Modal
+                                size="sm"
+                                scroll={false}
+                                onClose={() => {
+                                  setOpenConnectModal(false)
+                                  toggleEmailConflictModal(false)
+                                }}
+                              >
+                                <div className="p-4">
+                                  <ModalPrimitive.Title asChild>
+                                    <PageHeading>Email already in use</PageHeading>
+                                  </ModalPrimitive.Title>
+                                  <div>
+                                    <Text className="text-center" variant="normal" color="secondary">
+                                      Another account with this email address{' '}
+                                      <Text color="primary">({emailConflictInfo.email})</Text> already exists with account type{' '}
+                                      <Text color="primary">({emailConflictInfo.type})</Text>. Please sign in again with the
+                                      correct account.
+                                    </Text>
+                                    <div className="flex mt-4 gap-2 items-center justify-center">
+                                      <Button
+                                        label="OK"
+                                        onClick={() => {
+                                          setOpenConnectModal(false)
+                                          toggleEmailConflictModal(false)
+                                        }}
+                                      />
                                     </div>
                                   </div>
-                                )}
-
-                                <div className="flex flex-row gap-2 w-full mt-5">
-                                  <Button
-                                    className="w-full"
-                                    shape="square"
-                                    size="lg"
-                                    label="Reject"
-                                    onClick={() => {
-                                      rejectPendingRequest(pendingRequestConfirmation?.id)
-                                    }}
-                                  />
-                                  <Button
-                                    className="flex items-center text-center w-full"
-                                    shape="square"
-                                    size="lg"
-                                    label="Confirm"
-                                    variant="primary"
-                                    onClick={() => {
-                                      confirmPendingRequest(pendingRequestConfirmation?.id)
-                                    }}
-                                  />
                                 </div>
-                              </div>
+                              </Modal>
+                            )}
 
-                              <div className="mt-4">
-                                <PoweredBySequence />
-                              </div>
-                            </div>
-                          </Modal>
-                        )}
-
-                        {isEmailConflictOpen && emailConflictInfo && (
-                          <Modal
-                            size="sm"
-                            scroll={false}
-                            onClose={() => {
-                              setOpenConnectModal(false)
-                              toggleEmailConflictModal(false)
-                            }}
-                          >
-                            <div className="p-4">
-                              <ModalPrimitive.Title asChild>
-                                <PageHeading>Email already in use</PageHeading>
-                              </ModalPrimitive.Title>
-                              <div>
-                                <Text className="text-center" variant="normal" color="secondary">
-                                  Another account with this email address <Text color="primary">({emailConflictInfo.email})</Text>{' '}
-                                  already exists with account type <Text color="primary">({emailConflictInfo.type})</Text>. Please
-                                  sign in again with the correct account.
-                                </Text>
-                                <div className="flex mt-4 gap-2 items-center justify-center">
-                                  <Button
-                                    label="OK"
-                                    onClick={() => {
-                                      setOpenConnectModal(false)
-                                      toggleEmailConflictModal(false)
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </Modal>
-                        )}
-                      </AnimatePresence>
-                    </EpicAuthProvider>
-                  </ShadowRoot>
-                  {children}
+                            {isSocialLinkOpen && (
+                              <Modal size="sm" scroll={false} onClose={() => setIsSocialLinkOpen(false)}>
+                                <SocialLink />
+                              </Modal>
+                            )}
+                          </AnimatePresence>
+                        </EpicAuthProvider>
+                      </ShadowRoot>
+                      {children}
+                    </SocialLinkContextProvider>
+                  </ToastProvider>
                 </AnalyticsContextProvider>
               </WalletConfigContextProvider>
             </ConnectModalContextProvider>

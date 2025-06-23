@@ -97,6 +97,7 @@ export { useWallets } from './hooks/useWallets.js'
 export { useListAccounts } from './hooks/useListAccounts.js'
 export type { ConnectedWallet } from './hooks/useWallets.js'
 export type { LinkedWallet } from '@0xsequence/api'
+export { useSocialLink } from './hooks/useSocialLink.js'
 
 export { useDirectEcosystemConnect } from './hooks/useDirectEcosystemConnect.js'
 

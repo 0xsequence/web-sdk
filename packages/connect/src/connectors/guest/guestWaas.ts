@@ -7,8 +7,8 @@ export type GuestWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType
 
 export const guestWaas = (options: GuestWaasOptions): Wallet => ({
   id: 'guest-waas',
-  logoDark: getGuestLogo({ isDarkMode: true }),
-  logoLight: getGuestLogo({ isDarkMode: false }),
+  logoDark: getGuestLogo({ isDarkMode: true, isTextDisplayed: true }),
+  logoLight: getGuestLogo({ isDarkMode: false, isTextDisplayed: true }),
   name: 'Guest',
   type: 'social',
   createConnector: () => {

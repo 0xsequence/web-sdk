@@ -3,6 +3,7 @@ import {
   ContractVerificationStatus,
   signEthAuthProof,
   useOpenConnectModal,
+  useSocialLink,
   useStorage,
   useWaasFeeOptions,
   useWallets,
@@ -26,6 +27,7 @@ export const Connected = () => {
   const { address } = useAccount()
   const { setOpenConnectModal } = useOpenConnectModal()
   const { setOpenWalletModal } = useOpenWalletModal()
+  const { setIsSocialLinkOpen } = useSocialLink()
 
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
@@ -250,6 +252,10 @@ export const Connected = () => {
     })
   }
 
+  const onClickSocialLink = () => {
+    setIsSocialLinkOpen(true)
+  }
+
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
@@ -394,6 +400,8 @@ export const Connected = () => {
             {isDebugMode && (
               <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
             )}
+
+            <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
           </div>
 
           {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
