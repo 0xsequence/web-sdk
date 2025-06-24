@@ -27,7 +27,7 @@ export const CollectibleTile = ({ balance, onTokenClick }: CollectibleTileProps)
   const symbol = tokenMetadata?.[0]?.name
 
   return (
-    <div className="select-none cursor-pointer aspect-square relative" onClick={onClick}>
+    <div className="select-none cursor-pointer relative" onClick={onClick}>
       <TokenTileImage src={imageUrl} symbol={symbol} />
       <NetworkImage
         chainId={balance.chainId}

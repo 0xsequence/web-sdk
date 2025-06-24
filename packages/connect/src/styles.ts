@@ -997,6 +997,9 @@ export const styles = String.raw`
   .fill-background-raised {
     fill: var(--seq-color-background-raised);
   }
+  .object-contain {
+    object-fit: contain;
+  }
   .object-cover {
     object-fit: cover;
   }

@@ -5,6 +5,7 @@ import type { TokenBalance } from '@0xsequence/indexer'
 import { useState } from 'react'
 
 import type { TokenInfo } from '../../components/NavigationHeader/index.js'
+import { NoResults } from '../../components/NoResults.js'
 import { CollectiblesTab } from '../../components/SearchLists/CollectiblesList/CollectiblesTab.js'
 import { useNavigation, useSettings } from '../../hooks/index.js'
 
@@ -79,7 +80,7 @@ export const CollectionDetails = ({ contractAddress, chainId }: TokenInfo) => {
             />
           </TabsContent>
           <TabsContent value="explore">
-            <div></div>
+            <NoResults customText="Coming soon" />
           </TabsContent>
         </div>
       </TabsPrimitive.Root>

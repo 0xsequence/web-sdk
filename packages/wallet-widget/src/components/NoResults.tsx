@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import { MiniButton } from '../components/MiniButton.js'
 import { useSettings } from '../hooks/useSettings.js'
 
-export const NoResults = ({ hasInstructions }: { hasInstructions?: boolean }) => {
+export const NoResults = ({ hasInstructions, customText }: { hasInstructions?: boolean; customText?: string }) => {
   const { wallets } = useWallets()
   const { selectedWallets, allNetworks, selectedNetworks, setSelectedWallets, setSelectedNetworks } = useSettings()
 
@@ -22,7 +22,7 @@ export const NoResults = ({ hasInstructions }: { hasInstructions?: boolean }) =>
       </div>
       <div className="flex flex-col items-center justify-center gap-2">
         <Text variant="medium" color="primary">
-          No results found
+          {customText || 'No results found'}
         </Text>
 
         {hasInstructions && (

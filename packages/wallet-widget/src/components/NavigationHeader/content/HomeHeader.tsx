@@ -36,6 +36,13 @@ export const HomeHeader = () => {
     setIsWalletViewOpen(true)
   }
 
+  const handleManageWallets = () => {
+    setIsWalletViewOpen(false)
+    setNavigation({
+      location: 'settings-wallets'
+    })
+  }
+
   const onClickSend = () => {
     setIsOperationMenuOpen(false)
     setNavigation({
@@ -179,7 +186,10 @@ export const HomeHeader = () => {
                     Add Wallet
                   </Text>
                 </div>
-                <div className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer">
+                <div
+                  className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer"
+                  onClick={() => handleManageWallets()}
+                >
                   <SettingsIcon color="white" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Manage
