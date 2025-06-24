@@ -77,13 +77,6 @@ export const Connect = (props: ConnectProps) => {
     connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social') || hasConnectedSequenceUniversal
 
   const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
-  const waasConfigKey = config.waasConfigKey ?? ''
-
-  // Guest login setup
-  const sequenceWaaS = new SequenceWaaS({
-    projectAccessKey: config.projectAccessKey,
-    waasConfigKey: waasConfigKey
-  })
 
   // Setup wallet linking
   const { linkWallet, removeLinkedWallet } = useWaasLinkWallet(waasConnection?.connector)
@@ -252,6 +245,11 @@ export const Connect = (props: ConnectProps) => {
 
   const handleConnect = async (connector: ExtendedConnector) => {
     if (connector._wallet.id === 'guest-waas') {
+      const sequenceWaaS = new SequenceWaaS({
+        projectAccessKey: config.projectAccessKey,
+        waasConfigKey: config.waasConfigKey ?? ''
+      })
+
       await sequenceWaaS.signIn({ guest: true }, 'Guest')
     }
 
