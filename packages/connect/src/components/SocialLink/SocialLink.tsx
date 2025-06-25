@@ -142,26 +142,28 @@ export function SocialLink() {
 
       <Divider />
 
-      <div className="flex flex-col gap-2 w-fit">
+      <div className="flex flex-col gap-2 w-full">
         <Text variant="large" color="text100" fontWeight="bold" className="mb-5">
           Connect (link) another login method
         </Text>
 
-        {googleClientId && <GoogleLogin onSuccess={handleGoogleLogin} shape="circle" width={230} />}
-        {appleClientId && (
-          // @ts-ignore
-          <AppleSignin
-            authOptions={{
-              clientId: appleClientId,
-              scope: 'openid email',
-              redirectURI: appleRedirectUri,
-              usePopup: true
-            }}
-            onError={(error: unknown) => console.error(error)}
-            onSuccess={handleAppleLogin}
-            uiType="dark"
-          />
-        )}
+        <div className="flex flex-col w-fit gap-2">
+          {googleClientId && <GoogleLogin onSuccess={handleGoogleLogin} shape="circle" width="100%" />}
+          {appleClientId && (
+            // @ts-ignore
+            <AppleSignin
+              authOptions={{
+                clientId: appleClientId,
+                scope: 'openid email',
+                redirectURI: appleRedirectUri,
+                usePopup: true
+              }}
+              onError={(error: unknown) => console.error(error)}
+              onSuccess={handleAppleLogin}
+              uiType="dark"
+            />
+          )}
+        </div>
 
         <Divider />
 
