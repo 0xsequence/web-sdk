@@ -37,11 +37,7 @@ export interface SelectPaymentSettings {
   onError?: (error: Error) => void
   onClose?: () => void
   onRampProvider?: TransactionOnRampProvider
-  enableMainCurrencyPayment?: boolean
-  enableSwapPayments?: boolean
-  enableTransferFunds?: boolean
   creditCardProviders?: string[]
-  copyrightText?: string
   transakConfig?: TransakConfig
   sardineConfig?: SardineConfig
   customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void

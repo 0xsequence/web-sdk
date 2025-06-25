@@ -1,6 +1,6 @@
 import type { LifiToken } from '@0xsequence/api'
 import { compareAddress, sendTransactions, TRANSACTION_CONFIRMATIONS_DEFAULT, useAnalyticsContext } from '@0xsequence/connect'
-import { Button, Divider, Spinner, Tabs, TabsContent, TabsHeader, TabsRoot, Text } from '@0xsequence/design-system'
+import { cn, Button, Divider, Spinner, Tabs, TabsContent, TabsHeader, TabsRoot, Text } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
   useGetContractInfo,
@@ -42,35 +42,8 @@ type Tab = 'crypto' | 'credit-card'
 export const PaymentSelectionContent = () => {
   const { selectPaymentSettings = {} as SelectPaymentSettings } = useSelectPaymentModal()
 
-  const [selectedTab, setSelectedTab] = useState<Tab>('crypto')
   const isFirstRender = useRef<boolean>(true)
-  const {
-    chain,
-    collectibles,
-    collectionAddress,
-    currencyAddress,
-    targetContractAddress,
-    approvedSpenderAddress,
-    price,
-    txData,
-    enableTransferFunds = true,
-    enableMainCurrencyPayment = true,
-    enableSwapPayments = true,
-    creditCardProviders = [],
-    transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
-    onRampProvider,
-    onSuccess = () => {},
-    onError = () => {},
-    onClose = () => {},
-    supplementaryAnalyticsInfo,
-    slippageBps
-  } = selectPaymentSettings
-
-  const { clearCachedBalances } = useClearCachedBalances()
-
-  useEffect(() => {
-    clearCachedBalances()
-  }, [])
+  const { collectibles, creditCardProviders = [] } = selectPaymentSettings
 
   const validCreditCardProviders = creditCardProviders.filter(provider => {
     if (provider === 'transak') {
@@ -78,6 +51,13 @@ export const PaymentSelectionContent = () => {
     }
     return true
   })
+
+  const [selectedTab, setSelectedTab] = useState<Tab>('crypto')
+  const { clearCachedBalances } = useClearCachedBalances()
+
+  useEffect(() => {
+    clearCachedBalances()
+  }, [])
 
   const isTokenIdUnknown = collectibles.some(collectible => !collectible.tokenId)
 
@@ -112,7 +92,7 @@ export const PaymentSelectionContent = () => {
           <Divider className="w-full" />
         </div>
         <TabsRoot
-          className="w-full"
+          className={'w-full'}
           value={selectedTab}
           onValueChange={value => {
             // There is a bug with the tabs components which causes the tabs

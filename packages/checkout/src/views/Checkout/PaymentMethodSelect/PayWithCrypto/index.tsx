@@ -33,18 +33,6 @@ import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentMo
 import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../../../hooks/index.js'
 import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
 
-interface PayWithCryptoProps {
-  settings: SelectPaymentSettings
-  disableButtons: boolean
-  selectedCurrency: string | undefined
-  setSelectedCurrency: React.Dispatch<SetStateAction<string | undefined>>
-  isLoading: boolean
-  swapRoutes: LifiSwapRoute[]
-  swapRoutesIsLoading: boolean
-}
-
-const MAX_OPTIONS = 3
-
 export const PayWithCryptoTab = () => {
   const { triggerAddFunds } = useAddFundsModal()
   const { clearCachedBalances } = useClearCachedBalances()
@@ -64,9 +52,6 @@ export const PayWithCryptoTab = () => {
     approvedSpenderAddress,
     price,
     txData,
-    enableTransferFunds = true,
-    enableMainCurrencyPayment = true,
-    enableSwapPayments = true,
     transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onRampProvider,
     onSuccess = () => {},
