@@ -41,7 +41,6 @@ import {
   TokenSelectionContent
 } from '../../views/index.js'
 import { NavigationHeader } from '../NavigationHeader.js'
-import { NavigationHeaderCheckout } from '../NavigationHeaderCheckout.js'
 
 export interface SequenceCheckoutConfig {
   env?: Partial<EnvironmentOverrides>
@@ -52,6 +51,12 @@ export type SequenceCheckoutProviderProps = {
   config?: SequenceCheckoutConfig
 }
 
+const getDefaultLocationCheckout = (): NavigationCheckout => {
+  return {
+    location: 'payment-method-selection',
+    params: {}
+  }
+}
 export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutProviderProps) => {
   const { theme, position } = useTheme()
   const [openCheckoutModal, setOpenCheckoutModal] = useState<boolean>(false)
@@ -67,15 +72,8 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   const [transactionStatusSettings, setTransactionStatusSettings] = useState<TransactionStatusSettings>()
   const [swapModalSettings, setSwapModalSettings] = useState<SwapModalSettings>()
   const [history, setHistory] = useState<History>([])
-  const [checkoutHistory, setCheckoutHistory] = useState<HistoryCheckout>([])
+  const [checkoutHistory, setCheckoutHistory] = useState<HistoryCheckout>([getDefaultLocationCheckout()])
   const { customCSS } = useConnectConfigContext()
-
-  const getDefaultLocationCheckout = (): NavigationCheckout => {
-    return {
-      location: 'payment-method-selection',
-      params: {}
-    }
-  }
 
   const getDefaultLocation = (): Navigation => {
     // skip the order summary for credit card checkout if no items provided
@@ -236,7 +234,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
 
   useEffect(() => {
     if (openPaymentSelectionModal) {
-      setCheckoutHistory([])
+      setCheckoutHistory([getDefaultLocationCheckout()])
     }
   }, [openPaymentSelectionModal])
 

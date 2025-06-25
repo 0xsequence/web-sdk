@@ -13,7 +13,7 @@ import { useSelectPaymentModal } from '../../../hooks/useSelectPaymentModal.js'
 
 export const TokenSelectionContent = () => {
   const [search, setSearch] = useState('')
-  const { navigation, setNavigation } = useNavigationCheckout()
+  const { navigation, setHistory } = useNavigationCheckout()
 
   const { selectedCurrency } = navigation.params as TokenSelection['params']
 
@@ -119,15 +119,17 @@ export const TokenSelectionContent = () => {
               symbol={tokenInfo?.symbol || ''}
               isSelected={isSelected}
               onClick={() => {
-                setNavigation({
-                  location: 'payment-method-selection',
-                  params: {
-                    selectedCurrency: {
-                      address: token.contractAddress,
-                      chainId: token.chainId
+                setHistory([
+                  {
+                    location: 'payment-method-selection',
+                    params: {
+                      selectedCurrency: {
+                        address: token.contractAddress,
+                        chainId: token.chainId
+                      }
                     }
                   }
-                })
+                ])
               }}
             />
           )

@@ -24,7 +24,7 @@ export const NavigationHeaderCheckout = ({ secondaryText, primaryText, disableBa
         height: HEADER_HEIGHT
       }}
     >
-      {history.length > 0 && !disableBack ? (
+      {history.length > 1 && !disableBack ? (
         <IconButton
           onClick={onClickBack}
           icon={ChevronLeftIcon}
