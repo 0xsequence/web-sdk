@@ -1,24 +1,11 @@
-import type { LifiToken } from '@0xsequence/api'
-import { compareAddress, sendTransactions, TRANSACTION_CONFIRMATIONS_DEFAULT, useAnalyticsContext } from '@0xsequence/connect'
-import { cn, Button, Divider, Spinner, Tabs, TabsContent, TabsHeader, TabsRoot, Text } from '@0xsequence/design-system'
-import {
-  useClearCachedBalances,
-  useGetContractInfo,
-  useGetSwapQuote,
-  useGetSwapRoutes,
-  useIndexerClient
-} from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
-import { useEffect, useState, useRef } from 'react'
-import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
+import { Divider, TabsContent, TabsHeader, TabsRoot, Text } from '@0xsequence/design-system'
+import { useClearCachedBalances } from '@0xsequence/hooks'
+import { useEffect, useRef, useState } from 'react'
 
 import { NavigationHeaderCheckout } from '../../../components/NavigationHeaderCheckout.js'
-import { ERC_20_CONTRACT_ABI } from '../../../constants/abi.js'
-import { EVENT_SOURCE, HEADER_HEIGHT } from '../../../constants/index.js'
+import { HEADER_HEIGHT } from '../../../constants/index.js'
 import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
-import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../../hooks/index.js'
-import { useNavigationCheckout } from '../../../hooks/useNavigationCheckout.js'
+import { useSelectPaymentModal } from '../../../hooks/index.js'
 
 import { OrderSummary } from './OrderSummary/index.js'
 import { PayWithCreditCardTab } from './PayWithCreditCard/index.js'

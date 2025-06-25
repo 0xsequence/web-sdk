@@ -1,4 +1,3 @@
-import type { LifiSwapRoute } from '@0xsequence/api'
 import { CollectibleTileImage, formatDisplay } from '@0xsequence/connect'
 import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
@@ -59,12 +58,6 @@ export const OrderSummary = () => {
     disableCompactNotation: true,
     significantDigits: 6
   })
-
-  const totalQuantity =
-    selectPaymentSettings?.collectibles.reduce((accumulator, collectible) => {
-      const quantity = formatUnits(BigInt(collectible.quantity), Number(collectible.decimals || 0))
-      return accumulator + Number(quantity)
-    }, 0) || 0
 
   const fiatExchangeRate = dataCoinPrices?.[0].price?.value || 0
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)

@@ -1,5 +1,4 @@
 import {
-  getNativeTokenInfoByChainId,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   useAnalyticsContext,
@@ -115,8 +114,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   useEffect(() => {
     setIsBackButtonEnabled(!showConfirmation)
   }, [showConfirmation, setIsBackButtonEnabled])
-
-  const nativeTokenInfo = getNativeTokenInfoByChainId(chainId, chains)
 
   const isLoading = isLoadingBalances
 

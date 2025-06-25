@@ -1,5 +1,5 @@
 import { compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/connect'
-import { cn, Card, SearchInput, Spinner, Text, TokenImage, Scroll } from '@0xsequence/design-system'
+import { Card, Scroll, SearchInput, Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import Fuse from 'fuse.js'
@@ -52,8 +52,6 @@ export const TokenSelectionContent = () => {
   const currencyBalanceData = currencyBalanceDataPaginated?.pages?.flatMap(page => page.balances)
 
   const isLoading = isLoadingCurrencyInfo || swapRoutesIsLoading || currencyBalanceIsLoading
-
-  const mainCurrencyBalance = currencyBalanceData?.find(balance => compareAddress(balance.contractAddress, currencyAddress))
 
   interface Token {
     name: string

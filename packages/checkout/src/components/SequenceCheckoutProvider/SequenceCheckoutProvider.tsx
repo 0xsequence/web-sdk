@@ -3,14 +3,14 @@
 import { getModalPositionCss, ShadowRoot, useConnectConfigContext, useTheme } from '@0xsequence/connect'
 import { Modal } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
-import React, { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 
 import {
   AddFundsContextProvider,
   CheckoutModalContextProvider,
   EnvironmentContextProvider,
-  NavigationContextProvider,
   NavigationCheckoutContextProvider,
+  NavigationContextProvider,
   SelectPaymentContextProvider,
   SwapModalContextProvider,
   TransactionStatusModalContextProvider,
@@ -30,15 +30,15 @@ import {
 import {
   AddFundsContent,
   CheckoutSelection,
+  PaymentSelectionContent,
+  PaymentSelectionHeader,
   PendingCreditCardTransaction,
   Swap,
+  TokenSelectionContent,
   TransactionError,
   TransactionStatus,
   TransactionSuccess,
-  TransferToWallet,
-  PaymentSelectionHeader,
-  PaymentSelectionContent,
-  TokenSelectionContent
+  TransferToWallet
 } from '../../views/index.js'
 import { NavigationHeader } from '../NavigationHeader.js'
 

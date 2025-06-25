@@ -1,4 +1,4 @@
-import { cn, Card, Image, NetworkImage } from '@0xsequence/design-system'
+import { Card, Image, NetworkImage } from '@0xsequence/design-system'
 import type { FC } from 'react'
 
 interface CollectibleTileImageProps {

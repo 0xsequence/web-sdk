@@ -1,36 +1,31 @@
-import type { LifiSwapRoute, LifiToken } from '@0xsequence/api'
 import {
   compareAddress,
   ContractVerificationStatus,
-  CryptoOption,
   formatDisplay,
   sendTransactions,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext
 } from '@0xsequence/connect'
-import { AddIcon, Button, ChevronDownIcon, Spinner, SubtractIcon, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
+import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
   useGetCoinPrices,
   useGetContractInfo,
+  useGetSwapQuote,
   useGetTokenBalancesSummary,
-  useIndexerClient,
-  useGetSwapRoutes,
-  useGetSwapQuote
+  useIndexerClient
 } from '@0xsequence/hooks'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { motion } from 'motion/react'
-import { Fragment, useEffect, useMemo, useState, type SetStateAction } from 'react'
+import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, useWalletClient, usePublicClient, useReadContract } from 'wagmi'
+import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
-import { useAddFundsModal } from '../../../../hooks/index.js'
-
-import { EVENT_SOURCE } from '../../../../constants/index.js'
 import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
+import { EVENT_SOURCE } from '../../../../constants/index.js'
 import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentModal.js'
-import { useSelectPaymentModal, useTransactionStatusModal, useSkipOnCloseCallback } from '../../../../hooks/index.js'
+import { useAddFundsModal } from '../../../../hooks/index.js'
+import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../../../hooks/index.js'
 import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
 
 export const PayWithCryptoTab = () => {
