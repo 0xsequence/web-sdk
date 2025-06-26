@@ -163,14 +163,7 @@ export const TokenSelectionContent = () => {
           </div>
         )}
         {!isLoading && (
-          <Scroll
-            shadows={false}
-            style={{
-              height: '206px',
-              scrollbarColor: 'gray black',
-              scrollbarWidth: 'thin'
-            }}
-          >
+          <Scroll shadows={false} className="h-[206px] scrollbar-color-gray-black scrollbar-width-thin">
             <TokenOptions />
           </Scroll>
         )}

@@ -374,6 +374,9 @@ export const styles = String.raw`
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
   }
+  .ml-\[40px\] {
+    margin-left: 40px;
+  }
   .block {
     display: block;
   }
@@ -452,6 +455,9 @@ export const styles = String.raw`
   .h-\[52px\] {
     height: 52px;
   }
+  .h-\[56px\] {
+    height: 56px;
+  }
   .h-\[60px\] {
     height: 60px;
   }
@@ -460,6 +466,9 @@ export const styles = String.raw`
   }
   .h-\[128px\] {
     height: 128px;
+  }
+  .h-\[206px\] {
+    height: 206px;
   }
   .h-\[calc\(100dvh-70px\)\] {
     height: calc(100dvh - 70px);
@@ -545,14 +554,23 @@ export const styles = String.raw`
   .w-40 {
     width: calc(var(--spacing) * 40);
   }
+  .w-\[0px\] {
+    width: 0px;
+  }
   .w-\[1px\] {
     width: 1px;
   }
   .w-\[17px\] {
     width: 17px;
   }
+  .w-\[44px\] {
+    width: 44px;
+  }
   .w-\[52px\] {
     width: 52px;
+  }
+  .w-\[56px\] {
+    width: 56px;
   }
   .w-\[100px\] {
     width: 100px;

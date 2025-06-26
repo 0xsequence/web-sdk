@@ -71,13 +71,7 @@ export const OrderSummary = () => {
 
           return (
             <div className="flex gap-2 items-center" key={collectible.tokenId}>
-              <div
-                className="rounded-xl"
-                style={{
-                  height: '56px',
-                  width: '56px'
-                }}
-              >
+              <div className="rounded-xl h-[56px] w-[56px]">
                 <CollectibleTileImage
                   imageUrl={
                     isTokenIdUnknown

@@ -25,19 +25,13 @@ export const NavigationHeaderCheckout = ({ secondaryText, primaryText, disableBa
       }}
     >
       {history.length > 1 && !disableBack ? (
-        <IconButton
-          onClick={onClickBack}
-          icon={ChevronLeftIcon}
-          size="sm"
-          style={{
-            background: 'rgba(0,0,0,0)',
-            width: '44px'
-          }}
-        />
+        <div className="bg-transparent w-[0px]">
+          <IconButton onClick={onClickBack} icon={ChevronLeftIcon} size="sm" className="bg-transparent w-[44px]" />
+        </div>
       ) : (
         <div />
       )}
-      <div className="flex w-full items-center justify-center" style={{ marginLeft: '40px' }}>
+      <div className="flex w-full items-center justify-center ml-[40px]">
         <Text fontWeight="medium" variant="small" color="muted">
           {secondaryText}
         </Text>
@@ -47,11 +41,7 @@ export const NavigationHeaderCheckout = ({ secondaryText, primaryText, disableBa
           </Text>
         </ModalPrimitive.Title>
       </div>
-      <div
-        style={{
-          width: '44px'
-        }}
-      />
+      <div className="w-[44px]" />
     </div>
   )
 }
