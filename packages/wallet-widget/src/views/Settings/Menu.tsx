@@ -1,4 +1,4 @@
-import { useWallets } from '@0xsequence/connect'
+import { useSocialLink, useWallets } from '@0xsequence/connect'
 import { CurrencyIcon, Text, WalletIcon } from '@0xsequence/design-system'
 
 import { StackedIconTag } from '../../components/IconWrappers/StackedIconTag.js'
@@ -7,6 +7,7 @@ import { useNavigation, useSettings } from '../../hooks/index.js'
 import { useShared } from '../../hooks/useShared.js'
 
 export const SettingsMenu = () => {
+  const { setIsSocialLinkOpen } = useSocialLink()
   const { wallets } = useWallets()
   const { fiatCurrency } = useSettings()
   const { isGuest } = useShared()
@@ -39,7 +40,9 @@ export const SettingsMenu = () => {
     })
   }
 
-  const onClickGuest = () => {}
+  const onClickGuest = () => {
+    setIsSocialLinkOpen(true)
+  }
 
   const onClickPreferences = () => {
     setNavigation({
@@ -84,18 +87,18 @@ export const SettingsMenu = () => {
             </Text>
           </ListCard>
         )} */}
-        {isGuest && (
-          <ListCard type="chevron" onClick={onClickGuest}>
-            <Text color="primary" fontWeight="medium" variant="normal">
-              Link Guest Account
-            </Text>
-          </ListCard>
-        )}
         <ListCard type="chevron" onClick={onClickPreferences}>
           <Text color="primary" fontWeight="medium" variant="normal">
             Preferences
           </Text>
         </ListCard>
+        {isGuest && (
+          <ListCard type="chevron" onClick={onClickGuest}>
+            <Text color="warning" fontWeight="medium" variant="normal">
+              Link Guest Account
+            </Text>
+          </ListCard>
+        )}
       </div>
     </div>
   )

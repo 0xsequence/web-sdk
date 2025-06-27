@@ -1,4 +1,4 @@
-import { truncateAtIndex, useWallets } from '@0xsequence/connect'
+import { truncateAtIndex, useSocialLink, useWallets } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
 
@@ -13,10 +13,12 @@ export const Home = () => {
   const { wallets: allWallets } = useWallets()
   const { fiatCurrency } = useSettings()
   const { totalValue } = useValueRegistry()
-
+  const { setIsSocialLinkOpen } = useSocialLink()
   const { address: accountAddress } = useAccount()
 
-  const onClickLinkGuestAccount = () => {}
+  const onClickLinkGuestAccount = () => {
+    setIsSocialLinkOpen(true)
+  }
 
   return (
     <div className="flex flex-col items-center">

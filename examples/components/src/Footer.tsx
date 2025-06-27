@@ -1,4 +1,4 @@
-import { Button, Image, Text, useTheme } from '@0xsequence/design-system'
+import { Button, Image, Text } from '@0xsequence/design-system'
 
 interface BottomPageLink {
   label: string

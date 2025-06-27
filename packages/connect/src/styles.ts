@@ -250,14 +250,9 @@ export const styles = String.raw`
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
-<<<<<<< HEAD
   .left-\[50\%\] {
     left: 50%;
-  .left-\[-16px\] {
-    left: -16px;
   }
-=======
->>>>>>> a9473cc1 (feat: created general assets list,)
   .z-1 {
     z-index: 1;
   }
@@ -318,28 +313,8 @@ export const styles = String.raw`
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   .mt-0 {
     margin-top: calc(var(--spacing) * 0);
-=======
-=======
-  .mt-0 {
-    margin-top: calc(var(--spacing) * 0);
-  }
->>>>>>> c2519914 (feat: new collectible screens)
-=======
->>>>>>> 7e884860 (feat: added collection details,)
-=======
-  .mt-0 {
-    margin-top: calc(var(--spacing) * 0);
-  }
->>>>>>> b6154cd6 (feat: general ui improvements)
-  .mt-0\.5 {
-    margin-top: calc(var(--spacing) * 0.5);
->>>>>>> cdec19fb (feat: added search screen,)
   }
   .mt-1 {
     margin-top: calc(var(--spacing) * 1);
@@ -473,10 +448,11 @@ export const styles = String.raw`
   .h-\[1px\] {
     height: 1px;
   }
-  .h-\[17px\] {
-    height: 17px;
   .h-\[2px\] {
     height: 2px;
+  }
+  .h-\[17px\] {
+    height: 17px;
   }
   .h-\[52px\] {
     height: 52px;
