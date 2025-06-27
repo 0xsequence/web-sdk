@@ -583,6 +583,9 @@ export const styles = String.raw`
   .w-\[148px\] {
     width: 148px;
   }
+  .w-\[200px\] {
+    width: 200px;
+  }
   .w-fit {
     width: fit-content;
   }
@@ -2012,6 +2015,13 @@ export const styles = String.raw`
       &:has(:focus-visible) {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+      }
+    }
+  }
+  .focus-within\:\[\&\:has\(\:focus-visible\)\]\:ring-border-focus {
+    &:focus-within {
+      &:has(:focus-visible) {
+        --tw-ring-color: var(--seq-color-border-focus);
       }
     }
   }

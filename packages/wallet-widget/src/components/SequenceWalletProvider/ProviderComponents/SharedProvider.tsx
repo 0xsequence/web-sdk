@@ -15,8 +15,10 @@ export const SharedProvider = ({ children }: { children: ReactNode }) => {
       const sequenceWaas = connector?.sequenceWaas as {
         listAccounts: () => Promise<{ accounts: { email: string; type: string }[] }>
       }
-      const sequenceWaasAccounts = await sequenceWaas.listAccounts()
-      setSequenceWaasAccounts(sequenceWaasAccounts)
+      if (sequenceWaas) {
+        const sequenceWaasAccounts = await sequenceWaas.listAccounts()
+        setSequenceWaasAccounts(sequenceWaasAccounts)
+      }
     }
     fetchSequenceWaasAccounts()
   }, [connector])

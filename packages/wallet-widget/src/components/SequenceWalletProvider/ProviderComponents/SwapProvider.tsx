@@ -34,8 +34,10 @@ export const SwapProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchLifiTokens = async () => {
-      const tokens = await apiClient.getLifiTokens({ chainIds: lifiChains })
-      setLifiTokens(tokens.tokens)
+      if (lifiChains.length > 0) {
+        const tokens = await apiClient.getLifiTokens({ chainIds: lifiChains })
+        setLifiTokens(tokens.tokens)
+      }
     }
     fetchLifiTokens()
   }, [apiClient, lifiChains])

@@ -11,7 +11,7 @@ export const WalletAccountGradient = ({ accountAddresses }: { accountAddresses: 
   return (
     <div className="flex flex-row relative">
       {accountAddresses.slice(0, limit).map((address, index) => (
-        <WalletAccountGradientItem address={address} index={index} />
+        <WalletAccountGradientItem key={address} address={address} index={index} />
       ))}
     </div>
   )
