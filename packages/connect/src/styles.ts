@@ -316,12 +316,6 @@ export const styles = String.raw`
   }
   .mt-0 {
     margin-top: calc(var(--spacing) * 0);
-<<<<<<< HEAD
-=======
-  }
-  .mt-0\.5 {
-    margin-top: calc(var(--spacing) * 0.5);
->>>>>>> 47802da7 (openSea testnet)
   }
   .mt-1 {
     margin-top: calc(var(--spacing) * 1);
