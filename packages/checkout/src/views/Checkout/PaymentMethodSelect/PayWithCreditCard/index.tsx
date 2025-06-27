@@ -77,7 +77,7 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
 
     const checkoutSettings: CheckoutSettings = {
       creditCardCheckout: {
-        onSuccess: (txHash: string) => {
+        onSuccess: (txHash?: string) => {
           clearCachedBalances()
           onSuccess(txHash)
         },
