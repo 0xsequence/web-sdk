@@ -64,27 +64,21 @@ export const EmailWaasVerify = (props: EmailWaasVerifyProps) => {
           <PINCodeInput value={waasEmailPinCode} digits={6} group={3} onChange={setWaasEmailPinCode} disabled={isLoading} />
         </div>
 
-        <div className="flex justify-center items-center relative w-full gap-1">
+        <div className="flex justify-center items-center relative h-5 w-full gap-6">
           <Text variant="small" color="secondary">
-            Didn't receive an email?{' '}
+            Didn't receive an email?
           </Text>
           {showSentEmail && (
             <div className="flex flex-row items-center justify-center gap-2">
               <Text variant="small" fontWeight="bold" color="muted">
                 Email sent!
               </Text>
-              <CheckmarkIcon className="text-positive" size="sm" style={{ marginLeft: '-4px' }} />
+              <CheckmarkIcon className="text-positive" size="sm" />
             </div>
           )}
           {!showSentEmail && (
             <div className="flex relative flex-row items-center justify-center gap-2">
-              <Button
-                variant="text"
-                onClick={onClickResend}
-                disabled={isLoadingSendCode}
-                label="Resend email"
-                style={{ marginLeft: '-6px' }}
-              />
+              <Button variant="text" onClick={onClickResend} disabled={isLoadingSendCode} label="Resend email" />
               {isLoadingSendCode && <Spinner className="absolute top-0 right-[-18px]" size="sm" />}
             </div>
           )}
