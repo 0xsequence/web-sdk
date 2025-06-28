@@ -23,8 +23,7 @@ export const PayWithCreditCardTab = () => {
     onError = () => {},
     onClose = () => {},
     creditCardProviders = [],
-    transakConfig,
-    supplementaryAnalyticsInfo = {}
+    ...rest
   } = selectPaymentSettings!
 
   const { address: userAddress } = useAccount()
@@ -51,6 +50,7 @@ export const PayWithCreditCardTab = () => {
         return
       case 'sardine':
       case 'transak':
+      case 'forte':
         onPurchase()
         return
       default:
@@ -81,7 +81,6 @@ export const PayWithCreditCardTab = () => {
         onError,
         onClose,
         chainId,
-        recipientAddress: userAddress,
         contractAddress: targetContractAddress,
         currencyQuantity: price,
         currencySymbol: currencyInfoData.symbol,
@@ -93,9 +92,8 @@ export const PayWithCreditCardTab = () => {
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
-        transakConfig,
         approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || targetContractAddress,
-        supplementaryAnalyticsInfo
+        ...rest
       }
     }
 
