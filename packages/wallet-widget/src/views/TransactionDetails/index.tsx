@@ -260,7 +260,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
       <div className="flex flex-col items-center justify-center gap-4 w-full p-4 bg-background-secondary rounded-xl">
         <div className="flex w-full gap-1 flex-row items-center justify-start">
           <Text variant="normal" fontWeight="medium" color="muted">
-            Transfer{transaction?.transfers?.length! > 1 ? 's' : ''}
+            Transfers
           </Text>
           <NetworkImage chainId={transaction.chainId} size="xs" />
         </div>

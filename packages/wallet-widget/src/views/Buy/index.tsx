@@ -1,4 +1,4 @@
-import { useAddFundsModal } from '@0xsequence/checkout'
+import { TransactionOnRampProvider, useAddFundsModal } from '@0xsequence/checkout'
 import { useWallets } from '@0xsequence/connect'
 import { AddIcon, Text } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'
@@ -15,7 +15,7 @@ export const Buy = () => {
   }
 
   const onClickAddFunds = () => {
-    triggerAddFunds({ walletAddress: address || '' })
+    triggerAddFunds({ walletAddress: address || '', provider: TransactionOnRampProvider.transak })
   }
 
   return (

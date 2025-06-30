@@ -1,5 +1,5 @@
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
-import { AddIcon, Button, SendIcon, SwapIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { AddIcon, Button, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalance, useGetTransactionHistory } from '@0xsequence/hooks'
 import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
@@ -124,12 +124,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress = '' }: T
               label="Send"
               onClick={onClickSend}
             />
-            <Button
-              className="w-full text-primary bg-background-secondary"
-              leftIcon={AddIcon}
-              label="Add"
-              onClick={onClickAdd}
-            />
+            <Button className="w-full text-primary bg-background-secondary" leftIcon={AddIcon} label="Add" onClick={onClickAdd} />
           </div>
         )}
         <div>
