@@ -292,6 +292,9 @@ export const styles = String.raw`
   .-m-\[1px\] {
     margin: calc(1px * -1);
   }
+  .m-2 {
+    margin: calc(var(--spacing) * 2);
+  }
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
@@ -312,9 +315,6 @@ export const styles = String.raw`
   }
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
-  }
-  .mt-0 {
-    margin-top: calc(var(--spacing) * 0);
   }
   .mt-1 {
     margin-top: calc(var(--spacing) * 1);
@@ -352,9 +352,6 @@ export const styles = String.raw`
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
-  .mb-3 {
-    margin-bottom: calc(var(--spacing) * 3);
-  }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
@@ -375,6 +372,9 @@ export const styles = String.raw`
   }
   .ml-\[40px\] {
     margin-left: 40px;
+  }
+  .ml-auto {
+    margin-left: auto;
   }
   .block {
     display: block;
@@ -768,6 +768,9 @@ export const styles = String.raw`
   .justify-self-center {
     justify-self: center;
   }
+  .justify-self-end {
+    justify-self: flex-end;
+  }
   .truncate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -876,12 +879,6 @@ export const styles = String.raw`
   .border-border-normal {
     border-color: var(--seq-color-border-normal);
   }
-  .border-primary {
-    border-color: var(--seq-color-primary);
-  }
-  .border-red-500 {
-    border-color: var(--color-red-500);
-  }
   .border-transparent {
     border-color: transparent;
   }
@@ -948,10 +945,6 @@ export const styles = String.raw`
   .bg-white {
     background-color: var(--color-white);
   }
-  .bg-gradient-to-r {
-    --tw-gradient-position: to right in oklab;
-    background-image: linear-gradient(var(--tw-gradient-stops));
-  }
   .bg-gradient-primary {
     background-image: var(--seq-color-gradient-primary);
   }
@@ -972,9 +965,6 @@ export const styles = String.raw`
   }
   .fill-background-raised {
     fill: var(--seq-color-background-raised);
-  }
-  .object-contain {
-    object-fit: contain;
   }
   .object-cover {
     object-fit: cover;
@@ -1039,9 +1029,6 @@ export const styles = String.raw`
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
-  .py-5 {
-    padding-block: calc(var(--spacing) * 5);
-  }
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
   }
@@ -1068,6 +1055,9 @@ export const styles = String.raw`
   }
   .pt-\[60px\] {
     padding-top: 60px;
+  }
+  .pr-1 {
+    padding-right: calc(var(--spacing) * 1);
   }
   .pr-2 {
     padding-right: calc(var(--spacing) * 2);
