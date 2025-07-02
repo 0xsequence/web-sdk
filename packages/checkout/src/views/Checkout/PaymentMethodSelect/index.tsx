@@ -6,6 +6,7 @@ import { NavigationHeaderCheckout } from '../../../components/NavigationHeaderCh
 import { HEADER_HEIGHT } from '../../../constants/index.js'
 import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
 import { useSelectPaymentModal } from '../../../hooks/index.js'
+import { useSkipOnCloseCallback } from '../../../hooks/useSkipOnCloseCallback.js'
 
 import { OrderSummary } from './OrderSummary/index.js'
 import { PayWithCreditCardTab } from './PayWithCreditCard/index.js'
@@ -30,7 +31,8 @@ export const PaymentSelectionContent = () => {
   const { selectPaymentSettings = {} as SelectPaymentSettings } = useSelectPaymentModal()
 
   const isFirstRender = useRef<boolean>(true)
-  const { collectibles, creditCardProviders = [] } = selectPaymentSettings
+  const { collectibles, creditCardProviders = [], onClose = () => {} } = selectPaymentSettings
+  const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
 
   const validCreditCardProviders = creditCardProviders.filter(provider => {
     if (provider === 'transak') {
@@ -93,14 +95,14 @@ export const PaymentSelectionContent = () => {
           }}
         >
           <TabsHeader tabs={tabs} value={selectedTab} />
-          <TabsContent value="crypto">
+          <TabsContent value="crypto" forceMount>
             <TabWrapper>
-              <PayWithCryptoTab />
+              <PayWithCryptoTab skipOnCloseCallback={skipOnCloseCallback} />
             </TabWrapper>
           </TabsContent>
-          <TabsContent value="credit-card">
+          <TabsContent value="credit-card" forceMount>
             <TabWrapper>
-              <PayWithCreditCardTab />
+              <PayWithCreditCardTab skipOnCloseCallback={skipOnCloseCallback} />
             </TabWrapper>
           </TabsContent>
         </TabsRoot>

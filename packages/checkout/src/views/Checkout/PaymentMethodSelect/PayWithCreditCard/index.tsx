@@ -4,11 +4,15 @@ import { findSupportedNetwork } from '@0xsequence/network'
 import { useAccount } from 'wagmi'
 
 import type { CheckoutSettings } from '../../../../contexts/CheckoutModal.js'
-import { useCheckoutModal, useSelectPaymentModal, useSkipOnCloseCallback } from '../../../../hooks/index.js'
+import { useCheckoutModal, useSelectPaymentModal } from '../../../../hooks/index.js'
 
 type BasePaymentProviderOptions = 'sardine' | 'transak'
 
-export const PayWithCreditCardTab = () => {
+interface PayWithCreditCardTabProps {
+  skipOnCloseCallback: () => void
+}
+
+export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardTabProps) => {
   const { closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
   const {
     chain,
@@ -32,7 +36,6 @@ export const PayWithCreditCardTab = () => {
   const { triggerCheckout } = useCheckoutModal()
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
-  const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
   const selectedPaymentProvider = creditCardProviders?.[0]
 
   const { data: currencyInfoData, isLoading: isLoadingContractInfo } = useGetContractInfo({
