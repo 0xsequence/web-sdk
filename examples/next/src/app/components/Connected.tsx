@@ -33,6 +33,7 @@ export const Connected = () => {
   const storage = useStorage()
 
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
+  const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
 
   const onClickConnect = () => {
     setOpenConnectModal(true)
@@ -401,7 +402,9 @@ export const Connected = () => {
               <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
             )}
 
-            <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
+            {isWaasConnectionActive && (
+              <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
+            )}
           </div>
 
           {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (

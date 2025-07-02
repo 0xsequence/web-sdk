@@ -547,13 +547,7 @@ export const Connected = () => {
               onClick={() =>
                 setOpenWalletModal(true, {
                   defaultNavigation: {
-                    location: 'search-collectibles',
-                    params: {
-                      selectedCollection: {
-                        chainId: 137,
-                        contractAddress: '0x92473261F2c26F2264429C451F70b0192f858795'
-                      }
-                    }
+                    location: 'search'
                   }
                 })
               }
@@ -702,7 +696,9 @@ export const Connected = () => {
               onClick={onClickSelectPayment}
             />
 
+            {/* {isWaasConnectionActive && ( */}
             <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
+            {/* )} */}
           </div>
 
           {pendingFeeOptionConfirmation && (

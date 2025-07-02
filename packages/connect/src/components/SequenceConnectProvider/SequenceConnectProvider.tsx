@@ -365,11 +365,18 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               </Modal>
                             )}
 
-                            {isSocialLinkOpen && (
-                              <Modal size="sm" scroll={false} onClose={() => setIsSocialLinkOpen(false)}>
-                                <SocialLink />
-                              </Modal>
-                            )}
+                            {isSocialLinkOpen &&
+                              (waasConnector ? (
+                                <Modal size="sm" scroll={false} onClose={() => setIsSocialLinkOpen(false)}>
+                                  <SocialLink />
+                                </Modal>
+                              ) : (
+                                <Modal size="sm" scroll={false} onClose={() => setIsSocialLinkOpen(false)}>
+                                  <Text className="p-8" variant="medium" color="warning">
+                                    Social link is not supported for universal wallets (works only for embedded wallets)
+                                  </Text>
+                                </Modal>
+                              ))}
                           </AnimatePresence>
                         </EpicAuthProvider>
                       </ShadowRoot>
