@@ -95,12 +95,12 @@ export const PaymentSelectionContent = () => {
           }}
         >
           <TabsHeader tabs={tabs} value={selectedTab} />
-          <TabsContent value="crypto" forceMount>
+          <TabsContent value="crypto">
             <TabWrapper>
               <PayWithCryptoTab skipOnCloseCallback={skipOnCloseCallback} />
             </TabWrapper>
           </TabsContent>
-          <TabsContent value="credit-card" forceMount>
+          <TabsContent value="credit-card">
             <TabWrapper>
               <PayWithCreditCardTab skipOnCloseCallback={skipOnCloseCallback} />
             </TabWrapper>
