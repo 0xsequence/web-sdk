@@ -25,10 +25,14 @@ import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import { EVENT_SOURCE } from '../../../../constants/index.js'
 import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentModal.js'
 import { useAddFundsModal } from '../../../../hooks/index.js'
-import { useSelectPaymentModal, useSkipOnCloseCallback, useTransactionStatusModal } from '../../../../hooks/index.js'
+import { useSelectPaymentModal, useTransactionStatusModal } from '../../../../hooks/index.js'
 import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
 
-export const PayWithCryptoTab = () => {
+interface PayWithCryptoTabProps {
+  skipOnCloseCallback: () => void
+}
+
+export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps) => {
   const { triggerAddFunds } = useAddFundsModal()
   const { clearCachedBalances } = useClearCachedBalances()
   const [isPurchasing, setIsPurchasing] = useState<boolean>(false)
@@ -56,7 +60,6 @@ export const PayWithCryptoTab = () => {
     slippageBps
   } = selectPaymentSettings
 
-  const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
