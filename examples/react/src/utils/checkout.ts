@@ -6,9 +6,6 @@ import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { encodeFunctionData, toHex } from 'viem'
 import { orderbookAbi } from '../constants/orderbook-abi'
 
-// Forte payment contract address (temporary will be replaced in new api inputs)
-const FORTE_CONTRACT_ADDRESS = '0xa6abee70242d53841417586bb9d3fa31ef3cbae1'
-
 interface PurchaseTransactionDataERC721Sale {
   recipientAddress: string
   currencyAddress: string
@@ -290,6 +287,127 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
     return {
       chain: 11155111,
       currencyAddress: zeroAddress,
+      targetContractAddress: '0xfdb42A198a932C8D3B506Ffa5e855bC4b348a712',
+      collectionAddress: '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b',
+      price,
+      collectibles,
+      txData,
+      forteConfig: {
+        protocol: 'custom_evm_call',
+        calldata: structuredCalldata,
+        sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
+      }
+    }
+  },
+  'forte-payment-erc1155-sale-erc20-token-testnet': (recipientAddress: string) => {
+    const collectibles = [
+      {
+        tokenId: '1',
+        quantity: '1'
+      }
+    ]
+    const price = '1000000000000'
+
+    const structuredCalldata = {
+      functionName: 'mint',
+      arguments: [
+        {
+          type: 'address',
+          value: '${receiver_address}'
+        },
+        {
+          type: 'uint256[]',
+          value: ['1']
+        },
+        {
+          type: 'uint256[]',
+          value: ['1']
+        },
+        {
+          type: 'bytes',
+          value: toHex(0)
+        },
+        {
+          type: 'address',
+          value: zeroAddress
+        },
+        {
+          type: 'uint256',
+          value: price
+        },
+        {
+          type: 'bytes32[]',
+          value: [toHex(0, { size: 32 })]
+        }
+      ]
+    }
+
+    const currencyAddress = '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14'
+
+    return {
+      chain: 11155111,
+      currencyAddress,
+      targetContractAddress: '0x0c29598a69aeda9f3fed0ba64a2d94c54f83e8c6',
+      collectionAddress: '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b',
+      price,
+      collectibles,
+      txData: getPurchaseTransactionERC1155Sale({
+        recipientAddress,
+        currencyAddress,
+        price,
+        collectibles
+      }),
+      forteConfig: {
+        protocol: 'mint',
+        calldata: structuredCalldata,
+        sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986'
+      }
+    }
+  },
+  'forte-payment-erc1155-orderbook-erc20-token-testnet': (recipientAddress: string) => {
+    const collectibles = [
+      {
+        tokenId: '1',
+        quantity: '1'
+      }
+    ]
+    const price = '1000000000000000'
+    const requestId = '28'
+    const txData = getOrderbookTransactionData({
+      recipientAddress: recipientAddress,
+      requestId,
+      quantity: collectibles[0].quantity
+    })
+
+    const structuredCalldata = {
+      functionName: 'acceptRequest',
+      arguments: [
+        {
+          type: 'uint256',
+          value: requestId
+        },
+        {
+          type: 'uint256',
+          value: collectibles[0].quantity
+        },
+        {
+          type: 'address',
+          value: '${receiver_address}'
+        },
+        {
+          type: 'uint256[]',
+          value: []
+        },
+        {
+          type: 'address[]',
+          value: []
+        }
+      ]
+    }
+
+    return {
+      chain: 11155111,
+      currencyAddress: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
       targetContractAddress: '0xfdb42A198a932C8D3B506Ffa5e855bC4b348a712',
       collectionAddress: '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b',
       price,
