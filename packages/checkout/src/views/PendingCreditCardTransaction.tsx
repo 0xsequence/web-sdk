@@ -1,5 +1,5 @@
 import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
-import { Spinner, Text } from '@0xsequence/design-system'
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
@@ -8,9 +8,12 @@ import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
-import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
+import { useEnvironmentContext, useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
+import { type ForteMintConfig, type ForteSeaportConfig } from '../contexts/index.js'
 import {
   useCheckoutModal,
+  useForteAccessToken,
+  useFortePaymentIntent,
   useNavigation,
   useSardineClientToken,
   useSkipOnCloseCallback,
@@ -35,6 +38,8 @@ export const PendingCreditCardTransaction = () => {
   const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
 
   switch (provider) {
+    case 'forte':
+      return <PendingCreditCardTransactionForte skipOnCloseCallback={skipOnCloseCallback} />
     case 'transak':
       return <PendingCreditCardTransactionTransak skipOnCloseCallback={skipOnCloseCallback} />
     case 'sardine':
@@ -434,6 +439,92 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
       />
+    </div>
+  )
+}
+
+export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+  const { initializeWidget } = useFortePaymentController()
+  const { data: accessTokenData, isLoading: isLoadingAccessToken, isError: isErrorAccessToken } = useForteAccessToken()
+  const nav = useNavigation()
+  const {
+    params: { creditCardCheckout }
+  } = nav.navigation as TransactionPendingNavigation
+  const { closeCheckout } = useCheckoutModal()
+
+  const {
+    data: tokenMetadatas,
+    isLoading: isLoadingTokenMetadata,
+    isError: isErrorTokenMetadata
+  } = useGetTokenMetadata({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress,
+    tokenIDs: [creditCardCheckout.nftId]
+  })
+
+  const tokenMetadata = tokenMetadatas ? tokenMetadatas[0] : undefined
+
+  const nftQuantity = formatUnits(BigInt(creditCardCheckout.nftQuantity), Number(creditCardCheckout.nftDecimals || 0))
+  const currencyQuantity = formatUnits(
+    BigInt(creditCardCheckout.currencyQuantity),
+    Number(creditCardCheckout.currencyDecimals || 18)
+  )
+
+  const { data: paymentIntentData, isError: isErrorPaymentIntent } = useFortePaymentIntent(
+    {
+      accessToken: accessTokenData?.accessToken || '',
+      tokenType: accessTokenData?.tokenType || '',
+      nftQuantity,
+      recipientAddress: creditCardCheckout.recipientAddress,
+      chainId: creditCardCheckout.chainId.toString(),
+      nftAddress: creditCardCheckout.nftAddress,
+      currencyAddress: creditCardCheckout.currencyAddress,
+      targetContractAddress: creditCardCheckout.contractAddress,
+      nftName: tokenMetadata?.name || '',
+      imageUrl: tokenMetadata?.image || '',
+      tokenId: creditCardCheckout.nftId,
+      protocolConfig: creditCardCheckout.forteConfig!,
+      currencyQuantity,
+      calldata:
+        creditCardCheckout.forteConfig!.protocol === 'mint'
+          ? creditCardCheckout.forteConfig!.calldata
+          : creditCardCheckout.calldata,
+      approvedSpenderAddress: creditCardCheckout.approvedSpenderAddress
+    },
+    {
+      disabled: isLoadingTokenMetadata || isLoadingAccessToken
+    }
+  )
+
+  useEffect(() => {
+    if (!paymentIntentData) {
+      return
+    }
+
+    initializeWidget({
+      paymentIntentId: paymentIntentData.payment_intent_id,
+      widgetData: paymentIntentData,
+      accessToken: accessTokenData?.accessToken || '',
+      tokenType: accessTokenData?.tokenType || '',
+      creditCardCheckout
+    })
+    skipOnCloseCallback()
+    closeCheckout()
+  }, [paymentIntentData])
+
+  const isError = isErrorTokenMetadata || isErrorAccessToken || isErrorPaymentIntent
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center" style={{ height: '770px' }}>
+        <Text color="primary">An error has occurred</Text>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center justify-center" style={{ height: '770px' }}>
+      <Spinner size="lg" />
     </div>
   )
 }
