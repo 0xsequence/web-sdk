@@ -472,6 +472,8 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     Number(creditCardCheckout.currencyDecimals || 18)
   )
 
+  console.log('creditCardCheckout', creditCardCheckout)
+
   const { data: paymentIntentData, isError: isErrorPaymentIntent } = useFortePaymentIntent(
     {
       accessToken: accessTokenData?.accessToken || '',
@@ -490,7 +492,8 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       calldata:
         creditCardCheckout.forteConfig!.protocol === 'mint'
           ? creditCardCheckout.forteConfig!.calldata
-          : creditCardCheckout.calldata
+          : creditCardCheckout.calldata,
+      approvedSpenderAddress: creditCardCheckout.approvedSpenderAddress
     },
     {
       disabled: isLoadingTokenMetadata || isLoadingAccessToken
