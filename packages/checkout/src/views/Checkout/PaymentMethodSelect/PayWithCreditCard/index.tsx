@@ -27,6 +27,7 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
     onError = () => {},
     onClose = () => {},
     creditCardProviders = [],
+    approvedSpenderAddress,
     ...rest
   } = selectPaymentSettings!
 
@@ -95,8 +96,8 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
-        approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || targetContractAddress,
         onSuccessChecker: selectPaymentSettings?.onSuccessChecker,
+        approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || approvedSpenderAddress,
         ...rest
       }
     }
