@@ -306,7 +306,8 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
         quantity: '1'
       }
     ]
-    const price = '1000000000000'
+    const price = '1000000000000000'
+    const currencyAddress = '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14'
 
     const structuredCalldata = {
       functionName: 'mint',
@@ -329,7 +330,7 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
         },
         {
           type: 'address',
-          value: zeroAddress
+          value: currencyAddress
         },
         {
           type: 'uint256',
@@ -342,12 +343,11 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       ]
     }
 
-    const currencyAddress = '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14'
-
     return {
       chain: 11155111,
       currencyAddress,
       targetContractAddress: '0x0c29598a69aeda9f3fed0ba64a2d94c54f83e8c6',
+      approvedSpenderAddress: '0x0c29598a69aeda9f3fed0ba64a2d94c54f83e8c6',
       collectionAddress: '0xb496d64e1fe4f3465fb83f3fd8cb50d8e227101b',
       price,
       collectibles,
