@@ -304,6 +304,10 @@ const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string
   },
   '8453': {
     [zeroAddress]: 'BASE_ETH'
+  },
+  '11155111': {
+    [zeroAddress]: 'ETH',
+    ['0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14'.toLowerCase()]: 'WETH'
   }
 }
 
