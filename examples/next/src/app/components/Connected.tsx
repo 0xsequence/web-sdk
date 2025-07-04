@@ -3,7 +3,7 @@ import {
   ContractVerificationStatus,
   signEthAuthProof,
   useOpenConnectModal,
-  useSocialLink,
+  // useSocialLink,
   useStorage,
   useWaasFeeOptions,
   useWallets,
@@ -16,6 +16,7 @@ import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { useEffect, useState, type ComponentProps } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, parseUnits } from 'viem'
+import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode, sponsoredContractAddresses } from '../../config'
@@ -27,7 +28,7 @@ export const Connected = () => {
   const { address } = useAccount()
   const { setOpenConnectModal } = useOpenConnectModal()
   const { setOpenWalletModal } = useOpenWalletModal()
-  const { setIsSocialLinkOpen } = useSocialLink()
+  // const { setIsSocialLinkOpen } = useSocialLink()
 
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
@@ -51,6 +52,12 @@ export const Connected = () => {
   const [isSigningMessage, setIsSigningMessage] = useState(false)
   const [isMessageValid, setIsMessageValid] = useState<boolean | undefined>()
   const [messageSig, setMessageSig] = useState<string | undefined>()
+  const [isSigningSIWE, setIsSigningSIWE] = useState(false)
+  const [siweSig, setSiweSig] = useState<string | undefined>()
+  const [isSIWEValid, setIsSIWEValid] = useState<boolean | undefined>()
+  const [isSigningTypedData, setIsSigningTypedData] = useState(false)
+  const [typedDataSig, setTypedDataSig] = useState<string | undefined>()
+  const [isTypedDataValid, setIsTypedDataValid] = useState<boolean | undefined>()
 
   const [lastTxnDataHash, setLastTxnDataHash] = useState<string | undefined>()
   const [lastTxnDataHash2, setLastTxnDataHash2] = useState<string | undefined>()
@@ -165,6 +172,25 @@ export const Connected = () => {
     }
   }, [txnData, txnData2, txnData3])
 
+  const domain = {
+    name: 'Sequence Example',
+    version: '1',
+    chainId: chainId,
+    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  } as const
+
+  const types = {
+    Person: [
+      { name: 'name', type: 'string' },
+      { name: 'wallet', type: 'address' }
+    ]
+  } as const
+
+  const value = {
+    name: 'John Doe',
+    wallet: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  } as const
+
   const signMessage = async () => {
     if (!walletClient || !publicClient) {
       return
@@ -199,6 +225,94 @@ export const Connected = () => {
       console.log('isValid?', isValid)
     } catch (e) {
       setIsSigningMessage(false)
+      if (e instanceof Error) {
+        console.error(e.cause)
+      } else {
+        console.error(e)
+      }
+    }
+  }
+
+  const signSIWE = async () => {
+    if (!walletClient || !publicClient) {
+      return
+    }
+
+    setIsSigningSIWE(true)
+
+    try {
+      const message = createSiweMessage({
+        address: address || ('' as `0x${string}`),
+        chainId: chainId,
+        domain: window.location.hostname,
+        nonce: generateSiweNonce(),
+        statement: messageToSign,
+        uri: window.location.origin,
+        version: '1'
+      })
+
+      const sig = await walletClient.signMessage({
+        account: address || ('' as `0x${string}`),
+        message
+      })
+
+      console.log('address', address)
+      console.log('signature', sig)
+      console.log('chainId in homepage', chainId)
+
+      const isValid = await publicClient.verifyMessage({
+        address: address || ('' as `0x${string}`),
+        message,
+        signature: sig
+      })
+
+      setSiweSig(sig)
+      setIsSIWEValid(isValid)
+      setIsSigningSIWE(false)
+    } catch (e) {
+      setIsSigningSIWE(false)
+      if (e instanceof Error) {
+        console.error(e.cause)
+      }
+    }
+  }
+
+  const signTypedData = async () => {
+    if (!walletClient || !address || !publicClient) {
+      return
+    }
+
+    setIsSigningTypedData(true)
+
+    try {
+      const sig = await walletClient.signTypedData({
+        account: address,
+        domain,
+        types,
+        primaryType: 'Person',
+        message: value
+      })
+
+      console.log('signature:', sig)
+
+      const [account] = await walletClient.getAddresses()
+
+      const isValid = await publicClient.verifyTypedData({
+        address: account,
+        domain,
+        types,
+        primaryType: 'Person',
+        message: value,
+        signature: sig
+      })
+
+      console.log('isValid?', isValid)
+
+      setTypedDataSig(sig)
+      setIsTypedDataValid(isValid)
+      setIsSigningTypedData(false)
+    } catch (e) {
+      setIsSigningTypedData(false)
       if (e instanceof Error) {
         console.error(e.cause)
       } else {
@@ -253,9 +367,9 @@ export const Connected = () => {
     })
   }
 
-  const onClickSocialLink = () => {
-    setIsSocialLinkOpen(true)
-  }
+  // const onClickSocialLink = () => {
+  //   setIsSocialLinkOpen(true)
+  // }
 
   useEffect(() => {
     setLastTxnDataHash(undefined)
@@ -270,7 +384,7 @@ export const Connected = () => {
       <div className="flex px-4 flex-col justify-center items-center" style={{ margin: '140px 0' }}>
         <div className="flex flex-col gap-4">
           <div className="flex my-3 flex-col gap-2">
-            <Text fontWeight="semibold" variant="small" color="muted">
+            <Text variant="medium" color="muted">
               Connected Wallets
             </Text>
 
@@ -305,16 +419,37 @@ export const Connected = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Text variant="small" color="muted" fontWeight="medium">
+            <Text className="align-self-center mt-4" variant="medium" color="muted">
               Demos
             </Text>
-            <CardButton title="Inventory" description="View all tokens in your wallet" onClick={() => setOpenWalletModal(true)} />
-            {/* <CardButton
-              title="Checkout"
-              description="Checkout screen before placing a purchase on coins or collections"
-              onClick={onClickCheckout}
-            /> */}
-            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && (
+
+            <Text variant="small-bold" color="muted">
+              Wallet Widget
+            </Text>
+
+            <CardButton
+              title="Wallet widget"
+              description="View your integrated wallet"
+              onClick={() => setOpenWalletModal(true)}
+            />
+
+            <CardButton
+              title="Wallet Widget Inventory"
+              description="Open the wallet widget with a specific collection (location: search for this demo)"
+              onClick={() =>
+                setOpenWalletModal(true, {
+                  defaultNavigation: {
+                    location: 'search'
+                  }
+                })
+              }
+            />
+
+            <Text className="mt-4" variant="small-bold" color="muted">
+              Send Transactions
+            </Text>
+
+            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"
                 description="Send a transaction with your wallet without paying any fees"
@@ -356,13 +491,99 @@ export const Connected = () => {
                 </Text>
               )}
 
+            {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
+              <div className="my-3">
+                <Select
+                  name="feeOption"
+                  labelLocation="top"
+                  label="Pick a fee option"
+                  onValueChange={val => {
+                    const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
+                    if (selected) {
+                      setSelectedFeeOptionTokenName(selected.token.name)
+                      setFeeOptionAlert(undefined)
+                    }
+                  }}
+                  value={selectedFeeOptionTokenName}
+                  options={
+                    pendingFeeOptionConfirmation?.options?.map(option => ({
+                      label: (
+                        <div className="flex items-start flex-col">
+                          <div className="flex flex-row">
+                            <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
+                            <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                          </div>
+                          <div className="flex flex-row">
+                            <Text>Wallet balance for {option.token.name}: </Text>{' '}
+                            <Text>
+                              {formatUnits(
+                                BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
+                                option.token.decimals || 0
+                              )}
+                            </Text>
+                          </div>
+                        </div>
+                      ),
+                      value: option.token.name
+                    })) || []
+                  }
+                />
+
+                <div className="flex my-2 items-center justify-center flex-col">
+                  <Button
+                    onClick={() => {
+                      const selected = pendingFeeOptionConfirmation?.options?.find(
+                        option => option.token.name === selectedFeeOptionTokenName
+                      )
+
+                      if (selected?.token.contractAddress !== undefined) {
+                        // check if wallet has enough balance, should be balance > feeOption.value
+                        const balance = parseUnits(
+                          feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
+                          selected.token.decimals || 0
+                        )
+                        const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
+                        if (balance && balance < feeOptionValue) {
+                          setFeeOptionAlert({
+                            title: 'Insufficient balance',
+                            description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
+                            secondaryDescription:
+                              'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
+                            variant: 'warning'
+                          })
+                          return
+                        }
+
+                        confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
+                      }
+                    }}
+                    label="Confirm fee option"
+                  />
+                  {feeOptionAlert && (
+                    <div className="mt-3" style={{ maxWidth: '332px' }}>
+                      <Alert
+                        title={feeOptionAlert.title}
+                        description={feeOptionAlert.description}
+                        secondaryDescription={feeOptionAlert.secondaryDescription}
+                        variant={feeOptionAlert.variant}
+                        buttonProps={feeOptionAlert.buttonProps}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <Text className="mt-4" variant="small-bold" color="muted">
+              Sign Messages
+            </Text>
+
             <CardButton
               title="Sign message"
               description="Sign a message with your wallet"
               onClick={signMessage}
               isPending={isSigningMessage}
             />
-
             {isMessageValid && (
               <Card className="flex text-primary flex-col gap-2" style={{ width: '332px' }}>
                 <Text variant="medium">Signed message:</Text>
@@ -378,12 +599,68 @@ export const Connected = () => {
             )}
 
             <CardButton
+              title="Sign SIWE Message"
+              description="Sign a SIWE message with your wallet"
+              onClick={signSIWE}
+              isPending={isSigningSIWE}
+            />
+            {isSIWEValid && (
+              <Card className="flex text-primary flex-col gap-2" style={{ width: '332px' }}>
+                <Text variant="medium">Signed SIWE message:</Text>
+                <Text>{messageToSign}</Text>
+                <Text variant="medium">Signature:</Text>
+                <Text variant="code" ellipsis asChild>
+                  <p>{siweSig}</p>
+                </Text>
+                <Text variant="medium">
+                  isValid: <Text variant="code">{isSIWEValid.toString()}</Text>
+                </Text>
+              </Card>
+            )}
+
+            <CardButton
+              title="Sign typed data"
+              description="Sign typed data with your wallet"
+              onClick={signTypedData}
+              isPending={isSigningTypedData}
+            />
+            {typedDataSig && (
+              <Card className="flex text-primary flex-col gap-2" style={{ width: '332px' }}>
+                <Text variant="medium">Signed typed data:</Text>
+                <Text variant="code" asChild>
+                  <p>
+                    {JSON.stringify(
+                      {
+                        domain,
+                        types,
+                        primaryType: 'Person',
+                        message: value
+                      },
+                      null,
+                      2
+                    )}
+                  </p>
+                </Text>
+                <Text variant="medium">Signature:</Text>
+                <Text variant="code" ellipsis asChild>
+                  <p>{typedDataSig}</p>
+                </Text>
+                <Text variant="medium">
+                  isValid: <Text variant="code">{isTypedDataValid?.toString()}</Text>
+                </Text>
+              </Card>
+            )}
+
+            <Text className="mt-4" variant="small-bold" color="muted">
+              Misc
+            </Text>
+
+            <CardButton
               title="Mint an NFT"
               description="Test minting an NFT to your wallet"
               isPending={isPendingMintTxn}
               onClick={runMintNFT}
             />
-
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash2 &&
               ((txnData2 as any)?.chainId === chainId || txnData2) && (
@@ -402,92 +679,11 @@ export const Connected = () => {
               <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
             )}
 
-            {isWaasConnectionActive && (
+            {/* TODO: fix next.js issue with social link */}
+            {/* {isWaasConnectionActive && (
               <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
-            )}
+            )} */}
           </div>
-
-          {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
-            <div className="my-3">
-              <Select
-                name="feeOption"
-                labelLocation="top"
-                label="Pick a fee option"
-                onValueChange={val => {
-                  const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
-                  if (selected) {
-                    setSelectedFeeOptionTokenName(selected.token.name)
-                    setFeeOptionAlert(undefined)
-                  }
-                }}
-                value={selectedFeeOptionTokenName}
-                options={
-                  pendingFeeOptionConfirmation?.options?.map(option => ({
-                    label: (
-                      <div className="flex items-start flex-col">
-                        <div className="flex flex-row">
-                          <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
-                          <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
-                        </div>
-                        <div className="flex flex-row">
-                          <Text>Wallet balance for {option.token.name}: </Text>{' '}
-                          <Text>
-                            {formatUnits(
-                              BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
-                              option.token.decimals || 0
-                            )}
-                          </Text>
-                        </div>
-                      </div>
-                    ),
-                    value: option.token.name
-                  })) || []
-                }
-              />
-
-              <div className="flex my-2 items-center justify-center flex-col">
-                <Button
-                  onClick={() => {
-                    const selected = pendingFeeOptionConfirmation?.options?.find(
-                      option => option.token.name === selectedFeeOptionTokenName
-                    )
-
-                    if (selected?.token.contractAddress !== undefined) {
-                      // check if wallet has enough balance, should be balance > feeOption.value
-                      const balance = parseUnits(
-                        feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
-                        selected.token.decimals || 0
-                      )
-                      const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
-                      if (balance && balance < feeOptionValue) {
-                        setFeeOptionAlert({
-                          title: 'Insufficient balance',
-                          description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
-                          secondaryDescription: 'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
-                          variant: 'warning'
-                        })
-                        return
-                      }
-
-                      confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
-                    }
-                  }}
-                  label="Confirm fee option"
-                />
-                {feeOptionAlert && (
-                  <div className="mt-3" style={{ maxWidth: '332px' }}>
-                    <Alert
-                      title={feeOptionAlert.title}
-                      description={feeOptionAlert.description}
-                      secondaryDescription={feeOptionAlert.secondaryDescription}
-                      variant={feeOptionAlert.variant}
-                      buttonProps={feeOptionAlert.buttonProps}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </>
