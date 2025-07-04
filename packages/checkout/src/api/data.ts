@@ -290,6 +290,7 @@ export interface CreateFortePaymentIntentArgs {
   currencyQuantity: string
   protocolConfig: ForteConfig
   calldata: string | StructuredCalldata
+  approvedSpenderAddress?: string
 }
 
 const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
@@ -325,7 +326,8 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     tokenId,
     protocolConfig,
     currencyAddress,
-    currencyQuantity
+    currencyQuantity,
+    approvedSpenderAddress
   } = args
 
   const network = findSupportedNetwork(chainId)
@@ -362,6 +364,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
           image_url: imageUrl,
           title: nftName,
           mint_data: {
+            ...(approvedSpenderAddress ? { pay_to_address: approvedSpenderAddress } : {}),
             token_contract_address: nftAddress,
             token_ids: tokenId ? [tokenId] : [],
             protocol_address: targetContractAddress,
@@ -391,6 +394,7 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
       }
     } else if (protocolConfig.protocol == 'custom_evm_call') {
       listingData = {
+        ...(approvedSpenderAddress ? { pay_to_address: approvedSpenderAddress } : {}),
         protocol: protocolConfig.protocol,
         protocol_address: targetContractAddress,
         ...(typeof protocolConfig.calldata === 'string'
