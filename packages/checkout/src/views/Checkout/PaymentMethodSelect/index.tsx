@@ -31,8 +31,10 @@ export const PaymentSelectionContent = () => {
   const { selectPaymentSettings = {} as SelectPaymentSettings } = useSelectPaymentModal()
 
   const isFirstRender = useRef<boolean>(true)
-  const { collectibles, creditCardProviders = [], onClose = () => {} } = selectPaymentSettings
+  const { collectibles, creditCardProviders = [], onClose = () => {}, price } = selectPaymentSettings
   const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
+
+  const isFree = Number(price) == 0
 
   const validCreditCardProviders = creditCardProviders.filter(provider => {
     if (provider === 'transak') {
@@ -50,7 +52,7 @@ export const PaymentSelectionContent = () => {
 
   const isTokenIdUnknown = collectibles.some(collectible => !collectible.tokenId)
 
-  const showCreditCardPayment = validCreditCardProviders.length > 0 && !isTokenIdUnknown
+  const showCreditCardPayment = validCreditCardProviders.length > 0 && !isTokenIdUnknown && !isFree
 
   const tabs: { label: string; value: Tab }[] = [
     { label: 'Crypto', value: 'crypto' as Tab },
