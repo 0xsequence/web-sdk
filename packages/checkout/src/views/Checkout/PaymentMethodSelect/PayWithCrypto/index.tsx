@@ -56,6 +56,10 @@ export const PayWithCryptoTab = () => {
     slippageBps
   } = selectPaymentSettings
 
+  const isFree = Number(price) == 0
+
+  console.log('isFree', isFree, price)
+
   const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
@@ -163,6 +167,13 @@ export const PayWithCryptoTab = () => {
 
   const formattedPrice = formatUnits(BigInt(selectedCurrencyPrice), selectedCurrencyInfo?.decimals || 0)
   const displayPrice = formatDisplay(formattedPrice, {
+    disableScientificNotation: true,
+    disableCompactNotation: true,
+    significantDigits: 6
+  })
+
+  const formattedBalance = formatUnits(BigInt(tokenBalance?.balance || '0'), selectedCurrencyInfo?.decimals || 18)
+  const displayBalance = formatDisplay(formattedBalance, {
     disableScientificNotation: true,
     disableCompactNotation: true,
     significantDigits: 6
@@ -481,13 +492,6 @@ export const PayWithCryptoTab = () => {
   }
 
   if (isInsufficientBalance) {
-    const formattedBalance = formatUnits(BigInt(tokenBalance?.balance || '0'), selectedCurrencyInfo?.decimals || 18)
-    const displayBalance = formatDisplay(formattedBalance, {
-      disableScientificNotation: true,
-      disableCompactNotation: true,
-      significantDigits: 6
-    })
-
     return (
       <div className="flex flex-col justify-center items-center h-full w-full gap-3">
         <div className="flex flex-row justify-between items-center w-full">
@@ -530,39 +534,61 @@ export const PayWithCryptoTab = () => {
     )
   }
 
-  return (
-    <div className="flex flex-col justify-center items-center h-full w-full gap-3">
-      <div className="flex flex-row justify-between items-center w-full">
-        <div className="flex flex-col gap-0">
+  const PriceSection = () => {
+    if (isFree) {
+      return (
+        <div className="flex flex-col mb-2 w-full">
           <Text
-            variant="xsmall"
             color="text100"
+            variant="xsmall"
             fontWeight="bold"
             style={{
               fontSize: '24px'
             }}
           >
-            {displayPrice}
+            FREE ITEM
           </Text>
-          <div>
-            <Text color="text50" variant="xsmall" fontWeight="normal">
-              ~${priceFiat} USD
-            </Text>
+        </div>
+      )
+    }
+
+    return (
+      <>
+        <div className="flex flex-row justify-between items-center w-full">
+          <div className="flex flex-col gap-0.5">
             <Text
-              color="text50"
+              variant="xsmall"
+              color="negative"
               fontWeight="bold"
               style={{
-                fontSize: '10px'
+                fontSize: '24px'
               }}
             >
-              &nbsp;(fees included)
+              {displayPrice}
+            </Text>
+            <div className="flex flex-row gap-1 items-center">
+              <div className="text-negative">
+                <WarningIcon style={{ width: '14px', height: '14px' }} />
+              </div>
+              <Text color="negative" variant="xsmall" fontWeight="normal">
+                Insufficient funds
+              </Text>
+            </div>
+            <Text color="negative" variant="xsmall" fontWeight="normal">
+              Balance: {displayBalance} {selectedCurrencyInfo?.symbol}
             </Text>
           </div>
+          <div>
+            <TokenSelector />
+          </div>
         </div>
-        <div>
-          <TokenSelector />
-        </div>
-      </div>
+      </>
+    )
+  }
+
+  return (
+    <div className="flex flex-col justify-center items-center h-full w-full gap-3">
+      <PriceSection />
 
       <div className="flex flex-col justify-start items-center w-full gap-1">
         {isError && (
@@ -575,7 +601,7 @@ export const PayWithCryptoTab = () => {
 
         <Button
           disabled={isPurchasing}
-          label="Confirm payment"
+          label={isFree ? 'Confirm' : 'Confirm payment'}
           className="w-full"
           shape="square"
           variant="primary"
