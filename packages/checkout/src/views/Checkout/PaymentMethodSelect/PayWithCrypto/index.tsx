@@ -56,6 +56,8 @@ export const PayWithCryptoTab = () => {
     slippageBps
   } = selectPaymentSettings
 
+  const isFree = Number(price) == 0
+
   const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
@@ -530,9 +532,26 @@ export const PayWithCryptoTab = () => {
     )
   }
 
-  return (
-    <div className="flex flex-col justify-center items-center h-full w-full gap-3">
-      <div className="flex flex-row justify-between items-center w-full">
+  const PriceSection = () => {
+    if (isFree) {
+      return (
+        <div className="flex flex-col mt-3 mb-4 w-full">
+          <Text
+            color="text100"
+            variant="xsmall"
+            fontWeight="bold"
+            style={{
+              fontSize: '24px'
+            }}
+          >
+            FREE ITEM
+          </Text>
+        </div>
+      )
+    }
+
+    return (
+      <div className="flex flex-row justify-between items-center w-full gap-2">
         <div className="flex flex-col gap-0">
           <Text
             variant="xsmall"
@@ -563,6 +582,12 @@ export const PayWithCryptoTab = () => {
           <TokenSelector />
         </div>
       </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <PriceSection />
 
       <div className="flex flex-col justify-start items-center w-full gap-1">
         {isError && (
@@ -575,7 +600,7 @@ export const PayWithCryptoTab = () => {
 
         <Button
           disabled={isPurchasing}
-          label="Confirm payment"
+          label={isFree ? 'Confirm' : 'Confirm payment'}
           className="w-full"
           shape="square"
           variant="primary"
