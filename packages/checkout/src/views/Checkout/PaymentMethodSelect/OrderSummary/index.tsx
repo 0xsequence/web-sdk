@@ -8,6 +8,7 @@ import { useSelectPaymentModal } from '../../../../hooks/useSelectPaymentModal.j
 
 export const OrderSummary = () => {
   const { selectPaymentSettings } = useSelectPaymentModal()
+  const isFree = Number(selectPaymentSettings!.price) == 0
   const chain = selectPaymentSettings!.chain
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
@@ -62,6 +63,30 @@ export const OrderSummary = () => {
   const fiatExchangeRate = dataCoinPrices?.[0].price?.value || 0
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
 
+  const PriceSection = () => {
+    if (isFree) {
+      return (
+        <Text color="text50" variant="xsmall" fontWeight="normal">
+          Free
+        </Text>
+      )
+    }
+
+    return (
+      <>
+        <div className="flex flex-row gap-1 items-center">
+          <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" />
+          <Text color="white" variant="xsmall" fontWeight="normal">
+            {`${displayPrice} ${dataCurrencyInfo?.symbol} on ${network?.title}`}
+          </Text>
+        </div>
+        <Text color="text50" variant="xsmall" fontWeight="normal">
+          {`$${priceFiat} USD`}
+        </Text>
+      </>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-row gap-1">
@@ -90,15 +115,7 @@ export const OrderSummary = () => {
                 <Text variant="xsmall" color="secondary" fontWeight="normal">
                   {dataCollectionInfo?.name || null}
                 </Text>
-                <div className="flex flex-row gap-1 items-center">
-                  <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" />
-                  <Text color="white" variant="xsmall" fontWeight="normal">
-                    {`${displayPrice} ${dataCurrencyInfo?.symbol} on ${network?.title}`}
-                  </Text>
-                </div>
-                <Text color="text50" variant="xsmall" fontWeight="normal">
-                  {`$${priceFiat} USD`}
-                </Text>
+                <PriceSection />
               </div>
             </div>
           )
