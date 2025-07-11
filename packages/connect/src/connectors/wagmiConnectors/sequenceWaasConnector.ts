@@ -23,11 +23,7 @@ import {
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
-<<<<<<< HEAD
-import { normalizeChainId } from '../../utils/helpers.js'
 import { getPkcePair, getXOauthUrl } from '../X/XAuth.js'
-=======
->>>>>>> a7ecc1b2 (moved helpers.js utils to common)
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string

@@ -1,5 +1,4 @@
-import { compareAddress } from '@0xsequence/common'
-import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/common'
 import { Button, ChevronRightIcon, NumericInput, Text } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalance } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'

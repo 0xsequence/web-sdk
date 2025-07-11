@@ -1,4 +1,4 @@
-import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { getNativeTokenInfoByChainId } from '@0xsequence/common'
 import { compareAddress, Image, Skeleton, Text } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
 import { zeroAddress } from 'viem'

@@ -1,5 +1,6 @@
 // Constants
 export { TRANSACTION_CONFIRMATIONS_DEFAULT } from './constants/transactions.js'
+export { chains } from './chains/index.js'
 
 // Utils
 export {
@@ -13,3 +14,5 @@ export {
   truncateAtIndex,
   truncateAtMiddle
 } from './utils/helpers.js'
+
+export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
