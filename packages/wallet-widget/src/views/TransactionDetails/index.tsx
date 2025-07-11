@@ -1,6 +1,5 @@
 import type { Token } from '@0xsequence/api'
-import { compareAddress, formatDisplay, truncateAtIndex } from '@0xsequence/common'
-import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, truncateAtIndex } from '@0xsequence/common'
 import {
   ArrowRightIcon,
   Button,

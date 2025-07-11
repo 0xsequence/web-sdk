@@ -38,7 +38,6 @@ export { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, QUERY_KEYS, WEB_SDK_VERSIO
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
 
-export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
 export { getModalPositionCss } from './utils/styling.js'
 export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
 export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
