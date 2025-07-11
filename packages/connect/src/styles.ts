@@ -292,9 +292,6 @@ export const styles = String.raw`
   .-m-\[1px\] {
     margin: calc(1px * -1);
   }
-  .m-2 {
-    margin: calc(var(--spacing) * 2);
-  }
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
@@ -372,9 +369,6 @@ export const styles = String.raw`
   }
   .ml-\[40px\] {
     margin-left: 40px;
-  }
-  .ml-auto {
-    margin-left: auto;
   }
   .block {
     display: block;
@@ -756,9 +750,6 @@ export const styles = String.raw`
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
-  .gap-8 {
-    gap: calc(var(--spacing) * 8);
-  }
   .gap-10 {
     gap: calc(var(--spacing) * 10);
   }
@@ -770,9 +761,6 @@ export const styles = String.raw`
   }
   .justify-self-center {
     justify-self: center;
-  }
-  .justify-self-end {
-    justify-self: flex-end;
   }
   .truncate {
     overflow: hidden;
@@ -1056,14 +1044,8 @@ export const styles = String.raw`
   .pt-5 {
     padding-top: calc(var(--spacing) * 5);
   }
-  .pt-8 {
-    padding-top: calc(var(--spacing) * 8);
-  }
   .pt-\[60px\] {
     padding-top: 60px;
-  }
-  .pr-1 {
-    padding-right: calc(var(--spacing) * 1);
   }
   .pr-2 {
     padding-right: calc(var(--spacing) * 2);

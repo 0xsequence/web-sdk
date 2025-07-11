@@ -1,3 +1,4 @@
+import type { ExtendedConnector } from '@0xsequence/common'
 import { Modal, ModalPrimitive, Spinner } from '@0xsequence/design-system'
 import { useEffect } from 'react'
 import { useAccount, useConnect } from 'wagmi'
@@ -5,7 +6,6 @@ import { useAccount, useConnect } from 'wagmi'
 import { EpicLogo } from '../../connectors/epic/EpicLogo.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useStorage } from '../../hooks/useStorage.js'
-import type { ExtendedConnector } from '../../types.js'
 
 // EpicAuthProvider handles Epic Games OAuth login redirects.
 // On mount, it checks the URL for Epic login results, stores the Epic JWT in storage, and triggers a connection with the Epic connector if found.
