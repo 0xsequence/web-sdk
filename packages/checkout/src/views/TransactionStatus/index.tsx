@@ -1,5 +1,5 @@
-import { formatDisplay, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/common'
-import { CollectibleTileImage, waitForTransactionReceipt } from '@0xsequence/connect'
+import { formatDisplay, TRANSACTION_CONFIRMATIONS_DEFAULT, waitForTransactionReceipt } from '@0xsequence/common'
+import { CollectibleTileImage } from '@0xsequence/connect'
 import {
   ArrowDownIcon,
   Button,

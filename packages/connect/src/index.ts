@@ -5,19 +5,7 @@ export { SequenceConnectProvider } from './components/SequenceConnectProvider/in
 export { SequenceConnectPreviewProvider } from './components/SequenceConnectPreviewProvider/index.js'
 
 // Types
-export type {
-  ConnectConfig,
-  DisplayedAsset,
-  EthAuthSettings,
-  ExtendedConnector,
-  LogoProps,
-  ModalPosition,
-  StorageItem,
-  Wallet,
-  WalletField,
-  WalletProperties,
-  WalletType
-} from './types.js'
+export type { ConnectConfig, DisplayedAsset, EthAuthSettings, StorageItem } from './types.js'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
@@ -37,12 +25,7 @@ export { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, QUERY_KEYS, WEB_SDK_VERSIO
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
-
-export { getModalPositionCss } from './utils/styling.js'
-export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
-export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
-export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
 
 // Contexts
 export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'

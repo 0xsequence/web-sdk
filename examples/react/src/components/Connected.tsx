@@ -7,8 +7,8 @@ import {
   useSwapModal
 } from '@0xsequence/checkout'
 import type { SwapModalSettings } from '@0xsequence/checkout'
+import { getModalPositionCss } from '@0xsequence/common'
 import {
-  getModalPositionCss,
   signEthAuthProof,
   useOpenConnectModal,
   useSocialLink,

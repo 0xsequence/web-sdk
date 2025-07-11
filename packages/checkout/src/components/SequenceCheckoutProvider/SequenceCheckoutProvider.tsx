@@ -1,6 +1,7 @@
 'use client'
 
-import { getModalPositionCss, ShadowRoot, useConnectConfigContext, useTheme } from '@0xsequence/connect'
+import { getModalPositionCss } from '@0xsequence/common'
+import { ShadowRoot, useConnectConfigContext, useTheme } from '@0xsequence/connect'
 import { Modal } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useEffect, useState, type ReactNode } from 'react'

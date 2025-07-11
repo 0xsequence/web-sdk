@@ -1,6 +1,6 @@
-import type { FunctionComponent } from 'react'
+import type { LogoProps } from '@0xsequence/common'
 
-import type { LogoProps } from '../../types.js'
+import type { FunctionComponent } from 'react'
 
 export const EpicLogo: FunctionComponent = (props: LogoProps) => (
   <svg fill="#fff" width="30px" height="30px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">

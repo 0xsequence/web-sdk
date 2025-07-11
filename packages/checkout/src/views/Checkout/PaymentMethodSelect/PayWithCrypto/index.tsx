@@ -1,5 +1,5 @@
-import { compareAddress, formatDisplay, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/common'
-import { ContractVerificationStatus, sendTransactions, useAnalyticsContext } from '@0xsequence/connect'
+import { compareAddress, formatDisplay, sendTransactions, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/common'
+import { ContractVerificationStatus, useAnalyticsContext } from '@0xsequence/connect'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,

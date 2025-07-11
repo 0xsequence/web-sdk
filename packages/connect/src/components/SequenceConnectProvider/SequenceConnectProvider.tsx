@@ -1,7 +1,8 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { isJSON } from '@0xsequence/common'
+import { getModalPositionCss, isJSON } from '@0xsequence/common'
+import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
 import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
@@ -22,14 +23,7 @@ import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
-import {
-  type ConnectConfig,
-  type DisplayedAsset,
-  type EthAuthSettings,
-  type ExtendedConnector,
-  type ModalPosition
-} from '../../types.js'
-import { getModalPositionCss } from '../../utils/styling.js'
+import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
 import { EpicAuthProvider } from '../EpicAuthProvider/index.js'
 import { JsonTreeViewer } from '../JsonTreeViewer.js'
