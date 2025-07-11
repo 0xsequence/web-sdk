@@ -1,6 +1,6 @@
-import type { FunctionComponent } from 'react'
+import type { LogoProps } from '@0xsequence/common'
 
-import type { LogoProps } from '../../types.js'
+import type { FunctionComponent } from 'react'
 
 export const MetaMaskLogo: FunctionComponent<LogoProps> = props => (
   <svg viewBox="0 0 318.6 318.6" fill="none" {...props}>

@@ -1,4 +1,4 @@
-import type { Wallet } from '@0xsequence/connect'
+import type { Wallet } from '@0xsequence/common'
 
 import { immutableConnector, type BaseImmutableConnectorOptions } from '../wagmiConnector/index.js'
 

@@ -1,7 +1,7 @@
+import type { Wallet } from '@0xsequence/common'
+
 import { createConnector } from 'wagmi'
 import { walletConnect as walletConnectbase, type WalletConnectParameters } from 'wagmi/connectors'
-
-import type { Wallet } from '../../types.js'
 
 import { WalletConnectLogo } from './WalletConnectLogo.js'
 

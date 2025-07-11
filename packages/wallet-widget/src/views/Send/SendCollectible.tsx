@@ -1,12 +1,10 @@
-import { truncateAtMiddle, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/common'
 import {
-  useAnalyticsContext,
-  useCheckWaasFeeOptions,
-  useWaasFeeOptions,
-  useWallets,
+  truncateAtMiddle,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt,
   type ExtendedConnector
-} from '@0xsequence/connect'
+} from '@0xsequence/common'
+import { useAnalyticsContext, useCheckWaasFeeOptions, useWaasFeeOptions, useWallets } from '@0xsequence/connect'
 import {
   AddIcon,
   Button,

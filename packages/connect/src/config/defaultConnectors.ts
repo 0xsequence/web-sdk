@@ -1,3 +1,4 @@
+import type { Wallet, WalletType } from '@0xsequence/common'
 import type { CreateConnectorFn } from 'wagmi'
 
 import { apple } from '../connectors/apple/apple.js'
@@ -16,7 +17,6 @@ import { sequence } from '../connectors/sequence/sequence.js'
 import { twitch } from '../connectors/twitch/twitch.js'
 import { walletConnect } from '../connectors/walletConnect/walletConnect.js'
 import { XWaas } from '../connectors/X/XWaas.js'
-import type { Wallet, WalletType } from '../types.js'
 import { getConnectWallets } from '../utils/getConnectWallets.js'
 
 export interface CommonConnectorOptions {

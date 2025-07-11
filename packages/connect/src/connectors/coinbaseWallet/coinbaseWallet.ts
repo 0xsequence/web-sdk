@@ -1,7 +1,6 @@
+import type { Wallet } from '@0xsequence/common'
 import type { CreateConnectorFn } from 'wagmi'
 import { coinbaseWallet as coinbaseWalletBase, type CoinbaseWalletParameters } from 'wagmi/connectors'
-
-import type { Wallet } from '../../types.js'
 
 import { CoinbaseWalletLogo } from './CoinbaseWalletLogo.js'
 

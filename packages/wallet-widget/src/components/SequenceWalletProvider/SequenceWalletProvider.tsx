@@ -1,14 +1,8 @@
 'use client'
 
 import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout'
-import {
-  getModalPositionCss,
-  ShadowRoot,
-  useConnectConfigContext,
-  useOpenConnectModal,
-  useSocialLink,
-  useTheme
-} from '@0xsequence/connect'
+import { getModalPositionCss } from '@0xsequence/common'
+import { ShadowRoot, useConnectConfigContext, useOpenConnectModal, useSocialLink, useTheme } from '@0xsequence/connect'
 import { Modal, Scroll, ToastProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useContext, useEffect, useState, type ReactNode } from 'react'

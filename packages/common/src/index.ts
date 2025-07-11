@@ -16,3 +16,18 @@ export {
 } from './utils/helpers.js'
 
 export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
+export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
+export { getModalPositionCss } from './utils/styling.js'
+export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
+export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
+
+// Types
+export type {
+  ExtendedConnector,
+  LogoProps,
+  ModalPosition,
+  Wallet,
+  WalletField,
+  WalletProperties,
+  WalletType
+} from './types/index.js'
