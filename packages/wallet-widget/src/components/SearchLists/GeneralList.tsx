@@ -1,4 +1,5 @@
-import { compareAddress, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
+import { compareAddress } from '@0xsequence/common'
+import { getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
 import { cn, Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'
 import type { ContractInfo, Transaction, TxnTransfer } from '@0xsequence/indexer'
