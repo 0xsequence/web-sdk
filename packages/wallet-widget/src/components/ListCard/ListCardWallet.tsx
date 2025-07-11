@@ -1,5 +1,5 @@
+import { truncateAtIndex } from '@0xsequence/common'
 import type { ConnectedWallet } from '@0xsequence/connect'
-import { truncateAtIndex } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 import { useEffect, useState } from 'react'
 import { useConnections } from 'wagmi'

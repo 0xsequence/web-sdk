@@ -1,6 +1,5 @@
+import { truncateAtMiddle, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/common'
 import {
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  truncateAtMiddle,
   useAnalyticsContext,
   useCheckWaasFeeOptions,
   useWaasConfirmationHandler,

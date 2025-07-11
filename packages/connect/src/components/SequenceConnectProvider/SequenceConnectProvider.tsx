@@ -1,6 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
+import { isJSON } from '@0xsequence/common'
 import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
@@ -28,7 +29,6 @@ import {
   type ExtendedConnector,
   type ModalPosition
 } from '../../types.js'
-import { isJSON } from '../../utils/helpers.js'
 import { getModalPositionCss } from '../../utils/styling.js'
 import { Connect } from '../Connect/Connect.js'
 import { EpicAuthProvider } from '../EpicAuthProvider/index.js'

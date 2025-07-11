@@ -41,6 +41,7 @@
   "peerDependencies": {
     "0xsequence": ">= 2.3.23",
     "@0xsequence/api": ">=2.3.23",
+    "@0xsequence/common": "workspace:*",
     "@0xsequence/connect": "workspace:*",
     "@0xsequence/hooks": "workspace:*",
     "@0xsequence/indexer": ">= 2.3.23",

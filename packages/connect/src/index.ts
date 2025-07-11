@@ -33,26 +33,11 @@ export { getDefaultChains } from './config/defaultChains.js'
 export { getDefaultTransports } from './config/defaultTransports.js'
 
 // Constants
-export {
-  DEFAULT_SESSION_EXPIRATION,
-  LocalStorageKey,
-  NATIVE_TOKEN_ADDRESS_0X,
-  QUERY_KEYS,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  WEB_SDK_VERSION
-} from './constants/index.js'
+export { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, QUERY_KEYS, WEB_SDK_VERSION } from './constants/index.js'
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
-export {
-  capitalize,
-  compareAddress,
-  formatAddress,
-  formatDisplay,
-  isEmailValid,
-  truncateAtIndex,
-  truncateAtMiddle
-} from './utils/helpers.js'
+
 export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
 export { getModalPositionCss } from './utils/styling.js'
 export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'

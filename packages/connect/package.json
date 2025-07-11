@@ -60,6 +60,7 @@
   "peerDependencies": {
     "0xsequence": ">= 2.3.23",
     "@0xsequence/hooks": "workspace:*",
+    "@0xsequence/common": "workspace:*",
     "@databeat/tracker": "^0.9.3",
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-query": ">= 5",

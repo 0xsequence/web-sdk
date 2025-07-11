@@ -1,8 +1,7 @@
+import { normalizeChainId } from '@0xsequence/common'
 import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
 import { ethers } from 'ethers'
 import { getAddress, TransactionRejectedRpcError } from 'viem'
-
-import { normalizeChainId } from '../../utils/helpers.js'
 
 import { ProviderTransport } from './providerTransport.js'
 

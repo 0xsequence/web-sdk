@@ -1,8 +1,7 @@
+import { normalizeChainId } from '@0xsequence/common'
 import { ethers } from 'ethers'
 import { getAddress } from 'viem'
 import { createConnector, type Connector } from 'wagmi'
-
-import { normalizeChainId } from '../../utils/helpers.js'
 
 import { EcosystemWalletTransportProvider } from './provider.js'
 

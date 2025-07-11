@@ -1,4 +1,4 @@
-import { formatAddress } from '@0xsequence/connect'
+import { formatAddress } from '@0xsequence/common'
 import { GradientAvatar, Text } from '@0xsequence/design-system'
 import { getAddress } from 'viem'
 import { useChains } from 'wagmi'

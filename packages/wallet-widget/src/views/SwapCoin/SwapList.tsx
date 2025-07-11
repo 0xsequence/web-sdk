@@ -1,8 +1,7 @@
+import { compareAddress, formatDisplay } from '@0xsequence/common'
 import {
-  compareAddress,
   ContractVerificationStatus,
   CryptoOption,
-  formatDisplay,
   sendTransactions,
   useAnalyticsContext,
   type ExtendedConnector

@@ -1,8 +1,6 @@
+import { compareAddress, truncateAtMiddle, TRANSACTION_CONFIRMATIONS_DEFAULT } from '@0xsequence/common'
 import {
-  compareAddress,
   getNativeTokenInfoByChainId,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  truncateAtMiddle,
   useAnalyticsContext,
   useCheckWaasFeeOptions,
   useWaasConfirmationHandler,
