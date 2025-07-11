@@ -31,10 +31,11 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@0xsequence/api": ">=2.3.23",
-    "@0xsequence/indexer": ">=2.3.23",
-    "@0xsequence/metadata": ">=2.3.23",
-    "@0xsequence/network": ">=2.3.23",
+    "@0xsequence/api": ">=2.3.11",
+    "@0xsequence/common": "workspace:*",
+    "@0xsequence/indexer": ">=2.3.7",
+    "@0xsequence/metadata": ">=2.3.7",
+    "@0xsequence/network": ">=2.3.7",
     "@tanstack/react-query": ">= 5",
     "react": ">= 17",
     "react-dom": ">= 17",

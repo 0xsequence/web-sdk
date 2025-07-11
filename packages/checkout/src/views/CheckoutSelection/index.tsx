@@ -1,5 +1,5 @@
-import { compareAddress, formatDisplay } from '@0xsequence/common'
-import { ContractVerificationStatus, getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/common'
+import { ContractVerificationStatus } from '@0xsequence/indexer'
 import {
   Button,
   ChevronRightIcon,
