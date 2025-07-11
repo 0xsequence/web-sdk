@@ -1,4 +1,4 @@
-import { formatDisplay, truncateAtIndex } from '@0xsequence/connect'
+import { formatDisplay, truncateAtIndex } from '@0xsequence/common'
 import {
   ArrowUpIcon,
   Button,

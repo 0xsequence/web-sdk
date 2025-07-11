@@ -1,4 +1,4 @@
-import { truncateAtMiddle } from '@0xsequence/connect'
+import { truncateAtMiddle } from '@0xsequence/common'
 import { Button, Card, ChevronRightIcon, GradientAvatar, Spinner, Text } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/hooks'
 import { useQuery } from '@tanstack/react-query'
