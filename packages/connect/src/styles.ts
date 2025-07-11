@@ -292,9 +292,6 @@ export const styles = String.raw`
   .-m-\[1px\] {
     margin: calc(1px * -1);
   }
-  .m-2 {
-    margin: calc(var(--spacing) * 2);
-  }
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
@@ -372,9 +369,6 @@ export const styles = String.raw`
   }
   .ml-\[40px\] {
     margin-left: 40px;
-  }
-  .ml-auto {
-    margin-left: auto;
   }
   .block {
     display: block;
@@ -583,9 +577,6 @@ export const styles = String.raw`
   .w-\[148px\] {
     width: 148px;
   }
-  .w-\[200px\] {
-    width: 200px;
-  }
   .w-fit {
     width: fit-content;
   }
@@ -759,9 +750,6 @@ export const styles = String.raw`
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
-  .gap-8 {
-    gap: calc(var(--spacing) * 8);
-  }
   .gap-10 {
     gap: calc(var(--spacing) * 10);
   }
@@ -773,9 +761,6 @@ export const styles = String.raw`
   }
   .justify-self-center {
     justify-self: center;
-  }
-  .justify-self-end {
-    justify-self: flex-end;
   }
   .truncate {
     overflow: hidden;
@@ -1059,14 +1044,8 @@ export const styles = String.raw`
   .pt-5 {
     padding-top: calc(var(--spacing) * 5);
   }
-  .pt-8 {
-    padding-top: calc(var(--spacing) * 8);
-  }
   .pt-\[60px\] {
     padding-top: 60px;
-  }
-  .pr-1 {
-    padding-right: calc(var(--spacing) * 1);
   }
   .pr-2 {
     padding-right: calc(var(--spacing) * 2);
@@ -2011,13 +1990,6 @@ export const styles = String.raw`
       &:has(:focus-visible) {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-      }
-    }
-  }
-  .focus-within\:\[\&\:has\(\:focus-visible\)\]\:ring-border-focus {
-    &:focus-within {
-      &:has(:focus-visible) {
-        --tw-ring-color: var(--seq-color-border-focus);
       }
     }
   }

@@ -1,3 +1,4 @@
+import type { ExtendedConnector } from '@0xsequence/common'
 import {
   ArrowRightIcon,
   Card,
@@ -12,7 +13,6 @@ import {
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 
-import type { ExtendedConnector } from '../../types.js'
 import { getLogo } from '../ConnectButton/index.js'
 
 interface ExtendedWalletListProps {

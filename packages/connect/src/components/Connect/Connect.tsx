@@ -1,5 +1,7 @@
 'use client'
 
+import { isEmailValid } from '@0xsequence/common'
+import type { ExtendedConnector, LogoProps } from '@0xsequence/common'
 import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { useGetWaasStatus } from '@0xsequence/hooks'
 import { SequenceWaaS } from '@0xsequence/waas'
@@ -19,8 +21,7 @@ import type { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflic
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet.js'
 import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
-import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
-import { isEmailValid } from '../../utils/helpers.js'
+import type { ConnectConfig } from '../../types.js'
 import { GuestWaasConnectButton } from '../ConnectButton/ConnectButton.js'
 import {
   AppleWaasConnectButton,

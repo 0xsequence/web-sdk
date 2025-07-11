@@ -1,6 +1,7 @@
+import type { WalletType } from '@0xsequence/common'
 import { createConfig as createWagmiConfig, type Config, type CreateConfigParameters } from 'wagmi'
 
-import type { ConnectConfig, WalletType } from '../types.js'
+import type { ConnectConfig } from '../types.js'
 
 import { getDefaultChains } from './defaultChains.js'
 import { getDefaultConnectors, type DefaultConnectorOptions } from './defaultConnectors.js'

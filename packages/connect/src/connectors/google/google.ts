@@ -1,4 +1,4 @@
-import type { Wallet } from '../../types.js'
+import type { Wallet } from '@0xsequence/common'
 import { sequenceWallet, type BaseSequenceConnectorOptions } from '../wagmiConnectors/index.js'
 
 import { getMonochromeGoogleLogo, GoogleLogo } from './GoogleLogo.js'

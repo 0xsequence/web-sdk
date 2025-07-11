@@ -1,40 +1,9 @@
 import type { ETHAuthProof } from '@0xsequence/auth'
+import type { ModalPosition } from '@0xsequence/common'
 import type { Theme } from '@0xsequence/design-system'
 import type { SequenceHooksEnv } from '@0xsequence/hooks'
-import type { FunctionComponent } from 'react'
-import type { Connector, CreateConnectorFn } from 'wagmi'
 
 import { LocalStorageKey } from './constants/localStorage.js'
-
-export interface LogoProps {
-  className?: string
-  style?: React.CSSProperties
-}
-
-export type WalletType = 'waas' | 'universal'
-
-export interface WalletProperties {
-  id: string
-  logoDark: FunctionComponent<LogoProps>
-  logoLight: FunctionComponent<LogoProps>
-  monochromeLogoDark?: FunctionComponent<LogoProps>
-  monochromeLogoLight?: FunctionComponent<LogoProps>
-  name: string
-  iconBackground?: string
-  hideConnectorId?: string | null
-  isSequenceBased?: boolean
-  type?: 'social' | 'wallet'
-}
-
-export type Wallet = WalletProperties & {
-  createConnector: (projectAccessKey: string) => CreateConnectorFn
-}
-
-export interface WalletField {
-  _wallet: WalletProperties
-}
-
-export type ExtendedConnector = Connector & WalletField
 
 export interface DisplayedAsset {
   contractAddress: string
@@ -51,17 +20,6 @@ export interface EthAuthSettings {
   /** authorizeNonce is an optional number to be passed as ETHAuth's nonce claim for replay protection. **/
   nonce?: number
 }
-
-export type ModalPosition =
-  | 'center'
-  | 'middle-right'
-  | 'middle-left'
-  | 'top-center'
-  | 'top-right'
-  | 'top-left'
-  | 'bottom-center'
-  | 'bottom-right'
-  | 'bottom-left'
 
 export interface ConnectConfig {
   projectAccessKey: string

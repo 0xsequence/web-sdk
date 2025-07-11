@@ -1,4 +1,5 @@
-import { compareAddress, useWallets } from '@0xsequence/connect'
+import { compareAddress } from '@0xsequence/common'
+import { useWallets } from '@0xsequence/connect'
 import { useGetCoinPrices, useGetExchangeRate } from '@0xsequence/hooks'
 import { useEffect, useState, type ReactNode } from 'react'
 import { getAddress, zeroAddress } from 'viem'

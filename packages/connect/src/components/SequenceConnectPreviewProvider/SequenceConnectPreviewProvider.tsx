@@ -1,6 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
+import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
 import { ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -16,13 +17,7 @@ import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
-import {
-  type ConnectConfig,
-  type DisplayedAsset,
-  type EthAuthSettings,
-  type ExtendedConnector,
-  type ModalPosition
-} from '../../types.js'
+import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
 
 export type SequenceConnectProviderProps = {
