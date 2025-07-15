@@ -475,8 +475,6 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
 
   const { data: paymentIntentData, isError: isErrorPaymentIntent } = useFortePaymentIntent(
     {
-      accessToken: accessTokenData?.accessToken || '',
-      tokenType: accessTokenData?.tokenType || '',
       nftQuantity,
       recipientAddress: creditCardCheckout.recipientAddress,
       chainId: creditCardCheckout.chainId.toString(),

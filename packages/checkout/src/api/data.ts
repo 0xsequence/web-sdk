@@ -275,8 +275,6 @@ export const fetchForteAccessToken = async (forteApiUrl: string): Promise<FetchF
 }
 
 export interface CreateFortePaymentIntentArgs {
-  accessToken: string
-  tokenType: string
   nftQuantity: string
   recipientAddress: string
   chainId: string
@@ -315,10 +313,8 @@ const getForteCurrency = (chainId: string, currencyAddress: string) => {
   return forteCurrencyMap[chainId]?.[currencyAddress.toLowerCase()] || 'ETH'
 }
 
-export const createFortePaymentIntent = async (forteApiUrl: string, args: CreateFortePaymentIntentArgs): Promise<any> => {
+export const createFortePaymentIntent = async (sequenceApiUrl: string, args: CreateFortePaymentIntentArgs): Promise<any> => {
   const {
-    accessToken,
-    tokenType,
     recipientAddress,
     chainId,
     calldata,
@@ -340,13 +336,13 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     throw new Error('Invalid chainId')
   }
 
-  const url = `${forteApiUrl}/payments/v2/intent`
+  const url = `${sequenceApiUrl}/rpc/API/FortePayCreateIntent`
   const forteBlockchainName = network.name.toLowerCase().replace('-', '_')
   const idempotencyKey = `${recipientAddress}-${tokenId}-${targetContractAddress}-${nftName}-${new Date().getTime()}`
 
-  let body: { [key: string]: any } = {
+  let intent: { [key: string]: any } = {
     blockchain: forteBlockchainName,
-    idempotency_key: idempotencyKey,
+    idempotencyKey: idempotencyKey,
     buyer: {
       id: recipientAddress,
       wallet: {
@@ -357,28 +353,28 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
   }
 
   if (protocolConfig.protocol == 'mint') {
-    body = {
-      ...body,
-      transaction_type: 'BUY_NFT_MINT',
+    intent = {
+      ...intent,
+      transactionType: 'BUY_NFT_MINT',
       currency: getForteCurrency(chainId, currencyAddress),
       items: [
         {
           id: '1',
           amount: currencyQuantity,
-          image_url: imageUrl,
+          imageUrl: imageUrl,
           title: nftName,
-          mint_data: {
-            ...(approvedSpenderAddress ? { pay_to_address: approvedSpenderAddress } : {}),
-            token_contract_address: nftAddress,
-            token_ids: tokenId ? [tokenId] : [],
-            protocol_address: targetContractAddress,
+          mintData: {
+            ...(approvedSpenderAddress ? { payToAddress: approvedSpenderAddress } : {}),
+            tokenContractAddress: nftAddress,
+            tokenIds: tokenId ? [tokenId] : [],
+            protocolAddress: targetContractAddress,
             protocol: 'custom_evm_call',
             ...(typeof calldata === 'string'
               ? {
                   calldata: calldata
                 }
               : {
-                  structured_calldata: {
+                  structuredCalldata: {
                     function_name: calldata.functionName,
                     arguments: calldata.arguments
                   }
@@ -393,38 +389,38 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
     if (protocolConfig.protocol == 'seaport') {
       listingData = {
         protocol: protocolConfig.protocol,
-        order_hash: protocolConfig.orderHash,
-        protocol_address: protocolConfig.seaportProtocolAddress
+        orderHash: protocolConfig.orderHash,
+        protocolAddress: protocolConfig.seaportProtocolAddress
       }
     } else if (protocolConfig.protocol == 'custom_evm_call') {
       listingData = {
-        ...(approvedSpenderAddress ? { pay_to_address: approvedSpenderAddress } : {}),
+        ...(approvedSpenderAddress ? { payToAddress: approvedSpenderAddress } : {}),
         protocol: protocolConfig.protocol,
-        protocol_address: targetContractAddress,
+        protocolAddress: targetContractAddress,
         ...(typeof protocolConfig.calldata === 'string'
           ? { calldata: protocolConfig.calldata }
           : {
-              structured_calldata: {
-                function_name: protocolConfig.calldata.functionName,
+              structuredCalldata: {
+                functionName: protocolConfig.calldata.functionName,
                 arguments: protocolConfig.calldata.arguments
               }
             })
       }
     }
 
-    body = {
-      ...body,
+    intent = {
+      ...intent,
       transaction_type: 'BUY_NFT',
       currency: getForteCurrency(chainId, currencyAddress),
       items: [
         {
           amount: currencyQuantity,
           id: '1',
-          image_url: imageUrl,
-          listing_data: listingData,
-          nft_data: {
-            contract_address: nftAddress,
-            token_id: tokenId
+          imageUrl: imageUrl,
+          listingData: listingData,
+          nftData: {
+            contractAddress: nftAddress,
+            tokenId: tokenId
           },
           title: nftName
         }
@@ -441,10 +437,9 @@ export const createFortePaymentIntent = async (forteApiUrl: string, args: Create
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `${tokenType} ${accessToken}`
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify({ intent })
   })
 
   if (!res.ok) {
