@@ -185,8 +185,6 @@ export const checkoutConfig: SequenceCheckoutConfig = {
         sardineOnRampUrl: 'https://crypto.sandbox.sardine.ai/',
         transakApiUrl: 'https://global-stg.transak.com',
         transakApiKey: 'c20f2a0e-fe6a-4133-8fa7-77e9f84edf98',
-        // Confirmation code: 947293
-        fortePaymentUrl: 'https://sandbox-api.sandbox.lemmax.com',
         forteWidgetUrl: 'https://dev-forte-payments-cdn.pti-dev.cloud/forte-payments-widget.js'
       }
     : undefined

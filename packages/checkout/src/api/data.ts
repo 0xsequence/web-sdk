@@ -3,14 +3,7 @@ import type { TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork, networks, type ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
-import {
-  type CreditCardCheckout,
-  type ForteProtocolType,
-  type ForteConfig,
-  type ForteMintConfig,
-  type ForteSeaportConfig,
-  type StructuredCalldata
-} from '../contexts/index.js'
+import { type CreditCardCheckout, type ForteConfig, type StructuredCalldata } from '../contexts/index.js'
 
 export interface FetchSardineClientTokenReturn {
   token: string
