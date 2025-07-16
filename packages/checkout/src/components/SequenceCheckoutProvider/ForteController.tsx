@@ -8,6 +8,7 @@ const POLLING_TIME = 10 * 1000
 export const ForteController = ({ children }: { children: React.ReactNode }) => {
   const [fortePaymentData, setFortePaymentData] = useState<FortePaymentData>()
   const { forteWidgetUrl } = useEnvironmentContext()
+  const [isSuccess, setIsSuccess] = useState(false)
   // const { env } = useConfig()
   // const apiUrl = env.apiUrl
 
@@ -27,7 +28,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     let interval: NodeJS.Timeout | undefined
     let widgetClosedListener: () => void
 
-    if (fortePaymentData) {
+    if (fortePaymentData && !isSuccess) {
       interval = setInterval(() => {
         checkFortePaymentStatus()
       }, POLLING_TIME)
@@ -44,7 +45,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       clearInterval(interval)
       window.removeEventListener('FortePaymentsWidgetClosed', widgetClosedListener)
     }
-  }, [fortePaymentData])
+  }, [fortePaymentData, isSuccess])
 
   useEffect(() => {
     if (!fortePaymentData) {
@@ -66,6 +67,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
 
     const widgetData = fortePaymentData.widgetData
     script.onload = () => {
+      setIsSuccess(false)
       // @ts-ignore-next-line
       if (window?.initFortePaymentsWidget && widgetData) {
         const data = {
@@ -88,7 +90,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
   }, [fortePaymentData])
 
   const checkFortePaymentStatus = async () => {
-    if (!fortePaymentData) {
+    if (!fortePaymentData || isSuccess) {
       return
     }
 
@@ -98,6 +100,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
 
     if (status === 'Approved') {
       fortePaymentData.creditCardCheckout?.onSuccess?.()
+      setIsSuccess(true)
     }
 
     if (status === 'Declined' || status === 'Expired') {
