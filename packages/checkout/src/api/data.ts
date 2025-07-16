@@ -434,7 +434,23 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
   })
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch widget data, with status: ${res.status}`)
+    let errorMessage = `Failed to fetch widget data, with status: ${res.status}`
+
+    try {
+      const data = await res.json()
+
+      if (data.cause) {
+        errorMessage = `Failed to fetch widget data: ${data.cause}`
+      } else if (data.message) {
+        errorMessage = `Failed to fetch widget data: ${data.message}`
+      } else if (data.error) {
+        errorMessage = `Failed to fetch widget data: ${data.error}`
+      }
+    } catch (parseError) {
+      console.error('Could not parse error response as JSON:', parseError)
+    }
+
+    throw new Error(errorMessage)
   }
 
   const data = await res.json()

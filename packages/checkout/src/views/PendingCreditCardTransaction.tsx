@@ -469,7 +469,11 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     Number(creditCardCheckout.currencyDecimals || 18)
   )
 
-  const { data: paymentIntentData, isError: isErrorPaymentIntent } = useFortePaymentIntent(
+  const {
+    data: paymentIntentData,
+    isError: isErrorPaymentIntent,
+    error: paymentIntentError
+  } = useFortePaymentIntent(
     {
       recipientAddress: creditCardCheckout.recipientAddress,
       chainId: creditCardCheckout.chainId.toString(),
@@ -492,6 +496,20 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     }
   )
 
+  const isPriceTooLow = paymentIntentError?.message?.includes('price too low')
+  // A more unique error message in the case of a high price is pending from forte
+  const isPriceTooHigh = paymentIntentError?.message?.includes('failed with status code 500')
+
+  const getErrorMessage = () => {
+    if (isPriceTooLow) {
+      return 'The price for the item is too low for credit card paymetns'
+    }
+    if (isPriceTooHigh) {
+      return 'The price for the item is too high for credit card payments'
+    }
+    return 'An error has occurred'
+  }
+
   useEffect(() => {
     if (!paymentIntentData) {
       return
@@ -510,8 +528,8 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
 
   if (isError) {
     return (
-      <div className="flex items-center justify-center" style={{ height: '770px' }}>
-        <Text color="primary">An error has occurred</Text>
+      <div className="flex items-center justify-center px-4 text-center" style={{ height: '770px' }}>
+        <Text color="primary">{getErrorMessage()}</Text>
       </div>
     )
   }
