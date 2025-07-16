@@ -17,4 +17,4 @@ export interface FortePaymentController {
 
 const [useFortePaymentController, FortePaymentControllerProvider] = createGenericContext<FortePaymentController>()
 
-export { useFortePaymentController, FortePaymentControllerProvider }
+export { FortePaymentControllerProvider, useFortePaymentController }
