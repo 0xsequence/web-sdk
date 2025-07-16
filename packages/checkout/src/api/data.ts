@@ -275,7 +275,6 @@ export const fetchForteAccessToken = async (forteApiUrl: string): Promise<FetchF
 }
 
 export interface CreateFortePaymentIntentArgs {
-  nftQuantity: string
   recipientAddress: string
   chainId: string
   signature?: string
@@ -321,7 +320,6 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
     targetContractAddress,
     nftName,
     nftAddress,
-    nftQuantity,
     imageUrl,
     tokenId,
     protocolConfig,
@@ -448,12 +446,10 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
 
   const data = await res.json()
 
-  return data.data
+  return data.resp
 }
 
 export interface FetchFortePaymentStatusArgs {
-  accessToken: string
-  tokenType: string
   paymentIntentId: string
 }
 
@@ -467,24 +463,23 @@ export const fetchFortePaymentStatus = async (
   forteApiUrl: string,
   args: FetchFortePaymentStatusArgs
 ): Promise<FetchFortePaymentStatusReturn> => {
-  const { accessToken, tokenType, paymentIntentId } = args
+  const { paymentIntentId } = args
 
-  const url = `${forteApiUrl}/payments/v1/payments/statuses`
+  const url = `${forteApiUrl}/rpc/API/FortePayGetPaymentStatuses`
 
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `${tokenType} ${accessToken}`
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      payment_intent_ids: [paymentIntentId]
+      paymentIntentIds: [paymentIntentId]
     })
   })
 
-  const { data } = await res.json()
+  const { statuses } = await res.json()
 
   return {
-    status: (data[0]?.status as FortePaymentStatus) || ''
+    status: (statuses[0]?.status as FortePaymentStatus) || ''
   }
 }

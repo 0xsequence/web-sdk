@@ -7,7 +7,11 @@ const POLLING_TIME = 10 * 1000
 
 export const ForteController = ({ children }: { children: React.ReactNode }) => {
   const [fortePaymentData, setFortePaymentData] = useState<FortePaymentData>()
-  const { fortePaymentUrl, forteWidgetUrl } = useEnvironmentContext()
+  const { forteWidgetUrl } = useEnvironmentContext()
+  // const { env } = useConfig()
+  // const apiUrl = env.apiUrl
+
+  const apiUrl = 'http://localhost:4422'
 
   const initializeWidget = (fortePaymentData: FortePaymentData) => {
     setFortePaymentData(fortePaymentData)
@@ -64,10 +68,18 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     script.onload = () => {
       // @ts-ignore-next-line
       if (window?.initFortePaymentsWidget && widgetData) {
+        const data = {
+          notes: widgetData.notes,
+          widget_data: widgetData.widgetData,
+          payment_intent_id: widgetData.paymentIntentId,
+          error_code: widgetData.error_code ?? null,
+          flow: widgetData.flow
+        }
+
         // @ts-ignore-next-line
         window.initFortePaymentsWidget({
           containerId: 'forte-payments-widget-container',
-          data: widgetData
+          data
         })
       }
     }
@@ -80,9 +92,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       return
     }
 
-    const { status } = await fetchFortePaymentStatus(fortePaymentUrl, {
-      accessToken: fortePaymentData.accessToken,
-      tokenType: fortePaymentData.tokenType,
+    const { status } = await fetchFortePaymentStatus(apiUrl, {
       paymentIntentId: fortePaymentData.paymentIntentId
     })
 
