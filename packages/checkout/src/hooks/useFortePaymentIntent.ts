@@ -8,7 +8,6 @@ interface UseFortePaymentIntentOptions {
 }
 
 export const useFortePaymentIntent = (args: CreateFortePaymentIntentArgs, options?: UseFortePaymentIntentOptions) => {
-  // const { fortePaymentUrl } = useEnvironmentContext()
   // const { env } = useConfig()
   // const apiUrl = env.apiUrl
 

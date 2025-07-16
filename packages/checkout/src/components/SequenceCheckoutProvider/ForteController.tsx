@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { fetchFortePaymentStatus } from '../../api/data.js'
 import { useEnvironmentContext, FortePaymentControllerProvider, type FortePaymentData } from '../../contexts/index.js'
