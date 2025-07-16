@@ -8,9 +8,10 @@ import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
-import { useEnvironmentContext, type TransactionPendingNavigation } from '../contexts/index.js'
+import { useEnvironmentContext, useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
   useCheckoutModal,
+  useFortePaymentIntent,
   useNavigation,
   useSardineClientToken,
   useSkipOnCloseCallback,
@@ -35,6 +36,8 @@ export const PendingCreditCardTransaction = () => {
   const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
 
   switch (provider) {
+    case 'forte':
+      return <PendingCreditCardTransactionForte skipOnCloseCallback={skipOnCloseCallback} />
     case 'transak':
       return <PendingCreditCardTransactionTransak skipOnCloseCallback={skipOnCloseCallback} />
     case 'sardine':
@@ -434,6 +437,103 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
       />
+    </div>
+  )
+}
+
+export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
+  const { initializeWidget } = useFortePaymentController()
+  const nav = useNavigation()
+  const {
+    params: { creditCardCheckout }
+  } = nav.navigation as TransactionPendingNavigation
+  const { closeCheckout } = useCheckoutModal()
+
+  const {
+    data: tokenMetadatas,
+    isLoading: isLoadingTokenMetadata,
+    isError: isErrorTokenMetadata
+  } = useGetTokenMetadata({
+    chainID: String(creditCardCheckout.chainId),
+    contractAddress: creditCardCheckout.nftAddress,
+    tokenIDs: [creditCardCheckout.nftId]
+  })
+
+  const tokenMetadata = tokenMetadatas ? tokenMetadatas[0] : undefined
+
+  const currencyQuantity = formatUnits(
+    BigInt(creditCardCheckout.currencyQuantity),
+    Number(creditCardCheckout.currencyDecimals || 18)
+  )
+
+  const {
+    data: paymentIntentData,
+    isError: isErrorPaymentIntent,
+    error: paymentIntentError
+  } = useFortePaymentIntent(
+    {
+      recipientAddress: creditCardCheckout.recipientAddress,
+      chainId: creditCardCheckout.chainId.toString(),
+      nftAddress: creditCardCheckout.nftAddress,
+      currencyAddress: creditCardCheckout.currencyAddress,
+      targetContractAddress: creditCardCheckout.contractAddress,
+      nftName: tokenMetadata?.name || '',
+      imageUrl: tokenMetadata?.image || '',
+      tokenId: creditCardCheckout.nftId,
+      protocolConfig: creditCardCheckout.forteConfig!,
+      currencyQuantity,
+      calldata:
+        creditCardCheckout.forteConfig!.protocol === 'mint'
+          ? creditCardCheckout.forteConfig!.calldata
+          : creditCardCheckout.calldata,
+      approvedSpenderAddress: creditCardCheckout.approvedSpenderAddress
+    },
+    {
+      disabled: isLoadingTokenMetadata
+    }
+  )
+
+  const isPriceTooLow = paymentIntentError?.message?.includes('price too low')
+  // A more unique error message in the case of a high price is pending from forte
+  const isPriceTooHigh = paymentIntentError?.message?.includes('failed with status code 500')
+
+  const getErrorMessage = () => {
+    if (isPriceTooLow) {
+      return 'The price for the item is too low for credit card paymetns'
+    }
+    if (isPriceTooHigh) {
+      return 'The price for the item is too high for credit card payments'
+    }
+    return 'An error has occurred'
+  }
+
+  useEffect(() => {
+    if (!paymentIntentData) {
+      return
+    }
+
+    initializeWidget({
+      paymentIntentId: paymentIntentData.paymentIntentId,
+      widgetData: paymentIntentData,
+      creditCardCheckout
+    })
+    skipOnCloseCallback()
+    closeCheckout()
+  }, [paymentIntentData])
+
+  const isError = isErrorTokenMetadata || isErrorPaymentIntent
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center px-4 text-center" style={{ height: '770px' }}>
+        <Text color="primary">{getErrorMessage()}</Text>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center justify-center" style={{ height: '770px' }}>
+      <Spinner size="lg" />
     </div>
   )
 }
