@@ -9,10 +9,8 @@ import { formatUnits } from 'viem'
 import { fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
 import { useEnvironmentContext, useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
-import { type ForteMintConfig, type ForteSeaportConfig } from '../contexts/index.js'
 import {
   useCheckoutModal,
-  useForteAccessToken,
   useFortePaymentIntent,
   useNavigation,
   useSardineClientToken,
@@ -447,7 +445,6 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
 
 export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
   const { initializeWidget } = useFortePaymentController()
-  const { data: accessTokenData, isLoading: isLoadingAccessToken, isError: isErrorAccessToken } = useForteAccessToken()
   const nav = useNavigation()
   const {
     params: { creditCardCheckout }
@@ -466,7 +463,6 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
 
   const tokenMetadata = tokenMetadatas ? tokenMetadatas[0] : undefined
 
-  const nftQuantity = formatUnits(BigInt(creditCardCheckout.nftQuantity), Number(creditCardCheckout.nftDecimals || 0))
   const currencyQuantity = formatUnits(
     BigInt(creditCardCheckout.currencyQuantity),
     Number(creditCardCheckout.currencyDecimals || 18)
@@ -474,7 +470,6 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
 
   const { data: paymentIntentData, isError: isErrorPaymentIntent } = useFortePaymentIntent(
     {
-      nftQuantity,
       recipientAddress: creditCardCheckout.recipientAddress,
       chainId: creditCardCheckout.chainId.toString(),
       nftAddress: creditCardCheckout.nftAddress,
@@ -492,7 +487,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       approvedSpenderAddress: creditCardCheckout.approvedSpenderAddress
     },
     {
-      disabled: isLoadingTokenMetadata || isLoadingAccessToken
+      disabled: isLoadingTokenMetadata
     }
   )
 
@@ -502,17 +497,15 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
     }
 
     initializeWidget({
-      paymentIntentId: paymentIntentData.payment_intent_id,
+      paymentIntentId: paymentIntentData.paymentIntentId,
       widgetData: paymentIntentData,
-      accessToken: accessTokenData?.accessToken || '',
-      tokenType: accessTokenData?.tokenType || '',
       creditCardCheckout
     })
     skipOnCloseCallback()
     closeCheckout()
   }, [paymentIntentData])
 
-  const isError = isErrorTokenMetadata || isErrorAccessToken || isErrorPaymentIntent
+  const isError = isErrorTokenMetadata || isErrorPaymentIntent
 
   if (isError) {
     return (
