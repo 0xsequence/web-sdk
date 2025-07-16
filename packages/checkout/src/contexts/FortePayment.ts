@@ -6,8 +6,6 @@ import { createGenericContext } from './genericContext.js'
 export interface FortePaymentData {
   paymentIntentId: string
   widgetData: any
-  accessToken: string
-  tokenType: string
   creditCardCheckout: CreditCardCheckout
 }
 
