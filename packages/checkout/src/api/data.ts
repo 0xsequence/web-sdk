@@ -392,7 +392,7 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
           ? { calldata: protocolConfig.calldata }
           : {
               structuredCalldata: {
-                functionName: protocolConfig.calldata.functionName,
+                function_name: protocolConfig.calldata.functionName,
                 arguments: protocolConfig.calldata.arguments
               }
             })
@@ -401,7 +401,7 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
 
     intent = {
       ...intent,
-      transaction_type: 'BUY_NFT',
+      transactionType: 'BUY_NFT',
       currency: getForteCurrency(chainId, currencyAddress),
       items: [
         {
