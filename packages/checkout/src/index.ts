@@ -16,6 +16,9 @@ export { type AddFundsSettings } from './contexts/AddFundsModal.js'
 export { type SelectPaymentSettings } from './contexts/SelectPaymentModal.js'
 export { type SwapModalSettings } from './contexts/SwapModal.js'
 export { type CreditCardProviders } from './contexts/SelectPaymentModal.js'
+export { type TransactionStatusSettings } from './contexts/TransactionStatusModal.js'
+export { useTransactionStatusModal } from './hooks/useTransactionStatusModal.js'
+
 // utils
 export { fetchTransakSupportedCountries, getTransakLink } from './utils/transak.js'
 
