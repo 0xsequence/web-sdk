@@ -26,11 +26,13 @@ import { normalizeChainId } from '../../utils/helpers.js'
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
   appleClientId?: string
+  XClientId?: string
+  XRedirectURI?: string
   epicAuthUrl?: string
   appleRedirectURI?: string
   enableConfirmationModal?: boolean
   nodesUrl?: string
-  loginType: 'email' | 'google' | 'apple' | 'epic' | 'guest'
+  loginType: 'email' | 'google' | 'apple' | 'epic' | 'X' | 'guest'
 }
 
 export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
@@ -49,6 +51,8 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasGoogleIdToken]: string
     [LocalStorageKey.WaasEmailIdToken]: string
     [LocalStorageKey.WaasAppleIdToken]: string
+    [LocalStorageKey.WaasXClientId]: string
+    [LocalStorageKey.WaasXRedirectURI]: string
     [LocalStorageKey.WaasGoogleClientID]: string
     [LocalStorageKey.WaasAppleClientID]: string
     [LocalStorageKey.WaasAppleRedirectURI]: string
@@ -94,6 +98,9 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
       if (params.epicAuthUrl) {
         await config.storage?.setItem(LocalStorageKey.WaasEpicAuthUrl, params.epicAuthUrl)
+      }
+      if (params.XClientId) {
+        await config.storage?.setItem(LocalStorageKey.WaasXClientId, params.XClientId)
       }
 
       sequenceWaasProvider.on('error', error => {
