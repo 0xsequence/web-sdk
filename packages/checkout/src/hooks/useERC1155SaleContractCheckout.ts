@@ -142,6 +142,7 @@ export const useERC1155SaleContractCheckout = ({
     isLoading: isLoadingCheckoutOptions,
     isError: isErrorCheckoutOptions
   } = useCheckoutOptionsSalesContract(chain, {
+    chainId: chain.toString(),
     contractAddress,
     wallet,
     collectionAddress,

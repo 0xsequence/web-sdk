@@ -15,6 +15,7 @@ import { metaMask } from '../connectors/metaMask/metaMask.js'
 import { sequence } from '../connectors/sequence/sequence.js'
 import { twitch } from '../connectors/twitch/twitch.js'
 import { walletConnect } from '../connectors/walletConnect/walletConnect.js'
+import { XWaas } from '../connectors/X/XWaas.js'
 import type { Wallet, WalletType } from '../types.js'
 import { getConnectWallets } from '../utils/getConnectWallets.js'
 
@@ -48,6 +49,12 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
     | false
     | {
         authUrl: string
+      }
+
+  X?:
+    | false
+    | {
+        clientId: string
       }
 
   ecosystem?: false | Omit<EcosystemWalletOptions, 'projectAccessKey' | 'defaultNetwork'>
@@ -178,6 +185,17 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
         projectAccessKey,
         waasConfigKey,
         epicAuthUrl: options.epic.authUrl,
+        enableConfirmationModal,
+        network: defaultChainId
+      })
+    )
+  }
+
+  if (options.X) {
+    wallets.push(
+      XWaas({
+        projectAccessKey,
+        waasConfigKey,
         enableConfirmationModal,
         network: defaultChainId
       })

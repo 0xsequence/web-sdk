@@ -21,7 +21,7 @@ import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
 import { isEmailValid } from '../../utils/helpers.js'
-import { GuestWaasConnectButton } from '../ConnectButton/ConnectButton.js'
+import { GuestWaasConnectButton, XWaasConnectButton } from '../ConnectButton/ConnectButton.js'
 import {
   AppleWaasConnectButton,
   ConnectButton,
@@ -69,6 +69,8 @@ export const Connect = (props: ConnectProps) => {
   const { signMessageAsync } = useSignMessage()
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
   const { data: waasStatusData } = useGetWaasStatus()
+
+  console.log('connectors', connectors)
 
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
@@ -502,6 +504,12 @@ export const Connect = (props: ConnectProps) => {
                                   />
                                 ) : connector._wallet.id === 'epic-waas' ? (
                                   <EpicWaasConnectButton
+                                    isDescriptive={descriptiveSocials}
+                                    connector={connector}
+                                    onConnect={onConnect}
+                                  />
+                                ) : connector._wallet.id === 'X-waas' ? (
+                                  <XWaasConnectButton
                                     isDescriptive={descriptiveSocials}
                                     connector={connector}
                                     onConnect={onConnect}

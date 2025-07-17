@@ -222,3 +222,9 @@ export const EpicWaasConnectButton = (props: ConnectButtonProps) => {
     />
   ) : null
 }
+
+export const XWaasConnectButton = (props: ConnectButtonProps) => {
+  const { connector } = props
+
+  return <ConnectButton {...props} connector={connector} onConnect={() => {}} disableTooltip />
+}
