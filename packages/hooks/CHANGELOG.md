@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.7
+
+### Patch Changes
+
+- Exported the useTransactionStatusModal
+
 ## 5.3.6
 
 ### Patch Changes

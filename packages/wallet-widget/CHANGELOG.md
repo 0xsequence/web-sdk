@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.3.7
+
+### Patch Changes
+
+- Exported the useTransactionStatusModal
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.3.7
+  - @0xsequence/connect@5.3.7
+  - @0xsequence/hooks@5.3.7
+
 ## 5.3.6
 
 ### Patch Changes
