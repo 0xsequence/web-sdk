@@ -1,4 +1,4 @@
-import { Button, Spinner } from '@0xsequence/design-system'
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import { useClearCachedBalances, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useAccount } from 'wagmi'
@@ -111,9 +111,27 @@ export const PayWithCreditCardTab = () => {
       </div>
     )
   }
+
+  const getProviderName = () => {
+    switch (selectedPaymentProvider) {
+      case 'sardine':
+        return 'Sardine'
+      case 'transak':
+        return 'Transak'
+      case 'forte':
+        return 'Forte'
+      default:
+        return null
+    }
+  }
   return (
-    <div className="flex flex-col justify-center items-center gap-2 w-full h-full">
-      <Button className="w-full" shape="square" onClick={payWithSelectedProvider} label="Continue" variant="primary" />
+    <div className="flex flex-col gap-2 justify-between h-full">
+      <Text color="text50" variant="small">
+        Buy directly with your debit or credit card {getProviderName() ? `through ${getProviderName()}` : ''}
+      </Text>
+      <div className="flex flex-col justify-center items-center gap-2 w-full h-full">
+        <Button className="w-full" shape="square" onClick={payWithSelectedProvider} label="Continue" variant="primary" />
+      </div>
     </div>
   )
 }
