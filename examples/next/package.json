@@ -17,6 +17,7 @@
     "@0xsequence/network": "^2.3.10",
     "@0xsequence/waas": "^2.3.10",
     "@0xsequence/wallet-widget": "workspace:*",
+    "@radix-ui/react-select": "^2.2.5",
     "@tailwindcss/postcss": "^4.1.4",
     "@tanstack/react-query": "^5.74.11",
     "example-shared-components": "workspace:*",

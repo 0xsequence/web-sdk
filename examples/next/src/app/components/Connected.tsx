@@ -9,7 +9,7 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, cn, Select, Text } from '@0xsequence/design-system'
+import { Button, Card, cn, Text } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/hooks'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
@@ -20,6 +20,8 @@ import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode, sponsoredContractAddresses } from '../../config'
+
+import { Select } from './Select'
 
 import { messageToSign } from '@/constants'
 import { abi } from '@/constants/nft-abi'
@@ -495,7 +497,6 @@ export const Connected = () => {
               <div className="my-3">
                 <Select
                   name="feeOption"
-                  labelLocation="top"
                   label="Pick a fee option"
                   onValueChange={val => {
                     const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
@@ -504,7 +505,7 @@ export const Connected = () => {
                       setFeeOptionAlert(undefined)
                     }
                   }}
-                  value={selectedFeeOptionTokenName}
+                  value={selectedFeeOptionTokenName || ''}
                   options={
                     pendingFeeOptionConfirmation?.options?.map(option => ({
                       label: (

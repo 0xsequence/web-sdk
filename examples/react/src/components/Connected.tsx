@@ -16,7 +16,7 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, cn, Modal, Scroll, Select, Switch, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
@@ -34,6 +34,7 @@ import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 import { CustomCheckout } from './CustomCheckout'
+import { Select } from './Select'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
@@ -656,7 +657,6 @@ export const Connected = () => {
               <div className="my-3">
                 <Select
                   name="feeOption"
-                  labelLocation="top"
                   label="Pick a fee option"
                   onValueChange={val => {
                     const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
@@ -665,7 +665,7 @@ export const Connected = () => {
                       setFeeOptionAlert(undefined)
                     }
                   }}
-                  value={selectedFeeOptionTokenName}
+                  value={selectedFeeOptionTokenName || ''}
                   options={[
                     ...pendingFeeOptionConfirmation.options.map(option => ({
                       label: (
