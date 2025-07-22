@@ -70,8 +70,6 @@ export const Connect = (props: ConnectProps) => {
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
   const { data: waasStatusData } = useGetWaasStatus()
 
-  console.log('connectors', connectors)
-
   const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
   const hasConnectedSequenceUniversal = connections.some(c => c.connector.name === SEQUENCE_UNIVERSAL_CONNECTOR_NAME)

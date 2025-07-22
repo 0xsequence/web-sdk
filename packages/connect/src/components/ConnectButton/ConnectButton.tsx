@@ -1,7 +1,9 @@
 import { Card, ContextMenuIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
+import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
+import { getXIdToken } from '../../connectors/X/XAuth.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useStorage, useStorageItem } from '../../hooks/useStorage.js'
 import type { ExtendedConnector, WalletProperties } from '../../types.js'
@@ -224,7 +226,62 @@ export const EpicWaasConnectButton = (props: ConnectButtonProps) => {
 }
 
 export const XWaasConnectButton = (props: ConnectButtonProps) => {
-  const { connector } = props
+  const { connector, onConnect } = props
+  const storage = useStorage()
 
-  return <ConnectButton {...props} connector={connector} onConnect={() => {}} disableTooltip />
+  const [XCodeVerifier, setXCodeVerifier] = useState<string>('')
+  const [XClientId, setXClientId] = useState<string>('')
+  const [XRedirectURI, setXRedirectURI] = useState<string>('')
+
+  const { data: authUrl } = useStorageItem(LocalStorageKey.WaasXAuthUrl)
+
+  useEffect(() => {
+    const getStorageItems = async () => {
+      const codeVerifier = await storage?.getItem(LocalStorageKey.WaasXCodeVerifier)
+      const XClientId = await storage?.getItem(LocalStorageKey.WaasXClientID)
+      const XRedirectURI = await storage?.getItem(LocalStorageKey.WaasXRedirectURI)
+      setXCodeVerifier(codeVerifier ?? '')
+      setXClientId(XClientId ?? '')
+      setXRedirectURI(XRedirectURI ?? '')
+    }
+    getStorageItems()
+  }, [])
+
+  return (
+    <ConnectButton
+      {...props}
+      connector={connector}
+      onConnect={() => {
+        const popup = window.open(authUrl as string, 'XAuthPopup', 'width=700,height=700')
+
+        const handleMessage = async (event: MessageEvent) => {
+          if (event.data?.type !== 'OAUTH_RETURN') {
+            return
+          }
+
+          if (event.source !== popup) {
+            return
+          }
+
+          window.removeEventListener('message', handleMessage)
+          popup?.close()
+
+          const { code } = event.data.data || {}
+
+          if (code && XCodeVerifier) {
+            try {
+              const idToken = await getXIdToken(code, XCodeVerifier, XClientId, XRedirectURI)
+              storage?.setItem(LocalStorageKey.WaasXIdToken, idToken)
+              onConnect(connector)
+            } catch (error) {
+              console.log('X login error', error)
+            }
+          }
+        }
+
+        window.addEventListener('message', handleMessage)
+      }}
+      disableTooltip
+    />
+  )
 }

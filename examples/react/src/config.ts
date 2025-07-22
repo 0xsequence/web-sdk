@@ -117,6 +117,10 @@ export const config =
           clientId: 'com.horizon.sequence.waas',
           redirectURI: window.location.origin + window.location.pathname
         },
+        X: {
+          clientId: 'MVZ6aHMyNmMtSF9mNHVldFR6TV86MTpjaQ',
+          redirectURI: window.location.origin + '/auth-callback-X'
+        },
         walletConnect: {
           projectId: walletConnectProjectId
         },

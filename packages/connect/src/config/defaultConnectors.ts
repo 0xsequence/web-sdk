@@ -55,6 +55,7 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
     | false
     | {
         clientId: string
+        redirectURI: string
       }
 
   ecosystem?: false | Omit<EcosystemWalletOptions, 'projectAccessKey' | 'defaultNetwork'>
@@ -196,6 +197,8 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
       XWaas({
         projectAccessKey,
         waasConfigKey,
+        XClientId: options.X.clientId,
+        XRedirectURI: options.X.redirectURI,
         enableConfirmationModal,
         network: defaultChainId
       })

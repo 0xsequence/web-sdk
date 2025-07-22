@@ -9,11 +9,11 @@ interface GetXLogo {
 export const getXLogo = ({ isDarkMode }: GetXLogo) => {
   const fillColor = isDarkMode ? 'white' : 'black'
 
-  const XLogo: FunctionComponent<LogoProps> = () => {
+  const XLogo: FunctionComponent<LogoProps> = props => {
     return (
-      <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
         <path
-          d="M178.57 127.044L290.27 0H263.81L166.78 110.288L89.34 0H0L117.13 166.791L0 300H26.46L128.86 183.507L210.66 300H300M36.01 19.5237H76.66L263.79 281.435H223.13"
+          d="M18.2856 14.16352L27.2216 4H25.1048L17.3424 12.82304L11.1472 4H4L13.3704 17.34328L4 28H6.1168L14.3088 18.68056L20.8528 28H28M6.8808 5.561896H10.1328L25.1032 26.5148H21.8504"
           fill={fillColor}
         />
       </svg>

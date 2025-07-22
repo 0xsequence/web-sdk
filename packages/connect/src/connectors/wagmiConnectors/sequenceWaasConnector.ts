@@ -5,6 +5,7 @@ import {
   type ExtendedSequenceConfig,
   type FeeOption,
   type SequenceConfig,
+  type SignInResponse,
   type Transaction
 } from '@0xsequence/waas'
 import { ethers } from 'ethers'
@@ -22,6 +23,7 @@ import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { normalizeChainId } from '../../utils/helpers.js'
+import { getPkcePair, getXOauthUrl } from '../X/XAuth.js'
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string
@@ -51,8 +53,11 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasGoogleIdToken]: string
     [LocalStorageKey.WaasEmailIdToken]: string
     [LocalStorageKey.WaasAppleIdToken]: string
-    [LocalStorageKey.WaasXClientId]: string
+    [LocalStorageKey.WaasXAuthUrl]: string
+    [LocalStorageKey.WaasXClientID]: string
     [LocalStorageKey.WaasXRedirectURI]: string
+    [LocalStorageKey.WaasXCodeVerifier]: string
+    [LocalStorageKey.WaasXIdToken]: string
     [LocalStorageKey.WaasGoogleClientID]: string
     [LocalStorageKey.WaasAppleClientID]: string
     [LocalStorageKey.WaasAppleRedirectURI]: string
@@ -99,8 +104,13 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       if (params.epicAuthUrl) {
         await config.storage?.setItem(LocalStorageKey.WaasEpicAuthUrl, params.epicAuthUrl)
       }
-      if (params.XClientId) {
-        await config.storage?.setItem(LocalStorageKey.WaasXClientId, params.XClientId)
+      if (params.XClientId && params.XRedirectURI) {
+        const { code_challenge, code_verifier } = await getPkcePair()
+        const authUrl = await getXOauthUrl(params.XClientId, params.XRedirectURI, code_challenge)
+        await config.storage?.setItem(LocalStorageKey.WaasXAuthUrl, authUrl)
+        await config.storage?.setItem(LocalStorageKey.WaasXClientID, params.XClientId)
+        await config.storage?.setItem(LocalStorageKey.WaasXRedirectURI, params.XRedirectURI)
+        await config.storage?.setItem(LocalStorageKey.WaasXCodeVerifier, code_verifier)
       }
 
       sequenceWaasProvider.on('error', error => {
@@ -119,6 +129,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
         const emailIdToken = await config.storage?.getItem(LocalStorageKey.WaasEmailIdToken)
         const appleIdToken = await config.storage?.getItem(LocalStorageKey.WaasAppleIdToken)
         const epicIdToken = await config.storage?.getItem(LocalStorageKey.WaasEpicIdToken)
+        const xIdToken = await config.storage?.getItem(LocalStorageKey.WaasXIdToken)
 
         let idToken: string | undefined
 
@@ -130,16 +141,26 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
           idToken = appleIdToken
         } else if (params.loginType === 'epic' && epicIdToken) {
           idToken = epicIdToken
+        } else if (params.loginType === 'X' && xIdToken) {
+          idToken = xIdToken
         }
 
         await config.storage?.removeItem(LocalStorageKey.WaasGoogleIdToken)
         await config.storage?.removeItem(LocalStorageKey.WaasEmailIdToken)
         await config.storage?.removeItem(LocalStorageKey.WaasAppleIdToken)
         await config.storage?.removeItem(LocalStorageKey.WaasEpicIdToken)
+        await config.storage?.removeItem(LocalStorageKey.WaasXIdToken)
 
         if (idToken) {
           try {
-            const signInResponse = await provider.sequenceWaas.signIn({ idToken }, randomName())
+            let signInResponse: SignInResponse | undefined
+
+            if (params.loginType === 'X') {
+              signInResponse = await provider.sequenceWaas.signIn({ xAccessToken: idToken }, randomName())
+            } else {
+              signInResponse = await provider.sequenceWaas.signIn({ idToken }, randomName())
+            }
+
             if (signInResponse?.email) {
               await config.storage?.setItem(LocalStorageKey.WaasSignInEmail, signInResponse.email)
             }
