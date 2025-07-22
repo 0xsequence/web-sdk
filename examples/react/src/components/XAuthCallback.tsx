@@ -20,7 +20,7 @@ export function XAuthCallback() {
   return (
     <div className="flex justify-center items-center w-full pt-10">
       <Text variant="large" color="primary">
-        You can close this window.
+        You may now close this window.
       </Text>
     </div>
   )

@@ -33,7 +33,9 @@ export async function getPkcePair() {
 }
 
 export async function getXIdToken(code: string, codeVerifier: string, XClientId: string, XRedirectURI: string) {
-  const response = await fetch('http://localhost:8080/https://api.x.com/2/oauth2/token', {
+  // NOTE: when testing locally, you must use a cors proxy and append the proxy url in front of the fetch url like so:
+  // 'http://localhost:8080/https://api.x.com/2/oauth2/token'
+  const response = await fetch('https://api.x.com/2/oauth2/token', {
     method: 'POST',
     body: new URLSearchParams({
       code,
