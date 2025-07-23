@@ -33,6 +33,7 @@ export interface StructuredCalldata {
 export interface ForteMintConfig {
   protocol: 'mint'
   calldata: string | StructuredCalldata
+  sellerAddress: string
 }
 
 export interface ForteSeaportConfig {
