@@ -10,7 +10,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
   const [fortePaymentData, setFortePaymentData] = useState<FortePaymentData>()
   const { forteWidgetUrl } = useEnvironmentContext()
   const [isSuccess, setIsSuccess] = useState(false)
-  const { env } = useConfig()
+  const { env, projectAccessKey } = useConfig()
   const apiUrl = env.apiUrl
 
   const initializeWidget = (fortePaymentData: FortePaymentData) => {
@@ -93,7 +93,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       return
     }
 
-    const { status } = await fetchFortePaymentStatus(apiUrl, {
+    const { status } = await fetchFortePaymentStatus(apiUrl, projectAccessKey, {
       paymentIntentId: fortePaymentData.paymentIntentId
     })
 
