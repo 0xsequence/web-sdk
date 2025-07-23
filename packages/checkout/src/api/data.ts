@@ -305,7 +305,11 @@ const getForteCurrency = (chainId: string, currencyAddress: string) => {
   return forteCurrencyMap[chainId]?.[currencyAddress.toLowerCase()] || 'ETH'
 }
 
-export const createFortePaymentIntent = async (sequenceApiUrl: string, args: CreateFortePaymentIntentArgs): Promise<any> => {
+export const createFortePaymentIntent = async (
+  sequenceApiUrl: string,
+  projectAccessKey: string,
+  args: CreateFortePaymentIntentArgs
+): Promise<any> => {
   const {
     recipientAddress,
     chainId,
@@ -434,7 +438,8 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-Access-Key': projectAccessKey
     },
     body: JSON.stringify({ intent })
   })
@@ -476,6 +481,7 @@ export interface FetchFortePaymentStatusReturn {
 
 export const fetchFortePaymentStatus = async (
   forteApiUrl: string,
+  projectAccessKey: string,
   args: FetchFortePaymentStatusArgs
 ): Promise<FetchFortePaymentStatusReturn> => {
   const { paymentIntentId } = args
@@ -485,7 +491,8 @@ export const fetchFortePaymentStatus = async (
   const res = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-Access-Key': projectAccessKey
     },
     body: JSON.stringify({
       paymentIntentIds: [paymentIntentId]
