@@ -8,13 +8,13 @@ interface UseFortePaymentIntentOptions {
 }
 
 export const useFortePaymentIntent = (args: CreateFortePaymentIntentArgs, options?: UseFortePaymentIntentOptions) => {
-  const { env } = useConfig()
+  const { env, projectAccessKey } = useConfig()
   const apiUrl = env.apiUrl
 
   return useQuery({
     queryKey: ['useFortePaymentIntent', args],
     queryFn: async () => {
-      const res = await createFortePaymentIntent(apiUrl, args)
+      const res = await createFortePaymentIntent(apiUrl, projectAccessKey, args)
 
       return res
     },
