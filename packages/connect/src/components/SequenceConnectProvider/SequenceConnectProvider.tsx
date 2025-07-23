@@ -1,7 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { getModalPositionCss, isJSON } from '@0xsequence/common'
+import { getModalPositionCss, isJSON, NetworkBadge } from '@0xsequence/common'
 import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
 import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { ToastProvider } from '@0xsequence/design-system'
@@ -28,7 +28,6 @@ import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings } from '.
 import { Connect } from '../Connect/Connect.js'
 import { EpicAuthProvider } from '../EpicAuthProvider/index.js'
 import { JsonTreeViewer } from '../JsonTreeViewer.js'
-import { NetworkBadge } from '../NetworkBadge/index.js'
 import { PageHeading } from '../PageHeading/index.js'
 import { PoweredBySequence } from '../SequenceLogo/index.js'
 import { ShadowRoot } from '../ShadowRoot/index.js'

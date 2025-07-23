@@ -1,5 +1,4 @@
-import { formatDisplay } from '@0xsequence/common'
-import { CollectibleTileImage } from '@0xsequence/connect'
+import { CollectibleTileImage, formatDisplay } from '@0xsequence/common'
 import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
