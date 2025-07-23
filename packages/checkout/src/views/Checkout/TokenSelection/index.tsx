@@ -1,5 +1,4 @@
-import { compareAddress, formatDisplay } from '@0xsequence/common'
-import { ContractVerificationStatus } from '@0xsequence/connect'
+import { compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/common'
 import { Card, Scroll, SearchInput, Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'

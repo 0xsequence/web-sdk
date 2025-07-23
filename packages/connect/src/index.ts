@@ -84,6 +84,3 @@ export { CollectibleTileImage } from './components/CollectibleTileImage/index.js
 export { CryptoOption } from './components/CryptoOption.js'
 export { SelectedIndicator } from './components/SelectedIndicator.js'
 export { ShadowRoot } from './components/ShadowRoot/index.js'
-
-// Indexer
-export { ContractVerificationStatus } from '@0xsequence/indexer'

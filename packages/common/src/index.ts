@@ -31,3 +31,6 @@ export type {
   WalletProperties,
   WalletType
 } from './types/index.js'
+
+// Indexer
+export { ContractVerificationStatus } from '@0xsequence/indexer'
