@@ -1,6 +1,7 @@
-import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '../../utils/index.js'
 import { NetworkImage, Text } from '@0xsequence/design-system'
 import React from 'react'
+
+import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '../../utils/index.js'
 
 interface NetworkBadgeProps {
   chainId: number

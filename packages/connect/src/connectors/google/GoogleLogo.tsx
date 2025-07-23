@@ -1,5 +1,4 @@
 import type { LogoProps } from '@0xsequence/common'
-
 import type { FunctionComponent } from 'react'
 
 export const GoogleLogo: FunctionComponent = (props: LogoProps) => {

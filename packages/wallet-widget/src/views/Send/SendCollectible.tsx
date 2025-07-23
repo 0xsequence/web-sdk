@@ -1,7 +1,7 @@
 import {
-  truncateAtMiddle,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext,
+  truncateAtMiddle,
   waitForTransactionReceipt,
   type ExtendedConnector
 } from '@0xsequence/common'

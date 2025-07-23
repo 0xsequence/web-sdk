@@ -1,10 +1,10 @@
 import {
   compareAddress,
   getNativeTokenInfoByChainId,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   useAnalyticsContext,
   useWaasConfirmationHandler,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt,
   type ExtendedConnector
 } from '@0xsequence/common'

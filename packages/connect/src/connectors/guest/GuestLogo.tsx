@@ -1,6 +1,5 @@
 import type { LogoProps } from '@0xsequence/common'
 import { Text } from '@0xsequence/design-system'
-
 import React from 'react'
 
 interface GetGuestLogo {

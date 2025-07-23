@@ -1,5 +1,4 @@
 import type { LogoProps } from '@0xsequence/common'
-
 import React from 'react'
 
 export const WalletConnectLogo: React.FunctionComponent = (props: LogoProps) => {

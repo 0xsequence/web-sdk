@@ -4,9 +4,10 @@ import { SequenceWaaS, type FeeOption } from '@0xsequence/waas'
 import type { Hex, PublicClient, WalletClient } from 'viem'
 import type { Connector } from 'wagmi'
 
-import { compareAddress } from './helpers.js'
 import { TRANSACTION_CONFIRMATIONS_DEFAULT } from '../constants/transactions.js'
 import type { ExtendedConnector } from '../types/index.js'
+
+import { compareAddress } from './helpers.js'
 
 class FeeOptionInsufficientFundsError extends Error {
   public readonly feeOptions: FeeOption[]
