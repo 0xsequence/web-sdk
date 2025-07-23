@@ -348,6 +348,12 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
       ...intent,
       transactionType: 'BUY_NFT_MINT',
       currency: getForteCurrency(chainId, currencyAddress),
+      seller: {
+        wallet: {
+          address: targetContractAddress,
+          blockchain: forteBlockchainName
+        }
+      },
       items: [
         {
           id: '1',
