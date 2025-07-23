@@ -1,5 +1,4 @@
-import { compareAddress, formatDisplay, sendTransactions } from '@0xsequence/common'
-import { ContractVerificationStatus } from '@0xsequence/connect'
+import { ContractVerificationStatus, compareAddress, formatDisplay, sendTransactions } from '@0xsequence/common'
 import { useGetSwapQuote, useGetSwapRoutes, useGetTokenBalancesSummary, useIndexerClient } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'

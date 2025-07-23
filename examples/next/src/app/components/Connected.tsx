@@ -1,6 +1,6 @@
 import type { CheckoutSettings } from '@0xsequence/checkout'
+import { ContractVerificationStatus } from '@0xsequence/common'
 import {
-  ContractVerificationStatus,
   signEthAuthProof,
   useOpenConnectModal,
   // useSocialLink,

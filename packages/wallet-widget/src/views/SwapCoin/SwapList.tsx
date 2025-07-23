@@ -1,5 +1,11 @@
-import { compareAddress, formatDisplay, sendTransactions, type ExtendedConnector } from '@0xsequence/common'
-import { ContractVerificationStatus, CryptoOption, useAnalyticsContext } from '@0xsequence/connect'
+import {
+  compareAddress,
+  ContractVerificationStatus,
+  formatDisplay,
+  sendTransactions,
+  type ExtendedConnector
+} from '@0xsequence/common'
+import { CryptoOption, useAnalyticsContext } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
