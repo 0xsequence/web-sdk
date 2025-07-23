@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useConfig } from '@0xsequence/hooks'
 
 import { fetchFortePaymentStatus } from '../../api/data.js'
 import { useEnvironmentContext, FortePaymentControllerProvider, type FortePaymentData } from '../../contexts/index.js'
@@ -9,10 +10,8 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
   const [fortePaymentData, setFortePaymentData] = useState<FortePaymentData>()
   const { forteWidgetUrl } = useEnvironmentContext()
   const [isSuccess, setIsSuccess] = useState(false)
-  // const { env } = useConfig()
-  // const apiUrl = env.apiUrl
-
-  const apiUrl = 'http://localhost:4422'
+  const { env } = useConfig()
+  const apiUrl = env.apiUrl
 
   const initializeWidget = (fortePaymentData: FortePaymentData) => {
     setFortePaymentData(fortePaymentData)

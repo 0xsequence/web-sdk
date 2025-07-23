@@ -8,10 +8,8 @@ interface UseFortePaymentIntentOptions {
 }
 
 export const useFortePaymentIntent = (args: CreateFortePaymentIntentArgs, options?: UseFortePaymentIntentOptions) => {
-  // const { env } = useConfig()
-  // const apiUrl = env.apiUrl
-
-  const apiUrl = 'http://localhost:4422'
+  const { env } = useConfig()
+  const apiUrl = env.apiUrl
 
   return useQuery({
     queryKey: ['useFortePaymentIntent', args],
