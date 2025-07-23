@@ -350,7 +350,7 @@ export const createFortePaymentIntent = async (sequenceApiUrl: string, args: Cre
       currency: getForteCurrency(chainId, currencyAddress),
       seller: {
         wallet: {
-          address: targetContractAddress,
+          address: protocolConfig.sellerAddress,
           blockchain: forteBlockchainName
         }
       },
