@@ -1,4 +1,10 @@
-import { capitalize, compareAddress, getNativeTokenInfoByChainId, truncateAtMiddle } from '@0xsequence/common'
+import {
+  capitalize,
+  CollectibleTileImage,
+  compareAddress,
+  getNativeTokenInfoByChainId,
+  truncateAtMiddle
+} from '@0xsequence/common'
 import { commons } from '@0xsequence/core'
 import { Card, Collapsible, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { useAPIClient, useGetSingleTokenBalance, useGetTokenMetadata } from '@0xsequence/hooks'
@@ -8,7 +14,6 @@ import { formatUnits, zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { decodeTransactions, DecodingType, type AwardItemProps, type TransferProps } from '../../utils/txnDecoding.js'
-import { CollectibleTileImage } from '../CollectibleTileImage/index.js'
 
 interface TxnDetailsProps {
   address: string

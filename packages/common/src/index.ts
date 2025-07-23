@@ -32,5 +32,11 @@ export type {
   WalletType
 } from './types/index.js'
 
+// Components
+export { NetworkBadge } from './components/NetworkBadge/index.js'
+export { CollectibleTileImage } from './components/CollectibleTileImage/index.js'
+export { CryptoOption } from './components/CryptoOption.js'
+export { SelectedIndicator } from './components/SelectedIndicator.js'
+
 // Indexer
 export { ContractVerificationStatus } from '@0xsequence/indexer'

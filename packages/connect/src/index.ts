@@ -79,8 +79,4 @@ export { useSocialLink } from './hooks/useSocialLink.js'
 export { useDirectEcosystemConnect } from './hooks/useDirectEcosystemConnect.js'
 
 // Components
-export { NetworkBadge } from './components/NetworkBadge/index.js'
-export { CollectibleTileImage } from './components/CollectibleTileImage/index.js'
-export { CryptoOption } from './components/CryptoOption.js'
-export { SelectedIndicator } from './components/SelectedIndicator.js'
 export { ShadowRoot } from './components/ShadowRoot/index.js'

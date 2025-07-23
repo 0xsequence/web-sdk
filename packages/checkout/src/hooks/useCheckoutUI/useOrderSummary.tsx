@@ -1,5 +1,4 @@
-import { compareAddress, formatDisplay } from '@0xsequence/common'
-import { NetworkBadge } from '@0xsequence/connect'
+import { compareAddress, formatDisplay, NetworkBadge } from '@0xsequence/common'
 import { networkImageUrl } from '@0xsequence/design-system'
 import { useGetCoinPrices } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
