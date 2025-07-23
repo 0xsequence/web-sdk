@@ -1,4 +1,5 @@
 import type { Wallet } from '@0xsequence/common'
+
 import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector.js'
 
 import { getAppleLogo, getAppleMonochromeLogo } from './AppleLogo.js'

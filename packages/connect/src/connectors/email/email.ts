@@ -1,4 +1,5 @@
 import type { Wallet } from '@0xsequence/common'
+
 import { sequenceWallet, type BaseSequenceConnectorOptions } from '../wagmiConnectors/index.js'
 
 import { getEmailLogo } from './EmailLogo.js'

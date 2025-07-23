@@ -1,8 +1,8 @@
 import {
   compareAddress,
   getNativeTokenInfoByChainId,
-  truncateAtMiddle,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
+  truncateAtMiddle,
   waitForTransactionReceipt,
   type ExtendedConnector
 } from '@0xsequence/common'

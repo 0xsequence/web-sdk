@@ -1,5 +1,4 @@
 import type { LogoProps } from '@0xsequence/common'
-
 import type { FunctionComponent } from 'react'
 
 export const FacebookLogo: FunctionComponent<LogoProps> = props => {

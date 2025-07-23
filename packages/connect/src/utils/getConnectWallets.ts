@@ -1,5 +1,4 @@
 import type { ExtendedConnector, Wallet } from '@0xsequence/common'
-
 import type { CreateConnectorFn } from 'wagmi'
 
 export const getConnectWallets = (projectAccessKey: string, wallets: Wallet[]): CreateConnectorFn[] => {

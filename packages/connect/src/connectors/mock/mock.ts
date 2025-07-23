@@ -1,5 +1,4 @@
 import type { Wallet } from '@0xsequence/common'
-
 import { mock as mockBase, type MockParameters } from 'wagmi/connectors'
 
 import { SequenceLogo } from '../sequence/SequenceLogo.js'
