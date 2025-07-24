@@ -33,6 +33,8 @@ const SelectItem = forwardRef(({ children, className, ...props }: SelectPrimitiv
   )
 })
 
+SelectItem.displayName = 'SelectItem'
+
 export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement>) => {
   const { name, label, options } = props
 
@@ -79,3 +81,5 @@ export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement
     </Field>
   )
 })
+
+Select.displayName = 'Select'
