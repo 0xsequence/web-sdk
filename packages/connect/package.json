@@ -50,11 +50,11 @@
     "@0xsequence/provider": "^2.3.10",
     "@0xsequence/utils": "^2.3.10",
     "@0xsequence/waas": "^2.3.10",
-    "@tailwindcss/cli": "^4.1.4",
+    "@tailwindcss/cli": "^4.1.11",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
-    "tailwindcss": "^4.1.4",
+    "tailwindcss": "^4.1.11",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
