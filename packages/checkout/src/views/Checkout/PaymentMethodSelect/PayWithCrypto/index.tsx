@@ -62,9 +62,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
 
   const isFree = Number(price) == 0
 
-  console.log('isFree', isFree, price)
-
-  const { skipOnCloseCallback } = useSkipOnCloseCallback(onClose)
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
