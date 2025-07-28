@@ -538,16 +538,9 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   const PriceSection = () => {
     if (isFree) {
       return (
-        <div className="flex flex-col mt-3 mb-4 w-full">
-          <Text
-            color="text100"
-            variant="xsmall"
-            fontWeight="bold"
-            style={{
-              fontSize: '24px'
-            }}
-          >
-            FREE ITEM
+        <div className="flex flex-col mt-2 mb-1 w-full">
+          <Text color="text100" variant="small" fontWeight="bold">
+            This item is free, click Confirm to mint to your wallet
           </Text>
         </div>
       )
