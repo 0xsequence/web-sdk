@@ -2,6 +2,7 @@ import {
   TransactionOnRampProvider,
   useAddFundsModal,
   useCheckoutModal,
+  useERC1155SaleContractCheckout,
   useSelectPaymentModal,
   useSwapModal
 } from '@0xsequence/checkout'
@@ -79,6 +80,17 @@ export const Connected = () => {
     error: sendUnsponsoredTransactionError,
     reset: resetSendUnsponsoredTransaction
   } = useSendTransaction()
+
+  const { openCheckoutModal, isLoading: erc1155CheckoutLoading } = useERC1155SaleContractCheckout({
+    chain: 137,
+    contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
+    wallet: address || '',
+    collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
+    items: [{ tokenId: '1', quantity: '1' }],
+    onSuccess: txnHash => {
+      console.log('txnHash', txnHash)
+    }
+  })
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
@@ -819,6 +831,13 @@ export const Connected = () => {
                   title="Custom Checkout"
                   description="Hook for creating custom checkout UIs"
                   onClick={() => setIsOpenCustomCheckout(true)}
+                />
+
+                <CardButton
+                  title="ERC1155 Checkout"
+                  description="Purchase with useERC1155SaleContractCheckout hook"
+                  onClick={openCheckoutModal}
+                  isPending={erc1155CheckoutLoading}
                 />
               </>
             )}

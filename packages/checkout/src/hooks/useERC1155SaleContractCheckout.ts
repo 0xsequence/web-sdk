@@ -1,4 +1,5 @@
 import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
+import { useFindVersion } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { encodeFunctionData, toHex, zeroAddress, type Abi, type Hex } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
@@ -227,6 +228,12 @@ export const useSaleContractConfig = ({
   contractAddress,
   tokenIds
 }: UseSaleContractConfigArgs): UseSaleContractConfigReturn => {
+  const { data: versionData, isLoading: isLoadingVersion, isError: isErrorVersion } = useFindVersion({ uid: '123', hash: '456' })
+
+  console.log('version', versionData)
+  console.log('isLoadingVersion', isLoadingVersion)
+  console.log('isErrorVersion', isErrorVersion)
+
   const {
     data: paymentTokenERC1155,
     isLoading: isLoadingPaymentTokenERC1155,
