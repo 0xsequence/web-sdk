@@ -29,7 +29,6 @@ export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
 
 // Contexts
 export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'
-export { AnalyticsContextProvider, useAnalyticsContext } from './contexts/Analytics.js'
 export { ConnectModalContextProvider, useConnectModalContext } from './contexts/ConnectModal.js'
 export { ThemeContextProvider, useThemeContext } from './contexts/Theme.js'
 export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/WalletConfig.js'

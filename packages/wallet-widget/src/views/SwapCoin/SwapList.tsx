@@ -4,9 +4,9 @@ import {
   CryptoOption,
   formatDisplay,
   sendTransactions,
+  useAnalyticsContext,
   type ExtendedConnector
 } from '@0xsequence/common'
-import { useAnalyticsContext } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,

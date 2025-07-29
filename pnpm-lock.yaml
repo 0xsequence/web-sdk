@@ -353,6 +353,9 @@ importers:
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(motion@12.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@0xsequence/provider':
+        specifier: '>=2.3.7'
+        version: 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
         specifier: '>=2.3.7'
         version: 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))

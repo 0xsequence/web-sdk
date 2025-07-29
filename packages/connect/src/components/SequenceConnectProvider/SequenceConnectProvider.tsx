@@ -1,7 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { getModalPositionCss, isJSON, NetworkBadge } from '@0xsequence/common'
+import { AnalyticsContextProvider, getModalPositionCss, isJSON, NetworkBadge } from '@0xsequence/common'
 import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
 import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { ToastProvider } from '@0xsequence/design-system'
@@ -15,7 +15,6 @@ import { hexToString, type Hex } from 'viem'
 import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants/index.js'
-import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
 import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal.js'
 import { SocialLinkContextProvider } from '../../contexts/SocialLink.js'

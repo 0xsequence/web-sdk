@@ -1,4 +1,4 @@
-import { createGenericContext } from './genericContext.js'
+import { createGenericContext } from '@0xsequence/common'
 
 type SocialLinkContext = {
   waasConfigKey: string

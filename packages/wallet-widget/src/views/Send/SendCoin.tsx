@@ -1,12 +1,13 @@
 import {
   compareAddress,
   getNativeTokenInfoByChainId,
+  useAnalyticsContext,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   waitForTransactionReceipt,
   type ExtendedConnector
 } from '@0xsequence/common'
-import { useAnalyticsContext, useCheckWaasFeeOptions, useWaasFeeOptions, useWallets } from '@0xsequence/connect'
+import { useCheckWaasFeeOptions, useWaasFeeOptions, useWallets } from '@0xsequence/connect'
 import {
   Button,
   Card,

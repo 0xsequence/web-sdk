@@ -3,9 +3,9 @@ import {
   ContractVerificationStatus,
   formatDisplay,
   sendTransactions,
+  useAnalyticsContext,
   TRANSACTION_CONFIRMATIONS_DEFAULT
 } from '@0xsequence/common'
-import { useAnalyticsContext } from '@0xsequence/connect'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
