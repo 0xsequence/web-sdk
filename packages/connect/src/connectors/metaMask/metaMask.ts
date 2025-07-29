@@ -2,7 +2,6 @@ import type { Wallet } from '@0xsequence/common'
 import type { CreateConnectorFn } from 'wagmi'
 import { metaMask as metaMaskConnector, type MetaMaskParameters } from 'wagmi/connectors'
 
-
 import { MetaMaskLogo } from './MetaMaskLogo.js'
 
 export const metaMask = (params: MetaMaskParameters): Wallet => ({

@@ -1,8 +1,7 @@
 'use client'
 
+import { createGenericContext } from '@0xsequence/common'
 import type { ConnectConfig } from '../types.js'
-
-import { createGenericContext } from './genericContext.js'
 
 const [useConnectConfigContext, ConnectConfigContextProvider] = createGenericContext<ConnectConfig>()
 

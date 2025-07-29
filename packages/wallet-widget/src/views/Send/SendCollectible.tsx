@@ -1,4 +1,5 @@
 import {
+  useAnalyticsContext,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext,
   truncateAtMiddle,

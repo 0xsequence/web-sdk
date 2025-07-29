@@ -1,6 +1,6 @@
 'use client'
 
-import { createGenericContext } from './genericContext.js'
+import { createGenericContext } from '@0xsequence/common'
 
 export interface PaymentMethodSelectionParams {
   selectedCurrency?: {

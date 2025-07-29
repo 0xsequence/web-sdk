@@ -1,6 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
+import { AnalyticsContextProvider } from '@0xsequence/common'
 import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
 import { ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceClient } from '@0xsequence/provider'
@@ -10,7 +11,6 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION } from '../../constants/ethAuth.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
-import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
 import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
