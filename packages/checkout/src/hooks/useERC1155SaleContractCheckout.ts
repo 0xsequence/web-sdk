@@ -228,7 +228,12 @@ export const useSaleContractConfig = ({
   contractAddress,
   tokenIds
 }: UseSaleContractConfigArgs): UseSaleContractConfigReturn => {
-  const { data: versionData, isLoading: isLoadingVersion, isError: isErrorVersion } = useFindVersion({ uid: '123', hash: '456' })
+  // TODO: get the hash from the contract
+  const {
+    data: versionData,
+    isLoading: isLoadingVersion,
+    isError: isErrorVersion
+  } = useFindVersion({ uid: 'erc1155-sale-contract', hash: '456' })
 
   console.log('version', versionData)
   console.log('isLoadingVersion', isLoadingVersion)

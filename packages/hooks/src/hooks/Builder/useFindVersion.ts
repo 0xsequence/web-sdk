@@ -41,7 +41,7 @@ export const useFindVersion = (args: FindVersionArgs, options?: HooksOptions) =>
   return useQuery({
     queryKey: [QUERY_KEYS.useFindVersion, args.uid, args.hash, options],
     queryFn: async () => {
-      const res = await fetch(`${env.builderUrl}/rpc/ContractLibrary/findVersion`, {
+      const res = await fetch(`${env.builderUrl}/rpc/ContractLibrary/FindVersion`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Access-Key': projectAccessKey },
         body: JSON.stringify({ uid: args.uid, hash: args.hash })
