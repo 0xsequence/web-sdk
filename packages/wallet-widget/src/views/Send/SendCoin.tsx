@@ -1,9 +1,9 @@
 import {
   compareAddress,
   getNativeTokenInfoByChainId,
-  useAnalyticsContext,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
+  useAnalyticsContext,
   waitForTransactionReceipt,
   type ExtendedConnector
 } from '@0xsequence/common'

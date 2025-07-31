@@ -1,6 +1,7 @@
 'use client'
 
 import { createGenericContext } from '@0xsequence/common'
+
 import type { DisplayedAsset } from '../types.js'
 
 type WalletConfigContext = {

@@ -1,6 +1,7 @@
 'use client'
 
 import { createGenericContext } from '@0xsequence/common'
+
 import type { Navigation } from './Navigation.js'
 
 export interface WalletOptions {
