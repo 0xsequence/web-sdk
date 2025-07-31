@@ -580,34 +580,14 @@ importers:
 
 packages:
 
-<<<<<<< HEAD
-  0xsequence@2.3.17:
-    resolution: {integrity: sha512-/fkAFKT1I6r4H/gSmPZ4P2zP9TN84sL8PjzVUtcuKUetFJEjXYiZVRQTOdzjgNu1QTuAY+EeCZZoxyLag45aWA==}
-=======
   0xsequence@2.3.23:
     resolution: {integrity: sha512-h+BLPjTJsua3QmVGprgo5/2M4+teezXoZ//OSNNVVPm+Tk+yOUgEmJjGJB6J8xEyUtARPCEjOl7W5PVeDcrLgw==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
   '@0xsequence/abi@2.3.17':
     resolution: {integrity: sha512-9q2pq3OmOgBAbYInF+gOlKb+g2zN5zGPCJtmBfYQcLrqUI/FayHRBBPFKjmA294ABzYV6/ChvWvupW680YeFaQ==}
 
-<<<<<<< HEAD
-  '@0xsequence/account@2.3.17':
-    resolution: {integrity: sha512-fEM0TXdBGXeKA4ooSuVRubhN8xe1O40d4FcTIGvrhj8VahUjcxjjf1ln3eCuF/3IrWna077EiELHXQHsSBlHYQ==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/api@2.3.11':
-    resolution: {integrity: sha512-2GA+I7E6TWucAdeSP4gEPGDjXUihS+MWrveqlnBroCOUlnKqkownPOflm0tDueGhfrfp1ZkvRP0eGsAt09M0SA==}
-
-  '@0xsequence/api@2.3.17':
-    resolution: {integrity: sha512-FC65y3VjIl7/stTK9Iy5804aqn0EUteBkYCW3ehbhksk7P46YyGPtNmaKMxTh7cHYuw1+Cmb0w7kffkyn2G3kw==}
-
-  '@0xsequence/auth@2.3.17':
-    resolution: {integrity: sha512-afeL/idwM6jWHvP0lwDpug/BMxMRG7/1dn3olbO39fHoKNetIiQKTdGHLe+wEX44hAM5HCv4j3EVUSDTBORMOw==}
-=======
   '@0xsequence/abi@2.3.23':
     resolution: {integrity: sha512-N5bVeCAKaHQ6+M8lKVlPfNcbmp3s10BBLNiqM1XzIGuzl5BKxBj0S9h4Vb7cd//3ALxgqYjwRvxi760wIDnyCA==}
 
@@ -621,20 +601,16 @@ packages:
 
   '@0xsequence/auth@2.3.23':
     resolution: {integrity: sha512-2yY0sp9N6fXiocSEqmLXvwLOQUhQ9MsvwcwAmr+76thg5aifnuzJJaEAaCRolo8sfyy9no6y8Ll8NHr4aduQEQ==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
   '@0xsequence/core@2.3.17':
     resolution: {integrity: sha512-0grBs92Z4jBVx6mKapgLvFe5W0i93I7TonQWdzVLxaBjZTfeTi9QDZ6f7knvxBbTT7o2huKYzCoubCCptH6oQg==}
-<<<<<<< HEAD
-=======
     peerDependencies:
       ethers: '>=6'
 
   '@0xsequence/core@2.3.23':
     resolution: {integrity: sha512-0y6TidFNJFYQF2yqGXScWYZTuGy651qwBH+9fQKRjzGSa0eXpe3zkccqiNuTtOXpR5QHBVGJ2U69SbK3ajzKEA==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
@@ -650,29 +626,14 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-<<<<<<< HEAD
-  '@0xsequence/guard@2.3.17':
-    resolution: {integrity: sha512-flG/XXAQkJulOtjt+DPdZwJZgzQX6m6iBn9g5mJDnZLIPvF0L+QLnR5hw6kzWyQ4P732DeJ/yTMhFHIa/aduJw==}
-=======
   '@0xsequence/guard@2.3.23':
     resolution: {integrity: sha512-nMFChM4TMuyqzKWsDrRyCmF+rYpiCAFVgg2D6hHQnYFSVqzUW36H3yHswztUtNXYuLX4ZGuk7kWmJgS6GWxquA==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
   '@0xsequence/indexer@2.3.17':
     resolution: {integrity: sha512-2oJOqML1FK/gbEqWENX3FSdQ+29BDGMzX8Eb5g8T60mGpbs+oLUS9FEcMqZkb0i8jy+bSSnzPj/QBk3PevLI9Q==}
 
-<<<<<<< HEAD
-  '@0xsequence/marketplace@2.3.17':
-    resolution: {integrity: sha512-g1COJ2ZqbRyfqxuOkpoD/4Y29dAxas2sj+nOiZFvQHyCW9jPqziYbMtAurhjHXgh22qQlUaL3vsdhxYFdmovaA==}
-
-  '@0xsequence/metadata@2.3.17':
-    resolution: {integrity: sha512-0/VQ8y3q8AIFTNL8vdQ1n1HNrf9+HrSZui7fMs1flITFGVU1+rQo4TYSETu/JeAKjfGkdoe07Z9BdtaL5k8fhg==}
-
-  '@0xsequence/migration@2.3.17':
-    resolution: {integrity: sha512-F727/qzRL/WvFbSD1sx1zR0Ous9yGdbYSdTBhqYJrECcCTHZ+jdLKUN8letsBG9J4CdReASLKiacHgUh5l1GTg==}
-=======
   '@0xsequence/indexer@2.3.23':
     resolution: {integrity: sha512-wYOPGDucEB+h4qujS4TqZ25pehdhByDLxsMLVDA4VFH0AFZlAt7Pq9hQznbQNnLwRPm+DHE/QB//qcPRvCiEFQ==}
 
@@ -684,7 +645,6 @@ packages:
 
   '@0xsequence/migration@2.3.23':
     resolution: {integrity: sha512-u2PzPw6fowDueh8pbiJfeM9nHgkLRhJk/xVMoyOUTQt69+yAW2PDIkNzqLEpb2XkxECx2tXTBpn1m/jL52ZDaQ==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
@@ -693,10 +653,6 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-<<<<<<< HEAD
-  '@0xsequence/provider@2.3.17':
-    resolution: {integrity: sha512-CpNVUn/Fdzzkh0eXD8tXeBqgonGDOVGHshBYOkAFWv/UtyMyVDYXKXuVO1RoGXCaPd6gsy77djdV8xmUOWnyEQ==}
-=======
   '@0xsequence/network@2.3.23':
     resolution: {integrity: sha512-7p0iTcFpkzQvh5saainlD95MZmUlMkZ+BiGzu/qT1gXYhUHEm5soq9wcII1JztgHaXgb+naS6PVTKB+z9eijYg==}
     peerDependencies:
@@ -704,7 +660,6 @@ packages:
 
   '@0xsequence/provider@2.3.23':
     resolution: {integrity: sha512-cBSugJw84x01eBjsyysnkpZJ9PaZG7JyVu//Pa4tkTEI5GpnVe2TUa/zpk/rExMkEdfTZPpBpRcMnEz0Vvuyqw==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
@@ -713,20 +668,6 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-<<<<<<< HEAD
-  '@0xsequence/replacer@2.3.17':
-    resolution: {integrity: sha512-GhY9wUtkDYqZuw1CswHl6Nv5IYl3zZvl+GHQyRpHxytYtFweluHo3cBYne5k6i0rtgem2AnOtBCSJmPrapBRDg==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/sessions@2.3.17':
-    resolution: {integrity: sha512-laaA687//uiKybQwfhmSYjncQmfr1KOrRAY5iXLoaQQaK2Npe7amB/MIbymytx7zNCIcXulkoWg2sLiE4VE0Wg==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/signhub@2.3.17':
-    resolution: {integrity: sha512-AfrdHWD0g9CRH7pomxSZDFolRuQtN6dCOXeasXXGvfj/H+HT9PsVKeKw1QJ1Ub9/BhHzc+g07L0ZZs8aU6kQDg==}
-=======
   '@0xsequence/relayer@2.3.23':
     resolution: {integrity: sha512-6b+ZjS2PWBM46awtPunfudCuvNUok7AUuuQiP5cukgTV949t5heoL9sY+FnJCVNEGayuqyghqMP4pyBmGgpo1w==}
     peerDependencies:
@@ -744,7 +685,6 @@ packages:
 
   '@0xsequence/signhub@2.3.23':
     resolution: {integrity: sha512-gPHtJ55DKN02D/6NsUKZ0zdCRxolR2N1eGUj7a1otioCM1MInTo2v3dttF3zip5sp9holw1kaYIeZrlrnbQXWQ==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
@@ -753,15 +693,6 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-<<<<<<< HEAD
-  '@0xsequence/waas@2.3.17':
-    resolution: {integrity: sha512-P/3SOrh1ZPGI3S8Kfx9xBlzTcudn/YFAmvxDssvMvl3KHG3bsLlMyL1/1x4ooNjYKvTeBaDXJ+I+E1Z4BEi/Vg==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/wallet@2.3.17':
-    resolution: {integrity: sha512-kPuxet2u9jej2jsXv4URPT21lsR2reQsFyyYI7OUhYlEhWpyEGZkoQGCp1HcK2XbBhL1RhA/i6BTnh0ewuu0Qw==}
-=======
   '@0xsequence/utils@2.3.23':
     resolution: {integrity: sha512-Ak4/QuginegFw/tnpyb9u0aw8fA6XHdLH9JjM0jsRrPyM5v6KqKFQoCrCssQfXeBxuHaWs+ABxf5gL9TKpDBng==}
     peerDependencies:
@@ -774,7 +705,6 @@ packages:
 
   '@0xsequence/wallet@2.3.23':
     resolution: {integrity: sha512-+oVM4bmVWLfK5UrLSBkwNTP2jlJxLRGM+3+8pdFAWb6znGRGvoXWVzUY5j7PFAJM8l3YnIwSjrtjugDwMxvJTg==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     peerDependencies:
       ethers: '>=6'
 
@@ -3222,7 +3152,6 @@ packages:
   '@swc/helpers@0.5.5':
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
 
-<<<<<<< HEAD
   '@tailwindcss/cli@4.1.11':
     resolution: {integrity: sha512-7RAFOrVaXCFz5ooEG36Kbh+sMJiI2j4+Ozp71smgjnLfBRu7DTfoq8DsTvzse2/6nDeo2M3vS/FGaxfDgr3rtQ==}
     hasBin: true
@@ -3235,22 +3164,10 @@ packages:
 
   '@tailwindcss/oxide-android-arm64@4.1.11':
     resolution: {integrity: sha512-3IfFuATVRUMZZprEIx9OGDjG3Ou3jG4xQzNTvjDoKmU9JdmoCohQJ83MYd0GPnQIu89YoJqvMM0G3uqLRFtetg==}
-=======
-  '@tailwindcss/cli@4.1.8':
-    resolution: {integrity: sha512-+6lkjXSr/68zWiabK3mVYVHmOq/SAHjJ13mR8spyB4LgUWZbWzU9kCSErlAUo+gK5aVfgqe8kY6Ltz9+nz5XYA==}
-    hasBin: true
-
-  '@tailwindcss/node@4.1.8':
-    resolution: {integrity: sha512-OWwBsbC9BFAJelmnNcrKuf+bka2ZxCE2A4Ft53Tkg4uoiE67r/PMEYwCsourC26E+kmxfwE0hVzMdxqeW+xu7Q==}
-
-  '@tailwindcss/oxide-android-arm64@4.1.8':
-    resolution: {integrity: sha512-Fbz7qni62uKYceWYvUjRqhGfZKwhZDQhlrJKGtnZfuNtHFqa8wmr+Wn74CTWERiW2hn3mN5gTpOoxWKk0jRxjg==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [android]
 
-<<<<<<< HEAD
   '@tailwindcss/oxide-android-arm64@4.1.8':
     resolution: {integrity: sha512-Fbz7qni62uKYceWYvUjRqhGfZKwhZDQhlrJKGtnZfuNtHFqa8wmr+Wn74CTWERiW2hn3mN5gTpOoxWKk0jRxjg==}
     engines: {node: '>= 10'}
@@ -3259,15 +3176,10 @@ packages:
 
   '@tailwindcss/oxide-darwin-arm64@4.1.11':
     resolution: {integrity: sha512-ESgStEOEsyg8J5YcMb1xl8WFOXfeBmrhAwGsFxxB2CxY9evy63+AtpbDLAyRkJnxLy2WsD1qF13E97uQyP1lfQ==}
-=======
-  '@tailwindcss/oxide-darwin-arm64@4.1.8':
-    resolution: {integrity: sha512-RdRvedGsT0vwVVDztvyXhKpsU2ark/BjgG0huo4+2BluxdXo8NDgzl77qh0T1nUxmM11eXwR8jA39ibvSTbi7A==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-<<<<<<< HEAD
   '@tailwindcss/oxide-darwin-arm64@4.1.8':
     resolution: {integrity: sha512-RdRvedGsT0vwVVDztvyXhKpsU2ark/BjgG0huo4+2BluxdXo8NDgzl77qh0T1nUxmM11eXwR8jA39ibvSTbi7A==}
     engines: {node: '>= 10'}
@@ -3276,15 +3188,10 @@ packages:
 
   '@tailwindcss/oxide-darwin-x64@4.1.11':
     resolution: {integrity: sha512-EgnK8kRchgmgzG6jE10UQNaH9Mwi2n+yw1jWmof9Vyg2lpKNX2ioe7CJdf9M5f8V9uaQxInenZkOxnTVL3fhAw==}
-=======
-  '@tailwindcss/oxide-darwin-x64@4.1.8':
-    resolution: {integrity: sha512-t6PgxjEMLp5Ovf7uMb2OFmb3kqzVTPPakWpBIFzppk4JE4ix0yEtbtSjPbU8+PZETpaYMtXvss2Sdkx8Vs4XRw==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-<<<<<<< HEAD
   '@tailwindcss/oxide-darwin-x64@4.1.8':
     resolution: {integrity: sha512-t6PgxjEMLp5Ovf7uMb2OFmb3kqzVTPPakWpBIFzppk4JE4ix0yEtbtSjPbU8+PZETpaYMtXvss2Sdkx8Vs4XRw==}
     engines: {node: '>= 10'}
@@ -3293,15 +3200,10 @@ packages:
 
   '@tailwindcss/oxide-freebsd-x64@4.1.11':
     resolution: {integrity: sha512-xdqKtbpHs7pQhIKmqVpxStnY1skuNh4CtbcyOHeX1YBE0hArj2romsFGb6yUmzkq/6M24nkxDqU8GYrKrz+UcA==}
-=======
-  '@tailwindcss/oxide-freebsd-x64@4.1.8':
-    resolution: {integrity: sha512-g8C8eGEyhHTqwPStSwZNSrOlyx0bhK/V/+zX0Y+n7DoRUzyS8eMbVshVOLJTDDC+Qn9IJnilYbIKzpB9n4aBsg==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [freebsd]
 
-<<<<<<< HEAD
   '@tailwindcss/oxide-freebsd-x64@4.1.8':
     resolution: {integrity: sha512-g8C8eGEyhHTqwPStSwZNSrOlyx0bhK/V/+zX0Y+n7DoRUzyS8eMbVshVOLJTDDC+Qn9IJnilYbIKzpB9n4aBsg==}
     engines: {node: '>= 10'}
@@ -3310,10 +3212,6 @@ packages:
 
   '@tailwindcss/oxide-linux-arm-gnueabihf@4.1.11':
     resolution: {integrity: sha512-ryHQK2eyDYYMwB5wZL46uoxz2zzDZsFBwfjssgB7pzytAeCCa6glsiJGjhTEddq/4OsIjsLNMAiMlHNYnkEEeg==}
-=======
-  '@tailwindcss/oxide-linux-arm-gnueabihf@4.1.8':
-    resolution: {integrity: sha512-Jmzr3FA4S2tHhaC6yCjac3rGf7hG9R6Gf2z9i9JFcuyy0u79HfQsh/thifbYTF2ic82KJovKKkIB6Z9TdNhCXQ==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
@@ -3333,15 +3231,12 @@ packages:
   '@tailwindcss/oxide-linux-arm64-gnu@4.1.8':
     resolution: {integrity: sha512-qq7jXtO1+UEtCmCeBBIRDrPFIVI4ilEQ97qgBGdwXAARrUqSn/L9fUrkb1XP/mvVtoVeR2bt/0L77xx53bPZ/Q==}
     engines: {node: '>= 10'}
-<<<<<<< HEAD
     cpu: [arm64]
     os: [linux]
 
   '@tailwindcss/oxide-linux-arm64-musl@4.1.11':
     resolution: {integrity: sha512-m/NVRFNGlEHJrNVk3O6I9ggVuNjXHIPoD6bqay/pubtYC9QIdAMpS+cswZQPBLvVvEF6GtSNONbDkZrjWZXYNQ==}
     engines: {node: '>= 10'}
-=======
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     cpu: [arm64]
     os: [linux]
 
@@ -3360,15 +3255,12 @@ packages:
   '@tailwindcss/oxide-linux-x64-gnu@4.1.8':
     resolution: {integrity: sha512-32iEXX/pXwikshNOGnERAFwFSfiltmijMIAbUhnNyjFr3tmWmMJWQKU2vNcFX0DACSXJ3ZWcSkzNbaKTdngH6g==}
     engines: {node: '>= 10'}
-<<<<<<< HEAD
     cpu: [x64]
     os: [linux]
 
   '@tailwindcss/oxide-linux-x64-musl@4.1.11':
     resolution: {integrity: sha512-e3C/RRhGunWYNC3aSF7exsQkdXzQ/M+aYuZHKnw4U7KQwTJotnWsGOIVih0s2qQzmEzOFIJ3+xt7iq67K/p56Q==}
     engines: {node: '>= 10'}
-=======
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     cpu: [x64]
     os: [linux]
 
@@ -3378,13 +3270,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-<<<<<<< HEAD
   '@tailwindcss/oxide-wasm32-wasi@4.1.11':
     resolution: {integrity: sha512-Xo1+/GU0JEN/C/dvcammKHzeM6NqKovG+6921MR6oadee5XPBaKOumrJCXvopJ/Qb5TH7LX/UAywbqrP4lax0g==}
-=======
-  '@tailwindcss/oxide-wasm32-wasi@4.1.8':
-    resolution: {integrity: sha512-CXBPVFkpDjM67sS1psWohZ6g/2/cd+cq56vPxK4JeawelxwK4YECgl9Y9TjkE2qfF+9/s1tHHJqrC4SS6cVvSg==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>=14.0.0'}
     cpu: [wasm32]
     bundledDependencies:
@@ -3395,7 +3282,6 @@ packages:
       - '@emnapi/wasi-threads'
       - tslib
 
-<<<<<<< HEAD
   '@tailwindcss/oxide-wasm32-wasi@4.1.8':
     resolution: {integrity: sha512-CXBPVFkpDjM67sS1psWohZ6g/2/cd+cq56vPxK4JeawelxwK4YECgl9Y9TjkE2qfF+9/s1tHHJqrC4SS6cVvSg==}
     engines: {node: '>=14.0.0'}
@@ -3410,15 +3296,10 @@ packages:
 
   '@tailwindcss/oxide-win32-arm64-msvc@4.1.11':
     resolution: {integrity: sha512-UgKYx5PwEKrac3GPNPf6HVMNhUIGuUh4wlDFR2jYYdkX6pL/rn73zTq/4pzUm8fOjAn5L8zDeHp9iXmUGOXZ+w==}
-=======
-  '@tailwindcss/oxide-win32-arm64-msvc@4.1.8':
-    resolution: {integrity: sha512-7GmYk1n28teDHUjPlIx4Z6Z4hHEgvP5ZW2QS9ygnDAdI/myh3HTHjDqtSqgu1BpRoI4OiLx+fThAyA1JePoENA==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-<<<<<<< HEAD
   '@tailwindcss/oxide-win32-arm64-msvc@4.1.8':
     resolution: {integrity: sha512-7GmYk1n28teDHUjPlIx4Z6Z4hHEgvP5ZW2QS9ygnDAdI/myh3HTHjDqtSqgu1BpRoI4OiLx+fThAyA1JePoENA==}
     engines: {node: '>= 10'}
@@ -3427,10 +3308,6 @@ packages:
 
   '@tailwindcss/oxide-win32-x64-msvc@4.1.11':
     resolution: {integrity: sha512-YfHoggn1j0LK7wR82TOucWc5LDCguHnoS879idHekmmiR7g9HUtMw9MI0NHatS28u/Xlkfi9w5RJWgz2Dl+5Qg==}
-=======
-  '@tailwindcss/oxide-win32-x64-msvc@4.1.8':
-    resolution: {integrity: sha512-fou+U20j+Jl0EHwK92spoWISON2OBnCazIc038Xj2TdweYV33ZRkS9nwqiUi2d/Wba5xg5UoHfvynnb/UB49cQ==}
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -7117,12 +6994,9 @@ packages:
 
   tailwind-merge@3.3.0:
     resolution: {integrity: sha512-fyW/pEfcQSiigd5SNn0nApUOxx0zB/dm6UDU/rEwc2c3sX2smWUNbapHv+QRqLGVp9GWX3THIa7MUGPo+YkDzQ==}
-<<<<<<< HEAD
 
   tailwindcss@4.1.11:
     resolution: {integrity: sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==}
-=======
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
 
   tailwindcss@4.1.8:
     resolution: {integrity: sha512-kjeW8gjdxasbmFKpVGrGd5T4i40mV5J2Rasw48QARfYeQ8YS9x02ON9SFWax3Qf616rt4Cp3nVNIj6Hd1mP3og==}
@@ -7939,11 +7813,7 @@ packages:
 
 snapshots:
 
-<<<<<<< HEAD
-  0xsequence@2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
-=======
   0xsequence@2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
->>>>>>> 58ef36f3 (feat: added X waas auth support,)
     dependencies:
       '@0xsequence/abi': 2.3.23
       '@0xsequence/account': 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
