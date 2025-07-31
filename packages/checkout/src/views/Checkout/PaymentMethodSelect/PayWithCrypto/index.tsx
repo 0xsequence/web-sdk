@@ -16,6 +16,7 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
+import type { ChainId } from '@0xsequence/network'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'

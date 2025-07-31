@@ -1,5 +1,6 @@
 import { useGetMultipleContractsInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
+import type { ContractInfo } from '@0xsequence/metadata'
 import { useEffect } from 'react'
 
 export const useGetAllCollections = ({
@@ -10,7 +11,7 @@ export const useGetAllCollections = ({
   accountAddresses: string[]
   chainIds: number[]
   hideUnlistedTokens: boolean
-}) => {
+}): { data: ContractInfo[]; isLoading: boolean } => {
   const {
     data: tokenBalancesData,
     isLoading,
