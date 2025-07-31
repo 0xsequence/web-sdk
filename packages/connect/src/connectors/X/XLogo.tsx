@@ -1,6 +1,5 @@
+import type { LogoProps } from '@0xsequence/common'
 import type { FunctionComponent } from 'react'
-
-import type { LogoProps } from '../../types.js'
 
 interface GetXLogo {
   isDarkMode: boolean
