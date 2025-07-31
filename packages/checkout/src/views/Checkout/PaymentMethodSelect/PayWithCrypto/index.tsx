@@ -3,8 +3,8 @@ import {
   ContractVerificationStatus,
   formatDisplay,
   sendTransactions,
-  useAnalyticsContext,
-  TRANSACTION_CONFIRMATIONS_DEFAULT
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  useAnalyticsContext
 } from '@0xsequence/common'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
@@ -16,7 +16,6 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
-import type { ChainId } from '@0xsequence/network'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'

@@ -20,8 +20,8 @@ import type { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflic
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet.js'
 import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
-import { GuestWaasConnectButton, XWaasConnectButton } from '../ConnectButton/ConnectButton.js'
 import type { ConnectConfig } from '../../types.js'
+import { GuestWaasConnectButton, XWaasConnectButton } from '../ConnectButton/ConnectButton.js'
 import {
   AppleWaasConnectButton,
   ConnectButton,
