@@ -1,5 +1,5 @@
 import { CreditCardProviders, useCheckoutUI } from '@0xsequence/checkout'
-import { CryptoOption } from '@0xsequence/connect'
+import { CryptoOption } from '@0xsequence/common'
 import { Button, Image, NetworkImage, Spinner, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 import { encodeFunctionData, toHex } from 'viem'

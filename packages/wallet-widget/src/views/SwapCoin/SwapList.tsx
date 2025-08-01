@@ -6,7 +6,7 @@ import {
   sendTransactions,
   useAnalyticsContext,
   type ExtendedConnector
-} from '@0xsequence/connect'
+} from '@0xsequence/common'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,

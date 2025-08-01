@@ -1,6 +1,8 @@
 'use client'
 
 import { sequence } from '0xsequence'
+import { AnalyticsContextProvider, getModalPositionCss, isJSON, NetworkBadge } from '@0xsequence/common'
+import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
 import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { ToastProvider } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
@@ -13,7 +15,6 @@ import { hexToString, type Hex } from 'viem'
 import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants/index.js'
-import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
 import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal.js'
 import { SocialLinkContextProvider } from '../../contexts/SocialLink.js'
@@ -22,19 +23,10 @@ import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
-import {
-  type ConnectConfig,
-  type DisplayedAsset,
-  type EthAuthSettings,
-  type ExtendedConnector,
-  type ModalPosition
-} from '../../types.js'
-import { isJSON } from '../../utils/helpers.js'
-import { getModalPositionCss } from '../../utils/styling.js'
+import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
 import { EpicAuthProvider } from '../EpicAuthProvider/index.js'
 import { JsonTreeViewer } from '../JsonTreeViewer.js'
-import { NetworkBadge } from '../NetworkBadge/index.js'
 import { PageHeading } from '../PageHeading/index.js'
 import { PoweredBySequence } from '../SequenceLogo/index.js'
 import { ShadowRoot } from '../ShadowRoot/index.js'

@@ -1,6 +1,8 @@
 'use client'
 
 import { sequence } from '0xsequence'
+import { AnalyticsContextProvider } from '@0xsequence/common'
+import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
 import { ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceClient } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -9,20 +11,13 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION } from '../../constants/ethAuth.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
-import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
 import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ConnectModalContextProvider } from '../../contexts/ConnectModal.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
-import {
-  type ConnectConfig,
-  type DisplayedAsset,
-  type EthAuthSettings,
-  type ExtendedConnector,
-  type ModalPosition
-} from '../../types.js'
+import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
 
 export type SequenceConnectProviderProps = {

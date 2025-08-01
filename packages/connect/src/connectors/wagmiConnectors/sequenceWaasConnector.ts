@@ -1,3 +1,4 @@
+import { normalizeChainId } from '@0xsequence/common'
 import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
 import {
   SequenceWaaS,
@@ -22,7 +23,6 @@ import {
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
-import { normalizeChainId } from '../../utils/helpers.js'
 import { getPkcePair, getXOauthUrl } from '../X/XAuth.js'
 
 export interface SequenceWaasConnectConfig {

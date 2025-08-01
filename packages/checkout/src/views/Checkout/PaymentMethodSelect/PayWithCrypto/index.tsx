@@ -5,7 +5,7 @@ import {
   sendTransactions,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext
-} from '@0xsequence/connect'
+} from '@0xsequence/common'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,

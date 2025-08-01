@@ -3,7 +3,7 @@ import {
   formatDisplay,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt
-} from '@0xsequence/connect'
+} from '@0xsequence/common'
 import {
   ArrowDownIcon,
   Card,
