@@ -343,9 +343,6 @@ export const styles = String.raw`
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
-  .mb-3 {
-    margin-bottom: calc(var(--spacing) * 3);
-  }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
@@ -848,9 +845,6 @@ export const styles = String.raw`
   .border-solid {
     --tw-border-style: solid;
     border-style: solid;
-  }
-  .border-background-primary {
-    border-color: var(--seq-color-background-primary);
   }
   .border-border-error {
     border-color: var(--seq-color-border-error);
