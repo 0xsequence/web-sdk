@@ -523,9 +523,6 @@ importers:
       '@0xsequence/api':
         specifier: 2.3.23
         version: 2.3.23
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../common
       '@0xsequence/indexer':
         specifier: ^2.3.23
         version: 2.3.23

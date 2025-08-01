@@ -823,9 +823,6 @@ export const styles = String.raw`
     --tw-border-style: solid;
     border-style: solid;
   }
-  .border-background-primary {
-    border-color: var(--seq-color-background-primary);
-  }
   .border-border-error {
     border-color: var(--seq-color-border-error);
   }
