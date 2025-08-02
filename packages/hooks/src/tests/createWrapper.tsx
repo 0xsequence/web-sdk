@@ -27,7 +27,8 @@ export const createWrapper = () => {
             metadataUrl: 'https://metadata.sequence.app',
             apiUrl: 'https://api.sequence.app',
             indexerUrl: 'https://indexer.sequence.app',
-            imageProxyUrl: 'https://image-proxy.sequence.app'
+            imageProxyUrl: 'https://image-proxy.sequence.app',
+            builderUrl: 'https://api.sequence.build'
           }
         }}
       >

@@ -8,6 +8,7 @@ export interface SequenceHooksEnv {
   apiUrl: string
   indexerUrl: string
   imageProxyUrl: string
+  builderUrl: string
 }
 
 export interface SequenceHooksConfigProviderValue {
@@ -28,7 +29,8 @@ const defaultEnv: Required<SequenceHooksEnv> = {
   metadataUrl: 'https://metadata.sequence.app',
   apiUrl: 'https://api.sequence.app',
   indexerUrl: 'https://indexer.sequence.app',
-  imageProxyUrl: 'https://imgproxy.sequence.xyz/'
+  imageProxyUrl: 'https://imgproxy.sequence.xyz/',
+  builderUrl: 'https://api.sequence.build'
 }
 
 export const SequenceHooksContext = createContext<SequenceHooksConfig | null>(null)

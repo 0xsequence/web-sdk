@@ -17,6 +17,10 @@ export { useGetCollectiblePrices } from './hooks/API/useGetCollectiblePrices.js'
 export { useGetExchangeRate } from './hooks/API/useGetExchangeRate.js'
 export { useGetWaasStatus } from './hooks/API/useGetWaasStatus.js'
 
+// Builder
+export { useBuilderClient } from './hooks/Builder/useBuilderClient.js'
+export { useFindVersion } from './hooks/Builder/useFindVersion.js'
+
 // Indexer
 export { useIndexerClient, useIndexerClients } from './hooks/Indexer/useIndexerClient.js'
 export { useGetTransactionHistory } from './hooks/Indexer/useGetTransactionHistory.js'

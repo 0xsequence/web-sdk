@@ -1,7 +1,8 @@
 import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
+import { useFindVersion } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { encodeFunctionData, toHex, zeroAddress, type Abi, type Hex } from 'viem'
-import { useReadContract, useReadContracts } from 'wagmi'
+import { encodeFunctionData, keccak256, sha256, toHex, zeroAddress, type Abi, type Hex } from 'viem'
+import { useBytecode, useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi.js'
 import type { SelectPaymentSettings } from '../contexts/SelectPaymentModal.js'
@@ -228,14 +229,56 @@ export const useSaleContractConfig = ({
   tokenIds
 }: UseSaleContractConfigArgs): UseSaleContractConfigReturn => {
   const {
+    data: bytecode,
+    isLoading: isLoadingBytecode,
+    isError: isErrorBytecode
+  } = useBytecode({
+    address: contractAddress as Hex,
+    chainId
+  })
+
+  const {
+    data: versionData,
+    isLoading: isLoadingVersion,
+    isError: isErrorVersion
+  } = useFindVersion(
+    { uid: 'erc-1155-sale', hash: bytecode ? sha256(bytecode) : '' },
+    {
+      disabled: !bytecode
+    }
+  )
+
+  const getAbi = () => {
+    if (isErrorVersion) return ERC_1155_SALE_CONTRACT
+
+    const versionAbi = versionData?.itemVersion?.sourceData?.abi
+    if (!versionAbi) return ERC_1155_SALE_CONTRACT
+
+    if (typeof versionAbi === 'string') {
+      try {
+        return JSON.parse(versionAbi)
+      } catch {
+        return ERC_1155_SALE_CONTRACT
+      }
+    }
+
+    return versionAbi
+  }
+
+  const abi = getAbi()
+
+  const {
     data: paymentTokenERC1155,
     isLoading: isLoadingPaymentTokenERC1155,
     isError: isErrorPaymentTokenERC1155
   } = useReadContract({
     chainId,
-    abi: ERC_1155_SALE_CONTRACT,
+    abi,
     address: contractAddress as Hex,
-    functionName: 'paymentToken'
+    functionName: 'paymentToken',
+    query: {
+      enabled: !!versionData || isErrorVersion
+    }
   })
 
   interface SaleDetailsERC1155 {
@@ -252,14 +295,17 @@ export const useSaleContractConfig = ({
     isError: isErrorGlobalSaleDetailsERC1155
   } = useReadContract({
     chainId,
-    abi: ERC_1155_SALE_CONTRACT,
+    abi,
     address: contractAddress as Hex,
-    functionName: 'globalSaleDetails'
+    functionName: 'globalSaleDetails',
+    query: {
+      enabled: !!versionData || isErrorVersion
+    }
   })
 
   const baseTokenSaleContract = {
     chainId,
-    abi: ERC_1155_SALE_CONTRACT as Abi,
+    abi,
     address: contractAddress as Hex,
     functionName: 'tokenSaleDetails'
   }
@@ -277,8 +323,14 @@ export const useSaleContractConfig = ({
     contracts: tokenSaleContracts
   })
 
-  const isLoadingERC1155 = isLoadingPaymentTokenERC1155 || isLoadingGlobalSaleDetailsERC1155 || isLoadingTokenSaleDetailsERC1155
-  const isErrorERC1155 = isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155
+  const isLoadingERC1155 =
+    isLoadingPaymentTokenERC1155 ||
+    isLoadingGlobalSaleDetailsERC1155 ||
+    isLoadingTokenSaleDetailsERC1155 ||
+    isLoadingVersion ||
+    isLoadingBytecode
+  const isErrorERC1155 =
+    isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155 || isErrorBytecode
 
   if (isLoadingERC1155 || isErrorERC1155) {
     return {
@@ -291,7 +343,7 @@ export const useSaleContractConfig = ({
   const getSaleConfigs = (): SaleConfig[] => {
     let saleInfos: SaleConfig[] = []
 
-    if (isLoadingERC1155 || isErrorERC1155) {
+    if (isLoadingERC1155 || isErrorERC1155 || isLoadingVersion || isLoadingBytecode) {
       return saleInfos
     }
 

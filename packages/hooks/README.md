@@ -13,7 +13,8 @@ Wrap your application with the `SequenceHooksProvider` to provide a config to th
       metadataUrl: 'your-metadata-url',
       apiUrl: 'your-api-url',
       indexerUrl: 'your-indexer-url',
-      imageProxyUrl: 'your-image-proxy-url'
+      imageProxyUrl: 'your-image-proxy-url',
+      builderUrl: 'your-builder-api-url'
     }
   }}
 >
