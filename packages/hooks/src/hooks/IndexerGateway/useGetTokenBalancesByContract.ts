@@ -83,7 +83,7 @@ export const useGetTokenBalancesByContract = (args: IndexerGateway.GetTokenBalan
     getNextPageParam: ({ page }) => {
       return page?.more ? page : undefined
     },
-    initialPageParam: { pageSize: args.page?.pageSize } as Page,
+    initialPageParam: { ...args?.page } as Page,
     retry: options?.retry ?? false,
     staleTime: time.oneSecond * 30,
     enabled: args.filter.contractAddresses.length > 0 && !options?.disabled
