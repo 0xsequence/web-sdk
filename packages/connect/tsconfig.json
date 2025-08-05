@@ -11,6 +11,7 @@
     "strict": true,
     // "noUncheckedIndexedAccess": true,
     "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "sourceMap": true,
     "declaration": false,
     "lib": ["es2022", "dom", "dom.iterable"],

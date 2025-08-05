@@ -5,7 +5,6 @@ import { useAPIClient } from '@0xsequence/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAccount, useConnect, useConnections, useDisconnect, type Connector, type UseConnectionsReturnType } from 'wagmi'
 
-import { SEQUENCE_UNIVERSAL_CONNECTOR_NAME } from '../components/Connect/Connect.js'
 import type { ExtendedConnector } from '../types.js'
 
 import { useWaasGetLinkedWalletsSignature } from './useWaasGetLinkedWalletsSignature.js'
@@ -321,10 +320,6 @@ export const useWallets = (): UseWalletsReturnType => {
 const getConnectorName = (connector: Connector) => {
   const connectorName = connector.name
   const connectorWalletName = (connector._wallet as any)?.name
-
-  if (connectorName === SEQUENCE_UNIVERSAL_CONNECTOR_NAME) {
-    return 'Sequence Universal'
-  }
 
   return connectorWalletName ?? connectorName
 }

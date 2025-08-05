@@ -145,12 +145,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <div id="kit-provider">
                   <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                    <Connect
-                      onClose={() => setOpenConnectModal(false)}
-                      emailConflictInfo={emailConflictInfo}
-                      isPreview
-                      {...props}
-                    />
+                    <Connect onClose={() => setOpenConnectModal(false)} isPreview {...props} />
                   </ThemeProvider>
                 </div>
                 {children}

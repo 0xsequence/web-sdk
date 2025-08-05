@@ -11,8 +11,6 @@ export interface LogoProps {
   style?: React.CSSProperties
 }
 
-export type WalletType = 'waas' | 'universal'
-
 export interface WalletProperties {
   id: string
   logoDark: FunctionComponent<LogoProps>
@@ -65,7 +63,6 @@ export type ModalPosition =
 
 export interface ConnectConfig {
   projectAccessKey: string
-  waasConfigKey?: string
   disableAnalytics?: boolean
   defaultTheme?: Theme
   position?: ModalPosition
@@ -89,14 +86,4 @@ export interface ConnectConfig {
 export type StorageItem = {
   [LocalStorageKey.EthAuthProof]: ETHAuthProof
   [LocalStorageKey.EthAuthSettings]: EthAuthSettings
-  [LocalStorageKey.WaasEmailIdToken]: string
-  [LocalStorageKey.WaasGoogleClientID]: string
-  [LocalStorageKey.WaasGoogleIdToken]: string
-  [LocalStorageKey.WaasEpicAuthUrl]: string
-  [LocalStorageKey.WaasEpicIdToken]: string
-  [LocalStorageKey.WaasAppleClientID]: string
-  [LocalStorageKey.WaasAppleIdToken]: string
-  [LocalStorageKey.WaasAppleRedirectURI]: string
-  [LocalStorageKey.WaasActiveLoginType]: string
-  [LocalStorageKey.WaasSignInEmail]: string
 }

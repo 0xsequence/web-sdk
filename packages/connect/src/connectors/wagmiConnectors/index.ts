@@ -1,2 +1,1 @@
-export * from './sequenceConnector.js'
-export * from './sequenceWaasConnector.js'
+export * from './sequenceV3Connector.js'

@@ -21,6 +21,7 @@ import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
+import { Abi, AbiFunction } from 'ox'
 import React, { useEffect, type ComponentProps } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, toHex, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
@@ -62,6 +63,7 @@ export const Connected = () => {
 
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
   const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
+  const isV3WalletConnectionActive = wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
 
   const {
     data: txnData,
@@ -313,6 +315,35 @@ export const Connected = () => {
         console.error(e)
       }
     }
+  }
+
+  const getEmitterContractAddress = (redirectUrl: string) => {
+    switch (redirectUrl) {
+      case 'http://localhost:4444':
+      case 'http://localhost:4445': // Intentionally broken
+        // Implicit validation for 'http://localhost:4444'
+        return '0x33985d320809E26274a72E03268c8a29927Bc6dA'
+      case 'https://demo-dapp-v3.pages.dev':
+        // Implicit validation for 'https://demo-dapp-v3.pages.dev'
+        return '0x8F6066bA491b019bAc33407255f3bc5cC684A5a4'
+      default:
+        // No implicit validation against URLs
+        return '0xb7bE532959236170064cf099e1a3395aEf228F44'
+    }
+  }
+
+  const EMITTER_ABI = Abi.from(['function explicitEmit()', 'function implicitEmit()'])
+
+  const runSendV3TestTransaction = async () => {
+    if (!walletClient) {
+      return
+    }
+
+    sendTransaction({
+      to: getEmitterContractAddress(window.location.origin),
+      value: 0n,
+      data: AbiFunction.getSelector(EMITTER_ABI[1])
+    })
   }
 
   const runSendTransaction = async () => {
@@ -610,6 +641,15 @@ export const Connected = () => {
             <Text className="mt-4" variant="small-bold" color="muted">
               Send Transactions
             </Text>
+
+            {isV3WalletConnectionActive && (
+              <CardButton
+                title="Send V3 transaction"
+                description="Send a transaction with your V3 wallet"
+                isPending={isPendingSendTxn}
+                onClick={runSendV3TestTransaction}
+              />
+            )}
 
             {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton

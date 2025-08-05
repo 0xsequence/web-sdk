@@ -15,20 +15,12 @@ export type {
   StorageItem,
   Wallet,
   WalletField,
-  WalletProperties,
-  WalletType
+  WalletProperties
 } from './types.js'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
-export {
-  getDefaultConnectors,
-  getDefaultUniversalConnectors,
-  getDefaultWaasConnectors,
-  type DefaultConnectorOptions,
-  type DefaultUniversalConnectorOptions,
-  type DefaultWaasConnectorOptions
-} from './config/defaultConnectors.js'
+export { getDefaultConnectors, type DefaultConnectorOptions } from './config/defaultConnectors.js'
 export { getDefaultChains } from './config/defaultChains.js'
 export { getDefaultTransports } from './config/defaultTransports.js'
 
@@ -68,27 +60,12 @@ export { ThemeContextProvider, useThemeContext } from './contexts/Theme.js'
 export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/WalletConfig.js'
 
 // Connectors
-export { apple, type AppleOptions } from './connectors/apple/apple.js'
-export { appleWaas, type AppleWaasOptions } from './connectors/apple/appleWaas.js'
-export { epicWaas, type EpicWaasOptions } from './connectors/epic/epicWaas.js'
+
 export { coinbaseWallet } from './connectors/coinbaseWallet/coinbaseWallet.js'
-export { discord, type DiscordOptions } from './connectors/discord/discord.js'
-export { email, type EmailOptions } from './connectors/email/email.js'
-export { emailWaas, type EmailWaasOptions } from './connectors/email/emailWaas.js'
-export { facebook, type FacebookOptions } from './connectors/facebook/facebook.js'
-export { google, type GoogleOptions } from './connectors/google/google.js'
-export { googleWaas, type GoogleWaasOptions } from './connectors/google/googleWaas.js'
+
 export { mock } from './connectors/mock/mock.js'
-export { sequence, type SequenceOptions } from './connectors/sequence/sequence.js'
-export { twitch, type TwitchOptions } from './connectors/twitch/twitch.js'
+
 export { walletConnect } from './connectors/walletConnect/walletConnect.js'
-export { ecosystemWallet, type EcosystemWalletOptions } from './connectors/ecosystem/index.js'
-export {
-  sequenceWaasWallet,
-  sequenceWallet,
-  type BaseSequenceConnectorOptions,
-  type BaseSequenceWaasConnectorOptions
-} from './connectors/wagmiConnectors/index.js'
 
 // Hooks
 export { useOpenConnectModal } from './hooks/useOpenConnectModal.js'
@@ -106,8 +83,6 @@ export { useListAccounts } from './hooks/useListAccounts.js'
 export type { ConnectedWallet } from './hooks/useWallets.js'
 export type { LinkedWallet } from '@0xsequence/api'
 export { useSocialLink } from './hooks/useSocialLink.js'
-
-export { useDirectEcosystemConnect } from './hooks/useDirectEcosystemConnect.js'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge/index.js'

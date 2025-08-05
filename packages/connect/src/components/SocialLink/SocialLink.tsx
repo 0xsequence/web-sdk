@@ -28,8 +28,6 @@ export function SocialLink() {
   const [code, setCode] = useState<string[]>([])
 
   const sequenceWaaS = useSequenceWaaS()
-  const { data: googleClientId } = useStorageItem(LocalStorageKey.WaasGoogleClientID)
-  const { data: appleClientId } = useStorageItem(LocalStorageKey.WaasAppleClientID)
 
   const {
     inProgress: emailAuthInProgress,
@@ -147,23 +145,7 @@ export function SocialLink() {
           Connect (link) another login method
         </Text>
 
-        <div className="flex flex-col w-fit gap-2">
-          {googleClientId && <GoogleLogin onSuccess={handleGoogleLogin} shape="circle" width="100%" />}
-          {appleClientId && (
-            // @ts-ignore
-            <AppleSignin
-              authOptions={{
-                clientId: appleClientId,
-                scope: 'openid email',
-                redirectURI: appleRedirectUri,
-                usePopup: true
-              }}
-              onError={(error: unknown) => console.error(error)}
-              onSuccess={handleAppleLogin}
-              uiType="dark"
-            />
-          )}
-        </div>
+        <div className="flex flex-col w-fit gap-2"></div>
 
         <Divider />
 
