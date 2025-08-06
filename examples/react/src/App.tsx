@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { Homepage } from './components/Homepage'
 import { ImmutableCallback } from './components/ImmutableCallback'
+import { XAuthCallback } from './components/XAuthCallback'
 import { checkoutConfig, config } from './config'
 
 export const App = () => {
@@ -16,6 +17,7 @@ export const App = () => {
             <Routes>
               <Route path="/" element={<Homepage />} />
               <Route path="/auth-callback" element={<ImmutableCallback />} />
+              <Route path="/auth-callback-X" element={<XAuthCallback />} />
             </Routes>
           </BrowserRouter>
         </SequenceCheckoutProvider>

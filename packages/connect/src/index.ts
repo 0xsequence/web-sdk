@@ -60,7 +60,6 @@ export { ThemeContextProvider, useThemeContext } from './contexts/Theme.js'
 export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/WalletConfig.js'
 
 // Connectors
-
 export { coinbaseWallet } from './connectors/coinbaseWallet/coinbaseWallet.js'
 
 export { mock } from './connectors/mock/mock.js'

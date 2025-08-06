@@ -9,17 +9,19 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, cn, Select, Text } from '@0xsequence/design-system'
+import { Button, Card, cn, Text } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/hooks'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
-import { useEffect, useState, type ComponentProps } from 'react'
+import { useCallback, useEffect, useState, type ComponentProps } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, parseUnits } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { isDebugMode, sponsoredContractAddresses } from '../../config'
+
+import { Select } from './Select'
 
 import { messageToSign } from '@/constants'
 import { abi } from '@/constants/nft-abi'
@@ -100,13 +102,7 @@ export const Connected = () => {
 
   const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps | undefined>(undefined)
 
-  useEffect(() => {
-    if (pendingFeeOptionConfirmation) {
-      checkTokenBalancesForFeeOptions()
-    }
-  }, [pendingFeeOptionConfirmation])
-
-  const checkTokenBalancesForFeeOptions = async () => {
+  const checkTokenBalancesForFeeOptions = useCallback(async () => {
     if (pendingFeeOptionConfirmation) {
       const [account] = await walletClient!.getAddresses()
       const nativeTokenBalance = await indexerClient.getNativeTokenBalance({ accountAddress: account })
@@ -138,7 +134,13 @@ export const Connected = () => {
 
       setFeeOptionBalances(balances)
     }
-  }
+  }, [pendingFeeOptionConfirmation, indexerClient, walletClient])
+
+  useEffect(() => {
+    if (pendingFeeOptionConfirmation) {
+      checkTokenBalancesForFeeOptions()
+    }
+  }, [pendingFeeOptionConfirmation, checkTokenBalancesForFeeOptions])
 
   const networkForCurrentChainId = allNetworks.find(n => n.chainId === chainId)!
 
@@ -495,7 +497,6 @@ export const Connected = () => {
               <div className="my-3">
                 <Select
                   name="feeOption"
-                  labelLocation="top"
                   label="Pick a fee option"
                   onValueChange={val => {
                     const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
@@ -504,7 +505,7 @@ export const Connected = () => {
                       setFeeOptionAlert(undefined)
                     }
                   }}
-                  value={selectedFeeOptionTokenName}
+                  value={selectedFeeOptionTokenName || ''}
                   options={
                     pendingFeeOptionConfirmation?.options?.map(option => ({
                       label: (

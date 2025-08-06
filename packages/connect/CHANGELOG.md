@@ -1,5 +1,23 @@
 # @0xsequence/connect
 
+## 5.3.9
+
+### Patch Changes
+
+- - erc1155SaleContract fix
+  - X auth support for Embedded Wallet
+- Updated dependencies []:
+  - @0xsequence/hooks@5.3.9
+
+## 5.3.8
+
+### Patch Changes
+
+- erc1155SaleContract fix
+
+- Updated dependencies []:
+  - @0xsequence/hooks@5.3.8
+
 ## 5.3.7
 
 ### Patch Changes

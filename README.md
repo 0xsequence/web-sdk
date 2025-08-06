@@ -78,6 +78,13 @@ interface CreateConfigOptions {
         redirectURI: string
       }
 
+  X?:
+    | boolean
+    | {
+        clientId: string
+        redirectURI: string
+      }
+      
   email?:
     | boolean
     | {
@@ -109,6 +116,12 @@ const config = createConfig('waas', {
     redirectURI: '...'
   },
 
+  X: {
+    clientId: '<your-X-client-id>',
+    redirectURI: '...'
+  },
+
+
   walletConnect: {
     projectId: '<your-wallet-connect-id>'
   },
@@ -121,6 +134,34 @@ function App() {
     <SequenceConnect config={config}>
       <Content />
     </SequenceConnect>
+  )
+}
+```
+
+#### Note about X (formerly Twitter) authentication. X authentication specifically needs a callback route; either a frontend page or a backend endpoint. An frontend example callback page is below:
+Please ensure that the redirect uri and the callback page route is identical or X will refuse the authentication
+
+```js
+export function XAuthCallback() {
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search)
+
+    const payload = {
+      code: query.get('code'),
+      state: query.get('state')
+    }
+
+    if (window.opener) {
+      window.opener.postMessage({ type: 'OAUTH_RETURN', data: payload }, '*')
+    }
+
+    window.close()
+  }, [])
+
+  return (
+    <h3>
+      you may now close this window.
+    </h3>
   )
 }
 ```

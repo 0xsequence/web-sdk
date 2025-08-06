@@ -57,8 +57,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     hideExternalConnectOptions = false,
     hideConnectedWallets = false,
     hideSocialConnectOptions = false,
-    customCSS,
-    waasConfigKey = ''
+    customCSS
   } = config
 
   const defaultAppName = signIn.projectName || 'app'
@@ -77,11 +76,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
 
   const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
-
-  const googleWaasConnector = wagmiConfig.connectors.find(
-    c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
-  ) as ExtendedConnector | undefined
-  const googleClientId: string = (googleWaasConnector as any)?.params?.googleClientId || ''
 
   const setupAnalytics = (projectAccessKey: string) => {
     const s = sequence.initWallet(projectAccessKey)
@@ -194,7 +188,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
             >
               <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                 <ToastProvider>
-                  <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey, setIsSocialLinkOpen }}>
+                  {/* TODO: either remove SocialLinkContextProvider or figure out what to do for waasConfigKey */}
+                  <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey: '', setIsSocialLinkOpen }}>
                     <ShadowRoot theme={theme} customCSS={customCSS}>
                       <AnimatePresence>
                         {openConnectModal && (

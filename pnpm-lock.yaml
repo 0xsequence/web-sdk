@@ -108,14 +108,17 @@ importers:
         specifier: workspace:*
         version: link:../../packages/hooks
       '@0xsequence/network':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/wallet-widget':
         specifier: workspace:*
         version: link:../../packages/wallet-widget
+      '@radix-ui/react-select':
+        specifier: ^2.2.5
+        version: 2.2.5(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@tailwindcss/postcss':
         specifier: ^4.1.4
         version: 4.1.11
@@ -187,10 +190,10 @@ importers:
         specifier: workspace:*
         version: link:../../packages/immutable-connector
       '@0xsequence/network':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/wallet-core':
         specifier: github:0xsequence/sequence.js#dists/wallet/core
@@ -207,6 +210,9 @@ importers:
       '@imtbl/sdk':
         specifier: ^2.2.0
         version: 2.4.5(bufferutil@4.0.9)(hardhat@2.26.1(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
+      '@radix-ui/react-select':
+        specifier: ^2.2.5
+        version: 2.2.5(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@tanstack/react-query':
         specifier: ^5.74.11
         version: 5.84.1(react@19.1.1)
@@ -278,11 +284,11 @@ importers:
   packages/checkout:
     dependencies:
       0xsequence:
-        specifier: '>= 2.3.7'
+        specifier: '>= 2.3.23'
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/api':
-        specifier: '>=2.3.11'
-        version: 2.3.11
+        specifier: '>=2.3.23'
+        version: 2.3.23
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(motion@12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -290,19 +296,19 @@ importers:
         specifier: workspace:*
         version: link:../hooks
       '@0xsequence/indexer':
-        specifier: '>= 2.3.7'
+        specifier: '>= 2.3.23'
         version: 2.3.23
       '@0xsequence/marketplace':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23
       '@0xsequence/metadata':
-        specifier: '>= 2.3.7'
+        specifier: '>= 2.3.23'
         version: 2.3.23
       '@0xsequence/network':
-        specifier: '>= 2.3.7'
+        specifier: '>= 2.3.23'
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: '>= 2.3.7'
+        specifier: '>= 2.3.23'
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       date-fns:
         specifier: ^4.1.0
@@ -369,22 +375,22 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/indexer':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23
       '@0xsequence/metadata':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23
       '@0xsequence/network':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/provider':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/utils':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/wallet-core':
         specifier: github:0xsequence/sequence.js#dists/wallet/core
@@ -421,7 +427,7 @@ importers:
         version: 10.0.0
     devDependencies:
       0xsequence:
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/hooks':
         specifier: workspace:*
@@ -454,16 +460,19 @@ importers:
   packages/hooks:
     devDependencies:
       '@0xsequence/api':
-        specifier: 2.3.11
-        version: 2.3.11
+        specifier: 2.3.23
+        version: 2.3.23
+      '@0xsequence/builder':
+        specifier: ^2.3.23
+        version: 2.3.23
       '@0xsequence/indexer':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23
       '@0xsequence/metadata':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23
       '@0xsequence/network':
-        specifier: ^2.3.10
+        specifier: ^2.3.23
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@tanstack/react-query':
         specifier: ^5.74.11
@@ -508,7 +517,7 @@ importers:
   packages/immutable-connector:
     dependencies:
       0xsequence:
-        specifier: '>= 2.3.7'
+        specifier: '>= 2.3.23'
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/connect':
         specifier: workspace:*
@@ -538,8 +547,8 @@ importers:
   packages/wallet-widget:
     dependencies:
       '@0xsequence/api':
-        specifier: '>=2.3.11'
-        version: 2.3.11
+        specifier: '>=2.3.23'
+        version: 2.3.23
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(motion@12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -547,13 +556,13 @@ importers:
         specifier: workspace:*
         version: link:../hooks
       '@0xsequence/indexer':
-        specifier: '>=2.3.7'
+        specifier: '>=2.3.23'
         version: 2.3.23
       '@0xsequence/metadata':
-        specifier: '>=2.3.7'
+        specifier: '>=2.3.23'
         version: 2.3.23
       '@0xsequence/network':
-        specifier: '>=2.3.7'
+        specifier: '>=2.3.23'
         version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@radix-ui/react-popover':
         specifier: ^1.1.11
@@ -624,6 +633,9 @@ packages:
     resolution: {integrity: sha512-2yY0sp9N6fXiocSEqmLXvwLOQUhQ9MsvwcwAmr+76thg5aifnuzJJaEAaCRolo8sfyy9no6y8Ll8NHr4aduQEQ==}
     peerDependencies:
       ethers: '>=6'
+
+  '@0xsequence/builder@2.3.23':
+    resolution: {integrity: sha512-Mctq8uZIDmb2XpGT58Wx6UwYOCcyeQASYXcoYFuWw8xcqEnS1E6Ecmc/olqEGKSO6LMmaTzEe+8pnn+7JfLT6w==}
 
   '@0xsequence/core@2.3.23':
     resolution: {integrity: sha512-0y6TidFNJFYQF2yqGXScWYZTuGy651qwBH+9fQKRjzGSa0eXpe3zkccqiNuTtOXpR5QHBVGJ2U69SbK3ajzKEA==}
@@ -7874,6 +7886,8 @@ snapshots:
       '@0xsequence/utils': 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/wallet': 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+
+  '@0xsequence/builder@2.3.23': {}
 
   '@0xsequence/core@2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
