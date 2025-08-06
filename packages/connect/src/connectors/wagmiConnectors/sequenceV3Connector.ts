@@ -1,4 +1,6 @@
-import { DappClient, TransportMode } from '@0xsequence/dapp-client'
+import { DappClient } from '@0xsequence/dapp-client'
+import { Relayer } from '@0xsequence/wallet-core'
+import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
   RpcError,
@@ -25,6 +27,15 @@ export interface BaseSequenceV3ConnectorOptions {
   defaultNetwork: number
   nodesUrl?: string
   loginType: 'email' | 'google' | 'apple' | 'passkey'
+}
+
+export interface FeeOptionConfirmationHandler {
+  confirmFeeOption(
+    id: string,
+    options: Relayer.FeeOption[],
+    txs: TransactionRequest[],
+    chainId: number
+  ): Promise<{ id: string; feeOption?: Relayer.FeeOption; confirmed: boolean }>
 }
 
 export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
@@ -55,6 +66,7 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       id: `sequence-v3-wallet`,
       name: 'Sequence V3 Wallet',
       type: sequenceV3Wallet.type,
+      provider,
 
       get client() {
         return client
@@ -90,7 +102,6 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
 
       async isAuthorized() {
         try {
-          // This is the first async method wagmi calls on page load.
           await client.initialize()
           return client.getWalletAddress() ? true : false
         } catch (e) {
@@ -139,6 +150,8 @@ export class SequenceV3Provider implements EIP1193Provider {
   private currentChainId: number
   private nodesUrl: string
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
+
+  public feeConfirmationHandler?: FeeOptionConfirmationHandler
 
   private readonly listeners = new Map<keyof EIP1193EventMap, Array<(...args: any[]) => void>>()
 
@@ -224,12 +237,10 @@ export class SequenceV3Provider implements EIP1193Provider {
         const message = params[0] as string
 
         return new Promise((resolve, reject) => {
-          // TODO add response type here
           const unsubscribe = this.client.on('signatureResponse', (data: any) => {
             if (data.error) {
               reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
             } else {
-              console.log('Signature response:', data)
               resolve(data.response.signature)
             }
             unsubscribe()
@@ -276,12 +287,10 @@ export class SequenceV3Provider implements EIP1193Provider {
         }
 
         return new Promise((resolve, reject) => {
-          // TODO add response type here
           const unsubscribe = this.client.on('signatureResponse', (data: any) => {
             if (data.error) {
               reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
             } else {
-              console.log('Signature response:', data)
               resolve(data.response.signature)
             }
             unsubscribe()
@@ -299,14 +308,40 @@ export class SequenceV3Provider implements EIP1193Provider {
           })
         }
         const tx = params[0] as TransactionRequest
+        const transactions = [{ to: tx.to!, value: tx.value ?? 0n, data: tx.data ?? '0x' }]
 
-        return this.client.sendTransaction(this.currentChainId, [
-          {
-            to: tx.to!,
-            value: tx.value ?? 0n,
-            data: tx.data ?? '0x'
+        const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+        let selectedFeeOption: Relayer.FeeOption | undefined
+
+        if (feeOptions && feeOptions.length > 0) {
+          if (!this.feeConfirmationHandler) {
+            throw new RpcError(new Error('Unable to send transaction: please use useFeeOptions hook and pick a fee option'), {
+              code: -32000,
+              shortMessage: 'Fee confirmation handler not found'
+            })
           }
-        ])
+
+          const id = uuidv4()
+          const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
+
+          if (!confirmation.confirmed) {
+            throw new RpcError(new Error('User rejected the request.'), {
+              code: 4001,
+              shortMessage: 'User rejected send transaction request.'
+            })
+          }
+
+          if (id !== confirmation.id) {
+            throw new RpcError(new Error('User confirmation ids do not match'), {
+              code: -32000,
+              shortMessage: 'Confirmation ID mismatch'
+            })
+          }
+
+          selectedFeeOption = confirmation.feeOption
+        }
+
+        return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
       }
 
       case 'wallet_switchEthereumChain': {
