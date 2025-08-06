@@ -62,8 +62,6 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
 
       auxData: undefined as Record<string, unknown> | undefined,
 
-      // The setup method is now very simple. The main initialization happens
-      // on demand inside isAuthorized() and connect().
       async setup() {
         if (typeof window !== 'object') {
           return
@@ -81,7 +79,6 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       },
 
       async getAccounts() {
-        // We still await initialize here to handle cases where this is called directly.
         await client.initialize()
         const address = client.getWalletAddress()
         return address ? [getAddress(address)] : []
@@ -94,9 +91,8 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       async isAuthorized() {
         try {
           // This is the first async method wagmi calls on page load.
-          // Initializing the client here is the correct place.
           await client.initialize()
-          return client.isInitialized
+          return client.getWalletAddress() ? true : false
         } catch (e) {
           console.error('Error during authorization check:', e)
           return false
