@@ -15,7 +15,7 @@ const walletType: WalletType = searchParams.get('type') === 'universal' ? 'unive
 const isDebugMode = searchParams.has('debug')
 // @ts-ignore
 const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
-const projectAccessKey = isDev ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+const projectAccessKey = isDev ? 'AQAAAAAAAJ0CLMPDVgdSVHFag6RLxYZ1FjY' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
