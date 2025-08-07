@@ -441,9 +441,6 @@ importers:
       '@0xsequence/api':
         specifier: 2.3.23
         version: 2.3.23
-      '@0xsequence/builder':
-        specifier: ^2.3.23
-        version: 2.3.23
       '@0xsequence/indexer':
         specifier: ^2.3.23
         version: 2.3.23
@@ -612,9 +609,6 @@ packages:
     resolution: {integrity: sha512-2yY0sp9N6fXiocSEqmLXvwLOQUhQ9MsvwcwAmr+76thg5aifnuzJJaEAaCRolo8sfyy9no6y8Ll8NHr4aduQEQ==}
     peerDependencies:
       ethers: '>=6'
-
-  '@0xsequence/builder@2.3.23':
-    resolution: {integrity: sha512-Mctq8uZIDmb2XpGT58Wx6UwYOCcyeQASYXcoYFuWw8xcqEnS1E6Ecmc/olqEGKSO6LMmaTzEe+8pnn+7JfLT6w==}
 
   '@0xsequence/core@2.3.17':
     resolution: {integrity: sha512-0grBs92Z4jBVx6mKapgLvFe5W0i93I7TonQWdzVLxaBjZTfeTi9QDZ6f7knvxBbTT7o2huKYzCoubCCptH6oQg==}
@@ -7879,8 +7873,6 @@ snapshots:
       '@0xsequence/utils': 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/wallet': 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-
-  '@0xsequence/builder@2.3.23': {}
 
   '@0xsequence/core@2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:

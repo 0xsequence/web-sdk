@@ -18,7 +18,6 @@ export { useGetExchangeRate } from './hooks/API/useGetExchangeRate.js'
 export { useGetWaasStatus } from './hooks/API/useGetWaasStatus.js'
 
 // Builder
-export { useBuilderClient } from './hooks/Builder/useBuilderClient.js'
 export { useFindVersion } from './hooks/Builder/useFindVersion.js'
 
 // Indexer
