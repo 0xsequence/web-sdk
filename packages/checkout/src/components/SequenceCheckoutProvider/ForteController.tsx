@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
 import { useConfig } from '@0xsequence/hooks'
+import { useEffect, useState } from 'react'
 
 import { fetchFortePaymentStatus } from '../../api/data.js'
-import { useEnvironmentContext, FortePaymentControllerProvider, type FortePaymentData } from '../../contexts/index.js'
+import { FortePaymentControllerProvider, useEnvironmentContext, type FortePaymentData } from '../../contexts/index.js'
 
 const POLLING_TIME = 10 * 1000
 
