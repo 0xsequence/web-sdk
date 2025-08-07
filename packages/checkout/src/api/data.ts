@@ -387,13 +387,7 @@ export const createFortePaymentIntent = async (
   } else {
     let listingData: { [key: string]: any } = {}
 
-    if (protocolConfig.protocol == 'seaport') {
-      listingData = {
-        protocol: protocolConfig.protocol,
-        orderHash: protocolConfig.orderHash,
-        protocolAddress: protocolConfig.seaportProtocolAddress
-      }
-    } else if (protocolConfig.protocol == 'custom_evm_call') {
+    if (protocolConfig.protocol == 'custom_evm_call') {
       listingData = {
         ...(approvedSpenderAddress ? { payToAddress: approvedSpenderAddress } : {}),
         protocol: protocolConfig.protocol,

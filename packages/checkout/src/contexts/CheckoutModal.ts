@@ -37,20 +37,13 @@ export interface ForteMintConfig {
   sellerAddress: string
 }
 
-export interface ForteSeaportConfig {
-  protocol: 'seaport'
-  orderHash: string
-  seaportProtocolAddress: string
-  sellerAddress: string
-}
-
 export interface ForteCustomEvmCallConfig {
   protocol: 'custom_evm_call'
   calldata: string | StructuredCalldata
   sellerAddress: string
 }
 
-export type ForteConfig = ForteMintConfig | ForteSeaportConfig | ForteCustomEvmCallConfig
+export type ForteConfig = ForteMintConfig | ForteCustomEvmCallConfig
 
 export interface CreditCardCheckout {
   chainId: number
