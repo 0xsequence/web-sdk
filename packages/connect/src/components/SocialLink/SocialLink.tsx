@@ -1,4 +1,4 @@
-import { Button, Divider, PINCodeInput, Spinner, Text, TextInput, useToast } from '@0xsequence/design-system'
+import { Button, Divider, PINCodeInput, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { type Account } from '@0xsequence/waas'
 import { GoogleLogin, type CredentialResponse } from '@react-oauth/google'
 import { ethers } from 'ethers'
@@ -13,8 +13,7 @@ import { isAccountAlreadyLinkedError, useEmailAuth } from '../../utils/useEmailA
 import { AccountName } from './AccountName.js'
 
 export function SocialLink() {
-  const toast = useToast()
-
+  const [linkErrorMessage, setLinkErrorMessage] = useState<string | null>('this is and error message')
   const [currentAccount, setCurrentAccount] = useState<Account>()
   const [accounts, setAccounts] = useState<Account[]>()
   const [loading, setLoading] = useState<boolean>(true)
@@ -63,16 +62,13 @@ export function SocialLink() {
   const handleGoogleLogin = async (tokenResponse: CredentialResponse) => {
     const challenge = await sequenceWaaS.initAuth({ idToken: tokenResponse.credential! })
 
+    setLinkErrorMessage(null)
     try {
       const linkResponse = await sequenceWaaS.linkAccount(challenge)
       setAccounts(accounts => [...(accounts || []), linkResponse.account])
     } catch (e) {
       if (isAccountAlreadyLinkedError(e)) {
-        toast({
-          title: 'Account already linked',
-          description: 'This account is already linked to another wallet',
-          variant: 'error'
-        })
+        setLinkErrorMessage('This account is already linked to another wallet')
       }
     }
   }
@@ -80,16 +76,14 @@ export function SocialLink() {
   const appleRedirectUri = 'https://' + window.location.host
   const handleAppleLogin = async (response: { authorization: { id_token: string } }) => {
     const challenge = await sequenceWaaS.initAuth({ idToken: response.authorization.id_token })
+
+    setLinkErrorMessage(null)
     try {
       const linkResponse = await sequenceWaaS.linkAccount(challenge)
       setAccounts(accounts => [...(accounts || []), linkResponse.account])
     } catch (e) {
       if (isAccountAlreadyLinkedError(e)) {
-        toast({
-          title: 'Account already linked',
-          description: 'This account is already linked to another wallet',
-          variant: 'error'
-        })
+        setLinkErrorMessage('This account is already linked to another wallet')
       }
     }
   }
@@ -165,6 +159,12 @@ export function SocialLink() {
           )}
         </div>
 
+        {linkErrorMessage && (
+          <Text variant="normal" color="negative" fontWeight="bold">
+            {linkErrorMessage}
+          </Text>
+        )}
+
         <Divider />
 
         <div className="mt-2">
@@ -210,11 +210,13 @@ export function SocialLink() {
                 name="email"
                 type="email"
                 onChange={(ev: { target: { value: SetStateAction<string> } }) => {
+                  setLinkErrorMessage(null)
                   setEmail(ev.target.value)
                 }}
                 ref={inputRef}
                 onKeyDown={(ev: { key: string }) => {
                   if (email && ev.key === 'Enter') {
+                    setLinkErrorMessage(null)
                     initiateEmailAuth(email)
                   }
                 }}

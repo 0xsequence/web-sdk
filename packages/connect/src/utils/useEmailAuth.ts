@@ -1,4 +1,3 @@
-import { useToast } from '@0xsequence/design-system'
 import { Challenge } from '@0xsequence/waas'
 import { useEffect, useState } from 'react'
 
@@ -13,8 +12,6 @@ export function useEmailAuth({
   sessionName: string
   linkAccount?: boolean
 }) {
-  const toast = useToast()
-
   const [error, setError] = useState<unknown>()
   const [loading, setLoading] = useState(false)
   const [inProgress, setInProgress] = useState(false)
@@ -60,11 +57,7 @@ export function useEmailAuth({
         await sequenceWaaS.linkAccount(challenge.withAnswer(answer))
       } catch (e) {
         if (isAccountAlreadyLinkedError(e)) {
-          toast({
-            title: 'Account already linked',
-            description: 'This account is already linked to another wallet',
-            variant: 'error'
-          })
+          setError('This account is already linked to another wallet')
         }
       }
       setLoading(false)

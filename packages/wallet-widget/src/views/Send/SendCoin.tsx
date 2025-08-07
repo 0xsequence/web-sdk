@@ -21,8 +21,7 @@ import {
   NumericInput,
   Spinner,
   Text,
-  TextInput,
-  useToast
+  TextInput
 } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
@@ -54,7 +53,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { clearCachedBalances } = useClearCachedBalances()
   const publicClient = usePublicClient({ chainId })
   const indexerClient = useIndexerClient(chainId)
-  const toast = useToast()
   const { wallets } = useWallets()
   const { setNavigation } = useNavigation()
   const { setIsBackButtonEnabled } = useNavigationContext()
@@ -73,6 +71,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { data: walletClient } = useWalletClient()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [feeOptions, setFeeOptions] = useState<
     | {
         options: any[]
@@ -152,6 +151,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const isNonZeroAmount = amountRaw > 0n
 
   const handleChangeAmount = (ev: ChangeEvent<HTMLInputElement>) => {
+    setErrorMsg(null)
     const { value } = ev.target
 
     // Prevent value from having more decimals than the token supports
@@ -161,6 +161,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   }
 
   const handleMax = () => {
+    setErrorMsg(null)
     amountInputRef.current?.focus()
     const maxAmount = formatUnits(BigInt(tokenBalance?.balance || 0), decimals).toString()
 
@@ -168,15 +169,18 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   }
 
   const handlePaste = async () => {
+    setErrorMsg(null)
     const result = await navigator.clipboard.readText()
     setToAddress(result)
   }
 
   const handleToAddressClear = () => {
+    setErrorMsg(null)
     setToAddress('')
   }
 
   const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
+    setErrorMsg(null)
     e.preventDefault()
 
     if (!isCorrectChainId && !isConnectorSequenceBased) {
@@ -232,11 +236,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     if (!walletClient) {
       console.error('Wallet client not found')
-      toast({
-        title: 'Error',
-        description: 'Wallet client not available. Please ensure your wallet is connected.',
-        variant: 'error'
-      })
+      setErrorMsg('Wallet client not available. Please ensure your wallet is connected.')
       setIsSendTxnPending(false)
       return
     }
@@ -271,12 +271,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
         })
         setIsSendTxnPending(false) // Set pending to false immediately after getting hash
 
-        toast({
-          title: 'Transaction sent',
-          description: `Successfully sent ${amountToSendFormatted} ${symbol} to ${toAddress}`,
-          variant: 'success'
-        })
-
         analytics?.track({
           event: 'SEND_TRANSACTION_REQUEST',
           props: {
@@ -308,27 +302,18 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
             })
             .catch(error => {
               console.error('Error waiting for transaction receipt:', error)
-              // Optionally show another toast for confirmation failure
             })
         }
       } else {
         // Handle case where txHash is unexpectedly undefined
         setIsSendTxnPending(false)
-        toast({
-          title: 'Transaction Error',
-          description: 'Transaction submitted but no hash received.',
-          variant: 'error'
-        })
+        setErrorMsg('Transaction submitted but no hash received.')
       }
     } catch (error: any) {
       console.error('Transaction failed:', error)
       setIsSendTxnPending(false)
       setIsBackButtonEnabled(true)
-      toast({
-        title: 'Transaction Failed',
-        description: error?.shortMessage || error?.message || 'An unknown error occurred.',
-        variant: 'error'
-      })
+      setErrorMsg(error?.shortMessage || error?.message || 'An unknown error occurred.')
     }
   }
 
@@ -407,6 +392,11 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
               </>
             )}
           </div>
+          {errorMsg && (
+            <Text variant="normal" color="negative" fontWeight="bold">
+              {errorMsg}
+            </Text>
+          )}
 
           <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
             {isCheckingFeeOptions ? (
