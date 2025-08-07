@@ -27,7 +27,6 @@ import {
   type TransactionStatusSettings,
   type TransferFundsSettings
 } from '../../contexts/index.js'
-
 import {
   AddFundsContent,
   CheckoutSelection,
@@ -42,6 +41,7 @@ import {
   TransferToWallet
 } from '../../views/index.js'
 import { NavigationHeader } from '../NavigationHeader.js'
+
 import { ForteController } from './ForteController.js'
 
 export interface SequenceCheckoutConfig {
