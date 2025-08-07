@@ -1,9 +1,9 @@
 import { type ForteConfig } from '@0xsequence/checkout'
 import { zeroAddress } from 'viem'
+import { encodeFunctionData, toHex } from 'viem'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
-import { encodeFunctionData, toHex } from 'viem'
 import { orderbookAbi } from '../constants/orderbook-abi'
 
 interface PurchaseTransactionDataERC721Sale {

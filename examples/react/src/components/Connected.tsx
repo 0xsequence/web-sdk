@@ -1,11 +1,10 @@
 import {
+  TransactionOnRampProvider,
   useAddFundsModal,
   useCheckoutModal,
   useERC1155SaleContractCheckout,
   useSelectPaymentModal,
   useSwapModal,
-  TransactionOnRampProvider,
-  type ForteConfig,
   type SwapModalSettings
 } from '@0xsequence/checkout'
 import {
@@ -24,14 +23,12 @@ import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, type ComponentProps } from 'react'
-import { encodeFunctionData, formatUnits, parseAbi, toHex, zeroAddress } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
-import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
-// import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 import { checkoutPresets } from '../utils/checkout'
