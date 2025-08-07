@@ -1,3 +1,4 @@
+import type { Signers } from '@0xsequence/wallet-core'
 import type { CreateConnectorFn } from 'wagmi'
 
 import { coinbaseWallet } from '../connectors/coinbaseWallet/coinbaseWallet.js'
@@ -31,6 +32,7 @@ export interface DefaultConnectorOptions extends CommonConnectorOptions {
    * @deprecated, use connectors.walletConnect.projectId instead
    */
   walletConnectProjectId?: string
+  permissions?: Signers.Session.ExplicitParams
 }
 
 export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateConnectorFn[] => {
@@ -58,6 +60,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
         dappOrigin: dappOrigin,
+        permissions: options.permissions,
         defaultNetwork: defaultChainId
       })
     )

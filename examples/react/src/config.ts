@@ -6,6 +6,8 @@ import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
 import { zeroAddress } from 'viem'
 
+import { getPermissionForType, PERMISSION_TYPE_LOCAL_STORAGE_KEY, PermissionsType } from './constants/permissions'
+
 const searchParams = new URLSearchParams(location.search)
 
 // append ?type=waas|universal to url to switch between wallet types
@@ -102,7 +104,12 @@ export const config = createConfig({
       passportInstance,
       environment: Environment.SANDBOX
     })
-  ]
+  ],
+  permissions: getPermissionForType(
+    window.location.origin,
+    ChainId.ARBITRUM_SEPOLIA,
+    (localStorage.getItem(PERMISSION_TYPE_LOCAL_STORAGE_KEY) as PermissionsType) ?? 'none'
+  )
 })
 
 export const getErc1155SaleContractConfig = (walletAddress: string) => ({

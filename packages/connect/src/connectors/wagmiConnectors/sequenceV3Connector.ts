@@ -1,5 +1,5 @@
 import { DappClient } from '@0xsequence/dapp-client'
-import { Relayer } from '@0xsequence/wallet-core'
+import { Relayer, Signers } from '@0xsequence/wallet-core'
 import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
@@ -25,6 +25,7 @@ export interface BaseSequenceV3ConnectorOptions {
   walletUrl: string
   dappOrigin: string
   defaultNetwork: number
+  permissions?: Signers.Session.ExplicitParams
   nodesUrl?: string
   loginType: 'email' | 'google' | 'apple' | 'passkey'
 }
@@ -47,7 +48,7 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
   type StorageItem = {}
 
   const client = new DappClient(params.walletUrl, params.dappOrigin)
-  const provider = new SequenceV3Provider(client, params.defaultNetwork, params.nodesUrl, params.loginType)
+  const provider = new SequenceV3Provider(client, params.defaultNetwork, params.nodesUrl, params.loginType, params.permissions)
 
   return createConnector<Provider, Properties, StorageItem>(config => {
     client.on('sessionsUpdated', () => {
@@ -150,6 +151,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private currentChainId: number
   private nodesUrl: string
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
+  private initialPermissions?: Signers.Session.ExplicitParams
 
   public feeConfirmationHandler?: FeeOptionConfirmationHandler
 
@@ -159,11 +161,13 @@ export class SequenceV3Provider implements EIP1193Provider {
     private client: DappClient,
     defaultNetwork: number,
     nodesUrl = 'https://nodes.sequence.app',
-    loginType: 'email' | 'google' | 'apple' | 'passkey' = 'google'
+    loginType: 'email' | 'google' | 'apple' | 'passkey' = 'google',
+    initialPermissions?: Signers.Session.ExplicitParams
   ) {
     this.currentChainId = defaultNetwork
     this.nodesUrl = nodesUrl
     this.loginType = loginType
+    this.initialPermissions = initialPermissions
   }
 
   on<TEvent extends keyof EIP1193EventMap>(event: TEvent, listener: EIP1193EventMap[TEvent]): void {
@@ -212,7 +216,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           const address = this.client.getWalletAddress()
           return address ? [getAddress(address)] : []
         }
-        await this.client.connect(this.currentChainId, undefined, {
+        await this.client.connect(this.currentChainId, this.initialPermissions, {
           preferredLoginMethod: this.loginType
         })
         const walletAddress = this.client.getWalletAddress()

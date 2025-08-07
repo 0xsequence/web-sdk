@@ -2,11 +2,19 @@ import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
 import { Button, Image } from '@0xsequence/design-system'
 import { Footer } from 'example-shared-components'
 
+import { PERMISSION_TYPE_LOCAL_STORAGE_KEY, PermissionsType } from '../constants/permissions'
+import { useLocalState } from '../hooks/useLocalState'
+
 import { Connected } from './Connected'
 
 export const Homepage = () => {
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
+
+  const [initialPermissionsType, setInitialPermissionsType] = useLocalState<PermissionsType>(
+    PERMISSION_TYPE_LOCAL_STORAGE_KEY,
+    'none'
+  )
 
   const onClickConnect = () => {
     setOpenConnectModal(true)
@@ -22,6 +30,23 @@ export const Homepage = () => {
 
           <div className="flex gap-2 flex-row items-center">
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
+          </div>
+
+          <div className="permissions-group">
+            <label htmlFor="initial-permissions">Initial Permissions (Optional)</label>
+            <select
+              id="initial-permissions"
+              value={initialPermissionsType}
+              onChange={e => {
+                setInitialPermissionsType(e.target.value as PermissionsType)
+                window.location.reload()
+              }}
+            >
+              <option value="none">None (Implicit Signer Only)</option>
+              <option value="open">Open</option>
+              <option value="restrictive">Restrictive</option>
+              <option value="cumulative">Restrictive Cumulative</option>
+            </select>
           </div>
         </div>
       ) : (
