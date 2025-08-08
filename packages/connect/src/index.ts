@@ -83,6 +83,9 @@ export type { ConnectedWallet } from './hooks/useWallets.js'
 export type { LinkedWallet } from '@0xsequence/api'
 export { useSocialLink } from './hooks/useSocialLink.js'
 
+export { useFeeOptions } from './hooks/useFeeOptions.js'
+export { usePermissions } from './hooks/usePermissions.js'
+
 // Components
 export { NetworkBadge } from './components/NetworkBadge/index.js'
 export { CollectibleTileImage } from './components/CollectibleTileImage/index.js'

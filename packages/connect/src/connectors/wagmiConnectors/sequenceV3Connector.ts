@@ -119,6 +119,8 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
           params: [{ chainId: `0x${chainId.toString(16)}` }]
         })
 
+        config.emitter.emit('change', { chainId })
+
         return chain
       },
 
@@ -356,6 +358,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           })
         }
         const newChainId = Number((params[0] as any).chainId)
+
         this.currentChainId = newChainId
         this.emit('chainChanged', `0x${newChainId.toString(16)}`)
         return null

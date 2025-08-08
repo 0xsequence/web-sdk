@@ -11,6 +11,7 @@ import {
   getModalPositionCss,
   signEthAuthProof,
   useOpenConnectModal,
+  usePermissions,
   useSocialLink,
   useStorage,
   useWaasFeeOptions,
@@ -33,6 +34,7 @@ import { messageToSign } from '../constants'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 // import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
+import { EMITTER_ABI, getEmitterContractAddress, getPermissionForType, PermissionsType } from '../constants/permissions'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 import { CustomCheckout } from './CustomCheckout'
@@ -83,6 +85,14 @@ export const Connected = () => {
     reset: resetSendUnsponsoredTransaction
   } = useSendTransaction()
 
+  const {
+    data: permissionedTxnData,
+    sendTransaction: sendPermissionedTransaction,
+    isPending: isPendingPermissionedTxn,
+    error: permissionedTxnError,
+    reset: resetPermissionedTxn
+  } = useSendTransaction()
+
   // const { openCheckoutModal, isLoading: erc1155CheckoutLoading } = useERC1155SaleContractCheckout({
   //   chain: 137,
   //   contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
@@ -107,6 +117,7 @@ export const Connected = () => {
   const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
   const [lastTxnDataHash3, setLastTxnDataHash3] = React.useState<string | undefined>()
+  const [lastPermissionedTxnDataHash, setLastPermissionedTxnDataHash] = React.useState<string | undefined>()
 
   const [confirmationEnabled, setConfirmationEnabled] = React.useState<boolean>(
     localStorage.getItem('confirmationEnabled') === 'true'
@@ -116,6 +127,9 @@ export const Connected = () => {
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
+
+  const { addPermissions, isLoading: isAddingPermissions, error: addPermissionsError } = usePermissions()
+  const [permissionType, setPermissionType] = React.useState<PermissionsType>('open')
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
@@ -179,7 +193,10 @@ export const Connected = () => {
     if (txnData3) {
       setLastTxnDataHash3((txnData3 as any).hash ?? txnData3)
     }
-  }, [txnData, txnData2, txnData3])
+    if (permissionedTxnData) {
+      setLastPermissionedTxnDataHash((permissionedTxnData as any).hash ?? permissionedTxnData)
+    }
+  }, [txnData, txnData2, txnData3, permissionedTxnData])
 
   const domain = {
     name: 'Sequence Example',
@@ -330,23 +347,6 @@ export const Connected = () => {
     }
   }
 
-  const getEmitterContractAddress = (redirectUrl: string) => {
-    switch (redirectUrl) {
-      case 'http://localhost:4444':
-      case 'http://localhost:4445': // Intentionally broken
-        // Implicit validation for 'http://localhost:4444'
-        return '0x33985d320809E26274a72E03268c8a29927Bc6dA'
-      case 'https://demo-dapp-v3.pages.dev':
-        // Implicit validation for 'https://demo-dapp-v3.pages.dev'
-        return '0x8F6066bA491b019bAc33407255f3bc5cC684A5a4'
-      default:
-        // No implicit validation against URLs
-        return '0xb7bE532959236170064cf099e1a3395aEf228F44'
-    }
-  }
-
-  const EMITTER_ABI = Abi.from(['function explicitEmit()', 'function implicitEmit()'])
-
   const runSendV3TestTransaction = async () => {
     if (!walletClient) {
       return
@@ -356,6 +356,31 @@ export const Connected = () => {
       to: getEmitterContractAddress(window.location.origin),
       value: 0n,
       data: AbiFunction.getSelector(EMITTER_ABI[1])
+    })
+  }
+
+  const handleAddPermissions = async () => {
+    try {
+      const permissions = getPermissionForType(window.location.origin, chainId, permissionType)
+      if (permissions) {
+        await addPermissions(chainId, permissions)
+        alert('Permission added successfully!')
+      } else {
+        alert('No permissions to request for the selected type.')
+      }
+    } catch (e) {
+      console.error('Failed to add permissions:', e)
+      alert('Failed to add permissions.')
+    }
+  }
+
+  const runSendConditionallyAllowedV3Transaction = async () => {
+    if (!walletClient) {
+      return
+    }
+    sendPermissionedTransaction({
+      to: getEmitterContractAddress(window.location.origin),
+      data: AbiFunction.getSelector(EMITTER_ABI[0])
     })
   }
 
@@ -577,11 +602,13 @@ export const Connected = () => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
     setLastTxnDataHash3(undefined)
+    setLastPermissionedTxnDataHash(undefined)
     setIsMessageValid(undefined)
     setTypedDataSig(undefined)
     resetWriteContract()
     resetSendUnsponsoredTransaction()
     resetSendTransaction()
+    resetPermissionedTxn()
   }, [chainId, address])
 
   return (
@@ -657,8 +684,8 @@ export const Connected = () => {
 
             {isV3WalletConnectionActive && (
               <CardButton
-                title="Send V3 transaction"
-                description="Send a transaction with your V3 wallet"
+                title="Send V3 transaction (implicit)"
+                description="Send a transaction that is already allowed by implicit permissions"
                 isPending={isPendingSendTxn}
                 onClick={runSendV3TestTransaction}
               />
@@ -773,6 +800,66 @@ export const Connected = () => {
                   )}
                 </div>
               </div>
+            )}
+
+            {isV3WalletConnectionActive && (
+              <>
+                <Text className="mt-4" variant="small-bold" color="muted">
+                  V3 Wallet Permissions
+                </Text>
+                <div className="my-3">
+                  <Select
+                    name="permissionType"
+                    label="1. Pick a permission type"
+                    onValueChange={val => setPermissionType(val as PermissionsType)}
+                    value={permissionType}
+                    options={[
+                      { label: 'Open', value: 'open' },
+                      { label: 'Restrictive', value: 'restrictive' },
+                      { label: 'Cumulative', value: 'cumulative' }
+                    ]}
+                  />
+                </div>
+                <CardButton
+                  title="2. Add V3 Session Permission"
+                  description="Request a new explicit session with the chosen permissions"
+                  isPending={isAddingPermissions}
+                  onClick={handleAddPermissions}
+                />
+                {addPermissionsError && (
+                  <Text variant="small" color="negative">
+                    Error: {addPermissionsError.message}
+                  </Text>
+                )}
+
+                <Text className="mt-4" variant="small-bold" color="muted">
+                  3. Test Explicit Permission transactions
+                </Text>
+
+                <CardButton
+                  title="Send conditionally allowed transaction"
+                  description="Calls explicitEmit()."
+                  isPending={isPendingPermissionedTxn}
+                  onClick={runSendConditionallyAllowedV3Transaction}
+                />
+
+                {networkForCurrentChainId.blockExplorer && lastPermissionedTxnDataHash && (
+                  <Text className="ml-4" variant="small" underline color="primary" asChild>
+                    <a
+                      href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${lastPermissionedTxnDataHash}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View permissioned transaction on {networkForCurrentChainId.blockExplorer.name}
+                    </a>
+                  </Text>
+                )}
+                {permissionedTxnError && (
+                  <Text className="ml-4" variant="small" color="negative">
+                    Transaction failed: {permissionedTxnError.message}
+                  </Text>
+                )}
+              </>
             )}
 
             <Text className="mt-4" variant="small-bold" color="muted">

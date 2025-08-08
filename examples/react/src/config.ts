@@ -93,7 +93,7 @@ export const config = createConfig({
   walletUrl: 'http://localhost:5173',
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
-  chainIds: [ChainId.ARBITRUM_SEPOLIA],
+  chainIds: [ChainId.ARBITRUM_SEPOLIA, ChainId.OPTIMISM],
   defaultChainId: ChainId.ARBITRUM_SEPOLIA,
   google: true,
   walletConnect: {
