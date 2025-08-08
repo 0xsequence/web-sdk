@@ -1,4 +1,4 @@
-import type { ExtendedConnector, WalletProperties } from '@0xsequence/common'
+import type { ExtendedConnector, WalletProperties } from '@0xsequence/web-sdk-core'
 import { Card, ContextMenuIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
 import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'

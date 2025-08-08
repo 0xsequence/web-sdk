@@ -1,4 +1,4 @@
-import { formatDisplay } from '@0xsequence/common'
+import { formatDisplay } from '@0xsequence/web-sdk-core'
 import { NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import React from 'react'
 import { formatUnits } from 'viem'

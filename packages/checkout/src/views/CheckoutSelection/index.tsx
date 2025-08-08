@@ -1,4 +1,4 @@
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/common'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-core'
 import {
   Button,
   ChevronRightIcon,

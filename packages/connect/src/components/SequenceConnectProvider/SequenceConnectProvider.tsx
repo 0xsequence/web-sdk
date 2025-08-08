@@ -1,8 +1,8 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { AnalyticsContextProvider, getModalPositionCss, isJSON, NetworkBadge } from '@0xsequence/common'
-import type { ExtendedConnector, ModalPosition } from '@0xsequence/common'
+import { AnalyticsContextProvider, getModalPositionCss, isJSON, NetworkBadge } from '@0xsequence/web-sdk-core'
+import type { ExtendedConnector, ModalPosition } from '@0xsequence/web-sdk-core'
 import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'

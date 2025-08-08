@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/common": "workspace:*",
+    "@0xsequence/web-sdk-core": "workspace:*",
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
     "@0xsequence/design-system": "2.1.11",

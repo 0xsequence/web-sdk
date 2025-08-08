@@ -3,7 +3,7 @@ import {
   formatDisplay,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitForTransactionReceipt
-} from '@0xsequence/common'
+} from '@0xsequence/web-sdk-core'
 import {
   ArrowDownIcon,
   Button,

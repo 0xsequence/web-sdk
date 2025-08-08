@@ -1,4 +1,4 @@
-import { truncateAtIndex } from '@0xsequence/common'
+import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import type { ConnectedWallet } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 import { useEffect, useState } from 'react'

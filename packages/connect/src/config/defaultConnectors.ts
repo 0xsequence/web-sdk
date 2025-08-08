@@ -1,4 +1,4 @@
-import type { Wallet, WalletType } from '@0xsequence/common'
+import type { Wallet, WalletType } from '@0xsequence/web-sdk-core'
 import type { CreateConnectorFn } from 'wagmi'
 
 import { apple } from '../connectors/apple/apple.js'

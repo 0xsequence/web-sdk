@@ -1,5 +1,5 @@
 {
-  "name": "@0xsequence/common",
+  "name": "@0xsequence/web-sdk-core",
   "version": "5.3.6",
   "description": "Common utilities and components used by Sequence Web SDK",
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/common",

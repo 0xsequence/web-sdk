@@ -1,4 +1,4 @@
-import type { WalletType } from '@0xsequence/common'
+import type { WalletType } from '@0xsequence/web-sdk-core'
 import { createConfig as createWagmiConfig, type Config, type CreateConfigParameters } from 'wagmi'
 
 import type { ConnectConfig } from '../types.js'

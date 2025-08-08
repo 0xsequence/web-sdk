@@ -1,4 +1,4 @@
-import { normalizeChainId } from '@0xsequence/common'
+import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
 import {
   SequenceWaaS,

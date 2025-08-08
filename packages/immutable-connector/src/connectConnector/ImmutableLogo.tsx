@@ -1,4 +1,4 @@
-import type { LogoProps } from '@0xsequence/common'
+import type { LogoProps } from '@0xsequence/web-sdk-core'
 import React from 'react'
 
 export const ImmutableLogo: React.FunctionComponent = (props: LogoProps) => {

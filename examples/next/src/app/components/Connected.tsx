@@ -1,5 +1,5 @@
 import type { CheckoutSettings } from '@0xsequence/checkout'
-import { ContractVerificationStatus } from '@0xsequence/common'
+import { ContractVerificationStatus } from '@0xsequence/web-sdk-core'
 import {
   signEthAuthProof,
   useOpenConnectModal,

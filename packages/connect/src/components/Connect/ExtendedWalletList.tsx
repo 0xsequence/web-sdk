@@ -1,4 +1,4 @@
-import type { ExtendedConnector } from '@0xsequence/common'
+import type { ExtendedConnector } from '@0xsequence/web-sdk-core'
 import {
   ArrowRightIcon,
   Card,

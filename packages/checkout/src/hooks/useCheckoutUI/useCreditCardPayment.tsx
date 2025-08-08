@@ -1,4 +1,4 @@
-import { compareAddress } from '@0xsequence/common'
+import { compareAddress } from '@0xsequence/web-sdk-core'
 import { useProjectAccessKey } from '@0xsequence/connect'
 import { useConfig } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'

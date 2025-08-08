@@ -4,7 +4,7 @@ import {
   useAnalyticsContext,
   waitForTransactionReceipt,
   type ExtendedConnector
-} from '@0xsequence/common'
+} from '@0xsequence/web-sdk-core'
 import { useCheckWaasFeeOptions, useWaasConfirmationHandler, useWaasFeeOptions, useWallets } from '@0xsequence/connect'
 import {
   AddIcon,

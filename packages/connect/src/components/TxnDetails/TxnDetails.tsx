@@ -4,7 +4,7 @@ import {
   compareAddress,
   getNativeTokenInfoByChainId,
   truncateAtMiddle
-} from '@0xsequence/common'
+} from '@0xsequence/web-sdk-core'
 import { commons } from '@0xsequence/core'
 import { Card, Collapsible, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { useAPIClient, useGetSingleTokenBalance, useGetTokenMetadata } from '@0xsequence/hooks'

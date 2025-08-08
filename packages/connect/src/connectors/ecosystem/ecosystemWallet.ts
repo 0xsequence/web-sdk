@@ -1,4 +1,4 @@
-import { normalizeChainId } from '@0xsequence/common'
+import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { ethers } from 'ethers'
 import { getAddress } from 'viem'
 import { createConnector, type Connector } from 'wagmi'

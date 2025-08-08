@@ -77,15 +77,15 @@ importers:
 
   examples/components:
     dependencies:
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../../packages/common
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(motion@12.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@0xsequence/network':
         specifier: '*'
         version: 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/web-sdk-core':
+        specifier: workspace:*
+        version: link:../../packages/web-sdk-core
       '@radix-ui/react-popover':
         specifier: ^1.1.11
         version: 1.1.14(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -101,9 +101,6 @@ importers:
       '@0xsequence/checkout':
         specifier: workspace:*
         version: link:../../packages/checkout
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../../packages/common
       '@0xsequence/connect':
         specifier: workspace:*
         version: link:../../packages/connect
@@ -122,6 +119,9 @@ importers:
       '@0xsequence/wallet-widget':
         specifier: workspace:*
         version: link:../../packages/wallet-widget
+      '@0xsequence/web-sdk-core':
+        specifier: workspace:*
+        version: link:../../packages/web-sdk-core
       '@radix-ui/react-select':
         specifier: ^2.2.5
         version: 2.2.5(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -180,9 +180,6 @@ importers:
       '@0xsequence/checkout':
         specifier: workspace:*
         version: link:../../packages/checkout
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../../packages/common
       '@0xsequence/connect':
         specifier: workspace:*
         version: link:../../packages/connect
@@ -204,6 +201,9 @@ importers:
       '@0xsequence/wallet-widget':
         specifier: workspace:*
         version: link:../../packages/wallet-widget
+      '@0xsequence/web-sdk-core':
+        specifier: workspace:*
+        version: link:../../packages/web-sdk-core
       '@imtbl/config':
         specifier: ^2.2.0
         version: 2.2.4
@@ -286,9 +286,6 @@ importers:
       '@0xsequence/api':
         specifier: '>=2.3.23'
         version: 2.3.23
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../common
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(motion@12.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -310,6 +307,9 @@ importers:
       '@0xsequence/waas':
         specifier: '>= 2.3.23'
         version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/web-sdk-core':
+        specifier: workspace:*
+        version: link:../web-sdk-core
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -354,73 +354,6 @@ importers:
         specifier: ^2.15.1
         version: 2.15.5(@tanstack/query-core@5.80.5)(@tanstack/react-query@5.80.5(react@19.1.0))(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.30.6(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
 
-  packages/common:
-    dependencies:
-      0xsequence:
-        specifier: '>= 2.3.7'
-        version: 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/design-system':
-        specifier: 2.1.11
-        version: 2.1.11(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(motion@12.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@0xsequence/provider':
-        specifier: '>=2.3.7'
-        version: 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/waas':
-        specifier: '>=2.3.7'
-        version: 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-    devDependencies:
-      '@0xsequence/api':
-        specifier: 2.3.23
-        version: 2.3.23
-      '@0xsequence/indexer':
-        specifier: ^2.3.23
-        version: 2.3.23
-      '@0xsequence/metadata':
-        specifier: ^2.3.23
-        version: 2.3.23
-      '@0xsequence/network':
-        specifier: ^2.3.23
-        version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@tanstack/react-query':
-        specifier: ^5.74.11
-        version: 5.80.5(react@19.1.0)
-      '@testing-library/jest-dom':
-        specifier: ^6.6.3
-        version: 6.6.3
-      '@testing-library/react':
-        specifier: ^16.3.0
-        version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@testing-library/user-event':
-        specifier: ^14.6.1
-        version: 14.6.1(@testing-library/dom@10.4.0)
-      '@vitejs/plugin-react':
-        specifier: ^4.4.1
-        version: 4.5.1(vite@6.3.5(@types/node@22.7.5)(jiti@2.4.2)(lightningcss@1.30.1))
-      jsdom:
-        specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      msw:
-        specifier: ^2.7.5
-        version: 2.9.0(@types/node@22.7.5)(typescript@5.8.3)
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.1.0(react@19.1.0)
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-      viem:
-        specifier: ^2.28.1
-        version: 2.30.6(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
-      vite:
-        specifier: ^6.3.4
-        version: 6.3.5(@types/node@22.7.5)(jiti@2.4.2)(lightningcss@1.30.1)
-      vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@22.7.5)(jsdom@25.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(lightningcss@1.30.1)(msw@2.9.0(@types/node@22.7.5)(typescript@5.8.3))
-
   packages/connect:
     dependencies:
       '@0xsequence/api':
@@ -429,9 +362,6 @@ importers:
       '@0xsequence/auth':
         specifier: ^2.3.23
         version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../common
       '@0xsequence/core':
         specifier: ^2.3.23
         version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -459,6 +389,9 @@ importers:
       '@0xsequence/waas':
         specifier: ^2.3.23
         version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/web-sdk-core':
+        specifier: workspace:*
+        version: link:../web-sdk-core
       '@databeat/tracker':
         specifier: ^0.9.3
         version: 0.9.3
@@ -577,12 +510,12 @@ importers:
       0xsequence:
         specifier: '>= 2.3.7'
         version: 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../common
       '@0xsequence/connect':
         specifier: workspace:*
         version: link:../connect
+      '@0xsequence/web-sdk-core':
+        specifier: workspace:*
+        version: link:../web-sdk-core
       '@imtbl/config':
         specifier: '>=2.1.2'
         version: 2.2.4
@@ -610,9 +543,6 @@ importers:
       '@0xsequence/api':
         specifier: '>=2.3.23'
         version: 2.3.23
-      '@0xsequence/common':
-        specifier: workspace:*
-        version: link:../common
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(motion@12.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -628,6 +558,9 @@ importers:
       '@0xsequence/network':
         specifier: '>=2.3.23'
         version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/web-sdk-core':
+        specifier: workspace:*
+        version: link:../web-sdk-core
       '@radix-ui/react-popover':
         specifier: ^1.1.11
         version: 1.1.14(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -671,6 +604,73 @@ importers:
       wagmi:
         specifier: ^2.15.1
         version: 2.15.5(@tanstack/query-core@5.80.5)(@tanstack/react-query@5.80.5(react@19.1.0))(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.30.6(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
+
+  packages/web-sdk-core:
+    dependencies:
+      0xsequence:
+        specifier: '>= 2.3.7'
+        version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/design-system':
+        specifier: 2.1.11
+        version: 2.1.11(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(motion@12.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@0xsequence/provider':
+        specifier: '>=2.3.7'
+        version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/waas':
+        specifier: '>=2.3.7'
+        version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+    devDependencies:
+      '@0xsequence/api':
+        specifier: 2.3.23
+        version: 2.3.23
+      '@0xsequence/indexer':
+        specifier: ^2.3.23
+        version: 2.3.23
+      '@0xsequence/metadata':
+        specifier: ^2.3.23
+        version: 2.3.23
+      '@0xsequence/network':
+        specifier: ^2.3.23
+        version: 2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@tanstack/react-query':
+        specifier: ^5.74.11
+        version: 5.80.5(react@19.1.0)
+      '@testing-library/jest-dom':
+        specifier: ^6.6.3
+        version: 6.6.3
+      '@testing-library/react':
+        specifier: ^16.3.0
+        version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@testing-library/user-event':
+        specifier: ^14.6.1
+        version: 14.6.1(@testing-library/dom@10.4.0)
+      '@vitejs/plugin-react':
+        specifier: ^4.4.1
+        version: 4.5.1(vite@6.3.5(@types/node@22.7.5)(jiti@2.4.2)(lightningcss@1.30.1))
+      jsdom:
+        specifier: ^25.0.1
+        version: 25.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      msw:
+        specifier: ^2.7.5
+        version: 2.9.0(@types/node@22.7.5)(typescript@5.8.3)
+      react:
+        specifier: ^19.1.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.1.0(react@19.1.0)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      viem:
+        specifier: ^2.28.1
+        version: 2.30.6(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      vite:
+        specifier: ^6.3.4
+        version: 6.3.5(@types/node@22.7.5)(jiti@2.4.2)(lightningcss@1.30.1)
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.7.5)(jsdom@25.0.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(lightningcss@1.30.1)(msw@2.9.0(@types/node@22.7.5)(typescript@5.8.3))
 
 packages:
 
@@ -840,11 +840,6 @@ packages:
 
   '@0xsequence/utils@2.3.23':
     resolution: {integrity: sha512-Ak4/QuginegFw/tnpyb9u0aw8fA6XHdLH9JjM0jsRrPyM5v6KqKFQoCrCssQfXeBxuHaWs+ABxf5gL9TKpDBng==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/waas@2.3.17':
-    resolution: {integrity: sha512-P/3SOrh1ZPGI3S8Kfx9xBlzTcudn/YFAmvxDssvMvl3KHG3bsLlMyL1/1x4ooNjYKvTeBaDXJ+I+E1Z4BEi/Vg==}
     peerDependencies:
       ethers: '>=6'
 
@@ -8269,19 +8264,6 @@ snapshots:
     dependencies:
       ethers: 6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       js-base64: 3.7.7
-
-  '@0xsequence/waas@2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@0xsequence/core': 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/network': 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/utils': 2.3.17(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@aws-sdk/client-cognito-identity-provider': 3.823.0
-      ethers: 6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      idb: 7.1.1
-      json-canonicalize: 1.0.6
-      jwt-decode: 4.0.0
-    transitivePeerDependencies:
-      - aws-crt
 
   '@0xsequence/waas@2.3.23(ethers@6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:

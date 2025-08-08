@@ -5,7 +5,7 @@ import {
   sendTransactions,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext
-} from '@0xsequence/common'
+} from '@0xsequence/web-sdk-core'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,

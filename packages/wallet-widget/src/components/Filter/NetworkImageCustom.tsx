@@ -1,4 +1,4 @@
-import { getNetwork } from '@0xsequence/common'
+import { getNetwork } from '@0xsequence/web-sdk-core'
 import { NetworkImage } from '@0xsequence/design-system'
 
 export const NetworkImageCustom = ({
