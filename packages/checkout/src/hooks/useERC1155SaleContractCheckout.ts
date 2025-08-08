@@ -136,7 +136,7 @@ export const useERC1155SaleContractCheckout = ({
   collectionAddress,
   items,
   ...restArgs
-}: CheckoutOptionsSalesContractArgs & SaleContractSettings): UseERC1155SaleContractCheckoutReturnType => {
+}: Omit<CheckoutOptionsSalesContractArgs, 'chainId'> & SaleContractSettings): UseERC1155SaleContractCheckoutReturnType => {
   const { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
   const {
     data: checkoutOptions,
