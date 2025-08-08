@@ -1,7 +1,7 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
+import { Button, Card, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { ToastProvider } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
@@ -78,7 +78,25 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
 
-  const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(waasConnector)
+  const [isWalletWidgetOpen, setIsWalletWidgetOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    const handleWalletModalStateChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ open: boolean }>
+      setIsWalletWidgetOpen(customEvent.detail.open)
+    }
+
+    window.addEventListener('sequence:wallet-modal-state-change', handleWalletModalStateChange)
+
+    return () => {
+      window.removeEventListener('sequence:wallet-modal-state-change', handleWalletModalStateChange)
+    }
+  }, [])
+
+  const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(
+    waasConnector,
+    !isWalletWidgetOpen
+  )
 
   const googleWaasConnector = wagmiConfig.connectors.find(
     c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
@@ -271,21 +289,11 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                     )}
 
                                     {pendingRequestConfirmation.type === 'signTransaction' && (
-                                      <div className="flex flex-col w-full">
-                                        <TxnDetails
-                                          address={address ?? ''}
-                                          txs={pendingRequestConfirmation.txs ?? []}
-                                          chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
-                                        />
-
-                                        <Collapsible className="mt-4" label="Transaction data">
-                                          <Card className="overflow-x-scroll my-3">
-                                            <Text className="mb-4" variant="code">
-                                              {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
-                                            </Text>
-                                          </Card>
-                                        </Collapsible>
-                                      </div>
+                                      <TxnDetails
+                                        address={address ?? ''}
+                                        txs={pendingRequestConfirmation.txs ?? []}
+                                        chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
+                                      />
                                     )}
 
                                     {pendingRequestConfirmation.chainId && (

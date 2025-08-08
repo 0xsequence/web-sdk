@@ -11,7 +11,7 @@ import {
 } from '@0xsequence/connect'
 import { Modal, Scroll, ToastProvider } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
-import { useContext, useEffect, useState, type ReactNode } from 'react'
+import { useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useAccount } from 'wagmi'
 
 import { WALLET_HEIGHT, WALLET_WIDTH } from '../../constants/index.js'
@@ -64,6 +64,19 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
 
   // Wallet Modal Context
   const [openWalletModal, setOpenWalletModalState] = useState<boolean>(false)
+
+  const isInitialMount = useRef(true)
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+    } else {
+      const event = new CustomEvent('sequence:wallet-modal-state-change', {
+        detail: { open: openWalletModal }
+      })
+      window.dispatchEvent(event)
+    }
+  }, [openWalletModal])
 
   const setOpenWalletModal = (open: boolean, options?: WalletOptions) => {
     setOpenWalletModalState(open)

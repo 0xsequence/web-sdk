@@ -3,6 +3,7 @@ import {
   truncateAtMiddle,
   useAnalyticsContext,
   useCheckWaasFeeOptions,
+  useWaasConfirmationHandler,
   useWaasFeeOptions,
   useWallets,
   waitForTransactionReceipt,
@@ -27,7 +28,7 @@ import { useClearCachedBalances, useGetSingleTokenBalance, useIndexerClient } fr
 import type { ContractType, TokenBalance } from '@0xsequence/indexer'
 import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
-import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, useConfig, useConnections, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { AllButActiveWalletSelect } from '../../components/Select/AllButActiveWalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
@@ -114,6 +115,17 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   useEffect(() => {
     setIsBackButtonEnabled(!showConfirmation)
   }, [showConfirmation, setIsBackButtonEnabled])
+
+  const connections = useConnections()
+  const waasConnector = connections.find(c => c.connector.id.includes('waas'))?.connector
+
+  const [pendingRequestConfirmation, confirmPendingRequest] = useWaasConfirmationHandler(waasConnector)
+
+  useEffect(() => {
+    if (pendingRequestConfirmation) {
+      confirmPendingRequest(pendingRequestConfirmation.id)
+    }
+  }, [pendingRequestConfirmation])
 
   const isLoading = isLoadingBalances
 

@@ -1,5 +1,5 @@
 import { commons } from '@0xsequence/core'
-import { Card, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { Card, Collapsible, GradientAvatar, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
 import { useAPIClient, useGetSingleTokenBalance, useGetTokenMetadata } from '@0xsequence/hooks'
 import { ContractType } from '@0xsequence/indexer'
 import { useEffect, useState } from 'react'
@@ -63,20 +63,28 @@ export const TxnDetails = ({ address, txs, chainId }: TxnDetailsProps) => {
     getTxnProps()
   }, [])
 
-  if (!decodingType) {
-    return <TxnDetailsSkeleton />
-  }
-
-  if (decodingType === DecodingType.UNKNOWN) {
-    return <></>
-  }
+  let txnContent = <></>
 
   if (transferProps[0]) {
-    return <TransferItemInfo address={address} transferProps={transferProps[0]} chainId={chainId} />
+    txnContent = <TransferItemInfo address={address} transferProps={transferProps[0]} chainId={chainId} />
   }
   if (awardItemProps[0]) {
-    return <AwardItemInfo awardItemProps={awardItemProps[0]} />
+    txnContent = <AwardItemInfo awardItemProps={awardItemProps[0]} />
   }
+
+  return (
+    <div className="flex flex-col w-full">
+      {txnContent}
+
+      <Collapsible className="mt-4" label="Transaction data" open={!decodingType || decodingType === DecodingType.UNKNOWN}>
+        <Card className="overflow-x-scroll my-3">
+          <Text className="mb-4" variant="code">
+            {JSON.stringify(txs, null, 2)}
+          </Text>
+        </Card>
+      </Collapsible>
+    </div>
+  )
 }
 
 interface TransferItemInfoProps {
