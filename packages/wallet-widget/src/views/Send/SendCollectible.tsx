@@ -234,7 +234,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   }
 
   const executeTransaction = async () => {
-    if (!isCorrectChainId && !isConnectorSequenceBased) {
+    if (!isCorrectChainId && isConnectorSequenceBased) {
       await switchChainAsync({ chainId })
     }
 

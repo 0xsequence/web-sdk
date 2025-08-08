@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { useConfig } from '../useConfig.js'
 import { QUERY_KEYS, time } from '../../constants.js'
 import type { HooksOptions } from '../../types/hooks.js'
+import { useConfig } from '../useConfig.js'
 
 import { useBuilderClient } from './useBuilderClient.js'
 

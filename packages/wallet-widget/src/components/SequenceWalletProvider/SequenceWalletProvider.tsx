@@ -84,6 +84,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const displayScrollbar =
     navigation.location === 'home' ||
     navigation.location === 'send-general' ||
+    navigation.location === 'send-coin' ||
     navigation.location === 'collectible-details' ||
     navigation.location === 'coin-details' ||
     navigation.location === 'collection-details' ||
