@@ -8,6 +8,7 @@ export interface EnvironmentOverrides {
   transakApiKey: string
   sardineCheckoutUrl: string
   sardineOnRampUrl: string
+  forteWidgetUrl: string
 }
 
 const [useEnvironmentContext, EnvironmentContextProvider] = createGenericContext<EnvironmentOverrides>()
