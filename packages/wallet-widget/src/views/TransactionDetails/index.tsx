@@ -1,5 +1,5 @@
 import type { Token } from '@0xsequence/api'
-import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, truncateAtIndex } from '@0xsequence/common'
+import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, truncateAtIndex } from '@0xsequence/web-sdk-core'
 import {
   ArrowRightIcon,
   Button,

@@ -1,5 +1,5 @@
 import type { ETHAuthProof } from '@0xsequence/auth'
-import { publicClientToProvider, walletClientToSigner } from '@0xsequence/common'
+import { publicClientToProvider, walletClientToSigner } from '@0xsequence/web-sdk-core'
 import { ETHAuth, Proof } from '@0xsequence/ethauth'
 import { isValidTypedDataSignature } from '@0xsequence/provider'
 import type { Storage, UsePublicClientReturnType } from 'wagmi'

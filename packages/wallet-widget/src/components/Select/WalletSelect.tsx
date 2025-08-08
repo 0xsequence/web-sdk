@@ -1,4 +1,4 @@
-import { truncateAtIndex } from '@0xsequence/common'
+import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import { useWallets } from '@0xsequence/connect'
 import { ChevronUpDownIcon, cn, GradientAvatar, Text } from '@0xsequence/design-system'
 import { useState } from 'react'

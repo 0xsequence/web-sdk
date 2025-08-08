@@ -1,4 +1,4 @@
-import { formatDisplay, truncateAtIndex } from '@0xsequence/common'
+import { formatDisplay, truncateAtIndex } from '@0xsequence/web-sdk-core'
 import {
   ArrowUpIcon,
   Button,

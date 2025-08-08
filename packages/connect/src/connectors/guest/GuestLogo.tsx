@@ -1,4 +1,4 @@
-import type { LogoProps } from '@0xsequence/common'
+import type { LogoProps } from '@0xsequence/web-sdk-core'
 import { Text } from '@0xsequence/design-system'
 import React from 'react'
 

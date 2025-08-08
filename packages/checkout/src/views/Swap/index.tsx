@@ -1,4 +1,4 @@
-import { compareAddress, CryptoOption, formatDisplay, sendTransactions } from '@0xsequence/common'
+import { compareAddress, CryptoOption, formatDisplay, sendTransactions } from '@0xsequence/web-sdk-core'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useGetContractInfo,

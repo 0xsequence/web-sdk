@@ -1,4 +1,4 @@
-import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '@0xsequence/common'
+import { getNetwork, getNetworkBackgroundColor, getNetworkColor } from '@0xsequence/web-sdk-core'
 import { NetworkImage, Text } from '@0xsequence/design-system'
 import React from 'react'
 

@@ -1,7 +1,7 @@
 'use client'
 
-import { isEmailValid, useAnalyticsContext } from '@0xsequence/common'
-import type { ExtendedConnector, LogoProps } from '@0xsequence/common'
+import { isEmailValid, useAnalyticsContext } from '@0xsequence/web-sdk-core'
+import type { ExtendedConnector, LogoProps } from '@0xsequence/web-sdk-core'
 import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { useGetWaasStatus } from '@0xsequence/hooks'
 import { SequenceWaaS } from '@0xsequence/waas'

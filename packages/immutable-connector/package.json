@@ -34,7 +34,7 @@
   },
   "peerDependencies": {
     "@0xsequence/connect": "workspace:*",
-    "@0xsequence/common": "workspace:*",
+    "@0xsequence/web-sdk-core": "workspace:*",
     "0xsequence": ">= 2.3.7",
     "@imtbl/config": ">=2.1.2",
     "@imtbl/sdk": ">=2.1.2",

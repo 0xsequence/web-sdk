@@ -1,4 +1,4 @@
-import { useAnalyticsContext } from '@0xsequence/common'
+import { useAnalyticsContext } from '@0xsequence/web-sdk-core'
 import { useProjectAccessKey } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
 import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'

@@ -1,4 +1,4 @@
-import { createGenericContext } from '@0xsequence/common'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 
 interface Item {
   tokenId?: string

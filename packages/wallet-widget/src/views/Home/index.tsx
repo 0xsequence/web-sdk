@@ -1,4 +1,4 @@
-import { truncateAtIndex } from '@0xsequence/common'
+import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import { useSocialLink, useWallets } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
 import { useAccount } from 'wagmi'

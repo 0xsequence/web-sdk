@@ -1,4 +1,4 @@
-import type { Wallet } from '@0xsequence/common'
+import type { Wallet } from '@0xsequence/web-sdk-core'
 
 import { sequenceWallet, type BaseSequenceConnectorOptions } from '../wagmiConnectors/index.js'
 

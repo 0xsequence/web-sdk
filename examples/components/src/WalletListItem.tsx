@@ -1,4 +1,4 @@
-import { truncateAtMiddle } from '@0xsequence/common'
+import { truncateAtMiddle } from '@0xsequence/web-sdk-core'
 import { Button, Card, cn, Text } from '@0xsequence/design-system'
 
 interface WalletListItemProps {

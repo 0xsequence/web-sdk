@@ -1,4 +1,4 @@
-import type { LogoProps } from '@0xsequence/common'
+import type { LogoProps } from '@0xsequence/web-sdk-core'
 import type { FunctionComponent } from 'react'
 
 export const SequenceLogo: FunctionComponent<LogoProps> = props => {

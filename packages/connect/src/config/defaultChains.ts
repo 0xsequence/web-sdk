@@ -1,4 +1,4 @@
-import { chains } from '@0xsequence/common'
+import { chains } from '@0xsequence/web-sdk-core'
 import type { Chain } from 'viem'
 
 // Sequence supported Chain configs

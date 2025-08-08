@@ -1,6 +1,6 @@
 'use client'
 
-import { createGenericContext } from '@0xsequence/common'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 
 import type { ConnectConfig } from '../types.js'
 

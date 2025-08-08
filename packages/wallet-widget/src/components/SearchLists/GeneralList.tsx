@@ -1,4 +1,4 @@
-import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/common'
+import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-core'
 import { useWallets } from '@0xsequence/connect'
 import { cn, Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'

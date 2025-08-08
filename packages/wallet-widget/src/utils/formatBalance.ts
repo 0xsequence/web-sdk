@@ -1,4 +1,4 @@
-import { formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/common'
+import { formatDisplay, getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-core'
 import { compareAddress } from '@0xsequence/design-system'
 import type { TokenBalance } from '@0xsequence/indexer'
 import { formatUnits, type Chain } from 'viem'

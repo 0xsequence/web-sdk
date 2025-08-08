@@ -1,4 +1,4 @@
-import { getNetwork } from '@0xsequence/common'
+import { getNetwork } from '@0xsequence/web-sdk-core'
 import { Text } from '@0xsequence/design-system'
 
 import { NetworkImageCustom } from '../Filter/NetworkImageCustom.js'
