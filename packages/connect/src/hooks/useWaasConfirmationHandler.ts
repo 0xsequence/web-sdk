@@ -1,3 +1,5 @@
+'use client'
+
 import type { commons } from '@0xsequence/core'
 import { useEffect, useState } from 'react'
 
