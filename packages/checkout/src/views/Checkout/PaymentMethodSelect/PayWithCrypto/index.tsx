@@ -57,7 +57,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
     onError = () => {},
     onClose = () => {},
     supplementaryAnalyticsInfo,
-    slippageBps
+    slippageBps,
+    successActionButtons
   } = selectPaymentSettings
 
   const isFree = Number(price) == 0
@@ -273,7 +274,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
           clearCachedBalances()
           onSuccess(txHash)
         },
-        onClose
+        onClose,
+        successActionButtons
       })
     } catch (e) {
       console.error('Failed to purchase...', e)
@@ -406,7 +408,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
           clearCachedBalances()
           onSuccess(txHash)
         },
-        onClose
+        onClose,
+        successActionButtons
       })
     } catch (e) {
       console.error('Failed to purchase...', e)

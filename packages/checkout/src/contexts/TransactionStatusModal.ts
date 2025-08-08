@@ -1,4 +1,5 @@
 import { createGenericContext } from './genericContext.js'
+import type { ActionButtons } from './SelectPaymentModal.js'
 
 interface Item {
   tokenId?: string
@@ -17,6 +18,7 @@ export interface TransactionStatusSettings {
   onError?: (error: Error) => void
   onClose?: () => void
   txHash: string
+  successActionButtons?: ActionButtons[]
 }
 
 type TransactionStatusContext = {

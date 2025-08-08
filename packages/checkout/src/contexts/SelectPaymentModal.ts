@@ -22,6 +22,11 @@ export interface SardineConfig {
   approvedSpenderAddress?: string
 }
 
+export interface ActionButtons {
+  label: string
+  action: () => void
+}
+
 export interface SelectPaymentSettings {
   collectibles: Collectible[]
   chain: number | string
@@ -45,6 +50,7 @@ export interface SelectPaymentSettings {
   skipNativeBalanceCheck?: boolean
   slippageBps?: number
   nativeTokenAddress?: string
+  successActionButtons?: ActionButtons[]
 }
 
 type SelectPaymentModalContext = {

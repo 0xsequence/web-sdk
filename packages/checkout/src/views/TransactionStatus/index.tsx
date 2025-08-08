@@ -6,6 +6,7 @@ import {
 } from '@0xsequence/connect'
 import {
   ArrowDownIcon,
+  Button,
   Card,
   CheckmarkIcon,
   CloseIcon,
@@ -70,7 +71,7 @@ export const TransactionStatusHeader = ({ status, noItemsToDisplay }: Transactio
 }
 
 export const TransactionStatus = () => {
-  const { transactionStatusSettings } = useTransactionStatusModal()
+  const { transactionStatusSettings, closeTransactionStatusModal } = useTransactionStatusModal()
   const {
     collectionAddress,
     chainId,
@@ -80,7 +81,8 @@ export const TransactionStatus = () => {
     blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
     onSuccess,
     onError,
-    onClose = () => {}
+    onClose = () => {},
+    successActionButtons = []
   } = transactionStatusSettings!
   const networkConfig = findSupportedNetwork(chainId)
   const blockExplorerUrl = `${networkConfig?.blockExplorer?.rootUrl}tx/${txHash}`
@@ -300,6 +302,20 @@ export const TransactionStatus = () => {
     )
   }
 
+  const SuccessActionButtons = () => {
+    return (
+      <div className="flex flex-row gap-2">
+        {successActionButtons.map(button => {
+          const action = () => {
+            closeTransactionStatusModal()
+            button.action()
+          }
+          return <Button key={button.label} label={button.label} onClick={action} />
+        })}
+      </div>
+    )
+  }
+
   return (
     <div className="w-full px-6 pb-6">
       <TransactionStatusHeader status={status} noItemsToDisplay={noItemsToDisplay} />
@@ -329,6 +345,7 @@ export const TransactionStatus = () => {
                 </a>
               </Text>
             </div>
+            {status === 'success' && successActionButtons.length > 0 && <SuccessActionButtons />}
           </>
         )}
       </div>

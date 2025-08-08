@@ -183,7 +183,8 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
               creditCardCheckout.onSuccess(txHash, creditCardCheckout)
             }
           },
-          onClose: creditCardCheckout?.onClose
+          onClose: creditCardCheckout?.onClose,
+          successActionButtons: creditCardCheckout.successActionButtons
         })
         return
       }
@@ -356,7 +357,8 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
               creditCardCheckout.onSuccess(transactionHash, creditCardCheckout)
             }
           },
-          onClose: creditCardCheckout?.onClose
+          onClose: creditCardCheckout?.onClose,
+          successActionButtons: creditCardCheckout.successActionButtons
         })
         return
       }
