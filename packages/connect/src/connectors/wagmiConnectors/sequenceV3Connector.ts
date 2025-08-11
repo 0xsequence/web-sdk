@@ -1,3 +1,4 @@
+import { getNetwork, LocalStorageKey } from '@0xsequence/connect'
 import { DappClient } from '@0xsequence/dapp-client'
 import { Relayer, Signers } from '@0xsequence/wallet-core'
 import { v4 as uuidv4 } from 'uuid'
@@ -17,6 +18,7 @@ type EIP1193RequestArgs = Parameters<EIP1193RequestFn>[0]
 
 export interface SequenceV3Connector extends Connector {
   type: 'sequence-v3-wallet'
+  setEmail: (email: string) => void
   auxData?: Record<string, unknown>
 }
 
@@ -45,7 +47,9 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     client: DappClient
     auxData?: Record<string, unknown>
   }
-  type StorageItem = {}
+  type StorageItem = {
+    [LocalStorageKey.V3ActiveLoginType]: string
+  }
 
   const client = new DappClient(params.walletUrl, params.dappOrigin)
   const provider = new SequenceV3Provider(client, params.defaultNetwork, params.nodesUrl, params.loginType, params.permissions)
@@ -68,7 +72,9 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       name: 'Sequence V3 Wallet',
       type: sequenceV3Wallet.type,
       provider,
-
+      setEmail(email: string) {
+        provider.setEmail(email)
+      },
       get client() {
         return client
       },
@@ -83,11 +89,17 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
 
       async connect() {
         const accounts = await provider.request({ method: 'eth_requestAccounts' })
+        if (accounts.length) {
+          await config.storage?.setItem(LocalStorageKey.V3ActiveLoginType, params.loginType)
+        } else {
+          throw new Error('No accounts found')
+        }
         const chainId = await this.getChainId()
         return { accounts, chainId }
       },
 
       async disconnect() {
+        await config.storage?.removeItem(LocalStorageKey.V3ActiveLoginType)
         await client.disconnect()
       },
 
@@ -102,6 +114,10 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       },
 
       async isAuthorized() {
+        const activeV3Option = await config.storage?.getItem(LocalStorageKey.V3ActiveLoginType)
+        if (params.loginType !== activeV3Option) {
+          return false
+        }
         try {
           await client.initialize()
           return client.getWalletAddress() ? true : false
@@ -154,6 +170,15 @@ export class SequenceV3Provider implements EIP1193Provider {
   private nodesUrl: string
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
   private initialPermissions?: Signers.Session.ExplicitParams
+
+  email?: string
+
+  public setEmail(email: string) {
+    if (this.loginType !== 'email') {
+      throw new Error('setEmail can only be called when loginType is "email"')
+    }
+    this.email = email
+  }
 
   public feeConfirmationHandler?: FeeOptionConfirmationHandler
 
@@ -219,7 +244,8 @@ export class SequenceV3Provider implements EIP1193Provider {
           return address ? [getAddress(address)] : []
         }
         await this.client.connect(this.currentChainId, this.initialPermissions, {
-          preferredLoginMethod: this.loginType
+          preferredLoginMethod: this.loginType,
+          ...(this.loginType === 'email' && this.email ? { email: this.email } : {})
         })
         const walletAddress = this.client.getWalletAddress()
         if (!walletAddress) {
@@ -306,6 +332,7 @@ export class SequenceV3Provider implements EIP1193Provider {
         })
       }
 
+      case 'wallet_sendTransaction':
       case 'eth_sendTransaction': {
         if (!params || !Array.isArray(params) || !params[0]) {
           throw new RpcError(new Error('Invalid params for eth_sendTransaction'), {
@@ -366,7 +393,7 @@ export class SequenceV3Provider implements EIP1193Provider {
 
       default: {
         console.warn(`Method ${method} not explicitly handled by DappClient, using fallback RPC.`)
-        const res = await fetch(`${this.nodesUrl}/${this.currentChainId}`, {
+        const res = await fetch(`${this.nodesUrl}/${getNetwork(this.currentChainId).name}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params })

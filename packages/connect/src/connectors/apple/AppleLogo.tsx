@@ -30,7 +30,7 @@ interface GetAppleMonochromeLogo {
   isDarkMode: boolean
 }
 
-export const getAppleMonochromeLogo = ({ isDarkMode }: GetAppleMonochromeLogo) => {
+export const getMonochromeAppleLogo = ({ isDarkMode }: GetAppleMonochromeLogo) => {
   const fillColor = isDarkMode ? '#FFFFFF' : '#000000'
 
   const AppleOtcLogo: React.FunctionComponent = (props: LogoProps) => {

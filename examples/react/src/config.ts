@@ -96,6 +96,7 @@ export const config = createConfig({
   chainIds: [ChainId.ARBITRUM_SEPOLIA, ChainId.OPTIMISM],
   defaultChainId: ChainId.ARBITRUM_SEPOLIA,
   google: true,
+  email: true,
   walletConnect: {
     projectId: walletConnectProjectId
   },

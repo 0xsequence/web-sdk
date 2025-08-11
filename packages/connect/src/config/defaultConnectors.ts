@@ -7,6 +7,7 @@ import { metaMask } from '../connectors/metaMask/metaMask.js'
 import { walletConnect } from '../connectors/walletConnect/walletConnect.js'
 import type { Wallet } from '../types.js'
 import { getConnectWallets } from '../utils/getConnectWallets.js'
+import { emailV3 } from '../connectors/email/emailv3.js'
 
 export interface CommonConnectorOptions {
   appName: string
@@ -41,14 +42,18 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
   const wallets: Wallet[] = []
 
   if (options.email !== false) {
-    // wallets.push(
-    //   email({
-    //     defaultNetwork: defaultChainId,
-    //     connect: {
-    //       app: appName
-    //     }
-    //   })
-    // )
+    if (!walletUrl || !dappOrigin) {
+      throw new Error('Email wallet requires walletUrl and dappOrigin to be set')
+    }
+    wallets.push(
+      emailV3({
+        projectAccessKey: projectAccessKey,
+        walletUrl: walletUrl,
+        dappOrigin: dappOrigin,
+        permissions: options.permissions,
+        defaultNetwork: defaultChainId
+      })
+    )
   }
 
   if (options.google !== false) {
