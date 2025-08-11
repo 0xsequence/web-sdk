@@ -60,13 +60,13 @@ export const PaymentSelectionContent = () => {
   ]
 
   const TabWrapper = ({ children }: { children: React.ReactNode }) => {
-    return <div className="w-full bg-background-secondary mt-2 p-3 rounded-xl h-[128px]">{children}</div>
+    return <div className="w-full bg-background-secondary mt-2 p-3 rounded-xl min-h-[128px]">{children}</div>
   }
 
   return (
     <>
       <div
-        className="flex flex-col gap-2 items-start w-full pb-0 px-3 h-full transition-opacity duration-200"
+        className="flex flex-col gap-2 pb-3 items-start w-full px-3 h-full transition-opacity duration-200"
         style={{
           paddingTop: HEADER_HEIGHT
         }}

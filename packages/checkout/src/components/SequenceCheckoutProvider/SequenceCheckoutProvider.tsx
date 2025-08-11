@@ -344,7 +344,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
                               contentProps={{
                                 style: {
                                   maxWidth: '320px',
-                                  height: '368px',
+                                  height: 'auto',
                                   ...getModalPositionCss(position)
                                 }
                               }}

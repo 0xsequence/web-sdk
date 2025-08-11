@@ -121,7 +121,12 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
 
   const buyCurrencyAddress = currencyAddress
 
-  const { data: swapQuote, isLoading: isLoadingSwapQuote } = useGetSwapQuote(
+  const {
+    data: swapQuote,
+    isLoading: isLoadingSwapQuote,
+    isError: isErrorSwapQuote,
+    error: swapQuoteError
+  } = useGetSwapQuote(
     {
       params: {
         walletAddress: userAddress ?? '',
@@ -137,6 +142,9 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
       disabled: !isSwapTransaction
     }
   )
+
+  const isNotEnoughBalanceError =
+    typeof swapQuoteError?.cause === 'string' && swapQuoteError?.cause?.includes('not enough balance for swap')
 
   const selectedCurrencyPrice = isSwapTransaction ? swapQuote?.maxPrice || 0 : price || 0
 
@@ -479,7 +487,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-3 justify-center items-center h-full">
+      <div className="flex flex-col gap-3 justify-center items-center h-full pt-5">
         <Spinner />
         <Text color="text50" fontWeight="medium" variant="xsmall">
           Fetching best crypto price for this purchase
@@ -549,6 +557,19 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
       )
     }
 
+    if (isNotEnoughBalanceError) {
+      return (
+        <div className="flex flex-row justify-between items-center w-full gap-2">
+          <Text color="negative" variant="small" fontWeight="bold">
+            Insufficient funds for this purchase
+          </Text>
+          <div>
+            <TokenSelector />
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className="flex flex-row justify-between items-center w-full gap-2">
         <div className="flex flex-col gap-0">
@@ -589,7 +610,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
       <PriceSection />
 
       <div className="flex flex-col justify-start items-center w-full gap-1">
-        {isError && (
+        {(isError || (isErrorSwapQuote && !isNotEnoughBalanceError)) && (
           <div className="flex flex-col justify-start items-center w-full">
             <Text variant="xsmall" color="negative">
               An error occurred. Please try again.
@@ -598,7 +619,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
         )}
 
         <Button
-          disabled={isPurchasing}
+          disabled={isPurchasing || isErrorSwapQuote || isError}
           label={isFree ? 'Confirm' : 'Confirm payment'}
           className="w-full"
           shape="square"
