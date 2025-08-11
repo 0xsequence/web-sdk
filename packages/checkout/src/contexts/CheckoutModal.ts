@@ -3,7 +3,7 @@
 import type { Theme } from '@0xsequence/design-system'
 
 import { createGenericContext } from './genericContext.js'
-import type { SupplementaryAnalyticsInfo } from './SelectPaymentModal.js'
+import type { SupplementaryAnalyticsInfo, ActionButtons } from './SelectPaymentModal.js'
 
 interface CoinQuantity {
   contractAddress: string
@@ -43,6 +43,7 @@ export interface CreditCardCheckout {
   onClose?: () => void
   approvedSpenderAddress?: string
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
+  successActionButtons?: ActionButtons[]
 }
 
 export interface CheckoutSettings {

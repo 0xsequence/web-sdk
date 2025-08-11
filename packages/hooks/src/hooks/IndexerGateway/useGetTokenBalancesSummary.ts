@@ -115,7 +115,7 @@ export const useGetTokenBalancesSummary = (args: IndexerGateway.GetTokenBalances
     getNextPageParam: ({ page }) => {
       return page?.more ? page : undefined
     },
-    initialPageParam: { pageSize: args.page?.pageSize } as Page,
+    initialPageParam: { ...args?.page } as Page,
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,
     enabled: args.filter.accountAddresses.length > 0 && !options?.disabled

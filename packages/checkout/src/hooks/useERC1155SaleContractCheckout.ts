@@ -1,5 +1,5 @@
-import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { useFindVersion } from '@0xsequence/hooks'
+import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { encodeFunctionData, keccak256, sha256, toHex, zeroAddress, type Abi, type Hex } from 'viem'
 import { useBytecode, useReadContract, useReadContracts } from 'wagmi'
@@ -136,7 +136,7 @@ export const useERC1155SaleContractCheckout = ({
   collectionAddress,
   items,
   ...restArgs
-}: CheckoutOptionsSalesContractArgs & SaleContractSettings): UseERC1155SaleContractCheckoutReturnType => {
+}: Omit<CheckoutOptionsSalesContractArgs, 'chainId'> & SaleContractSettings): UseERC1155SaleContractCheckoutReturnType => {
   const { openSelectPaymentModal, closeSelectPaymentModal, selectPaymentSettings } = useSelectPaymentModal()
   const {
     data: checkoutOptions,
@@ -249,10 +249,14 @@ export const useSaleContractConfig = ({
   )
 
   const getAbi = () => {
-    if (isErrorVersion) return ERC_1155_SALE_CONTRACT
+    if (isErrorVersion) {
+      return ERC_1155_SALE_CONTRACT
+    }
 
     const versionAbi = versionData?.itemVersion?.sourceData?.abi
-    if (!versionAbi) return ERC_1155_SALE_CONTRACT
+    if (!versionAbi) {
+      return ERC_1155_SALE_CONTRACT
+    }
 
     if (typeof versionAbi === 'string') {
       try {

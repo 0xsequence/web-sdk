@@ -1,5 +1,16 @@
 # @0xsequence/hooks
 
+## 5.3.10
+
+### Patch Changes
+
+- - fixed typing problem with erc1155SaleContract hook
+  - remove builder dependy on hooks package
+  - fix confirmation modal issue
+  - show success action buttons
+  - allow cursor pagination for the useGetTokenDetails hook intial params
+  - removed toast errors and replace them by in-modal error messages
+
 ## 5.3.9
 
 ### Patch Changes
