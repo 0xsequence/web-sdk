@@ -10,6 +10,7 @@
     "verbatimModuleSyntax": true,
     "strict": true,
     // "noUncheckedIndexedAccess": true,
+    "rootDir": "./src",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "sourceMap": true,

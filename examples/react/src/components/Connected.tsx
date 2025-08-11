@@ -10,11 +10,11 @@ import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
+  useFeeOptions,
   useOpenConnectModal,
   usePermissions,
   useSocialLink,
   useStorage,
-  useWaasFeeOptions,
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
@@ -23,7 +23,7 @@ import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
-import { Abi, AbiFunction } from 'ox'
+import { AbiFunction } from 'ox'
 import React, { useEffect, type ComponentProps } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, toHex, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
@@ -124,7 +124,7 @@ export const Connected = () => {
   )
 
   const chainId = useChainId()
-  const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
+  const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useFeeOptions()
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
@@ -173,9 +173,11 @@ export const Connected = () => {
     }
 
     try {
+      // @ts-ignore
       const proof = await signEthAuthProof(walletClient, storage)
       console.log('proof:', proof)
 
+      // @ts-ignore
       const isValid = await validateEthProof(walletClient, publicClient, proof)
       console.log('isValid?:', isValid)
     } catch (e) {
@@ -732,6 +734,67 @@ export const Connected = () => {
                   </a>
                 </Text>
               )}
+
+            {isV3WalletConnectionActive && (
+              <>
+                <Text className="mt-4" variant="small-bold" color="muted">
+                  V3 Wallet Permissions
+                </Text>
+                <div className="my-3">
+                  <Select
+                    name="permissionType"
+                    label="1. Pick a permission type"
+                    onValueChange={val => setPermissionType(val as PermissionsType)}
+                    value={permissionType}
+                    options={[
+                      { label: 'Open', value: 'open' },
+                      { label: 'Restrictive', value: 'restrictive' },
+                      { label: 'Cumulative', value: 'cumulative' }
+                    ]}
+                  />
+                </div>
+                <CardButton
+                  title="2. Add V3 Session Permission"
+                  description="Request a new explicit session with the chosen permissions"
+                  isPending={isAddingPermissions}
+                  onClick={handleAddPermissions}
+                />
+                {addPermissionsError && (
+                  <Text variant="small" color="negative">
+                    Error: {addPermissionsError.message}
+                  </Text>
+                )}
+
+                <Text className="mt-4" variant="small-bold" color="muted">
+                  3. Test Explicit Permission transactions
+                </Text>
+
+                <CardButton
+                  title="Send conditionally allowed transaction"
+                  description="Calls explicitEmit()."
+                  isPending={isPendingPermissionedTxn}
+                  onClick={runSendConditionallyAllowedV3Transaction}
+                />
+
+                {networkForCurrentChainId.blockExplorer && lastPermissionedTxnDataHash && (
+                  <Text className="ml-4" variant="small" underline color="primary" asChild>
+                    <a
+                      href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${lastPermissionedTxnDataHash}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View permissioned transaction on {networkForCurrentChainId.blockExplorer.name}
+                    </a>
+                  </Text>
+                )}
+                {permissionedTxnError && (
+                  <Text className="ml-4" variant="small" color="negative">
+                    Transaction failed: {permissionedTxnError.message}
+                  </Text>
+                )}
+              </>
+            )}
+
             {pendingFeeOptionConfirmation && (
               <div className="my-3">
                 <Select
@@ -800,66 +863,6 @@ export const Connected = () => {
                   )}
                 </div>
               </div>
-            )}
-
-            {isV3WalletConnectionActive && (
-              <>
-                <Text className="mt-4" variant="small-bold" color="muted">
-                  V3 Wallet Permissions
-                </Text>
-                <div className="my-3">
-                  <Select
-                    name="permissionType"
-                    label="1. Pick a permission type"
-                    onValueChange={val => setPermissionType(val as PermissionsType)}
-                    value={permissionType}
-                    options={[
-                      { label: 'Open', value: 'open' },
-                      { label: 'Restrictive', value: 'restrictive' },
-                      { label: 'Cumulative', value: 'cumulative' }
-                    ]}
-                  />
-                </div>
-                <CardButton
-                  title="2. Add V3 Session Permission"
-                  description="Request a new explicit session with the chosen permissions"
-                  isPending={isAddingPermissions}
-                  onClick={handleAddPermissions}
-                />
-                {addPermissionsError && (
-                  <Text variant="small" color="negative">
-                    Error: {addPermissionsError.message}
-                  </Text>
-                )}
-
-                <Text className="mt-4" variant="small-bold" color="muted">
-                  3. Test Explicit Permission transactions
-                </Text>
-
-                <CardButton
-                  title="Send conditionally allowed transaction"
-                  description="Calls explicitEmit()."
-                  isPending={isPendingPermissionedTxn}
-                  onClick={runSendConditionallyAllowedV3Transaction}
-                />
-
-                {networkForCurrentChainId.blockExplorer && lastPermissionedTxnDataHash && (
-                  <Text className="ml-4" variant="small" underline color="primary" asChild>
-                    <a
-                      href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${lastPermissionedTxnDataHash}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      View permissioned transaction on {networkForCurrentChainId.blockExplorer.name}
-                    </a>
-                  </Text>
-                )}
-                {permissionedTxnError && (
-                  <Text className="ml-4" variant="small" color="negative">
-                    Transaction failed: {permissionedTxnError.message}
-                  </Text>
-                )}
-              </>
             )}
 
             <Text className="mt-4" variant="small-bold" color="muted">
