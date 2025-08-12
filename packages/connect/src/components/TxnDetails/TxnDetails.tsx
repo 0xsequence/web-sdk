@@ -76,7 +76,7 @@ export const TxnDetails = ({ address, txs, chainId }: TxnDetailsProps) => {
     <div className="flex flex-col w-full">
       {txnContent}
 
-      <Collapsible className="mt-4" label="Transaction data" open={!decodingType || decodingType === DecodingType.UNKNOWN}>
+      <Collapsible className="mt-4" label="Transaction data" defaultOpen={!decodingType || decodingType === DecodingType.UNKNOWN}>
         <Card className="overflow-x-scroll my-3">
           <Text className="mb-4" variant="code">
             {JSON.stringify(txs, null, 2)}

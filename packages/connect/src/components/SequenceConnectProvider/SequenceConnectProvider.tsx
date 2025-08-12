@@ -287,65 +287,12 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                   )}
 
                                   {pendingRequestConfirmation.type === 'signTransaction' && (
-                                    <div className="flex flex-col w-full">
-                                      <TxnDetails
-                                        address={address ?? ''}
-                                        txs={pendingRequestConfirmation.txs ?? []}
-                                        chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
-                                      />
-
-                                      <Collapsible className="mt-4" label="Transaction data">
-                                        <Card className="overflow-x-scroll my-3">
-                                          <Text className="mb-4" variant="code">
-                                            {JSON.stringify(pendingRequestConfirmation.txs, null, 2)}
-                                          </Text>
-                                        </Card>
-                                      </Collapsible>
-                                    </div>
-                                  )}
-
-                                  {pendingRequestConfirmation.type === 'signTransaction' && (
                                     <TxnDetails
                                       address={address ?? ''}
                                       txs={pendingRequestConfirmation.txs ?? []}
                                       chainId={pendingRequestConfirmation.chainId ?? ChainId.POLYGON}
                                     />
                                   )}
-
-                                  {pendingRequestConfirmation.chainId && (
-                                    <div className="flex w-full mt-3 justify-end items-center">
-                                      <div className="flex w-1/2 justify-start">
-                                        <Text variant="small" color="muted">
-                                          Network
-                                        </Text>
-                                      </div>
-                                      <div className="flex w-1/2 justify-end">
-                                        <NetworkBadge chainId={pendingRequestConfirmation.chainId} />
-                                      </div>
-                                    </div>
-                                  )}
-
-                                  <div className="flex flex-row gap-2 w-full mt-5">
-                                    <Button
-                                      className="w-full"
-                                      shape="square"
-                                      size="lg"
-                                      label="Reject"
-                                      onClick={() => {
-                                        rejectPendingRequest(pendingRequestConfirmation?.id)
-                                      }}
-                                    />
-                                    <Button
-                                      className="flex items-center text-center w-full"
-                                      shape="square"
-                                      size="lg"
-                                      label="Confirm"
-                                      variant="primary"
-                                      onClick={() => {
-                                        confirmPendingRequest(pendingRequestConfirmation?.id)
-                                      }}
-                                    />
-                                  </div>
 
                                   {pendingRequestConfirmation.chainId && (
                                     <div className="flex w-full mt-3 justify-end items-center">
