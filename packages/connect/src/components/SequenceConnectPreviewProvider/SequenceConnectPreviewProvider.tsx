@@ -1,10 +1,10 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { AnalyticsContextProvider } from '@0xsequence/web-sdk-core'
-import type { ExtendedConnector, ModalPosition } from '@0xsequence/web-sdk-core'
 import { ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceClient } from '@0xsequence/provider'
+import { AnalyticsContextProvider } from '@0xsequence/web-sdk-core'
+import type { ExtendedConnector, ModalPosition } from '@0xsequence/web-sdk-core'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useAccount, useConfig } from 'wagmi'

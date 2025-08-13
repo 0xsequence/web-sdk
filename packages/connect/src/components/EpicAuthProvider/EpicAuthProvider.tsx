@@ -1,5 +1,5 @@
-import type { ExtendedConnector } from '@0xsequence/web-sdk-core'
 import { Modal, ModalPrimitive, Spinner } from '@0xsequence/design-system'
+import type { ExtendedConnector } from '@0xsequence/web-sdk-core'
 import { useEffect } from 'react'
 import { useAccount, useConnect } from 'wagmi'
 

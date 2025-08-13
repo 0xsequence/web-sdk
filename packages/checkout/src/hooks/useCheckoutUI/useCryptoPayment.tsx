@@ -1,7 +1,7 @@
-import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/web-sdk-core'
 import { useGetSwapQuote, useGetSwapRoutes, useGetTokenBalancesSummary, useIndexerClient } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/web-sdk-core'
 import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'

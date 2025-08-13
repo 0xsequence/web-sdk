@@ -7,7 +7,6 @@ import {
   useSwapModal
 } from '@0xsequence/checkout'
 import type { SwapModalSettings } from '@0xsequence/checkout'
-import { getModalPositionCss } from '@0xsequence/web-sdk-core'
 import {
   signEthAuthProof,
   useOpenConnectModal,
@@ -20,6 +19,7 @@ import {
 import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
+import { getModalPositionCss } from '@0xsequence/web-sdk-core'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, type ComponentProps } from 'react'

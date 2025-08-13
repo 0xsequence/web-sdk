@@ -1,6 +1,6 @@
-import { getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-core'
 import { compareAddress, Image, Skeleton, Text } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
+import { getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-core'
 import { zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 

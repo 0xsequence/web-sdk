@@ -1,10 +1,10 @@
 'use client'
 
-import { isEmailValid, useAnalyticsContext } from '@0xsequence/web-sdk-core'
-import type { ExtendedConnector, LogoProps } from '@0xsequence/web-sdk-core'
 import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { useGetWaasStatus } from '@0xsequence/hooks'
 import { SequenceWaaS } from '@0xsequence/waas'
+import type { ExtendedConnector, LogoProps } from '@0xsequence/web-sdk-core'
+import { isEmailValid, useAnalyticsContext } from '@0xsequence/web-sdk-core'
 import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
 import { useEffect, useState, type ChangeEventHandler, type ReactNode } from 'react'

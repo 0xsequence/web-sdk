@@ -1,8 +1,8 @@
-import { ContractVerificationStatus } from '@0xsequence/web-sdk-core'
 import { useWallets } from '@0xsequence/connect'
 import { Divider, TabsContent, TabsPrimitive, Text } from '@0xsequence/design-system'
 import { useGetTokenBalancesByContract } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
+import { ContractVerificationStatus } from '@0xsequence/web-sdk-core'
 import { useState } from 'react'
 
 import type { TokenInfo } from '../../components/NavigationHeader/index.js'

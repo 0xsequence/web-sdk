@@ -1,12 +1,3 @@
-import {
-  compareAddress,
-  ContractVerificationStatus,
-  CryptoOption,
-  formatDisplay,
-  sendTransactions,
-  useAnalyticsContext,
-  type ExtendedConnector
-} from '@0xsequence/web-sdk-core'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
@@ -16,6 +7,15 @@ import {
   useGetTokenBalancesSummary,
   useIndexerClient
 } from '@0xsequence/hooks'
+import {
+  compareAddress,
+  ContractVerificationStatus,
+  CryptoOption,
+  formatDisplay,
+  sendTransactions,
+  useAnalyticsContext,
+  type ExtendedConnector
+} from '@0xsequence/web-sdk-core'
 import { useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'

@@ -1,4 +1,3 @@
-import type { ExtendedConnector } from '@0xsequence/web-sdk-core'
 import {
   ArrowRightIcon,
   Card,
@@ -10,6 +9,7 @@ import {
   Text,
   useTheme
 } from '@0xsequence/design-system'
+import type { ExtendedConnector } from '@0xsequence/web-sdk-core'
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 

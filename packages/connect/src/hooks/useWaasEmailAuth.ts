@@ -1,5 +1,5 @@
-import type { ExtendedConnector } from '@0xsequence/web-sdk-core'
 import { SequenceWaaS, type SignInResponse } from '@0xsequence/waas'
+import type { ExtendedConnector } from '@0xsequence/web-sdk-core'
 import { useState } from 'react'
 
 // import { EmailWaasOptions } from '../connectors/email/emailWaas'

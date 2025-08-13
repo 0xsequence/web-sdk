@@ -2,8 +2,8 @@ import { SequenceIndexerGateway, type IndexerGateway, type TokenBalance } from '
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import { createNativeTokenBalance } from '../../utils/helpers.js'
 import type { HooksOptions } from '../../types/hooks.js'
+import { createNativeTokenBalance } from '../../utils/helpers.js'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient.js'
 

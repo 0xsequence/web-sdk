@@ -1,5 +1,5 @@
-import { createGenericContext } from '@0xsequence/web-sdk-core'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 import type { Hex } from 'viem'
 
 export interface AddFundsSettings {

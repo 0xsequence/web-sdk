@@ -1,6 +1,6 @@
 import { CreditCardProviders, useCheckoutUI } from '@0xsequence/checkout'
-import { CryptoOption } from '@0xsequence/web-sdk-core'
 import { Button, Image, NetworkImage, Spinner, Text } from '@0xsequence/design-system'
+import { CryptoOption } from '@0xsequence/web-sdk-core'
 import { useState } from 'react'
 import { encodeFunctionData, toHex } from 'viem'
 import { useAccount } from 'wagmi'

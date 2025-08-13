@@ -1,7 +1,7 @@
 'use client'
 
-import { createGenericContext, type ModalPosition } from '@0xsequence/web-sdk-core'
 import type { Theme } from '@0xsequence/design-system'
+import { createGenericContext, type ModalPosition } from '@0xsequence/web-sdk-core'
 import type { Dispatch, SetStateAction } from 'react'
 
 type ThemeContext = {

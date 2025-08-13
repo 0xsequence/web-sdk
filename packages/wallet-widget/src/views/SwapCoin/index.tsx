@@ -1,7 +1,7 @@
-import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-core'
 import { Button, ChevronRightIcon, NumericInput, Text } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalance } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
+import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/web-sdk-core'
 import { useRef, useState, type ChangeEvent } from 'react'
 import { parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'

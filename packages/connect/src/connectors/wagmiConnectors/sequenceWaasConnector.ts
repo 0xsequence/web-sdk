@@ -1,4 +1,3 @@
-import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
 import {
   SequenceWaaS,
@@ -9,6 +8,7 @@ import {
   type SignInResponse,
   type Transaction
 } from '@0xsequence/waas'
+import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 import {

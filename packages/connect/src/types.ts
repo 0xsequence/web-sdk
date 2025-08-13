@@ -1,7 +1,7 @@
 import type { ETHAuthProof } from '@0xsequence/auth'
-import type { ModalPosition } from '@0xsequence/web-sdk-core'
 import type { Theme } from '@0xsequence/design-system'
 import type { SequenceHooksEnv } from '@0xsequence/hooks'
+import type { ModalPosition } from '@0xsequence/web-sdk-core'
 
 import { LocalStorageKey } from './constants/localStorage.js'
 

@@ -1,5 +1,5 @@
-import { formatAddress } from '@0xsequence/web-sdk-core'
 import { GradientAvatar, Text } from '@0xsequence/design-system'
+import { formatAddress } from '@0xsequence/web-sdk-core'
 import { getAddress } from 'viem'
 import { useChains } from 'wagmi'
 

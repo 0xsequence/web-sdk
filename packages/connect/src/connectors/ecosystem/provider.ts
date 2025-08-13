@@ -1,5 +1,5 @@
-import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
+import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { ethers } from 'ethers'
 import { getAddress, TransactionRejectedRpcError } from 'viem'
 

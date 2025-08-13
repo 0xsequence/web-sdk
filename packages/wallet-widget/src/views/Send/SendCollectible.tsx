@@ -1,10 +1,3 @@
-import {
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  truncateAtMiddle,
-  useAnalyticsContext,
-  waitForTransactionReceipt,
-  type ExtendedConnector
-} from '@0xsequence/web-sdk-core'
 import { useCheckWaasFeeOptions, useWaasConfirmationHandler, useWaasFeeOptions, useWallets } from '@0xsequence/connect'
 import {
   AddIcon,
@@ -22,6 +15,13 @@ import {
 } from '@0xsequence/design-system'
 import { useClearCachedBalances, useGetSingleTokenBalance, useIndexerClient } from '@0xsequence/hooks'
 import type { ContractType, TokenBalance } from '@0xsequence/indexer'
+import {
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  truncateAtMiddle,
+  useAnalyticsContext,
+  waitForTransactionReceipt,
+  type ExtendedConnector
+} from '@0xsequence/web-sdk-core'
 import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
 import { useAccount, useChainId, useConfig, useConnections, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'

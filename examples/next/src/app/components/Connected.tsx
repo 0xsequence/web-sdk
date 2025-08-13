@@ -1,5 +1,4 @@
 import type { CheckoutSettings } from '@0xsequence/checkout'
-import { ContractVerificationStatus } from '@0xsequence/web-sdk-core'
 import {
   signEthAuthProof,
   useOpenConnectModal,
@@ -13,6 +12,7 @@ import { Button, Card, cn, Text } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/hooks'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
+import { ContractVerificationStatus } from '@0xsequence/web-sdk-core'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { useCallback, useEffect, useState, type ComponentProps } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, parseUnits } from 'viem'

@@ -1,11 +1,3 @@
-import {
-  compareAddress,
-  ContractVerificationStatus,
-  formatDisplay,
-  sendTransactions,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  useAnalyticsContext
-} from '@0xsequence/web-sdk-core'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   useClearCachedBalances,
@@ -17,6 +9,14 @@ import {
 } from '@0xsequence/hooks'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
+import {
+  compareAddress,
+  ContractVerificationStatus,
+  formatDisplay,
+  sendTransactions,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  useAnalyticsContext
+} from '@0xsequence/web-sdk-core'
 import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'

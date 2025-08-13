@@ -1,7 +1,7 @@
 'use client'
 
-import { createGenericContext } from '@0xsequence/web-sdk-core'
 import type { Transaction } from '@0xsequence/indexer'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 
 export interface CoinDetailsParams {
   contractAddress: string

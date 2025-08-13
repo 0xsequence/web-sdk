@@ -1,12 +1,3 @@
-import {
-  compareAddress,
-  getNativeTokenInfoByChainId,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  truncateAtMiddle,
-  useAnalyticsContext,
-  waitForTransactionReceipt,
-  type ExtendedConnector
-} from '@0xsequence/web-sdk-core'
 import { useCheckWaasFeeOptions, useWaasConfirmationHandler, useWaasFeeOptions, useWallets } from '@0xsequence/connect'
 import {
   Button,
@@ -28,6 +19,15 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
+import {
+  compareAddress,
+  getNativeTokenInfoByChainId,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  truncateAtMiddle,
+  useAnalyticsContext,
+  waitForTransactionReceipt,
+  type ExtendedConnector
+} from '@0xsequence/web-sdk-core'
 import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, type Hex } from 'viem'
 import { useAccount, useChainId, useConfig, useConnections, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'

@@ -1,8 +1,8 @@
 import { sequence } from '0xsequence'
 import type { ETHAuthProof } from '@0xsequence/auth'
-import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import type { ChainIdLike } from '@0xsequence/network'
 import type { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
+import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { getAddress, UserRejectedRequestError } from 'viem'
 import { createConnector } from 'wagmi'
 

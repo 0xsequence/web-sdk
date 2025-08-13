@@ -1,5 +1,5 @@
-import { getNetwork } from '@0xsequence/web-sdk-core'
 import { NetworkImage } from '@0xsequence/design-system'
+import { getNetwork } from '@0xsequence/web-sdk-core'
 
 export const NetworkImageCustom = ({
   chainId,

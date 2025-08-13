@@ -1,6 +1,6 @@
-import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import { useWallets } from '@0xsequence/connect'
 import { ChevronUpDownIcon, cn, GradientAvatar, Text } from '@0xsequence/design-system'
+import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import { useState } from 'react'
 
 import { ListCardWallet } from '../ListCard/ListCardWallet.js'

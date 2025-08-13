@@ -1,6 +1,6 @@
-import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import type { ConnectedWallet } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
+import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import { useEffect, useState } from 'react'
 import { useConnections } from 'wagmi'
 
