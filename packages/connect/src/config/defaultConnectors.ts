@@ -1,13 +1,14 @@
 import type { Signers } from '@0xsequence/wallet-core'
 import type { CreateConnectorFn } from 'wagmi'
 
+import { appleV3 } from '../connectors/apple/applev3.js'
 import { coinbaseWallet } from '../connectors/coinbaseWallet/coinbaseWallet.js'
+import { emailV3 } from '../connectors/email/emailv3.js'
 import { googleV3 } from '../connectors/google/googleV3.js'
 import { metaMask } from '../connectors/metaMask/metaMask.js'
 import { walletConnect } from '../connectors/walletConnect/walletConnect.js'
 import type { Wallet } from '../types.js'
 import { getConnectWallets } from '../utils/getConnectWallets.js'
-import { emailV3 } from '../connectors/email/emailv3.js'
 
 export interface CommonConnectorOptions {
   appName: string
@@ -72,6 +73,18 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
   }
 
   if (options.apple !== false) {
+    if (!walletUrl || !dappOrigin) {
+      throw new Error('Apple wallet requires walletUrl and dappOrigin to be set')
+    }
+    wallets.push(
+      appleV3({
+        projectAccessKey: projectAccessKey,
+        walletUrl: walletUrl,
+        dappOrigin: dappOrigin,
+        permissions: options.permissions,
+        defaultNetwork: defaultChainId
+      })
+    )
   }
 
   if (options.metaMask !== false) {

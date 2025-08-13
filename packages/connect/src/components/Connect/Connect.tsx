@@ -202,7 +202,7 @@ export const Connect = (props: ConnectProps) => {
     .filter(c => c._wallet?.type === 'social')
     .filter(c => !c._wallet.id.includes('email'))
   const walletConnectors = [...baseWalletConnectors, ...injectedConnectors]
-  // TODO: handle for v3
+
   const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet?.id.includes('email'))
 
   const onChangeEmail: ChangeEventHandler<HTMLInputElement> = ev => {
@@ -384,16 +384,11 @@ export const Connect = (props: ConnectProps) => {
                             value={email}
                             name="email"
                             placeholder="Email address"
-                            // controls={
-                            // TODO: handle for v3 email
-                            // <>
-                            //   {emailAuthInProgress ? (
-                            //     <Spinner />
-                            //   ) : (
-                            //     <IconButton type="submit" size="xs" icon={ArrowRightIcon} disabled={!isEmailValid(email)} />
-                            //   )}
-                            // </>
-                            // }
+                            controls={
+                              <>
+                                <IconButton type="submit" size="xs" icon={ArrowRightIcon} disabled={!isEmailValid(email)} />
+                              </>
+                            }
                             data-1p-ignore
                           />
                         </form>
