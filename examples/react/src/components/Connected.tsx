@@ -843,13 +843,13 @@ export const Connected = () => {
             )}
 
             <CardButton
-              title="Swap with Sequence Pay"
+              title="Swap"
               description="Seamlessly swap eligible currencies in your wallet to a target currency"
               onClick={onClickSwap}
             />
 
             <CardButton
-              title="Checkout with Sequence Pay"
+              title="Checkout"
               description="Purchase an NFT through various purchase methods"
               onClick={onClickSelectPayment}
             />

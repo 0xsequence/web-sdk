@@ -67,7 +67,7 @@ type UseSwapModalReturnType = {
  *
  *   return (
  *     <button onClick={handleSwap}>
- *       Swap with Sequence Pay
+ *       Swap
  *     </button>
  *   )
  * }

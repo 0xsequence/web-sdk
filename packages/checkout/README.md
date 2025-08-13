@@ -36,13 +36,13 @@ const App = () => {
 }
 ```
 
-# NFT Checkout (Sequence Pay)
+# NFT Checkout
 
 <div align="center">
   <img src="../../public/docs/checkout-modal.png">
 </div>
 
-Sequence Pay Checkout allows users to purchase NFTs using various payment methods. Users can pay with the main currency (e.g., ETH), swap tokens for payment, or use a credit card provided the smart contract is whitelisted (contact a member of the Sequence team to whitelist your contract for credit card payments).
+NFT Checkout allows users to purchase NFTs using various payment methods. Users can pay with the main currency (e.g., ETH), swap tokens for payment, or use a credit card provided the smart contract is whitelisted (contact a member of the Sequence team to whitelist your contract for credit card payments).
 
 ## Basic Usage
 
