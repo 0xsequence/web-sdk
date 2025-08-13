@@ -13,6 +13,7 @@ import {
   useFeeOptions,
   useOpenConnectModal,
   usePermissions,
+  useSequenceSessionInfo,
   useSocialLink,
   useStorage,
   useWallets,
@@ -68,6 +69,10 @@ export const Connected = () => {
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
   const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
   const isV3WalletConnectionActive = wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
+
+  const sessionInfo = useSequenceSessionInfo()
+
+  console.log('sessionInfo', sessionInfo)
 
   const {
     data: txnData,

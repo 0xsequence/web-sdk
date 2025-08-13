@@ -85,6 +85,7 @@ export { useSocialLink } from './hooks/useSocialLink.js'
 
 export { useFeeOptions } from './hooks/useFeeOptions.js'
 export { usePermissions } from './hooks/usePermissions.js'
+export { useSequenceSessionInfo } from './hooks/useSequenceSessionInfo.js'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge/index.js'
