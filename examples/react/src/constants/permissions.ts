@@ -5,7 +5,7 @@ import { optimism } from 'viem/chains'
 
 export const transfer = AbiFunction.from(['function transfer(address to, uint256 value)'])
 
-export type PermissionsType = 'none' | 'open' | 'restrictive' | 'cumulative'
+export type PermissionsType = 'none' | 'contractCall' | 'usdcTransfer' | 'combined'
 
 export const PERMISSION_TYPE_LOCAL_STORAGE_KEY = 'permissionType'
 
@@ -26,101 +26,60 @@ export const getEmitterContractAddress = (redirectUrl: string): Address.Address 
 
 export const EMITTER_ABI = Abi.from(['function explicitEmit()', 'function implicitEmit()'])
 
-export const getRestrictivePermissions = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
-  const emitterContractAddress = getEmitterContractAddress(redirectUrl)
-  return {
-    chainId: BigInt(chainId),
-    valueLimit: 0n,
-    deadline: BigInt(Date.now() + 1000 * 60 * 5000),
-    permissions:
-      chainId === optimism.id
-        ? [
-            Utils.PermissionBuilder.for(USDC_ADDRESS).forFunction(transfer).withAddressParam('to', explicitAddress).build(),
-            {
-              target: emitterContractAddress,
-              rules: [
-                {
-                  // Require the explicitEmit selector
-                  cumulative: true,
-                  operation: Permission.ParameterOperation.EQUAL,
-                  value: Bytes.padRight(Bytes.fromHex(AbiFunction.getSelector(EMITTER_ABI[0])), 32),
-                  offset: 0n,
-                  mask: Permission.MASK.SELECTOR
-                }
-              ]
-            }
-          ]
-        : [
-            {
-              target: emitterContractAddress,
-              rules: [
-                {
-                  // Require the explicitEmit selector
-                  cumulative: false,
-                  operation: Permission.ParameterOperation.EQUAL,
-                  value: Bytes.padRight(Bytes.fromHex(AbiFunction.getSelector(EMITTER_ABI[0])), 32),
-                  offset: 0n,
-                  mask: Permission.MASK.SELECTOR
-                }
-              ]
-            }
-          ]
-  }
-}
-
 export const USDC_ADDRESS = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607' // Op mainnet
-export const explicitAddress = '0x7e08701cC9194eF4fFD82421dd0d986d1B43D521'
 
-export const getOpenPermissions = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
+// 1. Permission for a specific contract call
+export const getContractCallPermission = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
   const emitterContractAddress = getEmitterContractAddress(redirectUrl)
   return {
     chainId: BigInt(chainId),
     valueLimit: 0n,
     deadline: BigInt(Date.now() + 1000 * 60 * 5000),
-    // If testing on OP mainnet then we can use USDC to pay for the gas so add the permission
-    permissions:
-      chainId === optimism.id
-        ? [
-            Utils.PermissionBuilder.for(USDC_ADDRESS).forFunction(transfer).build(),
-            {
-              target: emitterContractAddress,
-              rules: []
-            }
-          ]
-        : [
-            {
-              target: emitterContractAddress,
-              rules: []
-            }
-          ]
+    permissions: [
+      {
+        target: emitterContractAddress,
+        rules: [
+          {
+            // Require the explicitEmit selector
+            cumulative: false,
+            operation: Permission.ParameterOperation.EQUAL,
+            value: Bytes.padRight(Bytes.fromHex(AbiFunction.getSelector(EMITTER_ABI[0])), 32),
+            offset: 0n,
+            mask: Permission.MASK.SELECTOR
+          }
+        ]
+      }
+    ]
   }
 }
 
-export const getCumulativePermissions = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
-  const emitterContractAddress = getEmitterContractAddress(redirectUrl)
+// 2. Permission for USDC transfers (on Optimism)
+export const getUsdcPermission = (chainId: number): Signers.Session.ExplicitParams => {
+  const permissions =
+    chainId === optimism.id ? Utils.PermissionBuilder.for(USDC_ADDRESS).forFunction(transfer).build() : undefined
+
+  if (!permissions) {
+    throw new Error(`This example permission is set up only for Optimism (chain id: ${optimism.id}).`)
+  }
+
   return {
     chainId: BigInt(chainId),
     valueLimit: 0n,
     deadline: BigInt(Date.now() + 1000 * 60 * 5000),
-    permissions:
-      chainId === optimism.id
-        ? [
-            Utils.PermissionBuilder.for(USDC_ADDRESS)
-              .forFunction(transfer)
-              // Limit spending for USDC to 500 units (1 USDC = 10^6)
-              .withUintNParam('value', 500n, 256, Permission.ParameterOperation.LESS_THAN_OR_EQUAL, true)
-              .build(),
-            {
-              target: emitterContractAddress,
-              rules: []
-            }
-          ]
-        : [
-            {
-              target: emitterContractAddress,
-              rules: []
-            }
-          ]
+    permissions: [permissions]
+  }
+}
+
+// 3. Combined permission for both contract call and USDC transfer
+export const getCombinedPermission = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
+  const contractCallPermissions = getContractCallPermission(redirectUrl, chainId).permissions
+  const usdcPermissions = getUsdcPermission(chainId).permissions
+
+  return {
+    chainId: BigInt(chainId),
+    valueLimit: 0n,
+    deadline: BigInt(Date.now() + 1000 * 60 * 5000),
+    permissions: [...contractCallPermissions, ...usdcPermissions]
   }
 }
 
@@ -130,12 +89,12 @@ export const getPermissionForType = (
   type: PermissionsType
 ): Signers.Session.ExplicitParams | undefined => {
   switch (type) {
-    case 'open':
-      return getOpenPermissions(redirectUrl, chainId)
-    case 'restrictive':
-      return getRestrictivePermissions(redirectUrl, chainId)
-    case 'cumulative':
-      return getCumulativePermissions(redirectUrl, chainId)
+    case 'contractCall':
+      return getContractCallPermission(redirectUrl, chainId)
+    case 'usdcTransfer':
+      return getUsdcPermission(chainId)
+    case 'combined':
+      return getCombinedPermission(redirectUrl, chainId)
     case 'none':
       return undefined // No permissions
     default:

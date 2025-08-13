@@ -21,6 +21,7 @@ import {
 } from '@0xsequence/connect'
 import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
+import { Permission } from '@0xsequence/wallet-primitives'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
@@ -36,7 +37,7 @@ import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 // import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { EMITTER_ABI, getEmitterContractAddress, getPermissionForType, PermissionsType } from '../constants/permissions'
-import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
+import { delay, getCheckoutSettings, getOrderbookCalldata, getPermissions } from '../utils'
 
 import { CustomCheckout } from './CustomCheckout'
 import { Select } from './Select'
@@ -71,6 +72,9 @@ export const Connected = () => {
   const isV3WalletConnectionActive = wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
 
   const sessionInfo = useSequenceSessionInfo()
+
+  const [hasPermission, setHasPermission] = React.useState(false)
+  const [isCheckingPermission, setIsCheckingPermission] = React.useState(false)
 
   console.log('sessionInfo', sessionInfo)
 
@@ -134,7 +138,134 @@ export const Connected = () => {
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
   const { addPermissions, isLoading: isAddingPermissions, error: addPermissionsError } = usePermissions()
-  const [permissionType, setPermissionType] = React.useState<PermissionsType>('open')
+  const [permissionType, setPermissionType] = React.useState<PermissionsType>('contractCall')
+
+  useEffect(() => {
+    const checkPermissions = async () => {
+      if (!sessionInfo.isInitialized || !isV3WalletConnectionActive || !address || !chainId) {
+        setHasPermission(false)
+        return
+      }
+
+      const sessionSigner = sessionInfo.signerAddresses.find(s => !s.isImplicit)
+
+      if (!sessionSigner) {
+        setHasPermission(false)
+        return
+      }
+
+      setIsCheckingPermission(true)
+      setHasPermission(false)
+
+      try {
+        const expectedPermissionConfig = getPermissionForType(window.location.origin, chainId, permissionType)
+
+        if (!expectedPermissionConfig || !expectedPermissionConfig.permissions) {
+          setHasPermission(true)
+          return
+        }
+
+        const existingPermissionConfig = await getPermissions(address, sessionSigner.address, chainId)
+
+        console.log('existingPermissionConfig:', existingPermissionConfig)
+
+        if (
+          !existingPermissionConfig ||
+          !('permissions' in existingPermissionConfig) ||
+          !existingPermissionConfig.permissions ||
+          existingPermissionConfig.chainId !== BigInt(chainId)
+        ) {
+          setHasPermission(false)
+          return
+        }
+
+        const arePermissionsSubset = (expectedPerms: Permission.Permission[], existingPerms: Permission.Permission[]) => {
+          if (expectedPerms.length > existingPerms.length) {
+            return false
+          }
+          if (expectedPerms.length === 0) {
+            return true
+          }
+
+          // Helper to compare two Uint8Arrays by their contents
+          const areByteArraysEqual = (a: Uint8Array, b: Uint8Array): boolean => {
+            if (a.length !== b.length) {
+              return false
+            }
+            for (let i = 0; i < a.length; i++) {
+              if (a[i] !== b[i]) {
+                return false
+              }
+            }
+            return true
+          }
+
+          // Helper to compare two arrays of rules, order-independent
+          const compareRulesets = (rulesA: Permission.ParameterRule[], rulesB: Permission.ParameterRule[]) => {
+            if (rulesA.length !== rulesB.length) {
+              return false
+            }
+            if (rulesA.length === 0) {
+              return true
+            }
+
+            const matchedB = new Array(rulesB.length).fill(false)
+            return rulesA.every(ruleA => {
+              const foundMatch = rulesB.some((ruleB, index) => {
+                if (matchedB[index]) {
+                  return false
+                }
+                // Compare individual rule properties, using the byte array helper for mask and value
+                if (
+                  ruleA.cumulative === ruleB.cumulative &&
+                  areByteArraysEqual(ruleA.mask, ruleB.mask) &&
+                  ruleA.offset === ruleB.offset &&
+                  ruleA.operation === ruleB.operation &&
+                  areByteArraysEqual(ruleA.value, ruleB.value)
+                ) {
+                  matchedB[index] = true
+                  return true
+                }
+                return false
+              })
+              return foundMatch
+            })
+          }
+
+          const matchedExisting = new Array(existingPerms.length).fill(false)
+
+          // Main logic: check if every expected permission is present in existing permissions
+          return expectedPerms.every(expectedPerm => {
+            return existingPerms.some((existingPerm, index) => {
+              if (matchedExisting[index]) {
+                return false
+              }
+
+              const isTargetMatch = expectedPerm.target.toLowerCase() === existingPerm.target.toLowerCase()
+              const areRulesMatch = compareRulesets(expectedPerm.rules ?? [], existingPerm.rules ?? [])
+
+              if (isTargetMatch && areRulesMatch) {
+                matchedExisting[index] = true
+                return true
+              }
+              return false
+            })
+          })
+        }
+
+        const isSubset = arePermissionsSubset(expectedPermissionConfig.permissions, existingPermissionConfig.permissions)
+        console.log('isSubset:', isSubset)
+        setHasPermission(isSubset)
+      } catch (error) {
+        console.error('Failed to check permissions:', error)
+        setHasPermission(false)
+      } finally {
+        setIsCheckingPermission(false)
+      }
+    }
+
+    checkPermissions()
+  }, [sessionInfo, address, chainId, permissionType, isV3WalletConnectionActive])
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
@@ -748,22 +879,43 @@ export const Connected = () => {
                 <div className="my-3">
                   <Select
                     name="permissionType"
-                    label="1. Pick a permission type"
+                    label="Pick a permission type"
                     onValueChange={val => setPermissionType(val as PermissionsType)}
                     value={permissionType}
                     options={[
-                      { label: 'Open', value: 'open' },
-                      { label: 'Restrictive', value: 'restrictive' },
-                      { label: 'Cumulative', value: 'cumulative' }
+                      { label: 'Contract call (explicitEmit)', value: 'contractCall' },
+                      { label: 'USDC Transfer (Optimism only)', value: 'usdcTransfer' },
+                      { label: 'Combined (explicitEmit() + USDC transfer)', value: 'combined' }
                     ]}
                   />
+                  <div className="my-2 text-center">
+                    {isCheckingPermission && (
+                      <Text variant="small" color="muted">
+                        Checking permissions...
+                      </Text>
+                    )}
+                    {!isCheckingPermission && hasPermission && permissionType !== 'none' && (
+                      <Text variant="small" color="positive">
+                        Permission already granted for this session.
+                      </Text>
+                    )}
+                  </div>
                 </div>
-                <CardButton
-                  title="2. Add V3 Session Permission"
-                  description="Request a new explicit session with the chosen permissions"
-                  isPending={isAddingPermissions}
-                  onClick={handleAddPermissions}
-                />
+
+                {!isCheckingPermission && !hasPermission && (
+                  <CardButton
+                    title="Add V3 Session Permission"
+                    description={
+                      hasPermission
+                        ? 'You already have the required permissions.'
+                        : 'Request a new explicit session with the chosen permissions.'
+                    }
+                    isPending={isAddingPermissions || isCheckingPermission}
+                    onClick={
+                      hasPermission || isAddingPermissions || isCheckingPermission ? () => {} : () => handleAddPermissions()
+                    }
+                  />
+                )}
                 {addPermissionsError && (
                   <Text variant="small" color="negative">
                     Error: {addPermissionsError.message}
@@ -771,12 +923,12 @@ export const Connected = () => {
                 )}
 
                 <Text className="mt-4" variant="small-bold" color="muted">
-                  3. Test Explicit Permission transactions
+                  Test Explicit Permission transactions
                 </Text>
 
                 <CardButton
                   title="Send conditionally allowed transaction"
-                  description="Calls explicitEmit()."
+                  description="Calls explicitEmit() on test contract. (Also uses USDC permission on Optimism for fee option)"
                   isPending={isPendingPermissionedTxn}
                   onClick={runSendConditionallyAllowedV3Transaction}
                 />

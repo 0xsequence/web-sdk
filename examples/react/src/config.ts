@@ -90,7 +90,7 @@ export const passportInstance = new passport.Passport({
 
 export const config = createConfig({
   ...connectConfig,
-  walletUrl: 'http://localhost:5173',
+  walletUrl: 'https://v3.sequence-dev.app',
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
   chainIds: [ChainId.ARBITRUM_SEPOLIA, ChainId.OPTIMISM],

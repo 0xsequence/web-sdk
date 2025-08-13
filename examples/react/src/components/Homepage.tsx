@@ -33,7 +33,7 @@ export const Homepage = () => {
           </div>
 
           <div className="permissions-group">
-            <label htmlFor="initial-permissions">Initial Permissions (Optional)</label>
+            <label htmlFor="initial-permissions">Initial Session Permissions (Optional)</label>
             <select
               id="initial-permissions"
               value={initialPermissionsType}
@@ -43,9 +43,9 @@ export const Homepage = () => {
               }}
             >
               <option value="none">None (Implicit Signer Only)</option>
-              <option value="open">Open</option>
-              <option value="restrictive">Restrictive</option>
-              <option value="cumulative">Restrictive Cumulative</option>
+              <option value="contractCall">1. Contract call for explicitEmit()</option>
+              <option value="usdcTransfer">2. USDC Transfer (Optimism only)</option>
+              <option value="combined">3. Combined (1. + 2.)</option>
             </select>
           </div>
         </div>
