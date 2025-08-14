@@ -8,6 +8,7 @@ import {
   type SignInResponse,
   type Transaction
 } from '@0xsequence/waas'
+import { normalizeChainId } from '@0xsequence/web-sdk-core'
 import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -22,7 +23,6 @@ import {
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
-import { normalizeChainId } from '../../utils/helpers.js'
 import { getPkcePair, getXOauthUrl } from '../X/XAuth.js'
 
 export interface SequenceWaasConnectConfig {

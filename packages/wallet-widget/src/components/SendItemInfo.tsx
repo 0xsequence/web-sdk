@@ -1,5 +1,5 @@
-import { formatDisplay } from '@0xsequence/connect'
 import { NetworkImage, Skeleton, Text, TokenImage } from '@0xsequence/design-system'
+import { formatDisplay } from '@0xsequence/web-sdk-core'
 import React from 'react'
 import { formatUnits } from 'viem'
 

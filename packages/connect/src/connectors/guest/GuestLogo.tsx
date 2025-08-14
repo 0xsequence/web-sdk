@@ -1,7 +1,6 @@
 import { Text } from '@0xsequence/design-system'
+import type { LogoProps } from '@0xsequence/web-sdk-core'
 import React from 'react'
-
-import type { LogoProps } from '../../types.js'
 
 interface GetGuestLogo {
   isDarkMode: boolean

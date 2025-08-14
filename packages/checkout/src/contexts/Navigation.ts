@@ -1,8 +1,8 @@
 'use client'
 
-import type { CreditCardCheckout } from '../contexts/CheckoutModal.js'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 
-import { createGenericContext } from './genericContext.js'
+import type { CreditCardCheckout } from '../contexts/CheckoutModal.js'
 
 export interface SelectCheckoutNavigation {
   location: 'select-method-checkout'

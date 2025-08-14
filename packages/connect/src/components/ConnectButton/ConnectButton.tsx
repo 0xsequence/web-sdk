@@ -1,4 +1,5 @@
 import { Card, ContextMenuIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
+import type { ExtendedConnector, WalletProperties } from '@0xsequence/web-sdk-core'
 import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
@@ -6,7 +7,6 @@ import { appleAuthHelpers } from 'react-apple-signin-auth'
 import { getXIdToken } from '../../connectors/X/XAuth.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useStorage, useStorageItem } from '../../hooks/useStorage.js'
-import type { ExtendedConnector, WalletProperties } from '../../types.js'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'

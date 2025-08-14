@@ -1,10 +1,4 @@
 import {
-  CollectibleTileImage,
-  formatDisplay,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  waitForTransactionReceipt
-} from '@0xsequence/connect'
-import {
   ArrowDownIcon,
   Button,
   Card,
@@ -19,6 +13,12 @@ import {
 import { useGetContractInfo, useGetTokenMetadata, useIndexerClient } from '@0xsequence/hooks'
 import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
+import {
+  CollectibleTileImage,
+  formatDisplay,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
+  waitForTransactionReceipt
+} from '@0xsequence/web-sdk-core'
 import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { formatUnits, type Hex, type PublicClient } from 'viem'

@@ -1,4 +1,5 @@
-import { createGenericContext } from './genericContext.js'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
+
 import type { ActionButtons } from './SelectPaymentModal.js'
 
 interface Item {

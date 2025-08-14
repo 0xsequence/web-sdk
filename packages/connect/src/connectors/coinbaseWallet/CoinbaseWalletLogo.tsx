@@ -1,6 +1,5 @@
+import type { LogoProps } from '@0xsequence/web-sdk-core'
 import type { FunctionComponent } from 'react'
-
-import type { LogoProps } from '../../types.js'
 
 export const CoinbaseWalletLogo: FunctionComponent<LogoProps> = props => {
   return (

@@ -1,8 +1,7 @@
 'use client'
 
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 import type { Dispatch, SetStateAction } from 'react'
-
-import { createGenericContext } from './genericContext.js'
 
 type ConnectModalContext = {
   isConnectModalOpen: boolean

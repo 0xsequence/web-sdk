@@ -1,7 +1,6 @@
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 import type { Hex } from 'viem'
-
-import { createGenericContext } from './genericContext.js'
 
 export interface AddFundsSettings {
   walletAddress: string | Hex

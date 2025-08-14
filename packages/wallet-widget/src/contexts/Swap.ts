@@ -1,6 +1,5 @@
 import type { Token } from '@0xsequence/api'
-
-import { createGenericContext } from './genericContext.js'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 
 export interface SwapContext {
   lifiChains: number[]

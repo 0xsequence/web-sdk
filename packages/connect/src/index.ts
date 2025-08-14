@@ -5,19 +5,7 @@ export { SequenceConnectProvider } from './components/SequenceConnectProvider/in
 export { SequenceConnectPreviewProvider } from './components/SequenceConnectPreviewProvider/index.js'
 
 // Types
-export type {
-  ConnectConfig,
-  DisplayedAsset,
-  EthAuthSettings,
-  ExtendedConnector,
-  LogoProps,
-  ModalPosition,
-  StorageItem,
-  Wallet,
-  WalletField,
-  WalletProperties,
-  WalletType
-} from './types.js'
+export type { ConnectConfig, DisplayedAsset, EthAuthSettings, StorageItem } from './types.js'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
@@ -33,36 +21,14 @@ export { getDefaultChains } from './config/defaultChains.js'
 export { getDefaultTransports } from './config/defaultTransports.js'
 
 // Constants
-export {
-  DEFAULT_SESSION_EXPIRATION,
-  LocalStorageKey,
-  NATIVE_TOKEN_ADDRESS_0X,
-  QUERY_KEYS,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  WEB_SDK_VERSION
-} from './constants/index.js'
+export { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, QUERY_KEYS, WEB_SDK_VERSION } from './constants/index.js'
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
-export {
-  capitalize,
-  compareAddress,
-  formatAddress,
-  formatDisplay,
-  isEmailValid,
-  truncateAtIndex,
-  truncateAtMiddle
-} from './utils/helpers.js'
-export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
-export { getModalPositionCss } from './utils/styling.js'
-export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
-export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
-export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
 
 // Contexts
 export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'
-export { AnalyticsContextProvider, useAnalyticsContext } from './contexts/Analytics.js'
 export { ConnectModalContextProvider, useConnectModalContext } from './contexts/ConnectModal.js'
 export { ThemeContextProvider, useThemeContext } from './contexts/Theme.js'
 export { useWalletConfigContext, WalletConfigContextProvider } from './contexts/WalletConfig.js'
@@ -112,11 +78,4 @@ export { useSocialLink } from './hooks/useSocialLink.js'
 export { useDirectEcosystemConnect } from './hooks/useDirectEcosystemConnect.js'
 
 // Components
-export { NetworkBadge } from './components/NetworkBadge/index.js'
-export { CollectibleTileImage } from './components/CollectibleTileImage/index.js'
-export { CryptoOption } from './components/CryptoOption.js'
-export { SelectedIndicator } from './components/SelectedIndicator.js'
 export { ShadowRoot } from './components/ShadowRoot/index.js'
-
-// Indexer
-export { ContractVerificationStatus } from '@0xsequence/indexer'

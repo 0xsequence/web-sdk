@@ -1,7 +1,7 @@
 import { useFindVersion } from '@0xsequence/hooks'
 import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { encodeFunctionData, keccak256, sha256, toHex, zeroAddress, type Abi, type Hex } from 'viem'
+import { encodeFunctionData, sha256, toHex, zeroAddress, type Hex } from 'viem'
 import { useBytecode, useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi.js'

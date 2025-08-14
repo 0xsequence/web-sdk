@@ -1,6 +1,6 @@
 import type { Price, TokenPrice } from '@0xsequence/api'
-import { compareAddress } from '@0xsequence/connect'
 import type { GetTransactionHistoryReturn, TokenBalance, Transaction } from '@0xsequence/indexer'
+import { compareAddress } from '@0xsequence/web-sdk-core'
 import type { InfiniteData } from '@tanstack/react-query'
 import { formatUnits, zeroAddress } from 'viem'
 

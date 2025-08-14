@@ -1,7 +1,7 @@
-import { CollectibleTileImage, formatDisplay } from '@0xsequence/connect'
 import { Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { CollectibleTileImage, formatDisplay } from '@0xsequence/web-sdk-core'
 import { formatUnits } from 'viem'
 
 import { useSelectPaymentModal } from '../../../../hooks/useSelectPaymentModal.js'

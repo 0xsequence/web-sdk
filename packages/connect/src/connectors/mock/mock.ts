@@ -1,6 +1,6 @@
+import type { Wallet } from '@0xsequence/web-sdk-core'
 import { mock as mockBase, type MockParameters } from 'wagmi/connectors'
 
-import type { Wallet } from '../../types.js'
 import { SequenceLogo } from '../sequence/SequenceLogo.js'
 
 export const mock = (options: MockParameters): Wallet => ({

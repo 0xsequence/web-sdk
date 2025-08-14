@@ -1,5 +1,6 @@
-import { truncateAtIndex, useSocialLink, useWallets } from '@0xsequence/connect'
+import { useSocialLink, useWallets } from '@0xsequence/connect'
 import { Text } from '@0xsequence/design-system'
+import { truncateAtIndex } from '@0xsequence/web-sdk-core'
 import { useAccount } from 'wagmi'
 
 import { CopyButton } from '../../components/CopyButton.js'

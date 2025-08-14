@@ -1,6 +1,5 @@
+import type { ExtendedConnector, Wallet } from '@0xsequence/web-sdk-core'
 import type { CreateConnectorFn } from 'wagmi'
-
-import type { ExtendedConnector, Wallet } from '../types.js'
 
 export const getConnectWallets = (projectAccessKey: string, wallets: Wallet[]): CreateConnectorFn[] => {
   const connectors: CreateConnectorFn[] = []

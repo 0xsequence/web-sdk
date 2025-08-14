@@ -1,8 +1,8 @@
 'use client'
 
-import type { ConnectConfig } from '../types.js'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 
-import { createGenericContext } from './genericContext.js'
+import type { ConnectConfig } from '../types.js'
 
 const [useConnectConfigContext, ConnectConfigContextProvider] = createGenericContext<ConnectConfig>()
 

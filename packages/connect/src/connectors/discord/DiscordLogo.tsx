@@ -1,6 +1,5 @@
+import type { LogoProps } from '@0xsequence/web-sdk-core'
 import type { FunctionComponent } from 'react'
-
-import type { LogoProps } from '../../types.js'
 
 interface GetDiscordLogo {
   isDarkMode: boolean

@@ -1,7 +1,7 @@
-import { compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/connect'
 import { Card, Scroll, SearchInput, Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/web-sdk-core'
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 import { formatUnits } from 'viem'

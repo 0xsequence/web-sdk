@@ -3,6 +3,8 @@
 import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { useGetWaasStatus } from '@0xsequence/hooks'
 import { SequenceWaaS } from '@0xsequence/waas'
+import type { ExtendedConnector, LogoProps } from '@0xsequence/web-sdk-core'
+import { isEmailValid, useAnalyticsContext } from '@0xsequence/web-sdk-core'
 import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
 import { useEffect, useState, type ChangeEventHandler, type ReactNode } from 'react'
@@ -12,15 +14,13 @@ import { useConnect, useConnections, useSignMessage } from 'wagmi'
 import { EVENT_SOURCE } from '../../constants/analytics.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { CHAIN_ID_FOR_SIGNATURE } from '../../constants/walletLinking.js'
-import { useAnalyticsContext } from '../../contexts/Analytics.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useEmailAuth } from '../../hooks/useWaasEmailAuth.js'
 import type { FormattedEmailConflictInfo } from '../../hooks/useWaasEmailConflict.js'
 import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet.js'
 import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
-import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
-import { isEmailValid } from '../../utils/helpers.js'
+import type { ConnectConfig } from '../../types.js'
 import { GuestWaasConnectButton, XWaasConnectButton } from '../ConnectButton/ConnectButton.js'
 import {
   AppleWaasConnectButton,
@@ -92,8 +92,9 @@ export const Connect = (props: ConnectProps) => {
 
       try {
         analytics?.track({
-          event: 'UNLINK_WALLET',
+          event: 'REQUEST',
           props: {
+            type: 'UNLINK_WALLET',
             parentWalletAddress: parentWallet ? getUserIdForEvent(parentWallet) : '',
             linkedWalletAddress: getUserIdForEvent(address),
             linkedWalletType: linkedWallets?.find(lw => lw.linkedWalletAddress === address)?.walletType || '',
@@ -150,8 +151,9 @@ export const Connect = (props: ConnectProps) => {
 
           try {
             analytics?.track({
-              event: 'LINK_WALLET',
+              event: 'REQUEST',
               props: {
+                type: 'LINK_WALLET',
                 parentWalletAddress: getUserIdForEvent(waasWalletAddress),
                 linkedWalletAddress: getUserIdForEvent(childWalletAddress),
                 linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',

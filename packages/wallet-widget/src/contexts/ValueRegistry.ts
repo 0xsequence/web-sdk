@@ -1,4 +1,4 @@
-import { createGenericContext } from './genericContext.js'
+import { createGenericContext } from '@0xsequence/web-sdk-core'
 
 export interface ValueRegistryPair {
   accountAddress: string

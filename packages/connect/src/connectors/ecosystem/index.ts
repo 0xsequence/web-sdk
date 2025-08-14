@@ -1,4 +1,4 @@
-import type { Wallet, WalletProperties } from '../../types.js'
+import type { Wallet, WalletProperties } from '@0xsequence/web-sdk-core'
 
 import { ecosystemWallet as baseEcosystemWallet, type BaseEcosystemConnectorOptions } from './ecosystemWallet.js'
 

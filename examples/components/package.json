@@ -9,6 +9,7 @@
   },
   "peerDependencies": {
     "@0xsequence/design-system": "2.1.11",
+    "@0xsequence/web-sdk-core": "workspace:*",
     "@0xsequence/network": "*",
     "wagmi": "^2.15.0"
   },

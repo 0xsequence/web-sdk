@@ -1,4 +1,3 @@
-import { formatDisplay, truncateAtIndex } from '@0xsequence/connect'
 import {
   ArrowUpIcon,
   Button,
@@ -12,6 +11,7 @@ import {
 } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { formatDisplay, truncateAtIndex } from '@0xsequence/web-sdk-core'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useEffect, useRef, useState } from 'react'
 import { formatUnits, getAddress } from 'viem'
@@ -35,7 +35,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
   const [triggerWidth, setTriggerWidth] = useState<number>(0)
 
   const [isExternalPopoverOpen, setIsExternalPopoverOpen] = useState(false)
-  const [foundMarketplaceURL, setFoundMarketplaceURL] = useState<string | null>(null)
+  const [foundMarketplaceURL] = useState<string | null>(null)
 
   useEffect(() => {
     if (triggerRef.current) {

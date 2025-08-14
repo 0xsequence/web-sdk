@@ -1,4 +1,5 @@
-import type { Wallet } from '../../types.js'
+import type { Wallet } from '@0xsequence/web-sdk-core'
+
 import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector.js'
 
 import { getEmailLogo } from './EmailLogo.js'

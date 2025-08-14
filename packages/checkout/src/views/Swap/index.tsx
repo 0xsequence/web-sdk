@@ -1,4 +1,3 @@
-import { compareAddress, CryptoOption, formatDisplay, sendTransactions } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   useGetContractInfo,
@@ -8,6 +7,7 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
+import { compareAddress, CryptoOption, formatDisplay, sendTransactions } from '@0xsequence/web-sdk-core'
 import { useEffect, useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
