@@ -8,6 +8,7 @@ import {
 } from '@0xsequence/connect'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
+  DEFAULT_SLIPPAGE_BPS,
   useClearCachedBalances,
   useGetCoinPrices,
   useGetContractInfo,
@@ -135,7 +136,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
         toTokenAmount: price,
         chainId: chainId,
         includeApprove: true,
-        slippageBps: slippageBps || 100
+        slippageBps: slippageBps || DEFAULT_SLIPPAGE_BPS
       }
     },
     {
@@ -570,6 +571,19 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
       )
     }
 
+    if (isErrorSwapQuote) {
+      return (
+        <div className="flex flex-row justify-between items-center w-full gap-2">
+          <Text color="negative" variant="small" fontWeight="bold">
+            Couldn't get a valid quote for swap, please pick another token
+          </Text>
+          <div>
+            <TokenSelector />
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className="flex flex-row justify-between items-center w-full gap-2">
         <div className="flex flex-col gap-0">
@@ -610,7 +624,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
       <PriceSection />
 
       <div className="flex flex-col justify-start items-center w-full gap-1">
-        {(isError || (isErrorSwapQuote && !isNotEnoughBalanceError)) && (
+        {isError && (
           <div className="flex flex-col justify-start items-center w-full">
             <Text variant="xsmall" color="negative">
               An error occurred. Please try again.

@@ -1,5 +1,5 @@
 // Constants
-export { QUERY_KEYS } from './constants.js'
+export { QUERY_KEYS, DEFAULT_SLIPPAGE_BPS } from './constants.js'
 
 // Contexts
 export {

@@ -1,6 +1,7 @@
 import { compareAddress, CryptoOption, formatDisplay, sendTransactions } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
+  DEFAULT_SLIPPAGE_BPS,
   useGetContractInfo,
   useGetSwapQuote,
   useGetSwapRoutes,
@@ -143,7 +144,7 @@ export const Swap = () => {
         fromTokenAddress: selectedCurrency || '',
         chainId: chainId,
         includeApprove: true,
-        slippageBps: slippageBps || 100
+        slippageBps: slippageBps || DEFAULT_SLIPPAGE_BPS
       }
     },
     {

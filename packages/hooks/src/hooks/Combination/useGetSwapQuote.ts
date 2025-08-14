@@ -69,7 +69,7 @@ import { useAPIClient } from '../API/useAPIClient.js'
  *       toTokenAddress: '0x789...',
  *       fromTokenAmount: '1000000000000000000', // 1 token in base units
  *       includeApprove: true,
- *       slippageBps: 100,
+ *       slippageBps: 150,
  *       chainId: 1
  *     }
  *   })
