@@ -32,7 +32,7 @@ export const Homepage = () => {
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
           </div>
 
-          <div className="permissions-group">
+          {/* <div className="permissions-group">
             <label htmlFor="initial-permissions">Initial Session Permissions (Optional)</label>
             <select
               id="initial-permissions"
@@ -47,7 +47,7 @@ export const Homepage = () => {
               <option value="usdcTransfer">2. USDC Transfer (Optimism only)</option>
               <option value="combined">3. Combined (1. + 2.)</option>
             </select>
-          </div>
+          </div> */}
         </div>
       ) : (
         <Connected />

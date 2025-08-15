@@ -147,15 +147,16 @@ export const Connected = () => {
         return
       }
 
-      const sessionSigner = sessionInfo.signerAddresses.find(s => !s.isImplicit)
+      // 1. Get all sessionSigners (without pre-filtering by chainId)
+      const allSessionSigners = sessionInfo.signerAddresses.filter(s => !s.isImplicit)
 
-      if (!sessionSigner) {
+      if (allSessionSigners.length === 0) {
         setHasPermission(false)
         return
       }
 
       setIsCheckingPermission(true)
-      setHasPermission(false)
+      setHasPermission(false) // Assume no permission until one is found
 
       try {
         const expectedPermissionConfig = getPermissionForType(window.location.origin, chainId, permissionType)
@@ -165,97 +166,108 @@ export const Connected = () => {
           return
         }
 
-        const existingPermissionConfig = await getPermissions(address, sessionSigner.address, chainId)
+        // 2. Check all sessionSigners to see if any have the expected permission config
+        for (const sessionSigner of allSessionSigners) {
+          const existingPermissionConfig = await getPermissions(address, sessionSigner.address, chainId)
 
-        console.log('existingPermissionConfig:', existingPermissionConfig)
+          console.log('Checking permissions for signer:', sessionSigner.address, 'on chainId:', chainId)
+          console.log('existingPermissionConfig:', existingPermissionConfig)
 
-        if (
-          !existingPermissionConfig ||
-          !('permissions' in existingPermissionConfig) ||
-          !existingPermissionConfig.permissions ||
-          existingPermissionConfig.chainId !== BigInt(chainId)
-        ) {
-          setHasPermission(false)
-          return
-        }
-
-        const arePermissionsSubset = (expectedPerms: Permission.Permission[], existingPerms: Permission.Permission[]) => {
-          if (expectedPerms.length > existingPerms.length) {
-            return false
-          }
-          if (expectedPerms.length === 0) {
-            return true
+          // Validate the received permission config
+          if (
+            !existingPermissionConfig ||
+            !('permissions' in existingPermissionConfig) ||
+            !existingPermissionConfig.permissions ||
+            // We need to check the chainId from the returned config
+            existingPermissionConfig.chainId !== BigInt(chainId)
+          ) {
+            // This signer does not have valid permissions for the current chain, try the next one.
+            continue
           }
 
-          // Helper to compare two Uint8Arrays by their contents
-          const areByteArraysEqual = (a: Uint8Array, b: Uint8Array): boolean => {
-            if (a.length !== b.length) {
+          const arePermissionsSubset = (expectedPerms: Permission.Permission[], existingPerms: Permission.Permission[]) => {
+            if (expectedPerms.length > existingPerms.length) {
               return false
             }
-            for (let i = 0; i < a.length; i++) {
-              if (a[i] !== b[i]) {
-                return false
-              }
-            }
-            return true
-          }
-
-          // Helper to compare two arrays of rules, order-independent
-          const compareRulesets = (rulesA: Permission.ParameterRule[], rulesB: Permission.ParameterRule[]) => {
-            if (rulesA.length !== rulesB.length) {
-              return false
-            }
-            if (rulesA.length === 0) {
+            if (expectedPerms.length === 0) {
               return true
             }
 
-            const matchedB = new Array(rulesB.length).fill(false)
-            return rulesA.every(ruleA => {
-              const foundMatch = rulesB.some((ruleB, index) => {
-                if (matchedB[index]) {
+            // Helper to compare two Uint8Arrays by their contents
+            const areByteArraysEqual = (a: Uint8Array, b: Uint8Array): boolean => {
+              if (a.length !== b.length) {
+                return false
+              }
+              for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) {
                   return false
                 }
-                // Compare individual rule properties, using the byte array helper for mask and value
-                if (
-                  ruleA.cumulative === ruleB.cumulative &&
-                  areByteArraysEqual(ruleA.mask, ruleB.mask) &&
-                  ruleA.offset === ruleB.offset &&
-                  ruleA.operation === ruleB.operation &&
-                  areByteArraysEqual(ruleA.value, ruleB.value)
-                ) {
-                  matchedB[index] = true
+              }
+              return true
+            }
+
+            // Helper to compare two arrays of rules, order-independent
+            const compareRulesets = (rulesA: Permission.ParameterRule[], rulesB: Permission.ParameterRule[]) => {
+              if (rulesA.length !== rulesB.length) {
+                return false
+              }
+              if (rulesA.length === 0) {
+                return true
+              }
+
+              const matchedB = new Array(rulesB.length).fill(false)
+              return rulesA.every(ruleA => {
+                const foundMatch = rulesB.some((ruleB, index) => {
+                  if (matchedB[index]) {
+                    return false
+                  }
+                  // Compare individual rule properties, using the byte array helper for mask and value
+                  if (
+                    ruleA.cumulative === ruleB.cumulative &&
+                    areByteArraysEqual(ruleA.mask, ruleB.mask) &&
+                    ruleA.offset === ruleB.offset &&
+                    ruleA.operation === ruleB.operation &&
+                    areByteArraysEqual(ruleA.value, ruleB.value)
+                  ) {
+                    matchedB[index] = true
+                    return true
+                  }
+                  return false
+                })
+                return foundMatch
+              })
+            }
+
+            const matchedExisting = new Array(existingPerms.length).fill(false)
+
+            // Main logic: check if every expected permission is present in existing permissions
+            return expectedPerms.every(expectedPerm => {
+              return existingPerms.some((existingPerm, index) => {
+                if (matchedExisting[index]) {
+                  return false
+                }
+
+                const isTargetMatch = expectedPerm.target.toLowerCase() === existingPerm.target.toLowerCase()
+                const areRulesMatch = compareRulesets(expectedPerm.rules ?? [], existingPerm.rules ?? [])
+
+                if (isTargetMatch && areRulesMatch) {
+                  matchedExisting[index] = true
                   return true
                 }
                 return false
               })
-              return foundMatch
             })
           }
 
-          const matchedExisting = new Array(existingPerms.length).fill(false)
+          const isSubset = arePermissionsSubset(expectedPermissionConfig.permissions, existingPermissionConfig.permissions)
+          console.log('isSubset for signer', sessionSigner.address, ':', isSubset)
 
-          // Main logic: check if every expected permission is present in existing permissions
-          return expectedPerms.every(expectedPerm => {
-            return existingPerms.some((existingPerm, index) => {
-              if (matchedExisting[index]) {
-                return false
-              }
-
-              const isTargetMatch = expectedPerm.target.toLowerCase() === existingPerm.target.toLowerCase()
-              const areRulesMatch = compareRulesets(expectedPerm.rules ?? [], existingPerm.rules ?? [])
-
-              if (isTargetMatch && areRulesMatch) {
-                matchedExisting[index] = true
-                return true
-              }
-              return false
-            })
-          })
+          // If we find a signer that has the required permissions, we can stop checking
+          if (isSubset) {
+            setHasPermission(true)
+            break
+          }
         }
-
-        const isSubset = arePermissionsSubset(expectedPermissionConfig.permissions, existingPermissionConfig.permissions)
-        console.log('isSubset:', isSubset)
-        setHasPermission(isSubset)
       } catch (error) {
         console.error('Failed to check permissions:', error)
         setHasPermission(false)
