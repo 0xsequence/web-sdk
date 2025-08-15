@@ -243,7 +243,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           const address = this.client.getWalletAddress()
           return address ? [getAddress(address)] : []
         }
-        await this.client.connect(this.currentChainId, this.initialPermissions, {
+        await this.client.connect(BigInt(this.currentChainId), this.initialPermissions, {
           preferredLoginMethod: this.loginType,
           ...(this.loginType === 'email' && this.email ? { email: this.email } : {})
         })
@@ -277,7 +277,7 @@ export class SequenceV3Provider implements EIP1193Provider {
             }
             unsubscribe()
           })
-          this.client.signMessage(this.currentChainId, message).catch(reject)
+          this.client.signMessage(BigInt(this.currentChainId), message).catch(reject)
         })
       }
 
@@ -328,7 +328,7 @@ export class SequenceV3Provider implements EIP1193Provider {
             unsubscribe()
           })
 
-          this.client.signTypedData(this.currentChainId, parsedTypedData as TypedData).catch(reject)
+          this.client.signTypedData(BigInt(this.currentChainId), parsedTypedData as TypedData).catch(reject)
         })
       }
 
@@ -343,7 +343,7 @@ export class SequenceV3Provider implements EIP1193Provider {
         const tx = params[0] as TransactionRequest
         const transactions = [{ to: tx.to!, value: tx.value ?? 0n, data: tx.data ?? '0x' }]
 
-        const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+        const feeOptions = await this.client.getFeeOptions(BigInt(this.currentChainId), transactions)
         let selectedFeeOption: Relayer.FeeOption | undefined
 
         if (feeOptions && feeOptions.length > 0) {
@@ -374,7 +374,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           selectedFeeOption = confirmation.feeOption
         }
 
-        return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+        return this.client.sendTransaction(BigInt(this.currentChainId), transactions, selectedFeeOption)
       }
 
       case 'wallet_switchEthereumChain': {

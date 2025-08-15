@@ -105,7 +105,7 @@ export function usePermissions(): UsePermissionsReturnType {
 
       try {
         // Call the underlying DappClient method
-        await dappClient.addExplicitSession(chainId, permissions)
+        await dappClient.addExplicitSession(BigInt(chainId), permissions)
       } catch (e: any) {
         setError(e)
         // Re-throw the error so the calling component can also handle it if needed

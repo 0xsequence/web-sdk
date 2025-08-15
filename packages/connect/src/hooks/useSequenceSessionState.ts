@@ -6,12 +6,12 @@ import { useConnections, type Connector } from 'wagmi'
 interface SessionState {
   isInitialized: boolean
   walletAddress: `0x${string}` | null
-  signerAddresses: Session[]
+  sessions: Session[]
   loginMethod: string | null
   userEmail: string | null
 }
 
-export function useSequenceSessionInfo() {
+export function useSequenceSessionState() {
   const connections = useConnections()
   const v3Connector: Connector | undefined = connections.find((c: any) =>
     c.connector.id.includes('sequence-v3-wallet')
@@ -22,7 +22,7 @@ export function useSequenceSessionInfo() {
   const [session, setSession] = useState<SessionState>({
     isInitialized: dappClient?.isInitialized ?? false,
     walletAddress: dappClient?.getWalletAddress() ?? null,
-    signerAddresses: dappClient?.getAllSessions() ?? [],
+    sessions: dappClient?.getAllSessions() ?? [],
     loginMethod: dappClient?.loginMethod ?? null,
     userEmail: dappClient?.userEmail ?? null
   })
@@ -32,7 +32,7 @@ export function useSequenceSessionInfo() {
       setSession({
         isInitialized: dappClient?.isInitialized ?? false,
         walletAddress: dappClient?.getWalletAddress() ?? null,
-        signerAddresses: dappClient?.getAllSessions() ?? [],
+        sessions: dappClient?.getAllSessions() ?? [],
         loginMethod: dappClient?.loginMethod ?? null,
         userEmail: dappClient?.userEmail ?? null
       })

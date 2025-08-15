@@ -13,7 +13,7 @@ import {
   useFeeOptions,
   useOpenConnectModal,
   usePermissions,
-  useSequenceSessionInfo,
+  useSequenceSessionState,
   useSocialLink,
   useStorage,
   useWallets,
@@ -71,12 +71,12 @@ export const Connected = () => {
   const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
   const isV3WalletConnectionActive = wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
 
-  const sessionInfo = useSequenceSessionInfo()
+  const sessionState = useSequenceSessionState()
 
   const [hasPermission, setHasPermission] = React.useState(false)
   const [isCheckingPermission, setIsCheckingPermission] = React.useState(false)
 
-  console.log('sessionInfo', sessionInfo)
+  console.log('sessionState', sessionState)
 
   const {
     data: txnData,
@@ -142,13 +142,13 @@ export const Connected = () => {
 
   useEffect(() => {
     const checkPermissions = async () => {
-      if (!sessionInfo.isInitialized || !isV3WalletConnectionActive || !address || !chainId) {
+      if (!sessionState.isInitialized || !isV3WalletConnectionActive || !address || !chainId) {
         setHasPermission(false)
         return
       }
 
       // 1. Get all sessionSigners (without pre-filtering by chainId)
-      const allSessionSigners = sessionInfo.signerAddresses.filter(s => !s.isImplicit)
+      const allSessionSigners = sessionState.sessions.filter(s => !s.isImplicit)
 
       if (allSessionSigners.length === 0) {
         setHasPermission(false)
@@ -277,7 +277,7 @@ export const Connected = () => {
     }
 
     checkPermissions()
-  }, [sessionInfo, address, chainId, permissionType, isV3WalletConnectionActive])
+  }, [sessionState, address, chainId, permissionType, isV3WalletConnectionActive])
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
