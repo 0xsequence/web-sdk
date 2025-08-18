@@ -1,9 +1,4 @@
-import {
-  CollectibleTileImage,
-  formatDisplay,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  waitForTransactionReceipt
-} from '@0xsequence/connect'
+import { CollectibleTileImage, formatDisplay, waitForTransactionReceipt } from '@0xsequence/connect'
 import {
   ArrowDownIcon,
   Button,
@@ -17,7 +12,11 @@ import {
   truncateAddress
 } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetTokenMetadata, useIndexerClient } from '@0xsequence/hooks'
-import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
+import {
+  type SequenceIndexer,
+  type TransactionReceipt,
+  TransactionStatus as TransactionStatusSequence
+} from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -32,6 +31,36 @@ export type TxStatus = 'pending' | 'success' | 'error'
 interface TransactionStatusHeaderProps {
   status: TxStatus
   noItemsToDisplay: boolean
+}
+
+const defaultOnSuccessChecker = async (receipt: TransactionReceipt, indexerClient?: SequenceIndexer) => {
+  if (receipt.txnStatus === TransactionStatusSequence.FAILED) {
+    throw new Error('Transaction failed')
+  }
+
+  if (!indexerClient) {
+    return
+  }
+
+  const indexerSyncPromise = new Promise((resolve, reject) => {
+    const checkForIndexerSync = async () => {
+      try {
+        const status = await indexerClient.runtimeStatus()
+        const isConfirmed = status.status.checks.lastBlockNumWithState >= receipt.blockNumber
+
+        if (!isConfirmed) {
+          setTimeout(checkForIndexerSync, 1000)
+        } else {
+          resolve(undefined)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+    checkForIndexerSync()
+  })
+
+  await indexerSyncPromise
 }
 
 export const TransactionStatusHeader = ({ status, noItemsToDisplay }: TransactionStatusHeaderProps) => {
@@ -78,7 +107,7 @@ export const TransactionStatus = () => {
     items,
     txHash,
     currencyAddress,
-    blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onSuccessChecker = defaultOnSuccessChecker,
     onSuccess,
     onError,
     onClose = () => {},
@@ -109,16 +138,13 @@ export const TransactionStatus = () => {
 
   const waitForTransaction = async (publicClient: PublicClient, txnHash: string) => {
     try {
-      const { txnStatus } = await waitForTransactionReceipt({
+      const receipt = await waitForTransactionReceipt({
         indexerClient,
         txnHash: txnHash as Hex,
-        publicClient,
-        confirmations: blockConfirmations
+        publicClient
       })
 
-      if (txnStatus === TransactionStatusSequence.FAILED) {
-        throw new Error('Transaction failed')
-      }
+      await onSuccessChecker(receipt, indexerClient)
 
       setStatus('success')
       onSuccess?.(txnHash)

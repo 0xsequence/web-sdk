@@ -358,7 +358,8 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
             }
           },
           onClose: creditCardCheckout?.onClose,
-          successActionButtons: creditCardCheckout.successActionButtons
+          successActionButtons: creditCardCheckout.successActionButtons,
+          onSuccessChecker: creditCardCheckout.onSuccessChecker
         })
         return
       }

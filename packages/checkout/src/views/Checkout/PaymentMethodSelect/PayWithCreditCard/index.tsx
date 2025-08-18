@@ -98,7 +98,8 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
         calldata: txData,
         transakConfig,
         approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || targetContractAddress,
-        supplementaryAnalyticsInfo
+        supplementaryAnalyticsInfo,
+        onSuccessChecker: selectPaymentSettings?.onSuccessChecker
       }
     }
 

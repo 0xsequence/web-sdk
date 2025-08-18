@@ -1,4 +1,5 @@
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
+import { type SequenceIndexer, type TransactionReceipt } from '@0xsequence/indexer'
 import type { Hex } from 'viem'
 
 import type { TransakConfig } from '../contexts/CheckoutModal.js'
@@ -51,6 +52,7 @@ export interface SelectPaymentSettings {
   slippageBps?: number
   nativeTokenAddress?: string
   successActionButtons?: ActionButtons[]
+  onSuccessChecker?: (receipt: TransactionReceipt, indexerClient?: SequenceIndexer) => Promise<void>
 }
 
 type SelectPaymentModalContext = {
