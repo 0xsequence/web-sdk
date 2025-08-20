@@ -21,6 +21,7 @@ export interface WalletListItemProps {
   isLinked: boolean
   isReadOnly: boolean
   onDisconnect: () => void
+  onReconnect?: () => void
   onUnlink?: () => void
 }
 
@@ -32,7 +33,8 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
   isLinked,
   isReadOnly,
   onDisconnect,
-  onUnlink
+  onUnlink,
+  onReconnect
 }) => {
   const [showUnlinkConfirm, setShowUnlinkConfirm] = useState(false)
   const [isUnlinking, setIsUnlinking] = useState(false)
@@ -84,7 +86,10 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
               <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
             </div>
           ) : (
-            <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
+            <>
+              {onReconnect && <Button size="xs" variant="glass" label="Reconnect" onClick={onReconnect} />}
+              <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
+            </>
           )}
         </div>
       )}

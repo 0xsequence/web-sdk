@@ -444,6 +444,8 @@ export const Connect = (props: ConnectProps) => {
                 linkedWallets={linkedWallets}
                 disconnectWallet={disconnectWallet}
                 unlinkWallet={handleUnlinkWallet}
+                connectWallet={handleConnect}
+                connectors={walletConnectors}
               />
 
               <>
