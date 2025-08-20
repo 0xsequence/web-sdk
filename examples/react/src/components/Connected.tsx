@@ -179,7 +179,7 @@ export const Connected = () => {
             !('permissions' in existingPermissionConfig) ||
             !existingPermissionConfig.permissions ||
             // We need to check the chainId from the returned config
-            existingPermissionConfig.chainId !== BigInt(chainId)
+            existingPermissionConfig.chainId !== chainId
           ) {
             // This signer does not have valid permissions for the current chain, try the next one.
             continue
@@ -832,15 +832,6 @@ export const Connected = () => {
               Send Transactions
             </Text>
 
-            {isV3WalletConnectionActive && (
-              <CardButton
-                title="Send V3 transaction (implicit)"
-                description="Send a transaction that is already allowed by implicit permissions"
-                isPending={isPendingSendTxn}
-                onClick={runSendV3TestTransaction}
-              />
-            )}
-
             {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"
@@ -885,10 +876,10 @@ export const Connected = () => {
 
             {isV3WalletConnectionActive && (
               <>
-                <Text className="mt-4" variant="small-bold" color="muted">
-                  V3 Wallet Permissions
+                <Text variant="small-bold" color="muted">
+                  with V3 Wallet Permissions
                 </Text>
-                <div className="my-3">
+                <div className="mb-2">
                   <Select
                     name="permissionType"
                     label="Pick a permission type"

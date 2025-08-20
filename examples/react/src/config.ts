@@ -101,17 +101,7 @@ export const config = createConfig({
   walletConnect: {
     projectId: walletConnectProjectId
   },
-  additionalWallets: [
-    immutable({
-      passportInstance,
-      environment: Environment.SANDBOX
-    })
-  ],
-  permissions: getPermissionForType(
-    window.location.origin,
-    ChainId.ARBITRUM_SEPOLIA,
-    (localStorage.getItem(PERMISSION_TYPE_LOCAL_STORAGE_KEY) as PermissionsType) ?? 'none'
-  )
+  permissions: getPermissionForType(window.location.origin, ChainId.ARBITRUM_SEPOLIA, 'contractCall')
 })
 
 export const getErc1155SaleContractConfig = (walletAddress: string) => ({
