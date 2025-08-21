@@ -356,6 +356,9 @@ importers:
 
   packages/connect:
     dependencies:
+      0xsequence:
+        specifier: '>= 2.3.23'
+        version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/api':
         specifier: '>=2.3.11'
         version: 2.3.23
@@ -374,6 +377,9 @@ importers:
       '@0xsequence/ethauth':
         specifier: ^1.0.0
         version: 1.0.0(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@0xsequence/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@0xsequence/indexer':
         specifier: ^2.3.23
         version: 2.3.23
@@ -407,6 +413,9 @@ importers:
       '@tailwindcss/cli':
         specifier: ^4.1.11
         version: 4.1.12
+      '@tanstack/react-query':
+        specifier: '>= 5'
+        version: 5.85.5(react@19.1.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -426,15 +435,6 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0
     devDependencies:
-      0xsequence:
-        specifier: ^2.3.23
-        version: 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/hooks':
-        specifier: workspace:*
-        version: link:../hooks
-      '@tanstack/react-query':
-        specifier: ^5.74.11
-        version: 5.85.5(react@19.1.1)
       '@types/uuid':
         specifier: ^9.0.8
         version: 9.0.8
@@ -683,8 +683,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/cd0e1f0d4412a458fe4ddb89a0ad2bd835fcf07b':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/cd0e1f0d4412a458fe4ddb89a0ad2bd835fcf07b}
+  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/8f7bbe7cc3451b79740f132466f48d4248f81135':
+    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/8f7bbe7cc3451b79740f132466f48d4248f81135}
     version: 3.0.0
 
   '@0xsequence/replacer@2.3.23':
@@ -8001,7 +8001,7 @@ snapshots:
       '@0xsequence/utils': 2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/cd0e1f0d4412a458fe4ddb89a0ad2bd835fcf07b': {}
+  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/8f7bbe7cc3451b79740f132466f48d4248f81135': {}
 
   '@0xsequence/replacer@2.3.23(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
@@ -8043,7 +8043,7 @@ snapshots:
 
   '@0xsequence/wallet-core@https://codeload.github.com/0xsequence/sequence.js/tar.gz/b61f5f505228a6eac79fbac120977bf9f0544290(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@0xsequence/relayer': https://codeload.github.com/0xsequence/sequence.js/tar.gz/cd0e1f0d4412a458fe4ddb89a0ad2bd835fcf07b
+      '@0xsequence/relayer': https://codeload.github.com/0xsequence/sequence.js/tar.gz/8f7bbe7cc3451b79740f132466f48d4248f81135
       '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/083525278aa8002d547004dd2aeb806c8cf79427(typescript@5.9.2)(zod@3.22.4)
       mipd: 0.0.7(typescript@5.9.2)
       ox: 0.7.2(typescript@5.9.2)(zod@3.22.4)
