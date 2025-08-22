@@ -59,6 +59,8 @@ export const PaymentSelectionContent = () => {
     ...(showCreditCardPayment ? [{ label: 'Credit Card', value: 'credit-card' as Tab }] : [])
   ]
 
+  const isSingleOption = tabs.length == 1
+
   const TabWrapper = ({ children }: { children: React.ReactNode }) => {
     return <div className="w-full bg-background-secondary mt-2 p-3 rounded-xl min-h-[128px]">{children}</div>
   }
@@ -77,7 +79,7 @@ export const PaymentSelectionContent = () => {
         <div className="w-full relative">
           <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 bg-background-primary px-2">
             <Text variant="xsmall" color="text50" className="relative top-[-2px]" fontWeight="normal">
-              Pay with
+              {`Pay with${isSingleOption ? ' ' + tabs[0].label : ''}`}
             </Text>
           </div>
           <Divider className="w-full" />
@@ -96,7 +98,7 @@ export const PaymentSelectionContent = () => {
             }
           }}
         >
-          <TabsHeader tabs={tabs} value={selectedTab} />
+          {!isSingleOption && <TabsHeader tabs={tabs} value={selectedTab} />}
           <TabsContent value="crypto">
             <TabWrapper>
               <PayWithCryptoTab skipOnCloseCallback={skipOnCloseCallback} />
