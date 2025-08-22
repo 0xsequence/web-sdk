@@ -619,6 +619,18 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
     )
   }
 
+  const getConfirmButtonText = () => {
+    if (isPurchasing) {
+      return 'Confirmation in progress...'
+    }
+
+    if (isFree) {
+      return 'Confirm'
+    }
+
+    return 'Confirm payment'
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <PriceSection />
@@ -633,8 +645,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
         )}
 
         <Button
-          disabled={isPurchasing || isErrorSwapQuote || isError}
-          label={isFree ? 'Confirm' : 'Confirm payment'}
+          disabled={isPurchasing || isErrorSwapQuote}
+          label={getConfirmButtonText()}
           className="w-full"
           shape="square"
           variant="primary"
