@@ -102,7 +102,7 @@ export const config = createConfig({
     projectId: walletConnectProjectId
   },
   permissions: getPermissionForType(window.location.origin, ChainId.ARBITRUM_SEPOLIA, 'contractCall')
-  // enableImplicitSession: true,
+  // enableImplicitSession: true
   // relayerUrl: 'https://v3-{network}-relayer.sequence.app'
   // nodesUrl: ...
 })

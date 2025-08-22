@@ -79,11 +79,11 @@ export const Connected = () => {
   console.log('sessionState', sessionState)
 
   const {
-    data: txnData,
-    sendTransaction,
-    isPending: isPendingSendTxn,
-    error: sendTransactionError,
-    reset: resetSendTransaction
+    data: implicitTestTxnData,
+    sendTransaction: sendImplicitTestTransaction,
+    isPending: isPendingImplicitTestTxn,
+    error: sendImplicitTestTransactionError,
+    reset: resetImplicitTestTransaction
   } = useSendTransaction()
   const { data: txnData2, isPending: isPendingMintTxn, writeContract, reset: resetWriteContract } = useWriteContract()
   const {
@@ -123,7 +123,7 @@ export const Connected = () => {
   const [typedDataSig, setTypedDataSig] = React.useState<string | undefined>()
   const [isTypedDataValid, setIsTypedDataValid] = React.useState<boolean | undefined>()
 
-  const [lastTxnDataHash, setLastTxnDataHash] = React.useState<string | undefined>()
+  const [lastImplicitTestTxnDataHash, setLastImplicitTestTxnDataHash] = React.useState<string | undefined>()
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
   const [lastTxnDataHash3, setLastTxnDataHash3] = React.useState<string | undefined>()
   const [lastPermissionedTxnDataHash, setLastPermissionedTxnDataHash] = React.useState<string | undefined>()
@@ -140,12 +140,16 @@ export const Connected = () => {
   const { addPermissions, isLoading: isAddingPermissions, error: addPermissionsError } = usePermissions()
   const [permissionType, setPermissionType] = React.useState<PermissionsType>('contractCall')
 
+  const [hasImplicitSession, setHasImplicitSession] = React.useState(false)
+
   useEffect(() => {
     const checkPermissions = async () => {
       if (!sessionState.isInitialized || !isV3WalletConnectionActive || !address || !chainId) {
         setHasPermission(false)
         return
       }
+
+      setHasImplicitSession(sessionState.sessions.some(s => s.isImplicit))
 
       // 1. Get all sessionSigners (without pre-filtering by chainId)
       const allSessionSigners = sessionState.sessions.filter(s => !s.isImplicit)
@@ -286,16 +290,16 @@ export const Connected = () => {
   }, [pendingFeeOptionConfirmation])
 
   useEffect(() => {
-    if (!sendTransactionError) {
+    if (!sendImplicitTestTransactionError) {
       return
     }
 
-    if (sendTransactionError instanceof Error) {
-      console.error(sendTransactionError.cause)
+    if (sendImplicitTestTransactionError instanceof Error) {
+      console.error(sendImplicitTestTransactionError.cause)
     } else {
-      console.error(sendTransactionError)
+      console.error(sendImplicitTestTransactionError)
     }
-  }, [sendTransactionError])
+  }, [sendImplicitTestTransactionError])
 
   useEffect(() => {
     if (!sendUnsponsoredTransactionError) {
@@ -334,8 +338,8 @@ export const Connected = () => {
   }
 
   useEffect(() => {
-    if (txnData) {
-      setLastTxnDataHash((txnData as any).hash ?? txnData)
+    if (implicitTestTxnData) {
+      setLastImplicitTestTxnDataHash((implicitTestTxnData as any).hash ?? implicitTestTxnData)
     }
     if (txnData2) {
       setLastTxnDataHash2((txnData2 as any).hash ?? txnData2)
@@ -346,7 +350,7 @@ export const Connected = () => {
     if (permissionedTxnData) {
       setLastPermissionedTxnDataHash((permissionedTxnData as any).hash ?? permissionedTxnData)
     }
-  }, [txnData, txnData2, txnData3, permissionedTxnData])
+  }, [implicitTestTxnData, txnData2, txnData3, permissionedTxnData])
 
   const domain = {
     name: 'Sequence Example',
@@ -497,12 +501,12 @@ export const Connected = () => {
     }
   }
 
-  const runSendV3TestTransaction = async () => {
+  const runSendV3ImplicitTestTransaction = async () => {
     if (!walletClient) {
       return
     }
 
-    sendTransaction({
+    sendImplicitTestTransaction({
       to: getEmitterContractAddress(window.location.origin),
       value: 0n,
       data: AbiFunction.getSelector(EMITTER_ABI[1])
@@ -534,30 +538,30 @@ export const Connected = () => {
     })
   }
 
-  const runSendTransaction = async () => {
-    if (!walletClient) {
-      return
-    }
+  // const runSendTransaction = async () => {
+  //   if (!walletClient) {
+  //     return
+  //   }
 
-    if (networkForCurrentChainId.testnet) {
-      const [account] = await walletClient.getAddresses()
+  //   if (networkForCurrentChainId.testnet) {
+  //     const [account] = await walletClient.getAddresses()
 
-      sendTransaction({
-        to: account,
-        value: BigInt(0),
-        gas: null
-      })
-    } else {
-      const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-      const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
+  //     sendTransaction({
+  //       to: account,
+  //       value: BigInt(0),
+  //       gas: null
+  //     })
+  //   } else {
+  //     const sponsoredContractAddress = sponsoredContractAddresses[chainId]
+  //     const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
 
-      sendTransaction({
-        to: sponsoredContractAddress,
-        data,
-        gas: null
-      })
-    }
-  }
+  //     sendTransaction({
+  //       to: sponsoredContractAddress,
+  //       data,
+  //       gas: null
+  //     })
+  //   }
+  // }
 
   const runSendUnsponsoredTransaction = async () => {
     if (!walletClient) {
@@ -749,7 +753,7 @@ export const Connected = () => {
   // }
 
   useEffect(() => {
-    setLastTxnDataHash(undefined)
+    setLastImplicitTestTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
     setLastTxnDataHash3(undefined)
     setLastPermissionedTxnDataHash(undefined)
@@ -757,7 +761,7 @@ export const Connected = () => {
     setTypedDataSig(undefined)
     resetWriteContract()
     resetSendUnsponsoredTransaction()
-    resetSendTransaction()
+    resetImplicitTestTransaction()
     resetPermissionedTxn()
   }, [chainId, address])
 
@@ -832,15 +836,15 @@ export const Connected = () => {
               Send Transactions
             </Text>
 
-            {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
+            {/* {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
               <CardButton
                 title="Send sponsored transaction"
                 description="Send a transaction with your wallet without paying any fees"
                 isPending={isPendingSendTxn}
                 onClick={runSendTransaction}
               />
-            )}
-            {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
+            )} */}
+            {/* {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
               <Text className="ml-4" variant="small" underline color="primary" asChild>
                 <a
                   href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
@@ -850,7 +854,7 @@ export const Connected = () => {
                   View on {networkForCurrentChainId.blockExplorer.name}
                 </a>
               </Text>
-            )}
+            )} */}
 
             {!networkForCurrentChainId.testnet && !isV3WalletConnectionActive && (
               <CardButton
@@ -874,11 +878,38 @@ export const Connected = () => {
                 </Text>
               )}
 
+            {hasImplicitSession && (
+              <>
+                <Text className="mt-4" variant="small-bold" color="muted">
+                  Test Implicit Permission transactions
+                </Text>
+
+                <CardButton
+                  title="Send conditionally allowed transaction"
+                  description="Calls implicitEmit() on test contract."
+                  isPending={isPendingImplicitTestTxn}
+                  onClick={runSendV3ImplicitTestTransaction}
+                />
+                {networkForCurrentChainId.blockExplorer && lastImplicitTestTxnDataHash && (
+                  <Text className="ml-4" variant="small" underline color="primary" asChild>
+                    <a
+                      href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${lastImplicitTestTxnDataHash}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View implicit test transaction result on {networkForCurrentChainId.blockExplorer.name}
+                    </a>
+                  </Text>
+                )}
+              </>
+            )}
+
             {isV3WalletConnectionActive && (
               <>
-                <Text variant="small-bold" color="muted">
-                  with V3 Wallet Permissions
+                <Text variant="small-bold" className="mt-4" color="muted">
+                  with V3 Explicit Permissions
                 </Text>
+
                 <div className="mb-2">
                   <Select
                     name="permissionType"
