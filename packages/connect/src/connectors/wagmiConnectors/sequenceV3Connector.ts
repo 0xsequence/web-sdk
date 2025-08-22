@@ -27,9 +27,11 @@ export interface BaseSequenceV3ConnectorOptions {
   walletUrl: string
   dappOrigin: string
   defaultNetwork: number
-  permissions?: Signers.Session.ExplicitParams
-  nodesUrl?: string
   loginType: 'email' | 'google' | 'apple' | 'passkey'
+  permissions?: Signers.Session.ExplicitParams
+  enableImplicitSession?: boolean
+  nodesUrl?: string
+  relayerUrl?: string
 }
 
 export interface FeeOptionConfirmationHandler {
@@ -51,8 +53,19 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     [LocalStorageKey.V3ActiveLoginType]: string
   }
 
-  const client = new DappClient(params.walletUrl, params.dappOrigin)
-  const provider = new SequenceV3Provider(client, params.defaultNetwork, params.nodesUrl, params.loginType, params.permissions)
+  const client = new DappClient(params.walletUrl, params.dappOrigin, params.projectAccessKey, {
+    nodesUrl: params.nodesUrl,
+    relayerUrl: params.relayerUrl
+  })
+  const provider = new SequenceV3Provider(
+    client,
+    params.defaultNetwork,
+    params.nodesUrl,
+    params.projectAccessKey,
+    params.loginType,
+    params.permissions,
+    params.enableImplicitSession
+  )
 
   return createConnector<Provider, Properties, StorageItem>(config => {
     client.on('sessionsUpdated', () => {
@@ -168,6 +181,8 @@ sequenceV3Wallet.type = 'sequence-v3-wallet' as const
 export class SequenceV3Provider implements EIP1193Provider {
   private currentChainId: number
   private nodesUrl: string
+  private projectAccessKey: string
+  private enableImplicitSession?: boolean
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
   private initialPermissions?: Signers.Session.ExplicitParams
 
@@ -188,13 +203,17 @@ export class SequenceV3Provider implements EIP1193Provider {
     private client: DappClient,
     defaultNetwork: number,
     nodesUrl = 'https://nodes.sequence.app',
-    loginType: 'email' | 'google' | 'apple' | 'passkey' = 'google',
-    initialPermissions?: Signers.Session.ExplicitParams
+    projectAccessKey: string,
+    loginType: 'email' | 'google' | 'apple' | 'passkey',
+    initialPermissions?: Signers.Session.ExplicitParams,
+    enableImplicitSession?: boolean
   ) {
     this.currentChainId = defaultNetwork
     this.nodesUrl = nodesUrl
     this.loginType = loginType
     this.initialPermissions = initialPermissions
+    this.projectAccessKey = projectAccessKey
+    this.enableImplicitSession = enableImplicitSession
   }
 
   on<TEvent extends keyof EIP1193EventMap>(event: TEvent, listener: EIP1193EventMap[TEvent]): void {
@@ -245,7 +264,8 @@ export class SequenceV3Provider implements EIP1193Provider {
         }
         await this.client.connect(this.currentChainId, this.initialPermissions, {
           preferredLoginMethod: this.loginType,
-          ...(this.loginType === 'email' && this.email ? { email: this.email } : {})
+          ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
+          ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
         })
         const walletAddress = this.client.getWalletAddress()
         if (!walletAddress) {
@@ -393,7 +413,8 @@ export class SequenceV3Provider implements EIP1193Provider {
 
       default: {
         console.warn(`Method ${method} not explicitly handled by DappClient, using fallback RPC.`)
-        const res = await fetch(`${this.nodesUrl}/${getNetwork(this.currentChainId).name}`, {
+        const nodeUrl = getRpcUrl(this.nodesUrl, this.projectAccessKey, getNetwork(this.currentChainId).name)
+        const res = await fetch(nodeUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params })
@@ -406,4 +427,24 @@ export class SequenceV3Provider implements EIP1193Provider {
       }
     }
   }
+}
+
+const getRpcUrl = (nodesUrl: string, projectAccessKey: string, networkName: string) => {
+  let url = applyTemplate(nodesUrl, { network: networkName })
+
+  if (nodesUrl.includes('sequence')) {
+    url = `${url}/${projectAccessKey}`
+  }
+
+  return url
+}
+
+function applyTemplate(template: string, values: Record<string, string>) {
+  return template.replace(/{(.*?)}/g, (_, key) => {
+    const value = values[key]
+    if (value === undefined) {
+      throw new Error(`Missing template value for ${template}: ${key}`)
+    }
+    return value
+  })
 }

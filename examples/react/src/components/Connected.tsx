@@ -852,7 +852,7 @@ export const Connected = () => {
               </Text>
             )}
 
-            {!networkForCurrentChainId.testnet && (
+            {!networkForCurrentChainId.testnet && !isV3WalletConnectionActive && (
               <CardButton
                 title="Send unsponsored transaction"
                 description="Send an unsponsored transaction with your wallet"

@@ -35,6 +35,9 @@ export interface DefaultConnectorOptions extends CommonConnectorOptions {
    */
   walletConnectProjectId?: string
   permissions?: Signers.Session.ExplicitParams
+  enableImplicitSession?: boolean
+  nodesUrl?: string
+  relayerUrl?: string
 }
 
 export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateConnectorFn[] => {
@@ -50,9 +53,12 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
       emailV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
         permissions: options.permissions,
-        defaultNetwork: defaultChainId
+        enableImplicitSession: options.enableImplicitSession,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
       })
     )
   }
@@ -65,9 +71,12 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
       googleV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
         permissions: options.permissions,
-        defaultNetwork: defaultChainId
+        enableImplicitSession: options.enableImplicitSession,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
       })
     )
   }
@@ -80,9 +89,12 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
       appleV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
         permissions: options.permissions,
-        defaultNetwork: defaultChainId
+        enableImplicitSession: options.enableImplicitSession,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
       })
     )
   }
