@@ -28,7 +28,7 @@
     "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm && pnpm build:cjs",
     "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
     "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
-    "build:css": "rimraf ./src/styles.ts && tailwindcss -i ./src/index.css -o - | echo \"export const styles = String.raw\\`\n$(cat)\\`\" > ./src/styles.ts",
+    "build:css": "node scripts/build-css.js",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
     "dev": "pnpm run writeVersion && concurrently \"pnpm dev:tsc\"  \"pnpm watch-css\"",
