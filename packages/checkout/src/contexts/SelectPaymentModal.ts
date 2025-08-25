@@ -1,11 +1,11 @@
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import type { Hex } from 'viem'
 
-import type { TransakConfig } from '../contexts/CheckoutModal.js'
+import type { ForteConfig, TransakConfig } from '../contexts/CheckoutModal.js'
 
 import { createGenericContext } from './genericContext.js'
 
-export type CreditCardProviders = 'sardine' | 'transak'
+export type CreditCardProviders = 'sardine' | 'transak' | 'forte'
 
 export interface Collectible {
   tokenId?: string
@@ -38,13 +38,14 @@ export interface SelectPaymentSettings {
   recipientAddress: string | Hex
   approvedSpenderAddress?: string
   transactionConfirmations?: number
-  onSuccess?: (txHash: string) => void
+  onSuccess?: (txHash?: string) => void
   onError?: (error: Error) => void
   onClose?: () => void
   onRampProvider?: TransactionOnRampProvider
   creditCardProviders?: string[]
   transakConfig?: TransakConfig
   sardineConfig?: SardineConfig
+  forteConfig?: ForteConfig
   customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
   skipNativeBalanceCheck?: boolean
