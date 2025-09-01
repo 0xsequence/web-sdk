@@ -1,5 +1,5 @@
 import { getNetwork, LocalStorageKey } from '@0xsequence/connect'
-import { DappClient, Relayer, Signers } from '@0xsequence/dapp-client'
+import { DappClient, Relayer, Signers, type TransactionRequest as DappClientTransactionRequest } from '@0xsequence/dapp-client'
 import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
@@ -362,38 +362,73 @@ export class SequenceV3Provider implements EIP1193Provider {
         const tx = params[0] as TransactionRequest
         const transactions = [{ to: tx.to!, value: tx.value ?? 0n, data: tx.data ?? '0x' }]
 
-        const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
-        let selectedFeeOption: Relayer.FeeOption | undefined
+        const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
 
-        if (feeOptions && feeOptions.length > 0) {
-          if (!this.feeConfirmationHandler) {
-            throw new RpcError(new Error('Unable to send transaction: please use useFeeOptions hook and pick a fee option'), {
-              code: -32000,
-              shortMessage: 'Fee confirmation handler not found'
-            })
+        if (hasPermission) {
+          const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+          let selectedFeeOption: Relayer.FeeOption | undefined
+
+          if (feeOptions && feeOptions.length > 0) {
+            if (!this.feeConfirmationHandler) {
+              throw new RpcError(new Error('Unable to send transaction: please use useFeeOptions hook and pick a fee option'), {
+                code: -32000,
+                shortMessage: 'Fee confirmation handler not found'
+              })
+            }
+
+            const id = uuidv4()
+            const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
+
+            if (!confirmation.confirmed) {
+              throw new RpcError(new Error('User rejected the request.'), {
+                code: 4001,
+                shortMessage: 'User rejected send transaction request.'
+              })
+            }
+
+            if (id !== confirmation.id) {
+              throw new RpcError(new Error('User confirmation ids do not match'), {
+                code: -32000,
+                shortMessage: 'Confirmation ID mismatch'
+              })
+            }
+            selectedFeeOption = confirmation.feeOption
           }
-
-          const id = uuidv4()
-          const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
-
-          if (!confirmation.confirmed) {
-            throw new RpcError(new Error('User rejected the request.'), {
-              code: 4001,
-              shortMessage: 'User rejected send transaction request.'
+          return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+        } else {
+          return new Promise((resolve, reject) => {
+            const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
+              unsubscribe()
+              if (data.error) {
+                reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
+              } else {
+                resolve(data.response.transactionHash)
+              }
             })
-          }
 
-          if (id !== confirmation.id) {
-            throw new RpcError(new Error('User confirmation ids do not match'), {
-              code: -32000,
-              shortMessage: 'Confirmation ID mismatch'
+            if (!tx.to) {
+              const error = new RpcError(new Error('Transaction requires a "to" address.'), {
+                code: -32602,
+                shortMessage: 'Invalid transaction params'
+              })
+              unsubscribe()
+              reject(error)
+              return
+            }
+
+            const walletTransactionRequest: DappClientTransactionRequest = {
+              to: tx.to,
+              value: tx.value,
+              data: tx.data,
+              gasLimit: tx.gas
+            }
+
+            this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch(err => {
+              unsubscribe()
+              reject(err)
             })
-          }
-
-          selectedFeeOption = confirmation.feeOption
+          })
         }
-
-        return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
       }
 
       case 'wallet_switchEthereumChain': {
