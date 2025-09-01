@@ -34,7 +34,7 @@ export interface DefaultConnectorOptions extends CommonConnectorOptions {
    * @deprecated, use connectors.walletConnect.projectId instead
    */
   walletConnectProjectId?: string
-  permissions?: Signers.Session.ExplicitParams
+  explicitSession?: Signers.Session.ExplicitParams
   enableImplicitSession?: boolean
   nodesUrl?: string
   relayerUrl?: string
@@ -55,7 +55,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        permissions: options.permissions,
+        explicitSession: options.explicitSession,
         enableImplicitSession: options.enableImplicitSession,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
@@ -73,7 +73,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        permissions: options.permissions,
+        explicitSession: options.explicitSession,
         enableImplicitSession: options.enableImplicitSession,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
@@ -91,7 +91,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        permissions: options.permissions,
+        explicitSession: options.explicitSession,
         enableImplicitSession: options.enableImplicitSession,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl

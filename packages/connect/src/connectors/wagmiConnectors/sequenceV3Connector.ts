@@ -27,7 +27,7 @@ export interface BaseSequenceV3ConnectorOptions {
   dappOrigin: string
   defaultNetwork: number
   loginType: 'email' | 'google' | 'apple' | 'passkey'
-  permissions?: Signers.Session.ExplicitParams
+  explicitSession?: Signers.Session.ExplicitParams
   enableImplicitSession?: boolean
   nodesUrl?: string
   relayerUrl?: string
@@ -62,7 +62,7 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     params.nodesUrl,
     params.projectAccessKey,
     params.loginType,
-    params.permissions,
+    params.explicitSession,
     params.enableImplicitSession
   )
 
