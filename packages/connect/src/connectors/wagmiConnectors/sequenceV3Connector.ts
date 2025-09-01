@@ -1,6 +1,5 @@
 import { getNetwork, LocalStorageKey } from '@0xsequence/connect'
-import { DappClient } from '@0xsequence/dapp-client'
-import { Relayer, Signers } from '@0xsequence/wallet-core'
+import { DappClient, Relayer, Signers } from '@0xsequence/dapp-client'
 import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
@@ -289,7 +288,7 @@ export class SequenceV3Provider implements EIP1193Provider {
         const message = params[0] as string
 
         return new Promise((resolve, reject) => {
-          const unsubscribe = this.client.on('signatureResponse', (data: any) => {
+          const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
             if (data.error) {
               reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
             } else {
@@ -339,7 +338,7 @@ export class SequenceV3Provider implements EIP1193Provider {
         }
 
         return new Promise((resolve, reject) => {
-          const unsubscribe = this.client.on('signatureResponse', (data: any) => {
+          const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
             if (data.error) {
               reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
             } else {

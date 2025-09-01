@@ -1,5 +1,4 @@
-import { Signers, Utils } from '@0xsequence/wallet-core'
-import { Permission } from '@0xsequence/wallet-primitives'
+import { Permission, Signers, Utils } from '@0xsequence/dapp-client'
 import { Abi, AbiFunction, Address, Bytes } from 'ox'
 import { optimism } from 'viem/chains'
 

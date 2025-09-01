@@ -1,4 +1,4 @@
-import type { Signers } from '@0xsequence/wallet-core'
+import type { Signers } from '@0xsequence/dapp-client'
 import type { CreateConnectorFn } from 'wagmi'
 
 import { appleV3 } from '../connectors/apple/applev3.js'

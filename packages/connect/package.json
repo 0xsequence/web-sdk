@@ -38,8 +38,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/wallet-core": "github:0xsequence/sequence.js#dists/wallet/core",
-    "@0xsequence/wallet-primitives": "github:0xsequence/sequence.js#dists/wallet/primitives",
     "@0xsequence/dapp-client": "github:0xsequence/sequence.js#dists/wallet/dapp-client",
     "@0xsequence/api": ">=2.3.11",
     "@0xsequence/auth": "^2.3.10",

@@ -1,6 +1,5 @@
+import { Extensions, SessionConfig, Signers, Wallet } from '@0xsequence/dapp-client'
 import { allNetworks } from '@0xsequence/network'
-import { Signers, Wallet } from '@0xsequence/wallet-core'
-import { Extensions, SessionConfig } from '@0xsequence/wallet-primitives'
 import { Provider, RpcTransport } from 'ox'
 import { Address } from 'viem'
 
