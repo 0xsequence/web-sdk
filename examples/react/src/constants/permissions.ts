@@ -1,5 +1,4 @@
-import { Signers, Utils } from '@0xsequence/wallet-core'
-import { Permission } from '@0xsequence/wallet-primitives'
+import { Permission, Signers, Utils } from '@0xsequence/dapp-client'
 import { Abi, AbiFunction, Address, Bytes } from 'ox'
 import { optimism } from 'viem/chains'
 
@@ -32,7 +31,7 @@ export const USDC_ADDRESS = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607' // Op m
 export const getContractCallPermission = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
   const emitterContractAddress = getEmitterContractAddress(redirectUrl)
   return {
-    chainId: BigInt(chainId),
+    chainId: chainId,
     valueLimit: 0n,
     deadline: BigInt(Date.now() + 1000 * 60 * 5000),
     permissions: [
@@ -63,7 +62,7 @@ export const getUsdcPermission = (chainId: number): Signers.Session.ExplicitPara
   }
 
   return {
-    chainId: BigInt(chainId),
+    chainId: chainId,
     valueLimit: 0n,
     deadline: BigInt(Date.now() + 1000 * 60 * 5000),
     permissions: [permissions]
@@ -76,7 +75,7 @@ export const getCombinedPermission = (redirectUrl: string, chainId: number): Sig
   const usdcPermissions = getUsdcPermission(chainId).permissions
 
   return {
-    chainId: BigInt(chainId),
+    chainId: chainId,
     valueLimit: 0n,
     deadline: BigInt(Date.now() + 1000 * 60 * 5000),
     permissions: [...contractCallPermissions, ...usdcPermissions]

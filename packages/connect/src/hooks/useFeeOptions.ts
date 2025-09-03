@@ -1,8 +1,8 @@
 'use client'
 
+import type { Relayer } from '@0xsequence/dapp-client'
 import { useIndexerClient } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { Relayer } from '@0xsequence/wallet-core'
 import { useEffect, useState } from 'react'
 import { formatUnits } from 'viem'
 import type { TransactionRequest } from 'viem'

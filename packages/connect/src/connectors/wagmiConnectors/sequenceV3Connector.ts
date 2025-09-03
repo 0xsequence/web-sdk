@@ -1,6 +1,5 @@
 import { getNetwork, LocalStorageKey } from '@0xsequence/connect'
-import { DappClient } from '@0xsequence/dapp-client'
-import { Relayer, Signers } from '@0xsequence/wallet-core'
+import { DappClient, Relayer, Signers, type TransactionRequest as DappClientTransactionRequest } from '@0xsequence/dapp-client'
 import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
@@ -27,9 +26,11 @@ export interface BaseSequenceV3ConnectorOptions {
   walletUrl: string
   dappOrigin: string
   defaultNetwork: number
-  permissions?: Signers.Session.ExplicitParams
-  nodesUrl?: string
   loginType: 'email' | 'google' | 'apple' | 'passkey'
+  explicitSession?: Signers.Session.ExplicitParams
+  enableImplicitSession?: boolean
+  nodesUrl?: string
+  relayerUrl?: string
 }
 
 export interface FeeOptionConfirmationHandler {
@@ -51,8 +52,19 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     [LocalStorageKey.V3ActiveLoginType]: string
   }
 
-  const client = new DappClient(params.walletUrl, params.dappOrigin)
-  const provider = new SequenceV3Provider(client, params.defaultNetwork, params.nodesUrl, params.loginType, params.permissions)
+  const client = new DappClient(params.walletUrl, params.dappOrigin, params.projectAccessKey, {
+    nodesUrl: params.nodesUrl,
+    relayerUrl: params.relayerUrl
+  })
+  const provider = new SequenceV3Provider(
+    client,
+    params.defaultNetwork,
+    params.nodesUrl,
+    params.projectAccessKey,
+    params.loginType,
+    params.explicitSession,
+    params.enableImplicitSession
+  )
 
   return createConnector<Provider, Properties, StorageItem>(config => {
     client.on('sessionsUpdated', () => {
@@ -168,6 +180,8 @@ sequenceV3Wallet.type = 'sequence-v3-wallet' as const
 export class SequenceV3Provider implements EIP1193Provider {
   private currentChainId: number
   private nodesUrl: string
+  private projectAccessKey: string
+  private enableImplicitSession?: boolean
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
   private initialPermissions?: Signers.Session.ExplicitParams
 
@@ -188,13 +202,17 @@ export class SequenceV3Provider implements EIP1193Provider {
     private client: DappClient,
     defaultNetwork: number,
     nodesUrl = 'https://nodes.sequence.app',
-    loginType: 'email' | 'google' | 'apple' | 'passkey' = 'google',
-    initialPermissions?: Signers.Session.ExplicitParams
+    projectAccessKey: string,
+    loginType: 'email' | 'google' | 'apple' | 'passkey',
+    initialPermissions?: Signers.Session.ExplicitParams,
+    enableImplicitSession?: boolean
   ) {
     this.currentChainId = defaultNetwork
     this.nodesUrl = nodesUrl
     this.loginType = loginType
     this.initialPermissions = initialPermissions
+    this.projectAccessKey = projectAccessKey
+    this.enableImplicitSession = enableImplicitSession
   }
 
   on<TEvent extends keyof EIP1193EventMap>(event: TEvent, listener: EIP1193EventMap[TEvent]): void {
@@ -245,7 +263,8 @@ export class SequenceV3Provider implements EIP1193Provider {
         }
         await this.client.connect(this.currentChainId, this.initialPermissions, {
           preferredLoginMethod: this.loginType,
-          ...(this.loginType === 'email' && this.email ? { email: this.email } : {})
+          ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
+          ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
         })
         const walletAddress = this.client.getWalletAddress()
         if (!walletAddress) {
@@ -269,7 +288,7 @@ export class SequenceV3Provider implements EIP1193Provider {
         const message = params[0] as string
 
         return new Promise((resolve, reject) => {
-          const unsubscribe = this.client.on('signatureResponse', (data: any) => {
+          const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
             if (data.error) {
               reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
             } else {
@@ -319,7 +338,7 @@ export class SequenceV3Provider implements EIP1193Provider {
         }
 
         return new Promise((resolve, reject) => {
-          const unsubscribe = this.client.on('signatureResponse', (data: any) => {
+          const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
             if (data.error) {
               reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
             } else {
@@ -343,38 +362,73 @@ export class SequenceV3Provider implements EIP1193Provider {
         const tx = params[0] as TransactionRequest
         const transactions = [{ to: tx.to!, value: tx.value ?? 0n, data: tx.data ?? '0x' }]
 
-        const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
-        let selectedFeeOption: Relayer.FeeOption | undefined
+        const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
 
-        if (feeOptions && feeOptions.length > 0) {
-          if (!this.feeConfirmationHandler) {
-            throw new RpcError(new Error('Unable to send transaction: please use useFeeOptions hook and pick a fee option'), {
-              code: -32000,
-              shortMessage: 'Fee confirmation handler not found'
-            })
+        if (hasPermission) {
+          const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+          let selectedFeeOption: Relayer.FeeOption | undefined
+
+          if (feeOptions && feeOptions.length > 0) {
+            if (!this.feeConfirmationHandler) {
+              throw new RpcError(new Error('Unable to send transaction: please use useFeeOptions hook and pick a fee option'), {
+                code: -32000,
+                shortMessage: 'Fee confirmation handler not found'
+              })
+            }
+
+            const id = uuidv4()
+            const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
+
+            if (!confirmation.confirmed) {
+              throw new RpcError(new Error('User rejected the request.'), {
+                code: 4001,
+                shortMessage: 'User rejected send transaction request.'
+              })
+            }
+
+            if (id !== confirmation.id) {
+              throw new RpcError(new Error('User confirmation ids do not match'), {
+                code: -32000,
+                shortMessage: 'Confirmation ID mismatch'
+              })
+            }
+            selectedFeeOption = confirmation.feeOption
           }
-
-          const id = uuidv4()
-          const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
-
-          if (!confirmation.confirmed) {
-            throw new RpcError(new Error('User rejected the request.'), {
-              code: 4001,
-              shortMessage: 'User rejected send transaction request.'
+          return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+        } else {
+          return new Promise((resolve, reject) => {
+            const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
+              unsubscribe()
+              if (data.error) {
+                reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
+              } else {
+                resolve(data.response.transactionHash)
+              }
             })
-          }
 
-          if (id !== confirmation.id) {
-            throw new RpcError(new Error('User confirmation ids do not match'), {
-              code: -32000,
-              shortMessage: 'Confirmation ID mismatch'
+            if (!tx.to) {
+              const error = new RpcError(new Error('Transaction requires a "to" address.'), {
+                code: -32602,
+                shortMessage: 'Invalid transaction params'
+              })
+              unsubscribe()
+              reject(error)
+              return
+            }
+
+            const walletTransactionRequest: DappClientTransactionRequest = {
+              to: tx.to,
+              value: tx.value,
+              data: tx.data,
+              gasLimit: tx.gas
+            }
+
+            this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch(err => {
+              unsubscribe()
+              reject(err)
             })
-          }
-
-          selectedFeeOption = confirmation.feeOption
+          })
         }
-
-        return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
       }
 
       case 'wallet_switchEthereumChain': {
@@ -393,7 +447,8 @@ export class SequenceV3Provider implements EIP1193Provider {
 
       default: {
         console.warn(`Method ${method} not explicitly handled by DappClient, using fallback RPC.`)
-        const res = await fetch(`${this.nodesUrl}/${getNetwork(this.currentChainId).name}`, {
+        const nodeUrl = getRpcUrl(this.nodesUrl, this.projectAccessKey, getNetwork(this.currentChainId).name)
+        const res = await fetch(nodeUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params })
@@ -406,4 +461,24 @@ export class SequenceV3Provider implements EIP1193Provider {
       }
     }
   }
+}
+
+const getRpcUrl = (nodesUrl: string, projectAccessKey: string, networkName: string) => {
+  let url = applyTemplate(nodesUrl, { network: networkName })
+
+  if (nodesUrl.includes('sequence')) {
+    url = `${url}/${projectAccessKey}`
+  }
+
+  return url
+}
+
+function applyTemplate(template: string, values: Record<string, string>) {
+  return template.replace(/{(.*?)}/g, (_, key) => {
+    const value = values[key]
+    if (value === undefined) {
+      throw new Error(`Missing template value for ${template}: ${key}`)
+    }
+    return value
+  })
 }

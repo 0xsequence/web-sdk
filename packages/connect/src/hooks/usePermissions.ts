@@ -1,8 +1,7 @@
 'use client'
 
-import { type DappClient } from '@0xsequence/dapp-client'
+import { Signers, type DappClient } from '@0xsequence/dapp-client'
 import { type ChainId } from '@0xsequence/network'
-import { type Signers } from '@0xsequence/wallet-core'
 import { useCallback, useState } from 'react'
 import { useConnections } from 'wagmi'
 import { type Connector } from 'wagmi'
@@ -36,7 +35,7 @@ export type UsePermissionsReturnType = {
  * @example
  * ```tsx
  * import { usePermissions } from './hooks/usePermissions';
- * import { Signers, Utils } from '@0xsequence/wallet-core';
+ * import { Signers, Utils } from '@0xsequence/dapp-client';
  * import { parseUnits } from 'viem';
  *
  * function MyComponent() {

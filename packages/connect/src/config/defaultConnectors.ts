@@ -1,4 +1,4 @@
-import type { Signers } from '@0xsequence/wallet-core'
+import type { Signers } from '@0xsequence/dapp-client'
 import type { CreateConnectorFn } from 'wagmi'
 
 import { appleV3 } from '../connectors/apple/applev3.js'
@@ -34,7 +34,10 @@ export interface DefaultConnectorOptions extends CommonConnectorOptions {
    * @deprecated, use connectors.walletConnect.projectId instead
    */
   walletConnectProjectId?: string
-  permissions?: Signers.Session.ExplicitParams
+  explicitSession?: Signers.Session.ExplicitParams
+  enableImplicitSession?: boolean
+  nodesUrl?: string
+  relayerUrl?: string
 }
 
 export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateConnectorFn[] => {
@@ -50,9 +53,12 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
       emailV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        permissions: options.permissions,
-        defaultNetwork: defaultChainId
+        explicitSession: options.explicitSession,
+        enableImplicitSession: options.enableImplicitSession,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
       })
     )
   }
@@ -65,9 +71,12 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
       googleV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        permissions: options.permissions,
-        defaultNetwork: defaultChainId
+        explicitSession: options.explicitSession,
+        enableImplicitSession: options.enableImplicitSession,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
       })
     )
   }
@@ -80,9 +89,12 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
       appleV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        permissions: options.permissions,
-        defaultNetwork: defaultChainId
+        explicitSession: options.explicitSession,
+        enableImplicitSession: options.enableImplicitSession,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
       })
     )
   }
