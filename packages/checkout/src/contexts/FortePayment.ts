@@ -12,7 +12,6 @@ export interface FortePaymentData {
 export interface FortePaymentController {
   data?: FortePaymentData
   initializeWidget: (fortePaymentData: FortePaymentData) => void
-  resetWidget: () => void
 }
 
 const [useFortePaymentController, FortePaymentControllerProvider] = createGenericContext<FortePaymentController>()

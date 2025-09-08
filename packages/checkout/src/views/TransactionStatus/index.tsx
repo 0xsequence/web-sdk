@@ -225,9 +225,12 @@ export const TransactionStatus = () => {
         return (
           <div className="flex gap-2 justify-center items-center">
             <div className="w-6 h-6 flex rounded-full bg-positive web-sdk-tx-status-icon">
-              <CheckmarkIcon className="text-white relative web-sdk-tx-status-checkmark-icon" style={{ top: '3px', right: '-1px' }} />
+              <CheckmarkIcon
+                className="text-white relative web-sdk-tx-status-checkmark-icon"
+                style={{ top: '3px', right: '-1px' }}
+              />
             </div>
-            <Text className='web-sdk-tx-status-indicator' variant="normal" color="muted">
+            <Text className="web-sdk-tx-status-indicator" variant="normal" color="muted">
               Transaction complete
             </Text>
           </div>
@@ -238,7 +241,7 @@ export const TransactionStatus = () => {
             <div className="w-6 h-6 rounded-full bg-negative web-sdk-tx-status-icon">
               <CloseIcon className="text-white relative" style={{ top: '2px', right: '-2px' }} />
             </div>
-            <Text className='web-sdk-tx-status-indicator' variant="normal" color="muted">
+            <Text className="web-sdk-tx-status-indicator" variant="normal" color="muted">
               Transaction failed
             </Text>
           </div>
@@ -247,8 +250,8 @@ export const TransactionStatus = () => {
       default:
         return (
           <div className="flex gap-2 justify-center items-center">
-            <Spinner className='web-sdk-tx-status-icon'/>
-            <Text className='web-sdk-tx-status-indicator' variant="normal" color="muted">
+            <Spinner className="web-sdk-tx-status-icon" />
+            <Text className="web-sdk-tx-status-indicator" variant="normal" color="muted">
               Processing transaction
             </Text>
           </div>
@@ -353,7 +356,7 @@ export const TransactionStatus = () => {
         ) : (
           <>
             <div className="flex w-full justify-start">
-              <Text className='web-sdk-tx-status-information-text' variant="normal" color="primary">
+              <Text className="web-sdk-tx-status-information-text" variant="normal" color="primary">
                 {getInformationText()}
               </Text>
             </div>
@@ -365,7 +368,12 @@ export const TransactionStatus = () => {
             )}
             <div className="flex w-full justify-between items-center">
               <StatusIndicator />
-              <Text className="no-underline cursor-pointer web-sdk-tx-status-txhash" variant="normal" style={{ color: '#8E7EFF' }} asChild>
+              <Text
+                className="no-underline cursor-pointer web-sdk-tx-status-txhash"
+                variant="normal"
+                style={{ color: '#8E7EFF' }}
+                asChild
+              >
                 <a href={blockExplorerUrl} target="_blank" rel="noreferrer">
                   {truncateAddress(txHash, 4, 4)}
                 </a>

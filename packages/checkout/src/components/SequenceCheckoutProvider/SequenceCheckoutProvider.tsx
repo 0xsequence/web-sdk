@@ -248,7 +248,7 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
         sardineOnRampUrl: config?.env?.sardineOnRampUrl ?? 'https://crypto.sardine.ai/',
         transakApiUrl: config?.env?.transakApiUrl ?? 'https://global.transak.com',
         transakApiKey: config?.env?.transakApiKey ?? '5911d9ec-46b5-48fa-a755-d59a715ff0cf',
-        forteWidgetUrl: config?.env?.forteWidgetUrl ?? 'https://client.payments.forte.io/forte-payments-widget.js'
+        forteWidgetUrl: config?.env?.forteWidgetUrl ?? 'https://payments.prod.lemmax.com/forte-payments-widget.js'
       }}
     >
       <ForteController>

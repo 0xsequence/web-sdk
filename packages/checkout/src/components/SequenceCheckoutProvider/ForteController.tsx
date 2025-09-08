@@ -10,18 +10,51 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
   const [fortePaymentData, setFortePaymentData] = useState<FortePaymentData>()
   const { forteWidgetUrl } = useEnvironmentContext()
   const [isSuccess, setIsSuccess] = useState(false)
+  const [widgetInitialized, setWidgetInitialized] = useState(false)
   const { env, projectAccessKey } = useConfig()
   const apiUrl = env.apiUrl
 
   const initializeWidget = (fortePaymentData: FortePaymentData) => {
+    setIsSuccess(false)
     setFortePaymentData(fortePaymentData)
   }
 
-  const resetWidget = () => {
-    setFortePaymentData(undefined)
-    document.getElementById('forte-widget-script')?.remove()
-    document.getElementById('forte-payments-widget-container')?.remove()
-  }
+  useEffect(() => {
+    const widgetInitializedListener: () => void = () => {
+      setWidgetInitialized(true)
+    }
+
+    if (!widgetInitialized) {
+      window.addEventListener('FortePaymentsWidgetLoaded', widgetInitializedListener)
+    }
+
+    return () => {
+      window.removeEventListener('FortePaymentsWidgetLoaded', widgetInitializedListener)
+    }
+  }, [widgetInitialized, fortePaymentData])
+
+  useEffect(() => {
+    if (widgetInitialized && fortePaymentData) {
+      const widgetData = fortePaymentData.widgetData
+
+      // @ts-ignore-next-line
+      if (window?.initFortePaymentsWidget && widgetData) {
+        const data = {
+          notes: widgetData.notes,
+          widget_data: widgetData.widgetData,
+          payment_intent_id: widgetData.paymentIntentId,
+          error_code: widgetData.error_code ?? null,
+          flow: widgetData.flow
+        }
+
+        // @ts-ignore-next-line
+        window.initFortePaymentsWidget({
+          containerId: 'forte-payments-widget-container',
+          data
+        })
+      }
+    }
+  }, [widgetInitialized, fortePaymentData])
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
@@ -34,7 +67,6 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
 
       widgetClosedListener = () => {
         fortePaymentData.creditCardCheckout?.onClose?.()
-        resetWidget()
       }
 
       window.addEventListener('FortePaymentsWidgetClosed', widgetClosedListener)
@@ -44,7 +76,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       clearInterval(interval)
       window.removeEventListener('FortePaymentsWidgetClosed', widgetClosedListener)
     }
-  }, [fortePaymentData, isSuccess])
+  }, [fortePaymentData, isSuccess, widgetInitialized])
 
   useEffect(() => {
     if (!fortePaymentData) {
@@ -64,28 +96,9 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     script.async = true
     script.src = forteWidgetUrl
 
-    const widgetData = fortePaymentData.widgetData
-    script.onload = () => {
-      setIsSuccess(false)
-      // @ts-ignore-next-line
-      if (window?.initFortePaymentsWidget && widgetData) {
-        const data = {
-          notes: widgetData.notes,
-          widget_data: widgetData.widgetData,
-          payment_intent_id: widgetData.paymentIntentId,
-          error_code: widgetData.error_code ?? null,
-          flow: widgetData.flow
-        }
-
-        // @ts-ignore-next-line
-        window.initFortePaymentsWidget({
-          containerId: 'forte-payments-widget-container',
-          data
-        })
-      }
-    }
-
     document.body.appendChild(script)
+
+    // After loading the script, Forte will generate a FortePaymentsWidgetLoaded event when the widget is ready to be called
   }, [fortePaymentData])
 
   const checkFortePaymentStatus = async () => {
@@ -114,8 +127,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     <FortePaymentControllerProvider
       value={{
         data: fortePaymentData,
-        initializeWidget,
-        resetWidget
+        initializeWidget
       }}
     >
       {children}
