@@ -97,6 +97,7 @@ export const config = createConfig({
   google: true,
   apple: true,
   email: true,
+  passkey: true,
   walletConnect: {
     projectId: walletConnectProjectId
   },

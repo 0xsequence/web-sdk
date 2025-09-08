@@ -5,6 +5,7 @@ import { appleV3 } from '../connectors/apple/applev3.js'
 import { coinbaseWallet } from '../connectors/coinbaseWallet/coinbaseWallet.js'
 import { emailV3 } from '../connectors/email/emailv3.js'
 import { googleV3 } from '../connectors/google/googleV3.js'
+import { passkeyV3 } from '../connectors/passkey/passkeyV3.js'
 import { metaMask } from '../connectors/metaMask/metaMask.js'
 import { walletConnect } from '../connectors/walletConnect/walletConnect.js'
 import type { Wallet } from '../types.js'
@@ -22,6 +23,7 @@ export interface DefaultConnectorOptions extends CommonConnectorOptions {
   email?: boolean
   google?: boolean
   apple?: boolean
+  passkey?: boolean
   coinbase?: boolean
   metaMask?: boolean
   walletConnect?:
@@ -87,6 +89,24 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
     }
     wallets.push(
       appleV3({
+        projectAccessKey: projectAccessKey,
+        walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
+        dappOrigin: dappOrigin,
+        explicitSession: options.explicitSession,
+        enableImplicitSession: options.enableImplicitSession,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
+      })
+    )
+  }
+
+  if (options.passkey !== false) {
+    if (!walletUrl || !dappOrigin) {
+      throw new Error('Passkey wallet requires walletUrl and dappOrigin to be set')
+    }
+    wallets.push(
+      passkeyV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
