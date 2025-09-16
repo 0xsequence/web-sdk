@@ -75,7 +75,7 @@ export type FunctionPermission = {
 }
 
 /**
- * The options object for creating permissions for multiple smart contracts.
+ * The options object for creating permissions for multiple smart contract functions.
  */
 export type CreateContractPermissionsOptions = {
   /** The address of the target contract. */
@@ -86,7 +86,7 @@ export type CreateContractPermissionsOptions = {
 }
 
 /**
- * The options object for creating a permission for a single smart contract.
+ * The options object for creating a permission.
  */
 export type CreateContractPermissionOptions = {
   /** The address of the target contract. */
