@@ -2,7 +2,6 @@ import {
   TransactionOnRampProvider,
   useAddFundsModal,
   useCheckoutModal,
-  useERC1155SaleContractCheckout,
   useSelectPaymentModal,
   useSwapModal
 } from '@0xsequence/checkout'
@@ -10,18 +9,18 @@ import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
+  useExplicitSession,
   useFeeOptions,
   useOpenConnectModal,
-  usePermissions,
   useSequenceSessionState,
   useSocialLink,
   useStorage,
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
+import { Permission } from '@0xsequence/dapp-client'
 import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
-import { Permission } from '@0xsequence/wallet-primitives'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
@@ -31,12 +30,11 @@ import { encodeFunctionData, formatUnits, parseAbi, toHex, zeroAddress } from 'v
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
-import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 // import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
-import { EMITTER_ABI, getEmitterContractAddress, getPermissionForType, PermissionsType } from '../constants/permissions'
+import { EMITTER_ABI, getEmitterContractAddress, getSessionConfigForType, PermissionsType } from '../constants/permissions'
 import { delay, getCheckoutSettings, getOrderbookCalldata, getPermissions } from '../utils'
 
 import { CustomCheckout } from './CustomCheckout'
@@ -137,7 +135,7 @@ export const Connected = () => {
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
-  const { addPermissions, isLoading: isAddingPermissions, error: addPermissionsError } = usePermissions()
+  const { addExplicitSession, isLoading: isAddingExplicitSession, error: addExplicitSessionError } = useExplicitSession()
   const [permissionType, setPermissionType] = React.useState<PermissionsType>('contractCall')
 
   const [hasImplicitSession, setHasImplicitSession] = React.useState(false)
@@ -163,9 +161,9 @@ export const Connected = () => {
       setHasPermission(false) // Assume no permission until one is found
 
       try {
-        const expectedPermissionConfig = getPermissionForType(window.location.origin, chainId, permissionType)
+        const expectedSessionConfig = getSessionConfigForType(window.location.origin, chainId, permissionType)
 
-        if (!expectedPermissionConfig || !expectedPermissionConfig.permissions) {
+        if (!expectedSessionConfig || !expectedSessionConfig.permissions) {
           setHasPermission(true)
           return
         }
@@ -263,7 +261,7 @@ export const Connected = () => {
             })
           }
 
-          const isSubset = arePermissionsSubset(expectedPermissionConfig.permissions, existingPermissionConfig.permissions)
+          const isSubset = arePermissionsSubset(expectedSessionConfig.permissions, existingPermissionConfig.permissions)
           console.log('isSubset for signer', sessionSigner.address, ':', isSubset)
 
           // If we find a signer that has the required permissions, we can stop checking
@@ -515,9 +513,9 @@ export const Connected = () => {
 
   const handleAddPermissions = async () => {
     try {
-      const permissions = getPermissionForType(window.location.origin, chainId, permissionType)
-      if (permissions) {
-        await addPermissions(chainId, permissions)
+      const session = getSessionConfigForType(window.location.origin, chainId, permissionType)
+      if (session) {
+        await addExplicitSession(chainId, session)
         alert('Permission added successfully!')
       } else {
         alert('No permissions to request for the selected type.')
@@ -944,15 +942,15 @@ export const Connected = () => {
                         ? 'You already have the required permissions.'
                         : 'Request a new explicit session with the chosen permissions.'
                     }
-                    isPending={isAddingPermissions || isCheckingPermission}
+                    isPending={isAddingExplicitSession || isCheckingPermission}
                     onClick={
-                      hasPermission || isAddingPermissions || isCheckingPermission ? () => {} : () => handleAddPermissions()
+                      hasPermission || isAddingExplicitSession || isCheckingPermission ? () => {} : () => handleAddPermissions()
                     }
                   />
                 )}
-                {addPermissionsError && (
+                {addExplicitSessionError && (
                   <Text variant="small" color="negative">
-                    Error: {addPermissionsError.message}
+                    Error: {addExplicitSessionError.message}
                   </Text>
                 )}
 

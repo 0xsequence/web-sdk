@@ -51,6 +51,7 @@ export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/
 export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
 export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
+export { createContractPermission, createContractPermissions, createExplicitSession } from './utils/session/index.js'
 
 // Contexts
 export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'
@@ -84,7 +85,7 @@ export type { LinkedWallet } from '@0xsequence/api'
 export { useSocialLink } from './hooks/useSocialLink.js'
 
 export { useFeeOptions } from './hooks/useFeeOptions.js'
-export { usePermissions } from './hooks/usePermissions.js'
+export { useExplicitSession } from './hooks/useExplicitSession.js'
 export { useSequenceSessionState } from './hooks/useSequenceSessionState.js'
 
 // Components

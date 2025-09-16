@@ -48,12 +48,10 @@ export const Connect = (props: ConnectProps) => {
 
   const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet'>(null)
   const { status, connectors, connect } = useConnect()
-  console.log('Connect status:', status)
+
   const connections = useConnections()
   const { signMessageAsync } = useSignMessage()
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
-
-  console.log(wallets)
 
   // TODO: make it work with v3
   // const { linkWallet, removeLinkedWallet } = useWaasLinkWallet(waasConnection?.connector)
@@ -183,7 +181,7 @@ export const Connect = (props: ConnectProps) => {
     })
     .map(connector => {
       const Logo = (props: LogoProps) => {
-        return <Image src={connector.icon} alt={connector.name} disableAnimation {...props} />
+        return <Image src={connector.icon} alt={connector.name} {...props} />
       }
 
       return {
