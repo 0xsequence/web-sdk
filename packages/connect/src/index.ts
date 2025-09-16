@@ -18,6 +18,7 @@ export type {
   WalletProperties
 } from './types.js'
 export * from './utils/session/types.js'
+export type { Session } from '@0xsequence/dapp-client'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
