@@ -143,7 +143,8 @@ export const config =
           ChainId.IMMUTABLE_ZKEVM,
           ChainId.IMMUTABLE_ZKEVM_TESTNET,
           ChainId.BASE_SEPOLIA,
-          ChainId.BASE
+          ChainId.BASE,
+          ChainId.SEPOLIA
         ],
         defaultChainId: ChainId.ARBITRUM_NOVA,
 
