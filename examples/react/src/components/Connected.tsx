@@ -9,7 +9,7 @@ import type { SwapModalSettings } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
-  useExplicitSession,
+  useExplicitSessions,
   useFeeOptions,
   useOpenConnectModal,
   useSequenceSessionState,
@@ -135,7 +135,7 @@ export const Connected = () => {
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
 
-  const { addExplicitSession, isLoading: isAddingExplicitSession, error: addExplicitSessionError } = useExplicitSession()
+  const { addExplicitSession, isLoading: isAddingExplicitSession, error: addExplicitSessionError } = useExplicitSessions()
   const [permissionType, setPermissionType] = React.useState<PermissionsType>('contractCall')
 
   const [hasImplicitSession, setHasImplicitSession] = React.useState(false)

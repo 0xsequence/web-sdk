@@ -1,6 +1,6 @@
 import { useAccount, useBalance, useDisconnect, useSendTransaction } from 'wagmi'
 import './index.css'
-import { useFeeOptions, useOpenConnectModal } from '@0xsequence/connect'
+import { useExplicitSessions, useFeeOptions, useOpenConnectModal } from '@0xsequence/connect'
 import { supplyERC20Calldata, supplyETHCalldata, withdrawERC20Calldata, withdrawETHCalldata } from '@contractjs/aave-v3'
 import { useEffect, useState } from 'react'
 import { encodeFunctionData, formatUnits, maxUint256, parseAbi, parseEther, parseUnits } from 'viem'
@@ -28,6 +28,9 @@ function App() {
   // Balance Hooks
   const { data: aUsdcBalance, refetch: refetchAusdcBalance } = useBalance({ address, token: AUSDC_ADDRESS, chainId: 42161 })
   const { data: aWethBalance, refetch: refetchAwethBalance } = useBalance({ address, token: AWETH_ADDRESS, chainId: 42161 })
+
+  // Session hooks
+  const { getExplicitSessions } = useExplicitSessions()
 
   // Transaction Hooks
   const {
@@ -399,6 +402,12 @@ function App() {
                     <p>Approve aWETH to be spent by the AAVE V3 Gateway.</p>
                     <button onClick={handleApproveAWETH} disabled={isPendingApproveAWETH} className="btn btn-secondary">
                       {isPendingApproveAWETH ? 'Approving...' : 'Approve aWETH'}
+                    </button>
+                  </div>
+                  <div className="action-item">
+                    <h3>Get session info</h3>
+                    <button onClick={async () => console.log(await getExplicitSessions())} className="btn btn-secondary">
+                      'Get session info'
                     </button>
                   </div>
                 </div>

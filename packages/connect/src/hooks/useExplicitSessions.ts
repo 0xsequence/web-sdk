@@ -1,12 +1,12 @@
 'use client'
 
-import { Signers, type DappClient } from '@0xsequence/dapp-client'
+import { Signers, type DappClient, type Session } from '@0xsequence/dapp-client'
 import { type ChainId } from '@0xsequence/network'
 import { useCallback, useState } from 'react'
 import { useConnections } from 'wagmi'
 import { type Connector } from 'wagmi'
 
-export type UseExplicitSessionReturnType = {
+export type UseExplicitSessiosnReturnType = {
   /**
    * A boolean indicating if the session request operation is in progress.
    */
@@ -24,6 +24,13 @@ export type UseExplicitSessionReturnType = {
    * @returns A promise that resolves when the request is sent, or rejects if an error occurs.
    */
   addExplicitSession: (chainId: ChainId, explicitSession: Signers.Session.ExplicitParams) => Promise<void>
+
+  /**
+   * Function to get all explicit sessions.
+   *
+   * @returns A promise that resolves when the sessions are found, or rejects if an error occurs.
+   */
+  getExplicitSessions: () => Promise<Session[]>
 }
 
 /**
@@ -33,7 +40,7 @@ export type UseExplicitSessionReturnType = {
  * @returns An object with the state and function to manage explicit sessions. {@link UseExplicitSessionReturnType}
  *
  */
-export function useExplicitSession(): UseExplicitSessionReturnType {
+export function useExplicitSessions(): UseExplicitSessiosnReturnType {
   const connections = useConnections()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
@@ -75,5 +82,30 @@ export function useExplicitSession(): UseExplicitSessionReturnType {
     [connections] // Recalculate the function if the user's connections change
   )
 
-  return { isLoading, error, addExplicitSession }
+  const getExplicitSessions = useCallback(async () => {
+    // Find the active Sequence V3 connector from wagmi's connections
+    const v3Connector: Connector | undefined = connections.find(c => c.connector.id.includes('sequence-v3-wallet'))?.connector
+
+    if (!v3Connector) {
+      const err = new Error('Sequence V3 connector not found. Make sure the user is connected.')
+      setError(err)
+      throw err
+    }
+
+    // Access the DappClient instance from the connector
+    const dappClient = (v3Connector as any).client as DappClient
+
+    if (!dappClient) {
+      const err = new Error('DappClient instance is not available on the connector.')
+      setError(err)
+      throw err
+    }
+
+    const sessions = dappClient.getAllSessions()
+    const explicitSessions = sessions.filter(session => session.isImplicit === false)
+
+    return explicitSessions
+  }, [connections])
+
+  return { isLoading, error, addExplicitSession, getExplicitSessions }
 }

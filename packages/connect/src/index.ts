@@ -17,6 +17,7 @@ export type {
   WalletField,
   WalletProperties
 } from './types.js'
+export * from './utils/session/types.js'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
@@ -33,6 +34,7 @@ export {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   WEB_SDK_VERSION
 } from './constants/index.js'
+export * from './utils/session/constants.js'
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
@@ -85,7 +87,7 @@ export type { LinkedWallet } from '@0xsequence/api'
 export { useSocialLink } from './hooks/useSocialLink.js'
 
 export { useFeeOptions } from './hooks/useFeeOptions.js'
-export { useExplicitSession } from './hooks/useExplicitSession.js'
+export { useExplicitSessions } from './hooks/useExplicitSessions.js'
 export { useSequenceSessionState } from './hooks/useSequenceSessionState.js'
 
 // Components

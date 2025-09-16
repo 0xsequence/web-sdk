@@ -1,5 +1,5 @@
-import { createContractPermission, createExplicitSession } from '@0xsequence/connect'
-import { Permission, Signers } from '@0xsequence/dapp-client'
+import { createContractPermission, createExplicitSession, type ExplicitSession } from '@0xsequence/connect'
+import { Permission } from '@0xsequence/dapp-client'
 import { Abi, AbiFunction, Address } from 'ox'
 import { optimism } from 'viem/chains'
 
@@ -55,7 +55,7 @@ export const getUsdcPermission = (chainId: number): Permission.Permission => {
 }
 
 // 3. Combined permission for both contract call and USDC transfer
-export const getCombinedPermission = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
+export const getCombinedPermission = (redirectUrl: string, chainId: number): ExplicitSession => {
   const contractCallPermission = createContractPermission({
     address: getEmitterContractAddress(redirectUrl),
     functionSignature: 'function explicitEmit()'
@@ -78,7 +78,7 @@ export const getSessionConfigForType = (
   redirectUrl: string,
   chainId: number,
   type: PermissionsType
-): Signers.Session.ExplicitParams | undefined => {
+): ExplicitSession | undefined => {
   switch (type) {
     case 'contractCall':
       return createExplicitSession({

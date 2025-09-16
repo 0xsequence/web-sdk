@@ -1,47 +1,8 @@
-import { Permission, Signers } from '@0xsequence/dapp-client'
+import { Signers } from '@0xsequence/dapp-client'
 import type { Address } from 'viem'
 
-/**
- * The options for specifying the duration of a session.
- */
-export type SessionDuration = {
-  days?: number
-  hours?: number
-  minutes?: number
-}
-
-export type NativeTokenSpending = {
-  valueLimit: bigint
-  allowedRecipients?: Address[]
-}
-
-/**
- * The configuration object for the `createExplicitSession` helper function.
- */
-export type CreateExplicitSessionOptions = {
-  /** The chain ID for which the session will be valid. */
-  chainId: number
-
-  /**
-   * The maximum cumulative amount of the native currency (e.g., ETH, MATIC)
-   * that can be spent across ALL transactions during this session.
-   */
-  nativeTokenSpending: NativeTokenSpending
-
-  /**
-   * The desired duration of the session. A final `deadline` timestamp will be
-   * calculated from this. Defaults to 24 hours if not provided.
-   */
-  expiresIn: SessionDuration
-
-  /**
-   * An array of fully-built permission objects. These should be the direct
-   * output from helpers like `createContractPermission`.
-   */
-  permissions: Permission.Permission[]
-}
-
-const SEQUENCE_VALUE_FORWARDER = '0xABAAd93EeE2a569cF0632f39B10A9f5D734777ca'
+import { SEQUENCE_VALUE_FORWARDER } from './constants.js'
+import type { CreateExplicitSessionOptions, ExplicitSession } from './types.js'
 
 /**
  * Assembles a complete, ready-to-use smart session object.
@@ -53,7 +14,7 @@ const SEQUENCE_VALUE_FORWARDER = '0xABAAd93EeE2a569cF0632f39B10A9f5D734777ca'
  * @param options The complete configuration for the session.
  * @returns The final, ready-to-use object that can be used with Sequence V3 connectors.
  */
-export function createExplicitSession(options: CreateExplicitSessionOptions): Signers.Session.ExplicitParams {
+export function createExplicitSession(options: CreateExplicitSessionOptions): ExplicitSession {
   // Calculate the session deadline.
   const nowInSeconds = BigInt(Math.floor(Date.now() / 1000))
 
