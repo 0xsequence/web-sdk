@@ -5,6 +5,7 @@ import { type ChainId } from '@0xsequence/network'
 import { useCallback, useState } from 'react'
 import { useConnections } from 'wagmi'
 import { type Connector } from 'wagmi'
+import type { ExplicitSession } from '../utils/session/types.js'
 
 export type UseExplicitSessiosnReturnType = {
   /**
@@ -23,7 +24,7 @@ export type UseExplicitSessiosnReturnType = {
    * @param explicitSession The explicit session to request for the new session.
    * @returns A promise that resolves when the request is sent, or rejects if an error occurs.
    */
-  addExplicitSession: (chainId: ChainId, explicitSession: Signers.Session.ExplicitParams) => Promise<void>
+  addExplicitSession: (chainId: ChainId, explicitSession: ExplicitSession) => Promise<void>
 
   /**
    * Function to get all explicit sessions.
