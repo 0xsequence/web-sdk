@@ -1,5 +1,6 @@
-import { Permission, Signers, Utils } from '@0xsequence/dapp-client'
-import { Abi, AbiFunction, Address, Bytes } from 'ox'
+import { createContractPermission, createExplicitSession, type ExplicitSession } from '@0xsequence/connect'
+import { Permission } from '@0xsequence/dapp-client'
+import { Abi, AbiFunction, Address } from 'ox'
 import { optimism } from 'viem/chains'
 
 export const transfer = AbiFunction.from(['function transfer(address to, uint256 value)'])
@@ -7,6 +8,8 @@ export const transfer = AbiFunction.from(['function transfer(address to, uint256
 export type PermissionsType = 'none' | 'contractCall' | 'usdcTransfer' | 'combined'
 
 export const PERMISSION_TYPE_LOCAL_STORAGE_KEY = 'permissionType'
+
+export const EMITTER_ABI = Abi.from(['function explicitEmit()', 'function implicitEmit()'])
 
 export const getEmitterContractAddress = (redirectUrl: string): Address.Address => {
   switch (redirectUrl) {
@@ -23,77 +26,93 @@ export const getEmitterContractAddress = (redirectUrl: string): Address.Address 
   }
 }
 
-export const EMITTER_ABI = Abi.from(['function explicitEmit()', 'function implicitEmit()'])
-
 export const USDC_ADDRESS = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607' // Op mainnet
 
-// 1. Permission for a specific contract call
-export const getContractCallPermission = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
+// Permission for a specific contract call
+export const getContractCallPermission = (redirectUrl: string): Permission.Permission => {
   const emitterContractAddress = getEmitterContractAddress(redirectUrl)
-  return {
-    chainId: chainId,
-    valueLimit: 0n,
-    deadline: BigInt(Date.now() + 1000 * 60 * 5000),
-    permissions: [
-      {
-        target: emitterContractAddress,
-        rules: [
-          {
-            // Require the explicitEmit selector
-            cumulative: false,
-            operation: Permission.ParameterOperation.EQUAL,
-            value: Bytes.padRight(Bytes.fromHex(AbiFunction.getSelector(EMITTER_ABI[0])), 32),
-            offset: 0n,
-            mask: Permission.MASK.SELECTOR
-          }
-        ]
-      }
-    ]
-  }
+  return createContractPermission({
+    address: emitterContractAddress,
+    functionSignature: 'function explicitEmit()'
+  })
 }
 
-// 2. Permission for USDC transfers (on Optimism)
-export const getUsdcPermission = (chainId: number): Signers.Session.ExplicitParams => {
-  const permissions =
-    chainId === optimism.id ? Utils.PermissionBuilder.for(USDC_ADDRESS).forFunction(transfer).build() : undefined
+// Permission for USDC transfers (on Optimism)
+export const getUsdcPermission = (chainId: number): Permission.Permission => {
+  const permission =
+    chainId === optimism.id
+      ? createContractPermission({
+          address: USDC_ADDRESS,
+          functionSignature: 'function transfer(address to, uint256 value)'
+        })
+      : undefined
 
-  if (!permissions) {
+  if (!permission) {
     throw new Error(`This example permission is set up only for Optimism (chain id: ${optimism.id}).`)
   }
 
-  return {
-    chainId: chainId,
-    valueLimit: 0n,
-    deadline: BigInt(Date.now() + 1000 * 60 * 5000),
-    permissions: [permissions]
-  }
+  return permission
 }
 
 // 3. Combined permission for both contract call and USDC transfer
-export const getCombinedPermission = (redirectUrl: string, chainId: number): Signers.Session.ExplicitParams => {
-  const contractCallPermissions = getContractCallPermission(redirectUrl, chainId).permissions
-  const usdcPermissions = getUsdcPermission(chainId).permissions
+export const getCombinedPermission = (redirectUrl: string, chainId: number): ExplicitSession => {
+  const contractCallPermission = createContractPermission({
+    address: getEmitterContractAddress(redirectUrl),
+    functionSignature: 'function explicitEmit()'
+  })
+  const usdcPermission = getUsdcPermission(chainId)
 
-  return {
+  return createExplicitSession({
     chainId: chainId,
-    valueLimit: 0n,
-    deadline: BigInt(Date.now() + 1000 * 60 * 5000),
-    permissions: [...contractCallPermissions, ...usdcPermissions]
-  }
+    nativeTokenSpending: {
+      valueLimit: 0n
+    },
+    expiresIn: {
+      days: 1
+    },
+    permissions: [contractCallPermission, usdcPermission]
+  })
 }
 
-export const getPermissionForType = (
+export const getSessionConfigForType = (
   redirectUrl: string,
   chainId: number,
   type: PermissionsType
-): Signers.Session.ExplicitParams | undefined => {
+): ExplicitSession | undefined => {
   switch (type) {
     case 'contractCall':
-      return getContractCallPermission(redirectUrl, chainId)
+      return createExplicitSession({
+        chainId: chainId,
+        nativeTokenSpending: {
+          valueLimit: 0n
+        },
+        expiresIn: {
+          days: 1
+        },
+        permissions: [getContractCallPermission(redirectUrl)]
+      })
     case 'usdcTransfer':
-      return getUsdcPermission(chainId)
+      return createExplicitSession({
+        chainId: chainId,
+        nativeTokenSpending: {
+          valueLimit: 0n
+        },
+        expiresIn: {
+          days: 1
+        },
+        permissions: [getUsdcPermission(chainId)]
+      })
     case 'combined':
-      return getCombinedPermission(redirectUrl, chainId)
+      return createExplicitSession({
+        chainId: chainId,
+        nativeTokenSpending: {
+          valueLimit: 0n
+        },
+        expiresIn: {
+          days: 1
+        },
+        permissions: [getContractCallPermission(redirectUrl), getUsdcPermission(chainId)]
+      })
     case 'none':
       return undefined // No permissions
     default:

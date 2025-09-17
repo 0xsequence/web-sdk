@@ -1,9 +1,19 @@
 import { getNetwork, LocalStorageKey } from '@0xsequence/connect'
-import { DappClient, Relayer, Signers, type TransactionRequest as DappClientTransactionRequest } from '@0xsequence/dapp-client'
+import {
+  DappClient,
+  Relayer,
+  Signers,
+  Utils,
+  type TransactionRequest as DappClientTransactionRequest
+} from '@0xsequence/dapp-client'
+import type { FeeToken } from '@0xsequence/waas'
 import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
+  maxUint256,
   RpcError,
+  zeroAddress,
+  type Address,
   type EIP1193EventMap,
   type EIP1193Provider,
   type EIP1193RequestFn,
@@ -183,7 +193,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private projectAccessKey: string
   private enableImplicitSession?: boolean
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
-  private initialPermissions?: Signers.Session.ExplicitParams
+  private initialSession?: Signers.Session.ExplicitParams
 
   email?: string
 
@@ -204,13 +214,13 @@ export class SequenceV3Provider implements EIP1193Provider {
     nodesUrl = 'https://nodes.sequence.app',
     projectAccessKey: string,
     loginType: 'email' | 'google' | 'apple' | 'passkey',
-    initialPermissions?: Signers.Session.ExplicitParams,
+    initialSession?: Signers.Session.ExplicitParams,
     enableImplicitSession?: boolean
   ) {
     this.currentChainId = defaultNetwork
     this.nodesUrl = nodesUrl
     this.loginType = loginType
-    this.initialPermissions = initialPermissions
+    this.initialSession = initialSession
     this.projectAccessKey = projectAccessKey
     this.enableImplicitSession = enableImplicitSession
   }
@@ -261,11 +271,48 @@ export class SequenceV3Provider implements EIP1193Provider {
           const address = this.client.getWalletAddress()
           return address ? [getAddress(address)] : []
         }
-        await this.client.connect(this.currentChainId, this.initialPermissions, {
-          preferredLoginMethod: this.loginType,
-          ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
-          ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
-        })
+        const options = {
+          method: 'POST',
+          headers: {
+            'X-Access-Key': this.projectAccessKey,
+            'Content-Type': 'application/json'
+          },
+          body: '{}'
+        }
+        const chainName = getNetwork(this.currentChainId).name
+        const feeOptions: { isFeeRequired: boolean; tokens: FeeToken[] } = await fetch(
+          `https://${chainName}-relayer.sequence.app/rpc/Relayer/FeeTokens`,
+          options
+        ).then(res => res.json())
+
+        const feeOptionPermissions = feeOptions.isFeeRequired
+          ? feeOptions.tokens.map(option =>
+              Utils.ERC20PermissionBuilder.buildTransfer(option.contractAddress as Address, maxUint256)
+            )
+          : []
+
+        // Combine initial permissions with fee option permissions
+        const combinedPermissions = this.initialSession
+          ? [...this.initialSession.permissions, ...feeOptionPermissions]
+          : feeOptionPermissions
+
+        // Ensure we have at least one permission
+        if (combinedPermissions.length === 0) {
+          throw new Error('No permissions available for session')
+        }
+
+        await this.client.connect(
+          this.currentChainId,
+          this.initialSession && {
+            ...this.initialSession,
+            permissions: combinedPermissions as Signers.Session.ExplicitParams['permissions']
+          },
+          {
+            preferredLoginMethod: this.loginType,
+            ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
+            ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
+          }
+        )
         const walletAddress = this.client.getWalletAddress()
         if (!walletAddress) {
           throw new RpcError(new Error('User rejected the request.'), { code: 4001, shortMessage: 'User rejected the request.' })
@@ -360,7 +407,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           })
         }
         const tx = params[0] as TransactionRequest
-        const transactions = [{ to: tx.to!, value: tx.value ?? 0n, data: tx.data ?? '0x' }]
+        const transactions = [{ to: tx.to!, value: BigInt(tx.value?.toString() ?? '0'), data: tx.data ?? '0x' }]
 
         const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
 
@@ -369,30 +416,28 @@ export class SequenceV3Provider implements EIP1193Provider {
           let selectedFeeOption: Relayer.FeeOption | undefined
 
           if (feeOptions && feeOptions.length > 0) {
-            if (!this.feeConfirmationHandler) {
-              throw new RpcError(new Error('Unable to send transaction: please use useFeeOptions hook and pick a fee option'), {
-                code: -32000,
-                shortMessage: 'Fee confirmation handler not found'
-              })
-            }
+            if (this.feeConfirmationHandler) {
+              const id = uuidv4()
+              const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
 
-            const id = uuidv4()
-            const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
+              if (!confirmation.confirmed) {
+                throw new RpcError(new Error('User rejected the request.'), {
+                  code: 4001,
+                  shortMessage: 'User rejected send transaction request.'
+                })
+              }
 
-            if (!confirmation.confirmed) {
-              throw new RpcError(new Error('User rejected the request.'), {
-                code: 4001,
-                shortMessage: 'User rejected send transaction request.'
-              })
+              if (id !== confirmation.id) {
+                throw new RpcError(new Error('User confirmation ids do not match'), {
+                  code: -32000,
+                  shortMessage: 'Confirmation ID mismatch'
+                })
+              }
+              selectedFeeOption = confirmation.feeOption
+            } else {
+              // Default to NATIVE TOKEN fee option if no fee confirmation handler is provided
+              selectedFeeOption = feeOptions.find(option => option.token.contractAddress === zeroAddress)
             }
-
-            if (id !== confirmation.id) {
-              throw new RpcError(new Error('User confirmation ids do not match'), {
-                code: -32000,
-                shortMessage: 'Confirmation ID mismatch'
-              })
-            }
-            selectedFeeOption = confirmation.feeOption
           }
           return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
         } else {

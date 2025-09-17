@@ -1,11 +1,11 @@
 import { SequenceCheckoutConfig } from '@0xsequence/checkout'
-import { ConnectConfig, createConfig } from '@0xsequence/connect'
+import { ConnectConfig, createConfig, createContractPermission, createExplicitSession } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
 import { zeroAddress } from 'viem'
 
-import { getPermissionForType } from './constants/permissions'
+import { getEmitterContractAddress } from './constants/permissions'
 
 const searchParams = new URLSearchParams(location.search)
 
@@ -101,10 +101,21 @@ export const config = createConfig({
   walletConnect: {
     projectId: walletConnectProjectId
   },
-  explicitSession: getPermissionForType(window.location.origin, ChainId.ARBITRUM_SEPOLIA, 'contractCall')
-  // enableImplicitSession: true
-  // relayerUrl: 'https://v3-{network}-relayer.sequence.app'
-  // nodesUrl: ...
+  explicitSession: createExplicitSession({
+    chainId: ChainId.ARBITRUM_SEPOLIA,
+    nativeTokenSpending: {
+      valueLimit: 0n
+    },
+    expiresIn: {
+      days: 1
+    },
+    permissions: [
+      createContractPermission({
+        address: getEmitterContractAddress(window.location.origin),
+        functionSignature: 'function explicitEmit()'
+      })
+    ]
+  })
 })
 
 export const getErc1155SaleContractConfig = (walletAddress: string) => ({

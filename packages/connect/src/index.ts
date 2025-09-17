@@ -17,6 +17,8 @@ export type {
   WalletField,
   WalletProperties
 } from './types.js'
+export * from './utils/session/types.js'
+export type { Session } from '@0xsequence/dapp-client'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
@@ -33,6 +35,7 @@ export {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   WEB_SDK_VERSION
 } from './constants/index.js'
+export * from './utils/session/constants.js'
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
@@ -51,6 +54,7 @@ export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/
 export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
 export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
+export { createContractPermission, createContractPermissions, createExplicitSession } from './utils/session/index.js'
 
 // Contexts
 export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'
@@ -84,7 +88,7 @@ export type { LinkedWallet } from '@0xsequence/api'
 export { useSocialLink } from './hooks/useSocialLink.js'
 
 export { useFeeOptions } from './hooks/useFeeOptions.js'
-export { usePermissions } from './hooks/usePermissions.js'
+export { useExplicitSessions } from './hooks/useExplicitSessions.js'
 export { useSequenceSessionState } from './hooks/useSequenceSessionState.js'
 
 // Components

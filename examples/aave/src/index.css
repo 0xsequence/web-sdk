@@ -1,0 +1,341 @@
+/* General Body & App Container Styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container {
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+  padding: 1rem;
+}
+
+.main-container {
+  max-width: 48rem; /* 768px */
+  margin: 0 auto;
+}
+
+/* Header Styles */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+}
+
+.header h1 {
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: #4b5563;
+  font-size: 1.125rem; /* 18px */
+}
+
+/* Main Content & Card Styles */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.75rem; /* 12px */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* Wallet Connection Styles */
+.wallet-connection-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wallet-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.status-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+.status-dot.connected { background-color: #22c55e; }
+.status-dot.disconnected { background-color: #ef4444; }
+
+.address-display {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.address-display p {
+  margin: 0;
+  font-size: 0.875rem; /* 14px */
+  color: #4b5563;
+}
+
+.address-mono {
+  font-family: monospace;
+  color: #1f2937;
+  word-break: break-all;
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  outline: none;
+}
+
+.btn:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+.btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.btn-primary { background-color: #2563eb; }
+.btn-primary:hover:not(:disabled) { background-color: #1d4ed8; }
+
+.btn-danger { background-color: #dc2626; }
+.btn-danger:hover:not(:disabled) { background-color: #b91c1c; }
+
+.btn-supply { background-color: #16a34a; min-width: 120px; }
+.btn-supply:hover:not(:disabled) { background-color: #15803d; }
+
+.btn-withdraw { background-color: #4f46e5; min-width: 120px; }
+.btn-withdraw:hover:not(:disabled) { background-color: #4338ca; }
+
+.btn-secondary { background-color: #4b5563; }
+.btn-secondary:hover:not(:disabled) { background-color: #374151; }
+
+/* AAVE Pool Styles */
+.pool-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pool-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pool-logo {
+  position: relative;
+}
+
+.pool-logo img {
+  width: 4rem; /* 64px */
+  height: 4rem;
+}
+
+.network-icon {
+  position: absolute;
+  bottom: -0.25rem;
+  right: -0.25rem;
+  width: 1.5rem !important; /* 24px */
+  height: 1.5rem !important;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.pool-title {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.pool-apy {
+  color: #6b7280;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pool-actions {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.input-field {
+  flex-grow: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.input-field:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+  border-color: #2563eb;
+}
+
+/* Advanced Actions Styles */
+.advanced-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .advanced-actions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.action-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-item h3 {
+  font-weight: 500;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.action-item p {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0 0 0.75rem 0;
+  flex-grow: 1;
+}
+
+/* Status Box Styles */
+.status-box {
+  padding: 1rem;
+  border: 1px solid;
+  border-radius: 0.5rem;
+}
+
+.status-box.status-success {
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.status-box.status-error {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.status-box h3 {
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+.status-box p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Fee Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 24rem; /* 384px */
+}
+
+.modal-content p {
+  color: #4b5563;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.fee-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fee-option-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.fee-option-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.fee-option-btn img {
+  width: 2rem; /* 32px */
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.fee-token-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.fee-token-amount {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
