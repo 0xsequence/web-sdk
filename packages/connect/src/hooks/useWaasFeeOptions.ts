@@ -126,6 +126,7 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
     if (sharedDeferred && sharedPendingConfirmation?.id === id) {
       sharedDeferred.resolve({ id, feeTokenAddress: undefined, confirmed: false })
       sharedDeferred = undefined
+      sharedPendingConfirmation = undefined
       notifyListeners(undefined)
     }
   }
