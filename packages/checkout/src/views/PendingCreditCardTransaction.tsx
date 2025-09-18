@@ -3,7 +3,7 @@ import { Spinner, Text } from '@0xsequence/design-system'
 import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { formatUnits } from 'viem'
 
 import { EVENT_SOURCE } from '../constants/index.js'
@@ -111,33 +111,39 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     }
   ])
 
-  console.log('transakNftDataJson', JSON.parse(transakNftDataJson))
   const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
 
-  const estimatedGasLimit = '500000'
+  const estimatedGasLimit = 500000
 
-  const partnerOrderId = `${creditCardCheckout.recipientAddress}-${new Date().getTime()}`
+  const partnerOrderId = useMemo(() => {
+    return `${creditCardCheckout.recipientAddress}-${new Date().getTime()}`
+  }, [creditCardCheckout.recipientAddress])
 
   // Note: the network name might not always line up with Transak. A conversion function might be necessary
   const networkName = network?.name.toLowerCase()
+
+  const disableTransakWidgetUrlFetch = isLoadingTokenMetadata || isLoadingCollectionInfo
 
   const {
     data: transakLinkData,
     isLoading: isLoadingTransakLink,
     isError: isErrorTransakLink
-  } = useTransakWidgetUrl({
-    isNFT: true,
-    calldata: transakCallData,
-    contractId: transakConfig?.contractId,
-    cryptoCurrencyCode: creditCardCheckout.currencySymbol,
-    estimatedGasLimit,
-    nftData: transakNftData,
-    walletAddress: creditCardCheckout.recipientAddress,
-    disableWalletAddressForm: true,
-    partnerOrderId,
-    network: networkName,
-    referrerDomain: window.location.origin
-  })
+  } = useTransakWidgetUrl(
+    {
+      isNFT: true,
+      calldata: transakCallData,
+      contractId: transakConfig?.contractId,
+      cryptoCurrencyCode: creditCardCheckout.currencySymbol,
+      estimatedGasLimit,
+      nftData: transakNftData,
+      walletAddress: creditCardCheckout.recipientAddress,
+      disableWalletAddressForm: true,
+      partnerOrderId,
+      network: networkName,
+      referrerDomain: window.location.origin
+    },
+    disableTransakWidgetUrlFetch
+  )
   const transakLink = transakLinkData?.url || ''
 
   const isLoading = isLoadingTokenMetadata || isLoadingCollectionInfo || isLoadingTransakLink

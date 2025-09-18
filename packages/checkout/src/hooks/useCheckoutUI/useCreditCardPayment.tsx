@@ -4,7 +4,7 @@ import { useConfig } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 
 import type { TransakConfig } from '../../contexts/CheckoutModal.js'
@@ -154,9 +154,11 @@ export const useCreditCardPayment = ({
 
   const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
 
-  const estimatedGasLimit = '500000'
+  const estimatedGasLimit = 500000
 
-  const partnerOrderId = `${recipientAddress}-${new Date().getTime()}`
+  const partnerOrderId = useMemo(() => {
+    return `${recipientAddress}-${new Date().getTime()}`
+  }, [recipientAddress])
 
   // Note: the network name might not always line up with Transak. A conversion function might be necessary
   const networkName = network?.name.toLowerCase()

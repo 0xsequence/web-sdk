@@ -275,7 +275,7 @@ export interface TransakWidgetUrlArgs {
   calldata?: string
   contractId?: string
   cryptoCurrencyCode?: string
-  estimatedGasLimit?: string
+  estimatedGasLimit?: number
   nftData?: string
   walletAddress: string
   disableWalletAddressForm?: boolean
