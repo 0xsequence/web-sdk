@@ -4,10 +4,15 @@ import { useConfig } from '@0xsequence/hooks'
 
 export const useTransakWidgetUrl = (args: TransakWidgetUrlArgs, disabled?: boolean) => {
   const { env, projectAccessKey } = useConfig()
+
+  // const apiUrl = env.apiUrl
+
+  const apiUrl = 'http://localhost:4422'
+
   return useQuery({
     queryKey: ['transakWidgetUrl', args],
-    queryFn: () => getTransakWidgetUrl(env.apiUrl, projectAccessKey, args),
-    staleTime: 0,
-    enabled: !disabled
+    queryFn: () => getTransakWidgetUrl(apiUrl, projectAccessKey, args),
+    staleTime: 5 * 60 * 1000,
+    enabled: !disabled && args.walletAddress !== ''
   })
 }
