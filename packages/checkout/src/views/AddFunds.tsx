@@ -29,10 +29,10 @@ export const AddFundsContentTransak = () => {
   } = useTransakWidgetUrl({
     referrerDomain: window.location.origin,
     walletAddress: addFundsSettings.walletAddress,
-    fiatAmount: addFundsSettings?.fiatAmount,
+    fiatAmount: addFundsSettings?.fiatAmount ? Number(addFundsSettings?.fiatAmount) : undefined,
     fiatCurrency: addFundsSettings?.fiatCurrency,
     disableWalletAddressForm: true,
-    defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
+    defaultFiatAmount: Number(addFundsSettings?.defaultFiatAmount) || 50,
     defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',
     cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList,
     networks: addFundsSettings?.networks || defaultNetworks

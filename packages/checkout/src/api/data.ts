@@ -282,9 +282,9 @@ export interface TransakWidgetUrlArgs {
   partnerOrderId?: string
   network?: string
   referrerDomain: string
-  fiatAmount?: string
+  fiatAmount?: number
   fiatCurrency?: string
-  defaultFiatAmount?: string
+  defaultFiatAmount?: number
   defaultCryptoCurrency?: string
   cryptoCurrencyList?: string
   networks?: string
