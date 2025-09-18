@@ -2,40 +2,6 @@ import type { AddFundsSettings } from '../contexts/AddFundsModal.js'
 
 export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a'
 
-export const getTransakLink = (
-  addFundsSettings: AddFundsSettings,
-  { transakApiUrl, transakApiKey }: { transakApiUrl: string; transakApiKey: string }
-) => {
-  interface Options {
-    [index: string]: string | undefined
-  }
-
-  const url = new URL(transakApiUrl)
-  const apiKey = transakApiKey
-
-  const options: Options = {
-    apiKey: apiKey,
-    referrerDomain: window.location.origin,
-    walletAddress: addFundsSettings.walletAddress,
-    fiatAmount: addFundsSettings?.fiatAmount,
-    fiatCurrency: addFundsSettings?.fiatCurrency,
-    disableWalletAddressForm: 'true',
-    defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
-    defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',
-    cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList,
-    networks: addFundsSettings?.networks
-  }
-
-  Object.keys(options).forEach(k => {
-    const option = options[k]
-    if (option) {
-      url.searchParams.append(k, option)
-    }
-  })
-
-  return url.href
-}
-
 interface CountriesResult {
   response: Country[]
 }

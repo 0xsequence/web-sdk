@@ -269,3 +269,50 @@ export const fetchFortePaymentStatus = async (
     status: (statuses[0]?.status as FortePaymentStatus) || ''
   }
 }
+
+export interface TransakWidgetUrlArgs {
+  isNFT?: boolean
+  calldata?: string
+  contractId?: string
+  cryptoCurrencyCode?: string
+  estimatedGasLimit?: string
+  nftData?: string
+  walletAddress: string
+  disableWalletAddressForm?: boolean
+  partnerOrderId?: string
+  network?: string
+  referrerDomain: string
+  fiatAmount?: string
+  fiatCurrency?: string
+  defaultFiatAmount?: string
+  defaultCryptoCurrency?: string
+  cryptoCurrencyList?: string
+  networks?: string
+}
+
+export const getTransakWidgetUrl = async (
+  sequenceApiUrl: string,
+  projectAccessKey: string,
+  args: TransakWidgetUrlArgs
+): Promise<{ url: string }> => {
+  const queryUrl = `${sequenceApiUrl}/rpc/API/TransakGetWidgetURL`
+
+  const res = await fetch(queryUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Access-Key': projectAccessKey
+    },
+    body: JSON.stringify({
+      params: {
+        ...args
+      }
+    })
+  })
+
+  const { url } = await res.json()
+
+  return {
+    url
+  }
+}

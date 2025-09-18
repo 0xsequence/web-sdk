@@ -12,6 +12,7 @@ import { useEnvironmentContext } from '../../contexts/Environment.js'
 import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal.js'
 import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak.js'
 
+import { useTransakWidgetUrl } from '../useTransakWidgetUrl.js'
 const POLLING_TIME = 10 * 1000
 const TRANSAK_IFRAME_ID = 'credit-card-payment-transak-iframe'
 
@@ -75,7 +76,19 @@ export const useCreditCardPayment = ({
   isLoadingCurrencyInfo,
   errorCurrencyInfo
 }: UseCreditCardPaymentArgs): UseCreditCardPaymentReturn => {
-  const { transakApiUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
+  const projectAccessKey = useProjectAccessKey()
+  const { env } = useConfig()
+  const disableSardineClientTokenFetch =
+    isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
+
+  const disableTransakWidgetUrlFetch =
+    isLoadingTokenMetadatas ||
+    isLoadingCurrencyInfo ||
+    isLoadingCollectionInfo ||
+    creditCardProvider !== 'transak' ||
+    !transakConfig
+
+  const { sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
   const network = findSupportedNetwork(chain)
   const error = errorCollectionInfo || errorTokenMetadata || errorCurrencyInfo
   const isLoading = isLoadingCollectionInfo || isLoadingTokenMetadatas || isLoadingCurrencyInfo
@@ -85,33 +98,32 @@ export const useCreditCardPayment = ({
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const tokenMetadata = tokenMetadatas?.[0]
 
-  const missingCreditCardProvider = !creditCardProvider
-  const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
-  const transakApiKey = transakConfig?.apiKey || transakGlobalApiKey
-
-  if (missingCreditCardProvider || missingTransakConfig) {
-    return {
-      error: new Error('Missing credit card provider or transak config'),
-      data: {
-        iframeId: '',
-        CreditCardIframe: () => null,
-        EventListener: () => null
+  const {
+    data: dataClientToken,
+    isLoading: isLoadingClientToken,
+    error: errorClientToken
+  } = useSardineClientToken(
+    {
+      order: {
+        chainId: network?.chainId || 137,
+        contractAddress: targetContractAddress,
+        recipientAddress,
+        currencyQuantity: totalPriceRaw,
+        currencySymbol: currencyInfo?.symbol || 'POL',
+        currencyDecimals: String(currencyDecimals || 18),
+        currencyAddress,
+        nftId: collectible.tokenId ?? '',
+        nftAddress: collectionAddress,
+        nftQuantity: collectible.quantity,
+        nftDecimals: String(dataCollectionInfo?.decimals || 18),
+        calldata: txData
       },
-      isLoading: false
-    }
-  }
-
-  if (error || isLoading) {
-    return {
-      error,
-      data: {
-        iframeId: '',
-        CreditCardIframe: () => null,
-        EventListener: () => null
-      },
-      isLoading
-    }
-  }
+      projectAccessKey: projectAccessKey,
+      apiClientUrl: env.apiUrl,
+      tokenMetadata: tokenMetadata
+    },
+    disableSardineClientTokenFetch
+  )
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -137,6 +149,96 @@ export const useCreditCardPayment = ({
       price: [price],
       quantity: Number(collectible.quantity),
       nftType: dataCollectionInfo?.type || 'ERC721'
+    }
+  ])
+
+  const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
+
+  const estimatedGasLimit = '500000'
+
+  const partnerOrderId = `${recipientAddress}-${new Date().getTime()}`
+
+  // Note: the network name might not always line up with Transak. A conversion function might be necessary
+  const networkName = network?.name.toLowerCase()
+
+  const {
+    data: transakLinkData,
+    isLoading: isLoadingTransakLink,
+    error: errorTransakLink
+  } = useTransakWidgetUrl(
+    {
+      isNFT: true,
+      calldata: transakCallData,
+      contractId: transakConfig?.contractId,
+      cryptoCurrencyCode: currencySymbol,
+      estimatedGasLimit,
+      nftData: transakNftData,
+      walletAddress: recipientAddress,
+      disableWalletAddressForm: true,
+      partnerOrderId,
+      network: networkName,
+      referrerDomain: window.location.origin
+    },
+    disableTransakWidgetUrlFetch
+  )
+
+  const missingCreditCardProvider = !creditCardProvider
+  const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
+
+  if (missingCreditCardProvider || missingTransakConfig) {
+    return {
+      error: new Error('Missing credit card provider or transak config'),
+      data: {
+        iframeId: '',
+        CreditCardIframe: () => null,
+        EventListener: () => null
+      },
+      isLoading: false
+    }
+  }
+
+  if (error || isLoading) {
+    return {
+      error,
+      data: {
+        iframeId: '',
+        CreditCardIframe: () => null,
+        EventListener: () => null
+      },
+      isLoading
+    }
+  }
+
+  if (creditCardProvider === 'transak') {
+    const transakLink = transakLinkData?.url
+
+    return {
+      error: errorTransakLink,
+      data: {
+        iframeId: TRANSAK_IFRAME_ID,
+        paymentUrl: transakLink,
+        CreditCardIframe: () => (
+          <div className="flex items-center justify-center" style={{ height: '770px' }}>
+            <iframe
+              id="transakIframe"
+              ref={iframeRef}
+              allow="camera;microphone;payment"
+              src={transakLink}
+              style={{
+                maxHeight: '650px',
+                height: '100%',
+                maxWidth: '380px',
+                width: '100%'
+              }}
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          </div>
+        ),
+        EventListener: () => (
+          <TransakEventListener onSuccess={onSuccess} onError={onError} isLoading={isLoading} iframeRef={iframeRef} />
+        )
+      },
+      isLoading: isLoadingTransakLink
     }
   ])
 

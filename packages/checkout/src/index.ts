@@ -21,7 +21,7 @@ export { type TransactionStatusSettings } from './contexts/TransactionStatusModa
 export { useTransactionStatusModal } from './hooks/useTransactionStatusModal.js'
 
 // utils
-export { fetchTransakSupportedCountries, getTransakLink } from './utils/transak.js'
+export { fetchTransakSupportedCountries } from './utils/transak.js'
 
 // OnRampProvider
 export { TransactionOnRampProvider } from '@0xsequence/marketplace'
