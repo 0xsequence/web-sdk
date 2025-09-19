@@ -44,6 +44,9 @@ const checkoutProvider = searchParams.get('checkoutProvider')
 const onRampProvider = searchParams.get('onRampProvider')
 const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-payment-erc1155-sale-native-token-testnet'
 
+// @ts-ignore
+const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
+
 export const Connected = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
@@ -422,7 +425,7 @@ export const Connected = () => {
       creditCardProviders: [creditCardProvider],
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
       transakConfig: {
-        contractId: '674eb5613d739107bbd18ed2'
+        contractId: isDev ? '68cd557b1f0d7a10940611a6' : '674eb5613d739107bbd18ed2'
       },
       onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)

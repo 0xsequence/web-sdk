@@ -95,7 +95,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const pakoData = Array.from(pako.deflate(calldataWithProxy))
 
-  const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
+  const transakCallData = btoa(String.fromCharCode.apply(null, pakoData))
 
   const price = Number(formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals)))
 
@@ -111,7 +111,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     }
   ])
 
-  const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
+  const transakNftData = btoa(transakNftDataJson)
 
   const estimatedGasLimit = 500000
 
