@@ -446,6 +446,7 @@ export const Connect = (props: ConnectProps) => {
                 unlinkWallet={handleUnlinkWallet}
                 connectWallet={handleConnect}
                 connectors={walletConnectors}
+                embeddedWalletTitle={config.embeddedWalletTitle}
               />
 
               <>

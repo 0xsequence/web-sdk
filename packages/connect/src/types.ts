@@ -84,6 +84,7 @@ export interface ConnectConfig {
   hideSocialConnectOptions?: boolean
   hideConnectedWallets?: boolean
   customCSS?: string
+  embeddedWalletTitle?: string
 }
 
 export type StorageItem = {

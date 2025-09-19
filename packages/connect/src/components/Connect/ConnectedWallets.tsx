@@ -14,6 +14,7 @@ interface ConnectedWalletsProps {
   unlinkWallet: (address: string) => void
   connectWallet: (connector: ExtendedConnector) => Promise<void>
   connectors: ExtendedConnector[]
+  embeddedWalletTitle?: string
 }
 
 const MAX_HEIGHT = 240
@@ -24,7 +25,8 @@ export const ConnectedWallets = ({
   disconnectWallet,
   unlinkWallet,
   connectWallet,
-  connectors
+  connectors,
+  embeddedWalletTitle
 }: ConnectedWalletsProps): JSX.Element | null => {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
@@ -158,7 +160,7 @@ export const ConnectedWallets = ({
                 }}
                 style={{ willChange: 'transform, opacity', transformOrigin: 'center' }}
               >
-                <WalletListItem {...wallet} />
+                <WalletListItem {...wallet} embeddedWalletTitle={embeddedWalletTitle} />
               </motion.div>
             ))}
           </AnimatePresence>
