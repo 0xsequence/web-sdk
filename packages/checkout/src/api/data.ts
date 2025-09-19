@@ -299,12 +299,6 @@ const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string
   [Chains.SEPOLIA]: {
     [zeroAddress]: 'ETH',
     ['0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14'.toLowerCase()]: 'WETH'
-  },
-  [Chains.ETHERLINK]: {
-    [zeroAddress]: 'ETH'
-  },
-  [Chains.ETHERLINK_TESTNET]: {
-    [zeroAddress]: 'ETH'
   }
 }
 
