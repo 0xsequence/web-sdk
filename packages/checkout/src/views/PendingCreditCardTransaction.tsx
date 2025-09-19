@@ -479,6 +479,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       chainId: creditCardCheckout.chainId.toString(),
       nftAddress: creditCardCheckout.nftAddress,
       currencyAddress: creditCardCheckout.currencyAddress,
+      currencySymbol: creditCardCheckout.currencySymbol,
       targetContractAddress: creditCardCheckout.contractAddress,
       nftName: tokenMetadata?.name || '',
       imageUrl: tokenMetadata?.image || '',
