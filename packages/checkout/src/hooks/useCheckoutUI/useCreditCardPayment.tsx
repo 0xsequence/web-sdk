@@ -139,7 +139,7 @@ export const useCreditCardPayment = ({
 
   const pakoData = Array.from(pako.deflate(calldataWithProxy))
 
-  const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
+  const transakCallData = btoa(String.fromCharCode.apply(null, pakoData))
 
   const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyDecimals || 18)))
 
@@ -155,7 +155,7 @@ export const useCreditCardPayment = ({
     }
   ])
 
-  const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
+  const transakNftData = btoa(transakNftDataJson)
 
   const estimatedGasLimit = 500000
 
