@@ -1,6 +1,6 @@
 import type { SequenceAPIClient } from '@0xsequence/api'
 import type { TokenMetadata } from '@0xsequence/metadata'
-import { findSupportedNetwork, networks, type ChainId } from '@0xsequence/network'
+import { findSupportedNetwork, networks, ChainId as Chains, type ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
 import { type CreditCardCheckout, type ForteConfig, type StructuredCalldata } from '../contexts/index.js'
@@ -285,20 +285,26 @@ export interface CreateFortePaymentIntentArgs {
 }
 
 const forteCurrencyMap: { [chainId: string]: { [currencyAddress: string]: string } } = {
-  '1': {
+  [Chains.MAINNET]: {
     [zeroAddress]: 'ETH',
     ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'.toLowerCase()]: 'USDC_ETH'
   },
-  '137': {
+  [Chains.POLYGON]: {
     [zeroAddress]: 'POL',
     ['0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'.toLowerCase()]: 'USDC_POLYGON'
   },
-  '8453': {
+  [Chains.BASE]: {
     [zeroAddress]: 'BASE_ETH'
   },
-  '11155111': {
+  [Chains.SEPOLIA]: {
     [zeroAddress]: 'ETH',
     ['0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14'.toLowerCase()]: 'WETH'
+  },
+  [Chains.ETHERLINK]: {
+    [zeroAddress]: 'ETH'
+  },
+  [Chains.ETHERLINK_TESTNET]: {
+    [zeroAddress]: 'ETH'
   }
 }
 
