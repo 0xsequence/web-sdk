@@ -16,6 +16,7 @@ import React, { useState } from 'react'
 export interface WalletListItemProps {
   name: string
   address: string
+  embeddedWalletTitle?: string
   isEmbedded: boolean
   isActive: boolean
   isLinked: boolean
@@ -28,6 +29,7 @@ export interface WalletListItemProps {
 export const WalletListItem: React.FC<WalletListItemProps> = ({
   name,
   address,
+  embeddedWalletTitle,
   isEmbedded,
   isActive,
   isLinked,
@@ -52,8 +54,8 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-1">
             <Text variant="normal" color="primary">
-              {isEmbedded ? 'Embedded - ' : ''}
-              {name}
+              {isEmbedded ? (embeddedWalletTitle ? embeddedWalletTitle : 'Embedded - ') : ''}
+              {isEmbedded && embeddedWalletTitle ? '' : name}
             </Text>
             {isLinked && (
               <Tooltip message="Linked to embedded wallet">
