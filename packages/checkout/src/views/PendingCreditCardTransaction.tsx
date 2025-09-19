@@ -3,7 +3,7 @@ import { Spinner, Text } from '@0xsequence/design-system'
 import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { formatUnits } from 'viem'
 
 import { fetchSardineOrderStatus } from '../api/data.js'
@@ -17,6 +17,7 @@ import {
   useSkipOnCloseCallback,
   useTransactionStatusModal
 } from '../hooks/index.js'
+import { useTransakWidgetUrl } from '../hooks/useTransakWidgetUrl.js'
 import { TRANSAK_PROXY_ADDRESS } from '../utils/transak.js'
 
 const POLLING_TIME = 10 * 1000
@@ -47,7 +48,6 @@ export const PendingCreditCardTransaction = () => {
 }
 
 export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
-  const { transakApiUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
@@ -83,7 +83,6 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
   const transakConfig = settings?.creditCardCheckout?.transakConfig
-  const transakApiKey = transakConfig?.apiKey || transakGlobalApiKey
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -99,7 +98,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const pakoData = Array.from(pako.deflate(calldataWithProxy))
 
-  const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
+  const transakCallData = btoa(String.fromCharCode.apply(null, pakoData))
 
   const price = Number(formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals)))
 
@@ -115,20 +114,43 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     }
   ])
 
-  console.log('transakNftDataJson', JSON.parse(transakNftDataJson))
-  const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
+  const transakNftData = btoa(transakNftDataJson)
 
-  const estimatedGasLimit = '500000'
+  const estimatedGasLimit = 500000
 
-  const partnerOrderId = `${creditCardCheckout.recipientAddress}-${new Date().getTime()}`
+  const partnerOrderId = useMemo(() => {
+    return `${creditCardCheckout.recipientAddress}-${new Date().getTime()}`
+  }, [creditCardCheckout.recipientAddress])
 
   // Note: the network name might not always line up with Transak. A conversion function might be necessary
   const networkName = network?.name.toLowerCase()
 
-  const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${creditCardCheckout.currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${creditCardCheckout.recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+  const disableTransakWidgetUrlFetch = isLoadingTokenMetadata || isLoadingCollectionInfo
 
-  const isLoading = isLoadingTokenMetadata || isLoadingCollectionInfo
-  const isError = isErrorTokenMetadata || isErrorCollectionInfo
+  const {
+    data: transakLinkData,
+    isLoading: isLoadingTransakLink,
+    isError: isErrorTransakLink
+  } = useTransakWidgetUrl(
+    {
+      isNFT: true,
+      calldata: transakCallData,
+      contractId: transakConfig?.contractId,
+      cryptoCurrencyCode: creditCardCheckout.currencySymbol,
+      estimatedGasLimit,
+      nftData: transakNftData,
+      walletAddress: creditCardCheckout.recipientAddress,
+      disableWalletAddressForm: true,
+      partnerOrderId,
+      network: networkName,
+      referrerDomain: window.location.origin
+    },
+    disableTransakWidgetUrlFetch
+  )
+  const transakLink = transakLinkData?.url || ''
+
+  const isLoading = isLoadingTokenMetadata || isLoadingCollectionInfo || isLoadingTransakLink
+  const isError = isErrorTokenMetadata || isErrorCollectionInfo || isErrorTransakLink
 
   useEffect(() => {
     const readMessage = (message: any) => {

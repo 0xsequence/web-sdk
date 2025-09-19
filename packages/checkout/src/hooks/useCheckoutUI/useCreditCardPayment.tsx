@@ -4,7 +4,7 @@ import { useConfig } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import pako from 'pako'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 
 import { fetchSardineOrderStatus } from '../../api/data.js'
@@ -14,6 +14,7 @@ import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaym
 import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak.js'
 import { useSardineClientToken } from '../useSardineClientToken.js'
 
+import { useTransakWidgetUrl } from '../useTransakWidgetUrl.js'
 const POLLING_TIME = 10 * 1000
 const TRANSAK_IFRAME_ID = 'credit-card-payment-transak-iframe'
 const SARDINE_IFRAME_ID = 'credit-card-payment-sardine-iframe'
@@ -82,7 +83,15 @@ export const useCreditCardPayment = ({
   const { env } = useConfig()
   const disableSardineClientTokenFetch =
     isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
-  const { transakApiUrl, sardineCheckoutUrl: sardineProxyUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
+
+  const disableTransakWidgetUrlFetch =
+    isLoadingTokenMetadatas ||
+    isLoadingCurrencyInfo ||
+    isLoadingCollectionInfo ||
+    creditCardProvider !== 'transak' ||
+    !transakConfig
+
+  const { sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
   const network = findSupportedNetwork(chain)
   const error = errorCollectionInfo || errorTokenMetadata || errorCurrencyInfo
   const isLoading = isLoadingCollectionInfo || isLoadingTokenMetadatas || isLoadingCurrencyInfo
@@ -119,9 +128,67 @@ export const useCreditCardPayment = ({
     disableSardineClientTokenFetch
   )
 
+  // Transak requires the recipient address to be the proxy address
+  // so we need to replace the recipient address with the proxy address in the calldata
+  // this is a weird hack so that credit card integrations are as simple as possible and should work 99% of the time
+  // If an issue arises, the user can override the calldata in the transak settings
+
+  const calldataWithProxy =
+    transakConfig?.callDataOverride ??
+    txData.replace(recipientAddress.toLowerCase().substring(2), TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2))
+
+  const pakoData = Array.from(pako.deflate(calldataWithProxy))
+
+  const transakCallData = btoa(String.fromCharCode.apply(null, pakoData))
+
+  const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyDecimals || 18)))
+
+  const transakNftDataJson = JSON.stringify([
+    {
+      imageURL: tokenMetadata?.image || '',
+      nftName: tokenMetadata?.name || 'collectible',
+      collectionAddress: collectionAddress,
+      tokenID: [collectible.tokenId],
+      price: [price],
+      quantity: Number(collectible.quantity),
+      nftType: dataCollectionInfo?.type || 'ERC721'
+    }
+  ])
+
+  const transakNftData = btoa(transakNftDataJson)
+
+  const estimatedGasLimit = 500000
+
+  const partnerOrderId = useMemo(() => {
+    return `${recipientAddress}-${new Date().getTime()}`
+  }, [recipientAddress])
+
+  // Note: the network name might not always line up with Transak. A conversion function might be necessary
+  const networkName = network?.name.toLowerCase()
+
+  const {
+    data: transakLinkData,
+    isLoading: isLoadingTransakLink,
+    error: errorTransakLink
+  } = useTransakWidgetUrl(
+    {
+      isNFT: true,
+      calldata: transakCallData,
+      contractId: transakConfig?.contractId,
+      cryptoCurrencyCode: currencySymbol,
+      estimatedGasLimit,
+      nftData: transakNftData,
+      walletAddress: recipientAddress,
+      disableWalletAddressForm: true,
+      partnerOrderId,
+      network: networkName,
+      referrerDomain: window.location.origin
+    },
+    disableTransakWidgetUrlFetch
+  )
+
   const missingCreditCardProvider = !creditCardProvider
   const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
-  const transakApiKey = transakConfig?.apiKey || transakGlobalApiKey
 
   if (missingCreditCardProvider || missingTransakConfig) {
     return {
@@ -148,46 +215,10 @@ export const useCreditCardPayment = ({
   }
 
   if (creditCardProvider === 'transak') {
-    // Transak requires the recipient address to be the proxy address
-    // so we need to replace the recipient address with the proxy address in the calldata
-    // this is a weird hack so that credit card integrations are as simple as possible and should work 99% of the time
-    // If an issue arises, the user can override the calldata in the transak settings
-
-    const calldataWithProxy =
-      transakConfig?.callDataOverride ??
-      txData.replace(recipientAddress.toLowerCase().substring(2), TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2))
-
-    const pakoData = Array.from(pako.deflate(calldataWithProxy))
-
-    const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
-
-    const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyDecimals || 18)))
-
-    const transakNftDataJson = JSON.stringify([
-      {
-        imageURL: tokenMetadata?.image || '',
-        nftName: tokenMetadata?.name || 'collectible',
-        collectionAddress: collectionAddress,
-        tokenID: [collectible.tokenId],
-        price: [price],
-        quantity: Number(collectible.quantity),
-        nftType: dataCollectionInfo?.type || 'ERC721'
-      }
-    ])
-
-    const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
-
-    const estimatedGasLimit = '500000'
-
-    const partnerOrderId = `${recipientAddress}-${new Date().getTime()}`
-
-    // Note: the network name might not always line up with Transak. A conversion function might be necessary
-    const network = findSupportedNetwork(chain)
-    const networkName = network?.name.toLowerCase()
-    const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+    const transakLink = transakLinkData?.url
 
     return {
-      error: null,
+      error: errorTransakLink,
       data: {
         iframeId: TRANSAK_IFRAME_ID,
         paymentUrl: transakLink,
@@ -212,7 +243,7 @@ export const useCreditCardPayment = ({
           <TransakEventListener onSuccess={onSuccess} onError={onError} isLoading={isLoading} iframeRef={iframeRef} />
         )
       },
-      isLoading: false
+      isLoading: isLoadingTransakLink
     }
   }
 
