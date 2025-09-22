@@ -1,4 +1,3 @@
-import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { WagmiProvider, type State } from 'wagmi'
@@ -22,20 +21,14 @@ export const SequenceConnectPreview = (props: SequenceConnectPreviewProps) => {
   return (
     <WagmiProvider config={wagmiConfig} initialState={initialState}>
       <QueryClientProvider client={queryClient || defaultQueryClient}>
-        <SequenceHooksProvider
+        <SequenceConnectPreviewProvider
           config={{
-            projectAccessKey: config.connectConfig.projectAccessKey
+            ...connectConfig,
+            hideConnectedWallets: true
           }}
         >
-          <SequenceConnectPreviewProvider
-            config={{
-              ...connectConfig,
-              hideConnectedWallets: true
-            }}
-          >
-            {children}
-          </SequenceConnectPreviewProvider>
-        </SequenceHooksProvider>
+          {children}
+        </SequenceConnectPreviewProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )
