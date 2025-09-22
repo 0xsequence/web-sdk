@@ -1,4 +1,5 @@
 export { SequenceConnect } from './components/SequenceConnect/index.js'
+export { SequenceConnectPreview } from './components/SequenceConnectPreview/index.js'
 
 // Provider
 export { SequenceConnectProvider } from './components/SequenceConnectProvider/index.js'
