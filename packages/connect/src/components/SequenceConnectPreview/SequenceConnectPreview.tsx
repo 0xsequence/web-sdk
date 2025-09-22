@@ -27,7 +27,14 @@ export const SequenceConnectPreview = (props: SequenceConnectPreviewProps) => {
             projectAccessKey: config.connectConfig.projectAccessKey
           }}
         >
-          <SequenceConnectPreviewProvider config={connectConfig}>{children}</SequenceConnectPreviewProvider>
+          <SequenceConnectPreviewProvider
+            config={{
+              ...connectConfig,
+              hideConnectedWallets: true
+            }}
+          >
+            {children}
+          </SequenceConnectPreviewProvider>
         </SequenceHooksProvider>
       </QueryClientProvider>
     </WagmiProvider>
