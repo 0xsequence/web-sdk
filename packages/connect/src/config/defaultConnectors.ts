@@ -1,4 +1,3 @@
-import type { Signers } from '@0xsequence/dapp-client'
 import type { CreateConnectorFn } from 'wagmi'
 
 import { appleV3 } from '../connectors/apple/applev3.js'
@@ -10,6 +9,7 @@ import { passkeyV3 } from '../connectors/passkey/passkeyV3.js'
 import { walletConnect } from '../connectors/walletConnect/walletConnect.js'
 import type { Wallet } from '../types.js'
 import { getConnectWallets } from '../utils/getConnectWallets.js'
+import type { ExplicitSessionParams } from '../utils/session/types.js'
 
 export interface CommonConnectorOptions {
   appName: string
@@ -36,7 +36,7 @@ export interface DefaultConnectorOptions extends CommonConnectorOptions {
    * @deprecated, use connectors.walletConnect.projectId instead
    */
   walletConnectProjectId?: string
-  explicitSession?: Signers.Session.ExplicitParams
+  explicitSessionParams?: ExplicitSessionParams
   enableImplicitSession?: boolean
   nodesUrl?: string
   relayerUrl?: string
@@ -57,7 +57,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        explicitSession: options.explicitSession,
+        explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
@@ -75,7 +75,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        explicitSession: options.explicitSession,
+        explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
@@ -93,7 +93,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        explicitSession: options.explicitSession,
+        explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
@@ -111,7 +111,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
         dappOrigin: dappOrigin,
-        explicitSession: options.explicitSession,
+        explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl

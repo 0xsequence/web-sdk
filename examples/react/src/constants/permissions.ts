@@ -1,5 +1,10 @@
-import { createContractPermission, createExplicitSession, type ExplicitSession } from '@0xsequence/connect'
-import { Permission } from '@0xsequence/dapp-client'
+import {
+  createContractPermission,
+  createExplicitSessionConfig,
+  ExplicitSessionParams,
+  type Permission
+} from '@0xsequence/connect'
+import { ExplicitSessionConfig } from '@0xsequence/dapp-client'
 import { Abi, AbiFunction, Address } from 'ox'
 import { optimism } from 'viem/chains'
 
@@ -29,7 +34,7 @@ export const getEmitterContractAddress = (redirectUrl: string): Address.Address 
 export const USDC_ADDRESS = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607' // Op mainnet
 
 // Permission for a specific contract call
-export const getContractCallPermission = (redirectUrl: string): Permission.Permission => {
+export const getContractCallPermission = (redirectUrl: string): Permission => {
   const emitterContractAddress = getEmitterContractAddress(redirectUrl)
   return createContractPermission({
     address: emitterContractAddress,
@@ -38,7 +43,7 @@ export const getContractCallPermission = (redirectUrl: string): Permission.Permi
 }
 
 // Permission for USDC transfers (on Optimism)
-export const getUsdcPermission = (chainId: number): Permission.Permission => {
+export const getUsdcPermission = (chainId: number): Permission => {
   const permission =
     chainId === optimism.id
       ? createContractPermission({
@@ -55,14 +60,14 @@ export const getUsdcPermission = (chainId: number): Permission.Permission => {
 }
 
 // 3. Combined permission for both contract call and USDC transfer
-export const getCombinedPermission = (redirectUrl: string, chainId: number): ExplicitSession => {
+export const getCombinedPermission = (redirectUrl: string, chainId: number): ExplicitSessionConfig => {
   const contractCallPermission = createContractPermission({
     address: getEmitterContractAddress(redirectUrl),
     functionSignature: 'function explicitEmit()'
   })
   const usdcPermission = getUsdcPermission(chainId)
 
-  return createExplicitSession({
+  return createExplicitSessionConfig({
     chainId: chainId,
     nativeTokenSpending: {
       valueLimit: 0n
@@ -78,21 +83,21 @@ export const getSessionConfigForType = (
   redirectUrl: string,
   chainId: number,
   type: PermissionsType
-): ExplicitSession | undefined => {
+): ExplicitSessionParams | undefined => {
   switch (type) {
     case 'contractCall':
-      return createExplicitSession({
+      return {
         chainId: chainId,
         nativeTokenSpending: {
-          valueLimit: 0n
+          valueLimit: 1000000000000000000n
         },
         expiresIn: {
           days: 1
         },
         permissions: [getContractCallPermission(redirectUrl)]
-      })
+      }
     case 'usdcTransfer':
-      return createExplicitSession({
+      return {
         chainId: chainId,
         nativeTokenSpending: {
           valueLimit: 0n
@@ -101,9 +106,9 @@ export const getSessionConfigForType = (
           days: 1
         },
         permissions: [getUsdcPermission(chainId)]
-      })
+      }
     case 'combined':
-      return createExplicitSession({
+      return {
         chainId: chainId,
         nativeTokenSpending: {
           valueLimit: 0n
@@ -112,7 +117,7 @@ export const getSessionConfigForType = (
           days: 1
         },
         permissions: [getContractCallPermission(redirectUrl), getUsdcPermission(chainId)]
-      })
+      }
     case 'none':
       return undefined // No permissions
     default:

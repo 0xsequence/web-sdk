@@ -16,9 +16,10 @@ import {
   useSocialLink,
   useStorage,
   useWallets,
-  validateEthProof
+  validateEthProof,
+  type ParameterRule,
+  type Permission
 } from '@0xsequence/connect'
-import { Permission } from '@0xsequence/dapp-client'
 import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
@@ -35,7 +36,7 @@ import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
 // import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { EMITTER_ABI, getEmitterContractAddress, getSessionConfigForType, PermissionsType } from '../constants/permissions'
-import { delay, getCheckoutSettings, getOrderbookCalldata, getPermissions } from '../utils'
+import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
 import { CustomCheckout } from './CustomCheckout'
 import { Select } from './Select'
@@ -147,12 +148,12 @@ export const Connected = () => {
         return
       }
 
-      setHasImplicitSession(sessionState.sessions.some(s => s.isImplicit))
+      setHasImplicitSession(sessionState.sessions.some(s => s.type === 'implicit'))
 
-      // 1. Get all sessionSigners (without pre-filtering by chainId)
-      const allSessionSigners = sessionState.sessions.filter(s => !s.isImplicit)
+      // 1. Get all sessions (without pre-filtering by chainId)
+      const sessions = sessionState.sessions.filter(s => s.type === 'explicit')
 
-      if (allSessionSigners.length === 0) {
+      if (sessions.length === 0) {
         setHasPermission(false)
         return
       }
@@ -169,25 +170,23 @@ export const Connected = () => {
         }
 
         // 2. Check all sessionSigners to see if any have the expected permission config
-        for (const sessionSigner of allSessionSigners) {
-          const existingPermissionConfig = await getPermissions(address, sessionSigner.address, chainId)
-
-          console.log('Checking permissions for signer:', sessionSigner.address, 'on chainId:', chainId)
-          console.log('existingPermissionConfig:', existingPermissionConfig)
+        for (const session of sessions) {
+          console.log('Checking permissions for signer:', session, 'on chainId:', chainId)
+          console.log('existingPermissionConfig:', session)
 
           // Validate the received permission config
           if (
-            !existingPermissionConfig ||
-            !('permissions' in existingPermissionConfig) ||
-            !existingPermissionConfig.permissions ||
+            !session ||
+            !('permissions' in session) ||
+            !session.permissions ||
             // We need to check the chainId from the returned config
-            existingPermissionConfig.chainId !== chainId
+            session.chainId !== chainId
           ) {
             // This signer does not have valid permissions for the current chain, try the next one.
             continue
           }
 
-          const arePermissionsSubset = (expectedPerms: Permission.Permission[], existingPerms: Permission.Permission[]) => {
+          const arePermissionsSubset = (expectedPerms: Permission[], existingPerms: Permission[]) => {
             if (expectedPerms.length > existingPerms.length) {
               return false
             }
@@ -209,7 +208,7 @@ export const Connected = () => {
             }
 
             // Helper to compare two arrays of rules, order-independent
-            const compareRulesets = (rulesA: Permission.ParameterRule[], rulesB: Permission.ParameterRule[]) => {
+            const compareRulesets = (rulesA: ParameterRule[], rulesB: ParameterRule[]) => {
               if (rulesA.length !== rulesB.length) {
                 return false
               }
@@ -261,8 +260,8 @@ export const Connected = () => {
             })
           }
 
-          const isSubset = arePermissionsSubset(expectedSessionConfig.permissions, existingPermissionConfig.permissions)
-          console.log('isSubset for signer', sessionSigner.address, ':', isSubset)
+          const isSubset = arePermissionsSubset(expectedSessionConfig.permissions, session.permissions)
+          console.log('isSubset for signer', session.sessionAddress, ':', isSubset)
 
           // If we find a signer that has the required permissions, we can stop checking
           if (isSubset) {
@@ -515,7 +514,7 @@ export const Connected = () => {
     try {
       const session = getSessionConfigForType(window.location.origin, chainId, permissionType)
       if (session) {
-        await addExplicitSession(chainId, session)
+        await addExplicitSession(session)
         alert('Permission added successfully!')
       } else {
         alert('No permissions to request for the selected type.')
