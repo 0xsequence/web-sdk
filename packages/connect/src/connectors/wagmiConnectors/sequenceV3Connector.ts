@@ -300,18 +300,28 @@ export class SequenceV3Provider implements EIP1193Provider {
         // Combine initial permissions with fee option permissions
         const combinedPermissions = this.initialSessionConfig
           ? [...this.initialSessionConfig.permissions, ...feeOptionPermissions]
-          : feeOptionPermissions
+          : []
 
         // Ensure we have at least one permission
         if (combinedPermissions.length === 0) {
           throw new Error('No permissions available for session')
         }
 
-        await this.client.connect(this.currentChainId, this.initialSessionConfig, {
-          preferredLoginMethod: this.loginType,
-          ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
-          ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
-        })
+        await this.client.connect(
+          this.currentChainId,
+          {
+            ...this.initialSessionConfig,
+            permissions: combinedPermissions,
+            valueLimit: this.initialSessionConfig?.valueLimit || 0n,
+            deadline: this.initialSessionConfig?.deadline || 0n,
+            chainId: this.currentChainId
+          },
+          {
+            preferredLoginMethod: this.loginType,
+            ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
+            ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
+          }
+        )
         const walletAddress = this.client.getWalletAddress()
         if (!walletAddress) {
           throw new RpcError(new Error('User rejected the request.'), { code: 4001, shortMessage: 'User rejected the request.' })
