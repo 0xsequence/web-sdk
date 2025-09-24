@@ -1,9 +1,11 @@
-import type { Permission, Signers } from '@0xsequence/dapp-client'
+import type { Permission } from '@0xsequence/dapp-client'
 import type { Address } from 'viem'
 
 export type Permission = Permission.Permission
 
 export type ParameterOperation = Permission.ParameterOperation
+
+export type ParameterRule = Permission.ParameterRule
 
 /**
  * The condition to apply when evaluating a rule against a parameter's value.
@@ -110,8 +112,6 @@ export type CreateContractPermissionOptions = {
   onlyOnce?: boolean
 }
 
-export type ExplicitSession = Signers.Session.ExplicitParams
-
 /**
  * The options for specifying the duration of a session.
  */
@@ -127,9 +127,9 @@ export type NativeTokenSpending = {
 }
 
 /**
- * The configuration object for the {@link createExplicitSession} helper function.
+ * The parameters needed to create an explicit session.
  */
-export type CreateExplicitSessionOptions = {
+export type ExplicitSessionParams = {
   /** The chain ID for which the session will be valid. */
   chainId: number
 

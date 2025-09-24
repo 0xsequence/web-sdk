@@ -18,7 +18,7 @@ export type {
   WalletProperties
 } from './types.js'
 export * from './utils/session/types.js'
-export type { Session } from '@0xsequence/dapp-client'
+export type { ExplicitSession, Session } from '@0xsequence/dapp-client'
 
 // Config
 export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
@@ -54,7 +54,7 @@ export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/
 export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
 export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
-export { createContractPermission, createContractPermissions, createExplicitSession } from './utils/session/index.js'
+export { createContractPermission, createContractPermissions, createExplicitSessionConfig } from './utils/session/index.js'
 
 // Contexts
 export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'

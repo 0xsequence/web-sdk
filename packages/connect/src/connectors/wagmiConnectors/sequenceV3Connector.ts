@@ -1,9 +1,15 @@
-import { getNetwork, LocalStorageKey } from '@0xsequence/connect'
+import {
+  createExplicitSessionConfig,
+  getNetwork,
+  LocalStorageKey,
+  type ExplicitSessionParams,
+  type Permission
+} from '@0xsequence/connect'
 import {
   DappClient,
   Relayer,
-  Signers,
   Utils,
+  type ExplicitSessionConfig,
   type TransactionRequest as DappClientTransactionRequest
 } from '@0xsequence/dapp-client'
 import type { FeeToken } from '@0xsequence/waas'
@@ -37,7 +43,7 @@ export interface BaseSequenceV3ConnectorOptions {
   dappOrigin: string
   defaultNetwork: number
   loginType: 'email' | 'google' | 'apple' | 'passkey'
-  explicitSession?: Signers.Session.ExplicitParams
+  explicitSessionParams?: ExplicitSessionParams
   enableImplicitSession?: boolean
   nodesUrl?: string
   relayerUrl?: string
@@ -72,7 +78,7 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     params.nodesUrl,
     params.projectAccessKey,
     params.loginType,
-    params.explicitSession,
+    params.explicitSessionParams ? createExplicitSessionConfig(params.explicitSessionParams) : undefined,
     params.enableImplicitSession
   )
 
@@ -193,7 +199,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private projectAccessKey: string
   private enableImplicitSession?: boolean
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
-  private initialSession?: Signers.Session.ExplicitParams
+  private initialSessionConfig?: ExplicitSessionConfig
 
   email?: string
 
@@ -214,13 +220,13 @@ export class SequenceV3Provider implements EIP1193Provider {
     nodesUrl = 'https://nodes.sequence.app',
     projectAccessKey: string,
     loginType: 'email' | 'google' | 'apple' | 'passkey',
-    initialSession?: Signers.Session.ExplicitParams,
+    initialSessionConfig?: ExplicitSessionConfig,
     enableImplicitSession?: boolean
   ) {
     this.currentChainId = defaultNetwork
     this.nodesUrl = nodesUrl
     this.loginType = loginType
-    this.initialSession = initialSession
+    this.initialSessionConfig = initialSessionConfig
     this.projectAccessKey = projectAccessKey
     this.enableImplicitSession = enableImplicitSession
   }
@@ -292,9 +298,9 @@ export class SequenceV3Provider implements EIP1193Provider {
           : []
 
         // Combine initial permissions with fee option permissions
-        const combinedPermissions = this.initialSession
-          ? [...this.initialSession.permissions, ...feeOptionPermissions]
-          : feeOptionPermissions
+        const combinedPermissions = this.initialSessionConfig
+          ? [...this.initialSessionConfig.permissions, ...feeOptionPermissions]
+          : []
 
         // Ensure we have at least one permission
         if (combinedPermissions.length === 0) {
@@ -303,9 +309,12 @@ export class SequenceV3Provider implements EIP1193Provider {
 
         await this.client.connect(
           this.currentChainId,
-          this.initialSession && {
-            ...this.initialSession,
-            permissions: combinedPermissions as Signers.Session.ExplicitParams['permissions']
+          {
+            ...this.initialSessionConfig,
+            permissions: combinedPermissions,
+            valueLimit: this.initialSessionConfig?.valueLimit || 0n,
+            deadline: this.initialSessionConfig?.deadline || 0n,
+            chainId: this.currentChainId
           },
           {
             preferredLoginMethod: this.loginType,

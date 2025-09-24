@@ -1,13 +1,10 @@
 import { Button, Divider, PINCodeInput, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { type Account } from '@0xsequence/waas'
-import { GoogleLogin, type CredentialResponse } from '@react-oauth/google'
+import { type CredentialResponse } from '@react-oauth/google'
 import { ethers } from 'ethers'
 import { useEffect, useRef, useState, type SetStateAction } from 'react'
-import AppleSignin from 'react-apple-signin-auth'
 
-import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useSequenceWaaS } from '../../hooks/useSequenceWaaS.js'
-import { useStorageItem } from '../../hooks/useStorage.js'
 import { isAccountAlreadyLinkedError, useEmailAuth } from '../../utils/useEmailAuth.js'
 
 import { AccountName } from './AccountName.js'

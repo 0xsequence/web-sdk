@@ -55,7 +55,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.1",
     "viem": "^2.33.3",
-    "wagmi": "^2.15.1"
+    "wagmi": "2.15.1"
   },
   "resolutions": {},
   "packageManager": "pnpm@10.12.1"

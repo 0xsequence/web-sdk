@@ -1,5 +1,5 @@
 import { SequenceCheckoutConfig } from '@0xsequence/checkout'
-import { ConnectConfig, createConfig, createContractPermission, createExplicitSession } from '@0xsequence/connect'
+import { ConnectConfig, createConfig, createContractPermission } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
@@ -89,7 +89,7 @@ export const passportInstance = new passport.Passport({
 
 export const config = createConfig({
   ...connectConfig,
-  walletUrl: 'https://v3.sequence-dev.app',
+  walletUrl: 'http://localhost:5173',
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
   chainIds: [ChainId.ARBITRUM_SEPOLIA, ChainId.OPTIMISM],
@@ -101,7 +101,7 @@ export const config = createConfig({
   walletConnect: {
     projectId: walletConnectProjectId
   },
-  explicitSession: createExplicitSession({
+  explicitSessionParams: {
     chainId: ChainId.ARBITRUM_SEPOLIA,
     nativeTokenSpending: {
       valueLimit: 0n
@@ -115,7 +115,7 @@ export const config = createConfig({
         functionSignature: 'function explicitEmit()'
       })
     ]
-  })
+  }
 })
 
 export const getErc1155SaleContractConfig = (walletAddress: string) => ({

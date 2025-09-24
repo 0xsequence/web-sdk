@@ -1,6 +1,12 @@
 import { useAccount, useBalance, useDisconnect, useSendTransaction } from 'wagmi'
 import './index.css'
-import { useExplicitSessions, useFeeOptions, useOpenConnectModal } from '@0xsequence/connect'
+import {
+  createContractPermission,
+  useExplicitSessions,
+  useFeeOptions,
+  useOpenConnectModal,
+  type ExplicitSession
+} from '@0xsequence/connect'
 import { supplyERC20Calldata, supplyETHCalldata, withdrawERC20Calldata, withdrawETHCalldata } from '@contractjs/aave-v3'
 import { useEffect, useState } from 'react'
 import { encodeFunctionData, formatUnits, maxUint256, parseAbi, parseEther, parseUnits } from 'viem'
@@ -25,12 +31,15 @@ function App() {
   const [recipientAddress, setRecipientAddress] = useState('')
   const [latestTxHash, setLatestTxHash] = useState<string | null>(null)
 
+  // State for session info
+  const [sessionsInfo, setSessionsInfo] = useState<ExplicitSession[]>([])
+
   // Balance Hooks
   const { data: aUsdcBalance, refetch: refetchAusdcBalance } = useBalance({ address, token: AUSDC_ADDRESS, chainId: 42161 })
   const { data: aWethBalance, refetch: refetchAwethBalance } = useBalance({ address, token: AWETH_ADDRESS, chainId: 42161 })
 
   // Session hooks
-  const { getExplicitSessions } = useExplicitSessions()
+  const { getExplicitSessions, modifyExplicitSession, addExplicitSession } = useExplicitSessions()
 
   // Transaction Hooks
   const {
@@ -81,9 +90,18 @@ function App() {
     isPending: isPendingApproveUSDC,
     error: errorApproveUSDC
   } = useSendTransaction()
+  const {
+    data: dataCallTestContract,
+    sendTransaction: sendCallTestContract,
+    isPending: isPendingCallTestContract,
+    error: errorCallTestContract
+  } = useSendTransaction()
 
   // Fee Option Hook
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useFeeOptions()
+
+  // Native Balance Hook
+  const { data: nativeBalanceData } = useBalance({ address, chainId: 42161 })
 
   // Effect to update the latest transaction hash for display
   useEffect(() => {
@@ -95,7 +113,8 @@ function App() {
       dataNativeCurrency ||
       dataApproveAWETH ||
       dataExplicitEmit ||
-      dataApproveUSDC
+      dataApproveUSDC ||
+      dataCallTestContract
     if (latestData) {
       setLatestTxHash(latestData)
       // Refetch balances after a successful transaction
@@ -111,9 +130,16 @@ function App() {
     dataApproveAWETH,
     dataExplicitEmit,
     dataApproveUSDC,
+    dataCallTestContract,
     refetchAusdcBalance,
     refetchAwethBalance
   ])
+
+  useEffect(() => {
+    getExplicitSessions().then(sessions => {
+      setSessionsInfo(sessions)
+    })
+  }, [getExplicitSessions])
 
   const anyError =
     errorSupply ||
@@ -123,7 +149,8 @@ function App() {
     errorNativeCurrency ||
     errorApproveAWETH ||
     errorExplicitEmit ||
-    errorApproveUSDC
+    errorApproveUSDC ||
+    errorCallTestContract
 
   const handleConnect = () => setOpenConnectModal(true)
   const handleDisconnect = () => disconnect()
@@ -210,6 +237,45 @@ function App() {
     })
   }
 
+  const handleModifySession = () => {
+    const newPermission = createContractPermission({
+      address: '0x7E485D0DA0392a0273E7e599c0fc066739E0Fe89',
+      functionSignature: 'function testContract() public'
+    })
+    const currentSession = sessionsInfo[0] as ExplicitSession
+    const modifiedSession = { ...currentSession, permissions: [...currentSession.permissions!, newPermission] }
+    modifyExplicitSession(modifiedSession)
+  }
+
+  const handleCallNewAllowedContract = () => {
+    sendCallTestContract({
+      to: '0x7E485D0DA0392a0273E7e599c0fc066739E0Fe89',
+      data: encodeFunctionData({
+        abi: parseAbi(['function testContract() public']),
+        functionName: 'testContract'
+      })
+    })
+  }
+
+  const handleAddExplicitSession = () => {
+    const newSession = {
+      chainId: 42161,
+      nativeTokenSpending: {
+        valueLimit: parseEther('0.1')
+      },
+      expiresIn: {
+        days: 1
+      },
+      permissions: [
+        createContractPermission({
+          address: USDC_ADDRESS_ARBITRUM,
+          functionSignature: 'function burn(uint256 amount) public'
+        })
+      ]
+    }
+    addExplicitSession(newSession)
+  }
+
   return (
     <div className="app-container">
       <div className="main-container">
@@ -235,6 +301,12 @@ function App() {
               <div className="address-display">
                 <p>Connected Address:</p>
                 <p className="address-mono">{address}</p>
+              </div>
+            )}
+            {isConnected && nativeBalanceData && (
+              <div className="address-display">
+                <p>Native Balance:</p>
+                <p className="address-mono">{nativeBalanceData.formatted}</p>
               </div>
             )}
           </section>
@@ -410,6 +482,24 @@ function App() {
                       'Get session info'
                     </button>
                   </div>
+                  <div className="action-item">
+                    <h3>Call new allowed contract</h3>
+                    <button onClick={handleCallNewAllowedContract} className="btn btn-secondary">
+                      {isPendingCallTestContract ? 'Calling...' : 'Call new allowed contract (Can be called only once)'}
+                    </button>
+                  </div>
+                  <div className="action-item">
+                    <h3>Modify session</h3>
+                    <button onClick={handleModifySession} className="btn btn-secondary">
+                      Modify session (Add new allowed contract)
+                    </button>
+                  </div>
+                </div>
+                <div className="action-item">
+                  <h3>Add new explicit session</h3>
+                  <button onClick={handleAddExplicitSession} className="btn btn-secondary">
+                    Add new explicit session
+                  </button>
                 </div>
               </section>
             </>

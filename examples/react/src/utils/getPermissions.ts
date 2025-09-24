@@ -1,7 +1,4 @@
-import { Extensions, SessionConfig, Signers, Wallet } from '@0xsequence/dapp-client'
 import { allNetworks } from '@0xsequence/network'
-import { Provider, RpcTransport } from 'ox'
-import { Address } from 'viem'
 
 const NODES_URL = 'https://nodes.sequence.app/{network}'
 
@@ -31,17 +28,4 @@ export const getSequenceRpcUrl = (chainId: number) => {
   const url = applyTemplate(NODES_URL, { network: network.name })
 
   return url
-}
-
-export const getPermissions = async (walletAddress: Address, sessionAddress: Address, chainId: number) => {
-  const wallet = new Wallet(walletAddress)
-  const rpcUrl = getSequenceRpcUrl(chainId)
-  const provider = Provider.from(RpcTransport.fromHttp(rpcUrl))
-  const tempManager = new Signers.SessionManager(wallet, {
-    sessionManagerAddress: Extensions.Dev1.sessions,
-    provider: provider
-  })
-  const topology = await tempManager.getTopology()
-  const permissions = SessionConfig.getSessionPermissions(topology, sessionAddress)
-  return permissions
 }

@@ -51,7 +51,7 @@
     "react": ">= 17",
     "react-dom": ">= 17",
     "viem": "^2.33.3",
-    "wagmi": ">= 2.15.0"
+    "wagmi": "2.15.0"
   },
   "devDependencies": {
     "@0xsequence/connect": "workspace:*",
@@ -62,6 +62,6 @@
     "react-dom": "^19.1.0",
     "viem": "^2.33.3",
     "vite": "^5.4.19",
-    "wagmi": "^2.15.1"
+    "wagmi": "2.15.1"
   }
 }
