@@ -572,9 +572,6 @@ export const styles = String.raw`
   .w-\[148px\] {
     width: 148px;
   }
-  .w-\[200px\] {
-    width: 200px;
-  }
   .w-fit {
     width: fit-content;
   }
@@ -880,12 +877,6 @@ export const styles = String.raw`
   }
   .bg-background-primary {
     background-color: var(--seq-color-background-primary);
-  }
-  .bg-background-primary\/25 {
-    background-color: var(--seq-color-background-primary);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--seq-color-background-primary) 25%, transparent);
-    }
   }
   .bg-background-raised {
     background-color: var(--seq-color-background-raised);
@@ -1328,10 +1319,6 @@ export const styles = String.raw`
   }
   .blur {
     --tw-blur: blur(8px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .blur-xs {
-    --tw-blur: blur(var(--blur-xs));
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .filter {
@@ -1966,13 +1953,6 @@ export const styles = String.raw`
       &:has(:focus-visible) {
         --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-      }
-    }
-  }
-  .focus-within\:\[\&\:has\(\:focus-visible\)\]\:ring-border-focus {
-    &:focus-within {
-      &:has(:focus-visible) {
-        --tw-ring-color: var(--seq-color-border-focus);
       }
     }
   }
