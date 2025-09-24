@@ -82,7 +82,7 @@ importers:
         version: link:../../packages/connect
       '@0xsequence/dapp-client':
         specifier: github:0xsequence/sequence.js#dists/wallet/dapp-client
-        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/fcfcc1791619b12697ffd257da4eb49714dc2174(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/e1749da32c4e0f180ca4d6180357b79a9b17d818(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@contractjs/aave-v3':
         specifier: ^0.0.8
         version: 0.0.8(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
@@ -140,7 +140,7 @@ importers:
     dependencies:
       '@0xsequence/design-system':
         specifier: 2.1.11
-        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@0xsequence/network':
         specifier: '*'
         version: 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -164,7 +164,7 @@ importers:
         version: link:../../packages/connect
       '@0xsequence/design-system':
         specifier: 2.1.11
-        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -240,10 +240,10 @@ importers:
         version: link:../../packages/connect
       '@0xsequence/dapp-client':
         specifier: github:0xsequence/sequence.js#dists/wallet/dapp-client
-        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/fcfcc1791619b12697ffd257da4eb49714dc2174(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/e1749da32c4e0f180ca4d6180357b79a9b17d818(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@0xsequence/design-system':
         specifier: 2.1.11
-        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -279,7 +279,7 @@ importers:
         version: link:../components
       motion:
         specifier: ^12.9.2
-        version: 12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       ox:
         specifier: ^0.7.2
         version: 0.7.2(typescript@5.8.3)(zod@3.22.4)
@@ -346,7 +346,7 @@ importers:
         version: 2.3.23
       '@0xsequence/design-system':
         specifier: 2.1.11
-        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -373,7 +373,7 @@ importers:
         version: 7.1.0
       motion:
         specifier: ^12.9.2
-        version: 12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       pako:
         specifier: ^2.1.0
         version: 2.1.0
@@ -425,10 +425,10 @@ importers:
         version: 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/dapp-client':
         specifier: github:0xsequence/sequence.js#dists/wallet/dapp-client
-        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/fcfcc1791619b12697ffd257da4eb49714dc2174(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/e1749da32c4e0f180ca4d6180357b79a9b17d818(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@0xsequence/design-system':
         specifier: ^2.2.1
-        version: 2.2.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.2.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@0xsequence/ethauth':
         specifier: ^1.0.0
         version: 1.0.0(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
@@ -473,7 +473,7 @@ importers:
         version: 7.1.0
       motion:
         specifier: ^12.9.2
-        version: 12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-apple-signin-auth:
         specifier: ^1.1.0
         version: 1.1.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -597,7 +597,7 @@ importers:
         version: 2.3.23
       '@0xsequence/design-system':
         specifier: 2.1.11
-        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -624,7 +624,7 @@ importers:
         version: 1.7.2(react@19.1.0)
       motion:
         specifier: ^12.9.2
-        version: 12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       qrcode.react:
         specifier: ^4.2.0
         version: 4.2.0(react@19.1.0)
@@ -685,8 +685,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/dapp-client@https://codeload.github.com/0xsequence/sequence.js/tar.gz/fcfcc1791619b12697ffd257da4eb49714dc2174':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/fcfcc1791619b12697ffd257da4eb49714dc2174}
+  '@0xsequence/dapp-client@https://codeload.github.com/0xsequence/sequence.js/tar.gz/e1749da32c4e0f180ca4d6180357b79a9b17d818':
+    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/e1749da32c4e0f180ca4d6180357b79a9b17d818}
     version: 0.0.0
 
   '@0xsequence/design-system@2.1.11':
@@ -713,8 +713,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/guard@https://codeload.github.com/0xsequence/sequence.js/tar.gz/352397d7c8e613d608e325416903e2d288fb5ac0':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/352397d7c8e613d608e325416903e2d288fb5ac0}
+  '@0xsequence/guard@https://codeload.github.com/0xsequence/sequence.js/tar.gz/43621a0dc89200398d80f0ae9311b74b54eb1f09':
+    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/43621a0dc89200398d80f0ae9311b74b54eb1f09}
     version: 3.0.0
 
   '@0xsequence/indexer@2.3.29':
@@ -746,8 +746,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/ff4da93f13b92e66b0dd564aa32e9b054653570e':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/ff4da93f13b92e66b0dd564aa32e9b054653570e}
+  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/4d959a0d11665cb9077e4180a5a3d4923fb3aa1e':
+    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/4d959a0d11665cb9077e4180a5a3d4923fb3aa1e}
     version: 3.0.0
 
   '@0xsequence/replacer@2.3.29':
@@ -775,12 +775,12 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/wallet-core@https://codeload.github.com/0xsequence/sequence.js/tar.gz/1c8f3776b86e4261421e06cbad42ddd38f3bbc4c':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/1c8f3776b86e4261421e06cbad42ddd38f3bbc4c}
+  '@0xsequence/wallet-core@https://codeload.github.com/0xsequence/sequence.js/tar.gz/b7b6d6c77e37d53bd0221655f8afcdf0d6c510b1':
+    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/b7b6d6c77e37d53bd0221655f8afcdf0d6c510b1}
     version: 0.0.0
 
-  '@0xsequence/wallet-primitives@https://codeload.github.com/0xsequence/sequence.js/tar.gz/2eb555be7b9df070b79ef71a1e8e681fd0097c6b':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/2eb555be7b9df070b79ef71a1e8e681fd0097c6b}
+  '@0xsequence/wallet-primitives@https://codeload.github.com/0xsequence/sequence.js/tar.gz/f9ed42e068792a8b2af1d5bf2923c9fea574e94c':
+    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/f9ed42e068792a8b2af1d5bf2923c9fea574e94c}
     version: 0.0.0
 
   '@0xsequence/wallet@2.3.29':
@@ -829,12 +829,12 @@ packages:
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
 
-  '@aws-sdk/client-cognito-identity-provider@3.894.0':
-    resolution: {integrity: sha512-LoJZHRKw0/g8byM3VAFvQoeQ0tkJ46YW1sM93TigAt86Pd6+6PFHBVrpsipfcipULURMqnCpuvuwrC3YO2o74g==}
+  '@aws-sdk/client-cognito-identity-provider@3.895.0':
+    resolution: {integrity: sha512-P9rkoRvaBtRafowwv+oXMsFdW2xrL2zvcizdyq8ZlFov+MweACI4lywcbZ7+krZjUSnctykmo76maVhMfy9Fvw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/client-sso@3.894.0':
-    resolution: {integrity: sha512-lsznYIOiaMtbJfxTlMbvc6d37a1D6OIYF/RgFu9ue765XtiAG2RUF4aoEKA9e448Bwv+078eE+ndNxH3fd0uEw==}
+  '@aws-sdk/client-sso@3.895.0':
+    resolution: {integrity: sha512-AQHk6iJrwce/NwZa5/Njy0ZGoHdxWCajkgufhXk53L0kRiC3vUPPWEV1m1F3etQWhaUsatcO2xtRuKvLpe4zgA==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/core@3.894.0':
@@ -849,24 +849,24 @@ packages:
     resolution: {integrity: sha512-Z5QQpqFRflszrT+lUq6+ORuu4jRDcpgCUSoTtlhczidMqfdOSckKmK3chZEfmUUJPSwoFQZ7EiVTsX3c886fBg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-ini@3.894.0':
-    resolution: {integrity: sha512-SpSR7ULrdBpOrqP7HtpBg1LtJiud+AKH+w8nXX9EjedbIVQgy5uNoGMxRt+fp3aa1D4TXooRPE183YpG6+zwLg==}
+  '@aws-sdk/credential-provider-ini@3.895.0':
+    resolution: {integrity: sha512-uIh7N4IN/yIk+qYMAkVpVkjhB90SGKSfaXEVcnmxzBDG6e5304HKT0esqoCVZvtFfLKasjm2TOpalM5l3fi/dA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-node@3.894.0':
-    resolution: {integrity: sha512-B2QNQtZBYHCQLfxSyftGoW2gPtpM2ndhMfmKvIMrSuKUXz3v+p70FLsGRETeOu6kOHsobGlgK+TQCg08qGQfeQ==}
+  '@aws-sdk/credential-provider-node@3.895.0':
+    resolution: {integrity: sha512-7xsBCmkBUz+2sNqNsDJ1uyQsBvwhNFzwFt8wX39WrFJTpTQh3uNQ5g8QH21BbkKqIFKCLdvgHgwt3Ub5RGVuPA==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/credential-provider-process@3.894.0':
     resolution: {integrity: sha512-VU74GNsj+SsO+pl4d+JimlQ7+AcderZaC6bFndQssQdFZ5NRad8yFNz5Xbec8CPJr+z/VAwHib6431F5nYF46g==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-sso@3.894.0':
-    resolution: {integrity: sha512-ZZ1jF8x70RObXbRAcUPMANqX0LhgxVCQBzAfy3tslOp3h6aTgB+WMdGpVVR91x00DbSJnswMMN+mgWkaw78fSQ==}
+  '@aws-sdk/credential-provider-sso@3.895.0':
+    resolution: {integrity: sha512-bZCcHUZGz+XlCaK0KEOHGHkMtlwIvnpxJvlZtSCVaBdX/IgouxaB42fxChflxSMRWF45ygdezfky4i17f6vC4w==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-web-identity@3.894.0':
-    resolution: {integrity: sha512-6IwlCueEwzu2RAzUWufb4ZPf+LxF30vSTB1aHy9RVNce8MTaBt5VZ0EPdicdnhL0xqGuYNERP5+WpS70K7D1dw==}
+  '@aws-sdk/credential-provider-web-identity@3.895.0':
+    resolution: {integrity: sha512-tKbXbOp2xrL02fxKvB7ko1E4Uvyy5TF9qi5pT2MVWNnfSsBlUM80aJ6tyUPKWXdUTdAlPrU3XcwgQl/DnnRa9A==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/middleware-host-header@3.893.0':
@@ -881,28 +881,28 @@ packages:
     resolution: {integrity: sha512-H7Zotd9zUHQAr/wr3bcWHULYhEeoQrF54artgsoUGIf/9emv6LzY89QUccKIxYd6oHKNTrTyXm9F0ZZrzXNxlg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-user-agent@3.894.0':
-    resolution: {integrity: sha512-+s1HRLDIuSMhOzVsxRKbatUjJib0w1AGxDfWNZWrSnM7Aq9U1cap0XgR9/zy7NhJ+I3Twrx6SCVfpjpZspoRTA==}
+  '@aws-sdk/middleware-user-agent@3.895.0':
+    resolution: {integrity: sha512-JUqQW2RPp4I95wZ/Im9fTiaX3DF55oJgeoiNlLdHkQZPSNNS/pT1WMWMReSvJdcfSNU3xSUaLtI+h4mQjQUDbQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/nested-clients@3.894.0':
-    resolution: {integrity: sha512-FEEIk43RLO7Oy2BHXfwbo4gjCec7pK7i5nnUT9GbJQh6JMcS0FqPJGF95lQa93quS3SgwdCpWbv01TH86i+41w==}
+  '@aws-sdk/nested-clients@3.895.0':
+    resolution: {integrity: sha512-8w1ihfYgvds6kfal/qJXQQrHRsKYh2nujSyzWMo2TMKMze9WPZA93G4mRbRtKtbSuQ66mVWePH8Cksq35ABu2Q==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/region-config-resolver@3.893.0':
     resolution: {integrity: sha512-/cJvh3Zsa+Of0Zbg7vl9wp/kZtdb40yk/2+XcroAMVPO9hPvmS9r/UOm6tO7FeX4TtkRFwWaQJiTZTgSdsPY+Q==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/token-providers@3.894.0':
-    resolution: {integrity: sha512-tOkrD6U3UrU5IJfbBl932RBi8EjFVFkU1hAjPgAWWBDy6uRQunpuh3i1z6dRQoelVT88BmEyEv1l/WpM5uZezg==}
+  '@aws-sdk/token-providers@3.895.0':
+    resolution: {integrity: sha512-vJqrEHFFGRZ3ok5T+jII00sa2DQ3HdVkTBIfM0DcrcPssqDV18VKdA767qiBdIEN/cygjdBg8Ri/cuq6ER9BeQ==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/types@3.893.0':
     resolution: {integrity: sha512-Aht1nn5SnA0N+Tjv0dzhAY7CQbxVtmq1bBR6xI0MhG7p2XYVh1wXuKTzrldEvQWwA3odOYunAfT9aBiKZx9qIg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/util-endpoints@3.893.0':
-    resolution: {integrity: sha512-xeMcL31jXHKyxRwB3oeNjs8YEpyvMnSYWr2OwLydgzgTr0G349AHlJHwYGCF9xiJ2C27kDxVvXV/Hpdp0p7TWw==}
+  '@aws-sdk/util-endpoints@3.895.0':
+    resolution: {integrity: sha512-MhxBvWbwxmKknuggO2NeMwOVkHOYL98pZ+1ZRI5YwckoCL3AvISMnPJgfN60ww6AIXHGpkp+HhpFdKOe8RHSEg==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/util-locate-window@3.893.0':
@@ -912,8 +912,8 @@ packages:
   '@aws-sdk/util-user-agent-browser@3.893.0':
     resolution: {integrity: sha512-PE9NtbDBW6Kgl1bG6A5fF3EPo168tnkj8TgMcT0sg4xYBWsBpq0bpJZRh+Jm5Bkwiw9IgTCLjEU7mR6xWaMB9w==}
 
-  '@aws-sdk/util-user-agent-node@3.894.0':
-    resolution: {integrity: sha512-tmA3XtQA6nPGyJGl9+7Bbo/5UmUvqCiweC5fNmfTg/aLpT3YkiivOG36XhuJxXVBkX3jr5Sc+IsaANUlJmblEA==}
+  '@aws-sdk/util-user-agent-node@3.895.0':
+    resolution: {integrity: sha512-lLRC7BAFOPtJk4cZC0Q0MZBMCGF109QpGnug3L3n/2TJW02Sinz9lzA0ykBpYXe9j60LjIYSENCg+F4DZE5vxg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       aws-crt: '>=1.0.0'
@@ -4640,8 +4640,8 @@ packages:
     resolution: {integrity: sha512-r6kEJXDKecVOCj2nLMuXK/FCPeurW33+3JRpfXVbjLja3XUYFfD9I/JBreH6sUyzcm3G/YQboBjMla6poKeSdA==}
     engines: {bun: '>=1', deno: '>=2', node: '>=16'}
 
-  electron-to-chromium@1.5.222:
-    resolution: {integrity: sha512-gA7psSwSwQRE60CEoLz6JBCQPIxNeuzB2nL8vE03GK/OHxlvykbLyeiumQy1iH5C2f3YbRAZpGCMT12a/9ih9w==}
+  electron-to-chromium@1.5.223:
+    resolution: {integrity: sha512-qKm55ic6nbEmagFlTFczML33rF90aU+WtrJ9MdTCThrcvDNdUHN4p6QfVN78U06ZmguqXIyMPyYhw2TrbDUwPQ==}
 
   elliptic@6.6.1:
     resolution: {integrity: sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g==}
@@ -5077,8 +5077,8 @@ packages:
   fp-ts@1.19.3:
     resolution: {integrity: sha512-H5KQDspykdHuztLTg+ajGN0Z2qUjcEf3Ybxc6hLt0k7/zPkn29XnKnxlBPyW2XIddWrGaJBzBl4VLYOtk39yZg==}
 
-  framer-motion@12.23.19:
-    resolution: {integrity: sha512-AaWAohgTs2+wUoDdpJaaqMgV6vkm1uzzDlZUItem45linLrFiFqi4iw7bryhcVqu4loaaSLtSjAojfCAB3qczw==}
+  framer-motion@12.23.20:
+    resolution: {integrity: sha512-+GWIKV6Rb8XtZO3gQ1adkZI3Oq14zQdeZdgcy+smOIbXGnqzOcNz1luU27bCtBiUxTXsE9hCLLnbeRJrcbAuLQ==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -5994,14 +5994,14 @@ packages:
     engines: {node: '>= 14.0.0'}
     hasBin: true
 
-  motion-dom@12.23.19:
-    resolution: {integrity: sha512-ivUCJ0zVZt7S++D8+ONeefkJj/8JlpCRYzGegLdXr8Z9aWg64KyljdaCGVa54Vv0K8hNE7vRQSaQve7V5l3rMw==}
+  motion-dom@12.23.20:
+    resolution: {integrity: sha512-0eFXthY9L6F1trIu/9q99DkBfpAjrdqsw+pZQVEEl6IvS4QiF7Nz9HSbQ5HrXVdE0Xsm72ZDmmoGAivATxEJqg==}
 
   motion-utils@12.23.6:
     resolution: {integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==}
 
-  motion@12.23.19:
-    resolution: {integrity: sha512-/GGg12T6gPllKgwftzlmPe4fbPsmjp6beb1qpHIwLte3KLwFXymSnqZDwWdSjGZH/sF3slYF8J2VAWzAkXwc0w==}
+  motion@12.23.20:
+    resolution: {integrity: sha512-pji+O9EPr/Kxbd5S8Ewn2QJ0JGj/itl/nxZkYBI0jtkS5SBHt3ED6k1coBSS7NrxhG0oy273HvndL5arAQfH6g==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -6337,9 +6337,9 @@ packages:
     resolution: {integrity: sha512-//nshmD55c46FuFw26xV/xFAaB5HF9Xdap7HJBBnrKdAd6/GxDBaNA1870O79+9ueg61cZLSVc+OaFlfmObYVQ==}
     engines: {node: '>= 14.16'}
 
-  pbkdf2@3.1.4:
-    resolution: {integrity: sha512-0yPXNT01PxSUdkIxL85Fd+yPdeCcvGwFPAAHbR3Z2ukMERcRrJFfLUKK3oglbQ9eUPeX6qDY3QiELqiDarZYUQ==}
-    engines: {node: '>=0.12'}
+  pbkdf2@3.1.5:
+    resolution: {integrity: sha512-Q3CG/cYvCO1ye4QKkuH7EXxs3VC/rI1/trd+qX2+PolbaKG0H+bgcZzrTt96mMyRtejk+JMCiLUn3y29W8qmFQ==}
+    engines: {node: '>= 0.10'}
 
   pg-cloudflare@1.2.7:
     resolution: {integrity: sha512-YgCtzMH0ptvZJslLM1ffsY4EuGaU0cx4XSdXLRFae8bPP4dS5xL1tNB3k2o/N64cHJpwU7dxKli/nZ2lUa5fLg==}
@@ -8007,11 +8007,11 @@ snapshots:
       '@0xsequence/utils': 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/dapp-client@https://codeload.github.com/0xsequence/sequence.js/tar.gz/fcfcc1791619b12697ffd257da4eb49714dc2174(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@0xsequence/dapp-client@https://codeload.github.com/0xsequence/sequence.js/tar.gz/e1749da32c4e0f180ca4d6180357b79a9b17d818(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@0xsequence/guard': https://codeload.github.com/0xsequence/sequence.js/tar.gz/352397d7c8e613d608e325416903e2d288fb5ac0(typescript@5.8.3)(zod@3.22.4)
-      '@0xsequence/wallet-core': https://codeload.github.com/0xsequence/sequence.js/tar.gz/1c8f3776b86e4261421e06cbad42ddd38f3bbc4c(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/2eb555be7b9df070b79ef71a1e8e681fd0097c6b(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/guard': https://codeload.github.com/0xsequence/sequence.js/tar.gz/43621a0dc89200398d80f0ae9311b74b54eb1f09(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/wallet-core': https://codeload.github.com/0xsequence/sequence.js/tar.gz/b7b6d6c77e37d53bd0221655f8afcdf0d6c510b1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/f9ed42e068792a8b2af1d5bf2923c9fea574e94c(typescript@5.8.3)(zod@3.22.4)
       ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
@@ -8019,7 +8019,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@0xsequence/design-system@2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@0xsequence/design-system@2.1.11(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@radix-ui/react-aspect-ratio': 1.1.7(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-checkbox': 1.3.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -8037,7 +8037,7 @@ snapshots:
       '@radix-ui/react-visually-hidden': 1.2.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       class-variance-authority: 0.7.1
       clsx: 2.1.1
-      motion: 12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      motion: 12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       react-hook-form: 7.63.0(react@19.1.0)
@@ -8046,7 +8046,7 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
 
-  '@0xsequence/design-system@2.2.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@0xsequence/design-system@2.2.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@radix-ui/react-aspect-ratio': 1.1.7(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-checkbox': 1.3.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -8064,7 +8064,7 @@ snapshots:
       '@radix-ui/react-visually-hidden': 1.2.3(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       class-variance-authority: 0.7.1
       clsx: 2.1.1
-      motion: 12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      motion: 12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       react-hook-form: 7.63.0(react@19.1.0)
@@ -8086,7 +8086,7 @@ snapshots:
       '@0xsequence/utils': 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/guard@https://codeload.github.com/0xsequence/sequence.js/tar.gz/352397d7c8e613d608e325416903e2d288fb5ac0(typescript@5.8.3)(zod@3.22.4)':
+  '@0xsequence/guard@https://codeload.github.com/0xsequence/sequence.js/tar.gz/43621a0dc89200398d80f0ae9311b74b54eb1f09(typescript@5.8.3)(zod@3.22.4)':
     dependencies:
       ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
     transitivePeerDependencies:
@@ -8137,7 +8137,7 @@ snapshots:
       '@0xsequence/utils': 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/ff4da93f13b92e66b0dd564aa32e9b054653570e': {}
+  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/4d959a0d11665cb9077e4180a5a3d4923fb3aa1e': {}
 
   '@0xsequence/replacer@2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
@@ -8169,7 +8169,7 @@ snapshots:
       '@0xsequence/core': 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/network': 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/utils': 2.3.29(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@aws-sdk/client-cognito-identity-provider': 3.894.0
+      '@aws-sdk/client-cognito-identity-provider': 3.895.0
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       idb: 7.1.1
       json-canonicalize: 1.2.0
@@ -8177,11 +8177,11 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@0xsequence/wallet-core@https://codeload.github.com/0xsequence/sequence.js/tar.gz/1c8f3776b86e4261421e06cbad42ddd38f3bbc4c(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@0xsequence/wallet-core@https://codeload.github.com/0xsequence/sequence.js/tar.gz/b7b6d6c77e37d53bd0221655f8afcdf0d6c510b1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@0xsequence/guard': https://codeload.github.com/0xsequence/sequence.js/tar.gz/352397d7c8e613d608e325416903e2d288fb5ac0(typescript@5.8.3)(zod@3.22.4)
-      '@0xsequence/relayer': https://codeload.github.com/0xsequence/sequence.js/tar.gz/ff4da93f13b92e66b0dd564aa32e9b054653570e
-      '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/2eb555be7b9df070b79ef71a1e8e681fd0097c6b(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/guard': https://codeload.github.com/0xsequence/sequence.js/tar.gz/43621a0dc89200398d80f0ae9311b74b54eb1f09(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/relayer': https://codeload.github.com/0xsequence/sequence.js/tar.gz/4d959a0d11665cb9077e4180a5a3d4923fb3aa1e
+      '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/f9ed42e068792a8b2af1d5bf2923c9fea574e94c(typescript@5.8.3)(zod@3.22.4)
       mipd: 0.0.7(typescript@5.8.3)
       ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
       viem: 2.37.8(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
@@ -8191,7 +8191,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@0xsequence/wallet-primitives@https://codeload.github.com/0xsequence/sequence.js/tar.gz/2eb555be7b9df070b79ef71a1e8e681fd0097c6b(typescript@5.8.3)(zod@3.22.4)':
+  '@0xsequence/wallet-primitives@https://codeload.github.com/0xsequence/sequence.js/tar.gz/f9ed42e068792a8b2af1d5bf2923c9fea574e94c(typescript@5.8.3)(zod@3.22.4)':
     dependencies:
       ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
     transitivePeerDependencies:
@@ -8273,21 +8273,21 @@ snapshots:
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
-  '@aws-sdk/client-cognito-identity-provider@3.894.0':
+  '@aws-sdk/client-cognito-identity-provider@3.895.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
       '@aws-sdk/core': 3.894.0
-      '@aws-sdk/credential-provider-node': 3.894.0
+      '@aws-sdk/credential-provider-node': 3.895.0
       '@aws-sdk/middleware-host-header': 3.893.0
       '@aws-sdk/middleware-logger': 3.893.0
       '@aws-sdk/middleware-recursion-detection': 3.893.0
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.895.0
       '@aws-sdk/region-config-resolver': 3.893.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@aws-sdk/util-user-agent-browser': 3.893.0
-      '@aws-sdk/util-user-agent-node': 3.894.0
+      '@aws-sdk/util-user-agent-node': 3.895.0
       '@smithy/config-resolver': 4.2.2
       '@smithy/core': 3.12.0
       '@smithy/fetch-http-handler': 5.2.1
@@ -8317,7 +8317,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/client-sso@3.894.0':
+  '@aws-sdk/client-sso@3.895.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
@@ -8325,12 +8325,12 @@ snapshots:
       '@aws-sdk/middleware-host-header': 3.893.0
       '@aws-sdk/middleware-logger': 3.893.0
       '@aws-sdk/middleware-recursion-detection': 3.893.0
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.895.0
       '@aws-sdk/region-config-resolver': 3.893.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@aws-sdk/util-user-agent-browser': 3.893.0
-      '@aws-sdk/util-user-agent-node': 3.894.0
+      '@aws-sdk/util-user-agent-node': 3.895.0
       '@smithy/config-resolver': 4.2.2
       '@smithy/core': 3.12.0
       '@smithy/fetch-http-handler': 5.2.1
@@ -8398,15 +8398,15 @@ snapshots:
       '@smithy/util-stream': 4.3.2
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-ini@3.894.0':
+  '@aws-sdk/credential-provider-ini@3.895.0':
     dependencies:
       '@aws-sdk/core': 3.894.0
       '@aws-sdk/credential-provider-env': 3.894.0
       '@aws-sdk/credential-provider-http': 3.894.0
       '@aws-sdk/credential-provider-process': 3.894.0
-      '@aws-sdk/credential-provider-sso': 3.894.0
-      '@aws-sdk/credential-provider-web-identity': 3.894.0
-      '@aws-sdk/nested-clients': 3.894.0
+      '@aws-sdk/credential-provider-sso': 3.895.0
+      '@aws-sdk/credential-provider-web-identity': 3.895.0
+      '@aws-sdk/nested-clients': 3.895.0
       '@aws-sdk/types': 3.893.0
       '@smithy/credential-provider-imds': 4.1.2
       '@smithy/property-provider': 4.1.1
@@ -8416,14 +8416,14 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-node@3.894.0':
+  '@aws-sdk/credential-provider-node@3.895.0':
     dependencies:
       '@aws-sdk/credential-provider-env': 3.894.0
       '@aws-sdk/credential-provider-http': 3.894.0
-      '@aws-sdk/credential-provider-ini': 3.894.0
+      '@aws-sdk/credential-provider-ini': 3.895.0
       '@aws-sdk/credential-provider-process': 3.894.0
-      '@aws-sdk/credential-provider-sso': 3.894.0
-      '@aws-sdk/credential-provider-web-identity': 3.894.0
+      '@aws-sdk/credential-provider-sso': 3.895.0
+      '@aws-sdk/credential-provider-web-identity': 3.895.0
       '@aws-sdk/types': 3.893.0
       '@smithy/credential-provider-imds': 4.1.2
       '@smithy/property-provider': 4.1.1
@@ -8442,11 +8442,11 @@ snapshots:
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-sso@3.894.0':
+  '@aws-sdk/credential-provider-sso@3.895.0':
     dependencies:
-      '@aws-sdk/client-sso': 3.894.0
+      '@aws-sdk/client-sso': 3.895.0
       '@aws-sdk/core': 3.894.0
-      '@aws-sdk/token-providers': 3.894.0
+      '@aws-sdk/token-providers': 3.895.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.2.0
@@ -8455,10 +8455,10 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-web-identity@3.894.0':
+  '@aws-sdk/credential-provider-web-identity@3.895.0':
     dependencies:
       '@aws-sdk/core': 3.894.0
-      '@aws-sdk/nested-clients': 3.894.0
+      '@aws-sdk/nested-clients': 3.895.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.2.0
@@ -8488,17 +8488,17 @@ snapshots:
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-user-agent@3.894.0':
+  '@aws-sdk/middleware-user-agent@3.895.0':
     dependencies:
       '@aws-sdk/core': 3.894.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@smithy/core': 3.12.0
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/nested-clients@3.894.0':
+  '@aws-sdk/nested-clients@3.895.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
@@ -8506,12 +8506,12 @@ snapshots:
       '@aws-sdk/middleware-host-header': 3.893.0
       '@aws-sdk/middleware-logger': 3.893.0
       '@aws-sdk/middleware-recursion-detection': 3.893.0
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.895.0
       '@aws-sdk/region-config-resolver': 3.893.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@aws-sdk/util-user-agent-browser': 3.893.0
-      '@aws-sdk/util-user-agent-node': 3.894.0
+      '@aws-sdk/util-user-agent-node': 3.895.0
       '@smithy/config-resolver': 4.2.2
       '@smithy/core': 3.12.0
       '@smithy/fetch-http-handler': 5.2.1
@@ -8550,10 +8550,10 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       tslib: 2.8.1
 
-  '@aws-sdk/token-providers@3.894.0':
+  '@aws-sdk/token-providers@3.895.0':
     dependencies:
       '@aws-sdk/core': 3.894.0
-      '@aws-sdk/nested-clients': 3.894.0
+      '@aws-sdk/nested-clients': 3.895.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.2.0
@@ -8567,7 +8567,7 @@ snapshots:
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/util-endpoints@3.893.0':
+  '@aws-sdk/util-endpoints@3.895.0':
     dependencies:
       '@aws-sdk/types': 3.893.0
       '@smithy/types': 4.5.0
@@ -8586,9 +8586,9 @@ snapshots:
       bowser: 2.12.1
       tslib: 2.8.1
 
-  '@aws-sdk/util-user-agent-node@3.894.0':
+  '@aws-sdk/util-user-agent-node@3.895.0':
     dependencies:
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.895.0
       '@aws-sdk/types': 3.893.0
       '@smithy/node-config-provider': 4.2.2
       '@smithy/types': 4.5.0
@@ -13354,7 +13354,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.6
       caniuse-lite: 1.0.30001743
-      electron-to-chromium: 1.5.222
+      electron-to-chromium: 1.5.223
       node-releases: 2.0.21
       update-browserslist-db: 1.1.3(browserslist@4.26.2)
 
@@ -13630,7 +13630,7 @@ snapshots:
       diffie-hellman: 5.0.3
       hash-base: 3.0.5
       inherits: 2.0.4
-      pbkdf2: 3.1.4
+      pbkdf2: 3.1.5
       public-encrypt: 4.0.3
       randombytes: 2.1.0
       randomfill: 1.0.4
@@ -13817,7 +13817,7 @@ snapshots:
       '@noble/curves': 1.9.7
       '@noble/hashes': 1.8.0
 
-  electron-to-chromium@1.5.222: {}
+  electron-to-chromium@1.5.223: {}
 
   elliptic@6.6.1:
     dependencies:
@@ -14541,9 +14541,9 @@ snapshots:
 
   fp-ts@1.19.3: {}
 
-  framer-motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  framer-motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
-      motion-dom: 12.23.19
+      motion-dom: 12.23.20
       motion-utils: 12.23.6
       tslib: 2.8.1
     optionalDependencies:
@@ -15572,15 +15572,15 @@ snapshots:
       yargs-parser: 20.2.9
       yargs-unparser: 2.0.0
 
-  motion-dom@12.23.19:
+  motion-dom@12.23.20:
     dependencies:
       motion-utils: 12.23.6
 
   motion-utils@12.23.6: {}
 
-  motion@12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  motion@12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
-      framer-motion: 12.23.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      framer-motion: 12.23.20(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       tslib: 2.8.1
     optionalDependencies:
       react: 19.1.0
@@ -15926,7 +15926,7 @@ snapshots:
       asn1.js: 4.10.1
       browserify-aes: 1.2.0
       evp_bytestokey: 1.0.3
-      pbkdf2: 3.1.4
+      pbkdf2: 3.1.5
       safe-buffer: 5.2.1
 
   parse-json@5.2.0:
@@ -15971,7 +15971,7 @@ snapshots:
 
   pathval@2.0.1: {}
 
-  pbkdf2@3.1.4:
+  pbkdf2@3.1.5:
     dependencies:
       create-hash: 1.2.0
       create-hmac: 1.1.7
