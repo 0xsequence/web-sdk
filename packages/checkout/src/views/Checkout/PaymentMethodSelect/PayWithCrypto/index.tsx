@@ -69,9 +69,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   const chainId = network?.chainId || 137
 
   const { address: userAddress, connector } = useAccount()
-  const { data: walletClient } = useWalletClient({
-    chainId: chainId
-  })
+  const { data: walletClient } = useWalletClient()
   const publicClient = usePublicClient({
     chainId: chainId
   })
@@ -189,7 +187,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
 
   const onPurchaseMainCurrency = async () => {
     if (!walletClient || !userAddress || !publicClient || !indexerClient || !connector) {
-      return
+      throw new Error('Wallet client, user address, public client, indexer client, or connector is not found')
+      // TODO: Handle these states better
     }
 
     setIsPurchasing(true)
