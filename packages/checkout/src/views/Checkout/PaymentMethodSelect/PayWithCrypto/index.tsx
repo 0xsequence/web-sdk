@@ -188,8 +188,20 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
 
   const onPurchaseMainCurrency = async () => {
-    if (!walletClient || !userAddress || !publicClient || !indexerClient || !connector) {
-      return
+    if (!walletClient) {
+      throw new Error('Wallet client is not available. Please ensure your wallet is connected.')
+    }
+    if (!userAddress) {
+      throw new Error('User address is not available. Please ensure your wallet is connected.')
+    }
+    if (!publicClient) {
+      throw new Error('Public client is not available. Please check your network connection.')
+    }
+    if (!indexerClient) {
+      throw new Error('Indexer client is not available. Please check your network connection.')
+    }
+    if (!connector) {
+      throw new Error('Wallet connector is not available. Please ensure your wallet is properly connected.')
     }
 
     setIsPurchasing(true)
@@ -298,8 +310,20 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   }
 
   const onClickPurchaseSwap = async () => {
-    if (!walletClient || !userAddress || !publicClient || !userAddress || !connector || !swapQuote) {
-      return
+    if (!walletClient) {
+      throw new Error('Wallet client is not available. Please ensure your wallet is connected.')
+    }
+    if (!userAddress) {
+      throw new Error('User address is not available. Please ensure your wallet is connected.')
+    }
+    if (!publicClient) {
+      throw new Error('Public client is not available. Please check your network connection.')
+    }
+    if (!connector) {
+      throw new Error('Wallet connector is not available. Please ensure your wallet is properly connected.')
+    }
+    if (!swapQuote) {
+      throw new Error('Swap quote is not available. Please try selecting a different token or refresh the page.')
     }
 
     setIsPurchasing(true)

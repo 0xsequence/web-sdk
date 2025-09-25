@@ -102,7 +102,10 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
   }, [fortePaymentData])
 
   const checkFortePaymentStatus = async () => {
-    if (!fortePaymentData || isSuccess) {
+    if (!fortePaymentData) {
+      throw new Error('Forte payment data is not available. Unable to check payment status.')
+    }
+    if (isSuccess) {
       return
     }
 

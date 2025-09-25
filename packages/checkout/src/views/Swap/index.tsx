@@ -158,8 +158,17 @@ export const Swap = () => {
   const isLoading = isLoadingCurrencyInfo || swapRoutesIsLoading
 
   const onClickProceed = async () => {
-    if (!userAddress || !publicClient || !walletClient || !connector) {
-      return
+    if (!userAddress) {
+      throw new Error('User address is not available. Please ensure your wallet is connected.')
+    }
+    if (!publicClient) {
+      throw new Error('Public client is not available. Please check your network connection.')
+    }
+    if (!walletClient) {
+      throw new Error('Wallet client is not available. Please ensure your wallet is connected.')
+    }
+    if (!connector) {
+      throw new Error('Wallet connector is not available. Please ensure your wallet is properly connected.')
     }
 
     setIsError(false)
