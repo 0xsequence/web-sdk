@@ -69,7 +69,11 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   const chainId = network?.chainId || 137
 
   const { address: userAddress, connector } = useAccount()
-  const { data: walletClient } = useWalletClient({
+  const {
+    data: walletClient,
+    isError: isErrorWalletClient,
+    error: errorWalletClient
+  } = useWalletClient({
     chainId: chainId
   })
   const publicClient = usePublicClient({
@@ -188,8 +192,10 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
 
   const onPurchaseMainCurrency = async () => {
-    if (!walletClient) {
-      throw new Error('Wallet client is not available. Please ensure your wallet is connected.')
+    if (!walletClient || isErrorWalletClient || errorWalletClient) {
+      throw new Error('Wallet client is not available. Please ensure your wallet is connected.', {
+        cause: errorWalletClient
+      })
     }
     if (!userAddress) {
       throw new Error('User address is not available. Please ensure your wallet is connected.')

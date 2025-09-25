@@ -167,7 +167,10 @@ export const useERC1155SaleContractCheckout = ({
     }
     if (error) {
       throw new Error(
-        'Failed to load checkout options or sale configuration. Please check your network connection and try again.'
+        'Failed to load checkout options or sale configuration. Please check your network connection and try again.',
+        {
+          cause: error
+        }
       )
     }
 
