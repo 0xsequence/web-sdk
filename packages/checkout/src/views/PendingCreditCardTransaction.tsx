@@ -304,7 +304,7 @@ export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: Pen
   const pollForOrderStatus = async () => {
     try {
       if (!data) {
-        return
+        throw new Error('Order data is not available. Unable to poll transaction status.')
       }
 
       const { orderId } = data
