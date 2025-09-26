@@ -36,7 +36,7 @@ interface PayWithCryptoTabProps {
 
 export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: PayWithCryptoTabProps) => {
   const connectedChainId = useChainId()
-  const { switchChainAsync } = useSwitchChain()
+  const { switchChain } = useSwitchChain()
   const { triggerAddFunds } = useAddFundsModal()
   const { clearCachedBalances } = useClearCachedBalances()
   const [isPurchasing, setIsPurchasing] = useState<boolean>(false)
@@ -145,10 +145,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   )
 
   useEffect(() => {
-    console.log('isSwitchingChainRef.current', isSwitchingChainRef.current)
-    console.log('connectedChainId', connectedChainId)
-    console.log('chainId', chainId)
-    console.log('isLoadingWalletClient', isLoadingWalletClient)
     if (isSwitchingChainRef.current && connectedChainId == Number(chainId) && !isLoadingWalletClient) {
       isSwitchingChainRef.current = false
       onClickPurchase()
@@ -208,8 +204,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
     try {
       if (connectedChainId != chainId) {
-        // await walletClient.switchChain({ id: chainId })
-        await switchChainAsync({ chainId })
+        await switchChain({ chainId })
         isSwitchingChainRef.current = true
         return
       }
@@ -319,9 +314,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     setIsError(false)
 
     try {
-      const walletClientChainId = await walletClient.getChainId()
-      if (walletClientChainId !== chainId) {
-        await walletClient.switchChain({ id: chainId })
+      if (connectedChainId != chainId) {
+        await switchChain({ chainId })
         isSwitchingChainRef.current = true
         return
       }
