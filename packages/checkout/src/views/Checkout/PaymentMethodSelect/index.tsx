@@ -29,6 +29,7 @@ type Tab = 'crypto' | 'credit-card'
 
 export const PaymentSelectionContent = () => {
   const { selectPaymentSettings = {} as SelectPaymentSettings } = useSelectPaymentModal()
+  const isSwitchingChainRef = useRef(false)
 
   const isFirstRender = useRef<boolean>(true)
   const { collectibles, creditCardProviders = [], onClose = () => {}, price } = selectPaymentSettings
@@ -101,7 +102,7 @@ export const PaymentSelectionContent = () => {
           {!isSingleOption && <TabsHeader tabs={tabs} value={selectedTab} />}
           <TabsContent value="crypto">
             <TabWrapper>
-              <PayWithCryptoTab skipOnCloseCallback={skipOnCloseCallback} />
+              <PayWithCryptoTab isSwitchingChainRef={isSwitchingChainRef} skipOnCloseCallback={skipOnCloseCallback} />
             </TabWrapper>
           </TabsContent>
           <TabsContent value="credit-card">
