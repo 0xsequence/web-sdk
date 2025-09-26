@@ -18,9 +18,9 @@ import {
 } from '@0xsequence/hooks'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useState } from 'react'
+import { useEffect, useState, type RefObject } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useReadContract, useWalletClient, useSwitchChain } from 'wagmi'
 
 import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import { EVENT_SOURCE } from '../../../../constants/index.js'
@@ -31,9 +31,12 @@ import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.j
 
 interface PayWithCryptoTabProps {
   skipOnCloseCallback: () => void
+  isSwitchingChainRef: RefObject<boolean>
 }
 
-export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps) => {
+export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: PayWithCryptoTabProps) => {
+  const connectedChainId = useChainId()
+  const { switchChain } = useSwitchChain()
   const { triggerAddFunds } = useAddFundsModal()
   const { clearCachedBalances } = useClearCachedBalances()
   const [isPurchasing, setIsPurchasing] = useState<boolean>(false)
@@ -69,12 +72,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   const chainId = network?.chainId || 137
 
   const { address: userAddress, connector } = useAccount()
-  const { data: walletClient } = useWalletClient({
-    chainId: chainId
-  })
-  const publicClient = usePublicClient({
-    chainId: chainId
-  })
+  const { data: walletClient, isLoading: isLoadingWalletClient } = useWalletClient()
+  const publicClient = usePublicClient()
   const indexerClient = useIndexerClient(chainId)
 
   const selectedCurrency = navigation.params?.selectedCurrency || {
@@ -145,6 +144,13 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
     }
   )
 
+  useEffect(() => {
+    if (isSwitchingChainRef.current && connectedChainId == Number(chainId) && !isLoadingWalletClient) {
+      isSwitchingChainRef.current = false
+      onClickPurchase()
+    }
+  }, [connectedChainId, chainId, isLoadingWalletClient, isSwitchingChainRef.current])
+
   const isNotEnoughBalanceError =
     typeof swapQuoteError?.cause === 'string' && swapQuoteError?.cause?.includes('not enough balance for swap')
 
@@ -189,16 +195,18 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
 
   const onPurchaseMainCurrency = async () => {
     if (!walletClient || !userAddress || !publicClient || !indexerClient || !connector) {
-      return
+      throw new Error('Wallet client, user address, public client, indexer client, or connector is not found')
+      // TODO: Handle these states better
     }
 
     setIsPurchasing(true)
     setIsError(false)
 
     try {
-      const walletClientChainId = await walletClient.getChainId()
-      if (walletClientChainId !== chainId) {
-        await walletClient.switchChain({ id: chainId })
+      if (connectedChainId != chainId) {
+        await switchChain({ chainId })
+        isSwitchingChainRef.current = true
+        return
       }
 
       const approveTxData = encodeFunctionData({
@@ -306,9 +314,10 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
     setIsError(false)
 
     try {
-      const walletClientChainId = await walletClient.getChainId()
-      if (walletClientChainId !== chainId) {
-        await walletClient.switchChain({ id: chainId })
+      if (connectedChainId != chainId) {
+        await switchChain({ chainId })
+        isSwitchingChainRef.current = true
+        return
       }
 
       const approveTxData = encodeFunctionData({
@@ -623,7 +632,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
   }
 
   const getConfirmButtonText = () => {
-    if (isPurchasing) {
+    if (isPurchasing || isSwitchingChainRef.current) {
       return 'Confirmation in progress...'
     }
 
@@ -648,7 +657,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback }: PayWithCryptoTabProps)
         )}
 
         <Button
-          disabled={isPurchasing || isErrorSwapQuote}
+          disabled={isPurchasing || isErrorSwapQuote || isSwitchingChainRef.current}
           label={getConfirmButtonText()}
           className="w-full"
           shape="square"
