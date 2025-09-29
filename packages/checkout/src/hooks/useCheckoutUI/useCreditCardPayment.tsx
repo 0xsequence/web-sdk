@@ -85,11 +85,7 @@ export const useCreditCardPayment = ({
     isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
 
   const disableTransakWidgetUrlFetch =
-    isLoadingTokenMetadatas ||
-    isLoadingCurrencyInfo ||
-    isLoadingCollectionInfo ||
-    creditCardProvider !== 'transak' ||
-    !transakConfig
+    isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'transak'
 
   const { sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
   const network = findSupportedNetwork(chain)
@@ -174,7 +170,7 @@ export const useCreditCardPayment = ({
     {
       isNFT: true,
       calldata: transakCallData,
-      contractId: transakConfig?.contractId,
+      targetContractAddress,
       cryptoCurrencyCode: currencySymbol,
       estimatedGasLimit,
       nftData: transakNftData,
@@ -188,9 +184,8 @@ export const useCreditCardPayment = ({
   )
 
   const missingCreditCardProvider = !creditCardProvider
-  const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
 
-  if (missingCreditCardProvider || missingTransakConfig) {
+  if (missingCreditCardProvider) {
     return {
       error: new Error('Missing credit card provider or transak config'),
       data: {

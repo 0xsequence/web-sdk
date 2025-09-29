@@ -178,7 +178,7 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
       }
     }
   },
-  'forte-payment-erc1155-sale-native-token-testnet': (recipientAddress: string) => {
+  'forte-transak-payment-erc1155-sale-native-token-testnet': (recipientAddress: string) => {
     const collectibles = [
       {
         tokenId: '1',

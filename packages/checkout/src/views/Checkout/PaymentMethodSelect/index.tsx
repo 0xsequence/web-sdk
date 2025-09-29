@@ -36,13 +36,6 @@ export const PaymentSelectionContent = () => {
 
   const isFree = Number(price) == 0
 
-  const validCreditCardProviders = creditCardProviders.filter(provider => {
-    if (provider === 'transak') {
-      return !!selectPaymentSettings?.transakConfig
-    }
-    return true
-  })
-
   const [selectedTab, setSelectedTab] = useState<Tab>('crypto')
   const { clearCachedBalances } = useClearCachedBalances()
 
@@ -52,7 +45,7 @@ export const PaymentSelectionContent = () => {
 
   const isTokenIdUnknown = collectibles.some(collectible => !collectible.tokenId)
 
-  const showCreditCardPayment = validCreditCardProviders.length > 0 && !isTokenIdUnknown && !isFree
+  const showCreditCardPayment = creditCardProviders.length > 0 && !isTokenIdUnknown && !isFree
 
   const tabs: { label: string; value: Tab }[] = [
     { label: 'Crypto', value: 'crypto' as Tab },

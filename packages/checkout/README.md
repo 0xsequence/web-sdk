@@ -274,9 +274,6 @@ const CustomCheckoutUI = () => {
     currencyAddress,
     collectionAddress,
     creditCardProvider: 'transak' as CreditCardProviders,
-    transakConfig: {
-      contractId,
-    },
     onSuccess: (txnHash?: string) => {
       console.log('success!', txnHash)
     },
