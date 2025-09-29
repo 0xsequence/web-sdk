@@ -77,9 +77,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     isLoading: isLoadingWalletClient,
     isError: isErrorWalletClient,
     error: errorWalletClient
-  } = useWalletClient({
-    chainId: chainId
-  })
+  } = useWalletClient()
   const publicClient = usePublicClient({
     chainId: chainId
   })
