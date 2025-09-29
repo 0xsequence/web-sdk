@@ -424,9 +424,6 @@ export const Connected = () => {
       recipientAddress: address,
       creditCardProviders: [creditCardProvider],
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-      transakConfig: {
-        contractId: isDev ? '68cd557b1f0d7a10940611a6' : '674eb5613d739107bbd18ed2'
-      },
       onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)
       },

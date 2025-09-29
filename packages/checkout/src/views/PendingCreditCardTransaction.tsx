@@ -132,7 +132,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     {
       isNFT: true,
       calldata: transakCallData,
-      contractId: transakConfig?.contractId,
+      targetContractAddress: creditCardCheckout.contractAddress,
       cryptoCurrencyCode: creditCardCheckout.currencySymbol,
       estimatedGasLimit,
       nftData: transakNftData,
@@ -226,7 +226,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
     return () => window.removeEventListener('message', readMessage)
   }, [isLoading])
 
-  if (isError || !transakConfig) {
+  if (isError) {
     return (
       <div
         className="flex flex-col justify-center items-center gap-6"
@@ -236,11 +236,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
         }}
       >
         <div>
-          {!transakConfig ? (
-            <Text color="primary">Error: No Transak configuration found</Text>
-          ) : (
-            <Text color="primary">An error has occurred</Text>
-          )}
+          <Text color="primary">An error has occurred</Text>
         </div>
       </div>
     )

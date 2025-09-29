@@ -273,7 +273,7 @@ export const fetchFortePaymentStatus = async (
 export interface TransakWidgetUrlArgs {
   isNFT?: boolean
   calldata?: string
-  contractId?: string
+  targetContractAddress?: string
   cryptoCurrencyCode?: string
   estimatedGasLimit?: number
   nftData?: string

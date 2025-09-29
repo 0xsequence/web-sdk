@@ -122,44 +122,36 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
     return (
       <div className="flex flex-col justify-center items-center gap-2 w-full">
         {/* Only 1 option will be displayed, even if multiple providers are passed */}
-        {creditCardProviders
-          .slice(0, 1)
-          .filter(provider => {
-            // cannot display transak checkout if the settings aren't provided
-            if (provider === 'transak' && !settings.transakConfig) {
-              return false
-            }
-            return true
-          })
-          .map(creditCardProvider => {
-            switch (creditCardProvider) {
-              case 'transak':
-              case 'forte':
-              case 'custom':
-                return (
-                  <Card
-                    className="flex justify-between items-center p-4 cursor-pointer"
-                    key={creditCardProvider}
-                    onClick={() => {
-                      setSelectedPaymentProvider(creditCardProvider)
-                    }}
-                    disabled={disableButtons}
-                  >
-                    <div className="flex flex-row gap-3 items-center">
-                      <PaymentsIcon className="text-white" />
-                      <Text color="primary" variant="normal" fontWeight="bold">
-                        Pay with credit or debit card
-                      </Text>
-                    </div>
-                    <div style={{ transform: 'rotate(-45deg)' }}>
-                      <ArrowRightIcon className="text-white" />
-                    </div>
-                  </Card>
-                )
-              default:
-                return null
-            }
-          })}
+        {creditCardProviders.slice(0, 1).map(creditCardProvider => {
+          switch (creditCardProvider) {
+            case 'sardine':
+            case 'transak':
+            case 'forte':
+            case 'custom':
+              return (
+                <Card
+                  className="flex justify-between items-center p-4 cursor-pointer"
+                  key="sardine"
+                  onClick={() => {
+                    setSelectedPaymentProvider(creditCardProvider)
+                  }}
+                  disabled={disableButtons}
+                >
+                  <div className="flex flex-row gap-3 items-center">
+                    <PaymentsIcon className="text-white" />
+                    <Text color="primary" variant="normal" fontWeight="bold">
+                      Pay with credit or debit card
+                    </Text>
+                  </div>
+                  <div style={{ transform: 'rotate(-45deg)' }}>
+                    <ArrowRightIcon className="text-white" />
+                  </div>
+                </Card>
+              )
+            default:
+              return null
+          }
+        })}
       </div>
     )
   }
