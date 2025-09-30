@@ -409,71 +409,82 @@ export class SequenceV3Provider implements EIP1193Provider {
         const tx = params[0] as TransactionRequest
         const transactions = [{ to: tx.to!, value: BigInt(tx.value?.toString() ?? '0'), data: tx.data ?? '0x' }]
 
-        const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
-
-        if (hasPermission) {
-          const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
-          let selectedFeeOption: Relayer.FeeOption | undefined
-
-          if (feeOptions && feeOptions.length > 0) {
-            if (this.feeConfirmationHandler) {
-              const id = uuidv4()
-              const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
-
-              if (!confirmation.confirmed) {
-                throw new RpcError(new Error('User rejected the request.'), {
-                  code: 4001,
-                  shortMessage: 'User rejected send transaction request.'
-                })
-              }
-
-              if (id !== confirmation.id) {
-                throw new RpcError(new Error('User confirmation ids do not match'), {
-                  code: -32000,
-                  shortMessage: 'Confirmation ID mismatch'
-                })
-              }
-              selectedFeeOption = confirmation.feeOption
-            } else {
-              // Default to NATIVE TOKEN fee option if no fee confirmation handler is provided
-              selectedFeeOption = feeOptions.find(option => option.token.contractAddress === zeroAddress)
-            }
-          }
-          return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
-        } else {
-          return new Promise((resolve, reject) => {
-            const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
-              unsubscribe()
-              if (data.error) {
-                reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
-              } else {
-                resolve(data.response.transactionHash)
-              }
-            })
-
-            if (!tx.to) {
-              const error = new RpcError(new Error('Transaction requires a "to" address.'), {
-                code: -32602,
-                shortMessage: 'Invalid transaction params'
-              })
-              unsubscribe()
-              reject(error)
-              return
-            }
-
-            const walletTransactionRequest: DappClientTransactionRequest = {
-              to: tx.to,
-              value: tx.value,
-              data: tx.data,
-              gasLimit: tx.gas
-            }
-
-            this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch(err => {
-              unsubscribe()
-              reject(err)
-            })
-          })
+        const signerValidity = await this.client.listSignerValidity(this.currentChainId)
+        let hasValidSigner = signerValidity.some(s => s.isValid)
+        if (!hasValidSigner) {
+          // Fix our session issues and recheck
+          await this.client.fixInvalidSessions(this.currentChainId, true)
+          hasValidSigner = await this.client.hasValidSigner(this.currentChainId)
         }
+
+        if (hasValidSigner) {
+          try {
+            const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+            let selectedFeeOption: Relayer.FeeOption | undefined
+
+            if (feeOptions && feeOptions.length > 0) {
+              if (this.feeConfirmationHandler) {
+                const id = uuidv4()
+                const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
+
+                if (!confirmation.confirmed) {
+                  throw new RpcError(new Error('User rejected the request.'), {
+                    code: 4001,
+                    shortMessage: 'User rejected send transaction request.'
+                  })
+                }
+
+                if (id !== confirmation.id) {
+                  throw new RpcError(new Error('User confirmation ids do not match'), {
+                    code: -32000,
+                    shortMessage: 'Confirmation ID mismatch'
+                  })
+                }
+                selectedFeeOption = confirmation.feeOption
+              } else {
+                // Default to NATIVE TOKEN fee option if no fee confirmation handler is provided
+                selectedFeeOption = feeOptions.find(option => option.token.contractAddress === zeroAddress)
+              }
+            }
+            return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+          } catch (err) {
+            // Log and continue, try calling the wallet directly
+            console.error('Transaction using session signer failed', err)
+          }
+        }
+
+        return new Promise((resolve, reject) => {
+          const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
+            unsubscribe()
+            if (data.error) {
+              reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
+            } else {
+              resolve(data.response.transactionHash)
+            }
+          })
+
+          if (!tx.to) {
+            const error = new RpcError(new Error('Transaction requires a "to" address.'), {
+              code: -32602,
+              shortMessage: 'Invalid transaction params'
+            })
+            unsubscribe()
+            reject(error)
+            return
+          }
+
+          const walletTransactionRequest: DappClientTransactionRequest = {
+            to: tx.to,
+            value: tx.value,
+            data: tx.data,
+            gasLimit: tx.gas
+          }
+
+          this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch(err => {
+            unsubscribe()
+            reject(err)
+          })
+        })
       }
 
       case 'wallet_switchEthereumChain': {
