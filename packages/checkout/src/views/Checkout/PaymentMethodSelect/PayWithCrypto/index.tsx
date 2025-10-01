@@ -20,7 +20,7 @@ import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState, type RefObject } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, usePublicClient, useReadContract, useWalletClient, useSwitchChain } from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useReadContract, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import { EVENT_SOURCE } from '../../../../constants/index.js'
@@ -179,7 +179,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     compareAddress(balance.contractAddress, selectedCurrency.address)
   )
 
-  const isInsufficientBalance = tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice)
+  const isInsufficientBalance =
+    tokenBalance === undefined || (tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice))
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
