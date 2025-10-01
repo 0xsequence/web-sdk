@@ -2,7 +2,6 @@ import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
 import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import pako from 'pako'
 import { useEffect, useMemo, useRef } from 'react'
 import { formatUnits } from 'viem'
 
@@ -96,13 +95,9 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
       TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2)
     )
 
-  const pakoData = Array.from(pako.deflate(calldataWithProxy))
-
-  const transakCallData = btoa(String.fromCharCode.apply(null, pakoData))
-
   const price = Number(formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals)))
 
-  const transakNftDataJson = JSON.stringify([
+  const transakNftData = [
     {
       imageURL: tokenMetadata?.image || '',
       nftName: tokenMetadata?.name || 'collectible',
@@ -112,9 +107,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
       quantity: Number(creditCardCheckout.nftQuantity),
       nftType: collectionInfo?.type || 'ERC721'
     }
-  ])
-
-  const transakNftData = btoa(transakNftDataJson)
+  ]
 
   const estimatedGasLimit = 500000
 
@@ -134,7 +127,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   } = useTransakWidgetUrl(
     {
       isNFT: true,
-      calldata: transakCallData,
+      calldata: calldataWithProxy,
       targetContractAddress: creditCardCheckout.contractAddress,
       cryptoCurrencyCode: getCurrencyCode({
         chainId: creditCardCheckout.chainId,
