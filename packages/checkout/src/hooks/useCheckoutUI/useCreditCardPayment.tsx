@@ -11,7 +11,7 @@ import { fetchSardineOrderStatus } from '../../api/data.js'
 import type { TransakConfig } from '../../contexts/CheckoutModal.js'
 import { useEnvironmentContext } from '../../contexts/Environment.js'
 import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal.js'
-import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak.js'
+import { TRANSAK_PROXY_ADDRESS, getCurrencyCode } from '../../utils/transak.js'
 import { useSardineClientToken } from '../useSardineClientToken.js'
 
 import { useTransakWidgetUrl } from '../useTransakWidgetUrl.js'
@@ -171,7 +171,11 @@ export const useCreditCardPayment = ({
       isNFT: true,
       calldata: transakCallData,
       targetContractAddress,
-      cryptoCurrencyCode: currencySymbol,
+      cryptoCurrencyCode: getCurrencyCode({
+        chainId: network?.chainId || 137,
+        currencyAddress,
+        defaultCurrencyCode: currencySymbol || 'ETH'
+      }),
       estimatedGasLimit,
       nftData: transakNftData,
       walletAddress: recipientAddress,

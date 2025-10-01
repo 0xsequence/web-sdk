@@ -1,3 +1,6 @@
+import { ChainId } from '@0xsequence/network'
+import { zeroAddress } from 'viem'
+
 import type { AddFundsSettings } from '../contexts/AddFundsModal.js'
 
 export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a'
@@ -28,4 +31,22 @@ export const fetchTransakSupportedCountries = async () => {
   const data = (await res.json()) as CountriesResult
 
   return data.response.filter(x => x.isAllowed).map(x => x.alpha2)
+}
+
+interface GetCurrencyCodeParams {
+  chainId: number
+  currencyAddress: string
+  defaultCurrencyCode: string
+}
+
+export const getCurrencyCode = ({ chainId, currencyAddress, defaultCurrencyCode }: GetCurrencyCodeParams) => {
+  const currencyCodeByAddress: { [chainId: number]: { [currencyAddress: string]: string | undefined } | undefined } = {
+    [ChainId.SEPOLIA]: {
+      [zeroAddress]: 'ETH'
+    }
+  }
+
+  const foundCurrencyAddress = currencyCodeByAddress?.[chainId]?.[currencyAddress.toLowerCase()]
+
+  return foundCurrencyAddress || defaultCurrencyCode
 }
