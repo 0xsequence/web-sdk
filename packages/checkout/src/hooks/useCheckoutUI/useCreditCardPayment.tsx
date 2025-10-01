@@ -10,7 +10,7 @@ import { formatUnits, zeroAddress, type Hex } from 'viem'
 import type { TransakConfig } from '../../contexts/CheckoutModal.js'
 import { useEnvironmentContext } from '../../contexts/Environment.js'
 import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal.js'
-import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak.js'
+import { TRANSAK_PROXY_ADDRESS, getCurrencyCode } from '../../utils/transak.js'
 
 import { useTransakWidgetUrl } from '../useTransakWidgetUrl.js'
 const POLLING_TIME = 10 * 1000
@@ -168,7 +168,11 @@ export const useCreditCardPayment = ({
       isNFT: true,
       calldata: transakCallData,
       targetContractAddress,
-      cryptoCurrencyCode: currencySymbol,
+      cryptoCurrencyCode: getCurrencyCode({
+        chainId: network?.chainId || 137,
+        currencyAddress,
+        defaultCurrencyCode: currencySymbol || 'ETH'
+      }),
       estimatedGasLimit,
       nftData: transakNftData,
       walletAddress: recipientAddress,

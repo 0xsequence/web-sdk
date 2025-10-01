@@ -16,7 +16,7 @@ import {
   useTransactionStatusModal
 } from '../hooks/index.js'
 import { useTransakWidgetUrl } from '../hooks/useTransakWidgetUrl.js'
-import { TRANSAK_PROXY_ADDRESS } from '../utils/transak.js'
+import { TRANSAK_PROXY_ADDRESS, getCurrencyCode } from '../utils/transak.js'
 
 const POLLING_TIME = 10 * 1000
 
@@ -133,7 +133,11 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
       isNFT: true,
       calldata: transakCallData,
       targetContractAddress: creditCardCheckout.contractAddress,
-      cryptoCurrencyCode: creditCardCheckout.currencySymbol,
+      cryptoCurrencyCode: getCurrencyCode({
+        chainId: creditCardCheckout.chainId,
+        currencyAddress: creditCardCheckout.currencyAddress,
+        defaultCurrencyCode: creditCardCheckout.currencySymbol || 'ETH'
+      }),
       estimatedGasLimit,
       nftData: transakNftData,
       walletAddress: creditCardCheckout.recipientAddress,
