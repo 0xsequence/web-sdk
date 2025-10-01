@@ -320,6 +320,10 @@ export const getTransakWidgetUrl = async (
     })
   })
 
+  if (!res.ok) {
+    throw new Error(`Transak API error: ${res.status} ${res.statusText}`)
+  }
+
   const { url } = await res.json()
 
   return {
