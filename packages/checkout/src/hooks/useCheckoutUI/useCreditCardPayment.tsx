@@ -3,7 +3,6 @@ import { compareAddress } from '@0xsequence/connect'
 import { useConfig } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
-import pako from 'pako'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 
@@ -130,25 +129,19 @@ export const useCreditCardPayment = ({
     transakConfig?.callDataOverride ??
     txData.replace(recipientAddress.toLowerCase().substring(2), TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2))
 
-  const pakoData = Array.from(pako.deflate(calldataWithProxy))
-
-  const transakCallData = btoa(String.fromCharCode.apply(null, pakoData))
-
   const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyDecimals || 18)))
 
-  const transakNftDataJson = JSON.stringify([
+  const transakNftData = [
     {
       imageURL: tokenMetadata?.image || '',
       nftName: tokenMetadata?.name || 'collectible',
       collectionAddress: collectionAddress,
-      tokenID: [collectible.tokenId],
+      tokenID: [collectible.tokenId || ''],
       price: [price],
       quantity: Number(collectible.quantity),
       nftType: dataCollectionInfo?.type || 'ERC721'
     }
-  ])
-
-  const transakNftData = btoa(transakNftDataJson)
+  ]
 
   const estimatedGasLimit = 500000
 
@@ -166,7 +159,7 @@ export const useCreditCardPayment = ({
   } = useTransakWidgetUrl(
     {
       isNFT: true,
-      calldata: transakCallData,
+      calldata: calldataWithProxy,
       targetContractAddress,
       cryptoCurrencyCode: getCurrencyCode({
         chainId: network?.chainId || 137,

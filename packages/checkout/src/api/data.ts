@@ -270,13 +270,23 @@ export const fetchFortePaymentStatus = async (
   }
 }
 
+export interface TransakNFTData {
+  imageURL: string
+  nftName: string
+  collectionAddress: string
+  tokenID: string[]
+  price: number[]
+  quantity: number
+  nftType: string
+}
+
 export interface TransakWidgetUrlArgs {
   isNFT?: boolean
   calldata?: string
   targetContractAddress?: string
   cryptoCurrencyCode?: string
   estimatedGasLimit?: number
-  nftData?: string
+  nftData?: TransakNFTData[]
   walletAddress: string
   disableWalletAddressForm?: boolean
   partnerOrderId?: string
