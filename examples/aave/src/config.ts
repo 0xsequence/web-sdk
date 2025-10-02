@@ -14,8 +14,7 @@ export const config: SequenceConnectConfig = createConfig({
     projectName: 'Sequence Web SDK Demo',
     logoUrl: 'https://sequence.build/sequence-icon.svg'
   },
-  // walletUrl: 'https://v3.sequence-dev.app',
-  walletUrl: 'http://localhost:5173',
+  walletUrl: 'https://v3.sequence-dev.app',
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
   chainIds: [42161],
