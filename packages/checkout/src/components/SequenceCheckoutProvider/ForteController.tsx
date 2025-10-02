@@ -58,7 +58,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
-    let widgetClosedListener: () => void
+    let widgetClosedListener: (e: Event) => void
 
     if (fortePaymentData && !isSuccess) {
       interval = setInterval(() => {
@@ -69,12 +69,20 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
         fortePaymentData.creditCardCheckout?.onClose?.()
       }
 
+      // Note: these events are mutually exclusive. ie they won't trigger at the same time
+      // FortePaymentsWidgetClosed only trigger when NOT in a success state
       window.addEventListener('FortePaymentsWidgetClosed', widgetClosedListener)
+      window.addEventListener('FortePaymentsBuyNftMintSuccess', widgetClosedListener)
+      window.addEventListener('FortePaymentsBuyNftSuccess', widgetClosedListener)
+      window.addEventListener('FortePaymentsBuyVdaSuccess', widgetClosedListener)
     }
 
     return () => {
       clearInterval(interval)
       window.removeEventListener('FortePaymentsWidgetClosed', widgetClosedListener)
+      window.removeEventListener('FortePaymentsBuyNftMintSuccess', widgetClosedListener)
+      window.removeEventListener('FortePaymentsBuyNftSuccess', widgetClosedListener)
+      window.removeEventListener('FortePaymentsBuyVdaSuccess', widgetClosedListener)
     }
   }, [fortePaymentData, isSuccess, widgetInitialized])
 
