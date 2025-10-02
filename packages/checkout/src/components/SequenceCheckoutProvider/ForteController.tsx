@@ -61,7 +61,6 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     let eventFortePaymentsWidgetClosedListener: (e: Event) => void
     let eventFortePaymentsBuyNftMintSuccessListener: (e: Event) => void
     let eventFortePaymentsBuyNftSuccessListener: (e: Event) => void
-    let eventFortePaymentsBuyVdaSuccessListener: (e: Event) => void
 
     if (fortePaymentData && !isSuccess) {
       interval = setInterval(() => {
@@ -87,18 +86,11 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
         setIsSuccess(true)
       }
 
-      eventFortePaymentsBuyVdaSuccessListener = (e: Event) => {
-        fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsBuyVdaSuccess?.(e)
-        fortePaymentData.creditCardCheckout?.onClose?.()
-        setIsSuccess(true)
-      }
-
       // Note: these events are mutually exclusive. ie they won't trigger at the same time
       // FortePaymentsWidgetClosed only trigger when NOT in a success state
       window.addEventListener('FortePaymentsWidgetClosed', eventFortePaymentsWidgetClosedListener)
       window.addEventListener('FortePaymentsBuyNftMintSuccess', eventFortePaymentsBuyNftMintSuccessListener)
       window.addEventListener('FortePaymentsBuyNftSuccess', eventFortePaymentsBuyNftSuccessListener)
-      window.addEventListener('FortePaymentsBuyVdaSuccess', eventFortePaymentsBuyVdaSuccessListener)
     }
 
     return () => {
@@ -106,7 +98,6 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       window.removeEventListener('FortePaymentsWidgetClosed', eventFortePaymentsWidgetClosedListener)
       window.removeEventListener('FortePaymentsBuyNftMintSuccess', eventFortePaymentsBuyNftMintSuccessListener)
       window.removeEventListener('FortePaymentsBuyNftSuccess', eventFortePaymentsBuyNftSuccessListener)
-      window.removeEventListener('FortePaymentsBuyVdaSuccess', eventFortePaymentsBuyVdaSuccessListener)
     }
   }, [fortePaymentData, isSuccess, widgetInitialized])
 

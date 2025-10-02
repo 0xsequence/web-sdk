@@ -238,9 +238,6 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
         protocol: 'mint',
         calldata: structuredCalldata,
         sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986',
-        onFortePaymentsBuyVdaSuccess: e => {
-          console.log('onFortePaymentsBuyVdaSuccess', e)
-        },
         onFortePaymentsBuyNftSuccess: e => {
           console.log('onFortePaymentsBuyNftSuccess', e)
         },
