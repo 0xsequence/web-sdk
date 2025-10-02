@@ -43,7 +43,14 @@ export interface ForteCustomEvmCallConfig {
   sellerAddress: string
 }
 
-export type ForteConfig = ForteMintConfig | ForteCustomEvmCallConfig
+export interface ForteEventsCallbacks {
+  onFortePaymentsBuyVdaSuccess?: (e: Event) => void
+  onFortePaymentsBuyNftSuccess?: (e: Event) => void
+  onFortePaymentsBuyNftMintSuccess?: (e: Event) => void
+  onFortePaymentsWidgetClosed?: (e: Event) => void
+}
+
+export type ForteConfig = (ForteMintConfig | ForteCustomEvmCallConfig) & ForteEventsCallbacks
 
 export interface CreditCardCheckout {
   chainId: number
