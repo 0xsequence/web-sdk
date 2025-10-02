@@ -1,11 +1,11 @@
 import { Button, Divider, PINCodeInput, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { type Account } from '@0xsequence/waas'
 import { type CredentialResponse } from '@react-oauth/google'
-import { ethers } from 'ethers'
 import { useEffect, useRef, useState, type SetStateAction } from 'react'
 
 import { useSequenceWaaS } from '../../hooks/useSequenceWaaS.js'
 import { isAccountAlreadyLinkedError, useEmailAuth } from '../../utils/useEmailAuth.js'
+import { getWord } from '../../utils/wordlist.js'
 
 import { AccountName } from './AccountName.js'
 
@@ -242,12 +242,11 @@ const DEVICE_EMOJIS = [
 ]
 
 function randomName() {
-  const wordlistSize = 2048
-  const words = ethers.wordlists.en
+  const wordlistSize = 210
 
   const randomEmoji = DEVICE_EMOJIS[Math.floor(Math.random() * DEVICE_EMOJIS.length)]
-  const randomWord1 = words.getWord(Math.floor(Math.random() * wordlistSize))
-  const randomWord2 = words.getWord(Math.floor(Math.random() * wordlistSize))
+  const randomWord1 = getWord(Math.floor(Math.random() * wordlistSize))
+  const randomWord2 = getWord(Math.floor(Math.random() * wordlistSize))
 
   return `${randomEmoji} ${randomWord1} ${randomWord2}`
 }

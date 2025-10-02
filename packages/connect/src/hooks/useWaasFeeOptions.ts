@@ -3,8 +3,8 @@
 import { useIndexerClient } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import type { FeeOption } from '@0xsequence/waas'
-import type { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
+import type { Transaction } from 'viem'
 import { formatUnits } from 'viem'
 import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
@@ -157,7 +157,7 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
       async confirmFeeOption(
         id: string,
         options: FeeOption[],
-        txs: ethers.Transaction[],
+        txs: Transaction[],
         chainId: number
       ): Promise<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> {
         const pending = new Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>()
