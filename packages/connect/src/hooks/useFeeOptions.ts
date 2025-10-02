@@ -4,7 +4,7 @@ import type { Relayer } from '@0xsequence/dapp-client'
 import { useIndexerClient } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useEffect, useState } from 'react'
-import { formatUnits } from 'viem'
+import { formatUnits, zeroAddress } from 'viem'
 import type { TransactionRequest } from 'viem'
 import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
@@ -182,7 +182,7 @@ export function useFeeOptions(config?: FeeOptionsConfig): UseFeeOptionsReturnTyp
         if (!skipFeeBalanceCheck) {
           const optionsWithBalances = await Promise.all(
             options.map(async (option: any) => {
-              if (option.token.contractAddress) {
+              if (option.token.contractAddress !== zeroAddress) {
                 const tokenBalances = await indexerClient.getTokenBalancesByContract({
                   filter: {
                     accountAddresses: [accountAddress],
