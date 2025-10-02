@@ -58,7 +58,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
-    let widgetClosedListener: (e: Event) => void
+    let widgetClosedListener: () => void
 
     if (fortePaymentData && !isSuccess) {
       interval = setInterval(() => {
