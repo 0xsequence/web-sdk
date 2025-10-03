@@ -11,7 +11,7 @@ import {
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, usePublicClient, useWalletClient, useChainId, useSwitchChain } from 'wagmi'
+import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks/index.js'

@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.3.17
+
+### Patch Changes
+
+- fixes related to undefined walletClient
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.17
+
 ## 5.3.16
 
 ### Patch Changes

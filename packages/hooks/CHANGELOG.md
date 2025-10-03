@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.17
+
+### Patch Changes
+
+- fixes related to undefined walletClient
+
 ## 5.3.16
 
 ### Patch Changes
