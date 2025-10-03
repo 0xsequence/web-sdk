@@ -44,7 +44,6 @@ export interface ForteCustomEvmCallConfig {
 }
 
 export interface ForteEventsCallbacks {
-  onFortePaymentsBuyVdaSuccess?: (e: Event) => void
   onFortePaymentsBuyNftSuccess?: (e: Event) => void
   onFortePaymentsBuyNftMintSuccess?: (e: Event) => void
   onFortePaymentsWidgetClosed?: (e: Event) => void
