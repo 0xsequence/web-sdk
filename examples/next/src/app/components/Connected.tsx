@@ -1,4 +1,4 @@
-import type { CheckoutSettings } from '@0xsequence/checkout'
+import { type CheckoutSettings, useTransactionStatusModal } from '@0xsequence/checkout'
 import {
   ContractVerificationStatus,
   signEthAuthProof,

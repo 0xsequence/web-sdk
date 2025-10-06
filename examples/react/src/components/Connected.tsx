@@ -5,6 +5,7 @@ import {
   useERC1155SaleContractCheckout,
   useSelectPaymentModal,
   useSwapModal,
+  useTransactionStatusModal,
   type SwapModalSettings
 } from '@0xsequence/checkout'
 import {
@@ -23,7 +24,7 @@ import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, type ComponentProps } from 'react'
-import { encodeFunctionData, formatUnits, parseAbi } from 'viem'
+import { encodeFunctionData, formatUnits, parseAbi, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
@@ -44,6 +45,7 @@ const onRampProvider = searchParams.get('onRampProvider')
 const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-payment-erc1155-sale-native-token-testnet'
 
 export const Connected = () => {
+  const { openTransactionStatusModal } = useTransactionStatusModal()
   const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
   const { address } = useAccount()
@@ -480,6 +482,23 @@ export const Connected = () => {
     setIsSocialLinkOpen(true)
   }
 
+  const onClickTransactionStatus = () => {
+    openTransactionStatusModal({
+      chainId: 137,
+      currencyAddress: zeroAddress,
+      collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
+      txHash: '0x7824a5f7107a964553f799a82d8178fd66ff5055e84f586010ccd80e5e40145b',
+      items: [
+        {
+          tokenId: '1',
+          quantity: '1',
+          decimals: 18,
+          price: '1000'
+        }
+      ]
+    })
+  }
+
   useEffect(() => {
     setLastTxnDataHash(undefined)
     setLastTxnDataHash2(undefined)
@@ -776,6 +795,12 @@ export const Connected = () => {
                   description="Purchase with useERC1155SaleContractCheckout hook"
                   onClick={openCheckoutModal}
                   isPending={erc1155CheckoutLoading}
+                />
+
+                <CardButton
+                  title="Transaction Status Modal"
+                  description="Transaction status modal"
+                  onClick={onClickTransactionStatus}
                 />
               </>
             )}

@@ -266,7 +266,9 @@ export const TransactionStatus = () => {
           const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
 
-          const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0))
+          const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0), {
+            disableScientificNotation: true
+          })
 
           return (
             <div className="flex flex-row items-center justify-between" key={item.tokenId}>
