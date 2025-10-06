@@ -341,9 +341,9 @@ export const createFortePaymentIntent = async (
     blockchain: forteBlockchainName,
     idempotencyKey: idempotencyKey,
     buyer: {
-      id: recipientAddress,
+      id: recipientAddress.toLowerCase(),
       wallet: {
-        address: recipientAddress,
+        address: recipientAddress.toLowerCase(),
         blockchain: forteBlockchainName
       }
     }
@@ -424,7 +424,7 @@ export const createFortePaymentIntent = async (
       ],
       seller: {
         wallet: {
-          address: protocolConfig.sellerAddress || '',
+          address: protocolConfig.sellerAddress.toLowerCase(),
           blockchain: forteBlockchainName
         }
       }
