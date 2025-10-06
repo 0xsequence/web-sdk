@@ -1,5 +1,23 @@
 # @0xsequence/hooks
 
+## 5.3.19
+
+### Patch Changes
+
+- Fix for ERC20: insufficient allowance bug during swap and pay
+
+## 5.3.18
+
+### Patch Changes
+
+- Bug fixes
+
+## 5.3.17
+
+### Patch Changes
+
+- fixes related to undefined walletClient
+
 ## 5.3.16
 
 ### Patch Changes

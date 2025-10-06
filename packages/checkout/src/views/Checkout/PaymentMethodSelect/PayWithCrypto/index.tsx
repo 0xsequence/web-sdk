@@ -86,7 +86,9 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     chainId: chain
   }
 
+  // Check if the target currency (what the item is priced in) is native
   const isNativeToken = compareAddress(currencyAddress, zeroAddress)
+  // Check if the selected currency (what the user is paying with) is native
   const isNativeTokenSelectedCurrency = compareAddress(selectedCurrency.address, zeroAddress)
 
   const { data: tokenBalancesData, isLoading: tokenBalancesIsLoading } = useGetTokenBalancesSummary({
@@ -168,14 +170,14 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     address: currencyAddress as Hex,
     args: [userAddress, approvedSpenderAddress || targetContractAddress],
     query: {
-      enabled: !!userAddress && !isNativeTokenSelectedCurrency
+      enabled: !!userAddress && !isNativeToken
     }
   })
 
   const isLoading =
     isLoadingCoinPrice ||
     isLoadingCurrencyInfo ||
-    (allowanceIsLoading && !isNativeTokenSelectedCurrency) ||
+    (allowanceIsLoading && !isNativeToken) ||
     isLoadingSwapQuote ||
     tokenBalancesIsLoading ||
     isLoadingSelectedCurrencyInfo
@@ -184,7 +186,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     compareAddress(balance.contractAddress, selectedCurrency.address)
   )
 
-  const isInsufficientBalance = tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice)
+  const isInsufficientBalance =
+    tokenBalance === undefined || (tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice))
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
@@ -381,7 +384,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
             : {})
         },
         // Actual transaction optional approve step
-        ...(isApproved || isNativeTokenSelectedCurrency
+        ...(isApproved || isNativeToken
           ? []
           : [
               {

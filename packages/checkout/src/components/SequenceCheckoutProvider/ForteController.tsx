@@ -58,23 +58,46 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
-    let widgetClosedListener: () => void
+    let eventFortePaymentsWidgetClosedListener: (e: Event) => void
+    let eventFortePaymentsBuyNftMintSuccessListener: (e: Event) => void
+    let eventFortePaymentsBuyNftSuccessListener: (e: Event) => void
 
     if (fortePaymentData && !isSuccess) {
       interval = setInterval(() => {
         checkFortePaymentStatus()
       }, POLLING_TIME)
+    }
 
-      widgetClosedListener = () => {
+    if (fortePaymentData) {
+      eventFortePaymentsWidgetClosedListener = (e: Event) => {
+        fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsWidgetClosed?.(e)
         fortePaymentData.creditCardCheckout?.onClose?.()
       }
 
-      window.addEventListener('FortePaymentsWidgetClosed', widgetClosedListener)
+      eventFortePaymentsBuyNftMintSuccessListener = (e: Event) => {
+        fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsBuyNftMintSuccess?.(e)
+        fortePaymentData.creditCardCheckout?.onClose?.()
+        setIsSuccess(true)
+      }
+
+      eventFortePaymentsBuyNftSuccessListener = (e: Event) => {
+        fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsBuyNftSuccess?.(e)
+        fortePaymentData.creditCardCheckout?.onClose?.()
+        setIsSuccess(true)
+      }
+
+      // Note: these events are mutually exclusive. ie they won't trigger at the same time
+      // FortePaymentsWidgetClosed only trigger when NOT in a success state
+      window.addEventListener('FortePaymentsWidgetClosed', eventFortePaymentsWidgetClosedListener)
+      window.addEventListener('FortePaymentsBuyNftMintSuccess', eventFortePaymentsBuyNftMintSuccessListener)
+      window.addEventListener('FortePaymentsBuyNftSuccess', eventFortePaymentsBuyNftSuccessListener)
     }
 
     return () => {
       clearInterval(interval)
-      window.removeEventListener('FortePaymentsWidgetClosed', widgetClosedListener)
+      window.removeEventListener('FortePaymentsWidgetClosed', eventFortePaymentsWidgetClosedListener)
+      window.removeEventListener('FortePaymentsBuyNftMintSuccess', eventFortePaymentsBuyNftMintSuccessListener)
+      window.removeEventListener('FortePaymentsBuyNftSuccess', eventFortePaymentsBuyNftSuccessListener)
     }
   }, [fortePaymentData, isSuccess, widgetInitialized])
 
@@ -113,7 +136,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       paymentIntentId: fortePaymentData.paymentIntentId
     })
 
-    if (status === 'Approved') {
+    if (status === 'Approved' && !isSuccess) {
       fortePaymentData.creditCardCheckout?.onSuccess?.()
       setIsSuccess(true)
     }
