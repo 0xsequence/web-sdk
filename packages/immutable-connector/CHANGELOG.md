@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.3.20
+
+### Patch Changes
+
+- Removed subscription for receipts in favor of api call
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.20
+
 ## 5.3.19
 
 ### Patch Changes

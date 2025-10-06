@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.3.20
+
+### Patch Changes
+
+- Removed subscription for receipts in favor of api call
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.3.20
+  - @0xsequence/connect@5.3.20
+  - @0xsequence/hooks@5.3.20
+
 ## 5.3.19
 
 ### Patch Changes

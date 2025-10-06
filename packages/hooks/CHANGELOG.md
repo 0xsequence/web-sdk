@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.20
+
+### Patch Changes
+
+- Removed subscription for receipts in favor of api call
+
 ## 5.3.19
 
 ### Patch Changes
