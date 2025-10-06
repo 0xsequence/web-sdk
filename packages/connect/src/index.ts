@@ -51,7 +51,6 @@ export {
 export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
 export { getModalPositionCss } from './utils/styling.js'
 export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
-export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
 export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
 export { createContractPermission, createContractPermissions, createExplicitSessionConfig } from './utils/session/index.js'
