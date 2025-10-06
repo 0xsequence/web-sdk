@@ -206,25 +206,9 @@ export const waitForTransactionReceipt = async ({
   publicClient,
   confirmations
 }: WaitForTransactionReceiptInput): Promise<TransactionReceipt> => {
-  const receiptPromise = new Promise<TransactionReceipt>(async (resolve, reject) => {
-    await indexerClient.subscribeReceipts(
-      {
-        filter: {
-          txnHash
-        }
-      },
-      {
-        onMessage: ({ receipt }) => {
-          resolve(receipt)
-        },
-        onError: () => {
-          reject('Transaction receipt not found')
-        }
-      }
-    )
+  const { receipt } = await indexerClient.fetchTransactionReceipt({
+    txnHash
   })
-
-  const receipt = await receiptPromise
 
   if (confirmations) {
     const blockConfirmationPromise = new Promise<void>(resolve => {
