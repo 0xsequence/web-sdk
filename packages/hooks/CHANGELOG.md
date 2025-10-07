@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.22
+
+### Patch Changes
+
+- Fix fetchTransaction receipt condition
+
 ## 5.3.21
 
 ### Patch Changes

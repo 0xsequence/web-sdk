@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.3.22
+
+### Patch Changes
+
+- Fix fetchTransaction receipt condition
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.22
+
 ## 5.3.21
 
 ### Patch Changes
