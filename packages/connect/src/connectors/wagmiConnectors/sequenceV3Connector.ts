@@ -286,36 +286,43 @@ export class SequenceV3Provider implements EIP1193Provider {
           body: '{}'
         }
         const chainName = getNetwork(this.currentChainId).name
-        const feeOptions: { isFeeRequired: boolean; tokens: FeeToken[] } = await fetch(
-          `https://${chainName}-relayer.sequence.app/rpc/Relayer/FeeTokens`,
-          options
-        ).then(res => res.json())
 
-        const feeOptionPermissions = feeOptions.isFeeRequired
-          ? feeOptions.tokens.map(option =>
-              Utils.ERC20PermissionBuilder.buildTransfer(option.contractAddress as Address, maxUint256)
-            )
-          : []
+        let combinedPermissions: Permission[] = []
+        // do not include fee options if there is no explicit session
+        if (this.initialSessionConfig) {
+          const feeOptions: { isFeeRequired: boolean; tokens: FeeToken[] } = await fetch(
+            `https://${chainName}-relayer.sequence.app/rpc/Relayer/FeeTokens`,
+            options
+          ).then(res => res.json())
 
-        // Combine initial permissions with fee option permissions
-        const combinedPermissions = this.initialSessionConfig
-          ? [...this.initialSessionConfig.permissions, ...feeOptionPermissions]
-          : []
+          const feeOptionPermissions = feeOptions.isFeeRequired
+            ? feeOptions.tokens.map(option =>
+                Utils.ERC20PermissionBuilder.buildTransfer(option.contractAddress as Address, maxUint256)
+              )
+            : []
 
-        // Ensure we have at least one permission
-        if (combinedPermissions.length === 0) {
-          throw new Error('No permissions available for session')
+          // Combine initial permissions with fee option permissions
+          combinedPermissions = this.initialSessionConfig
+            ? [...this.initialSessionConfig.permissions, ...feeOptionPermissions]
+            : []
+
+          // Ensure we have at least one permission
+          if (combinedPermissions.length === 0) {
+            throw new Error('No permissions available for session')
+          }
         }
 
         await this.client.connect(
           this.currentChainId,
-          {
-            ...this.initialSessionConfig,
-            permissions: combinedPermissions,
-            valueLimit: this.initialSessionConfig?.valueLimit || 0n,
-            deadline: this.initialSessionConfig?.deadline || 0n,
-            chainId: this.currentChainId
-          },
+          this.initialSessionConfig
+            ? {
+                ...this.initialSessionConfig,
+                permissions: combinedPermissions,
+                valueLimit: this.initialSessionConfig?.valueLimit || 0n,
+                deadline: this.initialSessionConfig?.deadline || 0n,
+                chainId: this.currentChainId
+              }
+            : undefined,
           {
             preferredLoginMethod: this.loginType,
             ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
@@ -418,34 +425,36 @@ export class SequenceV3Provider implements EIP1193Provider {
         const tx = params[0] as TransactionRequest
         const transactions = [{ to: tx.to!, value: BigInt(tx.value?.toString() ?? '0'), data: tx.data ?? '0x' }]
 
-        const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
+        const { hasPermission, isImplicit } = await this.client.checkForPermissions(this.currentChainId, transactions)
 
         if (hasPermission) {
-          const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
           let selectedFeeOption: Relayer.FeeOption | undefined
+          // do not check fee options if session is implicit
+          if (!isImplicit) {
+            const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+            if (feeOptions && feeOptions.length > 0) {
+              if (this.feeConfirmationHandler) {
+                const id = uuidv4()
+                const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
 
-          if (feeOptions && feeOptions.length > 0) {
-            if (this.feeConfirmationHandler) {
-              const id = uuidv4()
-              const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
+                if (!confirmation.confirmed) {
+                  throw new RpcError(new Error('User rejected the request.'), {
+                    code: 4001,
+                    shortMessage: 'User rejected send transaction request.'
+                  })
+                }
 
-              if (!confirmation.confirmed) {
-                throw new RpcError(new Error('User rejected the request.'), {
-                  code: 4001,
-                  shortMessage: 'User rejected send transaction request.'
-                })
+                if (id !== confirmation.id) {
+                  throw new RpcError(new Error('User confirmation ids do not match'), {
+                    code: -32000,
+                    shortMessage: 'Confirmation ID mismatch'
+                  })
+                }
+                selectedFeeOption = confirmation.feeOption
+              } else {
+                // Default to NATIVE TOKEN fee option if no fee confirmation handler is provided
+                selectedFeeOption = feeOptions.find(option => option.token.contractAddress === zeroAddress)
               }
-
-              if (id !== confirmation.id) {
-                throw new RpcError(new Error('User confirmation ids do not match'), {
-                  code: -32000,
-                  shortMessage: 'Confirmation ID mismatch'
-                })
-              }
-              selectedFeeOption = confirmation.feeOption
-            } else {
-              // Default to NATIVE TOKEN fee option if no fee confirmation handler is provided
-              selectedFeeOption = feeOptions.find(option => option.token.contractAddress === zeroAddress)
             }
           }
           return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
