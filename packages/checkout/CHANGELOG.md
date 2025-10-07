@@ -1,5 +1,15 @@
 # @0xsequence/checkout
 
+## 5.3.21
+
+### Patch Changes
+
+- Transaction receipt fetch improvement
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.21
+  - @0xsequence/hooks@5.3.21
+
 ## 5.3.20
 
 ### Patch Changes
