@@ -3,7 +3,7 @@ import { ConnectConfig, createConfig, createContractPermission } from '@0xsequen
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
-import { zeroAddress } from 'viem'
+import { parseEther, zeroAddress } from 'viem'
 
 import { getEmitterContractAddress } from './constants/permissions'
 
@@ -93,7 +93,7 @@ export const config = createConfig({
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
   chainIds: [ChainId.ARBITRUM_SEPOLIA, ChainId.OPTIMISM],
-  defaultChainId: ChainId.ARBITRUM_SEPOLIA,
+  defaultChainId: ChainId.OPTIMISM,
   google: true,
   apple: true,
   email: true,
@@ -101,10 +101,12 @@ export const config = createConfig({
   walletConnect: {
     projectId: walletConnectProjectId
   },
+  enableImplicitSession: true,
+  includeFeeOptionPermissions: true,
   explicitSessionParams: {
-    chainId: ChainId.ARBITRUM_SEPOLIA,
+    chainId: ChainId.OPTIMISM,
     nativeTokenSpending: {
-      valueLimit: 0n
+      valueLimit: parseEther('0.1')
     },
     expiresIn: {
       days: 1
