@@ -207,6 +207,7 @@ export const waitForTransactionReceipt = async ({
   confirmations
 }: WaitForTransactionReceiptInput): Promise<TransactionReceipt> => {
   const RECEIPT_MAX_WAIT_MINUTES = 3
+  const WAIT_TIME_BETWEEN_REQUESTS_MS = 3000
   const startTime = Date.now()
   const maxWaitTime = RECEIPT_MAX_WAIT_MINUTES * 60 * 1000
 
@@ -218,6 +219,11 @@ export const waitForTransactionReceipt = async ({
     })
 
     receipt = response.receipt
+
+    // Additional wait time between requests. fetchTransactionReceipt will wait for 400 blocks, but this could be short amount of time if the blocktime is very short
+    if (!receipt) {
+      await new Promise(resolve => setTimeout(resolve, WAIT_TIME_BETWEEN_REQUESTS_MS))
+    }
   }
 
   if (!receipt) {
