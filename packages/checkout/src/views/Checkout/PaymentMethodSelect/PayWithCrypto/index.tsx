@@ -550,14 +550,16 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
             <TokenSelector />
           </div>
         </div>
-        <Button
-          label="Add Funds"
-          className="w-full"
-          shape="square"
-          variant="glass"
-          leftIcon={() => <AddIcon size="md" />}
-          onClick={onClickAddFunds}
-        ></Button>
+        {onRampProvider !== TransactionOnRampProvider.unknown && (
+          <Button
+            label="Add Funds"
+            className="w-full"
+            shape="square"
+            variant="glass"
+            leftIcon={() => <AddIcon size="md" />}
+            onClick={onClickAddFunds}
+          ></Button>
+        )}
       </div>
     )
   }
