@@ -25,14 +25,12 @@ export const getTransakLink = async (addFundsSettings: AddFundsSettings, transak
   const data = {
     params: {
       referrerDomain: options.referrerDomain,
-      // fiatAmount: options?.fiatAmount,
       cryptoCurrencyCode: options.defaultCryptoCurrency,
-      walletAddress: options.walletAddress,
-      // fiatCurrency: 'EUR',
+      fiatAmount: options?.fiatAmount,
       fiatCurrency: options?.fiatCurrency,
       network: options.networks ? (options.networks as string).split(',')[0].trim() : undefined,
-      fiatAmount: options?.defaultFiatAmount,
-      disableWalletAddressForm: options.disableWalletAddressForm
+      disableWalletAddressForm: options.disableWalletAddressForm,
+      walletAddress: options.walletAddress
     }
   }
 
