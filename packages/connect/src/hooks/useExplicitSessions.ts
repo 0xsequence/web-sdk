@@ -6,6 +6,7 @@ import { parseEther, parseUnits, type Address } from 'viem'
 import { useConnections } from 'wagmi'
 import { type Connector } from 'wagmi'
 
+import { SEQUENCE_VALUE_FORWARDER } from '../utils/session/constants.js'
 import { createContractPermission } from '../utils/session/createContractPermission.js'
 import { createExplicitSessionConfig } from '../utils/session/createExplicitSessionParams.js'
 import type { ExplicitSessionParams } from '../utils/session/types.js'
@@ -120,6 +121,10 @@ export function useExplicitSessions(): UseExplicitSessionsReturnType {
       setError(null)
 
       if (includeFeeOptionPermissions) {
+        params.permissions.push({
+          target: SEQUENCE_VALUE_FORWARDER,
+          rules: []
+        })
         const { tokens, isFeeRequired, paymentAddress } = await dappClient.getFeeTokens(params.chainId)
         if (tokens && isFeeRequired) {
           const feeOptionPermissions = tokens.map(token =>
