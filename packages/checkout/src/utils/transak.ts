@@ -2,18 +2,18 @@ import type { AddFundsSettings } from '../contexts/AddFundsModal.js'
 
 export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a'
 
-export const getTransakLink = (
+export const getTransakLink = async (
   addFundsSettings: AddFundsSettings,
-  { transakApiUrl, transakApiKey }: { transakApiUrl: string; transakApiKey: string }
+  { transakApiUrl: _, transakApiKey }: { transakApiUrl: string; transakApiKey: string },
+  projectAccessKey: string
 ) => {
   const defaultNetworks =
     'ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain,immutablezkevm'
 
   interface Options {
-    [index: string]: string | undefined
+    [index: string]: string | boolean | undefined
   }
 
-  const url = new URL(transakApiUrl)
   const apiKey = transakApiKey
 
   const options: Options = {
@@ -22,21 +22,43 @@ export const getTransakLink = (
     walletAddress: addFundsSettings.walletAddress,
     fiatAmount: addFundsSettings?.fiatAmount,
     fiatCurrency: addFundsSettings?.fiatCurrency,
-    disableWalletAddressForm: 'true',
-    defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
-    defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',
-    cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList,
+    disableWalletAddressForm: true,
+    defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency,
     networks: addFundsSettings?.networks || defaultNetworks
   }
 
-  Object.keys(options).forEach(k => {
-    const option = options[k]
-    if (option) {
-      url.searchParams.append(k, option)
-    }
-  })
+  const url = new URL('https://api.sequence.app/rpc/API/TransakGetWidgetURL')
 
-  return url.href
+  const data = {
+    params: {
+      referrerDomain: options.referrerDomain,
+      // fiatAmount: options?.fiatAmount,
+      cryptoCurrencyCode: options.defaultCryptoCurrency,
+      walletAddress: options.walletAddress,
+      // fiatCurrency: 'EUR',
+      fiatCurrency: options?.fiatCurrency,
+      network: options.networks ? (options.networks as string).split(',')[0].trim() : undefined,
+      fiatAmount: options?.defaultFiatAmount,
+      disableWalletAddressForm: options.disableWalletAddressForm
+    }
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-key': projectAccessKey
+      },
+      body: JSON.stringify(data)
+    })
+
+    const result = await response.json()
+
+    return result?.url || ''
+  } catch (error) {
+    console.error('Error:', error)
+  }
 }
 
 interface CountriesResult {
