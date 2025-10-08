@@ -13,7 +13,6 @@ import {
   type ExplicitSessionConfig,
   type TransactionRequest as DappClientTransactionRequest
 } from '@0xsequence/dapp-client'
-import type { FeeToken } from '@0xsequence/waas'
 import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
@@ -285,42 +284,35 @@ export class SequenceV3Provider implements EIP1193Provider {
           return address ? [getAddress(address)] : []
         }
         let finalPermissions: Permission[] = this.initialSessionConfig ? [...this.initialSessionConfig.permissions] : []
-        let feeOptions: { isFeeRequired: boolean; tokens: FeeToken[]; paymentAddress: Address } = {
+        let feeOptions: { isFeeRequired: boolean; tokens?: Relayer.Standard.Rpc.FeeToken[]; paymentAddress?: Address } = {
           isFeeRequired: false,
           tokens: [],
           paymentAddress: zeroAddress
         }
         if (this.includeFeeOptionPermissions) {
-          const options = {
-            method: 'POST',
-            headers: {
-              'X-Access-Key': this.projectAccessKey,
-              'Content-Type': 'application/json'
-            },
-            body: '{}'
+          try {
+            feeOptions = await this.client.getFeeTokens(this.currentChainId)
+          } catch (error) {
+            throw new Error('Error getting fee options', { cause: error })
           }
-          const chainName = getNetwork(this.currentChainId).name
-          feeOptions = await fetch(`https://${chainName}-relayer.sequence.app/rpc/Relayer/FeeTokens`, options).then(res =>
-            res.json()
-          )
 
           const feeOptionPermissions = feeOptions.isFeeRequired
-            ? feeOptions.tokens.map(option =>
+            ? feeOptions.tokens?.map((token: Relayer.Standard.Rpc.FeeToken) =>
                 createContractPermission({
-                  address: option.contractAddress as Address,
+                  address: token.contractAddress as Address,
                   functionSignature: 'function transfer(address to, uint256 value)',
                   rules: [
                     {
                       param: 'value',
                       type: 'uint256',
                       condition: 'LESS_THAN_OR_EQUAL',
-                      value: option.decimals === 18 ? parseEther('0.1') : parseUnits('50', option.decimals || 6)
+                      value: token.decimals === 18 ? parseEther('0.1') : parseUnits('50', token.decimals || 6)
                     },
                     {
                       param: 'to',
                       type: 'address',
                       condition: 'EQUAL',
-                      value: feeOptions.paymentAddress
+                      value: feeOptions.paymentAddress as Address
                     }
                   ]
                 })
@@ -328,7 +320,7 @@ export class SequenceV3Provider implements EIP1193Provider {
             : []
 
           // Combine initial permissions with fee option permissions
-          finalPermissions = [...finalPermissions, ...feeOptionPermissions]
+          finalPermissions = [...finalPermissions, ...(feeOptionPermissions || [])]
 
           // Add the value forwarder permissions for native fee token spending if not added already
           const hasValueForwarderPermission = finalPermissions.find(permission => permission.target === SEQUENCE_VALUE_FORWARDER)
