@@ -2,11 +2,7 @@ import type { AddFundsSettings } from '../contexts/AddFundsModal.js'
 
 export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a'
 
-export const getTransakLink = async (
-  addFundsSettings: AddFundsSettings,
-  { transakApiUrl: _, transakApiKey }: { transakApiUrl: string; transakApiKey: string },
-  projectAccessKey: string
-) => {
+export const getTransakLink = async (addFundsSettings: AddFundsSettings, transakApiUrl: string, projectAccessKey: string) => {
   const defaultNetworks =
     'ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain,immutablezkevm'
 
@@ -14,10 +10,7 @@ export const getTransakLink = async (
     [index: string]: string | boolean | undefined
   }
 
-  const apiKey = transakApiKey
-
   const options: Options = {
-    apiKey: apiKey,
     referrerDomain: window.location.origin,
     walletAddress: addFundsSettings.walletAddress,
     fiatAmount: addFundsSettings?.fiatAmount,
@@ -27,7 +20,7 @@ export const getTransakLink = async (
     networks: addFundsSettings?.networks || defaultNetworks
   }
 
-  const url = new URL('https://api.sequence.app/rpc/API/TransakGetWidgetURL')
+  const url = new URL(transakApiUrl)
 
   const data = {
     params: {
@@ -55,7 +48,7 @@ export const getTransakLink = async (
 
     const result = await response.json()
 
-    return result?.url || ''
+    return result?.url
   } catch (error) {
     console.error('Error:', error)
   }

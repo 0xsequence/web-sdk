@@ -110,7 +110,7 @@ export const AddFundsContentSardine = () => {
 
 export const AddFundsContentTransak = () => {
   const { addFundsSettings = {} as AddFundsSettings } = useAddFundsModal()
-  const { transakApiUrl, transakApiKey } = useEnvironmentContext()
+  const { sequenceTransakApiUrl } = useEnvironmentContext()
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const projectAccessKey = useProjectAccessKey()
   const [isLoading, setIsLoading] = useState(false)
@@ -145,15 +145,13 @@ export const AddFundsContentTransak = () => {
 
   async function handleTransakLink({
     addFundsSettings,
-    transakApiUrl,
-    transakApiKey,
+    sequenceTransakApiUrl,
     projectAccessKey,
     setCreationLinkFailed,
     setIsLoading
   }: {
     addFundsSettings: AddFundsSettings
-    transakApiUrl: string
-    transakApiKey: string
+    sequenceTransakApiUrl: string
     projectAccessKey: string
     setCreationLinkFailed: (value: boolean) => void
     setIsLoading: (value: boolean) => void
@@ -161,14 +159,7 @@ export const AddFundsContentTransak = () => {
     try {
       setCreationLinkFailed(false)
       setIsLoading(true)
-      const link = await getTransakLink(
-        addFundsSettings,
-        {
-          transakApiUrl,
-          transakApiKey
-        },
-        projectAccessKey
-      )
+      const link = await getTransakLink(addFundsSettings, sequenceTransakApiUrl, projectAccessKey)
 
       if (link) {
         window.open(link, '_blank')
@@ -184,7 +175,7 @@ export const AddFundsContentTransak = () => {
   }
 
   useEffect(() => {
-    handleTransakLink({ addFundsSettings, transakApiKey, transakApiUrl, projectAccessKey, setIsLoading, setCreationLinkFailed })
+    handleTransakLink({ addFundsSettings, sequenceTransakApiUrl, projectAccessKey, setIsLoading, setCreationLinkFailed })
   }, [])
 
   if (isLoading) {
@@ -217,8 +208,7 @@ export const AddFundsContentTransak = () => {
             onClick={() => {
               handleTransakLink({
                 addFundsSettings,
-                transakApiKey,
-                transakApiUrl,
+                sequenceTransakApiUrl,
                 projectAccessKey,
                 setIsLoading,
                 setCreationLinkFailed

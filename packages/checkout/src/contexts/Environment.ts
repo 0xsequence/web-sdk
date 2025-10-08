@@ -5,6 +5,7 @@ import { createGenericContext } from './genericContext.js'
 export interface EnvironmentOverrides {
   marketplaceApiUrl: string
   transakApiUrl: string
+  sequenceTransakApiUrl: string
   transakApiKey: string
   sardineCheckoutUrl: string
   sardineOnRampUrl: string
