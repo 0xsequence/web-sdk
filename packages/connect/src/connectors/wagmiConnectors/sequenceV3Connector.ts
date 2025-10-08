@@ -11,6 +11,7 @@ import {
   DappClient,
   Relayer,
   type ExplicitSessionConfig,
+  type GetFeeTokensResponse,
   type TransactionRequest as DappClientTransactionRequest
 } from '@0xsequence/dapp-client'
 import { v4 as uuidv4 } from 'uuid'
@@ -284,20 +285,20 @@ export class SequenceV3Provider implements EIP1193Provider {
           return address ? [getAddress(address)] : []
         }
         let finalPermissions: Permission[] = this.initialSessionConfig ? [...this.initialSessionConfig.permissions] : []
-        let feeOptions: { isFeeRequired: boolean; tokens?: Relayer.Standard.Rpc.FeeToken[]; paymentAddress?: Address } = {
+        let feeTokens: GetFeeTokensResponse = {
           isFeeRequired: false,
           tokens: [],
           paymentAddress: zeroAddress
         }
         if (this.includeFeeOptionPermissions) {
           try {
-            feeOptions = await this.client.getFeeTokens(this.currentChainId)
+            feeTokens = await this.client.getFeeTokens(this.currentChainId)
           } catch (error) {
             throw new Error('Error getting fee options', { cause: error })
           }
 
-          const feeOptionPermissions = feeOptions.isFeeRequired
-            ? feeOptions.tokens?.map((token: Relayer.Standard.Rpc.FeeToken) =>
+          const feeOptionPermissions = feeTokens.isFeeRequired
+            ? feeTokens.tokens?.map((token: Relayer.Standard.Rpc.FeeToken) =>
                 createContractPermission({
                   address: token.contractAddress as Address,
                   functionSignature: 'function transfer(address to, uint256 value)',
@@ -312,7 +313,7 @@ export class SequenceV3Provider implements EIP1193Provider {
                       param: 'to',
                       type: 'address',
                       condition: 'EQUAL',
-                      value: feeOptions.paymentAddress as Address
+                      value: feeTokens.paymentAddress as Address
                     }
                   ]
                 })
@@ -342,7 +343,7 @@ export class SequenceV3Provider implements EIP1193Provider {
                 deadline: this.initialSessionConfig?.deadline || 0n,
                 chainId: this.currentChainId
               }
-            : feeOptions.isFeeRequired && this.includeFeeOptionPermissions
+            : feeTokens.isFeeRequired && this.includeFeeOptionPermissions
               ? {
                   deadline: BigInt(Math.floor(Date.now() / 1000)) + BigInt(60 * 60 * 24 * 7),
                   valueLimit: parseEther('0.1'),
