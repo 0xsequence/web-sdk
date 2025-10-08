@@ -2,9 +2,11 @@
 
 import { type DappClient, type ExplicitSession } from '@0xsequence/dapp-client'
 import { useCallback, useState } from 'react'
+import { parseEther, parseUnits, type Address } from 'viem'
 import { useConnections } from 'wagmi'
 import { type Connector } from 'wagmi'
 
+import { createContractPermission } from '../utils/session/createContractPermission.js'
 import { createExplicitSessionConfig } from '../utils/session/createExplicitSessionParams.js'
 import type { ExplicitSessionParams } from '../utils/session/types.js'
 
@@ -23,9 +25,10 @@ export type UseExplicitSessionsReturnType = {
    * This will open a popup asking the user to approve the new explicit session.
    *
    * @param params The explicit session params needed to create an explicit session {@link ExplicitSessionParams}.
+   * @param includeFeeOptionPermissions Whether to request fee option permissions with this session (Used to pay for gas fees).
    * @returns A promise that resolves when the request is sent, or rejects if an error occurs.
    */
-  addExplicitSession: (params: ExplicitSessionParams) => Promise<void>
+  addExplicitSession: (params: ExplicitSessionParams, includeFeeOptionPermissions?: boolean) => Promise<void>
 
   /**
    * Function to modify an existing explicit session.
@@ -110,11 +113,38 @@ export function useExplicitSessions(): UseExplicitSessionsReturnType {
   }, [connections])
 
   const addExplicitSession = useCallback(
-    async (params: ExplicitSessionParams) => {
+    async (params: ExplicitSessionParams, includeFeeOptionPermissions?: boolean) => {
       const dappClient = getDappClient()
 
       setIsLoading(true)
       setError(null)
+
+      if (includeFeeOptionPermissions) {
+        const { tokens, isFeeRequired, paymentAddress } = await dappClient.getFeeTokens(params.chainId)
+        if (tokens && isFeeRequired) {
+          const feeOptionPermissions = tokens.map(token =>
+            createContractPermission({
+              address: token.contractAddress as Address,
+              functionSignature: 'function transfer(address to, uint256 value)',
+              rules: [
+                {
+                  param: 'value',
+                  type: 'uint256',
+                  condition: 'LESS_THAN_OR_EQUAL',
+                  value: token.decimals === 18 ? parseEther('0.1') : parseUnits('50', token.decimals || 6)
+                },
+                {
+                  param: 'to',
+                  type: 'address',
+                  condition: 'EQUAL',
+                  value: paymentAddress as Address
+                }
+              ]
+            })
+          )
+          params.permissions.push(...feeOptionPermissions)
+        }
+      }
 
       const explicitSessionConfig = createExplicitSessionConfig(params)
 
