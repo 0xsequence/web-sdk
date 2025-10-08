@@ -75,7 +75,6 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     nodesUrl: params.nodesUrl,
     relayerUrl: params.relayerUrl
   })
-  console.log('params', params)
   const provider = new SequenceV3Provider(
     client,
     params.defaultNetwork,
