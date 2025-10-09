@@ -1,22 +1,24 @@
 import {
+  createContractPermission,
   createExplicitSessionConfig,
   getNetwork,
   LocalStorageKey,
+  SEQUENCE_VALUE_FORWARDER,
   type ExplicitSessionParams,
   type Permission
 } from '@0xsequence/connect'
 import {
   DappClient,
   Relayer,
-  Utils,
   type ExplicitSessionConfig,
+  type GetFeeTokensResponse,
   type TransactionRequest as DappClientTransactionRequest
 } from '@0xsequence/dapp-client'
-import type { FeeToken } from '@0xsequence/waas'
 import { v4 as uuidv4 } from 'uuid'
 import {
   getAddress,
-  maxUint256,
+  parseEther,
+  parseUnits,
   RpcError,
   zeroAddress,
   type Address,
@@ -45,6 +47,7 @@ export interface BaseSequenceV3ConnectorOptions {
   loginType: 'email' | 'google' | 'apple' | 'passkey'
   explicitSessionParams?: ExplicitSessionParams
   enableImplicitSession?: boolean
+  includeFeeOptionPermissions?: boolean
   nodesUrl?: string
   relayerUrl?: string
 }
@@ -79,7 +82,8 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     params.projectAccessKey,
     params.loginType,
     params.explicitSessionParams ? createExplicitSessionConfig(params.explicitSessionParams) : undefined,
-    params.enableImplicitSession
+    params.enableImplicitSession,
+    params.includeFeeOptionPermissions
   )
 
   return createConnector<Provider, Properties, StorageItem>(config => {
@@ -200,6 +204,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private enableImplicitSession?: boolean
   private loginType: 'email' | 'google' | 'apple' | 'passkey'
   private initialSessionConfig?: ExplicitSessionConfig
+  private includeFeeOptionPermissions?: boolean
 
   email?: string
 
@@ -221,7 +226,8 @@ export class SequenceV3Provider implements EIP1193Provider {
     projectAccessKey: string,
     loginType: 'email' | 'google' | 'apple' | 'passkey',
     initialSessionConfig?: ExplicitSessionConfig,
-    enableImplicitSession?: boolean
+    enableImplicitSession?: boolean,
+    includeFeeOptionPermissions?: boolean
   ) {
     this.currentChainId = defaultNetwork
     this.nodesUrl = nodesUrl
@@ -229,6 +235,7 @@ export class SequenceV3Provider implements EIP1193Provider {
     this.initialSessionConfig = initialSessionConfig
     this.projectAccessKey = projectAccessKey
     this.enableImplicitSession = enableImplicitSession
+    this.includeFeeOptionPermissions = includeFeeOptionPermissions || false
   }
 
   on<TEvent extends keyof EIP1193EventMap>(event: TEvent, listener: EIP1193EventMap[TEvent]): void {
@@ -277,45 +284,73 @@ export class SequenceV3Provider implements EIP1193Provider {
           const address = this.client.getWalletAddress()
           return address ? [getAddress(address)] : []
         }
-        const options = {
-          method: 'POST',
-          headers: {
-            'X-Access-Key': this.projectAccessKey,
-            'Content-Type': 'application/json'
-          },
-          body: '{}'
+        let finalPermissions: Permission[] = this.initialSessionConfig ? [...this.initialSessionConfig.permissions] : []
+        let feeTokens: GetFeeTokensResponse = {
+          isFeeRequired: false,
+          tokens: [],
+          paymentAddress: zeroAddress
         }
-        const chainName = getNetwork(this.currentChainId).name
-        const feeOptions: { isFeeRequired: boolean; tokens: FeeToken[] } = await fetch(
-          `https://${chainName}-relayer.sequence.app/rpc/Relayer/FeeTokens`,
-          options
-        ).then(res => res.json())
+        if (this.includeFeeOptionPermissions) {
+          try {
+            feeTokens = await this.client.getFeeTokens(this.currentChainId)
+          } catch (error) {
+            throw new Error('Error getting fee options', { cause: error })
+          }
 
-        const feeOptionPermissions = feeOptions.isFeeRequired
-          ? feeOptions.tokens.map(option =>
-              Utils.ERC20PermissionBuilder.buildTransfer(option.contractAddress as Address, maxUint256)
-            )
-          : []
+          const feeOptionPermissions = feeTokens.isFeeRequired
+            ? feeTokens.tokens?.map((token: Relayer.Standard.Rpc.FeeToken) =>
+                createContractPermission({
+                  address: token.contractAddress as Address,
+                  functionSignature: 'function transfer(address to, uint256 value)',
+                  rules: [
+                    {
+                      param: 'value',
+                      type: 'uint256',
+                      condition: 'LESS_THAN_OR_EQUAL',
+                      value: token.decimals === 18 ? parseEther('0.1') : parseUnits('50', token.decimals || 6)
+                    },
+                    {
+                      param: 'to',
+                      type: 'address',
+                      condition: 'EQUAL',
+                      value: feeTokens.paymentAddress as Address
+                    }
+                  ]
+                })
+              )
+            : []
 
-        // Combine initial permissions with fee option permissions
-        const combinedPermissions = this.initialSessionConfig
-          ? [...this.initialSessionConfig.permissions, ...feeOptionPermissions]
-          : []
+          // Combine initial permissions with fee option permissions
+          finalPermissions = [...finalPermissions, ...(feeOptionPermissions || [])]
 
-        // Ensure we have at least one permission
-        if (combinedPermissions.length === 0) {
-          throw new Error('No permissions available for session')
+          // Add the value forwarder permissions for native fee token spending if not added already
+          const hasValueForwarderPermission = finalPermissions.find(permission => permission.target === SEQUENCE_VALUE_FORWARDER)
+          if (!hasValueForwarderPermission) {
+            finalPermissions.push({
+              target: SEQUENCE_VALUE_FORWARDER,
+              rules: []
+            })
+          }
         }
 
         await this.client.connect(
           this.currentChainId,
-          {
-            ...this.initialSessionConfig,
-            permissions: combinedPermissions,
-            valueLimit: this.initialSessionConfig?.valueLimit || 0n,
-            deadline: this.initialSessionConfig?.deadline || 0n,
-            chainId: this.currentChainId
-          },
+          this.initialSessionConfig
+            ? {
+                ...this.initialSessionConfig,
+                permissions: finalPermissions,
+                valueLimit: this.initialSessionConfig?.valueLimit || 0n,
+                deadline: this.initialSessionConfig?.deadline || 0n,
+                chainId: this.currentChainId
+              }
+            : feeTokens.isFeeRequired && this.includeFeeOptionPermissions
+              ? {
+                  deadline: BigInt(Math.floor(Date.now() / 1000)) + BigInt(60 * 60 * 24 * 7),
+                  valueLimit: parseEther('0.1'),
+                  chainId: this.currentChainId,
+                  permissions: finalPermissions
+                }
+              : undefined,
           {
             preferredLoginMethod: this.loginType,
             ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
@@ -443,11 +478,9 @@ export class SequenceV3Provider implements EIP1193Provider {
                 })
               }
               selectedFeeOption = confirmation.feeOption
-            } else {
-              // Default to NATIVE TOKEN fee option if no fee confirmation handler is provided
-              selectedFeeOption = feeOptions.find(option => option.token.contractAddress === zeroAddress)
             }
           }
+          // @note no fee option selected, in this case dapp should sponsor the transaction
           return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
         } else {
           return new Promise((resolve, reject) => {

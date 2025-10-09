@@ -37,6 +37,7 @@ export interface DefaultConnectorOptions extends CommonConnectorOptions {
    */
   walletConnectProjectId?: string
   explicitSessionParams?: ExplicitSessionParams
+  includeFeeOptionPermissions?: boolean
   enableImplicitSession?: boolean
   nodesUrl?: string
   relayerUrl?: string
@@ -59,6 +60,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         dappOrigin: dappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
+        includeFeeOptionPermissions: options.includeFeeOptionPermissions,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
@@ -77,6 +79,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         dappOrigin: dappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
+        includeFeeOptionPermissions: options.includeFeeOptionPermissions,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
@@ -95,6 +98,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         dappOrigin: dappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
+        includeFeeOptionPermissions: options.includeFeeOptionPermissions,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
@@ -113,6 +117,7 @@ export const getDefaultConnectors = (options: DefaultConnectorOptions): CreateCo
         dappOrigin: dappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
+        includeFeeOptionPermissions: options.includeFeeOptionPermissions,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
