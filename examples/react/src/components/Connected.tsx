@@ -514,7 +514,7 @@ export const Connected = () => {
     try {
       const session = getSessionConfigForType(window.location.origin, chainId, permissionType)
       if (session) {
-        await addExplicitSession(session)
+        await addExplicitSession(session, true)
         alert('Permission added successfully!')
       } else {
         alert('No permissions to request for the selected type.')

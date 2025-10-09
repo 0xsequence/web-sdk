@@ -1,7 +1,6 @@
 import { type ExplicitSessionConfig } from '@0xsequence/dapp-client'
 import type { Address } from 'viem'
 
-import { SEQUENCE_VALUE_FORWARDER } from './constants.js'
 import type { ExplicitSessionParams, Permission } from './types.js'
 
 /**
@@ -29,11 +28,7 @@ export function createExplicitSessionConfig(params: ExplicitSessionParams): Expl
     throw new Error('createExplicitSessionParams: At least one permission is required.')
   }
 
-  // Always include SEQUENCE_VALUE_FORWARDER to enable ETH as fee option
   const nativeTokenReceivers: Address[] = [...(params.nativeTokenSpending.allowedRecipients || [])]
-  if (!nativeTokenReceivers.includes(SEQUENCE_VALUE_FORWARDER as Address)) {
-    nativeTokenReceivers.push(SEQUENCE_VALUE_FORWARDER as Address)
-  }
 
   const nativeTokenSpendingPermissions = nativeTokenReceivers.map(receiver => ({
     target: receiver as Address,
