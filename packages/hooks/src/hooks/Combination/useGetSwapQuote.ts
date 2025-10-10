@@ -20,7 +20,7 @@ import { useAPIClient } from '../API/useAPIClient.js'
  * - Transaction data generation for the swap
  * - Error handling for failed API calls
  *
- * Go to {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSwapQuote} for more detailed documentation.
+ * Go to {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetSwapQuote} for more detailed documentation.
  *
  * @param getSwapQuoteArgs - Configuration object for the swap quote query:
  * - params: The parameters for the swap quote query

@@ -73,7 +73,7 @@ const getTokenBalancesSummary = async (
  *   - `decimals`: Number of decimals
  *   - `logoURI`: URL of the token logo
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetTokenBalancesSummary} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetTokenBalancesSummary} for more detailed documentation.
  *
  * @example
  * ```tsx

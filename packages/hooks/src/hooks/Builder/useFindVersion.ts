@@ -9,7 +9,6 @@ import { useConfig } from '../useConfig.js'
  *
  * This hook uses React Query to fetch and cache the version of a contract.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useFindVersion} for more detailed documentation.
  *
  * @param args - The arguments for the hook:
  *   - uid: The UID of the contract

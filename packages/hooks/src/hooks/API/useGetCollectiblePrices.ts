@@ -32,7 +32,7 @@ const getCollectiblePrices = async (apiClient: SequenceAPIClient, tokens: Token[
  * Used in various UI components to display NFT valuations, particularly in collection views
  * and transaction details.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetCollectiblePrices} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetCollectiblePrices} for more detailed documentation.
  *
  * @param tokens - Array of tokens to get prices for. Each token must include:
  *   - chainId: The chain ID where the NFT exists

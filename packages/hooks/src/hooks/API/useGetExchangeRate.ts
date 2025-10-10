@@ -13,7 +13,7 @@ import { useAPIClient } from './useAPIClient.js'
  * Used throughout the wallet widget and checkout components to display fiat values
  * for tokens and NFTs.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetExchangeRate} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetExchangeRate} for more detailed documentation.
  *
  * @param toCurrency - The target currency code (e.g., 'EUR', 'GBP', 'JPY').
  *                     If 'USD' is provided, returns 1 as the conversion rate.

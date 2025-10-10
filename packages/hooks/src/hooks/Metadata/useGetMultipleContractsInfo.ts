@@ -28,7 +28,7 @@ const getMultipleContractsInfo = async (
  * for cross-chain applications. Can fetch any combination of NFTs (ERC721/ERC1155) and
  * tokens (ERC20) across different chains simultaneously.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetMultipleContractsInfo} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetMultipleContractsInfo} for more detailed documentation.
  *
  * @param useGetMultipleContractsInfoArgs - Array of contract info arguments
  * @param useGetMultipleContractsInfoArgs[].chainID - Chain ID as string (e.g., "1" for Ethereum mainnet)

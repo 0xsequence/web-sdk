@@ -31,7 +31,7 @@ const getNativeTokenBalance = async (
  *
  * @returns Query result containing an array of TokenBalance objects
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetNativeTokenBalance} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetNativeTokenBalance} for more detailed documentation.
  *
  * @example
  * ```tsx

@@ -48,7 +48,7 @@ const getSwapRoutes = async (
  * This hook uses React Query to fetch and cache swap routes from the Sequence API.
  * Stale time is set to one hour by default
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSwapRoutes} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetSwapRoutes} for more detailed documentation.
  *
  * @param args - Arguments for fetching swap routes:
  *   - walletAddress: The address of the user's wallet
