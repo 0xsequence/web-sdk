@@ -21,7 +21,7 @@ type UseAddFundsModalReturnType = {
  * The modal integration is powered by Transak, allowing users to purchase crypto directly within
  * your application.
  *
- * Go to {@link https://docs.sequence.xyz/sdk/web/hooks/useAddFundsModal} for more detailed documentation.
+ * Go to {@link https://docs.sequence.xyz/sdk/web/checkout-sdk/hooks/useAddFundsModal} for more detailed documentation.
  *
  * @returns An object containing functions and settings for the On-ramp modal {@link UseAddFundsModalReturnType}
  *

@@ -190,7 +190,7 @@ export interface UseWalletsReturnType {
  * For embedded wallets, it also provides access to linked wallets - additional
  * wallets that have been linked to the primary embedded wallet.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useWallets} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/ecosystem/hooks/useWallets} for more detailed documentation.
  *
  * @returns An object containing wallet information and management functions {@link UseWalletsReturnType}
  *

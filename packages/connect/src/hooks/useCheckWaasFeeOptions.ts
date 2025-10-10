@@ -15,7 +15,7 @@ import { useConnections } from 'wagmi'
  * for unsponsored transactions. It's particularly useful in
  * wallet interfaces and transaction confirmation flows.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useCheckWaasFeeOptions} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/embedded/hooks/useCheckWaasFeeOptions} for more detailed documentation.
  *
  * @returns A function that accepts transaction details and returns fee information
  * @returns.feeQuote - The fee quote for the transaction if available

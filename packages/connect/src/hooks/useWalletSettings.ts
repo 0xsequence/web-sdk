@@ -9,7 +9,7 @@ import { useWalletConfigContext } from '../contexts/WalletConfig.js'
  * - See if external wallets are visible on the Connect Modal
  * - See if linked wallets are visible on the Connect Modal
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useWalletSettings} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/ecosystem/hooks/useWalletSettings} for more detailed documentation.
  *
  * @returns An object containing:
  * - `displayedAssets` - Array of assets to display, each with a contract address and chain ID

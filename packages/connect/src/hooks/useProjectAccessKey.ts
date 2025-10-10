@@ -7,7 +7,7 @@ import { useConnectConfigContext } from '../contexts/ConnectConfig.js'
  * identify your application with Sequence services. It is used across various SDK features
  * including marketplace integration and wallet connections.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useProjectAccessKey} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/ecosystem/hooks/useProjectAccessKey} for more detailed documentation.
  *
  * @returns {string} The project access key configured for the application
  *

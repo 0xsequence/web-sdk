@@ -21,7 +21,7 @@ type UseSwapModalReturnType = {
  * The Swap modal allows users to select tokens from their wallet to swap to a specified target token,
  * with the option to execute additional transactions after the swap completes.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useSwapModal} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/checkout-sdk/hooks/useSwapModal} for more detailed documentation.
  *
  * @returns An object containing functions to control the Swap modal and its state {@link UseSwapModalReturnType}
  *

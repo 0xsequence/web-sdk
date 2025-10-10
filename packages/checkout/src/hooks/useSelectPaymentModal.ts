@@ -23,7 +23,7 @@ type UseSelectPaymentModalReturnType = {
  * - Pay with credit/debit card
  * - Receive funds from another wallet
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useSelectPaymentModal} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/checkout-sdk/hooks/useSelectPaymentModal} for more detailed documentation.
  *
  * @returns An object containing functions to control the Payment Selection modal and its state {@link UseSelectPaymentModalReturnType}
  *

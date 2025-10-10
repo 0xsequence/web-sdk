@@ -77,7 +77,7 @@ export const getERC1155SaleContractConfig = ({
  * - Generating the proper transaction data
  * - Opening and managing the checkout modal
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useERC1155SaleContractCheckout} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/checkout-sdk/hooks/useERC1155SaleContractCheckout} for more detailed documentation.
  *
  * @param {object} params - Configuration options for the ERC-1155 sale contract checkout
  * @param {number} params.chain - Chain ID where the sale contract is deployed
