@@ -24,6 +24,7 @@ import { useAccount, useChainId, usePublicClient, useReadContract, useSwitchChai
 
 import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import { EVENT_SOURCE } from '../../../../constants/index.js'
+import { type PaymentMethodSelectionParams } from '../../../../contexts/NavigationCheckout.js'
 import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentModal.js'
 import { useAddFundsModal } from '../../../../hooks/index.js'
 import { useSelectPaymentModal, useTransactionStatusModal } from '../../../../hooks/index.js'
@@ -45,6 +46,21 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const { analytics } = useAnalyticsContext()
   const [isError, setIsError] = useState<boolean>(false)
   const { navigation, setNavigation } = useNavigationCheckout()
+
+  const isFirstVisit = (navigation.params as PaymentMethodSelectionParams).isFirstVisit
+  console.log('isFirstVisit', isFirstVisit)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNavigation({
+        location: 'payment-method-selection',
+        params: {
+          ...navigation.params,
+          isFirstVisit: false
+        }
+      })
+    }, 5000)
+  }, [])
 
   const {
     chain,

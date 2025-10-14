@@ -124,7 +124,8 @@ export const TokenSelectionContent = () => {
                       selectedCurrency: {
                         address: token.contractAddress,
                         chainId: token.chainId
-                      }
+                      },
+                      isFirstVisit: false
                     }
                   }
                 ])

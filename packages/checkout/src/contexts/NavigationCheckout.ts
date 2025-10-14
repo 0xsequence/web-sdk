@@ -7,6 +7,7 @@ export interface PaymentMethodSelectionParams {
     address: string
     chainId: number
   }
+  isFirstVisit: boolean
 }
 
 export interface PaymentMehodSelection {
