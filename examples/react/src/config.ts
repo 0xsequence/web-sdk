@@ -15,7 +15,7 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 // @ts-ignore
 const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
-const projectAccessKey = isDev ? 'AQAAAAAAAAK2JvvZhWqZ51riasWBftkrVXE' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAKqC8tV0Mgsd0BGlI2bzanNTdEE'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
@@ -101,6 +101,8 @@ export const config = createConfig({
   walletConnect: {
     projectId: walletConnectProjectId
   },
+  nodesUrl: 'https://dev-nodes.sequence.app/{network}',
+  relayerUrl: 'https://dev-{network}-relayer.sequence.app',
   enableImplicitSession: true,
   includeFeeOptionPermissions: true,
   explicitSessionParams: {
