@@ -125,7 +125,7 @@ export const TokenSelectionContent = () => {
                         address: token.contractAddress,
                         chainId: token.chainId
                       },
-                      isFirstVisit: false
+                      isInitialBalanceChecked: true
                     }
                   }
                 ])

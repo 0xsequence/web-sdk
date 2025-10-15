@@ -47,21 +47,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const [isError, setIsError] = useState<boolean>(false)
   const { navigation, setNavigation } = useNavigationCheckout()
 
-  const isFirstVisit = (navigation.params as PaymentMethodSelectionParams).isFirstVisit
-  console.log('isFirstVisit', isFirstVisit)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setNavigation({
-        location: 'payment-method-selection',
-        params: {
-          ...navigation.params,
-          isFirstVisit: false
-        }
-      })
-    }, 5000)
-  }, [])
-
   const {
     chain,
     collectibles,
@@ -185,13 +170,16 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     }
   })
 
+  const isInitialBalanceChecked = (navigation.params as PaymentMethodSelectionParams).isInitialBalanceChecked
+
   const isLoading =
     isLoadingCoinPrice ||
     isLoadingCurrencyInfo ||
     (allowanceIsLoading && !isNativeToken) ||
     isLoadingSwapQuote ||
     tokenBalancesIsLoading ||
-    isLoadingSelectedCurrencyInfo
+    isLoadingSelectedCurrencyInfo ||
+    !isInitialBalanceChecked
 
   const tokenBalance = tokenBalancesData?.pages?.[0]?.balances?.find(balance =>
     compareAddress(balance.contractAddress, selectedCurrency.address)
@@ -199,6 +187,37 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
   const isInsufficientBalance =
     tokenBalance === undefined || (tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice))
+
+  const findSwapQuote = async () => {
+    // find new swap quote logic here
+    // useFindSwapRoutes: fromTokens[x].price => raw value for the full transactions
+    // get all balances from the swap routes and comprate each
+
+    // is swap quote found update with new selected currency, otherwise simply update balance check flag
+    setNavigation({
+      location: 'payment-method-selection',
+      params: {
+        ...navigation.params,
+        isInitialBalanceChecked: true
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (!isInitialBalanceChecked && !tokenBalancesIsLoading) {
+      if (isInsufficientBalance) {
+        findSwapQuote()
+      } else {
+        setNavigation({
+          location: 'payment-method-selection',
+          params: {
+            ...navigation.params,
+            isInitialBalanceChecked: true
+          }
+        })
+      }
+    }
+  }, [isInitialBalanceChecked, tokenBalancesIsLoading])
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 

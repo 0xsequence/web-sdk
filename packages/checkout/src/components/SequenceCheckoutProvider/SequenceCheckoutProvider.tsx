@@ -57,7 +57,7 @@ const getDefaultLocationCheckout = (): NavigationCheckout => {
   return {
     location: 'payment-method-selection',
     params: {
-      isFirstVisit: true
+      isInitialBalanceChecked: false
     }
   }
 }
