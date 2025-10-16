@@ -1,6 +1,7 @@
-import { Spinner, Text } from '@0xsequence/design-system'
+import { useProjectAccessKey } from '@0xsequence/connect'
+import { Button, Spinner, Text } from '@0xsequence/design-system'
 import { useAPIClient } from '@0xsequence/hooks'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { HEADER_HEIGHT } from '../constants/index.js'
 import type { AddFundsSettings } from '../contexts/AddFundsModal.js'
@@ -109,8 +110,11 @@ export const AddFundsContentSardine = () => {
 
 export const AddFundsContentTransak = () => {
   const { addFundsSettings = {} as AddFundsSettings } = useAddFundsModal()
-  const { transakApiUrl, transakApiKey } = useEnvironmentContext()
+  const { sequenceTransakApiUrl } = useEnvironmentContext()
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
+  const projectAccessKey = useProjectAccessKey()
+  const [isLoading, setIsLoading] = useState(false)
+  const [creationLinkFailed, setCreationLinkFailed] = useState(false)
 
   useEffect(() => {
     const handleMessage = (message: MessageEvent<any>) => {
@@ -139,26 +143,86 @@ export const AddFundsContentTransak = () => {
     }
   }, [])
 
-  const link = getTransakLink(addFundsSettings, {
-    transakApiUrl,
-    transakApiKey
-  })
+  async function handleTransakLink({
+    addFundsSettings,
+    sequenceTransakApiUrl,
+    projectAccessKey,
+    setCreationLinkFailed,
+    setIsLoading
+  }: {
+    addFundsSettings: AddFundsSettings
+    sequenceTransakApiUrl: string
+    projectAccessKey: string
+    setCreationLinkFailed: (value: boolean) => void
+    setIsLoading: (value: boolean) => void
+  }) {
+    try {
+      setCreationLinkFailed(false)
+      setIsLoading(true)
+      const link = await getTransakLink(addFundsSettings, sequenceTransakApiUrl, projectAccessKey)
+
+      if (link) {
+        window.open(link, '_blank')
+      } else {
+        setCreationLinkFailed(true)
+      }
+      setIsLoading(false)
+    } catch (error) {
+      console.error(`The creation of the Transak link has failed. Error: `, error)
+      setCreationLinkFailed(true)
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    handleTransakLink({ addFundsSettings, sequenceTransakApiUrl, projectAccessKey, setIsLoading, setCreationLinkFailed })
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div
+        className="flex items-center justify-center w-full px-4 pb-4 h-full"
+        style={{
+          height: '600px',
+          paddingTop: HEADER_HEIGHT
+        }}
+      >
+        <Spinner size="lg" />
+      </div>
+    )
+  }
 
   return (
     <div
-      className="flex items-center w-full px-4 pb-4 h-full"
+      className="flex items-center justify-center w-full px-4 pb-4 h-full"
       style={{
         height: '600px',
         paddingTop: HEADER_HEIGHT
       }}
     >
-      <iframe
-        ref={iframeRef}
-        className="w-full h-full border-0"
-        src={link}
-        allow="camera;microphone;payment"
-        referrerPolicy="strict-origin-when-cross-origin"
-      />
+      {creationLinkFailed ? (
+        <div className="flex flex-col gap-2 items-center">
+          <Text color="text100">The creation of the Transak link failed.</Text>
+          <Button
+            className="w-fit"
+            onClick={() => {
+              handleTransakLink({
+                addFundsSettings,
+                sequenceTransakApiUrl,
+                projectAccessKey,
+                setIsLoading,
+                setCreationLinkFailed
+              })
+            }}
+          >
+            Try Again
+          </Button>
+        </div>
+      ) : (
+        <div className="flex gap-2 items-center text-center">
+          <Text color="text100">Once you've added funds, you can close this window and try buying with crypto again.</Text>
+        </div>
+      )}
     </div>
   )
 }
