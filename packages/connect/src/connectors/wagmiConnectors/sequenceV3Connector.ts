@@ -9,8 +9,9 @@ import {
 } from '@0xsequence/connect'
 import {
   DappClient,
-  Relayer,
   type ExplicitSessionConfig,
+  type FeeOption,
+  type FeeToken,
   type GetFeeTokensResponse,
   type TransactionRequest as DappClientTransactionRequest
 } from '@0xsequence/dapp-client'
@@ -55,10 +56,10 @@ export interface BaseSequenceV3ConnectorOptions {
 export interface FeeOptionConfirmationHandler {
   confirmFeeOption(
     id: string,
-    options: Relayer.FeeOption[],
+    options: FeeOption[],
     txs: TransactionRequest[],
     chainId: number
-  ): Promise<{ id: string; feeOption?: Relayer.FeeOption; confirmed: boolean }>
+  ): Promise<{ id: string; feeOption?: FeeOption; confirmed: boolean }>
 }
 
 export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
@@ -298,7 +299,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           }
 
           const feeOptionPermissions = feeTokens.isFeeRequired
-            ? feeTokens.tokens?.map((token: Relayer.Standard.Rpc.FeeToken) =>
+            ? feeTokens.tokens?.map((token: FeeToken) =>
                 createContractPermission({
                   address: token.contractAddress as Address,
                   functionSignature: 'function transfer(address to, uint256 value)',
@@ -456,8 +457,14 @@ export class SequenceV3Provider implements EIP1193Provider {
         const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
 
         if (hasPermission) {
-          const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
-          let selectedFeeOption: Relayer.FeeOption | undefined
+          let feeOptions: FeeOption[] = []
+          let selectedFeeOption: FeeOption | undefined
+          try {
+            feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+          } catch (error) {
+            console.error('Error getting fee options:', error)
+            throw new Error('Error getting fee options', { cause: error })
+          }
 
           if (feeOptions && feeOptions.length > 0) {
             if (this.feeConfirmationHandler) {
@@ -481,7 +488,13 @@ export class SequenceV3Provider implements EIP1193Provider {
             }
           }
           // @note no fee option selected, in this case dapp should sponsor the transaction
-          return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+          try {
+            const response = await this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+            return response
+          } catch (error) {
+            console.error('Error sending transaction:', error)
+            throw new RpcError(new Error(error as string), { code: -32603, shortMessage: error as string })
+          }
         } else {
           return new Promise((resolve, reject) => {
             const unsubscribe = this.client.on('walletActionResponse', (data: any) => {

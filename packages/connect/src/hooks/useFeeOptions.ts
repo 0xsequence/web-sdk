@@ -1,6 +1,6 @@
 'use client'
 
-import type { Relayer } from '@0xsequence/dapp-client'
+import type { FeeOption } from '@0xsequence/dapp-client'
 import { useIndexerClient } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ import { Deferred } from '../utils/deferred.js'
 
 // --- Shared State Management ---
 let sharedPendingConfirmation: FeeOptionConfirmation | undefined = undefined
-let sharedDeferred: Deferred<{ id: string; feeOption?: Relayer.FeeOption; confirmed: boolean }> | undefined = undefined
+let sharedDeferred: Deferred<{ id: string; feeOption?: FeeOption; confirmed: boolean }> | undefined = undefined
 let listeners: React.Dispatch<React.SetStateAction<FeeOptionConfirmation | undefined>>[] = []
 
 const notifyListeners = (state: FeeOptionConfirmation | undefined) => {
@@ -24,7 +24,7 @@ const notifyListeners = (state: FeeOptionConfirmation | undefined) => {
 /**
  * Extended FeeOption type that includes balance information
  */
-export type FeeOptionExtended = Relayer.FeeOption & {
+export type FeeOptionExtended = FeeOption & {
   /** Raw balance string */
   balance: string
   /** Formatted balance with proper decimals */
@@ -40,7 +40,7 @@ export type FeeOptionConfirmation = {
   /** Unique identifier for the fee confirmation */
   id: string
   /** Available fee options, possibly with balance information */
-  options: Relayer.FeeOption[] | FeeOptionExtended[]
+  options: FeeOption[] | FeeOptionExtended[]
   /** Chain ID where the transaction will be executed */
   chainId: number
 }
@@ -166,11 +166,11 @@ export function useFeeOptions(config?: FeeOptionsConfig): UseFeeOptionsReturnTyp
     v3Provider.feeConfirmationHandler = {
       async confirmFeeOption(
         id: string,
-        options: Relayer.FeeOption[],
+        options: FeeOption[],
         txs: TransactionRequest[],
         chainId: number
-      ): Promise<{ id: string; feeOption?: Relayer.FeeOption; confirmed: boolean }> {
-        const pending = new Deferred<{ id: string; feeOption?: Relayer.FeeOption; confirmed: boolean }>()
+      ): Promise<{ id: string; feeOption?: FeeOption; confirmed: boolean }> {
+        const pending = new Deferred<{ id: string; feeOption?: FeeOption; confirmed: boolean }>()
         sharedDeferred = pending
         notifyListeners(undefined)
 
