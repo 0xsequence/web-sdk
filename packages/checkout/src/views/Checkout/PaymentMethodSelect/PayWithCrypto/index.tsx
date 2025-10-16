@@ -13,7 +13,6 @@ import {
   useGetCoinPrices,
   useGetContractInfo,
   useGetSwapQuote,
-  useGetSwapRoutes,
   useGetTokenBalancesSummary,
   useIndexerClient
 } from '@0xsequence/hooks'
@@ -30,6 +29,8 @@ import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentMo
 import { useAddFundsModal } from '../../../../hooks/index.js'
 import { useSelectPaymentModal, useTransactionStatusModal } from '../../../../hooks/index.js'
 import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
+
+import { useInitialBalanceCheck } from './useInitialBalanceCheck.js'
 
 interface PayWithCryptoTabProps {
   skipOnCloseCallback: () => void
@@ -191,94 +192,14 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     tokenBalance === undefined ||
     (tokenBalance?.balance && tokenBalance.balance !== '' && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice))
 
-  const { data: swapRoutes = [], isLoading: swapRoutesIsLoading } = useGetSwapRoutes(
-    {
-      walletAddress: userAddress ?? '',
-      toTokenAddress: buyCurrencyAddress,
-      toTokenAmount: price,
-      chainId: chainId
-    },
-    {
-      disabled: isInitialBalanceChecked || !isInsufficientBalance
-    }
-  )
-
-  const { data: swapRoutesTokenBalancesData, isLoading: swapRoutesTokenBalancesIsLoading } = useGetTokenBalancesSummary(
-    {
-      chainIds: [chainId],
-      filter: {
-        accountAddresses: userAddress ? [userAddress] : [],
-        contractStatus: ContractVerificationStatus.ALL,
-        contractWhitelist: swapRoutes
-          .flatMap(route => route.fromTokens)
-          .map(token => token.address)
-          .filter(address => compareAddress(address, zeroAddress)),
-        omitNativeBalances: false
-      },
-      omitMetadata: true
-    },
-    {
-      disabled: isInitialBalanceChecked || !isInsufficientBalance || swapRoutesIsLoading
-    }
-  )
-
-  const findSwapQuote = async () => {
-    let validSwapRoute: string | undefined
-
-    for (let i = 0; i < swapRoutes.length; i++) {
-      const route = swapRoutes[0]
-      for (let j = 0; j < route.fromTokens.length; j++) {
-        const fromToken = route.fromTokens[j]
-        const balance = swapRoutesTokenBalancesData?.pages?.[0]?.balances?.find(balance =>
-          compareAddress(balance.contractAddress, fromToken.address)
-        )
-
-        console.log('balance', balance)
-        console.log('fromToken', fromToken)
-        if (!balance) {
-          continue
-        }
-        if (BigInt(balance.balance || '0') >= BigInt(fromToken.price || '0')) {
-          validSwapRoute = fromToken.address
-          break
-        }
-      }
-    }
-
-    setNavigation({
-      location: 'payment-method-selection',
-      params: {
-        ...navigation.params,
-        selectedCurrency: {
-          address: validSwapRoute || selectedCurrency.address,
-          chainId: chainId
-        },
-        isInitialBalanceChecked: true
-      }
-    })
-  }
-
-  useEffect(() => {
-    if (!isInitialBalanceChecked && !tokenBalancesIsLoading && !swapRoutesIsLoading && !swapRoutesTokenBalancesIsLoading) {
-      if (isInsufficientBalance) {
-        findSwapQuote()
-      } else {
-        setNavigation({
-          location: 'payment-method-selection',
-          params: {
-            ...navigation.params,
-            isInitialBalanceChecked: true
-          }
-        })
-      }
-    }
-  }, [
-    isInitialBalanceChecked,
-    isInsufficientBalance,
-    tokenBalancesIsLoading,
-    swapRoutesIsLoading,
-    swapRoutesTokenBalancesIsLoading
-  ])
+  useInitialBalanceCheck({
+    userAddress: userAddress || '',
+    buyCurrencyAddress,
+    price,
+    chainId,
+    isInsufficientBalance: isInsufficientBalance as boolean,
+    tokenBalancesIsLoading
+  })
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 
