@@ -38,7 +38,12 @@ export const Swap = () => {
   const [isError, setIsError] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
   const publicClient = usePublicClient()
-  const { data: walletClient, isLoading: isLoadingWalletClient } = useWalletClient()
+  const {
+    data: walletClient,
+    isLoading: isLoadingWalletClient,
+    isError: isErrorWalletClient,
+    error: errorWalletClient
+  } = useWalletClient()
   const { switchChain } = useSwitchChain()
 
   const {
@@ -168,8 +173,19 @@ export const Swap = () => {
   const isLoading = isLoadingCurrencyInfo || swapRoutesIsLoading
 
   const onClickProceed = async () => {
-    if (!userAddress || !publicClient || !walletClient || !connector) {
-      throw new Error('Wallet client, user address, public client, indexer client, or connector is not found')
+    if (!userAddress) {
+      throw new Error('User address is not available. Please ensure your wallet is connected.')
+    }
+    if (!publicClient) {
+      throw new Error('Public client is not available. Please check your network connection.')
+    }
+    if (!walletClient || isErrorWalletClient || errorWalletClient) {
+      throw new Error('Wallet client is not available. Please ensure your wallet is connected.', {
+        cause: errorWalletClient
+      })
+    }
+    if (!connector) {
+      throw new Error('Wallet connector is not available. Please ensure your wallet is properly connected.')
     }
 
     if (connectedChainId != chainId) {
