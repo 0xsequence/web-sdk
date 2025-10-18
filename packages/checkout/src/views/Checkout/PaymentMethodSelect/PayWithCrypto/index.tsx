@@ -602,8 +602,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     }
 
     return (
-      <div className="flex flex-row justify-between items-center w-full gap-2">
-        <div className="flex flex-col gap-0">
+      <div className="flex flex-row flex-wrap justify-between items-center w-full gap-2">
+        <div className="flex flex-col gap-0 min-w-0">
           <Text
             variant="xsmall"
             color="text100"
@@ -612,7 +612,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
               fontSize: '24px'
             }}
           >
-            {displayPrice}
+            {`${displayPrice} ${dataCurrencyInfo?.symbol}`}
           </Text>
           <div>
             <Text color="text50" variant="xsmall" fontWeight="normal">
@@ -629,7 +629,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
             </Text>
           </div>
         </div>
-        <div>
+        <div className="flex-shrink-0">
           <TokenSelector />
         </div>
       </div>
