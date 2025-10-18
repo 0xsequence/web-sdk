@@ -306,13 +306,17 @@ function App() {
             )}
             {isConnected && nativeBalanceData && (
               <div className="address-display">
-                <div className="flex flex-col gap-2"> <p>Native Balance:</p>
+                <div className="flex flex-col gap-2">
+                  {' '}
+                  <p>Native Balance:</p>
                   <p className="address-mono">{nativeBalanceData.formatted}</p>
                 </div>
 
                 <div className="flex flex-col gap-2 mt-2">
                   <p>USDC Balance:</p>
-                  <p className="address-mono">{usdcBalance ? `${parseFloat(usdcBalance.formatted).toFixed(5)} ${usdcBalance.symbol}` : '0.00'}</p>
+                  <p className="address-mono">
+                    {usdcBalance ? `${parseFloat(usdcBalance.formatted).toFixed(5)} ${usdcBalance.symbol}` : '0.00'}
+                  </p>
                 </div>
               </div>
             )}
