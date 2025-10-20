@@ -9,8 +9,9 @@ import {
 } from '@0xsequence/connect'
 import {
   DappClient,
-  Relayer,
   type ExplicitSessionConfig,
+  type FeeOption,
+  type FeeToken,
   type GetFeeTokensResponse,
   type TransactionRequest as DappClientTransactionRequest
 } from '@0xsequence/dapp-client'
@@ -55,10 +56,10 @@ export interface BaseSequenceV3ConnectorOptions {
 export interface FeeOptionConfirmationHandler {
   confirmFeeOption(
     id: string,
-    options: Relayer.FeeOption[],
+    options: FeeOption[],
     txs: TransactionRequest[],
     chainId: number
-  ): Promise<{ id: string; feeOption?: Relayer.FeeOption; confirmed: boolean }>
+  ): Promise<{ id: string; feeOption?: FeeOption; confirmed: boolean }>
 }
 
 export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
@@ -298,7 +299,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           }
 
           const feeOptionPermissions = feeTokens.isFeeRequired
-            ? feeTokens.tokens?.map((token: Relayer.Standard.Rpc.FeeToken) =>
+            ? feeTokens.tokens?.map((token: FeeToken) =>
                 createContractPermission({
                   address: token.contractAddress as Address,
                   functionSignature: 'function transfer(address to, uint256 value)',
@@ -462,7 +463,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           // if it is not used, we do not query fee options at all
           if (this.feeConfirmationHandler) {
             const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
-            let selectedFeeOption: Relayer.FeeOption | undefined
+            let selectedFeeOption: FeeOption | undefined
 
             if (feeOptions && feeOptions.length > 0) {
               const id = uuidv4()

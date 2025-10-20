@@ -37,6 +37,7 @@ function App() {
   // Balance Hooks
   const { data: aUsdcBalance, refetch: refetchAusdcBalance } = useBalance({ address, token: AUSDC_ADDRESS, chainId: 42161 })
   const { data: aWethBalance, refetch: refetchAwethBalance } = useBalance({ address, token: AWETH_ADDRESS, chainId: 42161 })
+  const { data: usdcBalance } = useBalance({ address, token: USDC_ADDRESS_ARBITRUM, chainId: 42161 })
 
   // Session hooks
   const { getExplicitSessions, modifyExplicitSession, addExplicitSession } = useExplicitSessions()
@@ -305,8 +306,18 @@ function App() {
             )}
             {isConnected && nativeBalanceData && (
               <div className="address-display">
-                <p>Native Balance:</p>
-                <p className="address-mono">{nativeBalanceData.formatted}</p>
+                <div className="flex flex-col gap-2">
+                  {' '}
+                  <p>Native Balance:</p>
+                  <p className="address-mono">{nativeBalanceData.formatted}</p>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-2">
+                  <p>USDC Balance:</p>
+                  <p className="address-mono">
+                    {usdcBalance ? `${parseFloat(usdcBalance.formatted).toFixed(5)} ${usdcBalance.symbol}` : '0.00'}
+                  </p>
+                </div>
               </div>
             )}
           </section>
