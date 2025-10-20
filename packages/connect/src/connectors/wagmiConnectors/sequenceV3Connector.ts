@@ -308,13 +308,15 @@ export class SequenceV3Provider implements EIP1193Provider {
                       param: 'value',
                       type: 'uint256',
                       condition: 'LESS_THAN_OR_EQUAL',
-                      value: token.decimals === 18 ? parseEther('0.1') : parseUnits('50', token.decimals || 6)
+                      value: token.decimals === 18 ? parseEther('0.1') : parseUnits('50', token.decimals || 6),
+                      cumulative: true
                     },
                     {
                       param: 'to',
                       type: 'address',
                       condition: 'EQUAL',
-                      value: feeTokens.paymentAddress as Address
+                      value: feeTokens.paymentAddress as Address,
+                      cumulative: false
                     }
                   ]
                 })
@@ -457,17 +459,13 @@ export class SequenceV3Provider implements EIP1193Provider {
         const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
 
         if (hasPermission) {
-          let feeOptions: FeeOption[] = []
-          let selectedFeeOption: FeeOption | undefined
-          try {
-            feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
-          } catch (error) {
-            console.error('Error getting fee options:', error)
-            throw new Error('Error getting fee options', { cause: error })
-          }
+          // @note feeConfirmationHandler will only be defined if the useFeeOptions hook is used anywhere in the app
+          // if it is not used, we do not query fee options at all
+          if (this.feeConfirmationHandler) {
+            const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+            let selectedFeeOption: FeeOption | undefined
 
-          if (feeOptions && feeOptions.length > 0) {
-            if (this.feeConfirmationHandler) {
+            if (feeOptions && feeOptions.length > 0) {
               const id = uuidv4()
               const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
 
@@ -486,14 +484,12 @@ export class SequenceV3Provider implements EIP1193Provider {
               }
               selectedFeeOption = confirmation.feeOption
             }
-          }
-          // @note no fee option selected, in this case dapp should sponsor the transaction
-          try {
-            const response = await this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
-            return response
-          } catch (error) {
-            console.error('Error sending transaction:', error)
-            throw new RpcError(new Error(error as string), { code: -32603, shortMessage: error as string })
+            // @note if dApp has permission and there is a confirmation handler
+            // if there is no selectedFeeOption, dapp should sponsor the transaction or network used should be testnet
+            return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+          } else {
+            // @note if dApp has permission but there is no confirmation handler, in this case dapp should sponsor the transaction
+            return this.client.sendTransaction(this.currentChainId, transactions)
           }
         } else {
           return new Promise((resolve, reject) => {
