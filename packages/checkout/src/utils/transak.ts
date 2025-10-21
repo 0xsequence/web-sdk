@@ -6,9 +6,6 @@ export const getTransakLink = (
   addFundsSettings: AddFundsSettings,
   { transakApiUrl, transakApiKey }: { transakApiUrl: string; transakApiKey: string }
 ) => {
-  const defaultNetworks =
-    'ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain,immutablezkevm'
-
   interface Options {
     [index: string]: string | undefined
   }
@@ -26,7 +23,7 @@ export const getTransakLink = (
     defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
     defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',
     cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList,
-    networks: addFundsSettings?.networks || defaultNetworks
+    networks: addFundsSettings?.networks
   }
 
   Object.keys(options).forEach(k => {
