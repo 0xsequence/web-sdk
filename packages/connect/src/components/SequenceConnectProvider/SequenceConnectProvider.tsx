@@ -103,7 +103,10 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const googleClientId: string = (googleWaasConnector as any)?.params?.googleClientId || ''
 
   const setupAnalytics = (projectAccessKey: string) => {
-    const s = sequence.initWallet(projectAccessKey)
+    const s = sequence.initWallet(projectAccessKey, {
+      analytics: true
+    })
+
     const sequenceAnalytics = s.client.analytics
 
     if (sequenceAnalytics) {
