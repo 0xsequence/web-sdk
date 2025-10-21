@@ -108,21 +108,11 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       eventFortePaymentsBuyNftMintSuccessListener = (e: Event) => {
         fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsBuyNftMintSuccess?.(e)
         fortePaymentData.creditCardCheckout?.onClose?.()
-        if (!isSuccess) {
-          fortePaymentData.creditCardCheckout?.onSuccess?.()
-          trackSuccessEvent()
-          setIsSuccess(true)
-        }
       }
 
       eventFortePaymentsBuyNftSuccessListener = (e: Event) => {
         fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsBuyNftSuccess?.(e)
         fortePaymentData.creditCardCheckout?.onClose?.()
-        if (!isSuccess) {
-          fortePaymentData.creditCardCheckout?.onSuccess?.()
-          trackSuccessEvent()
-          setIsSuccess(true)
-        }
       }
 
       // Note: these events are mutually exclusive. ie they won't trigger at the same time
@@ -171,10 +161,6 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     const { status } = await fetchFortePaymentStatus(apiUrl, projectAccessKey, {
       paymentIntentId: fortePaymentData.paymentIntentId
     })
-
-    // The success events are only triggered when the TX is both successful and that
-    // the widget is closed in a success state. A seperate payment status check is
-    // performed to cover the case the user closes without a success state.
 
     if (status === 'Approved' && !isSuccess) {
       fortePaymentData.creditCardCheckout?.onSuccess?.()
