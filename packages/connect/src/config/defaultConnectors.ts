@@ -90,7 +90,11 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
 }
 
 export interface DefaultUniversalConnectorOptions extends CommonConnectorOptions {
-  sequence?: boolean
+  sequence?:
+    | boolean
+    | {
+        walletAppURL?: string
+      }
   email?: boolean
   google?: boolean
   facebook?: boolean
@@ -319,6 +323,7 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
     wallets.push(
       sequence({
         defaultNetwork: defaultChainId,
+        walletAppURL: options.sequence && typeof options.sequence === 'object' ? options.sequence.walletAppURL : undefined,
         connect: {
           app: appName
         }
