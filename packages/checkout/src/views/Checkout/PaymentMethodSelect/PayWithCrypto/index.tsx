@@ -24,10 +24,13 @@ import { useAccount, useChainId, usePublicClient, useReadContract, useSwitchChai
 
 import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import { EVENT_SOURCE } from '../../../../constants/index.js'
+import { type PaymentMethodSelectionParams } from '../../../../contexts/NavigationCheckout.js'
 import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentModal.js'
 import { useAddFundsModal } from '../../../../hooks/index.js'
 import { useSelectPaymentModal, useTransactionStatusModal } from '../../../../hooks/index.js'
 import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
+
+import { useInitialBalanceCheck } from './useInitialBalanceCheck.js'
 
 interface PayWithCryptoTabProps {
   skipOnCloseCallback: () => void
@@ -156,7 +159,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const isNotEnoughBalanceError =
     typeof swapQuoteError?.cause === 'string' && swapQuoteError?.cause?.includes('not enough balance for swap')
 
-  const selectedCurrencyPrice = isSwapTransaction ? swapQuote?.maxPrice || 0 : price || 0
+  const maxPrice = swapQuote?.maxPrice && swapQuote.maxPrice !== '' ? swapQuote.maxPrice : 0
+  const selectedCurrencyPrice = isSwapTransaction ? maxPrice : price || 0
 
   const { data: allowanceData, isLoading: allowanceIsLoading } = useReadContract({
     abi: ERC_20_CONTRACT_ABI,
@@ -169,20 +173,33 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     }
   })
 
+  const isInitialBalanceChecked = (navigation.params as PaymentMethodSelectionParams).isInitialBalanceChecked
+
   const isLoading =
     isLoadingCoinPrice ||
     isLoadingCurrencyInfo ||
     (allowanceIsLoading && !isNativeToken) ||
     isLoadingSwapQuote ||
     tokenBalancesIsLoading ||
-    isLoadingSelectedCurrencyInfo
+    isLoadingSelectedCurrencyInfo ||
+    !isInitialBalanceChecked
 
   const tokenBalance = tokenBalancesData?.pages?.[0]?.balances?.find(balance =>
     compareAddress(balance.contractAddress, selectedCurrency.address)
   )
 
   const isInsufficientBalance =
-    tokenBalance === undefined || (tokenBalance?.balance && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice))
+    tokenBalance === undefined ||
+    (tokenBalance?.balance && tokenBalance.balance !== '' && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice))
+
+  useInitialBalanceCheck({
+    userAddress: userAddress || '',
+    buyCurrencyAddress,
+    price,
+    chainId,
+    isInsufficientBalance: isInsufficientBalance as boolean,
+    tokenBalancesIsLoading
+  })
 
   const isApproved: boolean = (allowanceData as bigint) >= BigInt(price) || isNativeToken
 

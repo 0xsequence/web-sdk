@@ -56,7 +56,9 @@ export type SequenceCheckoutProviderProps = {
 const getDefaultLocationCheckout = (): NavigationCheckout => {
   return {
     location: 'payment-method-selection',
-    params: {}
+    params: {
+      isInitialBalanceChecked: false
+    }
   }
 }
 export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutProviderProps) => {
