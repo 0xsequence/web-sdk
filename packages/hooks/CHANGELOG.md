@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.24
+
+### Patch Changes
+
+- removed default networks from add funds
+
 ## 5.3.23
 
 ### Patch Changes

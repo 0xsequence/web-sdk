@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.3.24
+
+### Patch Changes
+
+- removed default networks from add funds
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.3.24
+  - @0xsequence/connect@5.3.24
+  - @0xsequence/hooks@5.3.24
+
 ## 5.3.23
 
 ### Patch Changes

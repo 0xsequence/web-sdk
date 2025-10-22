@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.3.24
+
+### Patch Changes
+
+- removed default networks from add funds
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.24
+
 ## 5.3.23
 
 ### Patch Changes
