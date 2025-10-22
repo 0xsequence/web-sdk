@@ -323,7 +323,10 @@ export const getDefaultUniversalConnectors = (options: DefaultUniversalConnector
     wallets.push(
       sequence({
         defaultNetwork: defaultChainId,
-        walletAppURL: options.sequence && typeof options.sequence === 'object' ? options.sequence.walletAppURL : undefined,
+        walletAppURL:
+          options.sequence && typeof options.sequence === 'object' && 'walletAppURL' in options.sequence
+            ? options.sequence.walletAppURL
+            : undefined,
         connect: {
           app: appName
         }
