@@ -1,10 +1,9 @@
 'use client'
 
-import { sequence } from '0xsequence'
 import { Button, Card, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
-import { SequenceClient } from '@0xsequence/provider'
+import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, useState } from 'react'
@@ -102,25 +101,23 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   ) as ExtendedConnector | undefined
   const googleClientId: string = (googleWaasConnector as any)?.params?.googleClientId || ''
 
-  const setupAnalytics = (projectAccessKey: string) => {
-    const s = sequence.initWallet(projectAccessKey)
-    const sequenceAnalytics = s.client.analytics
+  const getAnalyticsClient = (projectAccessKey: string) => {
+    // @ts-ignore-next-line
+    const sequenceAnalytics = setupAnalytics(projectAccessKey) as Analytics
 
-    if (sequenceAnalytics) {
-      type TrackArgs = Parameters<typeof sequenceAnalytics.track>
-      const originalTrack = sequenceAnalytics.track.bind(sequenceAnalytics)
+    type TrackArgs = Parameters<Analytics['track']>
+    const originalTrack = sequenceAnalytics.track.bind(sequenceAnalytics)
 
-      sequenceAnalytics.track = (...args: TrackArgs) => {
-        const [event] = args
-        if (event && typeof event === 'object' && 'props' in event) {
-          event.props = {
-            ...event.props,
-            sdkType: 'sequence web sdk',
-            version: WEB_SDK_VERSION
-          }
+    sequenceAnalytics.track = (...args: TrackArgs) => {
+      const [event] = args
+      if (event && typeof event === 'object' && 'props' in event) {
+        event.props = {
+          ...event.props,
+          sdkType: 'sequence web sdk',
+          version: WEB_SDK_VERSION
         }
-        return originalTrack?.(...args)
       }
+      return originalTrack?.(...args)
     }
     setAnalytics(sequenceAnalytics)
   }
@@ -138,7 +135,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
 
   useEffect(() => {
     if (!disableAnalytics) {
-      setupAnalytics(config.projectAccessKey)
+      getAnalyticsClient(config.projectAccessKey)
     }
   }, [])
 
