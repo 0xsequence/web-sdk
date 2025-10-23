@@ -59,6 +59,7 @@ export type UseWaasFeeOptionsReturnType = [
 export interface WaasFeeOptionsConfig {
   /** Whether to skip checking token balances (default: false) */
   skipFeeBalanceCheck?: boolean
+  chainIdOverride?: number
 }
 
 /**
@@ -104,7 +105,7 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
   const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>(
     sharedPendingConfirmation
   )
-  const indexerClient = useIndexerClient(connections[0]?.chainId ?? 1)
+  const indexerClient = useIndexerClient(options?.chainIdOverride ? options.chainIdOverride : (connections[0]?.chainId ?? 1))
   /**
    * Confirms the selected fee option
    * @param id - The fee confirmation ID

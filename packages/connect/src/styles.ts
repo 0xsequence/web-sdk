@@ -2513,6 +2513,4 @@ export const styles = String.raw`
       --tw-gradient-to-position: 100%;
     }
   }
-}
-
-`
+}`

@@ -660,19 +660,34 @@ export const Connected = () => {
                         option => option.token.name === selectedFeeOptionTokenName
                       )
 
-                      if (selected?.token.contractAddress !== undefined) {
-                        if (!('hasEnoughBalanceForFee' in selected) || !selected.hasEnoughBalanceForFee) {
-                          setFeeOptionAlert({
-                            title: 'Insufficient balance',
-                            description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
-                            secondaryDescription:
-                              'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
-                            variant: 'warning'
-                          })
-                          return
-                        }
+                      if (!selected) {
+                        setFeeOptionAlert({
+                          title: 'No option selected',
+                          description: 'Please select a fee option before confirming.',
+                          variant: 'warning'
+                        })
+                        return
+                      }
 
-                        confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
+                      if (!('hasEnoughBalanceForFee' in selected) || !selected.hasEnoughBalanceForFee) {
+                        console.log('Insufficient balance for selected option')
+                        setFeeOptionAlert({
+                          title: 'Insufficient balance',
+                          description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
+                          secondaryDescription: 'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
+                          variant: 'warning'
+                        })
+                        return
+                      }
+
+                      const feeTokenAddress: string | null =
+                        selected.token.contractAddress === zeroAddress || selected.token.contractAddress === null
+                          ? null
+                          : selected.token.contractAddress || null
+
+                      console.log('Confirming fee option with token address:', feeTokenAddress)
+                      if (pendingFeeOptionConfirmation?.id) {
+                        confirmPendingFeeOption(pendingFeeOptionConfirmation.id, feeTokenAddress)
                       }
                     }}
                     label="Confirm fee option"
