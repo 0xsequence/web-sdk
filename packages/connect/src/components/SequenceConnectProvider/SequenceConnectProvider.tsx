@@ -1,6 +1,5 @@
 'use client'
 
-import { sequence } from '0xsequence'
 import { Button, Card, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
