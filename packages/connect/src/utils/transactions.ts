@@ -46,7 +46,9 @@ export const sendTransactions = async ({
   indexerClient,
   transactionConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
   waitConfirmationForLastTransaction = true
-}: SendTransactionsInput): Promise<string> => {
+}: SendTransactionsInput): Promise<(() => Promise<string>)[]> => {
+  const returnedTransactions: (() => Promise<string>)[] = []
+
   const walletClientChainId = await walletClient.getChainId()
 
   if (walletClientChainId !== chainId) {
@@ -63,105 +65,115 @@ export const sendTransactions = async ({
 
   // Sequence WaaS
   if (isEmbeddedWallet) {
-    // waas connector logic
-    const resp = await sequenceWaaS.feeOptions({
-      transactions: transactions,
-      network: chainId
-    })
-
-    const isSponsored = resp.data.feeOptions.length == 0
-
-    let transactionsFeeOption
-    const transactionsFeeQuote = resp.data.feeQuote
-
-    const balances = await indexerClient.getTokenBalancesDetails({
-      filter: {
-        accountAddresses: [senderAddress],
-        omitNativeBalances: false
-      }
-    })
-
-    for (const feeOption of resp.data.feeOptions) {
-      const isNativeToken = feeOption.token.contractAddress == null
-
-      if (isNativeToken) {
-        const nativeTokenBalance = balances.nativeBalances?.[0].balance || '0'
-        if (BigInt(nativeTokenBalance) >= BigInt(feeOption.value)) {
-          transactionsFeeOption = feeOption
-          break
-        }
-      } else {
-        const erc20TokenBalance = balances.balances.find(b =>
-          compareAddress(b.contractAddress, feeOption.token.contractAddress || '')
-        )
-        const erc20TokenBalanceValue = erc20TokenBalance?.balance || '0'
-        if (BigInt(erc20TokenBalanceValue) >= BigInt(feeOption.value)) {
-          transactionsFeeOption = feeOption
-          break
-        }
-      }
-    }
-
-    if (!transactionsFeeOption && !isSponsored) {
-      throw new FeeOptionInsufficientFundsError(
-        `Transaction fee option with valid user balance not found: ${resp.data.feeOptions.map(f => f.token.symbol).join(', ')}`,
-        resp.data.feeOptions
-      )
-    }
-
-    const response = await sequenceWaaS.sendTransaction({
-      transactions,
-      transactionsFeeOption,
-      transactionsFeeQuote,
-      network: chainId
-    })
-
-    if (response.code === 'transactionFailed') {
-      throw new Error(response.data.error)
-    }
-
-    const txnHash = response.data.txHash
-
-    if (waitConfirmationForLastTransaction) {
-      const { txnStatus } = await waitForTransactionReceipt({
-        indexerClient,
-        txnHash: txnHash as Hex,
-        publicClient,
-        confirmations: transactionConfirmations
+    const triggerEmbeddedWalletPromise = async (): Promise<string> => {
+      // waas connector logic
+      const resp = await sequenceWaaS.feeOptions({
+        transactions: transactions,
+        network: chainId
       })
 
-      if (txnStatus === TransactionStatus.FAILED) {
-        throw new Error('Transaction failed')
+      const isSponsored = resp.data.feeOptions.length == 0
+
+      let transactionsFeeOption
+      const transactionsFeeQuote = resp.data.feeQuote
+
+      const balances = await indexerClient.getTokenBalancesDetails({
+        filter: {
+          accountAddresses: [senderAddress],
+          omitNativeBalances: false
+        }
+      })
+
+      for (const feeOption of resp.data.feeOptions) {
+        const isNativeToken = feeOption.token.contractAddress == null
+
+        if (isNativeToken) {
+          const nativeTokenBalance = balances.nativeBalances?.[0].balance || '0'
+          if (BigInt(nativeTokenBalance) >= BigInt(feeOption.value)) {
+            transactionsFeeOption = feeOption
+            break
+          }
+        } else {
+          const erc20TokenBalance = balances.balances.find(b =>
+            compareAddress(b.contractAddress, feeOption.token.contractAddress || '')
+          )
+          const erc20TokenBalanceValue = erc20TokenBalance?.balance || '0'
+          if (BigInt(erc20TokenBalanceValue) >= BigInt(feeOption.value)) {
+            transactionsFeeOption = feeOption
+            break
+          }
+        }
       }
+
+      if (!transactionsFeeOption && !isSponsored) {
+        throw new FeeOptionInsufficientFundsError(
+          `Transaction fee option with valid user balance not found: ${resp.data.feeOptions.map(f => f.token.symbol).join(', ')}`,
+          resp.data.feeOptions
+        )
+      }
+
+      const response = await sequenceWaaS.sendTransaction({
+        transactions,
+        transactionsFeeOption,
+        transactionsFeeQuote,
+        network: chainId
+      })
+
+      if (response.code === 'transactionFailed') {
+        throw new Error(response.data.error)
+      }
+
+      const txnHash = response.data.txHash
+
+      if (waitConfirmationForLastTransaction) {
+        const { txnStatus } = await waitForTransactionReceipt({
+          indexerClient,
+          txnHash: txnHash as Hex,
+          publicClient,
+          confirmations: transactionConfirmations
+        })
+
+        if (txnStatus === TransactionStatus.FAILED) {
+          throw new Error('Transaction failed')
+        }
+      }
+
+      return txnHash
     }
 
-    return txnHash
+    returnedTransactions.push(triggerEmbeddedWalletPromise)
 
     // Sequence-Based Connector
   } else if (isSequenceUniversalWallet) {
-    const wallet = sequence.getWallet()
-    const signer = wallet.getSigner()
-    const response = await signer.sendTransaction(transactions)
+    const triggerSequenceUniversalWalletPromise = async () => {
+      const wallet = sequence.getWallet()
+      const signer = wallet.getSigner()
+      const response = await signer.sendTransaction(transactions)
 
-    if (waitConfirmationForLastTransaction) {
-      const { txnStatus } = await waitForTransactionReceipt({
-        indexerClient,
-        txnHash: response.hash as Hex,
-        publicClient,
-        confirmations: transactionConfirmations
-      })
+      if (waitConfirmationForLastTransaction) {
+        const { txnStatus } = await waitForTransactionReceipt({
+          indexerClient,
+          txnHash: response.hash as Hex,
+          publicClient,
+          confirmations: transactionConfirmations
+        })
 
-      if (txnStatus === TransactionStatus.FAILED) {
-        throw new Error('Transaction failed')
+        if (txnStatus === TransactionStatus.FAILED) {
+          throw new Error('Transaction failed')
+        }
       }
+
+      return response.hash
     }
 
-    return response.hash
+    returnedTransactions.push(triggerSequenceUniversalWalletPromise)
     // Other connectors (metamask, eip-6963, etc...)
   } else {
-    let txHash: string = ''
-    // We fire the transactions one at a time since the cannot be batched
-    for (const [index, transaction] of transactions.entries()) {
+    interface TriggerOtherConnectorsPromiseInput {
+      transaction: Transaction
+      isLastTransaction: boolean
+    }
+    const triggerOtherConnectorTransaction = async ({ transaction, isLastTransaction }: TriggerOtherConnectorsPromiseInput) => {
       const txnHash = await walletClient.sendTransaction({
         account: senderAddress,
         to: transaction.to,
@@ -169,8 +181,6 @@ export const sendTransactions = async ({
         data: transaction?.data,
         chain: undefined
       })
-
-      const isLastTransaction = index === transactions.length - 1
 
       if (!isLastTransaction || (isLastTransaction && waitConfirmationForLastTransaction)) {
         const { txnStatus } = await waitForTransactionReceipt({
@@ -185,12 +195,18 @@ export const sendTransactions = async ({
         }
       }
 
-      // The transaction hash of the last transaction is the one that should be returned
-      txHash = txnHash
+      return txnHash
     }
 
-    return txHash
+    for (const [index, transaction] of transactions.entries()) {
+      const isLastTransaction = index === transactions.length - 1
+      const triggerOtherConnectorTransactionPromise = () => triggerOtherConnectorTransaction({ transaction, isLastTransaction })
+
+      returnedTransactions.push(triggerOtherConnectorTransactionPromise)
+    }
   }
+
+  return returnedTransactions
 }
 
 interface WaitForTransactionReceiptInput {
