@@ -100,7 +100,7 @@ const MyComponent = () => {
       recipientAddress: address,
       currencyAddress,
       collectionAddress,
-      creditCardProviders: ['sardine'],
+      creditCardProviders: ['transak'],
       copyrightText: 'ⓒ2024 Sequence',
       onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)

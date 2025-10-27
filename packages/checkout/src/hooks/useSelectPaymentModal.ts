@@ -79,7 +79,7 @@ type UseSelectPaymentModalReturnType = {
  *       recipientAddress: address,
  *       currencyAddress,
  *       collectionAddress,
- *       creditCardProviders: ['sardine', 'transak'],
+ *       creditCardProviders: ['transak'],
  *       transakConfig: {
  *         contractId: 'your-contract-id',
  *         apiKey: 'your-api-key'

@@ -64,7 +64,7 @@ export interface CreditCardCheckout {
   nftQuantity: string
   nftDecimals?: string
   calldata: string
-  provider?: 'sardine' | 'transak' | 'forte'
+  provider?: 'transak' | 'forte'
   transakConfig?: TransakConfig
   forteConfig?: ForteConfig
   onSuccess?: (transactionHash?: string, settings?: CreditCardCheckout) => void

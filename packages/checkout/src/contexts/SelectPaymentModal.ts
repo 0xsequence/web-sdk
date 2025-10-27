@@ -6,7 +6,7 @@ import type { ForteConfig, TransakConfig } from '../contexts/CheckoutModal.js'
 
 import { createGenericContext } from './genericContext.js'
 
-export type CreditCardProviders = 'sardine' | 'transak' | 'forte'
+export type CreditCardProviders = 'transak' | 'forte'
 
 export interface Collectible {
   tokenId?: string
@@ -17,10 +17,6 @@ export interface Collectible {
 
 export interface SupplementaryAnalyticsInfo {
   [key: string]: string
-}
-
-export interface SardineConfig {
-  approvedSpenderAddress?: string
 }
 
 export interface ActionButtons {
@@ -45,7 +41,6 @@ export interface SelectPaymentSettings {
   onRampProvider?: TransactionOnRampProvider
   creditCardProviders?: string[]
   transakConfig?: TransakConfig
-  sardineConfig?: SardineConfig
   forteConfig?: ForteConfig
   customProviderCallback?: (onSuccess: (txHash: string) => void, onError: (error: Error) => void, onClose: () => void) => void
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo

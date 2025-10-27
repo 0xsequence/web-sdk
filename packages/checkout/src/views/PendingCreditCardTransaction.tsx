@@ -6,14 +6,12 @@ import pako from 'pako'
 import { useEffect, useRef } from 'react'
 import { formatUnits } from 'viem'
 
-import { fetchSardineOrderStatus } from '../api/data.js'
 import { EVENT_SOURCE } from '../constants/index.js'
 import { useEnvironmentContext, useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
   useCheckoutModal,
   useFortePaymentIntent,
   useNavigation,
-  useSardineClientToken,
   useSkipOnCloseCallback,
   useTransactionStatusModal
 } from '../hooks/index.js'
@@ -40,9 +38,8 @@ export const PendingCreditCardTransaction = () => {
       return <PendingCreditCardTransactionForte skipOnCloseCallback={skipOnCloseCallback} />
     case 'transak':
       return <PendingCreditCardTransactionTransak skipOnCloseCallback={skipOnCloseCallback} />
-    case 'sardine':
     default:
-      return <PendingCreditCardTransactionSardine skipOnCloseCallback={skipOnCloseCallback} />
+      return null
   }
 }
 
@@ -256,189 +253,6 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
           width: '100%'
         }}
         referrerPolicy="strict-origin-when-cross-origin"
-      />
-    </div>
-  )
-}
-
-export const PendingCreditCardTransactionSardine = ({ skipOnCloseCallback }: PendingCreditTransactionProps) => {
-  const { analytics } = useAnalyticsContext()
-  const { openTransactionStatusModal } = useTransactionStatusModal()
-  const nav = useNavigation()
-  const { closeCheckout } = useCheckoutModal()
-  const { sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
-  const { env } = useConfig()
-  const iframeRef = useRef<HTMLIFrameElement | null>(null)
-
-  const {
-    params: { creditCardCheckout }
-  } = nav.navigation as TransactionPendingNavigation
-  const { setNavigation } = nav
-  const projectAccessKey = useProjectAccessKey()
-
-  const { data: tokensMetadata, isLoading: isLoadingTokenMetadata } = useGetTokenMetadata({
-    chainID: String(creditCardCheckout.chainId),
-    contractAddress: creditCardCheckout.nftAddress,
-    tokenIDs: [creditCardCheckout.nftId]
-  })
-  const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
-
-  const disableSardineClientTokenFetch = isLoadingTokenMetadata
-
-  const { data, isLoading, isError } = useSardineClientToken(
-    {
-      order: creditCardCheckout,
-      projectAccessKey: projectAccessKey,
-      apiClientUrl: env.apiUrl,
-      tokenMetadata: tokenMetadata
-    },
-    disableSardineClientTokenFetch
-  )
-
-  const authToken = data?.token
-
-  const sardineCheckoutUrl = sardineProxyUrl.replace('checkout', 'api')
-
-  const url = `${sardineProxyUrl}?api_url=${sardineCheckoutUrl}&client_token=${authToken}&show_features=true`
-
-  const pollForOrderStatus = async () => {
-    try {
-      if (!data) {
-        return
-      }
-
-      const { orderId } = data
-
-      console.log('Polling for transaction status')
-      const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey, env.apiUrl)
-      const status = pollResponse.resp.status
-      const transactionHash = pollResponse.resp?.transactionHash
-
-      console.log('transaction status poll response:', status)
-
-      if (status === 'Draft') {
-        return
-      }
-      if (status === 'Complete') {
-        skipOnCloseCallback()
-
-        analytics?.track({
-          event: 'SEND_TRANSACTION_REQUEST',
-          props: {
-            ...creditCardCheckout.supplementaryAnalyticsInfo,
-            type: 'credit_card',
-            provider: 'sardine',
-            source: EVENT_SOURCE,
-            chainId: String(creditCardCheckout.chainId),
-            listedCurrency: creditCardCheckout.currencyAddress,
-            purchasedCurrency: creditCardCheckout.currencyAddress,
-            origin: window.location.origin,
-            from: creditCardCheckout.recipientAddress,
-            to: creditCardCheckout.contractAddress,
-            item_ids: JSON.stringify([creditCardCheckout.nftId]),
-            item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
-            txHash: transactionHash
-          }
-        })
-
-        closeCheckout()
-        openTransactionStatusModal({
-          chainId: creditCardCheckout.chainId,
-          currencyAddress: creditCardCheckout.currencyAddress,
-          collectionAddress: creditCardCheckout.nftAddress,
-          txHash: transactionHash,
-          items: [
-            {
-              tokenId: creditCardCheckout.nftId,
-              quantity: creditCardCheckout.nftQuantity,
-              decimals: creditCardCheckout.nftDecimals === undefined ? undefined : Number(creditCardCheckout.nftDecimals),
-              price: creditCardCheckout.currencyQuantity
-            }
-          ],
-          onSuccess: () => {
-            if (creditCardCheckout.onSuccess) {
-              creditCardCheckout.onSuccess(transactionHash, creditCardCheckout)
-            }
-          },
-          onClose: creditCardCheckout?.onClose,
-          successActionButtons: creditCardCheckout.successActionButtons,
-          onSuccessChecker: creditCardCheckout.onSuccessChecker
-        })
-        return
-      }
-      if (status === 'Declined' || status === 'Cancelled') {
-        setNavigation({
-          location: 'transaction-error',
-          params: {
-            error: new Error('Failed to transfer collectible')
-          }
-        })
-        return
-      }
-    } catch (e) {
-      console.error('An error occurred while fetching the transaction status')
-      setNavigation({
-        location: 'transaction-error',
-        params: {
-          error: e as Error
-        }
-      })
-    }
-  }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      pollForOrderStatus()
-    }, POLLING_TIME)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [isLoading])
-
-  if (isError) {
-    return (
-      <div
-        className="flex flex-col justify-center items-center gap-6"
-        style={{
-          height: '650px',
-          width: '500px'
-        }}
-      >
-        <div>
-          <Text color="primary">An error has occurred</Text>
-        </div>
-      </div>
-    )
-  }
-
-  if (isLoading || !authToken) {
-    return (
-      <div
-        className="flex flex-col justify-center items-center gap-6"
-        style={{
-          height: '650px',
-          width: '500px'
-        }}
-      >
-        <div>
-          <Spinner size="lg" />
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div className="flex items-center justify-center" style={{ height: '770px' }}>
-      <iframe
-        ref={iframeRef}
-        src={url}
-        style={{
-          maxHeight: '650px',
-          height: '100%',
-          maxWidth: '500px',
-          width: '100%'
-        }}
       />
     </div>
   )

@@ -6,8 +6,6 @@ export interface EnvironmentOverrides {
   marketplaceApiUrl: string
   transakApiUrl: string
   transakApiKey: string
-  sardineCheckoutUrl: string
-  sardineOnRampUrl: string
   forteWidgetUrl: string
 }
 

@@ -14,7 +14,7 @@ interface PayWithCreditCardProps {
   skipOnCloseCallback: () => void
 }
 
-type BasePaymentProviderOptions = 'sardine' | 'transak' | 'forte'
+type BasePaymentProviderOptions = 'transak' | 'forte'
 type CustomPaymentProviderOptions = 'custom'
 type PaymentProviderOptions = BasePaymentProviderOptions | CustomPaymentProviderOptions
 
@@ -27,7 +27,6 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
     txData,
     collectibles,
     collectionAddress,
-    sardineConfig,
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
@@ -63,7 +62,6 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
           onClickCustomProvider()
         }
         return
-      case 'sardine':
       case 'transak':
       case 'forte':
         onPurchase()
@@ -108,7 +106,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
-        approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || settings.approvedSpenderAddress,
+        approvedSpenderAddress: settings.approvedSpenderAddress,
         supplementaryAnalyticsInfo,
         transakConfig,
         forteConfig
@@ -135,14 +133,13 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
           })
           .map(creditCardProvider => {
             switch (creditCardProvider) {
-              case 'sardine':
               case 'transak':
               case 'forte':
               case 'custom':
                 return (
                   <Card
                     className="flex justify-between items-center p-4 cursor-pointer"
-                    key="sardine"
+                    key={creditCardProvider}
                     onClick={() => {
                       setSelectedPaymentProvider(creditCardProvider)
                     }}

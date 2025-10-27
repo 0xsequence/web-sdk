@@ -7,16 +7,13 @@ import pako from 'pako'
 import React, { useEffect, useRef } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 
-import { fetchSardineOrderStatus } from '../../api/data.js'
 import type { TransakConfig } from '../../contexts/CheckoutModal.js'
 import { useEnvironmentContext } from '../../contexts/Environment.js'
 import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal.js'
 import { TRANSAK_PROXY_ADDRESS } from '../../utils/transak.js'
-import { useSardineClientToken } from '../useSardineClientToken.js'
 
 const POLLING_TIME = 10 * 1000
 const TRANSAK_IFRAME_ID = 'credit-card-payment-transak-iframe'
-const SARDINE_IFRAME_ID = 'credit-card-payment-sardine-iframe'
 
 export interface UseCreditCardPaymentArgs {
   chain: string | number
@@ -78,11 +75,7 @@ export const useCreditCardPayment = ({
   isLoadingCurrencyInfo,
   errorCurrencyInfo
 }: UseCreditCardPaymentArgs): UseCreditCardPaymentReturn => {
-  const projectAccessKey = useProjectAccessKey()
-  const { env } = useConfig()
-  const disableSardineClientTokenFetch =
-    isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
-  const { transakApiUrl, sardineCheckoutUrl: sardineProxyUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
+  const { transakApiUrl, transakApiKey: transakGlobalApiKey } = useEnvironmentContext()
   const network = findSupportedNetwork(chain)
   const error = errorCollectionInfo || errorTokenMetadata || errorCurrencyInfo
   const isLoading = isLoadingCollectionInfo || isLoadingTokenMetadatas || isLoadingCurrencyInfo
@@ -91,33 +84,6 @@ export const useCreditCardPayment = ({
   const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals || 18
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const tokenMetadata = tokenMetadatas?.[0]
-
-  const {
-    data: dataClientToken,
-    isLoading: isLoadingClientToken,
-    error: errorClientToken
-  } = useSardineClientToken(
-    {
-      order: {
-        chainId: network?.chainId || 137,
-        contractAddress: targetContractAddress,
-        recipientAddress,
-        currencyQuantity: totalPriceRaw,
-        currencySymbol: currencyInfo?.symbol || 'POL',
-        currencyDecimals: String(currencyDecimals || 18),
-        currencyAddress,
-        nftId: collectible.tokenId ?? '',
-        nftAddress: collectionAddress,
-        nftQuantity: collectible.quantity,
-        nftDecimals: String(dataCollectionInfo?.decimals || 18),
-        calldata: txData
-      },
-      projectAccessKey: projectAccessKey,
-      apiClientUrl: env.apiUrl,
-      tokenMetadata: tokenMetadata
-    },
-    disableSardineClientTokenFetch
-  )
 
   const missingCreditCardProvider = !creditCardProvider
   const missingTransakConfig = !transakConfig && creditCardProvider === 'transak'
@@ -147,107 +113,70 @@ export const useCreditCardPayment = ({
     }
   }
 
-  if (creditCardProvider === 'transak') {
-    // Transak requires the recipient address to be the proxy address
-    // so we need to replace the recipient address with the proxy address in the calldata
-    // this is a weird hack so that credit card integrations are as simple as possible and should work 99% of the time
-    // If an issue arises, the user can override the calldata in the transak settings
+  // Transak requires the recipient address to be the proxy address
+  // so we need to replace the recipient address with the proxy address in the calldata
+  // this is a weird hack so that credit card integrations are as simple as possible and should work 99% of the time
+  // If an issue arises, the user can override the calldata in the transak settings
 
-    const calldataWithProxy =
-      transakConfig?.callDataOverride ??
-      txData.replace(recipientAddress.toLowerCase().substring(2), TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2))
+  const calldataWithProxy =
+    transakConfig?.callDataOverride ??
+    txData.replace(recipientAddress.toLowerCase().substring(2), TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2))
 
-    const pakoData = Array.from(pako.deflate(calldataWithProxy))
+  const pakoData = Array.from(pako.deflate(calldataWithProxy))
 
-    const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
+  const transakCallData = encodeURIComponent(btoa(String.fromCharCode.apply(null, pakoData)))
 
-    const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyDecimals || 18)))
+  const price = Number(formatUnits(BigInt(totalPriceRaw), Number(currencyDecimals || 18)))
 
-    const transakNftDataJson = JSON.stringify([
-      {
-        imageURL: tokenMetadata?.image || '',
-        nftName: tokenMetadata?.name || 'collectible',
-        collectionAddress: collectionAddress,
-        tokenID: [collectible.tokenId],
-        price: [price],
-        quantity: Number(collectible.quantity),
-        nftType: dataCollectionInfo?.type || 'ERC721'
-      }
-    ])
-
-    const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
-
-    const estimatedGasLimit = '500000'
-
-    const partnerOrderId = `${recipientAddress}-${new Date().getTime()}`
-
-    // Note: the network name might not always line up with Transak. A conversion function might be necessary
-    const network = findSupportedNetwork(chain)
-    const networkName = network?.name.toLowerCase()
-    const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
-
-    return {
-      error: null,
-      data: {
-        iframeId: TRANSAK_IFRAME_ID,
-        paymentUrl: transakLink,
-        CreditCardIframe: () => (
-          <div className="flex items-center justify-center" style={{ height: '770px' }}>
-            <iframe
-              id="transakIframe"
-              ref={iframeRef}
-              allow="camera;microphone;payment"
-              src={transakLink}
-              style={{
-                maxHeight: '650px',
-                height: '100%',
-                maxWidth: '380px',
-                width: '100%'
-              }}
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
-          </div>
-        ),
-        EventListener: () => (
-          <TransakEventListener onSuccess={onSuccess} onError={onError} isLoading={isLoading} iframeRef={iframeRef} />
-        )
-      },
-      isLoading: false
+  const transakNftDataJson = JSON.stringify([
+    {
+      imageURL: tokenMetadata?.image || '',
+      nftName: tokenMetadata?.name || 'collectible',
+      collectionAddress: collectionAddress,
+      tokenID: [collectible.tokenId],
+      price: [price],
+      quantity: Number(collectible.quantity),
+      nftType: dataCollectionInfo?.type || 'ERC721'
     }
-  }
+  ])
 
-  // Sardine credit card provider
-  const sardineApiUrl = sardineProxyUrl.replace('checkout', 'api')
-  const authToken = dataClientToken?.token
-  const url = `${sardineProxyUrl}?api_url=${sardineApiUrl}&client_token=${authToken}&show_features=true`
+  const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
 
-  const isLoadingSardine = isLoadingClientToken || isLoading
-  const errorSardine = errorClientToken || error
+  const estimatedGasLimit = '500000'
 
-  const data = {
-    iframeId: SARDINE_IFRAME_ID,
-    paymentUrl: url,
-    CreditCardIframe: () => (
-      <div className="flex items-center justify-center" style={{ height: '770px' }}>
-        <iframe
-          id={SARDINE_IFRAME_ID}
-          src={url}
-          style={{
-            maxHeight: '650px',
-            height: '100%',
-            maxWidth: '380px',
-            width: '100%'
-          }}
-        />
-      </div>
-    ),
-    EventListener: () => <SardineEventListener onSuccess={onSuccess} onError={onError} orderId={dataClientToken?.orderId || ''} />
-  }
+  const partnerOrderId = `${recipientAddress}-${new Date().getTime()}`
+
+  // Note: the network name might not always line up with Transak. A conversion function might be necessary
+  const networkName = network?.name.toLowerCase()
+  const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
 
   return {
-    error: errorSardine,
-    isLoading: isLoadingSardine,
-    data
+    error: null,
+    data: {
+      iframeId: TRANSAK_IFRAME_ID,
+      paymentUrl: transakLink,
+      CreditCardIframe: () => (
+        <div className="flex items-center justify-center" style={{ height: '770px' }}>
+          <iframe
+            id="transakIframe"
+            ref={iframeRef}
+            allow="camera;microphone;payment"
+            src={transakLink}
+            style={{
+              maxHeight: '650px',
+              height: '100%',
+              maxWidth: '380px',
+              width: '100%'
+            }}
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
+        </div>
+      ),
+      EventListener: () => (
+        <TransakEventListener onSuccess={onSuccess} onError={onError} isLoading={isLoading} iframeRef={iframeRef} />
+      )
+    },
+    isLoading: false
   }
 }
 
@@ -286,50 +215,6 @@ const TransakEventListener = ({ onSuccess, onError, isLoading, iframeRef }: Tran
 
     return () => window.removeEventListener('message', readMessage)
   }, [isLoading])
-
-  return null
-}
-
-interface SardineEventListenerProps {
-  onSuccess?: (txHash: string) => void
-  onError?: (error: Error) => void
-  orderId: string
-}
-
-const SardineEventListener = ({ onSuccess, onError, orderId }: SardineEventListenerProps) => {
-  const { env } = useConfig()
-  const projectAccessKey = useProjectAccessKey()
-
-  const pollForOrderStatus = async () => {
-    try {
-      console.log('Polling for transaction status')
-      const pollResponse = await fetchSardineOrderStatus(orderId, projectAccessKey, env.apiUrl)
-      const status = pollResponse.resp.status
-      const transactionHash = pollResponse.resp?.transactionHash
-
-      console.log('transaction status poll response:', status)
-
-      if (status === 'Complete') {
-        onSuccess?.(transactionHash)
-      }
-      if (status === 'Declined' || status === 'Cancelled') {
-        onError?.(new Error('Failed to transfer collectible'))
-      }
-    } catch (e) {
-      console.error('An error occurred while fetching the transaction status')
-      onError?.(e as Error)
-    }
-  }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      pollForOrderStatus()
-    }, POLLING_TIME)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
 
   return null
 }
