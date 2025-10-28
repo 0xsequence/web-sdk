@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.3.27
+
+### Patch Changes
+
+- fix for databeat events
+
 ## 5.3.26
 
 ### Patch Changes
