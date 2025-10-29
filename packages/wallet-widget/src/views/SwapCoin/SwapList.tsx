@@ -168,7 +168,7 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         await walletClient.switchChain({ id: chainId })
       }
 
-      const txHash = await sendTransactions({
+      const txs = await sendTransactions({
         connector,
         walletClient,
         publicClient,
@@ -177,6 +177,16 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         senderAddress: userAddress,
         transactions: [...getSwapTransactions()]
       })
+      let txHash = ''
+      for (const [index, tx] of txs.entries()) {
+        const currentTxHash = await tx()
+
+        const isLastTransaction = index === txs.length - 1
+
+        if (isLastTransaction) {
+          txHash = currentTxHash
+        }
+      }
 
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',

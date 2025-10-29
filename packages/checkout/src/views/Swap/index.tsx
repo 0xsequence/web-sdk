@@ -237,7 +237,7 @@ export const Swap = () => {
         await walletClient.switchChain({ id: chainId })
       }
 
-      const txHash = await sendTransactions({
+      const txs = await sendTransactions({
         connector,
         walletClient,
         publicClient,
@@ -247,6 +247,17 @@ export const Swap = () => {
         transactionConfirmations: blockConfirmations,
         transactions: [...getSwapTransactions(), ...(postSwapTransactions ?? [])]
       })
+
+      let txHash = ''
+      for (const [index, tx] of txs.entries()) {
+        const currentTxHash = await tx()
+
+        const isLastTransaction = index === txs.length - 1
+        if (isLastTransaction) {
+          onSuccess?.(currentTxHash)
+          txHash = currentTxHash
+        }
+      }
 
       closeSwapModal()
       openTransactionStatusModal({

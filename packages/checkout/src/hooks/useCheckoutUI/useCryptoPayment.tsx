@@ -238,7 +238,8 @@ export const useCryptoPayment = ({
           }
         ]
 
-        const txHash = await sendTransactions({
+        let txHash = ''
+        const txs = await sendTransactions({
           chainId,
           senderAddress: userAddress,
           publicClient,
@@ -250,7 +251,17 @@ export const useCryptoPayment = ({
           waitConfirmationForLastTransaction: false
         })
 
-        onSuccess?.(txHash)
+        for (const [index, tx] of txs.entries()) {
+          const currentTxHash = await tx()
+
+          const isLastTransaction = index === txs.length - 1
+
+          if (isLastTransaction) {
+            onSuccess?.(currentTxHash)
+            txHash = currentTxHash
+          }
+        }
+
         return txHash
       } else {
         const swapOption = swapRoutes
@@ -322,7 +333,8 @@ export const useCryptoPayment = ({
           }
         ]
 
-        const txHash = await sendTransactions({
+        let txHash = ''
+        const txs = await sendTransactions({
           chainId,
           senderAddress: userAddress,
           publicClient,
@@ -334,7 +346,17 @@ export const useCryptoPayment = ({
           waitConfirmationForLastTransaction: false
         })
 
-        onSuccess?.(txHash)
+        for (const [index, tx] of txs.entries()) {
+          const currentTxHash = await tx()
+
+          const isLastTransaction = index === txs.length - 1
+
+          if (isLastTransaction) {
+            onSuccess?.(txHash)
+            txHash = currentTxHash
+          }
+        }
+
         return txHash
       }
     } catch (error) {

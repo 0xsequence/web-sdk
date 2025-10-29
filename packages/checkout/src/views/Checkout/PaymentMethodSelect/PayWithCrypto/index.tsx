@@ -26,7 +26,7 @@ import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import { EVENT_SOURCE } from '../../../../constants/index.js'
 import { type PaymentMethodSelectionParams } from '../../../../contexts/NavigationCheckout.js'
 import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentModal.js'
-import { useAddFundsModal } from '../../../../hooks/index.js'
+import { useAddFundsModal, useTransactionCounter } from '../../../../hooks/index.js'
 import { useSelectPaymentModal, useTransactionStatusModal } from '../../../../hooks/index.js'
 import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
 
@@ -48,6 +48,14 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const { analytics } = useAnalyticsContext()
   const [isError, setIsError] = useState<boolean>(false)
   const { navigation, setNavigation } = useNavigationCheckout()
+  const {
+    initializeTransactionCounter,
+    incrementTransactionCount,
+    transactionCount,
+    maxTransactions,
+    isTransactionCounterInitialized,
+    resetTransactionCounter
+  } = useTransactionCounter()
 
   const {
     chain,
@@ -239,6 +247,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
     setIsPurchasing(true)
     setIsError(false)
+    resetTransactionCounter()
 
     try {
       if (connectedChainId != chainId) {
@@ -275,7 +284,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         }
       ]
 
-      const txHash = await sendTransactions({
+      const txs = await sendTransactions({
         chainId,
         senderAddress: userAddress,
         publicClient,
@@ -286,6 +295,21 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         transactionConfirmations,
         waitConfirmationForLastTransaction: false
       })
+
+      initializeTransactionCounter(txs.length)
+
+      let txHash = ''
+      for (const [index, tx] of txs.entries()) {
+        const currentTxHash = await tx()
+        incrementTransactionCount()
+
+        const isLastTransaction = index === txs.length - 1
+
+        if (isLastTransaction) {
+          onSuccess?.(currentTxHash)
+          txHash = currentTxHash
+        }
+      }
 
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
@@ -362,6 +386,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
     setIsPurchasing(true)
     setIsError(false)
+    resetTransactionCounter()
 
     try {
       if (connectedChainId != chainId) {
@@ -423,7 +448,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         }
       ]
 
-      const txHash = await sendTransactions({
+      const txs = await sendTransactions({
         chainId,
         senderAddress: userAddress,
         publicClient,
@@ -434,6 +459,23 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         transactionConfirmations,
         waitConfirmationForLastTransaction: false
       })
+
+      initializeTransactionCounter(txs.length)
+
+      let txHash = ''
+      for (const [index, tx] of txs.entries()) {
+        const currentTxHash = await tx()
+        incrementTransactionCount()
+
+        const isLastTransaction = index === txs.length - 1
+
+        if (isLastTransaction) {
+          onSuccess?.(currentTxHash)
+          txHash = currentTxHash
+        } else {
+          // increment tx amount counter.....
+        }
+      }
 
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',
@@ -548,6 +590,21 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     )
   }
 
+  const TransactionCounterInfo = () => {
+    return (
+      <div className="flex flex-row justify-between items-center w-full">
+        <Text variant="xsmall" color="text50">
+          {`${transactionCount} / ${maxTransactions}`}
+          {isTransactionCounterInitialized && (
+            <Text variant="xsmall" color="text50">
+              "counter initialized"
+            </Text>
+          )}
+        </Text>
+      </div>
+    )
+  }
+
   if (isLoading) {
     return (
       <div className="flex flex-col gap-3 justify-center items-center h-full pt-5">
@@ -650,6 +707,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
     return (
       <div className="flex flex-row flex-wrap justify-between items-center w-full gap-2">
+        <TransactionCounterInfo />
         <div className="flex flex-col gap-0 min-w-0">
           <Text
             variant="xsmall"
