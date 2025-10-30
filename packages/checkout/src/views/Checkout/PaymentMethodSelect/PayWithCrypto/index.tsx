@@ -247,7 +247,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
     setIsPurchasing(true)
     setIsError(false)
-    resetTransactionCounter()
 
     try {
       if (connectedChainId != chainId) {
@@ -387,7 +386,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
     setIsPurchasing(true)
     setIsError(false)
-    resetTransactionCounter()
 
     try {
       if (connectedChainId != chainId) {
@@ -473,8 +471,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         if (isLastTransaction) {
           onSuccess?.(currentTxHash)
           txHash = currentTxHash
-        } else {
-          // increment tx amount counter.....
         }
       }
 
