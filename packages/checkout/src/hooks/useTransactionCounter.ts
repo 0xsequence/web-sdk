@@ -15,7 +15,7 @@ export const useTransactionCounter = () => {
   }
 
   const incrementTransactionCount = () => {
-    setCurrentTransactionNumber(currentTransactionNumber + 1)
+    setCurrentTransactionNumber(prev => prev + 1)
   }
 
   const isTransactionCounterInitialized = maxTransactions > 0
