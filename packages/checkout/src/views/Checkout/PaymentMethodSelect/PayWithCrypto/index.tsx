@@ -51,7 +51,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const {
     initializeTransactionCounter,
     incrementTransactionCount,
-    transactionCount,
+    currentTransactionNumber,
     maxTransactions,
     isTransactionCounterInitialized,
     resetTransactionCounter
@@ -364,6 +364,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
       setIsError(true)
     }
 
+    resetTransactionCounter()
     setIsPurchasing(false)
   }
 
@@ -531,6 +532,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     }
 
     setIsPurchasing(false)
+    resetTransactionCounter()
   }
 
   const onClickPurchase = () => {
@@ -586,21 +588,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         <div className="text-primary">
           <ChevronDownIcon size="md" />
         </div>
-      </div>
-    )
-  }
-
-  const TransactionCounterInfo = () => {
-    return (
-      <div className="flex flex-row justify-between items-center w-full">
-        <Text variant="xsmall" color="text50">
-          {`${transactionCount} / ${maxTransactions}`}
-          {isTransactionCounterInitialized && (
-            <Text variant="xsmall" color="text50">
-              "counter initialized"
-            </Text>
-          )}
-        </Text>
       </div>
     )
   }
@@ -669,6 +656,23 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   }
 
   const PriceSection = () => {
+    if (isTransactionCounterInitialized) {
+      const descriptionText =
+        maxTransactions > 1
+          ? `Confirming transaction ${currentTransactionNumber} of ${maxTransactions}`
+          : `Confirming transaction`
+      return (
+        <div className="flex flex-col flex-wrap justify-between items-center w-full gap-2">
+          <div className="flex flex-col gap-0.5">
+            <Text variant="xsmall" color="text50">
+              {descriptionText}
+            </Text>
+          </div>
+          <Spinner />
+        </div>
+      )
+    }
+
     if (isFree) {
       return (
         <div className="flex flex-col mt-2 mb-1 w-full">
@@ -707,7 +711,6 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
     return (
       <div className="flex flex-row flex-wrap justify-between items-center w-full gap-2">
-        <TransactionCounterInfo />
         <div className="flex flex-col gap-0 min-w-0">
           <Text
             variant="xsmall"
