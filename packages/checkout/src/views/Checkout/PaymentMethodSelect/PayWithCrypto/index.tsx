@@ -29,6 +29,7 @@ import type { SelectPaymentSettings } from '../../../../contexts/SelectPaymentMo
 import { useAddFundsModal } from '../../../../hooks/index.js'
 import { useSelectPaymentModal, useTransactionStatusModal } from '../../../../hooks/index.js'
 import { useNavigationCheckout } from '../../../../hooks/useNavigationCheckout.js'
+import { TRANSAK_ONRAMP_URL } from '../../../../utils/transak.js'
 
 import { useInitialBalanceCheck } from './useInitialBalanceCheck.js'
 
@@ -500,6 +501,11 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   }
 
   const onClickAddFunds = () => {
+    if (!onRampProvider || onRampProvider === TransactionOnRampProvider.unknown) {
+      window.open(TRANSAK_ONRAMP_URL, '_blank')
+      return
+    }
+
     const getNetworks = (): string | undefined => {
       const network = findSupportedNetwork(chainId)
       return network?.name?.toLowerCase()
@@ -509,7 +515,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     closeSelectPaymentModal()
     triggerAddFunds({
       walletAddress: userAddress || '',
-      provider: onRampProvider || TransactionOnRampProvider.transak,
+      provider: onRampProvider,
       networks: getNetworks(),
       defaultCryptoCurrency: dataCurrencyInfo?.symbol || '',
       onClose: selectPaymentSettings?.onClose
@@ -597,16 +603,14 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
             <TokenSelector />
           </div>
         </div>
-        {onRampProvider !== TransactionOnRampProvider.unknown && (
-          <Button
-            label="Add Funds"
-            className="w-full"
-            shape="square"
-            variant="glass"
-            leftIcon={() => <AddIcon size="md" />}
-            onClick={onClickAddFunds}
-          ></Button>
-        )}
+        <Button
+          label="Add Funds"
+          className="w-full"
+          shape="square"
+          variant="glass"
+          leftIcon={() => <AddIcon size="md" />}
+          onClick={onClickAddFunds}
+        ></Button>
       </div>
     )
   }
