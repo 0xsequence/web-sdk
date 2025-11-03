@@ -85,6 +85,8 @@ export interface ConnectConfig {
   hideConnectedWallets?: boolean
   customCSS?: string
   embeddedWalletTitle?: string
+  renderInline?: boolean
+  onConnectSuccess?: (address: string) => void
 }
 
 export type StorageItem = {

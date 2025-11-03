@@ -3,38 +3,30 @@ import type { ReactNode } from 'react'
 import { WagmiProvider, type State } from 'wagmi'
 
 import type { SequenceConnectConfig } from '../../config/createConfig.js'
-import { SequenceConnectPreviewProvider } from '../SequenceConnectPreviewProvider/SequenceConnectPreviewProvider.js'
+import { SequenceConnectInlineProvider } from '../SequenceConnectInlineProvider/SequenceConnectInlineProvider.js'
 
 const defaultQueryClient = new QueryClient()
 
-interface SequenceConnectPreviewProps {
+export interface SequenceConnectInlineProps {
   config: SequenceConnectConfig
   queryClient?: QueryClient
   initialState?: State | undefined
-  children: ReactNode
+  children?: ReactNode
 }
 
 /**
- * @internal
- * Preview version of SequenceConnect component.
- * This component should only be used for testing purposes.
- * It provides the same functionality as SequenceConnect but only for preview purposes.
+ * Inline version of SequenceConnect component.
+ * This component renders the connect UI inline within your layout instead of in a modal.
+ * Ideal for embedded wallet experiences or custom layouts.
  */
-export const SequenceConnectPreview = (props: SequenceConnectPreviewProps) => {
+export const SequenceConnectInline = (props: SequenceConnectInlineProps) => {
   const { config, queryClient, initialState, children } = props
   const { connectConfig, wagmiConfig } = config
 
   return (
     <WagmiProvider config={wagmiConfig} initialState={initialState}>
       <QueryClientProvider client={queryClient || defaultQueryClient}>
-        <SequenceConnectPreviewProvider
-          config={{
-            ...connectConfig,
-            hideConnectedWallets: true
-          }}
-        >
-          {children}
-        </SequenceConnectPreviewProvider>
+        <SequenceConnectInlineProvider config={connectConfig}>{children}</SequenceConnectInlineProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )

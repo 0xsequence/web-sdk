@@ -2,6 +2,7 @@ import { useOpenConnectModal, useWallets, WalletType } from '@0xsequence/connect
 import { Button, Card, CheckmarkIcon, Image, Text } from '@0xsequence/design-system'
 import { clsx } from 'clsx'
 import { Footer } from 'example-shared-components'
+import { Link } from 'react-router-dom'
 
 import { Connected } from './Connected'
 
@@ -34,6 +35,9 @@ export const Homepage = () => {
 
           <div className="flex gap-2 flex-row items-center">
             <Button onClick={onClickConnect} variant="feature" label="Connect" />
+            <Link to="/inline">
+              <Button variant="primary" label="Inline Demo" />
+            </Link>
           </div>
 
           <div className="flex gap-2 flex-col px-4 mt-10 w-full max-w-[480px]">
