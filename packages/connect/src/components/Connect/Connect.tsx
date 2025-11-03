@@ -43,7 +43,7 @@ export const SEQUENCE_UNIVERSAL_CONNECTOR_NAME = 'Sequence'
 interface ConnectProps extends SequenceConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
   onClose: () => void
-  isPreview?: boolean
+  isInline?: boolean
 }
 
 export const Connect = (props: ConnectProps) => {
@@ -52,7 +52,7 @@ export const Connect = (props: ConnectProps) => {
   const { analytics } = useAnalyticsContext()
   const { hideExternalConnectOptions, hideConnectedWallets, hideSocialConnectOptions } = useWalletSettings()
 
-  const { onClose, emailConflictInfo, config = {} as ConnectConfig, isPreview = false } = props
+  const { onClose, emailConflictInfo, config = {} as ConnectConfig, isInline = false } = props
   const { signIn = {} } = config
   const storage = useStorage()
 
@@ -256,6 +256,11 @@ export const Connect = (props: ConnectProps) => {
     connect(
       { connector },
       {
+        onSuccess: result => {
+          if (result?.accounts[0]) {
+            config.onConnectSuccess?.(result.accounts[0])
+          }
+        },
         onSettled: result => {
           setLastConnectedWallet(result?.accounts[0])
         }
@@ -377,14 +382,14 @@ export const Connect = (props: ConnectProps) => {
         : `Something went wrong. (${waasStatusData.errorResponse.msg})`
 
     return (
-      <div className="p-4">
+      <div className={isInline ? 'p-0' : 'p-4'}>
         <div
           className="flex flex-col justify-center text-primary items-center font-medium"
           style={{
-            marginTop: '2px'
+            marginTop: isInline ? '0' : '2px'
           }}
         >
-          <TitleWrapper isPreview={isPreview}>
+          <TitleWrapper isInline={isInline}>
             <Text color="secondary">
               {isLoading
                 ? `Connecting...`
@@ -406,14 +411,14 @@ export const Connect = (props: ConnectProps) => {
   }
 
   return (
-    <div className="p-4">
+    <div className={isInline ? 'p-0' : 'p-4'}>
       <div
         className="flex flex-col justify-center text-primary items-center font-medium"
         style={{
-          marginTop: '2px'
+          marginTop: isInline ? '0' : '2px'
         }}
       >
-        <TitleWrapper isPreview={isPreview}>
+        <TitleWrapper isInline={isInline}>
           <Text color="secondary">
             {isLoading
               ? `Connecting...`
@@ -595,8 +600,8 @@ export const Connect = (props: ConnectProps) => {
   )
 }
 
-const TitleWrapper = ({ children, isPreview }: { children: ReactNode; isPreview: boolean }) => {
-  if (isPreview) {
+const TitleWrapper = ({ children, isInline }: { children: ReactNode; isInline: boolean }) => {
+  if (isInline) {
     return <>{children}</>
   }
 

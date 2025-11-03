@@ -34,7 +34,7 @@ ie.
 - `SequenceWalletProvider` (previously KitWalletProvider)
 - `SequenceHooksProvider`
 
-Also for builder integration KitPreviewProvider was renamed `SequenceConnectPreviewProvider`
+Also for builder integration KitPreviewProvider was renamed `SequenceConnectInlineProvider`
 
 ### Hooks
 

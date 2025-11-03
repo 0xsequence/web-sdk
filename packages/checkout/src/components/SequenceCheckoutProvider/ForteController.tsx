@@ -1,12 +1,15 @@
+import { useAnalyticsContext } from '@0xsequence/connect'
 import { useConfig } from '@0xsequence/hooks'
 import { useEffect, useState } from 'react'
 
 import { fetchFortePaymentStatus } from '../../api/data.js'
+import { EVENT_SOURCE } from '../../constants/index.js'
 import { FortePaymentControllerProvider, useEnvironmentContext, type FortePaymentData } from '../../contexts/index.js'
 
 const POLLING_TIME = 10 * 1000
 
 export const ForteController = ({ children }: { children: React.ReactNode }) => {
+  const { analytics } = useAnalyticsContext()
   const [fortePaymentData, setFortePaymentData] = useState<FortePaymentData>()
   const { forteWidgetUrl } = useEnvironmentContext()
   const [isSuccess, setIsSuccess] = useState(false)
@@ -56,6 +59,34 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
     }
   }, [widgetInitialized, fortePaymentData])
 
+  const trackSuccessEvent = () => {
+    const creditCardCheckout = fortePaymentData?.creditCardCheckout
+
+    if (!creditCardCheckout || !analytics) {
+      return
+    }
+
+    analytics?.track({
+      event: 'SEND_TRANSACTION_REQUEST',
+      props: {
+        ...creditCardCheckout.supplementaryAnalyticsInfo,
+        type: 'credit_card',
+        provider: 'forte',
+        source: EVENT_SOURCE,
+        chainId: String(creditCardCheckout.chainId),
+        purchasedCurrencySymbol: creditCardCheckout.currencySymbol,
+        purchasedCurrency: creditCardCheckout.currencyAddress,
+        origin: window.location.origin,
+        from: creditCardCheckout.recipientAddress,
+        to: creditCardCheckout.contractAddress,
+        item_ids: JSON.stringify([creditCardCheckout.nftId]),
+        item_quantities: JSON.stringify([JSON.stringify([creditCardCheckout.nftQuantity])]),
+        txHash: 'unavailable',
+        paymentIntentId: fortePaymentData?.paymentIntentId || 'unavailable'
+      }
+    })
+  }
+
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined
     let eventFortePaymentsWidgetClosedListener: (e: Event) => void
@@ -77,13 +108,11 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
       eventFortePaymentsBuyNftMintSuccessListener = (e: Event) => {
         fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsBuyNftMintSuccess?.(e)
         fortePaymentData.creditCardCheckout?.onClose?.()
-        setIsSuccess(true)
       }
 
       eventFortePaymentsBuyNftSuccessListener = (e: Event) => {
         fortePaymentData?.creditCardCheckout?.forteConfig?.onFortePaymentsBuyNftSuccess?.(e)
         fortePaymentData.creditCardCheckout?.onClose?.()
-        setIsSuccess(true)
       }
 
       // Note: these events are mutually exclusive. ie they won't trigger at the same time
@@ -125,7 +154,10 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
   }, [fortePaymentData])
 
   const checkFortePaymentStatus = async () => {
-    if (!fortePaymentData || isSuccess) {
+    if (!fortePaymentData) {
+      throw new Error('Forte payment data is not available. Unable to check payment status.')
+    }
+    if (isSuccess) {
       return
     }
 
@@ -135,6 +167,7 @@ export const ForteController = ({ children }: { children: React.ReactNode }) => 
 
     if (status === 'Approved' && !isSuccess) {
       fortePaymentData.creditCardCheckout?.onSuccess?.()
+      trackSuccessEvent()
       setIsSuccess(true)
     }
 

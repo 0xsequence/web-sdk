@@ -6,6 +6,7 @@ Sequence Web SDK 🧰 is a library enabling developers to easily integrate web3 
 - Connect to popular web3 wallets eg: walletConnect, metamask ! 🦊 ⛓️
 - Full-fledged embedded wallet for coins and collectibles 👛 🖼️ 🪙
 - Fiat onramp 💵 💶 💴 💷
+- Inline connect UI for custom layouts and embedded experiences 🎨
 
 View the [demo](https://0xsequence.github.io/web-sdk)! 👀
 
@@ -52,6 +53,7 @@ interface CreateConfigOptions {
     chainId: number
   }>
   ethAuth?: EthAuthSettings
+  onConnectSuccess?: (address: string) => void // callback fired when wallet connects
 
   wagmiConfig?: WagmiConfig // optional wagmiConfig overrides
 
@@ -243,6 +245,76 @@ const MyReactComponent = () => {
 }
 ```
 
+### Inline Connect UI
+
+<div align="center">
+  <img src="public/docs/inline-connect.png" alt="Inline Connect UI">
+</div>
+
+Instead of using a modal, you can render the connect UI inline within your layout using the `SequenceConnectInline` component. This is perfect for custom layouts, embedded wallet experiences, or when you want the connect UI to be part of your page flow.
+
+```js
+import { SequenceConnectInline, createConfig } from '@0xsequence/connect'
+import { useNavigate } from 'react-router-dom'
+
+const config = createConfig('waas', {
+  projectAccessKey: '<your-project-access-key>',
+  chainIds: [1, 137],
+  defaultChainId: 1,
+  appName: 'Demo Dapp',
+  waasConfigKey: '<your-waas-config-key>',
+
+  // Optional: callback fired when wallet connects successfully
+  onConnectSuccess: (address) => {
+    console.log('Connected wallet:', address)
+    // Redirect or perform other actions
+  },
+
+  google: { clientId: '<your-google-client-id>' },
+  email: true
+})
+
+function InlinePage() {
+  return (
+    <div className="my-custom-layout">
+      <h1>Connect Your Wallet</h1>
+      <SequenceConnectInline config={config} />
+    </div>
+  )
+}
+```
+
+#### Key Differences from Modal UI:
+
+- **No padding/margins**: The inline UI removes the default padding designed for modal display
+- **Full width**: The component fills its container width
+- **No modal backdrop**: Renders directly in your layout
+- **Custom positioning**: You control the placement with your own CSS/layout
+
+#### Advanced: Using SequenceConnectInlineProvider
+
+For more control, you can use the lower-level `SequenceConnectInlineProvider`:
+
+```js
+import { SequenceConnectInlineProvider } from '@0xsequence/connect'
+import { WagmiProvider } from 'wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
+function App() {
+  return (
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <SequenceConnectInlineProvider config={connectConfig}>
+          <YourContent />
+        </SequenceConnectInlineProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  )
+}
+```
+
 ## Hooks
 
 ### useOpenConnectModal
@@ -294,6 +366,11 @@ The settings are described in more detailed in the Sequence Web SDK documentatio
       }
     ],
     readOnlyNetworks: [10],
+    // callback fired when wallet connects successfully
+    onConnectSuccess: (address) => {
+      console.log('Wallet connected:', address)
+      // Perform actions like redirecting, analytics tracking, etc.
+    },
   }
 
   <SequenceConnectProvider config={connectConfig}>

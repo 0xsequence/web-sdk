@@ -1,12 +1,12 @@
 'use client'
 
-import { Button, Card, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
+import { Button, Card, Modal, ModalPrimitive, Text, ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type ReactNode } from 'react'
 import { hexToString, type Hex } from 'viem'
 import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
 
@@ -20,6 +20,8 @@ import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
+import { styleProperties } from '../../styleProperties.js'
+import { styles } from '../../styles.js'
 import {
   type ConnectConfig,
   type DisplayedAsset,
@@ -39,13 +41,19 @@ import { ShadowRoot } from '../ShadowRoot/index.js'
 import { SocialLink } from '../SocialLink/SocialLink.js'
 import { TxnDetails } from '../TxnDetails/index.js'
 
-export type SequenceConnectProviderProps = {
-  children: React.ReactNode
+export type SequenceConnectInlineProviderProps = {
+  children: ReactNode
   config: ConnectConfig
 }
 
-export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => {
+/**
+ * Inline version of SequenceConnectProvider component.
+ * This component renders the connect UI inline within your layout instead of in a modal.
+ * Ideal for embedded wallet experiences or custom layouts.
+ */
+export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProviderProps) => {
   const { config, children } = props
+
   const {
     defaultTheme = 'dark',
     signIn = {},
@@ -65,7 +73,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
 
   const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth
 
-  const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
@@ -197,7 +204,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
         >
           <GoogleOAuthProvider clientId={googleClientId}>
             <ConnectModalContextProvider
-              value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+              value={{ isConnectModalOpen: false, setOpenConnectModal: () => {}, openConnectModalState: false }}
             >
               <WalletConfigContextProvider
                 value={{
@@ -211,30 +218,16 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
               >
                 <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                   <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey, setIsSocialLinkOpen }}>
-                    <ShadowRoot theme={theme} customCSS={customCSS}>
-                      <EpicAuthProvider>
-                        <AnimatePresence>
-                          {openConnectModal && (
-                            <Modal
-                              scroll={false}
-                              size="sm"
-                              contentProps={{
-                                style: {
-                                  maxWidth: '390px',
-                                  overflow: 'visible',
-                                  ...getModalPositionCss(position)
-                                }
-                              }}
-                              onClose={() => setOpenConnectModal(false)}
-                            >
-                              <Connect
-                                onClose={() => setOpenConnectModal(false)}
-                                emailConflictInfo={emailConflictInfo}
-                                {...props}
-                              />
-                            </Modal>
-                          )}
+                    <EpicAuthProvider>
+                      <div id="kit-provider" className="h-full w-full flex flex-col">
+                        <style>{styles + styleProperties + (customCSS ? `\n\n${customCSS}` : '')}</style>
+                        <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
+                          <Connect onClose={() => {}} emailConflictInfo={emailConflictInfo} isInline {...props} />
+                        </ThemeProvider>
+                      </div>
 
+                      <ShadowRoot theme={theme} customCSS={customCSS}>
+                        <AnimatePresence>
                           {pendingRequestConfirmation && (
                             <Modal
                               scroll={false}
@@ -339,7 +332,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               size="sm"
                               scroll={false}
                               onClose={() => {
-                                setOpenConnectModal(false)
                                 toggleEmailConflictModal(false)
                               }}
                             >
@@ -358,7 +350,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                     <Button
                                       label="OK"
                                       onClick={() => {
-                                        setOpenConnectModal(false)
                                         toggleEmailConflictModal(false)
                                       }}
                                     />
@@ -381,8 +372,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               </Modal>
                             ))}
                         </AnimatePresence>
-                      </EpicAuthProvider>
-                    </ShadowRoot>
+                      </ShadowRoot>
+                    </EpicAuthProvider>
                     {children}
                   </SocialLinkContextProvider>
                 </AnalyticsContextProvider>

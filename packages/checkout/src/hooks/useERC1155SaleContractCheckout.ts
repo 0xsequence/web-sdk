@@ -162,9 +162,16 @@ export const useERC1155SaleContractCheckout = ({
   const error = isErrorCheckoutOptions || isErrorSaleConfig
 
   const openCheckoutModal = () => {
-    if (isLoading || error) {
-      console.error('Error loading checkout options or sale config', { isLoading, error })
-      return
+    if (isLoading) {
+      throw new Error('Checkout options are still loading. Please wait and try again.')
+    }
+    if (error) {
+      throw new Error(
+        'Failed to load checkout options or sale configuration. Please check your network connection and try again.',
+        {
+          cause: error
+        }
+      )
     }
 
     openSelectPaymentModal(

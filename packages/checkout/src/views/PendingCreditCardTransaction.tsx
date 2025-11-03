@@ -148,7 +148,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
             provider: 'transak',
             source: EVENT_SOURCE,
             chainId: String(creditCardCheckout.chainId),
-            listedCurrency: creditCardCheckout.currencyAddress,
+            purchasedCurrencySymbol: creditCardCheckout.currencySymbol,
             purchasedCurrency: creditCardCheckout.currencyAddress,
             origin: window.location.origin,
             from: creditCardCheckout.recipientAddress,

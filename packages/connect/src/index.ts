@@ -1,9 +1,9 @@
 export { SequenceConnect } from './components/SequenceConnect/index.js'
-export { SequenceConnectPreview } from './components/SequenceConnectPreview/index.js'
+export { SequenceConnectInline } from './components/SequenceConnectInline/index.js'
 
 // Provider
 export { SequenceConnectProvider } from './components/SequenceConnectProvider/index.js'
-export { SequenceConnectPreviewProvider } from './components/SequenceConnectPreviewProvider/index.js'
+export { SequenceConnectInlineProvider } from './components/SequenceConnectInlineProvider/index.js'
 
 // Types
 export type {
@@ -21,7 +21,7 @@ export type {
 } from './types.js'
 
 // Config
-export { createConfig, type CreateConfigOptions } from './config/createConfig.js'
+export { createConfig, type CreateConfigOptions, type SequenceConnectConfig } from './config/createConfig.js'
 export {
   getDefaultConnectors,
   getDefaultUniversalConnectors,

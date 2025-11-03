@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.3.27
+
+### Patch Changes
+
+- fix for databeat events
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.27
+
 ## 5.3.26
 
 ### Patch Changes
