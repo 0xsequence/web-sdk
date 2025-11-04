@@ -7,7 +7,6 @@ import React, { useEffect, useMemo, useRef } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 
 import type { TransakConfig } from '../../contexts/CheckoutModal.js'
-import { useEnvironmentContext } from '../../contexts/Environment.js'
 import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal.js'
 import { TRANSAK_PROXY_ADDRESS, getCurrencyCode } from '../../utils/transak.js'
 
@@ -77,13 +76,10 @@ export const useCreditCardPayment = ({
 }: UseCreditCardPaymentArgs): UseCreditCardPaymentReturn => {
   const projectAccessKey = useProjectAccessKey()
   const { env } = useConfig()
-  const disableSardineClientTokenFetch =
-    isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'sardine'
 
   const disableTransakWidgetUrlFetch =
     isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'transak'
 
-  const { sardineCheckoutUrl: sardineProxyUrl } = useEnvironmentContext()
   const network = findSupportedNetwork(chain)
   const error = errorCollectionInfo || errorTokenMetadata || errorCurrencyInfo
   const isLoading = isLoadingCollectionInfo || isLoadingTokenMetadatas || isLoadingCurrencyInfo
@@ -92,33 +88,6 @@ export const useCreditCardPayment = ({
   const currencyDecimals = isNativeCurrency ? network?.nativeToken.decimals : currencyInfo?.decimals || 18
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const tokenMetadata = tokenMetadatas?.[0]
-
-  const {
-    data: dataClientToken,
-    isLoading: isLoadingClientToken,
-    error: errorClientToken
-  } = useSardineClientToken(
-    {
-      order: {
-        chainId: network?.chainId || 137,
-        contractAddress: targetContractAddress,
-        recipientAddress,
-        currencyQuantity: totalPriceRaw,
-        currencySymbol: currencyInfo?.symbol || 'POL',
-        currencyDecimals: String(currencyDecimals || 18),
-        currencyAddress,
-        nftId: collectible.tokenId ?? '',
-        nftAddress: collectionAddress,
-        nftQuantity: collectible.quantity,
-        nftDecimals: String(dataCollectionInfo?.decimals || 18),
-        calldata: txData
-      },
-      projectAccessKey: projectAccessKey,
-      apiClientUrl: env.apiUrl,
-      tokenMetadata: tokenMetadata
-    },
-    disableSardineClientTokenFetch
-  )
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -234,43 +203,14 @@ export const useCreditCardPayment = ({
       },
       isLoading: isLoadingTransakLink
     }
-  ])
-
-  const transakNftData = encodeURIComponent(btoa(transakNftDataJson))
-
-  const estimatedGasLimit = '500000'
-
-  const partnerOrderId = `${recipientAddress}-${new Date().getTime()}`
-
-  // Note: the network name might not always line up with Transak. A conversion function might be necessary
-  const networkName = network?.name.toLowerCase()
-  const transakLink = `${transakApiUrl}?apiKey=${transakApiKey}&isNFT=true&calldata=${transakCallData}&contractId=${transakConfig?.contractId}&cryptoCurrencyCode=${currencySymbol}&estimatedGasLimit=${estimatedGasLimit}&nftData=${transakNftData}&walletAddress=${recipientAddress}&disableWalletAddressForm=true&partnerOrderId=${partnerOrderId}&network=${networkName}`
+  }
 
   return {
     error: null,
     data: {
-      iframeId: TRANSAK_IFRAME_ID,
-      paymentUrl: transakLink,
-      CreditCardIframe: () => (
-        <div className="flex items-center justify-center" style={{ height: '770px' }}>
-          <iframe
-            id="transakIframe"
-            ref={iframeRef}
-            allow="camera;microphone;payment"
-            src={transakLink}
-            style={{
-              maxHeight: '650px',
-              height: '100%',
-              maxWidth: '380px',
-              width: '100%'
-            }}
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
-        </div>
-      ),
-      EventListener: () => (
-        <TransakEventListener onSuccess={onSuccess} onError={onError} isLoading={isLoading} iframeRef={iframeRef} />
-      )
+      iframeId: '',
+      CreditCardIframe: () => null,
+      EventListener: () => null
     },
     isLoading: false
   }

@@ -121,10 +121,8 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
   const Options = () => {
     return (
       <div className="flex flex-col justify-center items-center gap-2 w-full">
-        {/* Only 1 option will be displayed, even if multiple providers are passed */}
         {creditCardProviders.slice(0, 1).map(creditCardProvider => {
           switch (creditCardProvider) {
-            case 'sardine':
             case 'transak':
             case 'forte':
             case 'custom':

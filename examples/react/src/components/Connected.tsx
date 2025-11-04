@@ -42,7 +42,7 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 const checkoutProvider = searchParams.get('checkoutProvider')
 const onRampProvider = searchParams.get('onRampProvider')
-const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-payment-erc1155-sale-native-token-testnet'
+const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-transak-payment-erc1155-sale-native-token-testnet'
 
 // @ts-ignore
 const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
