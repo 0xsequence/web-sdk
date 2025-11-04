@@ -177,7 +177,13 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         senderAddress: userAddress,
         transactions: [...getSwapTransactions()]
       })
-      let txHash = ''
+
+      if (txs.length === 0) {
+        throw new Error('No transactions to send')
+      }
+
+      let txHash: string | undefined
+
       for (const [index, tx] of txs.entries()) {
         const currentTxHash = await tx()
 
@@ -186,6 +192,10 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         if (isLastTransaction) {
           txHash = currentTxHash
         }
+      }
+
+      if (!txHash) {
+        throw new Error('Transaction hash is not available')
       }
 
       analytics?.track({

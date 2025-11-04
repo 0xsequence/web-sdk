@@ -295,9 +295,13 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         waitConfirmationForLastTransaction: false
       })
 
+      if (txs.length === 0) {
+        throw new Error('No transactions to send')
+      }
+
       initializeTransactionCounter(txs.length)
 
-      let txHash = ''
+      let txHash: string | undefined
       for (const [index, tx] of txs.entries()) {
         const currentTxHash = await tx()
         incrementTransactionCount()
@@ -308,6 +312,10 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
           onSuccess?.(currentTxHash)
           txHash = currentTxHash
         }
+      }
+
+      if (!txHash) {
+        throw new Error('Transaction hash is not available')
       }
 
       analytics?.track({
@@ -459,9 +467,13 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         waitConfirmationForLastTransaction: false
       })
 
+      if (txs.length === 0) {
+        throw new Error('No transactions to send')
+      }
+
       initializeTransactionCounter(txs.length)
 
-      let txHash = ''
+      let txHash: string | undefined
       for (const [index, tx] of txs.entries()) {
         const currentTxHash = await tx()
         incrementTransactionCount()
@@ -472,6 +484,10 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
           onSuccess?.(currentTxHash)
           txHash = currentTxHash
         }
+      }
+
+      if (!txHash) {
+        throw new Error('Transaction hash is not available')
       }
 
       analytics?.track({

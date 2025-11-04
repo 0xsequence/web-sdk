@@ -238,7 +238,7 @@ export const useCryptoPayment = ({
           }
         ]
 
-        let txHash = ''
+        let txHash: string | undefined
         const txs = await sendTransactions({
           chainId,
           senderAddress: userAddress,
@@ -251,6 +251,10 @@ export const useCryptoPayment = ({
           waitConfirmationForLastTransaction: false
         })
 
+        if (txs.length === 0) {
+          throw new Error('No transactions to send')
+        }
+
         for (const [index, tx] of txs.entries()) {
           const currentTxHash = await tx()
 
@@ -260,6 +264,10 @@ export const useCryptoPayment = ({
             onSuccess?.(currentTxHash)
             txHash = currentTxHash
           }
+        }
+
+        if (!txHash) {
+          throw new Error('Transaction hash is not available')
         }
 
         return txHash
@@ -333,7 +341,7 @@ export const useCryptoPayment = ({
           }
         ]
 
-        let txHash = ''
+        let txHash: string | undefined
         const txs = await sendTransactions({
           chainId,
           senderAddress: userAddress,
@@ -346,15 +354,23 @@ export const useCryptoPayment = ({
           waitConfirmationForLastTransaction: false
         })
 
+        if (txs.length === 0) {
+          throw new Error('No transactions to send')
+        }
+
         for (const [index, tx] of txs.entries()) {
           const currentTxHash = await tx()
 
           const isLastTransaction = index === txs.length - 1
 
           if (isLastTransaction) {
-            onSuccess?.(txHash)
+            onSuccess?.(currentTxHash)
             txHash = currentTxHash
           }
+        }
+
+        if (!txHash) {
+          throw new Error('Transaction hash is not available')
         }
 
         return txHash

@@ -248,7 +248,12 @@ export const Swap = () => {
         transactions: [...getSwapTransactions(), ...(postSwapTransactions ?? [])]
       })
 
-      let txHash = ''
+      if (txs.length === 0) {
+        throw new Error('No transactions to send')
+      }
+
+      let txHash: string | undefined
+
       for (const [index, tx] of txs.entries()) {
         const currentTxHash = await tx()
 
@@ -257,6 +262,10 @@ export const Swap = () => {
           onSuccess?.(currentTxHash)
           txHash = currentTxHash
         }
+      }
+
+      if (!txHash) {
+        throw new Error('Transaction hash is not available')
       }
 
       closeSwapModal()
