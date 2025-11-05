@@ -5,9 +5,7 @@ import { useConfig } from '@0xsequence/hooks'
 export const useTransakWidgetUrl = (args: TransakWidgetUrlArgs, disabled?: boolean) => {
   const { env, projectAccessKey } = useConfig()
 
-  // const apiUrl = env.apiUrl
-
-  const apiUrl = 'http://localhost:4422'
+  const apiUrl = env.apiUrl
 
   return useQuery({
     queryKey: ['transakWidgetUrl', args],
