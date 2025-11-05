@@ -5,6 +5,10 @@ export { SequenceConnectInline } from './components/SequenceConnectInline/index.
 export { SequenceConnectProvider } from './components/SequenceConnectProvider/index.js'
 export { SequenceConnectInlineProvider } from './components/SequenceConnectInlineProvider/index.js'
 
+// Preview
+export { SequenceConnectPreview } from './components/SequenceConnectPreview/index.js'
+export { SequenceConnectPreviewProvider } from './components/SequenceConnectPreview/index.js'
+
 // Types
 export type {
   ConnectConfig,
