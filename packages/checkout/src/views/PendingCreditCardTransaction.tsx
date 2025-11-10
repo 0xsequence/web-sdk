@@ -99,8 +99,8 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
       imageURL: tokenMetadata?.image || '',
       nftName: tokenMetadata?.name || 'collectible',
       collectionAddress: creditCardCheckout.nftAddress,
-      tokenID: [creditCardCheckout.nftId],
-      price: [price],
+      tokenIDs: [creditCardCheckout.nftId],
+      prices: [price],
       quantity: Number(creditCardCheckout.nftQuantity),
       nftType: collectionInfo?.type || 'ERC721'
     }

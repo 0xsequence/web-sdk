@@ -105,8 +105,8 @@ export const useCreditCardPayment = ({
       imageURL: tokenMetadata?.image || '',
       nftName: tokenMetadata?.name || 'collectible',
       collectionAddress: collectionAddress,
-      tokenID: [collectible.tokenId || ''],
-      price: [price],
+      tokenIDs: [collectible.tokenId || ''],
+      prices: [price],
       quantity: Number(collectible.quantity),
       nftType: dataCollectionInfo?.type || 'ERC721'
     }

@@ -274,8 +274,8 @@ export interface TransakNFTData {
   imageURL: string
   nftName: string
   collectionAddress: string
-  tokenID: string[]
-  price: number[]
+  tokenIDs: string[]
+  prices: number[]
   quantity: number
   nftType: string
 }
