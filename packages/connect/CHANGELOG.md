@@ -1,5 +1,14 @@
 # @0xsequence/connect
 
+## 5.4.1
+
+### Patch Changes
+
+- Fix for add funds setting
+
+- Updated dependencies []:
+  - @0xsequence/hooks@5.4.1
+
 ## 5.4.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.1
+
+### Patch Changes
+
+- Fix for add funds setting
+
 ## 5.4.0
 
 ### Major Changes
