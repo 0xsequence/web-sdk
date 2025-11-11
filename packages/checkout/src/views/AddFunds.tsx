@@ -68,7 +68,7 @@ export const AddFundsContentTransak = () => {
 
   if (isLoadingTransakLink) {
     return (
-      <div className="flex items-center justify-center w-full px-4 pb-4 h-full">
+      <div className="flex items-center justify-center w-full px-4 pb-4 h-[200px]">
         <Spinner />
       </div>
     )
