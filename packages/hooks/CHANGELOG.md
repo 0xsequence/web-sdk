@@ -1,11 +1,5 @@
 # @0xsequence/hooks
 
-## 6.0.0
-
-### Major Changes
-
-- Removal of transak-related configuration parameters
-
 ## 5.3.29
 
 ### Patch Changes

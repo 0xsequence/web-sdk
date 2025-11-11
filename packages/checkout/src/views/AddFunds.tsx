@@ -1,5 +1,6 @@
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useEffect, useRef } from 'react'
+import { useAPIClient } from '@0xsequence/hooks'
+import React, { useEffect, useRef } from 'react'
 
 import { HEADER_HEIGHT } from '../constants/index.js'
 import type { AddFundsSettings } from '../contexts/AddFundsModal.js'

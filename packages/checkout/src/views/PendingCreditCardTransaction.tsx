@@ -1,12 +1,12 @@
-import { useAnalyticsContext } from '@0xsequence/connect'
+import { useAnalyticsContext, useProjectAccessKey } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
-import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
+import { useConfig, useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useMemo, useRef } from 'react'
 import { formatUnits } from 'viem'
 
 import { EVENT_SOURCE } from '../constants/index.js'
-import { useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
+import { useEnvironmentContext, useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
   useCheckoutModal,
   useFortePaymentIntent,
@@ -15,7 +15,9 @@ import {
   useTransactionStatusModal
 } from '../hooks/index.js'
 import { useTransakWidgetUrl } from '../hooks/useTransakWidgetUrl.js'
-import { getCurrencyCode, TRANSAK_PROXY_ADDRESS } from '../utils/transak.js'
+import { TRANSAK_PROXY_ADDRESS, getCurrencyCode } from '../utils/transak.js'
+
+const POLLING_TIME = 10 * 1000
 
 interface PendingCreditTransactionProps {
   skipOnCloseCallback: () => void

@@ -1,18 +1,5 @@
 # @0xsequence/kit-wallet
 
-## 6.0.0
-
-### Major Changes
-
-- Removal of transak-related configuration parameters
-
-### Patch Changes
-
-- Updated dependencies []:
-  - @0xsequence/checkout@6.0.0
-  - @0xsequence/connect@6.0.0
-  - @0xsequence/hooks@6.0.0
-
 ## 5.3.29
 
 ### Patch Changes
