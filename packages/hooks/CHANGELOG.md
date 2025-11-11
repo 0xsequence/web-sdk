@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.0
+
+### Minor Changes
+
+- Removal of Transak-related fields
+
 ## 5.3.29
 
 ### Patch Changes
