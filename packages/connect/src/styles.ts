@@ -447,6 +447,12 @@ export const styles = String.raw`
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
+  .h-200 {
+    height: calc(var(--spacing) * 200);
+  }
+  .h-400 {
+    height: calc(var(--spacing) * 400);
+  }
   .h-\[1px\] {
     height: 1px;
   }
@@ -467,6 +473,9 @@ export const styles = String.raw`
   }
   .h-\[64px\] {
     height: 64px;
+  }
+  .h-\[200px\] {
+    height: 200px;
   }
   .h-\[206px\] {
     height: 206px;
@@ -2513,6 +2522,4 @@ export const styles = String.raw`
       --tw-gradient-to-position: 100%;
     }
   }
-}
-
-`
+}`

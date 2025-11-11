@@ -76,7 +76,7 @@ export const AddFundsContentTransak = () => {
 
   if (errorTransakLink) {
     return (
-      <div className="flex items-center justify-center w-full px-4 pb-4 h-full">
+      <div className="flex items-center justify-center w-full px-4 pb-4 h-[200px]">
         <Text color="text100">An error has occurred</Text>
       </div>
     )
