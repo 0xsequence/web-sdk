@@ -31,10 +31,9 @@ export const AddFundsContentTransak = () => {
     fiatAmount: addFundsSettings?.fiatAmount ? Number(addFundsSettings?.fiatAmount) : undefined,
     fiatCurrency: addFundsSettings?.fiatCurrency,
     disableWalletAddressForm: true,
-    defaultFiatAmount: Number(addFundsSettings?.defaultFiatAmount) || 50,
+    defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
     defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',
-    cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList,
-    networks: addFundsSettings?.networks || defaultNetworks
+    cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList
   })
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
 

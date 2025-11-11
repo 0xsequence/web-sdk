@@ -294,7 +294,7 @@ export interface TransakWidgetUrlArgs {
   referrerDomain: string
   fiatAmount?: number
   fiatCurrency?: string
-  defaultFiatAmount?: number
+  defaultFiatAmount?: string
   defaultCryptoCurrency?: string
   cryptoCurrencyList?: string
   networks?: string
