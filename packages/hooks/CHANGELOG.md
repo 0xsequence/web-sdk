@@ -1,6 +1,6 @@
 # @0xsequence/hooks
 
-## 6.0.0
+## 5.4.0
 
 ### Major Changes
 

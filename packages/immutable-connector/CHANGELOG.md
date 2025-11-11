@@ -1,6 +1,6 @@
 # @0xsequence/immutable-connector
 
-## 6.0.0
+## 5.4.0
 
 ### Major Changes
 
@@ -9,7 +9,7 @@
 ### Patch Changes
 
 - Updated dependencies []:
-  - @0xsequence/connect@6.0.0
+  - @0xsequence/connect@5.4.0
 
 ## 5.3.29
 
