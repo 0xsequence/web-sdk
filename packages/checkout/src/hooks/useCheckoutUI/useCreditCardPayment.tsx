@@ -1,6 +1,4 @@
-import { useProjectAccessKey } from '@0xsequence/connect'
 import { compareAddress } from '@0xsequence/connect'
-import { useConfig } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import React, { useEffect, useMemo, useRef } from 'react'
@@ -8,10 +6,8 @@ import { formatUnits, zeroAddress, type Hex } from 'viem'
 
 import type { TransakConfig } from '../../contexts/CheckoutModal.js'
 import type { Collectible, CreditCardProviders } from '../../contexts/SelectPaymentModal.js'
-import { TRANSAK_PROXY_ADDRESS, getCurrencyCode } from '../../utils/transak.js'
-
+import { getCurrencyCode, TRANSAK_PROXY_ADDRESS } from '../../utils/transak.js'
 import { useTransakWidgetUrl } from '../useTransakWidgetUrl.js'
-const POLLING_TIME = 10 * 1000
 const TRANSAK_IFRAME_ID = 'credit-card-payment-transak-iframe'
 
 export interface UseCreditCardPaymentArgs {
@@ -74,9 +70,6 @@ export const useCreditCardPayment = ({
   isLoadingCurrencyInfo,
   errorCurrencyInfo
 }: UseCreditCardPaymentArgs): UseCreditCardPaymentReturn => {
-  const projectAccessKey = useProjectAccessKey()
-  const { env } = useConfig()
-
   const disableTransakWidgetUrlFetch =
     isLoadingTokenMetadatas || isLoadingCurrencyInfo || isLoadingCollectionInfo || creditCardProvider !== 'transak'
 
