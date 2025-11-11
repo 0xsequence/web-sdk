@@ -18,9 +18,6 @@ export const AddFundsContent = () => {
 export const AddFundsContentTransak = () => {
   const { addFundsSettings = {} as AddFundsSettings } = useAddFundsModal()
 
-  const defaultNetworks =
-    'ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain,immutablezkevm'
-
   const {
     data: transakLinkData,
     isLoading: isLoadingTransakLink,
