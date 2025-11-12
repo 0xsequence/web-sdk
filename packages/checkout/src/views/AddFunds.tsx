@@ -18,9 +18,6 @@ export const AddFundsContent = () => {
 export const AddFundsContentTransak = () => {
   const { addFundsSettings = {} as AddFundsSettings } = useAddFundsModal()
 
-  const defaultNetworks =
-    'ethereum,mainnet,arbitrum,optimism,polygon,polygonzkevm,zksync,base,bnb,oasys,astar,avaxcchain,immutablezkevm'
-
   const {
     data: transakLinkData,
     isLoading: isLoadingTransakLink,
@@ -28,9 +25,9 @@ export const AddFundsContentTransak = () => {
   } = useTransakWidgetUrl({
     referrerDomain: window.location.origin,
     walletAddress: addFundsSettings.walletAddress,
-    fiatAmount: addFundsSettings?.fiatAmount ? Number(addFundsSettings?.fiatAmount) : undefined,
-    fiatCurrency: addFundsSettings?.fiatCurrency,
+    fiatAmount: addFundsSettings?.fiatAmount,
     disableWalletAddressForm: true,
+    fiatCurrency: addFundsSettings?.fiatCurrency || 'USD',
     defaultFiatAmount: addFundsSettings?.defaultFiatAmount || '50',
     defaultCryptoCurrency: addFundsSettings?.defaultCryptoCurrency || 'USDC',
     cryptoCurrencyList: addFundsSettings?.cryptoCurrencyList
