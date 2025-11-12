@@ -239,9 +239,6 @@ export const styles = String.raw`
   .right-4 {
     right: calc(var(--spacing) * 4);
   }
-  .right-\[-18px\] {
-    right: -18px;
-  }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
   }
@@ -479,9 +476,6 @@ export const styles = String.raw`
   .h-px {
     height: 1px;
   }
-  .max-h-\[200px\] {
-    max-height: 200px;
-  }
   .max-h-\[360px\] {
     max-height: 360px;
   }
@@ -499,9 +493,6 @@ export const styles = String.raw`
   }
   .min-h-full {
     min-height: 100%;
-  }
-  .w-1\/2 {
-    width: calc(1/2 * 100%);
   }
   .w-3 {
     width: calc(var(--spacing) * 3);
@@ -747,9 +738,6 @@ export const styles = String.raw`
   }
   .overflow-hidden {
     overflow: hidden;
-  }
-  .overflow-scroll {
-    overflow: scroll;
   }
   .overflow-visible {
     overflow: visible;
@@ -997,9 +985,6 @@ export const styles = String.raw`
   }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
-  }
-  .py-6 {
-    padding-block: calc(var(--spacing) * 6);
   }
   .pt-0 {
     padding-top: calc(var(--spacing) * 0);

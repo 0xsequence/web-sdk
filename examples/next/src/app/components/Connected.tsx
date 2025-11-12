@@ -5,7 +5,6 @@ import {
   useOpenConnectModal,
   // useSocialLink,
   useStorage,
-  useWaasFeeOptions,
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
@@ -65,16 +64,6 @@ export const Connected = () => {
   const [lastTxnDataHash2, setLastTxnDataHash2] = useState<string | undefined>()
   const [lastTxnDataHash3, setLastTxnDataHash3] = useState<string | undefined>()
 
-  const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useWaasFeeOptions()
-
-  const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = useState<string | undefined>()
-
-  useEffect(() => {
-    if (pendingFeeOptionConfirmation) {
-      setSelectedFeeOptionTokenName(pendingFeeOptionConfirmation.options[0].token.name)
-    }
-  }, [pendingFeeOptionConfirmation])
-
   useEffect(() => {
     if (sendTransactionError) {
       if (sendTransactionError instanceof Error) {
@@ -101,46 +90,6 @@ export const Connected = () => {
   const [feeOptionBalances, setFeeOptionBalances] = useState<{ tokenName: string; decimals: number; balance: string }[]>([])
 
   const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps | undefined>(undefined)
-
-  const checkTokenBalancesForFeeOptions = useCallback(async () => {
-    if (pendingFeeOptionConfirmation) {
-      const [account] = await walletClient!.getAddresses()
-      const nativeTokenBalance = await indexerClient.getNativeTokenBalance({ accountAddress: account })
-
-      const tokenBalances = await indexerClient.getTokenBalancesSummary({
-        filter: {
-          accountAddresses: [account],
-          contractStatus: ContractVerificationStatus.ALL,
-          omitNativeBalances: true
-        }
-      })
-
-      const balances = pendingFeeOptionConfirmation.options.map(option => {
-        if (option.token.contractAddress === null) {
-          return {
-            tokenName: option.token.name,
-            decimals: option.token.decimals || 0,
-            balance: nativeTokenBalance.balance.balance
-          }
-        }
-        return {
-          tokenName: option.token.name,
-          decimals: option.token.decimals || 0,
-          balance:
-            tokenBalances.balances.find(b => b.contractAddress.toLowerCase() === option.token.contractAddress!.toLowerCase())
-              ?.balance || '0'
-        }
-      })
-
-      setFeeOptionBalances(balances)
-    }
-  }, [pendingFeeOptionConfirmation, indexerClient, walletClient])
-
-  useEffect(() => {
-    if (pendingFeeOptionConfirmation) {
-      checkTokenBalancesForFeeOptions()
-    }
-  }, [pendingFeeOptionConfirmation, checkTokenBalancesForFeeOptions])
 
   const networkForCurrentChainId = allNetworks.find(n => n.chainId === chainId)!
 
@@ -492,88 +441,6 @@ export const Connected = () => {
                   </a>
                 </Text>
               )}
-
-            {pendingFeeOptionConfirmation && feeOptionBalances.length > 0 && (
-              <div className="my-3">
-                <Select
-                  name="feeOption"
-                  label="Pick a fee option"
-                  onValueChange={val => {
-                    const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
-                    if (selected) {
-                      setSelectedFeeOptionTokenName(selected.token.name)
-                      setFeeOptionAlert(undefined)
-                    }
-                  }}
-                  value={selectedFeeOptionTokenName || ''}
-                  options={
-                    pendingFeeOptionConfirmation?.options?.map(option => ({
-                      label: (
-                        <div className="flex items-start flex-col">
-                          <div className="flex flex-row">
-                            <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
-                            <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
-                          </div>
-                          <div className="flex flex-row">
-                            <Text>Wallet balance for {option.token.name}: </Text>{' '}
-                            <Text>
-                              {formatUnits(
-                                BigInt(feeOptionBalances.find(b => b.tokenName === option.token.name)?.balance || '0'),
-                                option.token.decimals || 0
-                              )}
-                            </Text>
-                          </div>
-                        </div>
-                      ),
-                      value: option.token.name
-                    })) || []
-                  }
-                />
-
-                <div className="flex my-2 items-center justify-center flex-col">
-                  <Button
-                    onClick={() => {
-                      const selected = pendingFeeOptionConfirmation?.options?.find(
-                        option => option.token.name === selectedFeeOptionTokenName
-                      )
-
-                      if (selected?.token.contractAddress !== undefined) {
-                        // check if wallet has enough balance, should be balance > feeOption.value
-                        const balance = parseUnits(
-                          feeOptionBalances.find(b => b.tokenName === selected.token.name)?.balance || '0',
-                          selected.token.decimals || 0
-                        )
-                        const feeOptionValue = parseUnits(selected.value, selected.token.decimals || 0)
-                        if (balance && balance < feeOptionValue) {
-                          setFeeOptionAlert({
-                            title: 'Insufficient balance',
-                            description: `You do not have enough balance to pay the fee with ${selected.token.name}, please make sure you have enough balance in your wallet for the selected fee option.`,
-                            secondaryDescription:
-                              'You can also switch network to Arbitrum Sepolia to test a gasless transaction.',
-                            variant: 'warning'
-                          })
-                          return
-                        }
-
-                        confirmPendingFeeOption(pendingFeeOptionConfirmation?.id, selected.token.contractAddress)
-                      }
-                    }}
-                    label="Confirm fee option"
-                  />
-                  {feeOptionAlert && (
-                    <div className="mt-3" style={{ maxWidth: '332px' }}>
-                      <Alert
-                        title={feeOptionAlert.title}
-                        description={feeOptionAlert.description}
-                        secondaryDescription={feeOptionAlert.secondaryDescription}
-                        variant={feeOptionAlert.variant}
-                        buttonProps={feeOptionAlert.buttonProps}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
 
             <Text className="mt-4" variant="small-bold" color="muted">
               Sign Messages

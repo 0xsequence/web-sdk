@@ -15,7 +15,6 @@ import { ConnectModalContextProvider } from '../../contexts/ConnectModal.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
-import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import {
   type ConnectConfig,
   type DisplayedAsset,
@@ -115,8 +114,6 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
   useEffect(() => {
     setDisplayedAssets(displayedAssets)
   }, [displayedAssetsSetting])
-
-  const { emailConflictInfo } = useEmailConflict()
 
   return (
     <ConnectConfigContextProvider value={config}>

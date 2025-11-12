@@ -4,9 +4,6 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   useAnalyticsContext,
-  useCheckWaasFeeOptions,
-  useWaasConfirmationHandler,
-  useWaasFeeOptions,
   useWallets,
   waitForTransactionReceipt,
   type ExtendedConnector
@@ -81,8 +78,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   >()
   const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
-  const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
   const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
@@ -102,28 +97,12 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
   const isLoading = isLoadingBalances || isLoadingCoinPrices || isLoadingConversionRate
 
-  // Handle fee option confirmation when pendingFeeOption is available
-  useEffect(() => {
-    if (pendingFeeOption && selectedFeeTokenAddress !== null) {
-      confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
-    }
-  }, [pendingFeeOption, selectedFeeTokenAddress])
-
   // Control back button when showing confirmation
   useEffect(() => {
     setIsBackButtonEnabled(!showConfirmation)
   }, [showConfirmation, setIsBackButtonEnabled])
 
   const connections = useConnections()
-  const waasConnector = connections.find(c => c.connector.id.includes('waas'))?.connector
-
-  const [pendingRequestConfirmation, confirmPendingRequest] = useWaasConfirmationHandler(waasConnector)
-
-  useEffect(() => {
-    if (pendingRequestConfirmation) {
-      confirmPendingRequest(pendingRequestConfirmation.id)
-    }
-  }, [pendingRequestConfirmation])
 
   if (isLoading) {
     return null
@@ -208,21 +187,6 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
         data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] })
       }
     }
-
-    // Check fee options before showing confirmation
-    const feeOptionsResult = await checkFeeOptions({
-      transactions: [transaction],
-      chainId
-    })
-
-    setFeeOptions(
-      feeOptionsResult?.feeOptions
-        ? {
-            options: feeOptionsResult.feeOptions,
-            chainId
-          }
-        : undefined
-    )
 
     setShowConfirmation(true)
 

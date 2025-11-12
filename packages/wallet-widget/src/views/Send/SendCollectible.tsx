@@ -2,9 +2,6 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   useAnalyticsContext,
-  useCheckWaasFeeOptions,
-  useWaasConfirmationHandler,
-  useWaasFeeOptions,
   useWallets,
   waitForTransactionReceipt,
   type ExtendedConnector
@@ -74,10 +71,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       }
     | undefined
   >()
-  const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
-  const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
-  const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
 
   const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
@@ -106,25 +99,10 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   }, [tokenBalance])
 
   useEffect(() => {
-    if (pendingFeeOption && selectedFeeTokenAddress !== null) {
-      confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
-    }
-  }, [pendingFeeOption, selectedFeeTokenAddress])
-
-  useEffect(() => {
     setIsBackButtonEnabled(!showConfirmation)
   }, [showConfirmation, setIsBackButtonEnabled])
 
   const connections = useConnections()
-  const waasConnector = connections.find(c => c.connector.id.includes('waas'))?.connector
-
-  const [pendingRequestConfirmation, confirmPendingRequest] = useWaasConfirmationHandler(waasConnector)
-
-  useEffect(() => {
-    if (pendingRequestConfirmation) {
-      confirmPendingRequest(pendingRequestConfirmation.id)
-    }
-  }, [pendingRequestConfirmation])
 
   const isLoading = isLoadingBalances
 
@@ -202,8 +180,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       return
     }
 
-    setIsCheckingFeeOptions(true)
-
     const sendAmount = parseUnits(amountToSendFormatted, decimals)
     let transaction
 
@@ -229,25 +205,6 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           })
         }
     }
-
-    // Check fee options before showing confirmation
-    const feeOptionsResult = await checkFeeOptions({
-      transactions: [transaction],
-      chainId
-    })
-
-    setFeeOptions(
-      feeOptionsResult?.feeOptions
-        ? {
-            options: feeOptionsResult.feeOptions,
-            chainId
-          }
-        : undefined
-    )
-
-    setShowConfirmation(true)
-
-    setIsCheckingFeeOptions(false)
   }
 
   const executeTransaction = async () => {
@@ -445,19 +402,15 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             </Text>
           )}
           <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
-            {isCheckingFeeOptions ? (
-              <Spinner />
-            ) : (
-              <Button
-                className="text-primary w-full"
-                variant="primary"
-                size="lg"
-                type="submit"
-                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
-                label="Send"
-                rightIcon={ChevronRightIcon}
-              />
-            )}
+            <Button
+              className="text-primary w-full"
+              variant="primary"
+              size="lg"
+              type="submit"
+              disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
+              label="Send"
+              rightIcon={ChevronRightIcon}
+            />
           </div>
         </>
       )}
@@ -474,7 +427,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           decimals={decimals}
           feeOptions={feeOptions}
           onSelectFeeOption={feeTokenAddress => {
-            setSelectedFeeTokenAddress(feeTokenAddress)
+            // setSelectedFeeTokenAddress(feeTokenAddress)
           }}
           isLoading={isSendTxnPending}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
