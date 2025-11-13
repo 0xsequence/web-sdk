@@ -4,6 +4,7 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   useAnalyticsContext,
+  useFeeOptions,
   useWallets,
   waitForTransactionReceipt,
   type ExtendedConnector
@@ -28,9 +29,9 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
-import { useEffect, useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, useConfig, useConnections, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { AllButActiveWalletSelect } from '../../components/Select/AllButActiveWalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
@@ -58,7 +59,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const connectedChainId = useChainId()
   const { address: accountAddress = '', connector } = useAccount()
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
-  const isConnectorWaas = !!(connector as ExtendedConnector)?.type?.includes('waas')
+
   const isCorrectChainId = connectedChainId === chainId
   const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -67,17 +68,19 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const [toAddress, setToAddress] = useState<string>('')
   const { data: walletClient } = useWalletClient()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
-  const [showConfirmation, setShowConfirmation] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
-  const [feeOptions, setFeeOptions] = useState<
-    | {
-        options: any[]
-        chainId: number
-      }
-    | undefined
-  >()
-  const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
+  const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = useFeeOptions()
+  const isSequenceV3ConnectorActive = wallets.some(wallet => wallet.id === 'sequence-v3-wallet' && wallet.isActive)
+  const pendingSequenceFeeConfirmation =
+    isSequenceV3ConnectorActive && pendingFeeOptionConfirmation ? pendingFeeOptionConfirmation : undefined
+  const feeOptions = pendingSequenceFeeConfirmation
+    ? {
+        options: pendingSequenceFeeConfirmation.options,
+        chainId: pendingSequenceFeeConfirmation.chainId
+      }
+    : undefined
+  const isConfirmationVisible = Boolean(feeOptions)
 
   const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
@@ -99,10 +102,14 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
   // Control back button when showing confirmation
   useEffect(() => {
-    setIsBackButtonEnabled(!showConfirmation)
-  }, [showConfirmation, setIsBackButtonEnabled])
+    setIsBackButtonEnabled(!isConfirmationVisible)
+  }, [isConfirmationVisible, setIsBackButtonEnabled])
 
-  const connections = useConnections()
+  useEffect(() => {
+    if (!feeOptions?.options?.length) {
+      setSelectedFeeTokenAddress(null)
+    }
+  }, [feeOptions?.options?.length])
 
   if (isLoading) {
     return null
@@ -158,7 +165,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     setToAddress('')
   }
 
-  const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
+  const handleSendClick = async (e: FormEvent<HTMLFormElement>) => {
     setErrorMsg(null)
     e.preventDefault()
 
@@ -166,31 +173,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       await switchChainAsync({ chainId })
     }
 
-    if (!isConnectorWaas) {
-      executeTransaction()
-      return
-    }
-
-    setIsCheckingFeeOptions(true)
-
-    const sendAmount = parseUnits(amountToSendFormatted, decimals)
-    let transaction
-
-    if (isNativeCoin) {
-      transaction = {
-        to: toAddress as `0x${string}`,
-        value: BigInt(sendAmount.toString())
-      }
-    } else {
-      transaction = {
-        to: tokenBalance?.contractAddress as `0x${string}`,
-        data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] })
-      }
-    }
-
-    setShowConfirmation(true)
-
-    setIsCheckingFeeOptions(false)
+    executeTransaction()
   }
 
   const executeTransaction = async () => {
@@ -281,9 +264,39 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     }
   }
 
+  const handleConfirmationSubmit = () => {
+    if (!pendingSequenceFeeConfirmation) {
+      executeTransaction()
+      return
+    }
+
+    if (!selectedFeeTokenAddress) {
+      return
+    }
+
+    const selectedOption = pendingSequenceFeeConfirmation.options.find(
+      option => (option.token.contractAddress ?? zeroAddress) === selectedFeeTokenAddress
+    )
+
+    if (!selectedOption?.token.contractAddress) {
+      console.error('Unable to resolve the selected fee option.')
+      return
+    }
+
+    confirmPendingFeeOption(pendingSequenceFeeConfirmation.id, selectedOption.token.contractAddress)
+  }
+
+  const handleConfirmationCancel = () => {
+    if (pendingSequenceFeeConfirmation) {
+      rejectPendingFeeOption(pendingSequenceFeeConfirmation.id)
+    }
+    setSelectedFeeTokenAddress(null)
+    setIsSendTxnPending(false)
+  }
+
   return (
     <form className="flex px-4 pb-4 gap-2 flex-col" onSubmit={handleSendClick}>
-      {!showConfirmation && (
+      {!isConfirmationVisible && (
         <>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <SendItemInfo
@@ -363,7 +376,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           )}
 
           <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
-            {isCheckingFeeOptions ? (
+            {isSendTxnPending ? (
               <Spinner />
             ) : (
               <Button
@@ -371,7 +384,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 variant="primary"
                 size="lg"
                 type="submit"
-                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
+                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || isSendTxnPending}
                 label="Send"
                 rightIcon={ChevronRightIcon}
               />
@@ -379,7 +392,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           </div>
         </>
       )}
-      {showConfirmation && (
+      {isConfirmationVisible && (
         <TransactionConfirmation
           name={name}
           symbol={symbol}
@@ -394,14 +407,10 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
-          isLoading={isSendTxnPending}
+          isLoading={false}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
-          onConfirm={() => {
-            executeTransaction()
-          }}
-          onCancel={() => {
-            setShowConfirmation(false)
-          }}
+          onConfirm={handleConfirmationSubmit}
+          onCancel={handleConfirmationCancel}
         />
       )}
     </form>
