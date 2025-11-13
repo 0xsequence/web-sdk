@@ -1,6 +1,6 @@
 import { compareAddress } from '@0xsequence/connect'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
-import { ChainId, findSupportedNetwork } from '@0xsequence/network'
+import { findSupportedNetwork } from '@0xsequence/network'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 
