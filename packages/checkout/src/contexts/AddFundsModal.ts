@@ -18,6 +18,7 @@ export interface AddFundsSettings {
   provider?: TransactionOnRampProvider
   transakOnRampKind?: 'default' | 'windowed'
   cryptoAmount?: string
+  windowedOnRampMessage?: string
 }
 
 type AddFundsModalContext = {

@@ -467,7 +467,8 @@ export const Connected = () => {
   const onClickAddFunds = () => {
     triggerAddFunds({
       walletAddress: address || '',
-      provider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak
+      provider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
+      transakOnRampKind: 'default'
     })
   }
 

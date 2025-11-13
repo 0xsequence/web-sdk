@@ -1,6 +1,8 @@
 import { ChainId } from '@0xsequence/network'
 import { zeroAddress } from 'viem'
 
+import type { AddFundsSettings } from '../contexts/AddFundsModal.js'
+
 export const TRANSAK_PROXY_ADDRESS = '0x4a598b7ec77b1562ad0df7dc64a162695ce4c78a'
 
 export const getTransakLink = (
@@ -82,6 +84,7 @@ export const getTransakLinkFromSequenceApi = async (
 
     const result = await response.json()
 
+    console.log('result', result)
     return result?.url
   } catch (error) {
     console.error('Error:', error)
