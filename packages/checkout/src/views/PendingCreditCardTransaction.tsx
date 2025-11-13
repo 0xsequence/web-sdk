@@ -15,7 +15,7 @@ import {
   useTransactionStatusModal
 } from '../hooks/index.js'
 import { useTransakWidgetUrl } from '../hooks/useTransakWidgetUrl.js'
-import { getCurrencyCode, TRANSAK_PROXY_ADDRESS } from '../utils/transak.js'
+import { getCurrencyCode, getTransakProxyAddress } from '../utils/transak.js'
 
 interface PendingCreditTransactionProps {
   skipOnCloseCallback: () => void
@@ -83,11 +83,13 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   // this is a weird hack so that credit card integrations are as simple as possible and should work 99% of the time
   // If an issue arises, the user can override the calldata in the transak settings
 
+  const transakProxyAddress = getTransakProxyAddress(network?.chainId || 137) || ''
+
   const calldataWithProxy =
     transakConfig?.callDataOverride ??
     creditCardCheckout.calldata.replace(
       creditCardCheckout.recipientAddress.toLowerCase().substring(2),
-      TRANSAK_PROXY_ADDRESS.toLowerCase().substring(2)
+      transakProxyAddress.substring(2)
     )
 
   const price = Number(formatUnits(BigInt(creditCardCheckout.currencyQuantity), Number(creditCardCheckout.currencyDecimals)))
