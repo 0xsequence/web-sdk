@@ -561,6 +561,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
       return network?.name?.toLowerCase()
     }
 
+    const useWindowedOnRamp = !onRampProvider || onRampProvider == TransactionOnRampProvider.unknown
+
     skipOnCloseCallback()
     closeSelectPaymentModal()
     triggerAddFunds({
@@ -568,7 +570,9 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
       provider: onRampProvider || TransactionOnRampProvider.transak,
       networks: getNetworks(),
       defaultCryptoCurrency: dataCurrencyInfo?.symbol || '',
-      onClose: selectPaymentSettings?.onClose
+      onClose: selectPaymentSettings?.onClose,
+      transakOnRampKind: useWindowedOnRamp ? 'windowed' : 'default',
+      windowedOnRampMessage: "Once you've added funds, you can close this window and try buying with crypto again."
     })
   }
 
