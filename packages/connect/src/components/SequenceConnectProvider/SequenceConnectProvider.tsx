@@ -1,13 +1,11 @@
 'use client'
 
 import { sequence } from '0xsequence'
-import { Button, Card, Collapsible, Modal, ModalPrimitive, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
+import { Modal, ToastProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
-import { ChainId } from '@0xsequence/network'
 import { SequenceClient } from '@0xsequence/provider'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, useState } from 'react'
-import { hexToString, type Hex } from 'viem'
 import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants/index.js'
@@ -19,16 +17,9 @@ import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings, type ModalPosition } from '../../types.js'
-import { isJSON } from '../../utils/helpers.js'
 import { getModalPositionCss } from '../../utils/styling.js'
 import { Connect } from '../Connect/Connect.js'
-import { JsonTreeViewer } from '../JsonTreeViewer.js'
-import { NetworkBadge } from '../NetworkBadge/index.js'
-import { PageHeading } from '../PageHeading/index.js'
-import { PoweredBySequence } from '../SequenceLogo/index.js'
 import { ShadowRoot } from '../ShadowRoot/index.js'
-import { SocialLink } from '../SocialLink/SocialLink.js'
-import { TxnDetails } from '../TxnDetails/index.js'
 
 export type SequenceConnectProviderProps = {
   children: React.ReactNode
@@ -61,10 +52,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
-  const wagmiConfig = useConfig()
+
   const storage = useStorage()
-  const connections = useConnections()
-  const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
 
   const [isWalletWidgetOpen, setIsWalletWidgetOpen] = useState<boolean>(false)
 
@@ -210,19 +199,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                             <Connect onClose={() => setOpenConnectModal(false)} {...props} />
                           </Modal>
                         )}
-
-                        {isSocialLinkOpen &&
-                          (waasConnector ? (
-                            <Modal size="sm" scroll={false} onClose={() => setIsSocialLinkOpen(false)}>
-                              <SocialLink />
-                            </Modal>
-                          ) : (
-                            <Modal size="sm" scroll={false} onClose={() => setIsSocialLinkOpen(false)}>
-                              <Text className="p-8" variant="medium" color="warning">
-                                Social link is not supported for universal wallets (works only for embedded wallets)
-                              </Text>
-                            </Modal>
-                          ))}
                       </AnimatePresence>
                     </ShadowRoot>
                     {children}

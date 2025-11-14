@@ -6,7 +6,6 @@ export const styles = String.raw`
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-violet-600: oklch(54.1% 0.281 293.009);
     --color-black: #000;
     --color-white: #fff;
@@ -349,9 +348,6 @@ export const styles = String.raw`
   }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
-  }
-  .mb-5 {
-    margin-bottom: calc(var(--spacing) * 5);
   }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
@@ -947,9 +943,6 @@ export const styles = String.raw`
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
-  .p-8 {
-    padding: calc(var(--spacing) * 8);
-  }
   .p-\[10px\] {
     padding: 10px;
   }
@@ -1204,9 +1197,6 @@ export const styles = String.raw`
   }
   .text-primary {
     color: var(--seq-color-primary);
-  }
-  .text-red-500 {
-    color: var(--color-red-500);
   }
   .text-secondary {
     color: var(--seq-color-secondary);

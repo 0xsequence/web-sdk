@@ -44,13 +44,12 @@ export const Connect = (props: ConnectProps) => {
   const projectName = config?.signIn?.projectName
 
   const [email, setEmail] = useState('')
-  const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
 
   const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet'>(null)
   const { status, connectors, connect } = useConnect()
 
   const connections = useConnections()
-  const { signMessageAsync } = useSignMessage()
+  // const { signMessageAsync } = useSignMessage()
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
 
   // TODO: make it work with v3
@@ -312,7 +311,7 @@ export const Connect = (props: ConnectProps) => {
         </div>
       ) : (
         <>
-          {!hideConnectedWallets && wallets.length > 0 && !showEmailWaasPinInput && (
+          {!hideConnectedWallets && wallets.length > 0 && (
             <>
               <ConnectedWallets
                 wallets={wallets}

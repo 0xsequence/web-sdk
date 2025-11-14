@@ -3,7 +3,6 @@
 import { sequence } from '0xsequence'
 import { ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceClient } from '@0xsequence/provider'
-import { GoogleOAuthProvider } from '@react-oauth/google'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useAccount, useConfig } from 'wagmi'
 
@@ -54,13 +53,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
-  const wagmiConfig = useConfig()
   const storage = useStorage()
-
-  const googleWaasConnector = wagmiConfig.connectors.find(
-    c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
-  ) as ExtendedConnector | undefined
-  const googleClientId: string = (googleWaasConnector as any)?.params?.googleClientId || ''
 
   const setupAnalytics = (projectAccessKey: string) => {
     const s = sequence.initWallet(projectAccessKey)
@@ -125,31 +118,29 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
           setPosition: setModalPosition
         }}
       >
-        <GoogleOAuthProvider clientId={googleClientId}>
-          <ConnectModalContextProvider
-            value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+        <ConnectModalContextProvider
+          value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+        >
+          <WalletConfigContextProvider
+            value={{
+              setDisplayedAssets,
+              displayedAssets,
+              readOnlyNetworks,
+              hideExternalConnectOptions,
+              hideConnectedWallets,
+              hideSocialConnectOptions
+            }}
           >
-            <WalletConfigContextProvider
-              value={{
-                setDisplayedAssets,
-                displayedAssets,
-                readOnlyNetworks,
-                hideExternalConnectOptions,
-                hideConnectedWallets,
-                hideSocialConnectOptions
-              }}
-            >
-              <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                <div id="kit-provider">
-                  <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                    <Connect onClose={() => setOpenConnectModal(false)} isPreview {...props} />
-                  </ThemeProvider>
-                </div>
-                {children}
-              </AnalyticsContextProvider>
-            </WalletConfigContextProvider>
-          </ConnectModalContextProvider>
-        </GoogleOAuthProvider>
+            <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
+              <div id="kit-provider">
+                <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
+                  <Connect onClose={() => setOpenConnectModal(false)} isPreview {...props} />
+                </ThemeProvider>
+              </div>
+              {children}
+            </AnalyticsContextProvider>
+          </WalletConfigContextProvider>
+        </ConnectModalContextProvider>
       </ThemeContextProvider>
     </ConnectConfigContextProvider>
   )
