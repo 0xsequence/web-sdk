@@ -63,7 +63,7 @@ export { getModalPositionCss } from './utils/styling.js'
 export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
 export { publicClientToProvider, walletClientToSigner } from './utils/adapters.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
-export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
+export { isTxRejected, sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
 
 // Contexts
 export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'
