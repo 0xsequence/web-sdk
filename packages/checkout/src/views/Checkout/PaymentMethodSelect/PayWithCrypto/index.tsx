@@ -2,6 +2,7 @@ import {
   compareAddress,
   ContractVerificationStatus,
   formatDisplay,
+  isTxRejected,
   sendTransactions,
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext
@@ -37,6 +38,8 @@ interface PayWithCryptoTabProps {
   isSwitchingChainRef: RefObject<boolean>
 }
 
+type ErrorCause = 'generic' | 'user-rejection'
+
 export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: PayWithCryptoTabProps) => {
   const connectedChainId = useChainId()
   const { switchChain } = useSwitchChain()
@@ -46,7 +49,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const { selectPaymentSettings = {} as SelectPaymentSettings, closeSelectPaymentModal } = useSelectPaymentModal()
   const { analytics } = useAnalyticsContext()
-  const [isError, setIsError] = useState<boolean>(false)
+  const [error, setError] = useState<null | ErrorCause>(null)
   const { navigation, setNavigation } = useNavigationCheckout()
   const {
     initializeTransactionCounter,
@@ -246,7 +249,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     }
 
     setIsPurchasing(true)
-    setIsError(false)
+    setError(null)
 
     try {
       if (connectedChainId != chainId) {
@@ -368,7 +371,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
-      setIsError(true)
+      const isRejected = isTxRejected(e as Error)
+      setError(isRejected ? 'user-rejection' : 'generic')
     }
 
     resetTransactionCounter()
@@ -393,7 +397,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     }
 
     setIsPurchasing(true)
-    setIsError(false)
+    setError(null)
 
     try {
       if (connectedChainId != chainId) {
@@ -540,7 +544,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     } catch (e) {
       console.error('Failed to purchase...', e)
       onError(e as Error)
-      setIsError(true)
+      const isRejected = isTxRejected(e as Error)
+      setError(isRejected ? 'user-rejection' : 'generic')
     }
 
     setIsPurchasing(false)
@@ -772,15 +777,22 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     return 'Confirm payment'
   }
 
+  const getErrorText = () => {
+    if (error == 'user-rejection') {
+      return 'The transaction was rejected.'
+    }
+    return 'An error occurred. Please try again.'
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <PriceSection />
 
       <div className="flex flex-col justify-start items-center w-full gap-1">
-        {isError && (
+        {!!error && (
           <div className="flex flex-col justify-start items-center w-full">
             <Text variant="xsmall" color="negative">
-              An error occurred. Please try again.
+              {getErrorText()}
             </Text>
           </div>
         )}
