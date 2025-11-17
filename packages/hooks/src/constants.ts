@@ -14,7 +14,7 @@ export const QUERY_KEYS = {
   useGetCollectiblePrices: 'useGetCollectiblePrices',
   useGetSwapQuote: 'useGetSwapQuote',
   useGetSwapRoutes: 'useGetSwapRoutes',
-  useFindVersion: 'useFindVersion'
+  useDetectContractVersion: 'useDetectContractVersion'
 }
 
 export const time = {
