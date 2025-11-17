@@ -236,24 +236,10 @@ export const useSaleContractConfig = ({
   tokenIds
 }: UseSaleContractConfigArgs): UseSaleContractConfigReturn => {
   const {
-    data: bytecode,
-    isLoading: isLoadingBytecode,
-    isError: isErrorBytecode
-  } = useBytecode({
-    address: contractAddress as Hex,
-    chainId
-  })
-
-  const {
     data: versionData,
     isLoading: isLoadingVersion,
     isError: isErrorVersion
-  } = useDetectContractVersion(
-    { contractAddress, chainId },
-    {
-      disabled: !bytecode
-    }
-  )
+  } = useDetectContractVersion({ contractAddress, chainId })
 
   const getAbi = () => {
     if (isErrorVersion) {
@@ -335,13 +321,9 @@ export const useSaleContractConfig = ({
   })
 
   const isLoadingERC1155 =
-    isLoadingPaymentTokenERC1155 ||
-    isLoadingGlobalSaleDetailsERC1155 ||
-    isLoadingTokenSaleDetailsERC1155 ||
-    isLoadingVersion ||
-    isLoadingBytecode
-  const isErrorERC1155 =
-    isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155 || isErrorBytecode
+    isLoadingPaymentTokenERC1155 || isLoadingGlobalSaleDetailsERC1155 || isLoadingTokenSaleDetailsERC1155 || isLoadingVersion
+
+  const isErrorERC1155 = isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155
 
   if (isLoadingERC1155 || isErrorERC1155) {
     return {
@@ -354,7 +336,7 @@ export const useSaleContractConfig = ({
   const getSaleConfigs = (): SaleConfig[] => {
     let saleInfos: SaleConfig[] = []
 
-    if (isLoadingERC1155 || isErrorERC1155 || isLoadingVersion || isLoadingBytecode) {
+    if (isLoadingERC1155 || isErrorERC1155 || isLoadingVersion) {
       return saleInfos
     }
 
