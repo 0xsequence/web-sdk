@@ -1,7 +1,7 @@
-import { useFindVersion } from '@0xsequence/hooks'
+import { useDetectContractVersion } from '@0xsequence/hooks'
 import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { encodeFunctionData, sha256, toHex, zeroAddress, type Hex } from 'viem'
+import { encodeFunctionData, toHex, zeroAddress, type Hex } from 'viem'
 import { useBytecode, useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi.js'
@@ -248,8 +248,8 @@ export const useSaleContractConfig = ({
     data: versionData,
     isLoading: isLoadingVersion,
     isError: isErrorVersion
-  } = useFindVersion(
-    { uid: 'erc-1155-sale', hash: bytecode ? sha256(bytecode) : '' },
+  } = useDetectContractVersion(
+    { contractAddress, chainId },
     {
       disabled: !bytecode
     }
@@ -260,7 +260,7 @@ export const useSaleContractConfig = ({
       return ERC_1155_SALE_CONTRACT
     }
 
-    const versionAbi = versionData?.itemVersion?.sourceData?.abi
+    const versionAbi = versionData?.version?.sourceData?.abi
     if (!versionAbi) {
       return ERC_1155_SALE_CONTRACT
     }
