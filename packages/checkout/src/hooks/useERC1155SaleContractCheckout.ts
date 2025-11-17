@@ -2,7 +2,7 @@ import { useDetectContractVersion } from '@0xsequence/hooks'
 import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { encodeFunctionData, toHex, zeroAddress, type Hex } from 'viem'
-import { useBytecode, useReadContract, useReadContracts } from 'wagmi'
+import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi.js'
 import type { SelectPaymentSettings } from '../contexts/SelectPaymentModal.js'
