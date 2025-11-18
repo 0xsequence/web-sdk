@@ -18,9 +18,11 @@ export interface WalletProperties {
   monochromeLogoDark?: FunctionComponent<LogoProps>
   monochromeLogoLight?: FunctionComponent<LogoProps>
   name: string
+  ctaText?: string
   iconBackground?: string
   hideConnectorId?: string | null
   isSequenceBased?: boolean
+  isEcosystemWallet?: boolean
   type?: 'social' | 'wallet'
 }
 

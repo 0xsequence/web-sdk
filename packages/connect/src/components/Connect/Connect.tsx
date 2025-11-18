@@ -45,7 +45,7 @@ export const Connect = (props: ConnectProps) => {
 
   const [email, setEmail] = useState('')
 
-  const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet'>(null)
+  const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet' | 'ecosystem'>(null)
   const { status, connectors, connect } = useConnect()
 
   const connections = useConnections()
@@ -156,7 +156,9 @@ export const Connect = (props: ConnectProps) => {
 
   const hasV3Wallet = wallets.some(w => w.id.includes('-v3'))
 
-  const baseWalletConnectors = (connectors as ExtendedConnector[]).filter(c => {
+  const extendedConnectors = connectors as ExtendedConnector[]
+
+  const baseWalletConnectors = extendedConnectors.filter(c => {
     return c._wallet && (c._wallet.type === 'wallet' || c._wallet.type === undefined)
   })
 
@@ -170,10 +172,10 @@ export const Connect = (props: ConnectProps) => {
     // Remove the injected connectors when another connector is already in the base connectors
     .filter(connector => {
       if (connector.id === 'com.coinbase.wallet') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet')
+        return !extendedConnectors.find(existing => existing?._wallet?.id === 'coinbase-wallet')
       }
       if (connector.id === 'io.metamask') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask-wallet')
+        return !extendedConnectors.find(existing => existing?._wallet?.id === 'metamask-wallet')
       }
 
       return true
@@ -195,12 +197,20 @@ export const Connect = (props: ConnectProps) => {
       }
     })
 
-  const socialAuthConnectors = (connectors as ExtendedConnector[])
+  const ecosystemConnectors = extendedConnectors.filter(c => c._wallet?.isEcosystemWallet)
+
+  const socialAuthConnectors = extendedConnectors
     .filter(c => c._wallet?.type === 'social')
-    .filter(c => !c._wallet.id.includes('email'))
+    .filter(c => !c._wallet?.id.includes('email'))
+    .filter(c => !c._wallet?.isEcosystemWallet)
   const walletConnectors = [...baseWalletConnectors, ...injectedConnectors]
 
-  const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet?.id.includes('email'))
+  const shouldHideStandardSocial = ecosystemConnectors.length > 0
+
+  const emailConnector =
+    !hideSocialConnectOptions && !shouldHideStandardSocial
+      ? extendedConnectors.find(c => c._wallet?.id.includes('email'))
+      : undefined
 
   const onChangeEmail: ChangeEventHandler<HTMLInputElement> = ev => {
     setEmail(ev.target.value)
@@ -259,26 +269,41 @@ export const Connect = (props: ConnectProps) => {
     }
   }
 
-  const showSocialConnectorSection = socialAuthConnectors.length > 0
-  const showEmailInputSection = !!emailConnector
+  const showEcosystemConnectorSection = !hideSocialConnectOptions && ecosystemConnectors.length > 0
+  const showSocialConnectorSection = !hideSocialConnectOptions && !shouldHideStandardSocial && socialAuthConnectors.length > 0
+  const showEmailInputSection = !hideSocialConnectOptions && !shouldHideStandardSocial && !!emailConnector
 
+  const showMoreEcosystemOptions = ecosystemConnectors.length > MAX_ITEM_PER_ROW
   const showMoreSocialOptions = socialAuthConnectors.length > MAX_ITEM_PER_ROW
   const showMoreWalletOptions = walletConnectors.length > MAX_ITEM_PER_ROW
+  const ecosystemConnectorsPerRow =
+    showMoreEcosystemOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : ecosystemConnectors.length
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
   if (showExtendedList) {
     const SEARCHABLE_TRESHOLD = 8
-    const connectors = showExtendedList === 'social' ? socialAuthConnectors : walletConnectors
-    const searchable = connectors.length > SEARCHABLE_TRESHOLD
+    const connectorsForModal =
+      showExtendedList === 'social'
+        ? socialAuthConnectors
+        : showExtendedList === 'ecosystem'
+          ? ecosystemConnectors
+          : walletConnectors
+    const searchable = connectorsForModal.length > SEARCHABLE_TRESHOLD
+    const title =
+      showExtendedList === 'social'
+        ? 'Continue with a social account'
+        : showExtendedList === 'ecosystem'
+          ? 'Connect with an ecosystem wallet'
+          : 'Choose a wallet'
 
     return (
       <ExtendedWalletList
         searchable={searchable}
         onGoBack={() => setShowExtendedList(null)}
         onConnect={onConnect}
-        connectors={connectors}
-        title={showExtendedList === 'social' ? 'Continue with a social account' : 'Choose a wallet'}
+        connectors={connectorsForModal}
+        title={title}
       />
     )
   }
@@ -342,6 +367,27 @@ export const Connect = (props: ConnectProps) => {
 
                 <div className="flex mt-6 gap-6 flex-col">
                   <>
+                    {showEcosystemConnectorSection && (
+                      <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
+                        {ecosystemConnectors.slice(0, ecosystemConnectorsPerRow).map(connector => {
+                          return (
+                            <div className="w-full" key={connector.uid}>
+                              <ConnectButton
+                                disableTooltip={config?.signIn?.disableTooltipForDescriptiveSocials}
+                                isDescriptive={descriptiveSocials}
+                                connector={connector}
+                                onConnect={onConnect}
+                              />
+                            </div>
+                          )
+                        })}
+                        {showMoreEcosystemOptions && (
+                          <div className="w-full">
+                            <ShowAllWalletsButton onClick={() => setShowExtendedList('ecosystem')} />
+                          </div>
+                        )}
+                      </div>
+                    )}
                     {!hideSocialConnectOptions && showSocialConnectorSection && (
                       <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
                         {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {

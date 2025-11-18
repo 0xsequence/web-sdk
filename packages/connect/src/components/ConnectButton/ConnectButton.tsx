@@ -25,10 +25,12 @@ export const ConnectButton = (props: ConnectButtonProps) => {
   const { theme } = useTheme()
   const walletProps = connector._wallet
   const isDescriptive = props.isDescriptive || false
+  const shouldRenderTextButton = isDescriptive || !!walletProps.ctaText
+  const buttonCopy = walletProps.ctaText || `Continue with ${label || walletProps.name}`.trim()
 
   const Logo = getLogo(theme, walletProps)
 
-  if (isDescriptive) {
+  if (shouldRenderTextButton) {
     return (
       <Tooltip message={label || walletProps.name} side="bottom" disabled={disableTooltip}>
         <Card
@@ -39,7 +41,7 @@ export const ConnectButton = (props: ConnectButtonProps) => {
         >
           <Logo className={iconDescriptiveSizeClasses} />
           <Text color="primary" variant="normal" fontWeight="bold">
-            Continue with {label || walletProps.name}
+            {buttonCopy}
           </Text>
         </Card>
       </Tooltip>

@@ -94,10 +94,9 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
       <ConditionalScrollbar>
         <div className="flex flex-col gap-2">
           {displayedConnectors.map(connector => {
-            const walletName = connector._wallet.name
-            const connectorId = connector._wallet.id
-
             const walletProps = connector._wallet
+            const walletName = walletProps.ctaText || walletProps.name
+            const connectorId = connector._wallet.id
 
             const Logo = getLogo(theme, walletProps)
 

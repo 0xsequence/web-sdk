@@ -40,12 +40,15 @@ export interface SequenceV3Connector extends Connector {
   auxData?: Record<string, unknown>
 }
 
+export type SequenceV3LoginType = 'email' | 'google' | 'apple' | 'passkey'
+
 export interface BaseSequenceV3ConnectorOptions {
   projectAccessKey: string
   walletUrl: string
   dappOrigin: string
   defaultNetwork: number
-  loginType: 'email' | 'google' | 'apple' | 'passkey'
+  loginType?: SequenceV3LoginType
+  loginStorageKey?: string
   explicitSessionParams?: ExplicitSessionParams
   enableImplicitSession?: boolean
   includeFeeOptionPermissions?: boolean
@@ -87,6 +90,8 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     params.includeFeeOptionPermissions
   )
 
+  const loginStorageKey = params.loginStorageKey ?? params.loginType
+
   return createConnector<Provider, Properties, StorageItem>(config => {
     client.on('sessionsUpdated', () => {
       const walletAddress = client.getWalletAddress()
@@ -123,7 +128,11 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       async connect() {
         const accounts = await provider.request({ method: 'eth_requestAccounts' })
         if (accounts.length) {
-          await config.storage?.setItem(LocalStorageKey.V3ActiveLoginType, params.loginType)
+          if (loginStorageKey) {
+            await config.storage?.setItem(LocalStorageKey.V3ActiveLoginType, loginStorageKey)
+          } else {
+            await config.storage?.removeItem(LocalStorageKey.V3ActiveLoginType)
+          }
         } else {
           throw new Error('No accounts found')
         }
@@ -147,9 +156,11 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       },
 
       async isAuthorized() {
-        const activeV3Option = await config.storage?.getItem(LocalStorageKey.V3ActiveLoginType)
-        if (params.loginType !== activeV3Option) {
-          return false
+        if (loginStorageKey) {
+          const activeV3Option = await config.storage?.getItem(LocalStorageKey.V3ActiveLoginType)
+          if (loginStorageKey !== activeV3Option) {
+            return false
+          }
         }
         try {
           await client.initialize()
@@ -203,7 +214,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private nodesUrl: string
   private projectAccessKey: string
   private enableImplicitSession?: boolean
-  private loginType: 'email' | 'google' | 'apple' | 'passkey'
+  private loginType?: SequenceV3LoginType
   private initialSessionConfig?: ExplicitSessionConfig
   private includeFeeOptionPermissions?: boolean
 
@@ -225,7 +236,7 @@ export class SequenceV3Provider implements EIP1193Provider {
     defaultNetwork: number,
     nodesUrl = 'https://nodes.sequence.app',
     projectAccessKey: string,
-    loginType: 'email' | 'google' | 'apple' | 'passkey',
+    loginType?: SequenceV3LoginType,
     initialSessionConfig?: ExplicitSessionConfig,
     enableImplicitSession?: boolean,
     includeFeeOptionPermissions?: boolean
@@ -355,7 +366,7 @@ export class SequenceV3Provider implements EIP1193Provider {
                 }
               : undefined,
           {
-            preferredLoginMethod: this.loginType,
+            ...(this.loginType ? { preferredLoginMethod: this.loginType } : {}),
             ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
             ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
           }

@@ -5,6 +5,7 @@ import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
 import { parseEther, zeroAddress } from 'viem'
 
+import { SequenceEcosystemLogo } from './components/SequenceEcosystemLogo'
 import { getEmitterContractAddress } from './constants/permissions'
 
 const searchParams = new URLSearchParams(location.search)
@@ -98,6 +99,17 @@ export const config = createConfig({
   apple: true,
   email: true,
   passkey: true,
+  ecosystemWallets: [
+    {
+      id: 'sequence-ecosystem',
+      name: 'Sequence',
+      ctaText: 'Continue with Sequence',
+      logoDark: SequenceEcosystemLogo,
+      logoLight: SequenceEcosystemLogo,
+      monochromeLogoDark: SequenceEcosystemLogo,
+      monochromeLogoLight: SequenceEcosystemLogo
+    }
+  ],
   walletConnect: {
     projectId: walletConnectProjectId
   },
