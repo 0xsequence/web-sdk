@@ -38,6 +38,11 @@ export interface SequenceV3Connector extends Connector {
   type: 'sequence-v3-wallet'
   setEmail: (email: string) => void
   auxData?: Record<string, unknown>
+  readonly client: DappClient
+  readonly loginOptions?: {
+    loginType?: SequenceV3LoginType
+    loginStorageKey?: string
+  }
 }
 
 export type SequenceV3LoginType = 'email' | 'google' | 'apple' | 'passkey'
@@ -118,6 +123,10 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       },
 
       auxData: undefined as Record<string, unknown> | undefined,
+      loginOptions: {
+        loginType: params.loginType,
+        loginStorageKey
+      },
 
       async setup() {
         if (typeof window !== 'object') {

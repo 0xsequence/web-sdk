@@ -1,12 +1,24 @@
 'use client'
 
-import { ArrowRightIcon, Divider, IconButton, Image, ModalPrimitive, Spinner, Text, TextInput } from '@0xsequence/design-system'
+import {
+  ArrowRightIcon,
+  Button,
+  Card,
+  Divider,
+  IconButton,
+  Image,
+  ModalPrimitive,
+  Spinner,
+  Text,
+  TextInput,
+  useTheme
+} from '@0xsequence/design-system'
 import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
-import { useEffect, useState, type ChangeEventHandler, type ReactNode } from 'react'
-import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
-import { useConnect, useConnections, useSignMessage } from 'wagmi'
+import { useCallback, useEffect, useMemo, useState, type ChangeEventHandler, type ReactNode } from 'react'
+import { useConnect, useConnections } from 'wagmi'
 
+import type { SequenceV3Connector } from '../../connectors/wagmiConnectors/sequenceV3Connector.js'
 import { EVENT_SOURCE } from '../../constants/analytics.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { CHAIN_ID_FOR_SIGNATURE } from '../../constants/walletLinking.js'
@@ -14,8 +26,8 @@ import { useAnalyticsContext } from '../../contexts/Analytics.js'
 import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
-import { isEmailValid } from '../../utils/helpers.js'
-import { ConnectButton, ShowAllWalletsButton } from '../ConnectButton/index.js'
+import { formatAddress, isEmailValid } from '../../utils/helpers.js'
+import { ConnectButton, getLogo, ShowAllWalletsButton } from '../ConnectButton/index.js'
 import type { SequenceConnectProviderProps } from '../SequenceConnectProvider/index.js'
 import { PoweredBySequence } from '../SequenceLogo/index.js'
 
@@ -24,6 +36,13 @@ import { ConnectedWallets } from './ConnectedWallets.js'
 import { ExtendedWalletList } from './ExtendedWalletList.js'
 
 const MAX_ITEM_PER_ROW = 4
+const SEQUENCE_V3_CONNECTOR_TYPE = 'sequence-v3-wallet'
+
+interface RestorableSessionState {
+  connector: ExtendedConnector & SequenceV3Connector
+  walletAddress?: string
+  loginMethod?: string
+}
 
 interface ConnectProps extends SequenceConnectProviderProps {
   onClose: () => void
@@ -31,7 +50,7 @@ interface ConnectProps extends SequenceConnectProviderProps {
 }
 
 export const Connect = (props: ConnectProps) => {
-  useScript(appleAuthHelpers.APPLE_SCRIPT_SRC)
+  const { theme } = useTheme()
 
   const { analytics } = useAnalyticsContext()
   const { hideExternalConnectOptions, hideConnectedWallets, hideSocialConnectOptions } = useWalletSettings()
@@ -57,6 +76,9 @@ export const Connect = (props: ConnectProps) => {
 
   const [lastConnectedWallet, setLastConnectedWallet] = useState<`0x${string}` | undefined>(undefined)
   const [isSigningLinkMessage, setIsSigningLinkMessage] = useState(false)
+  const [isRestoringSession, setIsRestoringSession] = useState(false)
+  const [restorableSessionDismissed, setRestorableSessionDismissed] = useState(false)
+  const [restorableSession, setRestorableSession] = useState<RestorableSessionState | null>(null)
 
   const handleUnlinkWallet = async (address: string) => {
     // try {
@@ -158,6 +180,108 @@ export const Connect = (props: ConnectProps) => {
 
   const extendedConnectors = connectors as ExtendedConnector[]
 
+  const sequenceConnectors = useMemo(
+    () =>
+      extendedConnectors.filter(
+        (connector): connector is ExtendedConnector & SequenceV3Connector => connector.type === SEQUENCE_V3_CONNECTOR_TYPE
+      ),
+    [extendedConnectors]
+  )
+
+  const findSequenceConnectorByLoginMethod = useCallback(
+    (loginMethod?: string | null) => {
+      if (!loginMethod) {
+        return undefined
+      }
+      const normalizedMethod = loginMethod.trim().toLowerCase()
+      if (!normalizedMethod) {
+        return undefined
+      }
+
+      return sequenceConnectors.find(connector => {
+        const loginStorageKey = connector.loginOptions?.loginStorageKey?.toLowerCase()
+        const loginType = connector.loginOptions?.loginType?.toLowerCase()
+        const walletId = connector._wallet?.id?.toLowerCase()
+
+        if (loginStorageKey && loginStorageKey === normalizedMethod) {
+          return true
+        }
+        if (loginType && loginType === normalizedMethod) {
+          return true
+        }
+        if (walletId && (walletId === normalizedMethod || walletId.startsWith(`${normalizedMethod}-`))) {
+          return true
+        }
+
+        return false
+      })
+    },
+    [sequenceConnectors]
+  )
+
+  useEffect(() => {
+    if (restorableSessionDismissed) {
+      return
+    }
+
+    let cancelled = false
+
+    const checkRestorableSession = async () => {
+      for (const connector of sequenceConnectors) {
+        const client = connector.client
+        if (!client?.hasRestorableSessionlessConnection) {
+          continue
+        }
+
+        try {
+          const hasSession = await client.hasRestorableSessionlessConnection()
+          if (!hasSession) {
+            continue
+          }
+
+          const info = await client.getSessionlessConnectionInfo()
+          const resolvedConnector = findSequenceConnectorByLoginMethod(info?.loginMethod) || connector
+
+          if (resolvedConnector !== connector) {
+            const resolvedClient = resolvedConnector.client
+            if (!resolvedClient?.hasRestorableSessionlessConnection) {
+              continue
+            }
+            const resolvedHasSession = await resolvedClient.hasRestorableSessionlessConnection()
+            if (!resolvedHasSession) {
+              continue
+            }
+          }
+
+          if (!cancelled) {
+            setRestorableSession({
+              connector: resolvedConnector,
+              walletAddress: info?.walletAddress,
+              loginMethod: info?.loginMethod
+            })
+          }
+          return
+        } catch (error) {
+          console.warn('Failed to check restorable Sequence session', error)
+        }
+      }
+
+      if (!cancelled) {
+        setRestorableSession(null)
+      }
+    }
+
+    if (sequenceConnectors.length > 0) {
+      checkRestorableSession()
+    } else {
+      setRestorableSession(null)
+    }
+
+    return () => {
+      cancelled = true
+    }
+  }, [sequenceConnectors, restorableSessionDismissed, findSequenceConnectorByLoginMethod])
+
   const baseWalletConnectors = extendedConnectors.filter(c => {
     return c._wallet && (c._wallet.type === 'wallet' || c._wallet.type === undefined)
   })
@@ -212,13 +336,15 @@ export const Connect = (props: ConnectProps) => {
       ? extendedConnectors.find(c => c._wallet?.id.includes('email'))
       : undefined
 
+  const shouldShowRestorableSessionView = !!restorableSession && !restorableSessionDismissed
+
   const onChangeEmail: ChangeEventHandler<HTMLInputElement> = ev => {
     setEmail(ev.target.value)
   }
 
   useEffect(() => {
-    setIsLoading(status === 'pending' || status === 'success')
-  }, [status])
+    setIsLoading(status === 'pending' || status === 'success' || isRestoringSession)
+  }, [status, isRestoringSession])
 
   const handleConnect = async (connector: ExtendedConnector) => {
     connect(
@@ -229,6 +355,39 @@ export const Connect = (props: ConnectProps) => {
         }
       }
     )
+  }
+
+  const onDismissRestorableSession = () => {
+    setRestorableSession(null)
+    setRestorableSessionDismissed(true)
+  }
+
+  const onRestoreSession = async () => {
+    if (!restorableSession) {
+      return
+    }
+    const connector = restorableSession.connector
+    const client = connector.client
+    if (!client?.restoreSessionlessConnection) {
+      onDismissRestorableSession()
+      return
+    }
+
+    setIsRestoringSession(true)
+    try {
+      const restored = await client.restoreSessionlessConnection()
+      if (!restored) {
+        onDismissRestorableSession()
+        return
+      }
+      onDismissRestorableSession()
+      handleConnect(connector)
+    } catch (error) {
+      console.warn('Failed to restore Sequence session', error)
+      onDismissRestorableSession()
+    } finally {
+      setIsRestoringSession(false)
+    }
   }
 
   const onConnect = (connector: ExtendedConnector) => {
@@ -280,6 +439,55 @@ export const Connect = (props: ConnectProps) => {
     showMoreEcosystemOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : ecosystemConnectors.length
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
+
+  if (shouldShowRestorableSessionView && restorableSession) {
+    const walletProps = restorableSession.connector._wallet
+    const Logo = walletProps ? getLogo(theme, walletProps) : undefined
+    const continueTarget =
+      walletProps?.isEcosystemWallet && walletProps?.name
+        ? walletProps.name
+        : restorableSession.walletAddress
+          ? formatAddress(restorableSession.walletAddress)
+          : walletProps?.name || 'your wallet'
+    const continueLabel = `Continue with ${continueTarget}`
+
+    return (
+      <div className="p-4">
+        <div
+          className="flex flex-col justify-center text-primary items-center font-medium"
+          style={{
+            marginTop: '2px'
+          }}
+        >
+          <TitleWrapper isPreview={isPreview}>
+            <Text color="secondary">{isRestoringSession ? 'Connecting...' : 'Continue your session'}</Text>
+          </TitleWrapper>
+        </div>
+        <div className="flex flex-col gap-4 mt-6">
+          <Card
+            className={clsx('flex gap-3 items-center justify-start w-full h-14 px-4', isRestoringSession && 'opacity-50')}
+            clickable={!isRestoringSession}
+            onClick={onRestoreSession}
+            aria-disabled={isRestoringSession}
+          >
+            {Logo && <Logo className="w-6 h-6" />}
+            <div className="flex flex-col">
+              <Text variant="small" color="muted">
+                Previous session
+              </Text>
+              <Text variant="normal" fontWeight="bold" color="primary">
+                {continueLabel}
+              </Text>
+            </div>
+          </Card>
+          <Button label="Cancel" variant="glass" onClick={onDismissRestorableSession} disabled={isRestoringSession} />
+        </div>
+        <div className="mt-6">
+          <PoweredBySequence />
+        </div>
+      </div>
+    )
+  }
 
   if (showExtendedList) {
     const SEARCHABLE_TRESHOLD = 8
