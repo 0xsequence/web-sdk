@@ -2,7 +2,7 @@ import type { FunctionComponent } from 'react'
 
 import type { LogoProps } from '../../types.js'
 
-export const SequenceLogo: FunctionComponent<LogoProps> = props => {
+export const SequenceLogo: FunctionComponent<LogoProps> = () => {
   return (
     <div className="p-2">
       <svg width="100%" viewBox="0 0 500 365" fill="none" xmlns="http://www.w3.org/2000/svg">
