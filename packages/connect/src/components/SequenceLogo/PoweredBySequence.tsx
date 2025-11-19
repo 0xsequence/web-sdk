@@ -15,7 +15,9 @@ export const PoweredBySequence = () => {
       <Text variant="xsmall" color="muted" fontWeight="bold">
         Powered by
       </Text>
-      <SequenceLogo />
+      <div className="w-[80px] h-auto">
+        <SequenceLogo />
+      </div>
     </div>
   )
 }
