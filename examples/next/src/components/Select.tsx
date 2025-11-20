@@ -32,15 +32,14 @@ const SelectItem = forwardRef(({ children, className, ...props }: SelectPrimitiv
     </SelectPrimitive.Item>
   )
 })
-
 SelectItem.displayName = 'SelectItem'
 
 export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement>) => {
-  const { name, label, options } = props
+  const { name, label, options, value, onValueChange } = props
 
   return (
     <Field id={name} label={label} labelLocation={'top'} className="grid whitespace-nowrap">
-      <SelectPrimitive.Root name={name}>
+      <SelectPrimitive.Root name={name} value={value} onValueChange={onValueChange}>
         <SelectPrimitive.Trigger
           id={name}
           className={cn(
@@ -48,8 +47,7 @@ export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement
             'inline-flex items-center justify-between gap-1 p-4 h-[52px] bg-background-primary rounded-xl',
             'text-base font-medium text-primary select-none cursor-pointer border-none',
             'outline-hidden ring-inset ring-1 ring-border-normal focus-within:ring-2 focus-within:ring-border-focus focus-within:opacity-100',
-            '[&:has(:disabled)]:cursor-default [&:has(:disabled)]:opacity-50',
-            '[&:has(:disabled):hover]:cursor-default [&:has(:disabled):hover]:opacity-50'
+            '[&:has(:disabled)]:cursor-default [&:has(:disabled):hover]:cursor-default [&:has(:disabled):hover]:opacity-50'
           )}
           ref={ref}
         >
@@ -81,5 +79,4 @@ export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement
     </Field>
   )
 })
-
 Select.displayName = 'Select'

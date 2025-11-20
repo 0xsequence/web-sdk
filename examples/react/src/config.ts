@@ -99,17 +99,17 @@ export const config = createConfig({
   apple: true,
   email: true,
   passkey: true,
-  ecosystemWallets: [
-    {
-      id: 'sequence-ecosystem',
-      name: 'Sequence',
-      ctaText: 'Continue with Sequence',
-      logoDark: SequenceEcosystemLogo,
-      logoLight: SequenceEcosystemLogo,
-      monochromeLogoDark: SequenceEcosystemLogo,
-      monochromeLogoLight: SequenceEcosystemLogo
-    }
-  ],
+  // ecosystemWallets: [
+  //   {
+  //     id: 'sequence-ecosystem',
+  //     name: 'Sequence',
+  //     ctaText: 'Continue with Sequence',
+  //     logoDark: SequenceEcosystemLogo,
+  //     logoLight: SequenceEcosystemLogo,
+  //     monochromeLogoDark: SequenceEcosystemLogo,
+  //     monochromeLogoLight: SequenceEcosystemLogo
+  //   }
+  // ],
   walletConnect: {
     projectId: walletConnectProjectId
   },

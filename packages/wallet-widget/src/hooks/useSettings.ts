@@ -1,3 +1,5 @@
+'use client'
+
 import { LocalStorageKey, useWallets, useWalletSettings, type ConnectedWallet } from '@0xsequence/connect'
 import { Observable, observable } from 'micro-observables'
 import { useConfig } from 'wagmi'
@@ -84,12 +86,24 @@ export const useSettings = (): Settings => {
     ...new Set([...chains.map(chain => chain.id), ...(readOnlyNetworks || []), ...displayedAssets.map(asset => asset.chainId)])
   ]
 
+  const buildDefaultObservables = (): SettingsItems => ({
+    hideUnlistedTokensObservable: observable(true),
+    fiatCurrencyObservable: observable(defaultFiatCurrency),
+    selectedWalletsObservable: observable(allWallets),
+    selectedNetworksObservable: observable(allNetworks),
+    showCollectionsObservable: observable(false)
+  })
+
   const getSettingsFromStorage = (): SettingsItems => {
     let hideUnlistedTokens = true
     let fiatCurrency = defaultFiatCurrency
     let selectedWallets: ConnectedWallet[] = allWallets
     let selectedNetworks: number[] = allNetworks
     let showCollections = false
+
+    if (typeof window === 'undefined') {
+      return buildDefaultObservables()
+    }
 
     try {
       const settingsStorage = localStorage.getItem(LocalStorageKey.Settings)
@@ -208,6 +222,10 @@ export const useSettings = (): Settings => {
   }
 
   const updateLocalStorage = () => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
     const newSettings = {
       hideUnlistedTokens: hideUnlistedTokensObservable.get(),
       fiatCurrency: fiatCurrencyObservable.get(),

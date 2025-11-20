@@ -1,3 +1,5 @@
+'use client'
+
 import { DappClient } from '@0xsequence/dapp-client'
 import type { Session } from '@0xsequence/dapp-client'
 import { useEffect, useState } from 'react'
