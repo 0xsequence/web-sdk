@@ -59,6 +59,7 @@ export const Connect = (props: ConnectProps) => {
   const descriptiveSocials = !!config?.signIn?.descriptiveSocials
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
+  const showUniversalWalletsFirst = config?.signIn?.showUniversalWalletsFirst ?? false
 
   const [email, setEmail] = useState('')
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
@@ -384,6 +385,18 @@ export const Connect = (props: ConnectProps) => {
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
+  const WalletConnectorsSection = () => {
+    return (
+      <>
+        <div className="flex gap-2 flex-row justify-center items-center">
+          {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
+            return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+          })}
+        </div>
+      </>
+    )
+  }
+
   if (showExtendedList) {
     const SEARCHABLE_TRESHOLD = 8
     const connectors = showExtendedList === 'social' ? socialAuthConnectors : walletConnectors
@@ -507,6 +520,11 @@ export const Connect = (props: ConnectProps) => {
                 <>
                   <Banner config={config as ConnectConfig} />
 
+                  {showUniversalWalletsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
+                    <div className="mt-6">
+                      <WalletConnectorsSection />
+                    </div>
+                  )}
                   <div className="flex mt-6 gap-6 flex-col">
                     <>
                       {!hideSocialConnectOptions && showSocialConnectorSection && (
@@ -599,20 +617,10 @@ export const Connect = (props: ConnectProps) => {
                   </div>
                 </>
               )}
-              {!hideExternalConnectOptions && walletConnectors.length > 0 && (
-                <>
-                  <div
-                    className={clsx(
-                      'flex gap-2 flex-row justify-center items-center',
-                      hasConnectedSequenceUniversal ? 'mt-4' : 'mt-6'
-                    )}
-                  >
-                    {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
-                      return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
-                    })}
-                    {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
-                  </div>
-                </>
+              {!showUniversalWalletsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
+                <div className="mt-6">
+                  <WalletConnectorsSection />
+                </div>
               )}
               <div className="mt-6">
                 <PoweredBySequence />
