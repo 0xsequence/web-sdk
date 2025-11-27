@@ -387,13 +387,12 @@ export const Connect = (props: ConnectProps) => {
 
   const WalletConnectorsSection = () => {
     return (
-      <>
-        <div className="flex gap-2 flex-row justify-center items-center">
-          {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
-            return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
-          })}
-        </div>
-      </>
+      <div className={clsx('flex gap-2 flex-row justify-center items-center', hasConnectedSequenceUniversal ? 'mt-4' : 'mt-6')}>
+        {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
+          return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+        })}
+        {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
+      </div>
     )
   }
 
@@ -521,9 +520,7 @@ export const Connect = (props: ConnectProps) => {
                   <Banner config={config as ConnectConfig} />
 
                   {showUniversalWalletsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
-                    <div className="mt-6">
-                      <WalletConnectorsSection />
-                    </div>
+                    <WalletConnectorsSection />
                   )}
                   <div className="flex mt-6 gap-6 flex-col">
                     <>
@@ -618,9 +615,7 @@ export const Connect = (props: ConnectProps) => {
                 </>
               )}
               {!showUniversalWalletsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
-                <div className="mt-6">
-                  <WalletConnectorsSection />
-                </div>
+                <WalletConnectorsSection />
               )}
               <div className="mt-6">
                 <PoweredBySequence />
