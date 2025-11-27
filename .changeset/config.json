@@ -15,5 +15,5 @@
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["example-react", "example-next", "example-shared-components"]
+  "ignore": ["example-react", "example-next", "example-shared-components", "example-aave"]
 }
