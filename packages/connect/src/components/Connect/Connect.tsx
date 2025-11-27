@@ -70,8 +70,6 @@ export const Connect = (props: ConnectProps) => {
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
   const { data: waasStatusData } = useGetWaasStatus()
 
-  const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
-
   const hasConnectedSequenceUniversal = connections.some(c => c.connector.name === SEQUENCE_UNIVERSAL_CONNECTOR_NAME)
   const hasConnectedSocialOrSequenceUniversal =
     connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social') || hasConnectedSequenceUniversal
@@ -184,33 +182,59 @@ export const Connect = (props: ConnectProps) => {
     .filter(c => {
       return c._wallet && (c._wallet.type === 'wallet' || c._wallet.type === undefined)
     })
-    // Remove sequence if wallet extension detected
+    // Remove metamask if metamask is detected
     .filter(c => {
-      if (c._wallet?.id === 'sequence' && hasInjectedSequenceConnector) {
+      const isMetamaskInjected = window.ethereum?.isMetaMask
+
+      if (c._wallet?.id === 'metamask-wallet' && isMetamaskInjected) {
         return false
       }
 
       return true
     })
+    // Remove coinbase if coinbase is detected
+    .filter(c => {
+      const isCoinbaseInjected = window.ethereum?.isCoinbaseWallet
+
+      if (c._wallet?.id === 'coinbase-wallet' && isCoinbaseInjected) {
+        return false
+      }
+
+      return true
+    })
+
   const mockConnector = baseWalletConnectors.find(connector => {
     return connector._wallet.id === 'mock'
   })
 
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = connectors
-    .filter(c => c.type === 'injected')
-    // Remove the injected connectors when another connector is already in the base connectors
     .filter(connector => {
-      if (connector.id === 'com.coinbase.wallet') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet')
-      }
-      if (connector.id === 'io.metamask') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask-wallet')
+      // Keep the connector when it is an EIP-6963 connector
+      if (connector.type === 'injected') {
+        return true
       }
 
-      return true
+      // We check if SDK-generated connectors is actually an injected connector
+      const isMetamaskInjected = window.ethereum?.isMetaMask
+
+      if ((connector as ExtendedConnector)._wallet?.id === 'metamask-wallet' && isMetamaskInjected) {
+        return true
+      }
+
+      const isCoinbaseInjected = window.ethereum?.isCoinbaseWallet
+
+      if ((connector as ExtendedConnector)._wallet?.id === 'coinbase-wallet' && isCoinbaseInjected) {
+        return true
+      }
+
+      return false
     })
     .map(connector => {
+      if (connector?._wallet) {
+        return connector as ExtendedConnector
+      }
+
       const Logo = (props: LogoProps) => {
         return <Image src={connector.icon} alt={connector.name} disableAnimation {...props} />
       }
@@ -230,9 +254,10 @@ export const Connect = (props: ConnectProps) => {
   const socialAuthConnectors = (connectors as ExtendedConnector[])
     .filter(c => c._wallet?.type === 'social')
     .filter(c => !c._wallet.id.includes('email'))
-  const walletConnectors = [...baseWalletConnectors, ...injectedConnectors].filter(c =>
+  const walletConnectors = [...injectedConnectors, ...baseWalletConnectors].filter(c =>
     hasConnectedSequenceUniversal ? c.name !== SEQUENCE_UNIVERSAL_CONNECTOR_NAME : true
   )
+
   const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet?.id.includes('email'))
 
   const onChangeEmail: ChangeEventHandler<HTMLInputElement> = ev => {
