@@ -227,6 +227,8 @@ export const Connect = (props: ConnectProps) => {
     let cancelled = false
 
     const checkRestorableSession = async () => {
+      // disabled for now
+      return
       for (const connector of sequenceConnectors) {
         const client = connector.client
         if (!client?.hasRestorableSessionlessConnection) {
