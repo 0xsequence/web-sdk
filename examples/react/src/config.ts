@@ -28,7 +28,9 @@ export const connectConfig: ConnectConfig = {
   defaultTheme: 'dark',
   signIn: {
     projectName: 'Sequence Web SDK Demo',
-    useMock: isDebugMode
+    useMock: isDebugMode,
+    descriptiveSocials: true,
+    disableTooltipForDescriptiveSocials: true
   },
   // Custom css injected into shadow dom
   // customCSS: `

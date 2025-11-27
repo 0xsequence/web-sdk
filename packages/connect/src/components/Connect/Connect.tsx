@@ -327,6 +327,16 @@ export const Connect = (props: ConnectProps) => {
     .filter(c => c._wallet?.type === 'social')
     .filter(c => !c._wallet?.id.includes('email'))
     .filter(c => !c._wallet?.isEcosystemWallet)
+    .sort((a, b) => {
+      const isPasskey = (wallet?: ExtendedConnector['_wallet']) => wallet?.id === 'passkey-v3'
+      if (isPasskey(a._wallet) && !isPasskey(b._wallet)) {
+        return -1
+      }
+      if (!isPasskey(a._wallet) && isPasskey(b._wallet)) {
+        return 1
+      }
+      return 0
+    })
   const walletConnectors = [...baseWalletConnectors, ...injectedConnectors]
 
   const shouldHideStandardSocial = ecosystemConnectors.length > 0
@@ -576,7 +586,9 @@ export const Connect = (props: ConnectProps) => {
                 <div className="flex mt-6 gap-6 flex-col">
                   <>
                     {showEcosystemConnectorSection && (
-                      <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
+                      <div
+                        className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
+                      >
                         {ecosystemConnectors.slice(0, ecosystemConnectorsPerRow).map(connector => {
                           return (
                             <div className="w-full" key={connector.uid}>
@@ -597,7 +609,9 @@ export const Connect = (props: ConnectProps) => {
                       </div>
                     )}
                     {!hideSocialConnectOptions && showSocialConnectorSection && (
-                      <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
+                      <div
+                        className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
+                      >
                         {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                           return (
                             <div className="w-full" key={connector.uid}>
