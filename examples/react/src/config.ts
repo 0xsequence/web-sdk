@@ -28,7 +28,7 @@ export const connectConfig: ConnectConfig = {
   signIn: {
     projectName: 'Sequence Web SDK Demo',
     useMock: isDebugMode,
-    showUniversalWalletsFirst: false
+    showWalletAuthOptionsFirst: false
   },
   // Custom css injected into shadow dom
   // customCSS: `

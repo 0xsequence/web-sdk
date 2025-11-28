@@ -59,7 +59,7 @@ export const Connect = (props: ConnectProps) => {
   const descriptiveSocials = !!config?.signIn?.descriptiveSocials
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
-  const showUniversalWalletsFirst = config?.signIn?.showUniversalWalletsFirst ?? false
+  const showWalletAuthOptionsFirst = config?.signIn?.showWalletAuthOptionsFirst ?? false
 
   const [email, setEmail] = useState('')
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
@@ -519,7 +519,7 @@ export const Connect = (props: ConnectProps) => {
                 <>
                   <Banner config={config as ConnectConfig} />
 
-                  {showUniversalWalletsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
+                  {showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
                     <WalletConnectorsSection />
                   )}
                   <div className="flex mt-6 gap-6 flex-col">
@@ -614,7 +614,7 @@ export const Connect = (props: ConnectProps) => {
                   </div>
                 </>
               )}
-              {!showUniversalWalletsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
+              {!showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
                 <WalletConnectorsSection />
               )}
               <div className="mt-6">
