@@ -59,6 +59,7 @@ export const Connect = (props: ConnectProps) => {
   const descriptiveSocials = !!config?.signIn?.descriptiveSocials
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const projectName = config?.signIn?.projectName
+  const showWalletAuthOptionsFirst = config?.signIn?.showWalletAuthOptionsFirst ?? false
 
   const [email, setEmail] = useState('')
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
@@ -69,8 +70,6 @@ export const Connect = (props: ConnectProps) => {
   const { signMessageAsync } = useSignMessage()
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
   const { data: waasStatusData } = useGetWaasStatus()
-
-  const hasInjectedSequenceConnector = connectors.some(c => c.id === 'app.sequence')
 
   const hasConnectedSequenceUniversal = connections.some(c => c.connector.name === SEQUENCE_UNIVERSAL_CONNECTOR_NAME)
   const hasConnectedSocialOrSequenceUniversal =
@@ -184,33 +183,59 @@ export const Connect = (props: ConnectProps) => {
     .filter(c => {
       return c._wallet && (c._wallet.type === 'wallet' || c._wallet.type === undefined)
     })
-    // Remove sequence if wallet extension detected
+    // Remove metamask if metamask is detected
     .filter(c => {
-      if (c._wallet?.id === 'sequence' && hasInjectedSequenceConnector) {
+      const isMetamaskInjected = window.ethereum?.isMetaMask
+
+      if (c._wallet?.id === 'metamask-wallet' && isMetamaskInjected) {
         return false
       }
 
       return true
     })
+    // Remove coinbase if coinbase is detected
+    .filter(c => {
+      const isCoinbaseInjected = window.ethereum?.isCoinbaseWallet
+
+      if (c._wallet?.id === 'coinbase-wallet' && isCoinbaseInjected) {
+        return false
+      }
+
+      return true
+    })
+
   const mockConnector = baseWalletConnectors.find(connector => {
     return connector._wallet.id === 'mock'
   })
 
   // EIP-6963 connectors will not have the _wallet property
   const injectedConnectors: ExtendedConnector[] = connectors
-    .filter(c => c.type === 'injected')
-    // Remove the injected connectors when another connector is already in the base connectors
     .filter(connector => {
-      if (connector.id === 'com.coinbase.wallet') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'coinbase-wallet')
-      }
-      if (connector.id === 'io.metamask') {
-        return !connectors.find(connector => (connector as ExtendedConnector)?._wallet?.id === 'metamask-wallet')
+      // Keep the connector when it is an EIP-6963 connector
+      if (connector.type === 'injected') {
+        return true
       }
 
-      return true
+      // We check if SDK-generated connectors is actually an injected connector
+      const isMetamaskInjected = window.ethereum?.isMetaMask
+
+      if ((connector as ExtendedConnector)._wallet?.id === 'metamask-wallet' && isMetamaskInjected) {
+        return true
+      }
+
+      const isCoinbaseInjected = window.ethereum?.isCoinbaseWallet
+
+      if ((connector as ExtendedConnector)._wallet?.id === 'coinbase-wallet' && isCoinbaseInjected) {
+        return true
+      }
+
+      return false
     })
     .map(connector => {
+      if (connector?._wallet) {
+        return connector as ExtendedConnector
+      }
+
       const Logo = (props: LogoProps) => {
         return <Image src={connector.icon} alt={connector.name} disableAnimation {...props} />
       }
@@ -230,9 +255,10 @@ export const Connect = (props: ConnectProps) => {
   const socialAuthConnectors = (connectors as ExtendedConnector[])
     .filter(c => c._wallet?.type === 'social')
     .filter(c => !c._wallet.id.includes('email'))
-  const walletConnectors = [...baseWalletConnectors, ...injectedConnectors].filter(c =>
+  const walletConnectors = [...injectedConnectors, ...baseWalletConnectors].filter(c =>
     hasConnectedSequenceUniversal ? c.name !== SEQUENCE_UNIVERSAL_CONNECTOR_NAME : true
   )
+
   const emailConnector = (connectors as ExtendedConnector[]).find(c => c._wallet?.id.includes('email'))
 
   const onChangeEmail: ChangeEventHandler<HTMLInputElement> = ev => {
@@ -359,6 +385,17 @@ export const Connect = (props: ConnectProps) => {
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
+  const WalletConnectorsSection = () => {
+    return (
+      <div className={clsx('flex gap-2 flex-row justify-center items-center', hasConnectedSequenceUniversal ? 'mt-4' : 'mt-6')}>
+        {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
+          return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+        })}
+        {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
+      </div>
+    )
+  }
+
   if (showExtendedList) {
     const SEARCHABLE_TRESHOLD = 8
     const connectors = showExtendedList === 'social' ? socialAuthConnectors : walletConnectors
@@ -482,6 +519,9 @@ export const Connect = (props: ConnectProps) => {
                 <>
                   <Banner config={config as ConnectConfig} />
 
+                  {showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
+                    <WalletConnectorsSection />
+                  )}
                   <div className="flex mt-6 gap-6 flex-col">
                     <>
                       {!hideSocialConnectOptions && showSocialConnectorSection && (
@@ -574,20 +614,8 @@ export const Connect = (props: ConnectProps) => {
                   </div>
                 </>
               )}
-              {!hideExternalConnectOptions && walletConnectors.length > 0 && (
-                <>
-                  <div
-                    className={clsx(
-                      'flex gap-2 flex-row justify-center items-center',
-                      hasConnectedSequenceUniversal ? 'mt-4' : 'mt-6'
-                    )}
-                  >
-                    {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
-                      return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
-                    })}
-                    {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
-                  </div>
-                </>
+              {!showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
+                <WalletConnectorsSection />
               )}
               <div className="mt-6">
                 <PoweredBySequence />

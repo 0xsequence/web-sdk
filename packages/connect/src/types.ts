@@ -71,6 +71,7 @@ export interface ConnectConfig {
   position?: ModalPosition
   signIn?: {
     logoUrl?: string
+    showWalletAuthOptionsFirst?: boolean
     descriptiveSocials?: boolean
     disableTooltipForDescriptiveSocials?: boolean
     projectName?: string
