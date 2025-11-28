@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.4.3
+
+### Patch Changes
+
+- Minor fix for Sequence logo
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.3
+
 ## 5.4.2
 
 ### Patch Changes

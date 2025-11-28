@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.3
+
+### Patch Changes
+
+- Minor fix for Sequence logo
+
 ## 5.4.2
 
 ### Patch Changes
