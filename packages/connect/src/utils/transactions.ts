@@ -265,3 +265,19 @@ export const waitForTransactionReceipt = async ({
 
   return receipt
 }
+
+interface ErrorWithCode extends Error {
+  code?: number
+}
+
+export const isTxRejected = (error: Error): boolean => {
+  const errorWithCode = error as ErrorWithCode
+
+  // error 4001 is documented in EIP-1193
+  // https://eips.ethereum.org/EIPS/eip-1193#provider-errors
+  if (errorWithCode?.code == 4001) {
+    return true
+  }
+
+  return false
+}
