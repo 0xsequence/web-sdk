@@ -2,10 +2,10 @@ import type { FunctionComponent } from 'react'
 
 import type { LogoProps } from '../../types.js'
 
-export const SequenceLogo: FunctionComponent<LogoProps> = () => {
+export const SequenceLogo: FunctionComponent<LogoProps> = props => {
   return (
     <div className="p-2">
-      <svg width="100%" viewBox="0 0 500 365" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="100%" viewBox="0 0 500 365" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
         <g clip-path="url(#clip0_29_10159)">
           <path
             d="M496.448 181.441C496.448 158.416 478.089 139.75 455.442 139.75C432.796 139.75 414.437 158.416 414.437 181.441C414.437 204.467 432.796 223.132 455.442 223.132C478.089 223.132 496.448 204.467 496.448 181.441Z"
