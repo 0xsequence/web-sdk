@@ -1,5 +1,19 @@
 # @0xsequence/hooks
 
+## 5.4.2
+
+### Patch Changes
+
+- - **Onramp**: Add optional Transak alternate flow with default and windowed modes (#549)
+  - Add `showWalletAuthOptionsFirst` parameter to control connector ordering (#563)
+  - Update Sequence logos with newest logo (#561)
+  - Better logic for initial balance check (#562)
+  - Change injected connector logic to display before others (#563)
+  - Fix Transak parameters (#557)
+  - Add funds height when error state (#556)
+  - Add message for rejected transactions (#559)
+  - Deprecate `findVersion` (#560)
+
 ## 5.4.1
 
 ### Patch Changes
