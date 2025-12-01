@@ -1,4 +1,4 @@
-import type { GetLifiSwapQuoteArgs } from '@0xsequence/api'
+import type { GetLifiSwapQuoteRequest } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants.js'
@@ -88,7 +88,7 @@ import { useAPIClient } from '../API/useAPIClient.js'
  * }
  * ```
  */
-export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteArgs, options?: HooksOptions) => {
+export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteRequest, options?: HooksOptions) => {
   const apiClient = useAPIClient()
 
   return useQuery({
