@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.4.4
+
+### Patch Changes
+
+- Sequence logo update
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.4.4
+  - @0xsequence/connect@5.4.4
+  - @0xsequence/hooks@5.4.4
+
 ## 5.4.3
 
 ### Patch Changes
