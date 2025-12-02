@@ -146,7 +146,7 @@ importers:
         version: 5.8.3
       wagmi:
         specifier: ^2.15.0
-        version: 2.15.1(@tanstack/query-core@5.90.10)(@tanstack/react-query@5.90.10(react@19.1.0))(@types/react@19.2.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.39.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
+        version: 2.15.1(@tanstack/query-core@5.90.10)(@tanstack/react-query@5.90.10(react@19.1.0))(@types/react@19.2.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
 
   examples/next:
     dependencies:
@@ -157,8 +157,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/connect
       '@0xsequence/dapp-client':
-        specifier: github:0xsequence/sequence.js#dists/wallet/dapp-client
-        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/152e309f3bf8dc6dae14470bcd5cba97e2656a3f(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+        specifier: 3.0.0-beta.4
+        version: 3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.2.3(@types/react@19.2.6))(@types/react@19.2.6)(motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -254,8 +254,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/connect
       '@0xsequence/dapp-client':
-        specifier: github:0xsequence/sequence.js#dists/wallet/dapp-client
-        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/152e309f3bf8dc6dae14470bcd5cba97e2656a3f(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+        specifier: 3.0.0-beta.4
+        version: 3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.2.3(@types/react@19.2.6))(@types/react@19.2.6)(motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -436,8 +436,8 @@ importers:
         specifier: ^2.3.28
         version: 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/dapp-client':
-        specifier: github:0xsequence/sequence.js#dists/wallet/dapp-client
-        version: https://codeload.github.com/0xsequence/sequence.js/tar.gz/152e309f3bf8dc6dae14470bcd5cba97e2656a3f(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+        specifier: 3.0.0-beta.4
+        version: 3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.2.3(@types/react@19.2.6))(@types/react@19.2.6)(motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -688,9 +688,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/dapp-client@https://codeload.github.com/0xsequence/sequence.js/tar.gz/152e309f3bf8dc6dae14470bcd5cba97e2656a3f':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/152e309f3bf8dc6dae14470bcd5cba97e2656a3f}
-    version: 0.0.0
+  '@0xsequence/dapp-client@3.0.0-beta.4':
+    resolution: {integrity: sha512-5aeXoQhiA306HiZSMhkplnRTmywovvxJYcAiRpAq1FGAw3mSvI/yMoL3F5V+F3DmHOIF1SAfGG012J4uI+jfbA==}
 
   '@0xsequence/design-system@2.1.11':
     resolution: {integrity: sha512-wfuY9v2dNQxw9qAYyflwcKzuiiVqm4qqn2Jkoyw/CqxODcqQ3orUsGxjnbyvCWOwvHbH908c4LOZj/TBI6T0Fw==}
@@ -709,9 +708,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/guard@https://codeload.github.com/0xsequence/sequence.js/tar.gz/febecb3b0f853bf65cf818e2656397953e295d46':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/febecb3b0f853bf65cf818e2656397953e295d46}
-    version: 3.0.0
+  '@0xsequence/guard@3.0.0-beta.4':
+    resolution: {integrity: sha512-iCwnVVP8dALFEqz+3vuf/Bi1Z1oq3UcPZraMiqE+pGTDwruhpOfwmrY0NTk30VSg7oJK1yVWvTIx+YYPD+r6lA==}
 
   '@0xsequence/indexer@2.3.34':
     resolution: {integrity: sha512-SyhPlFE4lf3NeEZ08wZ/DgYDAUSvjzWWDDq6TUhkqqZCiavHcuGWQi7yM1qAibEd4hf4o74OT4yDjKJ453mPLQ==}
@@ -742,9 +740,8 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/69854b2c3b6b26f0757154e7fb8f3a532851e546':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/69854b2c3b6b26f0757154e7fb8f3a532851e546}
-    version: 3.0.0
+  '@0xsequence/relayer@3.0.0-beta.4':
+    resolution: {integrity: sha512-xNyesEGZ+Hfj9nzP1VyM3f1qVRo/44NM+/r/b1sgWw6SgSmU8gXAY80fo6oyVt25m8SIq4zmjyQhmBHQOj5TVA==}
 
   '@0xsequence/replacer@2.3.34':
     resolution: {integrity: sha512-IEENCQ+bnLacLS57bDTiiR64BUYf4trLBIOnCWnjFxiGyMxwqXCvZ5hDiuybzOYMIjux3HlgeI6VJelhlYeZ9A==}
@@ -771,13 +768,11 @@ packages:
     peerDependencies:
       ethers: '>=6'
 
-  '@0xsequence/wallet-core@https://codeload.github.com/0xsequence/sequence.js/tar.gz/b90af291a93ddb0f38b9b1ffa54d41693f8396da':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/b90af291a93ddb0f38b9b1ffa54d41693f8396da}
-    version: 0.0.0
+  '@0xsequence/wallet-core@3.0.0-beta.4':
+    resolution: {integrity: sha512-7jH3KcfuaEwDD1lcTnczmkuqZa48q2rKsrYSYtJsH+6RwQNXlGRTRIaafwd3A3HEcrUTSL1xDTRBhscTVeOIaQ==}
 
-  '@0xsequence/wallet-primitives@https://codeload.github.com/0xsequence/sequence.js/tar.gz/9669f8c84951f6860373d8652f56ddc3eed14394':
-    resolution: {tarball: https://codeload.github.com/0xsequence/sequence.js/tar.gz/9669f8c84951f6860373d8652f56ddc3eed14394}
-    version: 0.0.0
+  '@0xsequence/wallet-primitives@3.0.0-beta.4':
+    resolution: {integrity: sha512-RfRf6GlxU+QvHeAPEHq+Z961ayEm0TmAdaI9R9pmrj5YsR/ZPqb+XsARC3OlB5dnwiOCwjZQpVyA3wqgI8XCRQ==}
 
   '@0xsequence/wallet@2.3.34':
     resolution: {integrity: sha512-PCjw22lwQ+r0oOKdQcGtKsr3Xf6bHqoHxG6Ck36gNczKCvFJ0x2s6v9bsv9WzgJRggM59or4voGXO+JnWo931Q==}
@@ -6257,6 +6252,14 @@ packages:
       typescript:
         optional: true
 
+  ox@0.9.17:
+    resolution: {integrity: sha512-rKAnhzhRU3Xh3hiko+i1ZxywZ55eWQzeS/Q4HRKLx2PqfHOolisZHErSsJVipGlmQKHW5qwOED/GighEw9dbLg==}
+    peerDependencies:
+      typescript: '>=5.4.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   ox@0.9.6:
     resolution: {integrity: sha512-8SuCbHPvv2eZLYXrNmC0EC12rdzXQLdhnOMlHDW2wiCPLxBrOOJwX5L5E61by+UjTPOryqQiRSnjIKCI+GykKg==}
     peerDependencies:
@@ -7574,6 +7577,14 @@ packages:
       typescript:
         optional: true
 
+  viem@2.40.3:
+    resolution: {integrity: sha512-feYfEpbgjRkZYQpwcgxqkWzjxHI5LSDAjcGetHHwDRuX9BRQHUdV8ohrCosCYpdEhus/RknD3/bOd4qLYVPPuA==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vite-node@2.1.9:
     resolution: {integrity: sha512-AM9aQ/IPrW/6ENLQg3AGY4K1N2TGZdR5e4gu/MmmR2xR3Ll1+dib+nook92g4TV3PXVyeyxdWwtaCAiUL0hMxA==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -8035,13 +8046,13 @@ snapshots:
       '@0xsequence/utils': 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/dapp-client@https://codeload.github.com/0xsequence/sequence.js/tar.gz/152e309f3bf8dc6dae14470bcd5cba97e2656a3f(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@0xsequence/dapp-client@3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@0xsequence/guard': https://codeload.github.com/0xsequence/sequence.js/tar.gz/febecb3b0f853bf65cf818e2656397953e295d46(typescript@5.8.3)(zod@3.22.4)
-      '@0xsequence/relayer': https://codeload.github.com/0xsequence/sequence.js/tar.gz/69854b2c3b6b26f0757154e7fb8f3a532851e546(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@0xsequence/wallet-core': https://codeload.github.com/0xsequence/sequence.js/tar.gz/b90af291a93ddb0f38b9b1ffa54d41693f8396da(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/9669f8c84951f6860373d8652f56ddc3eed14394(typescript@5.8.3)(zod@3.22.4)
-      ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/guard': 3.0.0-beta.4(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/relayer': 3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@0xsequence/wallet-core': 3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@0xsequence/wallet-primitives': 3.0.0-beta.4(typescript@5.8.3)(zod@3.22.4)
+      ox: 0.9.17(typescript@5.8.3)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -8088,9 +8099,9 @@ snapshots:
       '@0xsequence/utils': 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/guard@https://codeload.github.com/0xsequence/sequence.js/tar.gz/febecb3b0f853bf65cf818e2656397953e295d46(typescript@5.8.3)(zod@3.22.4)':
+  '@0xsequence/guard@3.0.0-beta.4(typescript@5.8.3)(zod@3.22.4)':
     dependencies:
-      ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
+      ox: 0.9.17(typescript@5.8.3)(zod@3.22.4)
     transitivePeerDependencies:
       - typescript
       - zod
@@ -8139,12 +8150,12 @@ snapshots:
       '@0xsequence/utils': 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@0xsequence/relayer@https://codeload.github.com/0xsequence/sequence.js/tar.gz/69854b2c3b6b26f0757154e7fb8f3a532851e546(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@0xsequence/relayer@3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/9669f8c84951f6860373d8652f56ddc3eed14394(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/wallet-primitives': 3.0.0-beta.4(typescript@5.8.3)(zod@3.22.4)
       mipd: 0.0.7(typescript@5.8.3)
-      ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
-      viem: 2.39.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      ox: 0.9.17(typescript@5.8.3)(zod@3.22.4)
+      viem: 2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -8189,23 +8200,23 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@0xsequence/wallet-core@https://codeload.github.com/0xsequence/sequence.js/tar.gz/b90af291a93ddb0f38b9b1ffa54d41693f8396da(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@0xsequence/wallet-core@3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
-      '@0xsequence/guard': https://codeload.github.com/0xsequence/sequence.js/tar.gz/febecb3b0f853bf65cf818e2656397953e295d46(typescript@5.8.3)(zod@3.22.4)
-      '@0xsequence/relayer': https://codeload.github.com/0xsequence/sequence.js/tar.gz/69854b2c3b6b26f0757154e7fb8f3a532851e546(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@0xsequence/wallet-primitives': https://codeload.github.com/0xsequence/sequence.js/tar.gz/9669f8c84951f6860373d8652f56ddc3eed14394(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/guard': 3.0.0-beta.4(typescript@5.8.3)(zod@3.22.4)
+      '@0xsequence/relayer': 3.0.0-beta.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@0xsequence/wallet-primitives': 3.0.0-beta.4(typescript@5.8.3)(zod@3.22.4)
       mipd: 0.0.7(typescript@5.8.3)
-      ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
-      viem: 2.39.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      ox: 0.9.17(typescript@5.8.3)(zod@3.22.4)
+      viem: 2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
       - zod
 
-  '@0xsequence/wallet-primitives@https://codeload.github.com/0xsequence/sequence.js/tar.gz/9669f8c84951f6860373d8652f56ddc3eed14394(typescript@5.8.3)(zod@3.22.4)':
+  '@0xsequence/wallet-primitives@3.0.0-beta.4(typescript@5.8.3)(zod@3.22.4)':
     dependencies:
-      ox: 0.7.2(typescript@5.8.3)(zod@3.22.4)
+      ox: 0.9.17(typescript@5.8.3)(zod@3.22.4)
     transitivePeerDependencies:
       - typescript
       - zod
@@ -12426,6 +12437,46 @@ snapshots:
       - utf-8-validate
       - zod
 
+  '@wagmi/connectors@5.8.0(@types/react@19.2.6)(@wagmi/core@2.17.0(@tanstack/query-core@5.90.10)(@types/react@19.2.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)))(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)':
+    dependencies:
+      '@coinbase/wallet-sdk': 4.3.0
+      '@metamask/sdk': 0.32.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@safe-global/safe-apps-provider': 0.18.6(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@safe-global/safe-apps-sdk': 9.1.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      '@wagmi/core': 2.17.0(@tanstack/query-core@5.90.10)(@types/react@19.2.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))
+      '@walletconnect/ethereum-provider': 2.20.0(@types/react@19.2.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      cbw-sdk: '@coinbase/wallet-sdk@3.9.3'
+      viem: 2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@types/react'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - aws4fetch
+      - bufferutil
+      - db0
+      - encoding
+      - ioredis
+      - react
+      - supports-color
+      - uploadthing
+      - utf-8-validate
+      - zod
+
   '@wagmi/core@2.17.0(@tanstack/query-core@5.90.10)(@types/react@19.2.6)(react@18.3.1)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@18.3.1))(viem@2.39.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
       eventemitter3: 5.0.1
@@ -12446,6 +12497,21 @@ snapshots:
       eventemitter3: 5.0.1
       mipd: 0.0.7(typescript@5.8.3)
       viem: 2.39.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      zustand: 5.0.0(@types/react@19.2.6)(react@19.1.0)(use-sync-external-store@1.4.0(react@19.1.0))
+    optionalDependencies:
+      '@tanstack/query-core': 5.90.10
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - react
+      - use-sync-external-store
+
+  '@wagmi/core@2.17.0(@tanstack/query-core@5.90.10)(@types/react@19.2.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))':
+    dependencies:
+      eventemitter3: 5.0.1
+      mipd: 0.0.7(typescript@5.8.3)
+      viem: 2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       zustand: 5.0.0(@types/react@19.2.6)(react@19.1.0)(use-sync-external-store@1.4.0(react@19.1.0))
     optionalDependencies:
       '@tanstack/query-core': 5.90.10
@@ -15888,6 +15954,21 @@ snapshots:
     transitivePeerDependencies:
       - zod
 
+  ox@0.9.17(typescript@5.8.3)(zod@3.22.4):
+    dependencies:
+      '@adraffy/ens-normalize': 1.11.1
+      '@noble/ciphers': 1.3.0
+      '@noble/curves': 1.9.1
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.1.2(typescript@5.8.3)(zod@3.22.4)
+      eventemitter3: 5.0.1
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - zod
+
   ox@0.9.6(typescript@5.8.3)(zod@3.22.4):
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
@@ -17212,6 +17293,23 @@ snapshots:
       - utf-8-validate
       - zod
 
+  viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4):
+    dependencies:
+      '@noble/curves': 1.9.1
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.1.0(typescript@5.8.3)(zod@3.22.4)
+      isows: 1.0.7(ws@8.18.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      ox: 0.9.6(typescript@5.8.3)(zod@3.22.4)
+      ws: 8.18.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
   vite-node@2.1.9(@types/node@22.7.5)(lightningcss@1.30.2):
     dependencies:
       cac: 6.7.14
@@ -17397,6 +17495,45 @@ snapshots:
       react: 19.1.0
       use-sync-external-store: 1.4.0(react@19.1.0)
       viem: 2.39.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@tanstack/query-core'
+      - '@types/react'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - aws4fetch
+      - bufferutil
+      - db0
+      - encoding
+      - immer
+      - ioredis
+      - supports-color
+      - uploadthing
+      - utf-8-validate
+      - zod
+
+  wagmi@2.15.1(@tanstack/query-core@5.90.10)(@tanstack/react-query@5.90.10(react@19.1.0))(@types/react@19.2.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4):
+    dependencies:
+      '@tanstack/react-query': 5.90.10(react@19.1.0)
+      '@wagmi/connectors': 5.8.0(@types/react@19.2.6)(@wagmi/core@2.17.0(@tanstack/query-core@5.90.10)(@types/react@19.2.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)))(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
+      '@wagmi/core': 2.17.0(@tanstack/query-core@5.90.10)(@types/react@19.2.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4))
+      react: 19.1.0
+      use-sync-external-store: 1.4.0(react@19.1.0)
+      viem: 2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
     optionalDependencies:
       typescript: 5.8.3
     transitivePeerDependencies:
