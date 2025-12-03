@@ -80,7 +80,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     onSuccessChecker
   } = selectPaymentSettings
 
-  const isFree = Number(price) == 0
+  const isFree = BigInt(price) === 0n
 
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
@@ -204,16 +204,16 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     compareAddress(balance.contractAddress, selectedCurrency.address)
   )
 
-  const isInsufficientBalance =
-    tokenBalance === undefined ||
-    (tokenBalance?.balance && tokenBalance.balance !== '' && BigInt(tokenBalance.balance) < BigInt(selectedCurrencyPrice))
+  const userBalance = BigInt(tokenBalance?.balance || '0')
+  const requiredBalance = BigInt(selectedCurrencyPrice)
+  const isInsufficientBalance = !isFree && userBalance < requiredBalance
 
   useInitialBalanceCheck({
     userAddress: userAddress || '',
     buyCurrencyAddress,
     price,
     chainId,
-    isInsufficientBalance: isInsufficientBalance as boolean,
+    isInsufficientBalance,
     tokenBalancesIsLoading
   })
 

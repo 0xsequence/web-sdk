@@ -1,4 +1,4 @@
-import { SequenceAPIClient, type GetLifiSwapRoutesArgs, type LifiSwapRoute } from '@0xsequence/api'
+import { GetLifiSwapRouteDirection, SequenceAPIClient, type LifiSwapRoute } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
@@ -20,15 +20,26 @@ export interface UseGetSwapRoutesArgs {
   toTokenAmount: string
 }
 
-const getSwapRoutes = async (
-  apiClient: SequenceAPIClient,
-  args: GetLifiSwapRoutesArgs & { walletAddress: string }
-): Promise<LifiSwapRoute[]> => {
+interface GetSwapRoutesArgs {
+  chainId: number
+  walletAddress: string
+  toTokenAddress: string
+  toTokenAmount: string
+}
+
+const getSwapRoutes = async (apiClient: SequenceAPIClient, args: GetSwapRoutesArgs): Promise<LifiSwapRoute[]> => {
   if (!args.chainId || !args.toTokenAddress) {
     return []
   }
 
   const res = await apiClient.getLifiSwapRoutes({
+    params: {
+      direction: GetLifiSwapRouteDirection.to,
+      chainId: args.chainId,
+      walletAddress: args.walletAddress,
+      tokenAddress: args.toTokenAddress,
+      tokenAmount: args.toTokenAmount
+    },
     chainId: args.chainId,
     walletAddress: args.walletAddress,
     toTokenAddress: args.toTokenAddress,
