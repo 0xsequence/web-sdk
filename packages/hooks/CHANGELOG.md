@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.6
+
+### Patch Changes
+
+- Dependency updates
+
 ## 5.4.5
 
 ### Patch Changes

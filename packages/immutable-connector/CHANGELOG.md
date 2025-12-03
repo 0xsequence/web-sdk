@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.4.6
+
+### Patch Changes
+
+- Dependency updates
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.6
+
 ## 5.4.5
 
 ### Patch Changes
