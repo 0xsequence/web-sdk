@@ -26,6 +26,7 @@ export const useInitialBalanceCheck = ({
   isInsufficientBalance,
   tokenBalancesIsLoading
 }: UseInitialBalanceCheckArgs) => {
+  const isFree = BigInt(price) === 0n
   const { navigation, setNavigation } = useNavigationCheckout()
 
   const isInitialBalanceChecked = (navigation.params as PaymentMethodSelectionParams).isInitialBalanceChecked
@@ -42,7 +43,7 @@ export const useInitialBalanceCheck = ({
       chainId: chainId
     },
     {
-      disabled: isInitialBalanceChecked || !isInsufficientBalance
+      disabled: isInitialBalanceChecked || !isInsufficientBalance || isFree
     }
   )
 
@@ -65,7 +66,7 @@ export const useInitialBalanceCheck = ({
       omitMetadata: true
     },
     {
-      disabled: isInitialBalanceChecked || !isInsufficientBalance || swapRoutesIsLoading
+      disabled: isInitialBalanceChecked || !isInsufficientBalance || swapRoutesIsLoading || isFree
     }
   )
 
