@@ -7,7 +7,6 @@ export { useAddFundsModal } from './hooks/useAddFundsModal.js'
 export { useSelectPaymentModal } from './hooks/useSelectPaymentModal.js'
 export { useTransferFundsModal } from './hooks/useTransferFundsModal.js'
 export { useSwapModal } from './hooks/useSwapModal.js'
-export { useERC1155SaleContractCheckout, useERC1155SaleContractPaymentModal } from './hooks/useERC1155SaleContractCheckout.js'
 export { useCheckoutUI } from './hooks/useCheckoutUI/index.js'
 
 export { type ForteConfig } from './contexts/CheckoutModal.js'
