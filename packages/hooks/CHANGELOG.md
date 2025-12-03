@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.5
+
+### Patch Changes
+
+- Fix for free items checkout, sequence dep upgrades
+
 ## 5.4.4
 
 ### Patch Changes

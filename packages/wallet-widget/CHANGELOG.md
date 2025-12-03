@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.4.5
+
+### Patch Changes
+
+- Fix for free items checkout, sequence dep upgrades
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.4.5
+  - @0xsequence/connect@5.4.5
+  - @0xsequence/hooks@5.4.5
+
 ## 5.4.4
 
 ### Patch Changes

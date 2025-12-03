@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.4.5
+
+### Patch Changes
+
+- Fix for free items checkout, sequence dep upgrades
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.5
+
 ## 5.4.4
 
 ### Patch Changes
