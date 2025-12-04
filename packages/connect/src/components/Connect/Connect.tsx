@@ -16,18 +16,27 @@ import {
 import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
 import { useCallback, useEffect, useMemo, useState, type ChangeEventHandler, type ReactNode } from 'react'
-import { useConnect, useConnections } from 'wagmi'
+import { useConnect, useConnections, useSignMessage } from 'wagmi'
 
 import type { SequenceV3Connector } from '../../connectors/wagmiConnectors/sequenceV3Connector.js'
 import { EVENT_SOURCE } from '../../constants/analytics.js'
-import { LocalStorageKey } from '../../constants/localStorage.js'
 import { CHAIN_ID_FOR_SIGNATURE } from '../../constants/walletLinking.js'
 import { useAnalyticsContext } from '../../contexts/Analytics.js'
 import { useWallets } from '../../hooks/useWallets.js'
+import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
 import { formatAddress, isEmailValid } from '../../utils/helpers.js'
-import { ConnectButton, getLogo, ShowAllWalletsButton } from '../ConnectButton/index.js'
+import {
+  AppleWaasConnectButton,
+  ConnectButton,
+  EpicWaasConnectButton,
+  getLogo,
+  GoogleWaasConnectButton,
+  GuestWaasConnectButton,
+  ShowAllWalletsButton,
+  XWaasConnectButton
+} from '../ConnectButton/index.js'
 import type { SequenceConnectProviderProps } from '../SequenceConnectProvider/index.js'
 import { PoweredBySequence } from '../SequenceLogo/index.js'
 
@@ -66,13 +75,15 @@ export const Connect = (props: ConnectProps) => {
 
   const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet' | 'ecosystem'>(null)
   const { status, connectors, connect } = useConnect()
+  const { signMessageAsync } = useSignMessage()
 
   const connections = useConnections()
-  // const { signMessageAsync } = useSignMessage()
   const { wallets, linkedWallets, disconnectWallet, refetchLinkedWallets } = useWallets()
-
-  // TODO: make it work with v3
-  // const { linkWallet, removeLinkedWallet } = useWaasLinkWallet(waasConnection?.connector)
+  const waasConnection = useMemo(
+    () => connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas'),
+    [connections]
+  )
+  const { linkWallet, removeLinkedWallet } = useWaasLinkWallet(waasConnection?.connector)
 
   const [lastConnectedWallet, setLastConnectedWallet] = useState<`0x${string}` | undefined>(undefined)
   const [isSigningLinkMessage, setIsSigningLinkMessage] = useState(false)
@@ -81,26 +92,26 @@ export const Connect = (props: ConnectProps) => {
   const [restorableSession, setRestorableSession] = useState<RestorableSessionState | null>(null)
 
   const handleUnlinkWallet = async (address: string) => {
-    // try {
-    //   await removeLinkedWallet(address)
-    //   const parentWallet = wallets.find(w => w.isEmbedded)?.address
-    //   try {
-    //     analytics?.track({
-    //       event: 'UNLINK_WALLET',
-    //       props: {
-    //         parentWalletAddress: parentWallet ? getUserIdForEvent(parentWallet) : '',
-    //         linkedWalletAddress: getUserIdForEvent(address),
-    //         linkedWalletType: linkedWallets?.find(lw => lw.linkedWalletAddress === address)?.walletType || '',
-    //         source: EVENT_SOURCE
-    //       }
-    //     })
-    //   } catch (e) {
-    //     console.warn('unlink analytics error:', e)
-    //   }
-    //   refetchLinkedWallets()
-    // } catch (e) {
-    //   console.warn('unlink error:', e)
-    // }
+    try {
+      await removeLinkedWallet(address)
+      const parentWallet = wallets.find(w => w.isEmbedded)?.address
+      try {
+        analytics?.track({
+          event: 'UNLINK_WALLET',
+          props: {
+            parentWalletAddress: parentWallet ? getUserIdForEvent(parentWallet) : '',
+            linkedWalletAddress: getUserIdForEvent(address),
+            linkedWalletType: linkedWallets?.find(lw => lw.linkedWalletAddress === address)?.walletType || '',
+            source: EVENT_SOURCE
+          }
+        })
+      } catch (e) {
+        console.warn('unlink analytics error:', e)
+      }
+      refetchLinkedWallets()
+    } catch (e) {
+      console.warn('unlink error:', e)
+    }
   }
 
   useEffect(() => {
@@ -108,72 +119,70 @@ export const Connect = (props: ConnectProps) => {
       return
     }
 
-    // const tryLinkWallet = async () => {
-    //   const nonWaasWallets = connections.filter(c => (c.connector as ExtendedConnector)?.type !== 'sequence-waas')
+    const tryLinkWallet = async () => {
+      const nonWaasWallets = connections.filter(c => (c.connector as ExtendedConnector)?.type !== 'sequence-waas')
 
-    //   const nonLinkedWallets = nonWaasWallets.filter(
-    //     c => !linkedWallets?.find(lw => lw.linkedWalletAddress === c.accounts[0].toLowerCase())
-    //   )
+      const nonLinkedWallets = nonWaasWallets.filter(
+        c => !linkedWallets?.find(lw => lw.linkedWalletAddress.toLowerCase() === c.accounts[0].toLowerCase())
+      )
 
-    //   if (nonLinkedWallets.map(w => w.accounts[0]).includes(lastConnectedWallet as `0x${string}`)) {
-    //     const waasWalletAddress = waasConnection?.accounts[0]
+      if (nonLinkedWallets.map(w => w.accounts[0]).includes(lastConnectedWallet as `0x${string}`)) {
+        const waasWalletAddress = waasConnection?.accounts[0]
 
-    //     if (!waasWalletAddress) {
-    //       return
-    //     }
+        if (!waasWalletAddress) {
+          return
+        }
 
-    //     const childWalletAddress = lastConnectedWallet
-    //     const childMessage = `Link to parent wallet with address ${waasWalletAddress}`
+        const childWalletAddress = lastConnectedWallet
+        const childMessage = `Link to parent wallet with address ${waasWalletAddress}`
 
-    //     setIsSigningLinkMessage(true)
-    //     let childSignature
-    //     try {
-    //       childSignature = await signMessageAsync({ account: lastConnectedWallet, message: childMessage })
+        setIsSigningLinkMessage(true)
+        let childSignature
+        try {
+          childSignature = await signMessageAsync({ account: lastConnectedWallet, message: childMessage })
 
-    //       if (!childSignature) {
-    //         return
-    //       }
+          if (!childSignature) {
+            return
+          }
 
-    //       await linkWallet({
-    //         signatureChainId: CHAIN_ID_FOR_SIGNATURE,
-    //         connectorName: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
-    //         childWalletAddress,
-    //         childMessage,
-    //         childSignature
-    //       })
+          await linkWallet({
+            signatureChainId: CHAIN_ID_FOR_SIGNATURE,
+            connectorName: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+            childWalletAddress,
+            childMessage,
+            childSignature
+          })
 
-    //       try {
-    //         analytics?.track({
-    //           event: 'LINK_WALLET',
-    //           props: {
-    //             parentWalletAddress: getUserIdForEvent(waasWalletAddress),
-    //             linkedWalletAddress: getUserIdForEvent(childWalletAddress),
-    //             linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
-    //             source: EVENT_SOURCE
-    //           }
-    //         })
-    //       } catch (e) {
-    //         console.warn('link analytics error:', e)
-    //       }
+          try {
+            analytics?.track({
+              event: 'LINK_WALLET',
+              props: {
+                parentWalletAddress: getUserIdForEvent(waasWalletAddress),
+                linkedWalletAddress: getUserIdForEvent(childWalletAddress),
+                linkedWalletType: connections.find(c => c.accounts[0] === lastConnectedWallet)?.connector?.name || '',
+                source: EVENT_SOURCE
+              }
+            })
+          } catch (e) {
+            console.warn('link analytics error:', e)
+          }
 
-    //       refetchLinkedWallets()
-    //     } catch (e) {
-    //       console.log(e)
-    //     }
-    //   }
+          refetchLinkedWallets()
+        } catch (e) {
+          console.log(e)
+        }
+      }
 
-    //   setIsSigningLinkMessage(false)
-    //   setLastConnectedWallet(undefined)
-    //   onClose()
-    // }
-    // if (connections && connections.length > 1 && waasConnection !== undefined) {
-    //   tryLinkWallet()
-    // } else {
-    //   setLastConnectedWallet(undefined)
-    //   onClose()
-    // }
-
-    onClose()
+      setIsSigningLinkMessage(false)
+      setLastConnectedWallet(undefined)
+      onClose()
+    }
+    if (connections && connections.length > 1 && waasConnection !== undefined) {
+      tryLinkWallet()
+    } else {
+      setLastConnectedWallet(undefined)
+      onClose()
+    }
   }, [connections, lastConnectedWallet])
 
   const hasV3Wallet = wallets.some(w => w.id.includes('-v3'))
@@ -348,6 +357,33 @@ export const Connect = (props: ConnectProps) => {
       ? extendedConnectors.find(c => c._wallet?.id.includes('email'))
       : undefined
 
+  const renderConnectorButton = (
+    connector: ExtendedConnector,
+    options?: { isDescriptive?: boolean; disableTooltip?: boolean }
+  ) => {
+    const commonProps = {
+      connector,
+      onConnect,
+      isDescriptive: options?.isDescriptive,
+      disableTooltip: options?.disableTooltip
+    }
+
+    switch (connector._wallet?.id) {
+      case 'guest-waas':
+        return <GuestWaasConnectButton {...commonProps} setIsLoading={setIsLoading} />
+      case 'google-waas':
+        return <GoogleWaasConnectButton {...commonProps} />
+      case 'apple-waas':
+        return <AppleWaasConnectButton {...commonProps} />
+      case 'epic-waas':
+        return <EpicWaasConnectButton {...commonProps} />
+      case 'X-waas':
+        return <XWaasConnectButton {...commonProps} />
+      default:
+        return <ConnectButton {...commonProps} />
+    }
+  }
+
   const shouldShowRestorableSessionView = !!restorableSession && !restorableSessionDismissed
 
   const onChangeEmail: ChangeEventHandler<HTMLInputElement> = ev => {
@@ -359,7 +395,7 @@ export const Connect = (props: ConnectProps) => {
   }, [status, isRestoringSession])
 
   const handleConnect = async (connector: ExtendedConnector) => {
-    connect(
+    return connect(
       { connector },
       {
         onSettled: result => {
@@ -522,6 +558,12 @@ export const Connect = (props: ConnectProps) => {
         searchable={searchable}
         onGoBack={() => setShowExtendedList(null)}
         onConnect={onConnect}
+        renderConnectorButton={connector =>
+          renderConnectorButton(connector, {
+            isDescriptive: false,
+            disableTooltip: false
+          })
+        }
         connectors={connectorsForModal}
         title={title}
       />
@@ -563,6 +605,8 @@ export const Connect = (props: ConnectProps) => {
                 linkedWallets={linkedWallets}
                 disconnectWallet={disconnectWallet}
                 unlinkWallet={handleUnlinkWallet}
+                connectWallet={handleConnect}
+                connectors={walletConnectors}
               />
 
               <>
@@ -594,12 +638,10 @@ export const Connect = (props: ConnectProps) => {
                         {ecosystemConnectors.slice(0, ecosystemConnectorsPerRow).map(connector => {
                           return (
                             <div className="w-full" key={connector.uid}>
-                              <ConnectButton
-                                disableTooltip={config?.signIn?.disableTooltipForDescriptiveSocials}
-                                isDescriptive={descriptiveSocials}
-                                connector={connector}
-                                onConnect={onConnect}
-                              />
+                              {renderConnectorButton(connector, {
+                                isDescriptive: descriptiveSocials,
+                                disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
+                              })}
                             </div>
                           )
                         })}
@@ -617,12 +659,10 @@ export const Connect = (props: ConnectProps) => {
                         {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
                           return (
                             <div className="w-full" key={connector.uid}>
-                              <ConnectButton
-                                disableTooltip={config?.signIn?.disableTooltipForDescriptiveSocials}
-                                isDescriptive={descriptiveSocials}
-                                connector={connector}
-                                onConnect={onConnect}
-                              />
+                              {renderConnectorButton(connector, {
+                                isDescriptive: descriptiveSocials,
+                                disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
+                              })}
                             </div>
                           )
                         })}
@@ -670,7 +710,14 @@ export const Connect = (props: ConnectProps) => {
               <>
                 <div className={clsx('flex gap-2 flex-row justify-center items-center', hasV3Wallet ? 'mt-4' : 'mt-6')}>
                   {walletConnectors.slice(0, walletConnectorsPerRow).map(connector => {
-                    return <ConnectButton key={connector.uid} connector={connector} onConnect={onConnect} />
+                    return (
+                      <div key={connector.uid}>
+                        {renderConnectorButton(connector, {
+                          isDescriptive: false,
+                          disableTooltip: false
+                        })}
+                      </div>
+                    )
                   })}
                   {showMoreWalletOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('wallet')} />}
                 </div>

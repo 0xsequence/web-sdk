@@ -16,22 +16,26 @@ import React, { useState } from 'react'
 export interface WalletListItemProps {
   name: string
   address: string
+  embeddedWalletTitle?: string
   isEmbedded: boolean
   isActive: boolean
   isLinked: boolean
   isReadOnly: boolean
   onDisconnect: () => void
+  onReconnect?: () => void
   onUnlink?: () => void
 }
 
 export const WalletListItem: React.FC<WalletListItemProps> = ({
   name,
   address,
+  embeddedWalletTitle,
   isEmbedded,
   isActive,
   isLinked,
   isReadOnly,
   onDisconnect,
+  onReconnect,
   onUnlink
 }) => {
   const [showUnlinkConfirm, setShowUnlinkConfirm] = useState(false)
@@ -50,8 +54,8 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-1">
             <Text variant="normal" color="primary">
-              {isEmbedded ? 'Embedded - ' : ''}
-              {name}
+              {isEmbedded ? (embeddedWalletTitle ? embeddedWalletTitle : 'Embedded - ') : ''}
+              {isEmbedded && embeddedWalletTitle ? '' : name}
             </Text>
             {isLinked && (
               <Tooltip message="Linked to embedded wallet">
@@ -84,7 +88,10 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
               <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
             </div>
           ) : (
-            <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
+            <>
+              {onReconnect && <Button size="xs" variant="glass" label="Reconnect" onClick={onReconnect} />}
+              <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
+            </>
           )}
         </div>
       )}

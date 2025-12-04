@@ -2,6 +2,7 @@
 
 import { sequence } from '0xsequence'
 import { Modal, ToastProvider, type Theme } from '@0xsequence/design-system'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { SequenceClient } from '@0xsequence/provider'
 import { AnimatePresence } from 'motion/react'
@@ -19,6 +20,7 @@ import { useStorage } from '../../hooks/useStorage.js'
 import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings, type ModalPosition } from '../../types.js'
 import { getModalPositionCss } from '../../utils/styling.js'
 import { Connect } from '../Connect/Connect.js'
+import { EpicAuthProvider } from '../EpicAuthProvider/index.js'
 import { ShadowRoot } from '../ShadowRoot/index.js'
 
 export type SequenceConnectProviderProps = {
@@ -39,8 +41,13 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     hideExternalConnectOptions = false,
     hideConnectedWallets = false,
     hideSocialConnectOptions = false,
-    customCSS
+    customCSS,
+    waasConfigKey = ''
   } = config
+
+  // Google OAuth is required for the WaaS Google connector. Prefer the new config.google.clientId,
+  // but keep backward compatibility with the deprecated googleClientId flag.
+  const googleClientId = (config as any)?.google?.clientId || (config as any)?.googleClientId
 
   const defaultAppName = signIn.projectName || 'app'
 
@@ -167,45 +174,48 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
           <ConnectModalContextProvider
             value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
           >
-            <WalletConfigContextProvider
-              value={{
-                setDisplayedAssets,
-                displayedAssets,
-                readOnlyNetworks,
-                hideExternalConnectOptions,
-                hideConnectedWallets,
-                hideSocialConnectOptions
-              }}
-            >
-              <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                <ToastProvider>
-                  {/* TODO: either remove SocialLinkContextProvider or figure out what to do for waasConfigKey */}
-                  <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey: '', setIsSocialLinkOpen }}>
-                    <ShadowRoot theme={theme} customCSS={customCSS}>
-                      <AnimatePresence>
-                        {openConnectModal && (
-                          <Modal
-                            scroll={false}
-                            size="sm"
-                            contentProps={{
-                              style: {
-                                maxWidth: '390px',
-                                overflow: 'visible',
-                                ...getModalPositionCss(position)
-                              }
-                            }}
-                            onClose={() => setOpenConnectModal(false)}
-                          >
-                            <Connect onClose={() => setOpenConnectModal(false)} {...props} />
-                          </Modal>
-                        )}
-                      </AnimatePresence>
-                    </ShadowRoot>
-                    {children}
-                  </SocialLinkContextProvider>
-                </ToastProvider>
-              </AnalyticsContextProvider>
-            </WalletConfigContextProvider>
+            <GoogleOAuthProvider clientId={googleClientId || ''}>
+              <WalletConfigContextProvider
+                value={{
+                  setDisplayedAssets,
+                  displayedAssets,
+                  readOnlyNetworks,
+                  hideExternalConnectOptions,
+                  hideConnectedWallets,
+                  hideSocialConnectOptions
+                }}
+              >
+                <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
+                  <ToastProvider>
+                    <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey, setIsSocialLinkOpen }}>
+                      <ShadowRoot theme={theme} customCSS={customCSS}>
+                        <AnimatePresence>
+                          {openConnectModal && (
+                            <Modal
+                              scroll={false}
+                              size="sm"
+                              contentProps={{
+                                style: {
+                                  maxWidth: '390px',
+                                  overflow: 'visible',
+                                  ...getModalPositionCss(position)
+                                }
+                              }}
+                              onClose={() => setOpenConnectModal(false)}
+                            >
+                              <EpicAuthProvider>
+                                <Connect onClose={() => setOpenConnectModal(false)} {...props} />
+                              </EpicAuthProvider>
+                            </Modal>
+                          )}
+                        </AnimatePresence>
+                      </ShadowRoot>
+                      {children}
+                    </SocialLinkContextProvider>
+                  </ToastProvider>
+                </AnalyticsContextProvider>
+              </WalletConfigContextProvider>
+            </GoogleOAuthProvider>
           </ConnectModalContextProvider>
         </ThemeContextProvider>
       </ConnectConfigContextProvider>

@@ -10,7 +10,7 @@ import {
   useTheme
 } from '@0xsequence/design-system'
 import Fuse from 'fuse.js'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 import type { ExtendedConnector } from '../../types.js'
 import { getLogo } from '../ConnectButton/index.js'
@@ -21,9 +21,17 @@ interface ExtendedWalletListProps {
   connectors: ExtendedConnector[]
   onGoBack: () => void
   searchable: boolean
+  renderConnectorButton?: (connector: ExtendedConnector) => ReactNode
 }
 
-export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, searchable }: ExtendedWalletListProps) => {
+export const ExtendedWalletList = ({
+  onConnect,
+  connectors,
+  title,
+  onGoBack,
+  searchable,
+  renderConnectorButton
+}: ExtendedWalletListProps) => {
   const { theme } = useTheme()
   const [search, setSearch] = useState('')
 
@@ -97,6 +105,15 @@ export const ExtendedWalletList = ({ onConnect, connectors, title, onGoBack, sea
             const walletProps = connector._wallet
             const walletName = walletProps.ctaText || walletProps.name
             const connectorId = connector._wallet.id
+
+            const customButton = renderConnectorButton?.(connector)
+            if (customButton) {
+              return (
+                <div key={connectorId} className="w-full">
+                  {customButton}
+                </div>
+              )
+            }
 
             const Logo = getLogo(theme, walletProps)
 

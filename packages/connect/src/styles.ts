@@ -16,6 +16,8 @@ export const styles = String.raw`
     --text-sm--line-height: calc(1.25 / 0.875);
     --text-base: 1rem;
     --text-base--line-height: calc(1.5 / 1);
+    --text-lg: 1.125rem;
+    --text-lg--line-height: calc(1.75 / 1.125);
     --text-xl: 1.25rem;
     --text-xl--line-height: calc(1.75 / 1.25);
     --text-2xl: 1.5rem;
@@ -237,6 +239,9 @@ export const styles = String.raw`
   }
   .right-4 {
     right: calc(var(--spacing) * 4);
+  }
+  .right-\[-18px\] {
+    right: -18px;
   }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
@@ -979,6 +984,9 @@ export const styles = String.raw`
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
+  .py-6 {
+    padding-block: calc(var(--spacing) * 6);
+  }
   .pt-0 {
     padding-top: calc(var(--spacing) * 0);
   }
@@ -1063,6 +1071,10 @@ export const styles = String.raw`
   .text-base {
     font-size: var(--text-base);
     line-height: var(--tw-leading, var(--text-base--line-height));
+  }
+  .text-lg {
+    font-size: var(--text-lg);
+    line-height: var(--tw-leading, var(--text-lg--line-height));
   }
   .text-sm {
     font-size: var(--text-sm);
