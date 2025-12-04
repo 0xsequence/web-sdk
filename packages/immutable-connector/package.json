@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/immutable-connector",
-  "version": "5.4.7",
+  "version": "5.4.8",
   "description": "Immutable connector for Sequence Kit",
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/immutable-connector",
   "author": "Horizon Blockchain Games",
@@ -34,7 +34,7 @@
   },
   "peerDependencies": {
     "@0xsequence/connect": "workspace:*",
-    "0xsequence": ">= 2.3.37",
+    "0xsequence": ">= 2.3.38",
     "@imtbl/config": ">=2.1.2",
     "@imtbl/sdk": ">=2.1.2",
     "ethers": "^6.13.0",

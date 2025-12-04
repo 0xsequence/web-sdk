@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.4.8
+
+### Patch Changes
+
+- sequence.js dependency upgrades
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.8
+
 ## 5.4.7
 
 ### Patch Changes
