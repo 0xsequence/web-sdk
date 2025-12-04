@@ -39,11 +39,7 @@ const getSwapRoutes = async (apiClient: SequenceAPIClient, args: GetSwapRoutesAr
       walletAddress: args.walletAddress,
       tokenAddress: args.toTokenAddress,
       tokenAmount: args.toTokenAmount
-    },
-    chainId: args.chainId,
-    walletAddress: args.walletAddress,
-    toTokenAddress: args.toTokenAddress,
-    toTokenAmount: args.toTokenAmount
+    }
   })
 
   if (res.routes.length === 0) {
