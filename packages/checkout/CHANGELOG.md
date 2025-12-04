@@ -1,5 +1,15 @@
 # @0xsequence/checkout
 
+## 5.4.7
+
+### Patch Changes
+
+- sequence.js upgrades
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.7
+  - @0xsequence/hooks@5.4.7
+
 ## 5.4.6
 
 ### Patch Changes

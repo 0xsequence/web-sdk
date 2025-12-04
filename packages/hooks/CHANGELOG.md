@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.7
+
+### Patch Changes
+
+- sequence.js upgrades
+
 ## 5.4.6
 
 ### Patch Changes
