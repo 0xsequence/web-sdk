@@ -1,13 +1,4 @@
-import {
-  TransactionOnRampProvider,
-  useAddFundsModal,
-  useCheckoutModal,
-  useERC1155SaleContractCheckout,
-  useSelectPaymentModal,
-  useSwapModal,
-  useTransactionStatusModal,
-  type SwapModalSettings
-} from '@0xsequence/checkout'
+import { useCheckoutModal, useSelectPaymentModal, useSwapModal, useTransactionStatusModal } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
