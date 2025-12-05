@@ -139,7 +139,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
                 <div id="kit-provider">
                   <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
                     <EpicAuthProvider>
-                      <Connect onClose={() => setOpenConnectModal(false)} isPreview {...props} />
+                      <Connect onClose={() => setOpenConnectModal(false)} isInline {...props} />
                     </EpicAuthProvider>
                   </ThemeProvider>
                 </div>

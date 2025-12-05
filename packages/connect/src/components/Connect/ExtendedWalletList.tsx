@@ -10,7 +10,7 @@ import {
   useTheme
 } from '@0xsequence/design-system'
 import Fuse from 'fuse.js'
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 
 import type { ExtendedConnector } from '../../types.js'
 import { getLogo } from '../ConnectButton/index.js'
@@ -21,7 +21,7 @@ interface ExtendedWalletListProps {
   connectors: ExtendedConnector[]
   onGoBack: () => void
   searchable: boolean
-  renderConnectorButton?: (connector: ExtendedConnector) => ReactNode
+  isInline?: boolean
 }
 
 export const ExtendedWalletList = ({
@@ -30,18 +30,21 @@ export const ExtendedWalletList = ({
   title,
   onGoBack,
   searchable,
-  renderConnectorButton
+  isInline = false
 }: ExtendedWalletListProps) => {
   const { theme } = useTheme()
   const [search, setSearch] = useState('')
 
-  const fuzzyConnectors = new Fuse(connectors, {
+  // Guard against connectors missing wallet metadata to avoid runtime errors in the list view
+  const validConnectors = connectors.filter(connector => !!connector._wallet)
+
+  const fuzzyConnectors = new Fuse(validConnectors, {
     keys: ['_wallet.name']
   })
 
   const foundConnectors = fuzzyConnectors.search(search)
 
-  const displayedConnectors = search === '' ? connectors : foundConnectors.map(connector => connector.item)
+  const displayedConnectors = search === '' ? validConnectors : foundConnectors.map(connector => connector.item)
 
   const maxConnectorsInView = searchable ? 6 : 8
   const gutterHeight = 8
@@ -72,7 +75,7 @@ export const ExtendedWalletList = ({
   }
 
   return (
-    <div className="p-4">
+    <div className="relative p-4">
       <div className="absolute top-4 left-4">
         <IconButton
           className="bg-button-glass"
@@ -82,9 +85,13 @@ export const ExtendedWalletList = ({
         />
       </div>
       <div className="flex justify-center text-primary items-center font-medium mt-2 mb-4">
-        <ModalPrimitive.Title asChild>
+        {isInline ? (
           <Text>{title}</Text>
-        </ModalPrimitive.Title>
+        ) : (
+          <ModalPrimitive.Title asChild>
+            <Text>{title}</Text>
+          </ModalPrimitive.Title>
+        )}
       </div>
       {searchable && (
         <div className="w-full mb-4">
@@ -102,18 +109,10 @@ export const ExtendedWalletList = ({
       <ConditionalScrollbar>
         <div className="flex flex-col gap-2">
           {displayedConnectors.map(connector => {
-            const walletProps = connector._wallet
-            const walletName = walletProps.ctaText || walletProps.name
+            const walletName = connector._wallet.name
             const connectorId = connector._wallet.id
 
-            const customButton = renderConnectorButton?.(connector)
-            if (customButton) {
-              return (
-                <div key={connectorId} className="w-full">
-                  {customButton}
-                </div>
-              )
-            }
+            const walletProps = connector._wallet
 
             const Logo = getLogo(theme, walletProps)
 

@@ -87,14 +87,17 @@ export interface ConnectConfig {
   hideSocialConnectOptions?: boolean
   hideConnectedWallets?: boolean
   customCSS?: string
+  embeddedWalletTitle?: string
+  renderInline?: boolean
+  onConnectSuccess?: (address: string) => void
 }
 
 export type StorageItem = {
   [LocalStorageKey.EthAuthProof]: ETHAuthProof
   [LocalStorageKey.EthAuthSettings]: EthAuthSettings
+  [LocalStorageKey.WaasEmailIdToken]: string
   [LocalStorageKey.WaasGoogleClientID]: string
   [LocalStorageKey.WaasGoogleIdToken]: string
-  [LocalStorageKey.WaasEmailIdToken]: string
   [LocalStorageKey.WaasAppleClientID]: string
   [LocalStorageKey.WaasAppleIdToken]: string
   [LocalStorageKey.WaasAppleRedirectURI]: string
