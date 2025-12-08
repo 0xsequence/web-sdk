@@ -3,6 +3,7 @@ import {
   truncateAtMiddle,
   useAnalyticsContext,
   useFeeOptions,
+  useWaasFeeOptions,
   useWallets,
   waitForTransactionReceipt,
   type ExtendedConnector
@@ -65,17 +66,27 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
 
-  const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] = useFeeOptions()
-  const isSequenceV3ConnectorActive = wallets.some(wallet => wallet.id === 'sequence-v3-wallet' && wallet.isActive)
-  const pendingSequenceFeeConfirmation =
-    isSequenceV3ConnectorActive && pendingFeeOptionConfirmation ? pendingFeeOptionConfirmation : undefined
-  const feeOptions = pendingSequenceFeeConfirmation
+  const [pendingV3FeeConfirmation, confirmV3FeeOption, rejectV3FeeOption] = useFeeOptions()
+  const [pendingWaasFeeConfirmation, confirmWaasFeeOption, rejectWaasFeeOption] = useWaasFeeOptions()
+
+  const connectorType = (connector as ExtendedConnector | undefined)?.type
+  const isWaasConnectorActive = connectorType === 'sequence-waas'
+  const isSequenceV3ConnectorActive =
+    connectorType === 'sequence-v3-wallet' || wallets.some(wallet => wallet.id === 'sequence-v3-wallet' && wallet.isActive)
+
+  const activeFeeConfirmation = isWaasConnectorActive
+    ? pendingWaasFeeConfirmation
+    : isSequenceV3ConnectorActive
+      ? pendingV3FeeConfirmation
+      : undefined
+
+  const feeOptions = activeFeeConfirmation
     ? {
-        options: pendingSequenceFeeConfirmation.options,
-        chainId: pendingSequenceFeeConfirmation.chainId
+        options: activeFeeConfirmation.options as any[],
+        chainId: activeFeeConfirmation.chainId
       }
     : undefined
-  const isConfirmationVisible = Boolean(feeOptions)
+  const isConfirmationVisible = Boolean(activeFeeConfirmation)
 
   const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
@@ -188,7 +199,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   }
 
   const handleConfirmationSubmit = () => {
-    if (!pendingSequenceFeeConfirmation) {
+    if (!activeFeeConfirmation) {
       executeTransaction()
       return
     }
@@ -197,22 +208,38 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       return
     }
 
-    const selectedOption = pendingSequenceFeeConfirmation.options.find(
+    const selectedOption = activeFeeConfirmation.options.find(
       option => (option.token.contractAddress ?? zeroAddress) === selectedFeeTokenAddress
     )
 
-    if (!selectedOption?.token.contractAddress) {
+    if (!selectedOption) {
       console.error('Unable to resolve the selected fee option.')
       return
     }
 
-    confirmPendingFeeOption(pendingSequenceFeeConfirmation.id, selectedOption.token.contractAddress)
+    if (isWaasConnectorActive) {
+      const feeTokenAddress = selectedFeeTokenAddress === zeroAddress ? null : selectedFeeTokenAddress
+      confirmWaasFeeOption(activeFeeConfirmation.id, feeTokenAddress)
+      return
+    }
+
+    if (!selectedOption.token.contractAddress) {
+      console.error('Unable to resolve the selected fee option.')
+      return
+    }
+
+    confirmV3FeeOption(activeFeeConfirmation.id, selectedOption.token.contractAddress)
   }
 
   const handleConfirmationCancel = () => {
-    if (pendingSequenceFeeConfirmation) {
-      rejectPendingFeeOption(pendingSequenceFeeConfirmation.id)
+    if (activeFeeConfirmation) {
+      if (isWaasConnectorActive) {
+        rejectWaasFeeOption(activeFeeConfirmation.id)
+      } else if (isSequenceV3ConnectorActive) {
+        rejectV3FeeOption(activeFeeConfirmation.id)
+      }
     }
+
     setSelectedFeeTokenAddress(null)
     setIsSendTxnPending(false)
   }
