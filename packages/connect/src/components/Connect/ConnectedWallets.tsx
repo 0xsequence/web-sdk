@@ -12,8 +12,8 @@ interface ConnectedWalletsProps {
   linkedWallets?: LinkedWallet[]
   disconnectWallet: (address: string) => void
   unlinkWallet: (address: string) => void
-  connectWallet?: (connector: ExtendedConnector) => Promise<void>
-  connectors?: ExtendedConnector[]
+  connectWallet: (connector: ExtendedConnector) => Promise<void>
+  connectors: ExtendedConnector[]
   embeddedWalletTitle?: string
 }
 
@@ -104,7 +104,7 @@ export const ConnectedWallets = ({
 
     // Combine all wallets
     return [...sortedConnectedWallets, ...sortedReadOnlyWallets]
-  }, [wallets, linkedWallets, disconnectWallet, connectors, connectWallet, embeddedWalletTitle])
+  }, [wallets, linkedWallets, disconnectWallet, connectors])
 
   useEffect(() => {
     const container = scrollContainerRef.current
@@ -163,7 +163,7 @@ export const ConnectedWallets = ({
                 }}
                 style={{ willChange: 'transform, opacity', transformOrigin: 'center' }}
               >
-                <WalletListItem {...wallet} />
+                <WalletListItem {...wallet} embeddedWalletTitle={embeddedWalletTitle} />
               </motion.div>
             ))}
           </AnimatePresence>

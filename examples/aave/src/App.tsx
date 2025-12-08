@@ -1,4 +1,3 @@
-import { useAccount, useBalance, useDisconnect, useSendTransaction } from 'wagmi'
 import './index.css'
 import {
   createContractPermission,
@@ -10,6 +9,7 @@ import {
 import { supplyERC20Calldata, supplyETHCalldata, withdrawERC20Calldata, withdrawETHCalldata } from '@contractjs/aave-v3'
 import { useEffect, useState } from 'react'
 import { encodeFunctionData, formatUnits, maxUint256, parseAbi, parseEther, parseUnits } from 'viem'
+import { useAccount, useBalance, useDisconnect, useSendTransaction } from 'wagmi'
 
 import { AAVE_V3_POOL_ADDRESS_ARBITRUM, AAVE_V3_WRAPPED_TOKEN_GATEWAY_ADDRESS_ARBITRUM, USDC_ADDRESS_ARBITRUM } from './config'
 

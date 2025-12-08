@@ -8,9 +8,11 @@ export const styles = String.raw`
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-violet-600: oklch(54.1% 0.281 293.009);
+    --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
+    --container-md: 28rem;
     --text-xs: 0.75rem;
     --text-xs--line-height: calc(1 / 0.75);
     --text-sm: 0.875rem;
@@ -316,6 +318,9 @@ export const styles = String.raw`
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
+  .mt-0 {
+    margin-top: calc(var(--spacing) * 0);
+  }
   .mt-1 {
     margin-top: calc(var(--spacing) * 1);
   }
@@ -351,6 +356,9 @@ export const styles = String.raw`
   }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
+  }
+  .mb-3 {
+    margin-bottom: calc(var(--spacing) * 3);
   }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
@@ -442,6 +450,12 @@ export const styles = String.raw`
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
+  .h-200 {
+    height: calc(var(--spacing) * 200);
+  }
+  .h-400 {
+    height: calc(var(--spacing) * 400);
+  }
   .h-\[1px\] {
     height: 1px;
   }
@@ -463,14 +477,17 @@ export const styles = String.raw`
   .h-\[64px\] {
     height: 64px;
   }
-  .h-\[128px\] {
-    height: 128px;
+  .h-\[200px\] {
+    height: 200px;
   }
   .h-\[206px\] {
     height: 206px;
   }
   .h-\[calc\(100dvh-70px\)\] {
     height: calc(100dvh - 70px);
+  }
+  .h-auto {
+    height: auto;
   }
   .h-fit {
     height: fit-content;
@@ -501,6 +518,9 @@ export const styles = String.raw`
   }
   .min-h-\[100px\] {
     min-height: 100px;
+  }
+  .min-h-\[128px\] {
+    min-height: 128px;
   }
   .min-h-full {
     min-height: 100%;
@@ -571,6 +591,9 @@ export const styles = String.raw`
   .w-\[56px\] {
     width: 56px;
   }
+  .w-\[80px\] {
+    width: 80px;
+  }
   .w-\[100px\] {
     width: 100px;
   }
@@ -579,6 +602,9 @@ export const styles = String.raw`
   }
   .w-\[148px\] {
     width: 148px;
+  }
+  .w-auto {
+    width: auto;
   }
   .w-fit {
     width: fit-content;
@@ -597,6 +623,9 @@ export const styles = String.raw`
   }
   .max-w-full {
     max-width: 100%;
+  }
+  .max-w-md {
+    max-width: var(--container-md);
   }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
@@ -621,6 +650,9 @@ export const styles = String.raw`
   }
   .flex-shrink {
     flex-shrink: 1;
+  }
+  .flex-shrink-0 {
+    flex-shrink: 0;
   }
   .shrink-0 {
     flex-shrink: 0;
@@ -702,6 +734,9 @@ export const styles = String.raw`
   .flex-row {
     flex-direction: row;
   }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
   .place-items-center {
     place-items: center;
   }
@@ -773,6 +808,9 @@ export const styles = String.raw`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .overflow-auto {
+    overflow: auto;
+  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -828,9 +866,21 @@ export const styles = String.raw`
     border-top-left-radius: var(--radius-2xl);
     border-top-right-radius: var(--radius-2xl);
   }
+  .rounded-t-none {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .rounded-t-xl {
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+  }
   .rounded-b-none {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+  }
+  .rounded-b-xl {
+    border-bottom-right-radius: var(--radius-xl);
+    border-bottom-left-radius: var(--radius-xl);
   }
   .border {
     border-style: var(--tw-border-style);
@@ -875,6 +925,12 @@ export const styles = String.raw`
   }
   .border-border-normal {
     border-color: var(--seq-color-border-normal);
+  }
+  .border-primary {
+    border-color: var(--seq-color-primary);
+  }
+  .border-red-500 {
+    border-color: var(--color-red-500);
   }
   .border-transparent {
     border-color: transparent;
@@ -941,6 +997,10 @@ export const styles = String.raw`
   }
   .bg-white {
     background-color: var(--color-white);
+  }
+  .bg-gradient-to-r {
+    --tw-gradient-position: to right in oklab;
+    background-image: linear-gradient(var(--tw-gradient-stops));
   }
   .bg-gradient-primary {
     background-image: var(--seq-color-gradient-primary);
@@ -1026,6 +1086,9 @@ export const styles = String.raw`
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
+  .py-5 {
+    padding-block: calc(var(--spacing) * 5);
+  }
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
   }
@@ -1058,9 +1121,6 @@ export const styles = String.raw`
   }
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
-  }
-  .pb-0 {
-    padding-bottom: calc(var(--spacing) * 0);
   }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
@@ -1155,6 +1215,10 @@ export const styles = String.raw`
     --tw-leading: calc(var(--spacing) * 0);
     line-height: calc(var(--spacing) * 0);
   }
+  .leading-1 {
+    --tw-leading: calc(var(--spacing) * 1);
+    line-height: calc(var(--spacing) * 1);
+  }
   .leading-4 {
     --tw-leading: calc(var(--spacing) * 4);
     line-height: calc(var(--spacing) * 4);
@@ -1233,6 +1297,9 @@ export const styles = String.raw`
   }
   .text-black {
     color: var(--color-black);
+  }
+  .text-gray-500 {
+    color: var(--color-gray-500);
   }
   .text-info {
     color: var(--seq-color-info);
@@ -2466,4 +2533,6 @@ export const styles = String.raw`
       --tw-gradient-to-position: 100%;
     }
   }
-}`
+}
+
+`

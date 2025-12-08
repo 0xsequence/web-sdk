@@ -1,5 +1,249 @@
 # @0xsequence/immutable-connector
 
+## 5.4.6
+
+### Patch Changes
+
+- Dependency updates
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.6
+
+## 5.4.5
+
+### Patch Changes
+
+- Fix for free items checkout, sequence dep upgrades
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.5
+
+## 5.4.4
+
+### Patch Changes
+
+- Sequence logo update
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.4
+
+## 5.4.3
+
+### Patch Changes
+
+- Minor fix for Sequence logo
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.3
+
+## 5.4.2
+
+### Patch Changes
+
+- - **Onramp**: Add optional Transak alternate flow with default and windowed modes (#549)
+  - Add `showWalletAuthOptionsFirst` parameter to control connector ordering (#563)
+  - Update Sequence logos with newest logo (#561)
+  - Better logic for initial balance check (#562)
+  - Change injected connector logic to display before others (#563)
+  - Fix Transak parameters (#557)
+  - Add funds height when error state (#556)
+  - Add message for rejected transactions (#559)
+  - Deprecate `findVersion` (#560)
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.2
+
+## 5.4.1
+
+### Patch Changes
+
+- Fix for add funds setting
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.1
+
+## 5.4.0
+
+### Major Changes
+
+- Removal of transak-related configuration parameters
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.0
+
+## 5.3.29
+
+### Patch Changes
+
+- Preview mode
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.29
+
+## 5.3.28
+
+### Patch Changes
+
+- Minor fixes and improvements
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.28
+
+## 5.3.27
+
+### Patch Changes
+
+- fix for databeat events
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.27
+
+## 5.3.26
+
+### Patch Changes
+
+- Chain id override optio
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.26
+
+## 5.3.25
+
+### Patch Changes
+
+- Improvement for wallet URL init
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.25
+
+## 5.3.24
+
+### Patch Changes
+
+- removed default networks from add funds
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.24
+
+## 5.3.23
+
+### Patch Changes
+
+- Allow disabling Add Funds button
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.23
+
+## 5.3.22
+
+### Patch Changes
+
+- Fix fetchTransaction receipt condition
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.22
+
+## 5.3.21
+
+### Patch Changes
+
+- Transaction receipt fetch improvement
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.21
+
+## 5.3.20
+
+### Patch Changes
+
+- Removed subscription for receipts in favor of api call
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.20
+
+## 5.3.19
+
+### Patch Changes
+
+- Fix for ERC20: insufficient allowance bug during swap and pay
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.19
+
+## 5.3.18
+
+### Patch Changes
+
+- Bug fixes
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.18
+
+## 5.3.17
+
+### Patch Changes
+
+- fixes related to undefined walletClient
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.17
+
+## 5.3.16
+
+### Patch Changes
+
+- Improve connect sdk preview, add custom embedded wallet title option
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.16
+
+## 5.3.15
+
+### Patch Changes
+
+- Forte Pay NFT checkout support
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.15
+
+## 5.3.14
+
+### Patch Changes
+
+- Customization class in checkout
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.14
+
+## 5.3.13
+
+### Patch Changes
+
+- Minor fixes
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.13
+
+## 5.3.12
+
+### Patch Changes
+
+- Checkout SDK fixes and improvements
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.12
+
+## 5.3.11
+
+### Patch Changes
+
+- Fix for waas connector modal
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.3.11
+
 ## 5.3.10
 
 ### Patch Changes

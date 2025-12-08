@@ -50,15 +50,15 @@ const getSingleTokenBalance = async (args: GetSingleTokenBalanceArgs, indexerGat
  *
  * @returns Query result containing the token balance
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSingleTokenBalanceSummary} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetSingleTokenBalance} for more detailed documentation.
  *
  * @example
  * ```tsx
- * import { useGetSingleTokenBalanceSummary, ZERO_ADDRESS } from '@0xsequence/hooks'
+ * import { useGetSingleTokenBalance, ZERO_ADDRESS } from '@0xsequence/hooks'
  *
  * // Fetch native ETH balance
  * function NativeBalance() {
- *   const { data: ethBalance } = useGetSingleTokenBalanceSummary({
+ *   const { data: ethBalance } = useGetSingleTokenBalance({
  *     chainId: 1,
  *     accountAddress: '0x123...',
  *     contractAddress: ZERO_ADDRESS
@@ -68,7 +68,7 @@ const getSingleTokenBalance = async (args: GetSingleTokenBalanceArgs, indexerGat
  *
  * // Fetch USDC balance
  * function TokenBalance() {
- *   const { data: usdcBalance } = useGetSingleTokenBalanceSummary({
+ *   const { data: usdcBalance } = useGetSingleTokenBalance({
  *     chainId: 1,
  *     accountAddress: '0x123...',
  *     contractAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' // USDC

@@ -15,7 +15,6 @@ import {
   useFeeOptions,
   useOpenConnectModal,
   useSequenceSessionState,
-  useSocialLink,
   useStorage,
   useWallets,
   validateEthProof,
@@ -44,8 +43,7 @@ import { CustomCheckout } from './CustomCheckout'
 import { Select } from './Select'
 
 // append ?debug to url to enable debug mode
-const searchParams =
-  typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
 const isDebugMode = searchParams.has('debug')
 const checkoutProvider = searchParams.get('checkoutProvider')
 const onRampProvider = searchParams.get('onRampProvider')
@@ -59,7 +57,7 @@ export const Connected = () => {
   const { triggerCheckout } = useCheckoutModal()
   const { triggerAddFunds } = useAddFundsModal()
   const { openSelectPaymentModal } = useSelectPaymentModal()
-  const { setIsSocialLinkOpen } = useSocialLink()
+
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
 
@@ -747,10 +745,6 @@ export const Connected = () => {
   const onClickConnect = () => {
     setOpenConnectModal(true)
   }
-
-  // const onClickSocialLink = () => {
-  //   setIsSocialLinkOpen(true)
-  // }
 
   useEffect(() => {
     setLastImplicitTestTxnDataHash(undefined)

@@ -12,7 +12,7 @@ import type { Chain } from 'wagmi/chains'
  * The hook is commonly used in conjunction with other Sequence hooks to access chain-specific
  * information when working with transactions, indexer clients, or network-specific features.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useChain} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/ecosystem/hooks/useChain} for more detailed documentation.
  *
  * @param chainId - Optional chain ID to get configuration for a specific chain. If not provided, returns the current chain's configuration.
  * @returns Chain configuration object for the specified or current chain, or undefined if not found

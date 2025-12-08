@@ -35,7 +35,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
   const [triggerWidth, setTriggerWidth] = useState<number>(0)
 
   const [isExternalPopoverOpen, setIsExternalPopoverOpen] = useState(false)
-  const [foundMarketplaceURL, setFoundMarketplaceURL] = useState<string | null>(null)
+  const [foundMarketplaceURL] = useState<string | null>(null)
 
   useEffect(() => {
     if (triggerRef.current) {

@@ -1,5 +1,169 @@
 # @0xsequence/hooks
 
+## 5.4.6
+
+### Patch Changes
+
+- Dependency updates
+
+## 5.4.5
+
+### Patch Changes
+
+- Fix for free items checkout, sequence dep upgrades
+
+## 5.4.4
+
+### Patch Changes
+
+- Sequence logo update
+
+## 5.4.3
+
+### Patch Changes
+
+- Minor fix for Sequence logo
+
+## 5.4.2
+
+### Patch Changes
+
+- - **Onramp**: Add optional Transak alternate flow with default and windowed modes (#549)
+  - Add `showWalletAuthOptionsFirst` parameter to control connector ordering (#563)
+  - Update Sequence logos with newest logo (#561)
+  - Better logic for initial balance check (#562)
+  - Change injected connector logic to display before others (#563)
+  - Fix Transak parameters (#557)
+  - Add funds height when error state (#556)
+  - Add message for rejected transactions (#559)
+  - Deprecate `findVersion` (#560)
+
+## 5.4.1
+
+### Patch Changes
+
+- Fix for add funds setting
+
+## 5.4.0
+
+### Major Changes
+
+- Removal of transak-related configuration parameters
+
+## 5.3.29
+
+### Patch Changes
+
+- Preview mode
+
+## 5.3.28
+
+### Patch Changes
+
+- Minor fixes and improvements
+
+## 5.3.27
+
+### Patch Changes
+
+- fix for databeat events
+
+## 5.3.26
+
+### Patch Changes
+
+- Chain id override optio
+
+## 5.3.25
+
+### Patch Changes
+
+- Improvement for wallet URL init
+
+## 5.3.24
+
+### Patch Changes
+
+- removed default networks from add funds
+
+## 5.3.23
+
+### Patch Changes
+
+- Allow disabling Add Funds button
+
+## 5.3.22
+
+### Patch Changes
+
+- Fix fetchTransaction receipt condition
+
+## 5.3.21
+
+### Patch Changes
+
+- Transaction receipt fetch improvement
+
+## 5.3.20
+
+### Patch Changes
+
+- Removed subscription for receipts in favor of api call
+
+## 5.3.19
+
+### Patch Changes
+
+- Fix for ERC20: insufficient allowance bug during swap and pay
+
+## 5.3.18
+
+### Patch Changes
+
+- Bug fixes
+
+## 5.3.17
+
+### Patch Changes
+
+- fixes related to undefined walletClient
+
+## 5.3.16
+
+### Patch Changes
+
+- Improve connect sdk preview, add custom embedded wallet title option
+
+## 5.3.15
+
+### Patch Changes
+
+- Forte Pay NFT checkout support
+
+## 5.3.14
+
+### Patch Changes
+
+- Customization class in checkout
+
+## 5.3.13
+
+### Patch Changes
+
+- Minor fixes
+
+## 5.3.12
+
+### Patch Changes
+
+- Checkout SDK fixes and improvements
+
+## 5.3.11
+
+### Patch Changes
+
+- Fix for waas connector modal
+
 ## 5.3.10
 
 ### Patch Changes

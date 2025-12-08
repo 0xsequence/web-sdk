@@ -1,1 +1,1 @@
-export const WEB_SDK_VERSION = '5.3.10'
+export const WEB_SDK_VERSION = '5.4.8'

@@ -92,11 +92,7 @@ export const CustomCheckout = () => {
                 width: '36px'
               }}
             >
-              <Image
-                alt="Collectible preview"
-                disableAnimation
-                src={orderSummary.data?.collectibleItem?.collectibleImageUrl}
-              />
+              <Image alt="Collectible preview" disableAnimation src={orderSummary.data?.collectibleItem?.collectibleImageUrl} />
             </div>
             <div className="flex flex-col gap-0.5">
               <Text variant="small" color="secondary" fontWeight="medium">

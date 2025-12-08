@@ -1,6 +1,6 @@
 'use client'
 
-import { SequenceAPIClient, type GetLinkedWalletsArgs, type LinkedWallet } from '@0xsequence/api'
+import { SequenceAPIClient, type GetLinkedWalletsRequest, type LinkedWallet } from '@0xsequence/api'
 import { useAPIClient } from '@0xsequence/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAccount, useConnect, useConnections, useDisconnect, type Connector, type UseConnectionsReturnType } from 'wagmi'
@@ -14,12 +14,12 @@ interface UseLinkedWalletsOptions {
 }
 
 // Create a stable storage key from args
-const createStorageKey = (args: GetLinkedWalletsArgs): string =>
+const createStorageKey = (args: GetLinkedWalletsRequest): string =>
   `@0xsequence.linked_wallets-${args.parentWalletAddress}-${args.signatureChainId}`
 
 const getLinkedWallets = async (
   apiClient: SequenceAPIClient,
-  args: GetLinkedWalletsArgs,
+  args: GetLinkedWalletsRequest,
   headers?: object,
   signal?: AbortSignal
 ): Promise<Array<LinkedWallet>> => {
@@ -74,7 +74,10 @@ const notifyLinkedWalletsListeners = () => {
   }, 0)
 }
 
-export const useLinkedWallets = (args: GetLinkedWalletsArgs, options: UseLinkedWalletsOptions = {}): UseLinkedWalletsResult => {
+export const useLinkedWallets = (
+  args: GetLinkedWalletsRequest,
+  options: UseLinkedWalletsOptions = {}
+): UseLinkedWalletsResult => {
   const apiClient = useAPIClient()
   const [data, setData] = useState<LinkedWallet[] | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
@@ -189,7 +192,7 @@ export interface UseWalletsReturnType {
  * For embedded wallets, it also provides access to linked wallets - additional
  * wallets that have been linked to the primary embedded wallet.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useWallets} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/ecosystem/hooks/useWallets} for more detailed documentation.
  *
  * @returns An object containing wallet information and management functions {@link UseWalletsReturnType}
  *

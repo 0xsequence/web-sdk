@@ -1,4 +1,4 @@
-import type { GetLifiSwapQuoteArgs } from '@0xsequence/api'
+import type { GetLifiSwapQuoteRequest } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants.js'
@@ -20,7 +20,7 @@ import { useAPIClient } from '../API/useAPIClient.js'
  * - Transaction data generation for the swap
  * - Error handling for failed API calls
  *
- * Go to {@link https://docs.sequence.xyz/sdk/web/hooks/useGetSwapQuote} for more detailed documentation.
+ * Go to {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetSwapQuote} for more detailed documentation.
  *
  * @param getSwapQuoteArgs - Configuration object for the swap quote query:
  * - params: The parameters for the swap quote query
@@ -69,7 +69,7 @@ import { useAPIClient } from '../API/useAPIClient.js'
  *       toTokenAddress: '0x789...',
  *       fromTokenAmount: '1000000000000000000', // 1 token in base units
  *       includeApprove: true,
- *       slippageBps: 100,
+ *       slippageBps: 150,
  *       chainId: 1
  *     }
  *   })
@@ -88,7 +88,7 @@ import { useAPIClient } from '../API/useAPIClient.js'
  * }
  * ```
  */
-export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteArgs, options?: HooksOptions) => {
+export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteRequest, options?: HooksOptions) => {
   const apiClient = useAPIClient()
 
   return useQuery({

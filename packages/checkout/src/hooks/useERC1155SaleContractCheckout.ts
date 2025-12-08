@@ -1,8 +1,8 @@
-import { useFindVersion } from '@0xsequence/hooks'
+import { useDetectContractVersion } from '@0xsequence/hooks'
 import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { encodeFunctionData, keccak256, sha256, toHex, zeroAddress, type Abi, type Hex } from 'viem'
-import { useBytecode, useReadContract, useReadContracts } from 'wagmi'
+import { encodeFunctionData, toHex, zeroAddress, type Hex } from 'viem'
+import { useReadContract, useReadContracts } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../constants/abi.js'
 import type { SelectPaymentSettings } from '../contexts/SelectPaymentModal.js'
@@ -77,7 +77,7 @@ export const getERC1155SaleContractConfig = ({
  * - Generating the proper transaction data
  * - Opening and managing the checkout modal
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useERC1155SaleContractCheckout} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/checkout-sdk/hooks/useERC1155SaleContractCheckout} for more detailed documentation.
  *
  * @param {object} params - Configuration options for the ERC-1155 sale contract checkout
  * @param {number} params.chain - Chain ID where the sale contract is deployed
@@ -162,9 +162,16 @@ export const useERC1155SaleContractCheckout = ({
   const error = isErrorCheckoutOptions || isErrorSaleConfig
 
   const openCheckoutModal = () => {
-    if (isLoading || error) {
-      console.error('Error loading checkout options or sale config', { isLoading, error })
-      return
+    if (isLoading) {
+      throw new Error('Checkout options are still loading. Please wait and try again.')
+    }
+    if (error) {
+      throw new Error(
+        'Failed to load checkout options or sale configuration. Please check your network connection and try again.',
+        {
+          cause: error
+        }
+      )
     }
 
     openSelectPaymentModal(
@@ -229,31 +236,17 @@ export const useSaleContractConfig = ({
   tokenIds
 }: UseSaleContractConfigArgs): UseSaleContractConfigReturn => {
   const {
-    data: bytecode,
-    isLoading: isLoadingBytecode,
-    isError: isErrorBytecode
-  } = useBytecode({
-    address: contractAddress as Hex,
-    chainId
-  })
-
-  const {
     data: versionData,
     isLoading: isLoadingVersion,
     isError: isErrorVersion
-  } = useFindVersion(
-    { uid: 'erc-1155-sale', hash: bytecode ? sha256(bytecode) : '' },
-    {
-      disabled: !bytecode
-    }
-  )
+  } = useDetectContractVersion({ contractAddress, chainId })
 
   const getAbi = () => {
     if (isErrorVersion) {
       return ERC_1155_SALE_CONTRACT
     }
 
-    const versionAbi = versionData?.itemVersion?.sourceData?.abi
+    const versionAbi = versionData?.version?.sourceData?.abi
     if (!versionAbi) {
       return ERC_1155_SALE_CONTRACT
     }
@@ -328,13 +321,9 @@ export const useSaleContractConfig = ({
   })
 
   const isLoadingERC1155 =
-    isLoadingPaymentTokenERC1155 ||
-    isLoadingGlobalSaleDetailsERC1155 ||
-    isLoadingTokenSaleDetailsERC1155 ||
-    isLoadingVersion ||
-    isLoadingBytecode
-  const isErrorERC1155 =
-    isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155 || isErrorBytecode
+    isLoadingPaymentTokenERC1155 || isLoadingGlobalSaleDetailsERC1155 || isLoadingTokenSaleDetailsERC1155 || isLoadingVersion
+
+  const isErrorERC1155 = isErrorPaymentTokenERC1155 || isErrorGlobalSaleDetailsERC1155 || isErrorTokenSaleDetailsERC1155
 
   if (isLoadingERC1155 || isErrorERC1155) {
     return {
@@ -347,7 +336,7 @@ export const useSaleContractConfig = ({
   const getSaleConfigs = (): SaleConfig[] => {
     let saleInfos: SaleConfig[] = []
 
-    if (isLoadingERC1155 || isErrorERC1155 || isLoadingVersion || isLoadingBytecode) {
+    if (isLoadingERC1155 || isErrorERC1155 || isLoadingVersion) {
       return saleInfos
     }
 

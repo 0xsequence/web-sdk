@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi'
 import type { CheckoutSettings } from '../../../../contexts/CheckoutModal.js'
 import { useCheckoutModal, useSelectPaymentModal } from '../../../../hooks/index.js'
 
-type BasePaymentProviderOptions = 'sardine' | 'transak'
+type BasePaymentProviderOptions = 'transak'
 
 interface PayWithCreditCardTabProps {
   skipOnCloseCallback: () => void
@@ -22,13 +22,12 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
     txData,
     collectibles,
     collectionAddress,
-    sardineConfig,
     onSuccess = () => {},
     onError = () => {},
     onClose = () => {},
     creditCardProviders = [],
-    transakConfig,
-    supplementaryAnalyticsInfo = {}
+    approvedSpenderAddress,
+    ...rest
   } = selectPaymentSettings!
 
   const { address: userAddress } = useAccount()
@@ -52,8 +51,8 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
           onClickCustomProvider()
         }
         return
-      case 'sardine':
       case 'transak':
+      case 'forte':
         onPurchase()
         return
       default:
@@ -77,14 +76,13 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
 
     const checkoutSettings: CheckoutSettings = {
       creditCardCheckout: {
-        onSuccess: (txHash: string) => {
+        onSuccess: (txHash?: string) => {
           clearCachedBalances()
           onSuccess(txHash)
         },
         onError,
         onClose,
         chainId,
-        recipientAddress: userAddress,
         contractAddress: targetContractAddress,
         currencyQuantity: price,
         currencySymbol: currencyInfoData.symbol,
@@ -96,9 +94,9 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
         nftDecimals: collectible.decimals === undefined ? undefined : String(collectible.decimals),
         provider: selectedPaymentProvider as BasePaymentProviderOptions,
         calldata: txData,
-        transakConfig,
-        approvedSpenderAddress: sardineConfig?.approvedSpenderAddress || targetContractAddress,
-        supplementaryAnalyticsInfo
+        onSuccessChecker: selectPaymentSettings?.onSuccessChecker,
+        approvedSpenderAddress,
+        ...rest
       }
     }
 
@@ -117,8 +115,6 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
 
   const getProviderName = () => {
     switch (selectedPaymentProvider) {
-      case 'sardine':
-        return 'Sardine'
       case 'transak':
         return 'Transak'
       case 'forte':

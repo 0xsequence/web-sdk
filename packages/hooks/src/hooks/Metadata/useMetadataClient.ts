@@ -18,7 +18,7 @@ import { useConfig } from '../useConfig.js'
  * - {@link useGetContractInfo} for fetching contract information
  * - {@link useGetMultipleContractsInfo} for batch fetching contract information
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useMetadataClient} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useMetadataClient} for more detailed documentation.
  *
  * @returns A configured instance of SequenceMetadata client
  *

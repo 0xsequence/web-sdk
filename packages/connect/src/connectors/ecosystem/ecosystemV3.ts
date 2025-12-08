@@ -14,17 +14,8 @@ export type EcosystemWalletDefinition = Pick<
 export type EcosystemV3Options = Omit<BaseSequenceV3ConnectorOptions, 'loginType'> & EcosystemWalletDefinition
 
 export const ecosystemV3 = (options: EcosystemV3Options): Wallet => {
-  const {
-    id,
-    name,
-    ctaText,
-    logoDark,
-    logoLight,
-    monochromeLogoDark,
-    monochromeLogoLight,
-    loginType,
-    ...connectorOptions
-  } = options
+  const { id, name, ctaText, logoDark, logoLight, monochromeLogoDark, monochromeLogoLight, loginType, ...connectorOptions } =
+    options
 
   const walletId = id || createEcosystemWalletId(name)
 
@@ -51,6 +42,10 @@ export const ecosystemV3 = (options: EcosystemV3Options): Wallet => {
 }
 
 const createEcosystemWalletId = (value: string) => {
-  const normalized = value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
   return normalized ? `ecosystem-v3-${normalized}` : 'ecosystem-v3'
 }

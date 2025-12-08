@@ -539,7 +539,7 @@ export class SequenceV3Provider implements EIP1193Provider {
               gasLimit: tx.gas
             }
 
-            this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch(err => {
+            this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch((err: unknown) => {
               unsubscribe()
               reject(err)
             })

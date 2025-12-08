@@ -212,7 +212,7 @@ export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
 }
 
 export const EpicWaasConnectButton = (props: ConnectButtonProps) => {
-  const { connector, onConnect } = props
+  const { connector } = props
 
   const { data: authUrl } = useStorageItem(LocalStorageKey.WaasEpicAuthUrl)
 

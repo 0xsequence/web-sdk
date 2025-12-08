@@ -1,9 +1,4 @@
-import {
-  CollectibleTileImage,
-  formatDisplay,
-  TRANSACTION_CONFIRMATIONS_DEFAULT,
-  waitForTransactionReceipt
-} from '@0xsequence/connect'
+import { CollectibleTileImage, formatDisplay, waitForTransactionReceipt } from '@0xsequence/connect'
 import {
   ArrowDownIcon,
   Button,
@@ -17,7 +12,11 @@ import {
   truncateAddress
 } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetTokenMetadata, useIndexerClient } from '@0xsequence/hooks'
-import { TransactionStatus as TransactionStatusSequence } from '@0xsequence/indexer'
+import {
+  TransactionStatus as TransactionStatusSequence,
+  type SequenceIndexer,
+  type TransactionReceipt
+} from '@0xsequence/indexer'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -32,6 +31,36 @@ export type TxStatus = 'pending' | 'success' | 'error'
 interface TransactionStatusHeaderProps {
   status: TxStatus
   noItemsToDisplay: boolean
+}
+
+const defaultOnSuccessChecker = async (receipt: TransactionReceipt, indexerClient?: SequenceIndexer) => {
+  if (receipt.txnStatus === TransactionStatusSequence.FAILED) {
+    throw new Error('Transaction failed')
+  }
+
+  if (!indexerClient) {
+    return
+  }
+
+  const indexerSyncPromise = new Promise((resolve, reject) => {
+    const checkForIndexerSync = async () => {
+      try {
+        const status = await indexerClient.runtimeStatus()
+        const isConfirmed = status.status.checks.lastBlockNumWithState >= receipt.blockNumber
+
+        if (!isConfirmed) {
+          setTimeout(checkForIndexerSync, 1000)
+        } else {
+          resolve(undefined)
+        }
+      } catch (e) {
+        reject(e)
+      }
+    }
+    checkForIndexerSync()
+  })
+
+  await indexerSyncPromise
 }
 
 export const TransactionStatusHeader = ({ status, noItemsToDisplay }: TransactionStatusHeaderProps) => {
@@ -63,7 +92,7 @@ export const TransactionStatusHeader = ({ status, noItemsToDisplay }: Transactio
 
   return (
     <div className="fixed" style={{ top: '18px' }}>
-      <Text className="text-xl" color="white" variant="normal" fontWeight="bold">
+      <Text className="text-xl web-sdk-tx-status-header-text" color="white" variant="normal" fontWeight="bold">
         {headerText}
       </Text>
     </div>
@@ -78,7 +107,7 @@ export const TransactionStatus = () => {
     items,
     txHash,
     currencyAddress,
-    blockConfirmations = TRANSACTION_CONFIRMATIONS_DEFAULT,
+    onSuccessChecker = defaultOnSuccessChecker,
     onSuccess,
     onError,
     onClose = () => {},
@@ -109,16 +138,13 @@ export const TransactionStatus = () => {
 
   const waitForTransaction = async (publicClient: PublicClient, txnHash: string) => {
     try {
-      const { txnStatus } = await waitForTransactionReceipt({
+      const receipt = await waitForTransactionReceipt({
         indexerClient,
         txnHash: txnHash as Hex,
-        publicClient,
-        confirmations: blockConfirmations
+        publicClient
       })
 
-      if (txnStatus === TransactionStatusSequence.FAILED) {
-        throw new Error('Transaction failed')
-      }
+      await onSuccessChecker(receipt, indexerClient)
 
       setStatus('success')
       onSuccess?.(txnHash)
@@ -198,10 +224,13 @@ export const TransactionStatus = () => {
       case 'success':
         return (
           <div className="flex gap-2 justify-center items-center">
-            <div className="w-6 h-6 rounded-full bg-positive">
-              <CheckmarkIcon className="text-white relative" style={{ top: '3px', right: '-1px' }} />
+            <div className="w-6 h-6 flex rounded-full bg-positive web-sdk-tx-status-icon">
+              <CheckmarkIcon
+                className="text-white relative web-sdk-tx-status-checkmark-icon"
+                style={{ top: '3px', right: '-1px' }}
+              />
             </div>
-            <Text variant="normal" color="muted">
+            <Text className="web-sdk-tx-status-indicator" variant="normal" color="muted">
               Transaction complete
             </Text>
           </div>
@@ -209,10 +238,10 @@ export const TransactionStatus = () => {
       case 'error':
         return (
           <div className="flex gap-2 justify-center items-center">
-            <div className="w-6 h-6 rounded-full bg-negative">
+            <div className="w-6 h-6 rounded-full bg-negative web-sdk-tx-status-icon">
               <CloseIcon className="text-white relative" style={{ top: '2px', right: '-2px' }} />
             </div>
-            <Text variant="normal" color="muted">
+            <Text className="web-sdk-tx-status-indicator" variant="normal" color="muted">
               Transaction failed
             </Text>
           </div>
@@ -221,8 +250,8 @@ export const TransactionStatus = () => {
       default:
         return (
           <div className="flex gap-2 justify-center items-center">
-            <Spinner />
-            <Text variant="normal" color="muted">
+            <Spinner className="web-sdk-tx-status-icon" />
+            <Text className="web-sdk-tx-status-indicator" variant="normal" color="muted">
               Processing transaction
             </Text>
           </div>
@@ -237,7 +266,9 @@ export const TransactionStatus = () => {
           const collectibleQuantity = Number(formatUnits(BigInt(item.quantity), item?.decimals || 0))
           const tokenMetadata = tokenMetadatas?.find(tokenMetadata => tokenMetadata.tokenId === item.tokenId)
 
-          const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0))
+          const price = formatDisplay(formatUnits(BigInt(item.price), dataCurrencyInfo?.decimals || 0), {
+            disableScientificNotation: true
+          })
 
           return (
             <div className="flex flex-row items-center justify-between" key={item.tokenId}>
@@ -304,7 +335,7 @@ export const TransactionStatus = () => {
 
   const SuccessActionButtons = () => {
     return (
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 web-sdk-tx-status-success-buttons">
         {successActionButtons.map(button => {
           const action = () => {
             closeTransactionStatusModal()
@@ -327,7 +358,7 @@ export const TransactionStatus = () => {
         ) : (
           <>
             <div className="flex w-full justify-start">
-              <Text variant="normal" color="primary">
+              <Text className="web-sdk-tx-status-information-text" variant="normal" color="primary">
                 {getInformationText()}
               </Text>
             </div>
@@ -339,7 +370,12 @@ export const TransactionStatus = () => {
             )}
             <div className="flex w-full justify-between items-center">
               <StatusIndicator />
-              <Text className="no-underline cursor-pointer" variant="normal" style={{ color: '#8E7EFF' }} asChild>
+              <Text
+                className="no-underline cursor-pointer web-sdk-tx-status-txhash"
+                variant="normal"
+                style={{ color: '#8E7EFF' }}
+                asChild
+              >
                 <a href={blockExplorerUrl} target="_blank" rel="noreferrer">
                   {truncateAddress(txHash, 4, 4)}
                 </a>

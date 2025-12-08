@@ -1,7 +1,7 @@
 import type { Wallet } from '../../types.js'
 import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector.js'
 
-import { getMonochromeEpicLogo, EpicLogo } from './EpicLogo.js'
+import { EpicLogo, getMonochromeEpicLogo } from './EpicLogo.js'
 
 export type EpicWaasOptions = Omit<BaseSequenceWaasConnectorOptions, 'loginType'>
 

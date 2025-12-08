@@ -44,7 +44,7 @@ const getTokenMetadata = async (metadataClient: SequenceMetadata, args: GetToken
  * Optimized for batch fetching with automatic chunking of token IDs to respect
  * rate limits (50 tokens per request).
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetTokenMetadata} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetTokenMetadata} for more detailed documentation.
  *
  * @param getTokenMetadataArgs - Arguments for fetching token metadata
  * @param getTokenMetadataArgs.chainID - Chain ID as string (e.g., "1" for Ethereum mainnet)

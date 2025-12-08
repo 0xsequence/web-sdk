@@ -48,7 +48,7 @@ const getTokenBalancesByContract = async (
  *   - `decimals`: Number of decimals (for ERC20)
  *   - `logoURI`: URL of the token logo
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetTokenBalancesByContract} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetTokenBalancesByContract} for more detailed documentation.
  *
  * @example
  * ```tsx

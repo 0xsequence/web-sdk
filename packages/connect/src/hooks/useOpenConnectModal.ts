@@ -18,7 +18,7 @@ type UseOpenConnectModalReturnType = {
  * This hook provides a method to open and close the connect modal, and access its current open state.
  * The Connect modal provides various wallet connection options including Sequence wallet and external wallets.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useOpenConnectModal} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/ecosystem/hooks/useOpenConnectModal} for more detailed documentation.
  *
  * @returns An object containing function to control the Connect modal and its state {@link UseOpenConnectModalReturnType}
  *

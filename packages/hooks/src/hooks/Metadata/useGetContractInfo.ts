@@ -15,7 +15,7 @@ import { useMetadataClient } from './useMetadataClient.js'
  * For native tokens (like ETH, POL), it enriches the response with network-specific
  * information like the native token symbol and network logo.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetContractInfo} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetContractInfo} for more detailed documentation.
  *
  * @param getContractInfoArgs - Arguments for fetching contract info
  * @param getContractInfoArgs.chainID - Chain ID as string (e.g., "1" for Ethereum mainnet)

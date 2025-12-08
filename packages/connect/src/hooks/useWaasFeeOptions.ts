@@ -46,9 +46,11 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
   const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>(
     sharedPendingConfirmation
   )
-  const [confirmPromise, setConfirmPromise] = useState<Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | null>(
-    null
-  )
+  const [confirmPromise, setConfirmPromise] = useState<Deferred<{
+    id: string
+    feeTokenAddress?: string | null
+    confirmed: boolean
+  }> | null>(null)
 
   const connections = useConnections()
   const waasConnection = connections.find(c => c.connector.id.includes('waas'))

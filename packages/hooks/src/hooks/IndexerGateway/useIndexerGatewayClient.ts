@@ -10,7 +10,7 @@ import { useConfig } from '../useConfig.js'
  *
  * @returns A SequenceIndexerGateway instance
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useIndexerGatewayClient} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useIndexerGatewayClient} for more detailed documentation.
  *
  * @example
  * ```tsx

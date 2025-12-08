@@ -9,11 +9,10 @@ import { useConfig } from '../useConfig.js'
  *
  * This hook uses React Query to fetch and cache the version of a contract.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useFindVersion} for more detailed documentation.
  *
  * @param args - The arguments for the hook:
- *   - uid: The UID of the contract
- *   - hash: The hash of the contract
+ *   - address: The address of the contract
+ *   - chainId: The chain id of the contract
  *
  * @param options - Optional configuration options:
  *   - retry: Whether to retry failed requests (defaults to false)
@@ -28,27 +27,27 @@ import { useConfig } from '../useConfig.js'
  *
  */
 
-interface FindVersionArgs {
-  uid: string
-  hash: string
+interface DetectContractVersionArgs {
+  contractAddress: string
+  chainId: number
 }
 
-export const useFindVersion = (args: FindVersionArgs, options?: HooksOptions) => {
+export const useDetectContractVersion = (args: DetectContractVersionArgs, options?: HooksOptions) => {
   const { projectAccessKey, env } = useConfig()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useFindVersion, args.uid, args.hash, options],
+    queryKey: [QUERY_KEYS.useDetectContractVersion, args.contractAddress, args.chainId, options],
     queryFn: async () => {
-      const res = await fetch(`${env.builderUrl}/rpc/ContractLibrary/FindVersion`, {
+      const res = await fetch(`${env.builderUrl}/rpc/ContractLibrary/DetectContractVersion`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Access-Key': projectAccessKey },
-        body: JSON.stringify({ uid: args.uid, hash: args.hash })
+        body: JSON.stringify({ address: args.contractAddress, chainId: args.chainId })
       })
       const data = await res.json()
       return data
     },
     retry: options?.retry ?? false,
     staleTime: time.oneMinute * 60,
-    enabled: !!args.uid && !!args.hash && !options?.disabled
+    enabled: !!args.contractAddress && !!args.chainId && !options?.disabled
   })
 }

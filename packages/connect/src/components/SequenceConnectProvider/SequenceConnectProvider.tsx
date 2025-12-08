@@ -1,15 +1,14 @@
 'use client'
 
-import { sequence } from '0xsequence'
 import { Button, Card, Modal, ModalPrimitive, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
-import { SequenceClient } from '@0xsequence/provider'
+import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, useState } from 'react'
 import { hexToString, type Hex } from 'viem'
-import { useAccount, useConnections, type Connector } from 'wagmi'
+import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants/index.js'
 import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
@@ -21,7 +20,13 @@ import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
-import { type ConnectConfig, type DisplayedAsset, type EthAuthSettings, type ModalPosition } from '../../types.js'
+import {
+  type ConnectConfig,
+  type DisplayedAsset,
+  type EthAuthSettings,
+  type ExtendedConnector,
+  type ModalPosition
+} from '../../types.js'
 import { isJSON } from '../../utils/helpers.js'
 import { getModalPositionCss } from '../../utils/styling.js'
 import { Connect } from '../Connect/Connect.js'
@@ -56,10 +61,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     waasConfigKey = ''
   } = config
 
-  // Google OAuth is required for the WaaS Google connector. Prefer the new config.google.clientId,
-  // but keep backward compatibility with the deprecated googleClientId flag.
-  const googleClientId = (config as any)?.google?.clientId || (config as any)?.googleClientId
-
   const defaultAppName = signIn.projectName || 'app'
 
   const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth
@@ -70,6 +71,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
+  const wagmiConfig = useConfig()
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
   const [isWalletWidgetOpen, setIsWalletWidgetOpen] = useState<boolean>(false)
@@ -89,25 +91,40 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     }
   }, [])
 
-  const setupAnalytics = (projectAccessKey: string) => {
-    const s = sequence.initWallet(projectAccessKey)
-    const sequenceAnalytics = s.client.analytics
+  const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(
+    waasConnector,
+    !isWalletWidgetOpen
+  )
 
-    if (sequenceAnalytics) {
-      type TrackArgs = Parameters<typeof sequenceAnalytics.track>
-      const originalTrack = sequenceAnalytics.track.bind(sequenceAnalytics)
+  const googleWaasConnector = wagmiConfig.connectors.find(
+    c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
+  ) as ExtendedConnector | undefined
 
-      sequenceAnalytics.track = (...args: TrackArgs) => {
-        const [event] = args
-        if (event && typeof event === 'object' && 'props' in event) {
-          event.props = {
-            ...event.props,
-            sdkType: 'sequence web sdk',
-            version: WEB_SDK_VERSION
-          }
+  // Google OAuth is required for the WaaS Google connector. Prefer the connector's clientId,
+  // then fall back to the new config.google.clientId, and finally the deprecated googleClientId flag.
+  const googleClientId: string =
+    (googleWaasConnector as any)?.params?.googleClientId ||
+    (config as any)?.google?.clientId ||
+    (config as any)?.googleClientId ||
+    ''
+
+  const getAnalyticsClient = (projectAccessKey: string) => {
+    // @ts-ignore-next-line
+    const sequenceAnalytics = setupAnalytics(projectAccessKey) as Analytics
+
+    type TrackArgs = Parameters<Analytics['track']>
+    const originalTrack = sequenceAnalytics.track.bind(sequenceAnalytics)
+
+    sequenceAnalytics.track = (...args: TrackArgs) => {
+      const [event] = args
+      if (event && typeof event === 'object' && 'props' in event) {
+        event.props = {
+          ...event.props,
+          sdkType: 'sequence web sdk',
+          version: WEB_SDK_VERSION
         }
-        return originalTrack?.(...args)
       }
+      return originalTrack?.(...args)
     }
     setAnalytics(sequenceAnalytics)
   }
@@ -125,7 +142,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
 
   useEffect(() => {
     if (!disableAnalytics) {
-      setupAnalytics(config.projectAccessKey)
+      getAnalyticsClient(config.projectAccessKey)
     }
   }, [])
 
@@ -162,14 +179,11 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   }, [theme, ethAuth])
 
   useEffect(() => {
-    setDisplayedAssets(displayedAssets)
+    setDisplayedAssets(displayedAssetsSetting)
   }, [displayedAssetsSetting])
 
   const { isEmailConflictOpen, emailConflictInfo, toggleEmailConflictModal } = useEmailConflict()
-  const [pendingRequestConfirmation, confirmPendingRequest, rejectPendingRequest] = useWaasConfirmationHandler(
-    waasConnector,
-    !isWalletWidgetOpen
-  )
+
   const [isSocialLinkOpen, setIsSocialLinkOpen] = useState<boolean>(false)
 
   return (

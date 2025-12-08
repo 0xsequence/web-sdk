@@ -4,8 +4,10 @@ export { SequenceConnectInline } from './components/SequenceConnectInline/index.
 // Provider
 export { SequenceConnectProvider } from './components/SequenceConnectProvider/index.js'
 export { EpicAuthProvider } from './components/EpicAuthProvider/index.js'
-export { SequenceConnectPreviewProvider } from './components/SequenceConnectPreviewProvider/index.js'
+
 export { SequenceConnectInlineProvider } from './components/SequenceConnectInlineProvider/index.js'
+// Preview
+export { SequenceConnectPreview, SequenceConnectPreviewProvider } from './components/SequenceConnectPreview/index.js'
 
 // Types
 export type {
@@ -63,7 +65,7 @@ export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/t
 export { getModalPositionCss } from './utils/styling.js'
 export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
-export { sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
+export { isTxRejected, sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
 export { createContractPermission, createContractPermissions, createExplicitSessionConfig } from './utils/session/index.js'
 
 // Contexts
@@ -83,11 +85,13 @@ export { guestWaas, type GuestWaasOptions } from './connectors/guest/guestWaas.j
 export { mock } from './connectors/mock/mock.js'
 export { XWaas, type XWaasOptions } from './connectors/X/XWaas.js'
 export { walletConnect } from './connectors/walletConnect/walletConnect.js'
+export { metaMask } from './connectors/metaMask/metaMask.js'
+
 export {
-  sequenceWaasWallet,
   sequenceV3Wallet,
-  type BaseSequenceWaasConnectorOptions,
-  type BaseSequenceV3ConnectorOptions
+  sequenceWaasWallet,
+  type BaseSequenceV3ConnectorOptions,
+  type BaseSequenceWaasConnectorOptions
 } from './connectors/wagmiConnectors/index.js'
 
 // Hooks

@@ -15,7 +15,7 @@ const swapQuoteArgs = {
     toTokenAmount: '10000',
     chainId: 137,
     includeApprove: true,
-    slippageBps: 100
+    slippageBps: 150
   }
 }
 

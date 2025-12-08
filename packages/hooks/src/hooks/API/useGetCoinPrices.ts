@@ -30,7 +30,7 @@ const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
  * This hook uses React Query to fetch and cache token prices from the Sequence API.
  * Prices are automatically refreshed every minute to ensure they stay current.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetCoinPrices} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetCoinPrices} for more detailed documentation.
  *
  * @param tokens - Array of tokens to get prices for. Each token must include:
  *   - chainId: The chain ID where the token exists

@@ -1,6 +1,7 @@
 'use client'
 
 import type { Theme } from '@0xsequence/design-system'
+import { type SequenceIndexer, type TransactionReceipt } from '@0xsequence/indexer'
 
 import { createGenericContext } from './genericContext.js'
 import type { ActionButtons, SupplementaryAnalyticsInfo } from './SelectPaymentModal.js'
@@ -18,10 +19,35 @@ interface OrderSummaryItem {
 }
 
 export interface TransakConfig {
-  apiKey?: string
-  contractId: string
   callDataOverride?: string
 }
+
+export type ForteProtocolType = 'seaport' | 'mint' | 'custom_evm_call'
+
+export interface StructuredCalldata {
+  functionName: string
+  arguments: any[]
+}
+
+export interface ForteMintConfig {
+  protocol: 'mint'
+  calldata: string | StructuredCalldata
+  sellerAddress: string
+}
+
+export interface ForteCustomEvmCallConfig {
+  protocol: 'custom_evm_call'
+  calldata: string | StructuredCalldata
+  sellerAddress: string
+}
+
+export interface ForteEventsCallbacks {
+  onFortePaymentsBuyNftSuccess?: (e: Event) => void
+  onFortePaymentsBuyNftMintSuccess?: (e: Event) => void
+  onFortePaymentsWidgetClosed?: (e: Event) => void
+}
+
+export type ForteConfig = (ForteMintConfig | ForteCustomEvmCallConfig) & ForteEventsCallbacks
 
 export interface CreditCardCheckout {
   chainId: number
@@ -36,14 +62,16 @@ export interface CreditCardCheckout {
   nftQuantity: string
   nftDecimals?: string
   calldata: string
-  provider?: 'sardine' | 'transak'
+  provider?: 'transak' | 'forte'
   transakConfig?: TransakConfig
-  onSuccess?: (transactionHash: string, settings: CreditCardCheckout) => void
+  forteConfig?: ForteConfig
+  onSuccess?: (transactionHash?: string, settings?: CreditCardCheckout) => void
   onError?: (error: Error, settings: CreditCardCheckout) => void
   onClose?: () => void
   approvedSpenderAddress?: string
   supplementaryAnalyticsInfo?: SupplementaryAnalyticsInfo
   successActionButtons?: ActionButtons[]
+  onSuccessChecker?: (receipt: TransactionReceipt, indexerClient?: SequenceIndexer) => Promise<void>
 }
 
 export interface CheckoutSettings {

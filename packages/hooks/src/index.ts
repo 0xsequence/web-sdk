@@ -1,5 +1,5 @@
 // Constants
-export { QUERY_KEYS } from './constants.js'
+export { DEFAULT_SLIPPAGE_BPS, QUERY_KEYS } from './constants.js'
 
 // Contexts
 export {
@@ -18,7 +18,7 @@ export { useGetExchangeRate } from './hooks/API/useGetExchangeRate.js'
 export { useGetWaasStatus } from './hooks/API/useGetWaasStatus.js'
 
 // Builder
-export { useFindVersion } from './hooks/Builder/useFindVersion.js'
+export { useDetectContractVersion } from './hooks/Builder/useDetectContractVersion.js'
 
 // Indexer
 export { useIndexerClient, useIndexerClients } from './hooks/Indexer/useIndexerClient.js'

@@ -1,5 +1,11 @@
 import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/connect'
-import { useGetSwapQuote, useGetSwapRoutes, useGetTokenBalancesSummary, useIndexerClient } from '@0xsequence/hooks'
+import {
+  DEFAULT_SLIPPAGE_BPS,
+  useGetSwapQuote,
+  useGetSwapRoutes,
+  useGetTokenBalancesSummary,
+  useIndexerClient
+} from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
@@ -142,7 +148,7 @@ export const useCryptoPayment = ({
         fromTokenAmount: '0',
         chainId: chainId,
         includeApprove: true,
-        slippageBps: slippageBps || 100
+        slippageBps: slippageBps || DEFAULT_SLIPPAGE_BPS
       }
     },
     {
@@ -232,7 +238,8 @@ export const useCryptoPayment = ({
           }
         ]
 
-        const txHash = await sendTransactions({
+        let txHash: string | undefined
+        const txs = await sendTransactions({
           chainId,
           senderAddress: userAddress,
           publicClient,
@@ -244,7 +251,25 @@ export const useCryptoPayment = ({
           waitConfirmationForLastTransaction: false
         })
 
-        onSuccess?.(txHash)
+        if (txs.length === 0) {
+          throw new Error('No transactions to send')
+        }
+
+        for (const [index, tx] of txs.entries()) {
+          const currentTxHash = await tx()
+
+          const isLastTransaction = index === txs.length - 1
+
+          if (isLastTransaction) {
+            onSuccess?.(currentTxHash)
+            txHash = currentTxHash
+          }
+        }
+
+        if (!txHash) {
+          throw new Error('Transaction hash is not available')
+        }
+
         return txHash
       } else {
         const swapOption = swapRoutes
@@ -316,7 +341,8 @@ export const useCryptoPayment = ({
           }
         ]
 
-        const txHash = await sendTransactions({
+        let txHash: string | undefined
+        const txs = await sendTransactions({
           chainId,
           senderAddress: userAddress,
           publicClient,
@@ -328,7 +354,25 @@ export const useCryptoPayment = ({
           waitConfirmationForLastTransaction: false
         })
 
-        onSuccess?.(txHash)
+        if (txs.length === 0) {
+          throw new Error('No transactions to send')
+        }
+
+        for (const [index, tx] of txs.entries()) {
+          const currentTxHash = await tx()
+
+          const isLastTransaction = index === txs.length - 1
+
+          if (isLastTransaction) {
+            onSuccess?.(currentTxHash)
+            txHash = currentTxHash
+          }
+        }
+
+        if (!txHash) {
+          throw new Error('Transaction hash is not available')
+        }
+
         return txHash
       }
     } catch (error) {

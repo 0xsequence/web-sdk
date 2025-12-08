@@ -1,3 +1,5 @@
+import { type SequenceIndexer, type TransactionReceipt } from '@0xsequence/indexer'
+
 import { createGenericContext } from './genericContext.js'
 import type { ActionButtons } from './SelectPaymentModal.js'
 
@@ -19,6 +21,7 @@ export interface TransactionStatusSettings {
   onClose?: () => void
   txHash: string
   successActionButtons?: ActionButtons[]
+  onSuccessChecker?: (receipt: TransactionReceipt, indexerClient?: SequenceIndexer) => Promise<void>
 }
 
 type TransactionStatusContext = {

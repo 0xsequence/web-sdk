@@ -568,11 +568,7 @@ class SimpleEmitter {
 }
 
 export interface WaasRequestConfirmationHandler {
-  confirmSignTransactionRequest(
-    id: string,
-    txs: Transaction[],
-    chainId: number
-  ): Promise<{ id: string; confirmed: boolean }>
+  confirmSignTransactionRequest(id: string, txs: Transaction[], chainId: number): Promise<{ id: string; confirmed: boolean }>
   confirmSignMessageRequest(id: string, message: string, chainId: number): Promise<{ id: string; confirmed: boolean }>
 }
 

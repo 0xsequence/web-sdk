@@ -73,7 +73,7 @@ const getTransactionHistorySummary = async (
  *   - metaTxnID: Optional meta transaction ID
  * - Other standard React Query properties (isLoading, isError, etc.)
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetTransactionHistorySummary} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetTransactionHistorySummary} for more detailed documentation.
  *
  * @example
  * ```tsx

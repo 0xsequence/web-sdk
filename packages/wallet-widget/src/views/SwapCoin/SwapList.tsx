@@ -9,6 +9,7 @@ import {
 } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
+  DEFAULT_SLIPPAGE_BPS,
   useClearCachedBalances,
   useGetContractInfo,
   useGetSwapQuote,
@@ -83,7 +84,7 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         fromTokenAddress: sellCurrencyAddress,
         chainId: chainId,
         includeApprove: true,
-        slippageBps: slippageBps || 100
+        slippageBps: slippageBps || DEFAULT_SLIPPAGE_BPS
       }
     },
     {
@@ -167,7 +168,7 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         await walletClient.switchChain({ id: chainId })
       }
 
-      const txHash = await sendTransactions({
+      const txs = await sendTransactions({
         connector,
         walletClient,
         publicClient,
@@ -176,6 +177,26 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         senderAddress: userAddress,
         transactions: [...getSwapTransactions()]
       })
+
+      if (txs.length === 0) {
+        throw new Error('No transactions to send')
+      }
+
+      let txHash: string | undefined
+
+      for (const [index, tx] of txs.entries()) {
+        const currentTxHash = await tx()
+
+        const isLastTransaction = index === txs.length - 1
+
+        if (isLastTransaction) {
+          txHash = currentTxHash
+        }
+      }
+
+      if (!txHash) {
+        throw new Error('Transaction hash is not available')
+      }
 
       analytics?.track({
         event: 'SEND_TRANSACTION_REQUEST',

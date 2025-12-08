@@ -87,7 +87,7 @@ const getTokenBalancesDetails = async (
  *   - `image`: Token image URL
  *   - `attributes`: Array of token attributes
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useGetTokenBalancesDetails} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetTokenBalancesDetails} for more detailed documentation.
  *
  * @example
  * ```tsx

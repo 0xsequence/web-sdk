@@ -79,27 +79,10 @@ export const CheckoutSelection = () => {
 
   const chainId = settings?.cryptoCheckout?.chainId || settings?.creditCardCheckout?.chainId || 1
 
-  const triggerSardineTransaction = async () => {
-    console.log('trigger sardine transaction')
-
-    if (settings?.creditCardCheckout) {
-      setNavigation({
-        location: 'transaction-pending',
-        params: {
-          creditCardCheckout: settings.creditCardCheckout
-        }
-      })
-    }
-  }
-
   const onClickPayWithCard = () => {
-    if (settings?.creditCardCheckout) {
-      triggerSardineTransaction()
-    } else {
-      setNavigation({
-        location: 'transaction-form'
-      })
-    }
+    setNavigation({
+      location: 'transaction-form'
+    })
   }
 
   const onClickPayWithCrypto = () => {

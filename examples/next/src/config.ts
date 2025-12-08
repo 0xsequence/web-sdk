@@ -8,8 +8,7 @@ import { cookieStorage, createStorage } from 'wagmi'
 
 import { getEmitterContractAddress } from './constants/permissions'
 
-const searchParams =
-  typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
 
 // append ?type=waas|universal to url to switch between wallet types
 

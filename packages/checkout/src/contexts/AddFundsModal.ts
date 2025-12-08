@@ -16,7 +16,9 @@ export interface AddFundsSettings {
   onOrderSuccessful?: (data: any) => void
   onOrderFailed?: (data: any) => void
   provider?: TransactionOnRampProvider
+  transakOnRampKind?: 'default' | 'windowed'
   cryptoAmount?: string
+  windowedOnRampMessage?: string
 }
 
 type AddFundsModalContext = {

@@ -1,6 +1,6 @@
 'use client'
 
-import { type DappClient, type ExplicitSession } from '@0xsequence/dapp-client'
+import { type DappClient, type ExplicitSession, type FeeToken } from '@0xsequence/dapp-client'
 import { useCallback, useState } from 'react'
 import { parseEther, parseUnits, type Address } from 'viem'
 import { useConnections } from 'wagmi'
@@ -127,7 +127,7 @@ export function useExplicitSessions(): UseExplicitSessionsReturnType {
         })
         const { tokens, isFeeRequired, paymentAddress } = await dappClient.getFeeTokens(params.chainId)
         if (tokens && isFeeRequired) {
-          const feeOptionPermissions = tokens.map(token =>
+          const feeOptionPermissions = tokens.map((token: FeeToken) =>
             createContractPermission({
               address: token.contractAddress as Address,
               functionSignature: 'function transfer(address to, uint256 value)',

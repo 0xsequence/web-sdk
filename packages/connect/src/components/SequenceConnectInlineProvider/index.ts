@@ -1,1 +1,1 @@
-export { SequenceConnectInlineProvider } from './SequenceConnectInlineProvider.js'
+export * from './SequenceConnectInlineProvider.js'

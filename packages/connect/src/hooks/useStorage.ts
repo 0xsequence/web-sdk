@@ -11,7 +11,7 @@ import type { StorageItem } from '../types.js'
  * It is commonly used for operations that require access to the storage layer,
  * such as generating authentication proofs.
  *
- * @see {@link https://docs.sequence.xyz/sdk/web/hooks/useStorage} for more detailed documentation.
+ * @see {@link https://docs.sequence.xyz/sdk/web/wallet-sdk/ecosystem/hooks/useStorage} for more detailed documentation.
  *
  * @returns The Storage instance if available, or null if not configured {@link Storage} or null
  *
