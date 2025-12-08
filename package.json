@@ -31,6 +31,10 @@
     "dev:next": "pnpm --filter example-next dev",
     "serve:next": "pnpm --filter example-next start",
     "build:next": "pnpm --filter example-next build",
+    "dev:react-waas": "pnpm --filter example-react-waas dev",
+    "debug:react-waas": "DEBUG=true pnpm dev:react-waas",
+    "serve:react-waas": "pnpm --filter example-react-waas serve",
+    "build:react-waas": "pnpm --filter example-react-waas build",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -53,9 +57,14 @@
     "turbo": "2.0.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.1",
-    "viem": "^2.33.3",
+    "viem": "^2.40.3",
     "wagmi": "2.15.1"
   },
   "resolutions": {},
+  "pnpm": {
+    "overrides": {
+      "viem": "2.40.3"
+    }
+  },
   "packageManager": "pnpm@10.12.1"
 }

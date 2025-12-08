@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useRef, type JSX } from 'react'
 
 import type { ConnectedWallet } from '../../hooks/useWallets.js'
+import type { ExtendedConnector } from '../../types.js'
 
 import { WalletListItem, type WalletListItemProps } from './WalletListItem.js'
 
@@ -11,6 +12,9 @@ interface ConnectedWalletsProps {
   linkedWallets?: LinkedWallet[]
   disconnectWallet: (address: string) => void
   unlinkWallet: (address: string) => void
+  connectWallet?: (connector: ExtendedConnector) => Promise<void>
+  connectors?: ExtendedConnector[]
+  embeddedWalletTitle?: string
 }
 
 const MAX_HEIGHT = 240
@@ -19,7 +23,10 @@ export const ConnectedWallets = ({
   wallets,
   linkedWallets,
   disconnectWallet,
-  unlinkWallet
+  unlinkWallet,
+  connectWallet,
+  connectors,
+  embeddedWalletTitle
 }: ConnectedWalletsProps): JSX.Element | null => {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
@@ -43,18 +50,25 @@ export const ConnectedWallets = ({
     // Get read-only linked wallets that aren't connected
     const readOnlyLinkedWallets = (linkedWallets ?? [])
       .filter(lw => !wallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase()))
-      .map(lw => ({
-        name: lw.walletType || 'Linked Wallet',
-        address: lw.linkedWalletAddress,
-        isEmbedded: false,
-        isActive: false,
-        isLinked: true,
-        isReadOnly: true,
-        onDisconnect: () => {}, // No-op for read-only wallets
-        onUnlink: () => {
-          unlinkWallet(lw.linkedWalletAddress)
+      .map(lw => {
+        const connector = connectors?.find(
+          c => c.name === lw.walletType || c._wallet?.id === lw.walletType || c._wallet?.name === lw.walletType
+        )
+
+        return {
+          name: lw.walletType || 'Linked Wallet',
+          address: lw.linkedWalletAddress,
+          isEmbedded: false,
+          isActive: false,
+          isLinked: true,
+          isReadOnly: true,
+          onReconnect: connector && connectWallet ? () => connectWallet(connector) : undefined,
+          onDisconnect: () => {}, // No-op for read-only wallets
+          onUnlink: () => {
+            unlinkWallet(lw.linkedWalletAddress)
+          }
         }
-      }))
+      })
 
     // Transform ConnectedWallet to WalletListItemProps
     const connectedWallets = wallets.map(wallet => ({
@@ -65,7 +79,8 @@ export const ConnectedWallets = ({
       isLinked: linkedWallets?.some(lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()) ?? false,
       isReadOnly: false,
       onDisconnect: () => disconnectWallet(wallet.address),
-      onUnlink: () => {} // No-op for connected wallets
+      onUnlink: () => {}, // No-op for connected wallets
+      embeddedWalletTitle
     }))
 
     // Sort wallets: embedded first, then by name and address
@@ -89,7 +104,7 @@ export const ConnectedWallets = ({
 
     // Combine all wallets
     return [...sortedConnectedWallets, ...sortedReadOnlyWallets]
-  }, [wallets, linkedWallets, disconnectWallet])
+  }, [wallets, linkedWallets, disconnectWallet, connectors, connectWallet, embeddedWalletTitle])
 
   useEffect(() => {
     const container = scrollContainerRef.current

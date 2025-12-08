@@ -30,6 +30,8 @@ export type Wallet = WalletProperties & {
   createConnector: (projectAccessKey: string) => CreateConnectorFn
 }
 
+export type WalletType = 'waas' | 'v3'
+
 export interface WalletField {
   _wallet: WalletProperties
 }
@@ -65,11 +67,13 @@ export type ModalPosition =
 
 export interface ConnectConfig {
   projectAccessKey: string
+  waasConfigKey?: string
   disableAnalytics?: boolean
   defaultTheme?: Theme
   position?: ModalPosition
   signIn?: {
     logoUrl?: string
+    showWalletAuthOptionsFirst?: boolean
     descriptiveSocials?: boolean
     disableTooltipForDescriptiveSocials?: boolean
     projectName?: string
@@ -83,9 +87,28 @@ export interface ConnectConfig {
   hideSocialConnectOptions?: boolean
   hideConnectedWallets?: boolean
   customCSS?: string
+  embeddedWalletTitle?: string
+  renderInline?: boolean
+  onConnectSuccess?: (address: string) => void
 }
 
 export type StorageItem = {
   [LocalStorageKey.EthAuthProof]: ETHAuthProof
   [LocalStorageKey.EthAuthSettings]: EthAuthSettings
+  [LocalStorageKey.WaasEmailIdToken]: string
+  [LocalStorageKey.WaasGoogleClientID]: string
+  [LocalStorageKey.WaasGoogleIdToken]: string
+  [LocalStorageKey.WaasAppleClientID]: string
+  [LocalStorageKey.WaasAppleIdToken]: string
+  [LocalStorageKey.WaasAppleRedirectURI]: string
+  [LocalStorageKey.WaasActiveLoginType]: string
+  [LocalStorageKey.WaasSignInEmail]: string
+  [LocalStorageKey.WaasEpicAuthUrl]: string
+  [LocalStorageKey.WaasEpicIdToken]: string
+  [LocalStorageKey.WaasXAuthUrl]: string
+  [LocalStorageKey.WaasXClientID]: string
+  [LocalStorageKey.WaasXRedirectURI]: string
+  [LocalStorageKey.WaasXCodeVerifier]: string
+  [LocalStorageKey.WaasXIdToken]: string
+  [LocalStorageKey.V3ActiveLoginType]: string
 }

@@ -2,6 +2,7 @@
 
 import { sequence } from '0xsequence'
 import { ThemeProvider, type Theme } from '@0xsequence/design-system'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { SequenceClient } from '@0xsequence/provider'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -18,10 +19,10 @@ import {
   type ConnectConfig,
   type DisplayedAsset,
   type EthAuthSettings,
-  type ExtendedConnector,
   type ModalPosition
 } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
+import { EpicAuthProvider } from '../EpicAuthProvider/index.js'
 
 export type SequenceConnectProviderProps = {
   children: ReactNode
@@ -42,6 +43,8 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
     hideConnectedWallets = false,
     hideSocialConnectOptions = false
   } = config
+
+  const googleClientId = (config as any)?.google?.clientId || (config as any)?.googleClientId
 
   const defaultAppName = signIn.projectName || 'app'
 
@@ -121,25 +124,29 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
         <ConnectModalContextProvider
           value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
         >
-          <WalletConfigContextProvider
-            value={{
-              setDisplayedAssets,
-              displayedAssets,
-              readOnlyNetworks,
-              hideExternalConnectOptions,
-              hideConnectedWallets,
-              hideSocialConnectOptions
-            }}
-          >
-            <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-              <div id="kit-provider">
-                <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                  <Connect onClose={() => setOpenConnectModal(false)} isPreview {...props} />
-                </ThemeProvider>
-              </div>
-              {children}
-            </AnalyticsContextProvider>
-          </WalletConfigContextProvider>
+          <GoogleOAuthProvider clientId={googleClientId || ''}>
+            <WalletConfigContextProvider
+              value={{
+                setDisplayedAssets,
+                displayedAssets,
+                readOnlyNetworks,
+                hideExternalConnectOptions,
+                hideConnectedWallets,
+                hideSocialConnectOptions
+              }}
+            >
+              <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
+                <div id="kit-provider">
+                  <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
+                    <EpicAuthProvider>
+                      <Connect onClose={() => setOpenConnectModal(false)} isInline {...props} />
+                    </EpicAuthProvider>
+                  </ThemeProvider>
+                </div>
+                {children}
+              </AnalyticsContextProvider>
+            </WalletConfigContextProvider>
+          </GoogleOAuthProvider>
         </ConnectModalContextProvider>
       </ThemeContextProvider>
     </ConnectConfigContextProvider>
