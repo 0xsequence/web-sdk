@@ -1,15 +1,4 @@
 import {
-  TransactionOnRampProvider,
-  useAddFundsModal,
-  useCheckoutModal,
-  useERC1155SaleContractCheckout,
-  useSelectPaymentModal,
-  useSwapModal,
-  useTransactionStatusModal,
-  type SwapModalSettings
-} from '@0xsequence/checkout'
-import {
-  getModalPositionCss,
   signEthAuthProof,
   useOpenConnectModal,
   useSocialLink,
@@ -18,11 +7,10 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, Switch, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
-import { AnimatePresence } from 'motion/react'
 import React, { useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
@@ -31,38 +19,19 @@ import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletC
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
-import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
-import { checkoutPresets } from '../utils/checkout'
+import { delay } from '../utils'
 
-import { CustomCheckout } from './CustomCheckout'
 import { Select } from './Select'
 
-// append ?debug to url to enable debug mode
-const searchParams = new URLSearchParams(location.search)
-const isDebugMode = searchParams.has('debug')
-const checkoutProvider = searchParams.get('checkoutProvider')
-const onRampProvider = searchParams.get('onRampProvider')
-const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-transak-payment-erc1155-sale-native-token-testnet'
-
 export const Connected = () => {
-  const { openTransactionStatusModal } = useTransactionStatusModal()
-  const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
   const { address } = useAccount()
-  const { openSwapModal } = useSwapModal()
+
   const { setOpenWalletModal } = useOpenWalletModal()
-  const { triggerCheckout } = useCheckoutModal()
-  const { triggerAddFunds } = useAddFundsModal()
-  const { openSelectPaymentModal } = useSelectPaymentModal()
+
   const { setIsSocialLinkOpen } = useSocialLink()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
-
-  const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
-
-  const [checkoutOrderId, setCheckoutOrderId] = React.useState('')
-  const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
-  const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
   const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
@@ -82,17 +51,6 @@ export const Connected = () => {
     error: sendUnsponsoredTransactionError,
     reset: resetSendUnsponsoredTransaction
   } = useSendTransaction()
-
-  const { openCheckoutModal, isLoading: erc1155CheckoutLoading } = useERC1155SaleContractCheckout({
-    chain: 137,
-    contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
-    wallet: address || '',
-    collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-    items: [{ tokenId: '1', quantity: '1' }],
-    onSuccess: txnHash => {
-      console.log('txnHash', txnHash)
-    }
-  })
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
@@ -380,120 +338,12 @@ export const Connected = () => {
     })
   }
 
-  const onClickCheckout = () => {
-    setIsCheckoutInfoModalOpen(true)
-  }
-
-  const onClickSwap = () => {
-    const chainId = 137
-    const toTokenAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const toTokenAmount = '200000'
-    const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
-
-    const swapModalSettings: SwapModalSettings = {
-      onSuccess: () => {
-        console.log('swap successful!')
-      },
-      chainId,
-      toTokenAddress,
-      toTokenAmount,
-      postSwapTransactions: [
-        {
-          to: '0x37470dac8a0255141745906c972e414b1409b470',
-          data
-        }
-      ],
-      title: 'Swap and Pay',
-      description: 'Select a token in your wallet to swap to 0.2 USDC.'
-    }
-
-    openSwapModal(swapModalSettings)
-  }
-
-  const onClickSelectPayment = () => {
-    if (!address) {
-      return
-    }
-
-    const creditCardProvider = checkoutProvider || 'forte'
-
-    openSelectPaymentModal({
-      recipientAddress: address,
-      creditCardProviders: [creditCardProvider],
-      onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-      onSuccess: (txnHash?: string) => {
-        console.log('success!', txnHash)
-      },
-      onError: (error: Error) => {
-        console.error(error)
-      },
-      onClose: () => {
-        console.log('modal closed!')
-      },
-      ...checkoutPresets[checkoutPreset as keyof typeof checkoutPresets](address || '')
-    })
-  }
-
-  const onCheckoutInfoConfirm = () => {
-    setIsCheckoutInfoModalOpen(false)
-    if (checkoutOrderId !== '' && checkoutTokenContractAddress !== '' && checkoutTokenId !== '') {
-      const chainId = ChainId.POLYGON
-      const orderbookAddress = '0xB537a160472183f2150d42EB1c3DD6684A55f74c'
-      const recipientAddress = address || ''
-      const nftQuantity = '1'
-
-      const checkoutSettings = getCheckoutSettings({
-        chainId,
-        contractAddress: orderbookAddress,
-        recipientAddress,
-        currencyQuantity: '100000',
-        currencySymbol: 'USDC',
-        currencyAddress: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
-        currencyDecimals: '6',
-        nftId: checkoutTokenId,
-        nftAddress: checkoutTokenContractAddress,
-        nftQuantity,
-        approvedSpenderAddress: orderbookAddress,
-        calldata: getOrderbookCalldata({
-          orderId: checkoutOrderId,
-          quantity: nftQuantity,
-          recipient: recipientAddress
-        })
-      })
-      triggerCheckout(checkoutSettings)
-    }
-  }
-
-  const onClickAddFunds = () => {
-    triggerAddFunds({
-      walletAddress: address || '',
-      provider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak
-    })
-  }
-
   const onClickConnect = () => {
     setOpenConnectModal(true)
   }
 
   const onClickSocialLink = () => {
     setIsSocialLinkOpen(true)
-  }
-
-  const onClickTransactionStatus = () => {
-    openTransactionStatusModal({
-      chainId: 137,
-      currencyAddress: zeroAddress,
-      collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-      txHash: '0x7824a5f7107a964553f799a82d8178fd66ff5055e84f586010ccd80e5e40145b',
-      items: [
-        {
-          tokenId: '1',
-          quantity: '1',
-          decimals: 18,
-          price: '1000'
-        }
-      ]
-    })
   }
 
   useEffect(() => {
@@ -782,56 +632,8 @@ export const Connected = () => {
             )}
 
             <Text className="mt-4" variant="small-bold" color="muted">
-              Web SDK Checkout
+              Misc
             </Text>
-
-            <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
-
-            {isDebugMode && (
-              <>
-                <CardButton
-                  title="NFT Checkout"
-                  description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
-                  onClick={onClickCheckout}
-                />
-                <CardButton
-                  title="Custom Checkout"
-                  description="Hook for creating custom checkout UIs"
-                  onClick={() => setIsOpenCustomCheckout(true)}
-                />
-
-                <CardButton
-                  title="ERC1155 Checkout"
-                  description="Purchase with useERC1155SaleContractCheckout hook"
-                  onClick={openCheckoutModal}
-                  isPending={erc1155CheckoutLoading}
-                />
-
-                <CardButton
-                  title="Transaction Status Modal"
-                  description="Transaction status modal"
-                  onClick={onClickTransactionStatus}
-                />
-              </>
-            )}
-
-            <CardButton
-              title="Swap"
-              description="Seamlessly swap eligible currencies in your wallet to a target currency"
-              onClick={onClickSwap}
-            />
-
-            <CardButton
-              title="Checkout"
-              description="Purchase an NFT through various purchase methods"
-              onClick={onClickSelectPayment}
-            />
-
-            {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA || isWaasConnectionActive) && (
-              <Text className="mt-4" variant="small-bold" color="muted">
-                Misc
-              </Text>
-            )}
 
             {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA) && (
               <CardButton
@@ -896,86 +698,6 @@ export const Connected = () => {
           )}
         </div>
       </div>
-      <AnimatePresence>
-        {isCheckoutInfoModalOpen && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            onClose={() => setIsCheckoutInfoModalOpen(false)}
-          >
-            <div id="sequence-kit-checkout-info-modal">
-              <div className="flex pt-16 pb-8 px-6 gap-2 flex-col">
-                <Text variant="medium" color="muted">
-                  Order ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="orderId"
-                  value={checkoutOrderId}
-                  onChange={ev => setCheckoutOrderId(ev.target.value)}
-                  placeholder="Order Id"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="muted">
-                  Token Contract Address
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenContractAddress"
-                  value={checkoutTokenContractAddress}
-                  onChange={ev => setCheckoutTokenContractAddress(ev.target.value)}
-                  placeholder="Token Contract Address"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="muted">
-                  Token ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenId"
-                  value={checkoutTokenId}
-                  onChange={ev => setCheckoutTokenId(ev.target.value)}
-                  placeholder="Token Id"
-                  data-1p-ignore
-                />
-
-                <Button
-                  className="mt-4"
-                  onClick={() => {
-                    onCheckoutInfoConfirm()
-                  }}
-                  label="Trigger checkout"
-                />
-              </div>
-            </div>
-          </Modal>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {isOpenCustomCheckout && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            onClose={() => setIsOpenCustomCheckout(false)}
-          >
-            <Scroll style={{ height: '600px' }}>
-              <CustomCheckout />
-            </Scroll>
-          </Modal>
-        )}
-      </AnimatePresence>
     </>
   )
 }

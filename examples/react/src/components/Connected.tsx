@@ -1,13 +1,4 @@
 import {
-  TransactionOnRampProvider,
-  useAddFundsModal,
-  useCheckoutModal,
-  useSelectPaymentModal,
-  useSwapModal,
-  type SwapModalSettings
-} from '@0xsequence/checkout'
-import {
-  getModalPositionCss,
   signEthAuthProof,
   useExplicitSessions,
   useFeeOptions,
@@ -19,50 +10,30 @@ import {
   type ParameterRule,
   type Permission
 } from '@0xsequence/connect'
-import { Button, Card, Modal, Scroll, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
-import { AnimatePresence } from 'motion/react'
 import { AbiFunction } from 'ox'
 import React, { useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseAbi, zeroAddress } from 'viem'
+import { formatUnits, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { EMITTER_ABI, getEmitterContractAddress, getSessionConfigForType, PermissionsType } from '../constants/permissions'
-import { getCheckoutSettings, getOrderbookCalldata } from '../utils'
-import { checkoutPresets } from '../utils/checkout'
 
-import { CustomCheckout } from './CustomCheckout'
 import { Select } from './Select'
 
-// append ?debug to url to enable debug mode
-const searchParams = new URLSearchParams(location.search)
-const isDebugMode = searchParams.has('debug')
-const checkoutProvider = searchParams.get('checkoutProvider')
-const onRampProvider = searchParams.get('onRampProvider')
-const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-transak-payment-erc1155-sale-native-token-testnet'
-
 export const Connected = () => {
-  const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
   const { address } = useAccount()
-  const { openSwapModal } = useSwapModal()
+
   const { setOpenWalletModal } = useOpenWalletModal()
-  const { triggerCheckout } = useCheckoutModal()
-  const { triggerAddFunds } = useAddFundsModal()
-  const { openSelectPaymentModal } = useSelectPaymentModal()
+
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
-
-  const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
-
-  const [checkoutOrderId, setCheckoutOrderId] = React.useState('')
-  const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
-  const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
 
@@ -98,17 +69,6 @@ export const Connected = () => {
     error: permissionedTxnError,
     reset: resetPermissionedTxn
   } = useSendTransaction()
-
-  // const { openCheckoutModal, isLoading: erc1155CheckoutLoading } = useERC1155SaleContractCheckout({
-  //   chain: 137,
-  //   contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
-  //   wallet: address || '',
-  //   collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-  //   items: [{ tokenId: '1', quantity: '1' }],
-  //   onSuccess: txnHash => {
-  //     console.log('txnHash', txnHash)
-  //   }
-  // })
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
@@ -529,31 +489,6 @@ export const Connected = () => {
     })
   }
 
-  // const runSendTransaction = async () => {
-  //   if (!walletClient) {
-  //     return
-  //   }
-
-  //   if (networkForCurrentChainId.testnet) {
-  //     const [account] = await walletClient.getAddresses()
-
-  //     sendTransaction({
-  //       to: account,
-  //       value: BigInt(0),
-  //       gas: null
-  //     })
-  //   } else {
-  //     const sponsoredContractAddress = sponsoredContractAddresses[chainId]
-  //     const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
-
-  //     sendTransaction({
-  //       to: sponsoredContractAddress,
-  //       data,
-  //       gas: null
-  //     })
-  //   }
-  // }
-
   const runSendUnsponsoredTransaction = async () => {
     if (!walletClient) {
       return
@@ -576,98 +511,6 @@ export const Connected = () => {
       abi,
       functionName: 'awardItem',
       args: [account, 'https://dev-metadata.sequence.app/projects/277/collections/62/tokens/0.json']
-    })
-  }
-
-  const onClickCheckout = () => {
-    setIsCheckoutInfoModalOpen(true)
-  }
-
-  const onClickSwap = () => {
-    const chainId = 137
-    const toTokenAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const toTokenAmount = '200000'
-    const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
-
-    const swapModalSettings: SwapModalSettings = {
-      onSuccess: () => {
-        console.log('swap successful!')
-      },
-      chainId,
-      toTokenAddress,
-      toTokenAmount,
-      postSwapTransactions: [
-        {
-          to: '0x37470dac8a0255141745906c972e414b1409b470',
-          data
-        }
-      ],
-      title: 'Swap and Pay',
-      description: 'Select a token in your wallet to swap to 0.2 USDC.'
-    }
-
-    openSwapModal(swapModalSettings)
-  }
-
-  const onClickSelectPayment = () => {
-    if (!address) {
-      return
-    }
-
-    const creditCardProvider = checkoutProvider || 'forte'
-
-    openSelectPaymentModal({
-      recipientAddress: address,
-      creditCardProviders: [creditCardProvider],
-      onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-      onSuccess: (txnHash?: string) => {
-        console.log('success!', txnHash)
-      },
-      onError: (error: Error) => {
-        console.error(error)
-      },
-      onClose: () => {
-        console.log('modal closed!')
-      },
-      ...checkoutPresets[checkoutPreset as keyof typeof checkoutPresets](address || '')
-    })
-  }
-
-  const onCheckoutInfoConfirm = () => {
-    setIsCheckoutInfoModalOpen(false)
-    if (checkoutOrderId !== '' && checkoutTokenContractAddress !== '' && checkoutTokenId !== '') {
-      const chainId = ChainId.POLYGON
-      const orderbookAddress = '0xB537a160472183f2150d42EB1c3DD6684A55f74c'
-      const recipientAddress = address || ''
-      const nftQuantity = '1'
-
-      const checkoutSettings = getCheckoutSettings({
-        chainId,
-        contractAddress: orderbookAddress,
-        recipientAddress,
-        currencyQuantity: '100000',
-        currencySymbol: 'USDC',
-        currencyAddress: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
-        currencyDecimals: '6',
-        nftId: checkoutTokenId,
-        nftAddress: checkoutTokenContractAddress,
-        nftQuantity,
-        approvedSpenderAddress: orderbookAddress,
-        calldata: getOrderbookCalldata({
-          orderId: checkoutOrderId,
-          quantity: nftQuantity,
-          recipient: recipientAddress
-        })
-      })
-      triggerCheckout(checkoutSettings)
-    }
-  }
-
-  const onClickAddFunds = () => {
-    triggerAddFunds({
-      walletAddress: address || '',
-      provider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-      transakOnRampKind: 'default'
     })
   }
 
@@ -1052,46 +895,6 @@ export const Connected = () => {
             )}
 
             <Text className="mt-4" variant="small-bold" color="muted">
-              Web SDK Checkout
-            </Text>
-
-            <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
-
-            {isDebugMode && (
-              <>
-                <CardButton
-                  title="NFT Checkout"
-                  description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
-                  onClick={onClickCheckout}
-                />
-                <CardButton
-                  title="Custom Checkout"
-                  description="Hook for creating custom checkout UIs"
-                  onClick={() => setIsOpenCustomCheckout(true)}
-                />
-                {/* 
-                <CardButton
-                  title="ERC1155 Checkout"
-                  description="Purchase with useERC1155SaleContractCheckout hook"
-                  onClick={openCheckoutModal}
-                  isPending={erc1155CheckoutLoading}
-                /> */}
-              </>
-            )}
-
-            <CardButton
-              title="Swap"
-              description="Seamlessly swap eligible currencies in your wallet to a target currency"
-              onClick={onClickSwap}
-            />
-
-            <CardButton
-              title="Checkout"
-              description="Purchase an NFT through various purchase methods"
-              onClick={onClickSelectPayment}
-            />
-
-            <Text className="mt-4" variant="small-bold" color="muted">
               Misc
             </Text>
 
@@ -1125,86 +928,6 @@ export const Connected = () => {
           </div>
         </div>
       </div>
-      <AnimatePresence>
-        {isCheckoutInfoModalOpen && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            onClose={() => setIsCheckoutInfoModalOpen(false)}
-          >
-            <div id="sequence-kit-checkout-info-modal">
-              <div className="flex pt-16 pb-8 px-6 gap-2 flex-col">
-                <Text variant="medium" color="muted">
-                  Order ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="orderId"
-                  value={checkoutOrderId}
-                  onChange={ev => setCheckoutOrderId(ev.target.value)}
-                  placeholder="Order Id"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="muted">
-                  Token Contract Address
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenContractAddress"
-                  value={checkoutTokenContractAddress}
-                  onChange={ev => setCheckoutTokenContractAddress(ev.target.value)}
-                  placeholder="Token Contract Address"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="muted">
-                  Token ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenId"
-                  value={checkoutTokenId}
-                  onChange={ev => setCheckoutTokenId(ev.target.value)}
-                  placeholder="Token Id"
-                  data-1p-ignore
-                />
-
-                <Button
-                  className="mt-4"
-                  onClick={() => {
-                    onCheckoutInfoConfirm()
-                  }}
-                  label="Trigger checkout"
-                />
-              </div>
-            </div>
-          </Modal>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {isOpenCustomCheckout && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            onClose={() => setIsOpenCustomCheckout(false)}
-          >
-            <Scroll style={{ height: '600px' }}>
-              <CustomCheckout />
-            </Scroll>
-          </Modal>
-        )}
-      </AnimatePresence>
     </>
   )
 }

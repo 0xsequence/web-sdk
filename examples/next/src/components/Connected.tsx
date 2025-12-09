@@ -1,74 +1,40 @@
 'use client'
 
 import {
-  TransactionOnRampProvider,
-  useAddFundsModal,
-  useCheckoutModal,
-  useSelectPaymentModal,
-  useSwapModal
-} from '@0xsequence/checkout'
-import type { SwapModalSettings } from '@0xsequence/checkout'
-import {
-  getModalPositionCss,
-  signEthAuthProof,
   useExplicitSessions,
   useFeeOptions,
   useOpenConnectModal,
   useSequenceSessionState,
-  useStorage,
   useWallets,
-  validateEthProof,
   type ParameterRule,
   type Permission
 } from '@0xsequence/connect'
-import { Button, Card, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
-import { AnimatePresence } from 'motion/react'
 import { AbiFunction } from 'ox'
 import React, { useEffect } from 'react'
-import { encodeFunctionData, formatUnits, parseAbi, toHex, zeroAddress } from 'viem'
+import { formatUnits } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { messageToSign } from '../constants'
-import { ERC_1155_SALE_CONTRACT } from '../constants/erc1155-sale-contract'
-// import { ERC_721_SALE_CONTRACT } from '../constants/erc721-sale-contract'
 import { abi } from '../constants/nft-abi'
 import { EMITTER_ABI, getEmitterContractAddress, getSessionConfigForType, PermissionsType } from '../constants/permissions'
-import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 
-import { CustomCheckout } from './CustomCheckout'
 import { Select } from './Select'
 
-// append ?debug to url to enable debug mode
-const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
-const isDebugMode = searchParams.has('debug')
-const checkoutProvider = searchParams.get('checkoutProvider')
-const onRampProvider = searchParams.get('onRampProvider')
-
 export const Connected = () => {
-  const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
   const { address } = useAccount()
-  const { openSwapModal } = useSwapModal()
+
   const { setOpenWalletModal } = useOpenWalletModal()
-  const { triggerCheckout } = useCheckoutModal()
-  const { triggerAddFunds } = useAddFundsModal()
-  const { openSelectPaymentModal } = useSelectPaymentModal()
 
   const { data: walletClient } = useWalletClient()
-  const storage = useStorage()
-
-  const [isCheckoutInfoModalOpen, setIsCheckoutInfoModalOpen] = React.useState(false)
-
-  const [checkoutOrderId, setCheckoutOrderId] = React.useState('')
-  const [checkoutTokenContractAddress, setCheckoutTokenContractAddress] = React.useState('')
-  const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
-  const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
+
   const isV3WalletConnectionActive = wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
 
   const sessionState = useSequenceSessionState()
@@ -102,17 +68,6 @@ export const Connected = () => {
     reset: resetPermissionedTxn
   } = useSendTransaction()
 
-  // const { openCheckoutModal, isLoading: erc1155CheckoutLoading } = useERC1155SaleContractCheckout({
-  //   chain: 137,
-  //   contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
-  //   wallet: address || '',
-  //   collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-  //   items: [{ tokenId: '1', quantity: '1' }],
-  //   onSuccess: txnHash => {
-  //     console.log('txnHash', txnHash)
-  //   }
-  // })
-
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
@@ -127,10 +82,6 @@ export const Connected = () => {
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
   const [lastTxnDataHash3, setLastTxnDataHash3] = React.useState<string | undefined>()
   const [lastPermissionedTxnDataHash, setLastPermissionedTxnDataHash] = React.useState<string | undefined>()
-
-  const [confirmationEnabled, setConfirmationEnabled] = React.useState<boolean>(
-    localStorage.getItem('confirmationEnabled') === 'true'
-  )
 
   const chainId = useChainId()
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useFeeOptions()
@@ -316,24 +267,6 @@ export const Connected = () => {
   const networkForCurrentChainId = allNetworks.find(n => n.chainId === chainId)!
 
   const publicClient = usePublicClient({ chainId })
-
-  const generateEthAuthProof = async () => {
-    if (!walletClient || !publicClient || !storage) {
-      return
-    }
-
-    try {
-      // @ts-ignore
-      const proof = await signEthAuthProof(walletClient, storage)
-      console.log('proof:', proof)
-
-      // @ts-ignore
-      const isValid = await validateEthProof(walletClient, publicClient, proof)
-      console.log('isValid?:', isValid)
-    } catch (e) {
-      console.error(e)
-    }
-  }
 
   useEffect(() => {
     if (implicitTestTxnData) {
@@ -586,158 +519,6 @@ export const Connected = () => {
     })
   }
 
-  const onClickCheckout = () => {
-    setIsCheckoutInfoModalOpen(true)
-  }
-
-  const onClickSwap = () => {
-    const chainId = 137
-    const toTokenAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const toTokenAmount = '200000'
-    const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
-
-    const swapModalSettings: SwapModalSettings = {
-      onSuccess: () => {
-        console.log('swap successful!')
-      },
-      chainId,
-      toTokenAddress,
-      toTokenAmount,
-      postSwapTransactions: [
-        {
-          to: '0x37470dac8a0255141745906c972e414b1409b470',
-          data
-        }
-      ],
-      title: 'Swap and Pay',
-      description: 'Select a token in your wallet to swap to 0.2 USDC.'
-    }
-
-    openSwapModal(swapModalSettings)
-  }
-
-  const onClickSelectPayment = () => {
-    if (!address) {
-      return
-    }
-
-    // NATIVE token sale
-    const currencyAddress = zeroAddress
-    const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
-    const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
-    const price = '200000000000000'
-
-    // // ERC-20 contract
-    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    // const salesContractAddress = '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b'
-    // const collectionAddress = '0xdeb398f41ccd290ee5114df7e498cf04fac916cb'
-    // const price = '200000'
-    // const contractId = '674eb5613d739107bbd18ed2'
-
-    const collectibles = [
-      {
-        tokenId: '1',
-        quantity: '1'
-      }
-    ]
-
-    const purchaseTransactionData = encodeFunctionData({
-      abi: ERC_1155_SALE_CONTRACT,
-      functionName: 'mint',
-      // [to, tokenIds, amounts, data, expectedPaymentToken, maxTotal, proof]
-      args: [
-        address,
-        collectibles.map(c => BigInt(c.tokenId)),
-        collectibles.map(c => BigInt(c.quantity)),
-        toHex(0),
-        currencyAddress,
-        price,
-        [toHex(0, { size: 32 })]
-      ]
-    })
-
-    // ERC-721 contract
-    // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    // const salesContractAddress = '0xa0284905d29cbeb19f4be486f9091fac215b7a6a'
-    // const collectionAddress = '0xd705db0a96075b98758c4bdafe8161d8566a68f8'
-    // const price = '1'
-    // const contractId = '674eb5613d739107bbd18ed2'
-
-    // const chainId = 137
-
-    // const collectibles = [
-    //   {
-    //     quantity: '1'
-    //   }
-    // ]
-
-    // const purchaseTransactionData = encodeFunctionData({
-    //   abi: ERC_721_SALE_CONTRACT,
-    //   functionName: 'mint',
-    //   // [to, amount, expectedPaymentToken, maxTotal, proof]
-    //   args: [address, BigInt(1), currencyAddress, price, [toHex(0, { size: 32 })]]
-    // })
-
-    openSelectPaymentModal({
-      collectibles,
-      chain: chainId,
-      price,
-      targetContractAddress: salesContractAddress,
-      recipientAddress: address,
-      currencyAddress,
-      collectionAddress,
-      creditCardProviders: [checkoutProvider || 'transak'],
-      onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-      onSuccess: (txnHash?: string) => {
-        console.log('success!', txnHash)
-      },
-      onError: (error: Error) => {
-        console.error(error)
-      },
-      onClose: () => {
-        console.log('modal closed!')
-      },
-      txData: purchaseTransactionData
-    })
-  }
-
-  const onCheckoutInfoConfirm = () => {
-    setIsCheckoutInfoModalOpen(false)
-    if (checkoutOrderId !== '' && checkoutTokenContractAddress !== '' && checkoutTokenId !== '') {
-      const chainId = ChainId.POLYGON
-      const orderbookAddress = '0xB537a160472183f2150d42EB1c3DD6684A55f74c'
-      const recipientAddress = address || ''
-      const nftQuantity = '1'
-
-      const checkoutSettings = getCheckoutSettings({
-        chainId,
-        contractAddress: orderbookAddress,
-        recipientAddress,
-        currencyQuantity: '100000',
-        currencySymbol: 'USDC',
-        currencyAddress: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
-        currencyDecimals: '6',
-        nftId: checkoutTokenId,
-        nftAddress: checkoutTokenContractAddress,
-        nftQuantity,
-        approvedSpenderAddress: orderbookAddress,
-        calldata: getOrderbookCalldata({
-          orderId: checkoutOrderId,
-          quantity: nftQuantity,
-          recipient: recipientAddress
-        })
-      })
-      triggerCheckout(checkoutSettings)
-    }
-  }
-
-  const onClickAddFunds = () => {
-    triggerAddFunds({
-      walletAddress: address || '',
-      provider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak
-    })
-  }
-
   const onClickConnect = () => {
     setOpenConnectModal(true)
   }
@@ -825,26 +606,6 @@ export const Connected = () => {
             <Text className="mt-4" variant="small-bold" color="muted">
               Send Transactions
             </Text>
-
-            {/* {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
-              <CardButton
-                title="Send sponsored transaction"
-                description="Send a transaction with your wallet without paying any fees"
-                isPending={isPendingSendTxn}
-                onClick={runSendTransaction}
-              />
-            )} */}
-            {/* {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
-              <Text className="ml-4" variant="small" underline color="primary" asChild>
-                <a
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View on {networkForCurrentChainId.blockExplorer.name}
-                </a>
-              </Text>
-            )} */}
 
             {!networkForCurrentChainId.testnet && !isV3WalletConnectionActive && (
               <CardButton
@@ -1123,49 +884,7 @@ export const Connected = () => {
               </Card>
             )}
 
-            <Text className="mt-4" variant="small-bold" color="muted">
-              Web SDK Checkout
-            </Text>
-
-            <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
-
-            {isDebugMode && (
-              <>
-                <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
-
-                <CardButton
-                  title="NFT Checkout"
-                  description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
-                  onClick={onClickCheckout}
-                />
-                <CardButton
-                  title="Custom Checkout"
-                  description="Hook for creating custom checkout UIs"
-                  onClick={() => setIsOpenCustomCheckout(true)}
-                />
-                {/* 
-                <CardButton
-                  title="ERC1155 Checkout"
-                  description="Purchase with useERC1155SaleContractCheckout hook"
-                  onClick={openCheckoutModal}
-                  isPending={erc1155CheckoutLoading}
-                /> */}
-              </>
-            )}
-
-            <CardButton
-              title="Swap with Sequence Pay"
-              description="Seamlessly swap eligible currencies in your wallet to a target currency"
-              onClick={onClickSwap}
-            />
-
-            <CardButton
-              title="Checkout with Sequence Pay"
-              description="Purchase an NFT through various purchase methods"
-              onClick={onClickSelectPayment}
-            />
-
-            {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA || isWaasConnectionActive) && (
+            {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA) && (
               <Text className="mt-4" variant="small-bold" color="muted">
                 Misc
               </Text>
@@ -1192,122 +911,9 @@ export const Connected = () => {
                   </a>
                 </Text>
               )}
-
-            {/* {isWaasConnectionActive && (
-              <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
-            )} */}
           </div>
-
-          {isWaasConnectionActive && (
-            <div className="my-3">
-              <label className="flex flex-row items-center justify-between">
-                <Text fontWeight="semibold" variant="small" color="muted">
-                  Confirmations
-                </Text>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    name="confirmations"
-                    checked={confirmationEnabled}
-                    onCheckedChange={async (checked: boolean) => {
-                      if (checked) {
-                        localStorage.setItem('confirmationEnabled', 'true')
-                        setConfirmationEnabled(true)
-                      } else {
-                        localStorage.removeItem('confirmationEnabled')
-                        setConfirmationEnabled(false)
-                      }
-
-                      await delay(300)
-
-                      window.location.reload()
-                    }}
-                  />
-                </div>
-              </label>
-            </div>
-          )}
         </div>
       </div>
-      <AnimatePresence>
-        {isCheckoutInfoModalOpen && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            onClose={() => setIsCheckoutInfoModalOpen(false)}
-          >
-            <div id="sequence-kit-checkout-info-modal">
-              <div className="flex pt-16 pb-8 px-6 gap-2 flex-col">
-                <Text variant="medium" color="muted">
-                  Order ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="orderId"
-                  value={checkoutOrderId}
-                  onChange={ev => setCheckoutOrderId(ev.target.value)}
-                  placeholder="Order Id"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="muted">
-                  Token Contract Address
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenContractAddress"
-                  value={checkoutTokenContractAddress}
-                  onChange={ev => setCheckoutTokenContractAddress(ev.target.value)}
-                  placeholder="Token Contract Address"
-                  data-1p-ignore
-                />
-                <Text variant="medium" color="muted">
-                  Token ID
-                </Text>
-                <TextInput
-                  autoFocus
-                  name="tokenId"
-                  value={checkoutTokenId}
-                  onChange={ev => setCheckoutTokenId(ev.target.value)}
-                  placeholder="Token Id"
-                  data-1p-ignore
-                />
-
-                <Button
-                  className="mt-4"
-                  onClick={() => {
-                    onCheckoutInfoConfirm()
-                  }}
-                  label="Trigger checkout"
-                />
-              </div>
-            </div>
-          </Modal>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {isOpenCustomCheckout && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            onClose={() => setIsOpenCustomCheckout(false)}
-          >
-            <Scroll style={{ height: '600px' }}>
-              <CustomCheckout />
-            </Scroll>
-          </Modal>
-        )}
-      </AnimatePresence>
     </>
   )
 }
