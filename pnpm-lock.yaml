@@ -165,15 +165,12 @@ importers:
       '@0xsequence/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-      '@0xsequence/immutable-connector':
-        specifier: workspace:*
-        version: link:../../packages/immutable-connector
       '@0xsequence/network':
-        specifier: ^2.3.23
-        version: 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        specifier: ^2.3.38
+        version: 2.3.38(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: ^2.3.23
-        version: 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        specifier: ^2.3.38
+        version: 2.3.38(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/wallet-widget':
         specifier: workspace:*
         version: link:../../packages/wallet-widget
@@ -266,11 +263,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/immutable-connector
       '@0xsequence/network':
-        specifier: ^2.3.36
-        version: 2.3.37(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        specifier: ^2.3.38
+        version: 2.3.38(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/waas':
-        specifier: ^2.3.36
-        version: 2.3.37(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        specifier: ^2.3.38
+        version: 2.3.38(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@0xsequence/wallet-widget':
         specifier: workspace:*
         version: link:../../packages/wallet-widget
@@ -921,11 +918,6 @@ packages:
 
   '@0xsequence/utils@2.3.38':
     resolution: {integrity: sha512-XCe17omFbLjQnDW7HNhNzTqcpeeiXeSCc5ttFjOYex+GO8v9imPt3qbcn4N2v4dlylfkSfpdh4DcnKlcAPAtFw==}
-    peerDependencies:
-      ethers: '>=6'
-
-  '@0xsequence/waas@2.3.34':
-    resolution: {integrity: sha512-JESi/E2PVHENAZNL9Z7Xa1KWahNKLm4M0deB5X4Gsl5iv02fqVvNJKHG9oIWqUywvpCyyUCattf+tmO0f2bjPg==}
     peerDependencies:
       ethers: '>=6'
 
@@ -8407,19 +8399,6 @@ snapshots:
     dependencies:
       ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       js-base64: 3.7.8
-
-  '@0xsequence/waas@2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
-    dependencies:
-      '@0xsequence/core': 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/network': 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@0xsequence/utils': 2.3.34(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@aws-sdk/client-cognito-identity-provider': 3.934.0
-      ethers: 6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      idb: 7.1.1
-      json-canonicalize: 1.2.0
-      jwt-decode: 4.0.0
-    transitivePeerDependencies:
-      - aws-crt
 
   '@0xsequence/waas@2.3.37(ethers@6.15.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
