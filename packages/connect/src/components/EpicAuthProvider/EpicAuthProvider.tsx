@@ -1,3 +1,5 @@
+'use client'
+
 import { Modal, ModalPrimitive, Spinner } from '@0xsequence/design-system'
 import { useEffect, type ReactNode } from 'react'
 import { useAccount, useConnect } from 'wagmi'

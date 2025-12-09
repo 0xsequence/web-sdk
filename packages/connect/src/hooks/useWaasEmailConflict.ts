@@ -1,3 +1,5 @@
+'use client'
+
 import { IdentityType, SequenceWaaS, type EmailConflictInfo } from '@0xsequence/waas'
 import { useEffect, useRef, useState } from 'react'
 import { useConnect } from 'wagmi'

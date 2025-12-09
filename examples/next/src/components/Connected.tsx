@@ -626,7 +626,6 @@ export const Connected = () => {
     const salesContractAddress = '0xf0056139095224f4eec53c578ab4de1e227b9597'
     const collectionAddress = '0x92473261f2c26f2264429c451f70b0192f858795'
     const price = '200000000000000'
-    const contractId = '674eb55a3d739107bbd18ecb'
 
     // // ERC-20 contract
     // const currencyAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
@@ -689,10 +688,7 @@ export const Connected = () => {
       collectionAddress,
       creditCardProviders: [checkoutProvider || 'transak'],
       onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-      transakConfig: {
-        contractId
-      },
-      onSuccess: (txnHash: string) => {
+      onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)
       },
       onError: (error: Error) => {
