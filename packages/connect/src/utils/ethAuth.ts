@@ -10,11 +10,25 @@ export const signEthAuthProof = async (
   walletClient: GetWalletClientData<any, any>,
   storage: Storage<StorageItem>
 ): Promise<ETHAuthProof> => {
+  const ethAuth = new ETHAuth()
+  const walletAddress = walletClient.account.address
+  const normalizedWalletAddress = walletAddress.toLowerCase()
+
   const proofInformation = await storage.getItem(LocalStorageKey.EthAuthProof)
 
   // if proof information was generated and saved upon wallet connection, use that
   if (proofInformation) {
-    return proofInformation
+    try {
+      const decodedProof = await ethAuth.decodeProof(proofInformation.proofString, true)
+
+      if (decodedProof.address === normalizedWalletAddress) {
+        return proofInformation
+      }
+
+      await storage.removeItem(LocalStorageKey.EthAuthProof)
+    } catch {
+      await storage.removeItem(LocalStorageKey.EthAuthProof)
+    }
   }
 
   // generate a new proof
@@ -24,10 +38,9 @@ export const signEthAuthProof = async (
     throw new Error('No ETHAuth settings found')
   }
 
-  const walletAddress = walletClient.account.address
-
   const proof = new Proof()
   proof.address = walletAddress
+  proof.setIssuedAtNow()
 
   proof.claims.app = proofSettings.app || 'app'
   proof.claims.ogn = proofSettings.origin
@@ -44,9 +57,9 @@ export const signEthAuthProof = async (
     domain: {
       name: typedData.domain.name,
       version: typedData.domain.version,
-      chainId: typedData.domain.chainId as bigint,
-      verifyingContract: typedData.domain.verifyingContract as any,
-      salt: typedData.domain.salt as `0x${string}`
+      chainId: typedData.domain.chainId == null ? undefined : BigInt(typedData.domain.chainId as any),
+      verifyingContract: (typedData.domain.verifyingContract as `0x${string}`) || undefined,
+      salt: (typedData.domain.salt as `0x${string}`) || undefined
     },
     primaryType,
     types: typedData.types,
@@ -55,13 +68,12 @@ export const signEthAuthProof = async (
 
   proof.signature = signature
 
-  const ethAuth = new ETHAuth()
   const proofString = await ethAuth.encodeProof(proof, true)
+  const proofPayload = { typedData, proofString }
 
-  return {
-    typedData,
-    proofString
-  }
+  await storage.setItem(LocalStorageKey.EthAuthProof, proofPayload)
+
+  return proofPayload
 }
 
 export const validateEthProof = async (
@@ -69,21 +81,25 @@ export const validateEthProof = async (
   publicClient: UsePublicClientReturnType<any, any>,
   proof: ETHAuthProof
 ): Promise<boolean> => {
-  const walletAddress = walletClient.account.address
+  const walletAddress = walletClient.account.address.toLowerCase()
   const ethAuth = new ETHAuth()
 
   const decodedProof = await ethAuth.decodeProof(proof.proofString, true)
 
-  const typedData = proof.typedData
+  if (decodedProof.address !== walletAddress) {
+    return false
+  }
+
+  const typedData = decodedProof.messageTypedData()
 
   const primaryType = Object.keys(typedData.types).find(key => key !== 'EIP712Domain' && typedData.types[key]) || 'Proof'
 
   const isValid = await publicClient.verifyTypedData({
-    address: walletAddress,
+    address: walletClient.account.address,
     domain: {
       name: typedData.domain.name || undefined,
       version: typedData.domain.version || undefined,
-      chainId: typedData.domain.chainId as bigint,
+      chainId: typedData.domain.chainId == null ? undefined : BigInt(typedData.domain.chainId as any),
       verifyingContract: (typedData.domain.verifyingContract as `0x${string}`) || undefined,
       salt: (typedData.domain.salt as `0x${string}`) || undefined
     },
