@@ -9,8 +9,6 @@ import { getEmitterContractAddress } from './constants/permissions'
 
 const searchParams = new URLSearchParams(location.search)
 
-// append ?type=waas|universal to url to switch between wallet types
-
 // append ?debug to url to enable debug mode
 const isDebugMode = searchParams.has('debug')
 // @ts-ignore
