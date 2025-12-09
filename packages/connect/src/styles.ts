@@ -345,8 +345,17 @@ export const styles = String.raw`
   .-mr-\[1px\] {
     margin-right: calc(1px * -1);
   }
+  .mr-3 {
+    margin-right: calc(var(--spacing) * 3);
+  }
   .mr-4 {
     margin-right: calc(var(--spacing) * 4);
+  }
+  .mr-10 {
+    margin-right: calc(var(--spacing) * 10);
+  }
+  .mr-12 {
+    margin-right: calc(var(--spacing) * 12);
   }
   .-mb-\[1px\] {
     margin-bottom: calc(1px * -1);
@@ -1074,6 +1083,9 @@ export const styles = String.raw`
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
   }
+  .px-8 {
+    padding-inline: calc(var(--spacing) * 8);
+  }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
@@ -1121,6 +1133,9 @@ export const styles = String.raw`
   }
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
+  }
+  .pr-16 {
+    padding-right: calc(var(--spacing) * 16);
   }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
@@ -2533,6 +2548,4 @@ export const styles = String.raw`
       --tw-gradient-to-position: 100%;
     }
   }
-}
-
-`
+}`
