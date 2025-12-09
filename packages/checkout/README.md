@@ -1,6 +1,6 @@
-# Sequence Checkout SDK
+# Sequence Web SDK Checkout
 
-[@0xsequence/checkout](https://www.npmjs.com/package/@0xsequence/checkout/v/0.0.0-20250924112110) provides a seamless and flexible payment experience for interacting with NFTs, cryptocurrencies, and fiat currencies. It supports multiple payment options, including cryptocurrency transfers, currency swaps, and even credit card payments for whitelisted contracts.
+Sequence Checkout provides a seamless and flexible payment experience for interacting with NFTs, cryptocurrencies, and fiat currencies. It supports multiple payment options, including cryptocurrency transfers, currency swaps, and even credit card payments for whitelisted contracts.
 
 ## Key Features
 
@@ -8,11 +8,9 @@
 - **Currency Swap**: Swap one token for another before completing the transaction.
 - **Fiat Onramp**: Onboard users with fiat currency to interact with the blockchain.
 
-# Quickstart
+# Installing the module
 
-1. First make sure you have installed and setup [@0xsequence/connect](https://www.npmjs.com/package/@0xsequence/connect/v/0.0.0-20250924112110)
-
-2. Install the package:
+First install the package:
 
 ```bash
 npm install @0xsequence/checkout
@@ -22,9 +20,9 @@ pnpm install @0xsequence/checkout
 yarn add @0xsequence/checkout
 ```
 
-3. Wrap your app with the SequenceCheckoutProvider.
+Then the wallet provider module must placed below the Sequence Web SDK Core provider.
 
-```typescript [main.tsx]
+```js
 import { SequenceCheckoutProvider } from '@0xsequence/checkout'
 
 const App = () => {
@@ -40,7 +38,7 @@ const App = () => {
 
 # NFT Checkout
 
-<div align="center" style="width: 50%; height: 50%;">
+<div align="center">
   <img src="../../public/docs/checkout-modal.png">
 </div>
 
