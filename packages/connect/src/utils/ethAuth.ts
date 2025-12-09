@@ -14,39 +14,58 @@ export const signEthAuthProof = async (
   const walletAddress = walletClient.account.address
   const normalizedWalletAddress = walletAddress.toLowerCase()
 
-  const proofInformation = await storage.getItem(LocalStorageKey.EthAuthProof)
+  const [proofInformation, proofSettings] = await Promise.all([
+    storage.getItem(LocalStorageKey.EthAuthProof),
+    storage.getItem(LocalStorageKey.EthAuthSettings)
+  ])
+  const clearCachedProof = () => storage.removeItem(LocalStorageKey.EthAuthProof)
+
+  if (!proofSettings) {
+    if (proofInformation) {
+      await clearCachedProof()
+    }
+    throw new Error('No ETHAuth settings found')
+  }
+
+  const expectedApp = proofSettings.app || 'app'
+  const expectedOrigin = proofSettings.origin
+  const expectedNonce = proofSettings.nonce
+  const expectedExpiry = proofSettings.expiry ? Math.max(proofSettings.expiry, 200) : DEFAULT_SESSION_EXPIRATION
 
   // if proof information was generated and saved upon wallet connection, use that
   if (proofInformation) {
     try {
       const decodedProof = await ethAuth.decodeProof(proofInformation.proofString, true)
+      const cachedExpiry =
+        decodedProof.claims.exp && decodedProof.claims.iat ? decodedProof.claims.exp - decodedProof.claims.iat : null
 
-      if (decodedProof.address === normalizedWalletAddress) {
+      const isMatchingProof =
+        decodedProof.address === normalizedWalletAddress &&
+        (decodedProof.claims.app || 'app') === expectedApp &&
+        (decodedProof.claims.ogn ?? undefined) === (expectedOrigin ?? undefined) &&
+        (decodedProof.claims.n ?? undefined) === (expectedNonce ?? undefined) &&
+        cachedExpiry !== null &&
+        Math.abs(cachedExpiry - expectedExpiry) <= 1
+
+      if (isMatchingProof) {
         return proofInformation
       }
 
-      await storage.removeItem(LocalStorageKey.EthAuthProof)
+      await clearCachedProof()
     } catch {
-      await storage.removeItem(LocalStorageKey.EthAuthProof)
+      await clearCachedProof()
     }
-  }
-
-  // generate a new proof
-  const proofSettings = await storage.getItem(LocalStorageKey.EthAuthSettings)
-
-  if (!proofSettings) {
-    throw new Error('No ETHAuth settings found')
   }
 
   const proof = new Proof()
   proof.address = walletAddress
   proof.setIssuedAtNow()
 
-  proof.claims.app = proofSettings.app || 'app'
-  proof.claims.ogn = proofSettings.origin
-  proof.claims.n = proofSettings.nonce
+  proof.claims.app = expectedApp
+  proof.claims.ogn = expectedOrigin
+  proof.claims.n = expectedNonce
 
-  proof.setExpiryIn(proofSettings.expiry ? Math.max(proofSettings.expiry, 200) : DEFAULT_SESSION_EXPIRATION)
+  proof.setExpiryIn(expectedExpiry)
 
   const typedData = proof.messageTypedData()
 
