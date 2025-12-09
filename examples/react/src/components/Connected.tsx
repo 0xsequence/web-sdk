@@ -19,13 +19,13 @@ import {
   type ParameterRule,
   type Permission
 } from '@0xsequence/connect'
-import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, Modal, Scroll, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
-import { CardButton, Header, WalletListItem } from 'example-shared-components'
+import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import { AnimatePresence } from 'motion/react'
 import { AbiFunction } from 'ox'
-import React, { useEffect, type ComponentProps } from 'react'
+import React, { useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
@@ -33,7 +33,7 @@ import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletC
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { EMITTER_ABI, getEmitterContractAddress, getSessionConfigForType, PermissionsType } from '../constants/permissions'
-import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
+import { getCheckoutSettings, getOrderbookCalldata } from '../utils'
 import { checkoutPresets } from '../utils/checkout'
 
 import { CustomCheckout } from './CustomCheckout'
@@ -65,7 +65,7 @@ export const Connected = () => {
   const [checkoutTokenId, setCheckoutTokenId] = React.useState('')
 
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
-  const isWaasConnectionActive = wallets.some(w => w.isEmbedded && w.isActive)
+
   const isV3WalletConnectionActive = wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
 
   const sessionState = useSequenceSessionState()
@@ -124,10 +124,6 @@ export const Connected = () => {
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
   const [lastTxnDataHash3, setLastTxnDataHash3] = React.useState<string | undefined>()
   const [lastPermissionedTxnDataHash, setLastPermissionedTxnDataHash] = React.useState<string | undefined>()
-
-  const [confirmationEnabled, setConfirmationEnabled] = React.useState<boolean>(
-    localStorage.getItem('confirmationEnabled') === 'true'
-  )
 
   const chainId = useChainId()
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useFeeOptions()
@@ -763,26 +759,6 @@ export const Connected = () => {
               Send Transactions
             </Text>
 
-            {/* {(sponsoredContractAddresses[chainId] || networkForCurrentChainId.testnet) && isWaasConnectionActive && (
-              <CardButton
-                title="Send sponsored transaction"
-                description="Send a transaction with your wallet without paying any fees"
-                isPending={isPendingSendTxn}
-                onClick={runSendTransaction}
-              />
-            )} */}
-            {/* {networkForCurrentChainId.blockExplorer && lastTxnDataHash && ((txnData as any)?.chainId === chainId || txnData) && (
-              <Text className="ml-4" variant="small" underline color="primary" asChild>
-                <a
-                  href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData as any).hash ?? txnData}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View on {networkForCurrentChainId.blockExplorer.name}
-                </a>
-              </Text>
-            )} */}
-
             {!networkForCurrentChainId.testnet && !isV3WalletConnectionActive && (
               <CardButton
                 title="Send unsponsored transaction"
@@ -977,14 +953,14 @@ export const Connected = () => {
                           : selected.token.contractAddress || null
 
                       console.log('Confirming fee option with token address:', feeTokenAddress)
-                      if (pendingFeeOptionConfirmation?.id) {
+                      if (pendingFeeOptionConfirmation?.id && feeTokenAddress) {
                         confirmPendingFeeOption(pendingFeeOptionConfirmation.id, feeTokenAddress)
                       }
                     }}
                     label="Confirm fee option"
                   />
                   {feeOptionAlert && (
-                    <div className="mt-3" style={{ maxWidth: '332px' }}>
+                    <div className="mt-3">
                       <Alert
                         title={feeOptionAlert.title}
                         description={feeOptionAlert.description}
@@ -1083,8 +1059,6 @@ export const Connected = () => {
 
             {isDebugMode && (
               <>
-                <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
-
                 <CardButton
                   title="NFT Checkout"
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
@@ -1117,11 +1091,9 @@ export const Connected = () => {
               onClick={onClickSelectPayment}
             />
 
-            {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA || isWaasConnectionActive) && (
-              <Text className="mt-4" variant="small-bold" color="muted">
-                Misc
-              </Text>
-            )}
+            <Text className="mt-4" variant="small-bold" color="muted">
+              Misc
+            </Text>
 
             {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA) && (
               <CardButton
@@ -1145,39 +1117,12 @@ export const Connected = () => {
                 </Text>
               )}
 
-            {/* {isWaasConnectionActive && (
-              <CardButton title="Social Link" description="Open the social link modal" onClick={() => onClickSocialLink()} />
-            )} */}
+            <CardButton
+              title="Generate EthAuth proof"
+              description="Generate EthAuth proof (result in console)"
+              onClick={generateEthAuthProof}
+            />
           </div>
-
-          {isWaasConnectionActive && (
-            <div className="my-3">
-              <label className="flex flex-row items-center justify-between">
-                <Text fontWeight="semibold" variant="small" color="muted">
-                  Confirmations
-                </Text>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    name="confirmations"
-                    checked={confirmationEnabled}
-                    onCheckedChange={async (checked: boolean) => {
-                      if (checked) {
-                        localStorage.setItem('confirmationEnabled', 'true')
-                        setConfirmationEnabled(true)
-                      } else {
-                        localStorage.removeItem('confirmationEnabled')
-                        setConfirmationEnabled(false)
-                      }
-
-                      await delay(300)
-
-                      window.location.reload()
-                    }}
-                  />
-                </div>
-              </label>
-            </div>
-          )}
         </div>
       </div>
       <AnimatePresence>
@@ -1261,54 +1206,5 @@ export const Connected = () => {
         )}
       </AnimatePresence>
     </>
-  )
-}
-
-export type AlertProps = {
-  title: string
-  description: string
-  secondaryDescription?: string
-  variant: 'negative' | 'warning' | 'positive'
-  buttonProps?: ComponentProps<typeof Button>
-  children?: React.ReactNode
-}
-
-const variants = {
-  negative: 'bg-negative',
-  warning: 'bg-warning',
-  positive: 'bg-positive'
-}
-
-export const Alert = ({ title, description, secondaryDescription, variant, buttonProps, children }: AlertProps) => {
-  return (
-    <div className={cn('rounded-xl', variants[variant])}>
-      <div className="flex bg-background-overlay rounded-xl py-4 w-full flex-col gap-3">
-        <div className="flex w-full gap-2 justify-between">
-          <div className="flex flex-col gap-1">
-            <Text variant="normal" color="primary" fontWeight="medium">
-              {title}
-            </Text>
-
-            <Text variant="normal" color="muted" fontWeight="medium">
-              {description}
-            </Text>
-
-            {secondaryDescription && (
-              <Text variant="normal" color="secondary" fontWeight="medium">
-                {secondaryDescription}
-              </Text>
-            )}
-          </div>
-
-          {buttonProps ? (
-            <div className="rounded-lg w-min h-min">
-              <Button className="shrink-0" variant="emphasis" shape="square" {...buttonProps} />
-            </div>
-          ) : null}
-        </div>
-
-        {children}
-      </div>
-    </div>
   )
 }

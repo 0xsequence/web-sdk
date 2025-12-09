@@ -1,3 +1,4 @@
+import type { ForteConfig } from '@0xsequence/checkout'
 import { zeroAddress } from 'viem'
 import { encodeFunctionData, toHex } from 'viem'
 
@@ -77,7 +78,7 @@ interface CheckoutPreset {
     quantity: string
   }[]
   txData: `0x${string}`
-  forteConfig?: unknown
+  forteConfig?: ForteConfig
 }
 
 export const checkoutPresets: Record<string, (recipientAddress: string) => CheckoutPreset> = {
@@ -237,13 +238,13 @@ export const checkoutPresets: Record<string, (recipientAddress: string) => Check
         protocol: 'mint',
         calldata: structuredCalldata,
         sellerAddress: '0x184D4F89ad34bb0491563787ca28118273402986',
-        onFortePaymentsBuyNftSuccess: (e: unknown) => {
+        onFortePaymentsBuyNftSuccess: (e: Event) => {
           console.log('onFortePaymentsBuyNftSuccess', e)
         },
-        onFortePaymentsBuyNftMintSuccess: (e: unknown) => {
+        onFortePaymentsBuyNftMintSuccess: (e: Event) => {
           console.log('onFortePaymentsBuyNftMintSuccess', e)
         },
-        onFortePaymentsWidgetClosed: (e: unknown) => {
+        onFortePaymentsWidgetClosed: (e: Event) => {
           console.log('onFortePaymentsWidgetClosed', e)
         }
       }

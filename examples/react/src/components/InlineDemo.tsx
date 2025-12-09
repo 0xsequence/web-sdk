@@ -4,9 +4,11 @@ import { Footer } from 'example-shared-components'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { config } from '../config'
+type InlineDemoProps = {
+  config: SequenceConnectConfig
+}
 
-export const InlineDemo = () => {
+export const InlineDemo = ({ config }: InlineDemoProps) => {
   const navigate = useNavigate()
 
   const inlineConfig: SequenceConnectConfig = useMemo(
@@ -21,7 +23,7 @@ export const InlineDemo = () => {
         }
       }
     }),
-    [navigate]
+    [navigate, config]
   )
 
   return (
