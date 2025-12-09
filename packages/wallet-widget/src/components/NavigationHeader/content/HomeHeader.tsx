@@ -50,24 +50,10 @@ export const HomeHeader = () => {
     })
   }
 
-  const onClickSwap = () => {
-    setIsOperationMenuOpen(false)
-    setNavigation({
-      location: 'swap'
-    })
-  }
-
   const onClickReceive = () => {
     setIsOperationMenuOpen(false)
     setNavigation({
       location: 'receive'
-    })
-  }
-
-  const onClickBuy = () => {
-    setIsOperationMenuOpen(false)
-    setNavigation({
-      location: 'buy'
     })
   }
 
@@ -120,34 +106,12 @@ export const HomeHeader = () => {
                 <div
                   className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
                   onClick={() => {
-                    onClickSwap()
-                  }}
-                >
-                  <SwapIcon color="white" />
-                  <Text variant="normal" fontWeight="bold" color="primary">
-                    Swap
-                  </Text>
-                </div>
-                <div
-                  className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
-                  onClick={() => {
                     onClickReceive()
                   }}
                 >
                   <ScanIcon color="white" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Receive
-                  </Text>
-                </div>
-                <div
-                  className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
-                  onClick={() => {
-                    onClickBuy()
-                  }}
-                >
-                  <AddIcon color="white" />
-                  <Text variant="normal" fontWeight="bold" color="primary">
-                    Buy
                   </Text>
                 </div>
               </div>

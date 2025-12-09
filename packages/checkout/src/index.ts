@@ -3,8 +3,6 @@ export { SequenceCheckoutProvider, type SequenceCheckoutConfig } from './compone
 
 // Hooks
 export { useCheckoutModal } from './hooks/useCheckoutModal.js'
-export { useSelectPaymentModal } from './hooks/useSelectPaymentModal.js'
-export { useSwapModal } from './hooks/useSwapModal.js'
 export { useTransferFundsModal } from './hooks/useTransferFundsModal.js'
 
 export { type ForteConfig } from './contexts/CheckoutModal.js'

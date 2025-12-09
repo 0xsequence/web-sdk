@@ -1,7 +1,7 @@
 import { type SequenceIndexer, type TransactionReceipt } from '@0xsequence/indexer'
 
 import { createGenericContext } from './genericContext.js'
-import type { ActionButtons } from './SelectPaymentModal.js'
+import type { ActionButtons } from './CheckoutModal.js'
 
 interface Item {
   tokenId?: string

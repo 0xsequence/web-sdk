@@ -1,7 +1,6 @@
 import type { Navigation } from '../../../contexts/index.js'
 import { CollectionDetails } from '../../../views/CollectionDetails/index.js'
 import {
-  Buy,
   CoinDetails,
   CollectibleDetails,
   Home,
@@ -17,7 +16,6 @@ import {
   SettingsProfiles,
   SettingsWallets,
   // QrScan,
-  Swap,
   SwapCoin,
   SwapList,
   TransactionDetails
@@ -40,12 +38,8 @@ export const getContent = (navigation: Navigation) => {
           tokenId={navigation.params.tokenId}
         />
       )
-    case 'swap':
-      return <Swap />
     case 'receive':
       return <Receive />
-    case 'buy':
-      return <Buy />
     case 'search':
       return <Search />
     case 'settings':

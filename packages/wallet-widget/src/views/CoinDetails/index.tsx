@@ -124,7 +124,6 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress = '' }: T
               label="Send"
               onClick={onClickSend}
             />
-            <Button className="w-full text-primary bg-background-secondary" leftIcon={AddIcon} label="Add" onClick={onClickAdd} />
           </div>
         )}
         <div>

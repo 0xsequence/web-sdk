@@ -4,7 +4,15 @@ import type { Theme } from '@0xsequence/design-system'
 import { type SequenceIndexer, type TransactionReceipt } from '@0xsequence/indexer'
 
 import { createGenericContext } from './genericContext.js'
-import type { ActionButtons, SupplementaryAnalyticsInfo } from './SelectPaymentModal.js'
+
+export interface SupplementaryAnalyticsInfo {
+  [key: string]: string
+}
+
+export interface ActionButtons {
+  label: string
+  action: () => void
+}
 
 interface CoinQuantity {
   contractAddress: string
