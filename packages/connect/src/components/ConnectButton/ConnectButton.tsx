@@ -117,10 +117,13 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   const Logo = getLogo(theme, walletProps)
 
   const WaasLoginContent = () => {
+    const baseClasses = 'flex items-center w-full h-full bg-background-secondary absolute pointer-events-none top-0 right-0'
+    const layoutClasses = isDescriptive ? 'gap-3 justify-start px-4' : 'justify-center'
+
     const copy = walletProps?.ctaText || 'Continue with Google'
     if (isDescriptive) {
       return (
-        <div className="flex gap-1 justify-center items-center bg-background-secondary absolute pointer-events-none w-full h-full top-0 right-0">
+        <div className={`${baseClasses} ${layoutClasses}`}>
           <Logo className={iconDescriptiveSizeClasses} />
           <Text color="primary" variant="normal" fontWeight="bold">
             {copy}
@@ -130,7 +133,7 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
     }
 
     return (
-      <div className="flex bg-background-secondary justify-center items-center absolute pointer-events-none w-full h-full top-0 right-0">
+      <div className={`${baseClasses} ${layoutClasses}`}>
         <Logo className={iconSizeClasses} />
       </div>
     )

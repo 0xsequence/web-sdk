@@ -802,93 +802,91 @@ export const Connect = (props: ConnectProps) => {
               />
             ) : (
               <>
+                {!hasPrimarySequenceConnection && <Banner config={config as ConnectConfig} />}
+
+                {showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
+                  <WalletConnectorsSection />
+                )}
+
                 {!hasPrimarySequenceConnection && (
-                  <>
-                    <Banner config={config as ConnectConfig} />
-
-                    {showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
-                      <WalletConnectorsSection />
-                    )}
-
-                    <div className="flex mt-6 gap-6 flex-col">
-                      <>
-                        {showEcosystemConnectorSection && (
-                          <div
-                            className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
-                          >
-                            {ecosystemConnectors.slice(0, ecosystemConnectorsPerRow).map(connector => {
-                              return (
-                                <div className="w-full" key={connector.uid}>
-                                  {renderConnectorButton(connector, {
-                                    isDescriptive: descriptiveSocials,
-                                    disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
-                                  })}
-                                </div>
-                              )
-                            })}
-                            {showMoreEcosystemOptions && (
-                              <div className="w-full">
-                                <ShowAllWalletsButton onClick={() => setShowExtendedList('ecosystem')} />
+                  <div className="flex mt-6 gap-6 flex-col">
+                    <>
+                      {showEcosystemConnectorSection && (
+                        <div
+                          className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
+                        >
+                          {ecosystemConnectors.slice(0, ecosystemConnectorsPerRow).map(connector => {
+                            return (
+                              <div className="w-full" key={connector.uid}>
+                                {renderConnectorButton(connector, {
+                                  isDescriptive: descriptiveSocials,
+                                  disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
+                                })}
                               </div>
-                            )}
-                          </div>
-                        )}
-                        {!hideSocialConnectOptions && showSocialConnectorSection && (
-                          <div
-                            className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
-                          >
-                            {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
-                              return (
-                                <div className="w-full" key={connector.uid}>
-                                  {renderConnectorButton(connector, {
-                                    isDescriptive: descriptiveSocials,
-                                    disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
-                                  })}
-                                </div>
-                              )
-                            })}
-                            {showMoreSocialOptions && (
-                              <div className="w-full">
-                                <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                            )
+                          })}
+                          {showMoreEcosystemOptions && (
+                            <div className="w-full">
+                              <ShowAllWalletsButton onClick={() => setShowExtendedList('ecosystem')} />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {!hideSocialConnectOptions && showSocialConnectorSection && (
+                        <div
+                          className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
+                        >
+                          {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
+                            return (
+                              <div className="w-full" key={connector.uid}>
+                                {renderConnectorButton(connector, {
+                                  isDescriptive: descriptiveSocials,
+                                  disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
+                                })}
                               </div>
-                            )}
-                          </div>
-                        )}
-                        {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
-                          <div className="flex gap-4 flex-row justify-center items-center">
-                            <Divider className="mx-0 my-0 text-background-secondary grow" />
-                            <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">
-                              or
-                            </Text>
-                            <Divider className="mx-0 my-0 text-background-secondary grow" />
-                          </div>
-                        )}
-                        {showEmailInputSection && (
-                          <>
-                            <form onSubmit={onConnectInlineEmail}>
-                              <TextInput
-                                autoFocus
-                                onChange={onChangeEmail}
-                                value={email}
-                                name="email"
-                                placeholder="Email address"
-                                controls={
-                                  <>
-                                    {emailAuthInProgress ? (
-                                      <Spinner />
-                                    ) : (
-                                      <IconButton type="submit" size="xs" icon={ArrowRightIcon} disabled={!isEmailValid(email)} />
-                                    )}
-                                  </>
-                                }
-                                data-1p-ignore
-                              />
-                            </form>
-                          </>
-                        )}
-                      </>
-                    </div>
-                  </>
+                            )
+                          })}
+                          {showMoreSocialOptions && (
+                            <div className="w-full">
+                              <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
+                        <div className="flex gap-4 flex-row justify-center items-center">
+                          <Divider className="mx-0 my-0 text-background-secondary grow" />
+                          <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">
+                            or
+                          </Text>
+                          <Divider className="mx-0 my-0 text-background-secondary grow" />
+                        </div>
+                      )}
+                      {showEmailInputSection && (
+                        <>
+                          <form onSubmit={onConnectInlineEmail}>
+                            <TextInput
+                              autoFocus
+                              onChange={onChangeEmail}
+                              value={email}
+                              name="email"
+                              placeholder="Email address"
+                              controls={
+                                <>
+                                  {emailAuthInProgress ? (
+                                    <Spinner />
+                                  ) : (
+                                    <IconButton type="submit" size="xs" icon={ArrowRightIcon} disabled={!isEmailValid(email)} />
+                                  )}
+                                </>
+                              }
+                              data-1p-ignore
+                            />
+                          </form>
+                        </>
+                      )}
+                    </>
+                  </div>
                 )}
 
                 {!showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
