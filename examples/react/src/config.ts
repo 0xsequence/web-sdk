@@ -15,7 +15,7 @@ const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 // @ts-ignore
 const isDev = false
-const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAKqC8tV0Mgsd0BGlI2bzanNTdEE'
+const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
