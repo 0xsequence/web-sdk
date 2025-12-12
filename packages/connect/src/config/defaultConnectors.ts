@@ -19,11 +19,23 @@ import { getConnectWallets } from '../utils/getConnectWallets.js'
 import type { ExplicitSessionParams } from '../utils/session/types.js'
 
 export interface CommonConnectorOptions {
-  appName: string
+  appName?: string
   projectAccessKey: string
   walletUrl?: string
   dappOrigin?: string
   defaultChainId?: number
+}
+
+const resolveAppName = (options: CommonConnectorOptions & { signIn?: { projectName?: string } }) => {
+  if (options.appName) {
+    return options.appName
+  }
+
+  if (options.signIn?.projectName) {
+    return options.signIn.projectName
+  }
+
+  return ''
 }
 
 export interface DefaultV3ConnectorOptions extends CommonConnectorOptions {
@@ -126,7 +138,8 @@ export const getDefaultConnectors = <T extends WalletType>(walletType: T, option
 }
 
 export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): CreateConnectorFn[] => {
-  const { projectAccessKey, waasConfigKey, appName, enableConfirmationModal, defaultChainId } = options
+  const { projectAccessKey, waasConfigKey, enableConfirmationModal, defaultChainId } = options
+  const appName = resolveAppName(options)
 
   const wallets: Wallet[] = []
 
@@ -248,7 +261,8 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
 }
 
 export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): CreateConnectorFn[] => {
-  const { projectAccessKey, appName, walletUrl, dappOrigin, defaultChainId = 1 } = options
+  const { projectAccessKey, walletUrl, dappOrigin, defaultChainId = 1 } = options
+  const appName = resolveAppName(options)
   const hasEcosystemWallets = Array.isArray(options.ecosystemWallets) && options.ecosystemWallets.length > 0
   const shouldIncludeStandardSocialWallets = !hasEcosystemWallets
 

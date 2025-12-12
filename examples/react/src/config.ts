@@ -16,6 +16,7 @@ const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAA
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 export const WALLET_URL_STORAGE_KEY = 'sequence-react-example.walletUrl'
 export const DEFAULT_WALLET_URL = 'https://immutable.ecosystem-demo.xyz'
+// export const DEFAULT_WALLET_URL = 'https://v3.sequence-dev.app/'
 
 export const sanitizeWalletUrl = (walletUrl: string): string => {
   const trimmed = walletUrl.trim()
