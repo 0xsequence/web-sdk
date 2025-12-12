@@ -58,7 +58,13 @@ const walletConfigurationPromises = new Map<string, Promise<WalletConfigurationR
 const walletConfigurationCache = new Map<string, CachedWalletConfiguration>()
 
 export const normalizeWalletUrl = (walletUrl: string): string => {
-  return walletUrl.replace(/\/+$/, '')
+  const trimmed = walletUrl.trim()
+  if (!trimmed) {
+    return ''
+  }
+
+  const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
+  return withProtocol.replace(/\/+$/, '')
 }
 
 const getCachedWalletConfiguration = (normalizedUrl: string): WalletConfigurationResponse | undefined => {

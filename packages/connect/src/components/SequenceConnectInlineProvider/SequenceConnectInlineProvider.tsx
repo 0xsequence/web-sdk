@@ -47,6 +47,21 @@ export type SequenceConnectInlineProviderProps = {
   config: ConnectConfig
 }
 
+const resolveInlineBackground = (theme: Theme | undefined) => {
+  if (theme && typeof theme === 'object' && 'colors' in theme) {
+    const background = (theme as any).colors?.backgroundPrimary
+    if (background) {
+      return background as string
+    }
+  }
+
+  if (typeof theme === 'string') {
+    return theme === 'light' ? '#f6f6f6' : '#000'
+  }
+
+  return '#000'
+}
+
 /**
  * Inline version of SequenceConnectProvider component.
  * This component renders the connect UI inline within your layout instead of in a modal.
@@ -86,6 +101,8 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
 
   const [isWalletWidgetOpen, setIsWalletWidgetOpen] = useState<boolean>(false)
+
+  const inlineBackground = resolveInlineBackground(theme)
 
   useEffect(() => {
     const handleWalletModalStateChange = (event: Event) => {
@@ -221,7 +238,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
                 <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
                   <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey, setIsSocialLinkOpen }}>
                     <EpicAuthProvider>
-                      <div id="kit-provider" className="h-full w-full flex flex-col">
+                      <div id="kit-provider" className="h-full w-full flex flex-col" style={{ background: inlineBackground }}>
                         <style>{styles + styleProperties + (customCSS ? `\n\n${customCSS}` : '')}</style>
                         <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
                           {isWalletConfigLoading ? (

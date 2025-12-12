@@ -19,6 +19,21 @@ export type SequenceConnectProviderProps = {
   config: ConnectConfig
 }
 
+const resolveInlineBackground = (theme: Theme | undefined) => {
+  if (theme && typeof theme === 'object' && 'colors' in theme) {
+    const background = (theme as any).colors?.backgroundPrimary
+    if (background) {
+      return background as string
+    }
+  }
+
+  if (typeof theme === 'string') {
+    return theme === 'light' ? '#f6f6f6' : '#000'
+  }
+
+  return '#000'
+}
+
 /**
  * @internal
  * Preview version of SequenceConnectProvider component.
@@ -44,6 +59,8 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
 
   const wagmiConfig = useConfig()
+
+  const inlineBackground = resolveInlineBackground(theme)
 
   const googleWaasConnector = wagmiConfig.connectors.find(
     c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
@@ -74,7 +91,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
                 hideSocialConnectOptions
               }}
             >
-              <div id="kit-provider">
+              <div id="kit-provider" style={{ background: inlineBackground }}>
                 <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
                   {isWalletConfigLoading ? (
                     <div className="flex py-8 justify-center items-center">
