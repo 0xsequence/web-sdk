@@ -1,6 +1,6 @@
 'use client'
 
-import { ThemeProvider, type Theme } from '@0xsequence/design-system'
+import { Spinner, ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { useState, type ReactNode } from 'react'
 import { useConfig } from 'wagmi'
@@ -10,6 +10,7 @@ import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
+import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
 import { type ConnectConfig, type DisplayedAsset, type ExtendedConnector, type ModalPosition } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
 
@@ -25,7 +26,8 @@ export type SequenceConnectProviderProps = {
  * It provides the same functionality as SequenceConnectProvider but only for preview purposes.
  */
 export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderProps) => {
-  const { config, children } = props
+  const { config: incomingConfig, children } = props
+  const { resolvedConfig: config, isLoading: isWalletConfigLoading, enabledProviders } = useResolvedConnectConfig(incomingConfig)
 
   const {
     defaultTheme = 'dark',
@@ -74,7 +76,20 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
             >
               <div id="kit-provider">
                 <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                  <Connect onClose={() => {}} emailConflictInfo={emailConflictInfo} isInline {...props} />
+                  {isWalletConfigLoading ? (
+                    <div className="flex py-8 justify-center items-center">
+                      <Spinner size="lg" />
+                    </div>
+                  ) : (
+                    <Connect
+                      onClose={() => {}}
+                      emailConflictInfo={emailConflictInfo}
+                      isInline
+                      {...props}
+                      config={config}
+                      enabledProviders={enabledProviders}
+                    />
+                  )}
                 </ThemeProvider>
               </div>
               {children}

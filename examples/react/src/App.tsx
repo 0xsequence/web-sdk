@@ -1,4 +1,3 @@
-import { SequenceCheckoutProvider } from '@0xsequence/checkout'
 import { SequenceConnect } from '@0xsequence/connect'
 import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
 import { useCallback, useMemo, useState } from 'react'
@@ -8,7 +7,7 @@ import { Homepage } from './components/Homepage'
 import { ImmutableCallback } from './components/ImmutableCallback'
 import { InlineDemo } from './components/InlineDemo'
 import { XAuthCallback } from './components/XAuthCallback'
-import { checkoutConfig, createExampleConfig, loadWalletUrl, persistWalletUrl, sanitizeWalletUrl } from './config'
+import { createExampleConfig, loadWalletUrl, persistWalletUrl, sanitizeWalletUrl } from './config'
 
 export const App = () => {
   const [walletUrl, setWalletUrl] = useState<string>(() => loadWalletUrl())
@@ -24,16 +23,14 @@ export const App = () => {
   return (
     <SequenceConnect config={config}>
       <SequenceWalletProvider>
-        <SequenceCheckoutProvider config={checkoutConfig}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Homepage walletUrl={walletUrl} onWalletUrlChange={handleWalletUrlChange} />} />
-              <Route path="/inline" element={<InlineDemo config={config} />} />
-              <Route path="/auth-callback" element={<ImmutableCallback />} />
-              <Route path="/auth-callback-X" element={<XAuthCallback />} />
-            </Routes>
-          </BrowserRouter>
-        </SequenceCheckoutProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Homepage walletUrl={walletUrl} onWalletUrlChange={handleWalletUrlChange} />} />
+            <Route path="/inline" element={<InlineDemo config={config} />} />
+            <Route path="/auth-callback" element={<ImmutableCallback />} />
+            <Route path="/auth-callback-X" element={<XAuthCallback />} />
+          </Routes>
+        </BrowserRouter>
       </SequenceWalletProvider>
     </SequenceConnect>
   )

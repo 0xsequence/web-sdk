@@ -23,6 +23,7 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
 
 export const connectConfig: ConnectConfig = {
   projectAccessKey,
+  walletUrl: 'https://v3.sequence-dev.app',
   defaultTheme: 'dark',
   signIn: {
     projectName: 'Sequence Web SDK Demo',

@@ -1,22 +1,21 @@
-import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, createContractPermission } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
-import { parseEther, zeroAddress } from 'viem'
+import { parseEther } from 'viem'
 
 import { getEmitterContractAddress } from './constants/permissions'
 
-const searchParams = new URLSearchParams(location.search)
+// const searchParams = new URLSearchParams(location.search)
 
 // append ?debug to url to enable debug mode
-const isDebugMode = searchParams.has('debug')
+// const isDebugMode = searchParams.has('debug')
 // @ts-ignore
 const isDev = false
 const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 export const WALLET_URL_STORAGE_KEY = 'sequence-react-example.walletUrl'
-export const DEFAULT_WALLET_URL = 'https://v3.sequence-dev.app'
+export const DEFAULT_WALLET_URL = 'https://immutable.ecosystem-demo.xyz'
 
 export const sanitizeWalletUrl = (walletUrl: string): string => {
   const trimmed = walletUrl.trim()
@@ -35,10 +34,8 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
 
 export const connectConfig: ConnectConfig = {
   projectAccessKey,
-  defaultTheme: 'dark',
+  walletUrl: DEFAULT_WALLET_URL,
   signIn: {
-    projectName: 'Sequence Web SDK Demo',
-    useMock: isDebugMode,
     descriptiveSocials: true,
     disableTooltipForDescriptiveSocials: true
   },
@@ -48,34 +45,7 @@ export const connectConfig: ConnectConfig = {
   //     color: red !important;
   //   }
   // `,
-  displayedAssets: [
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Skyweaver assets
-    {
-      contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-      chainId: ChainId.POLYGON
-    }
-  ],
-  readOnlyNetworks: [ChainId.OPTIMISM],
+  displayedAssets: [],
   env: isDev
     ? {
         indexerGatewayUrl: 'https://dev-indexer.sequence.app',
@@ -125,23 +95,7 @@ export const createExampleConfig = (walletUrl: string) =>
     walletUrl: sanitizeWalletUrl(walletUrl),
     dappOrigin: window.location.origin,
     appName: 'Sequence Web SDK Demo',
-    chainIds: [ChainId.ARBITRUM_SEPOLIA, ChainId.OPTIMISM],
     defaultChainId: ChainId.OPTIMISM,
-    google: true,
-    apple: true,
-    email: true,
-    passkey: true,
-    // ecosystemWallets: [
-    //   {
-    //     id: 'sequence-ecosystem',
-    //     name: 'Sequence',
-    //     ctaText: 'Continue with Sequence',
-    //     logoDark: SequenceEcosystemLogo,
-    //     logoLight: SequenceEcosystemLogo,
-    //     monochromeLogoDark: SequenceEcosystemLogo,
-    //     monochromeLogoLight: SequenceEcosystemLogo
-    //   }
-    // ],
     walletConnect: {
       projectId: walletConnectProjectId
     },
@@ -165,31 +119,3 @@ export const createExampleConfig = (walletUrl: string) =>
       ]
     }
   })
-
-export const getErc1155SaleContractConfig = (walletAddress: string) => ({
-  chain: 137,
-  // ERC20 token sale
-  contractAddress: '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b',
-  collectionAddress: '0xdeb398f41ccd290ee5114df7e498cf04fac916cb',
-  // Native token sale
-  // contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
-  // collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-  wallet: walletAddress,
-  items: [
-    {
-      tokenId: '1',
-      quantity: '1'
-    }
-  ],
-  onSuccess: () => {
-    console.log('success')
-  }
-})
-
-export const checkoutConfig: SequenceCheckoutConfig = {
-  env: isDev
-    ? {
-        forteWidgetUrl: 'https://payments.sandbox.lemmax.com/forte-payments-widget.js'
-      }
-    : undefined
-}

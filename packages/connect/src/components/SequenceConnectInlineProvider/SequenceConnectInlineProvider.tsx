@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Card, Modal, ModalPrimitive, Text, ThemeProvider, type Theme } from '@0xsequence/design-system'
+import { Button, Card, Modal, ModalPrimitive, Spinner, Text, ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
@@ -20,6 +20,7 @@ import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
+import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
 import { styleProperties } from '../../styleProperties.js'
 import { styles } from '../../styles.js'
 import {
@@ -52,7 +53,8 @@ export type SequenceConnectInlineProviderProps = {
  * Ideal for embedded wallet experiences or custom layouts.
  */
 export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProviderProps) => {
-  const { config, children } = props
+  const { config: incomingConfig, children } = props
+  const { resolvedConfig: config, isLoading: isWalletConfigLoading, enabledProviders } = useResolvedConnectConfig(incomingConfig)
 
   const {
     defaultTheme = 'dark',
@@ -144,7 +146,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
     if (!disableAnalytics) {
       getAnalyticsClient(config.projectAccessKey)
     }
-  }, [])
+  }, [disableAnalytics, config.projectAccessKey])
 
   useEffect(() => {
     if (theme !== defaultTheme) {
@@ -179,7 +181,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
   }, [theme, ethAuth])
 
   useEffect(() => {
-    setDisplayedAssets(displayedAssets)
+    setDisplayedAssets(displayedAssetsSetting)
   }, [displayedAssetsSetting])
 
   const { isEmailConflictOpen, emailConflictInfo, toggleEmailConflictModal } = useEmailConflict()
@@ -222,7 +224,20 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
                       <div id="kit-provider" className="h-full w-full flex flex-col">
                         <style>{styles + styleProperties + (customCSS ? `\n\n${customCSS}` : '')}</style>
                         <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                          <Connect onClose={() => {}} emailConflictInfo={emailConflictInfo} isInline {...props} />
+                          {isWalletConfigLoading ? (
+                            <div className="flex py-8 justify-center items-center">
+                              <Spinner size="lg" />
+                            </div>
+                          ) : (
+                            <Connect
+                              onClose={() => {}}
+                              emailConflictInfo={emailConflictInfo}
+                              isInline
+                              {...props}
+                              config={config}
+                              enabledProviders={enabledProviders}
+                            />
+                          )}
                         </ThemeProvider>
                       </div>
 

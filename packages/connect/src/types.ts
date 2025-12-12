@@ -68,6 +68,8 @@ export type ModalPosition =
 export interface ConnectConfig {
   projectAccessKey: string
   waasConfigKey?: string
+  walletUrl?: string
+  chainIds?: number[]
   disableAnalytics?: boolean
   defaultTheme?: Theme
   position?: ModalPosition

@@ -33,6 +33,7 @@ import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet.js'
 import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
+import type { WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
 import { formatAddress, isEmailValid } from '../../utils/helpers.js'
 import {
   AppleWaasConnectButton,
@@ -55,6 +56,25 @@ import { ExtendedWalletList } from './ExtendedWalletList.js'
 const MAX_ITEM_PER_ROW = 4
 const SEQUENCE_V3_CONNECTOR_TYPE = 'sequence-v3-wallet'
 
+const getConnectorProvider = (connector: ExtendedConnector): WalletConfigurationProvider | null => {
+  const walletId = connector._wallet?.id?.toLowerCase() || ''
+
+  if (walletId.includes('email')) {
+    return 'EMAIL'
+  }
+  if (walletId.includes('google')) {
+    return 'GOOGLE'
+  }
+  if (walletId.includes('apple')) {
+    return 'APPLE'
+  }
+  if (walletId.includes('passkey')) {
+    return 'PASSKEY'
+  }
+
+  return null
+}
+
 interface RestorableSessionState {
   connector: ExtendedConnector & SequenceV3Connector
   walletAddress?: string
@@ -65,6 +85,7 @@ interface ConnectProps extends SequenceConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
   onClose: () => void
   isInline?: boolean
+  enabledProviders?: WalletConfigurationProvider[]
 }
 
 export const Connect = (props: ConnectProps) => {
@@ -90,6 +111,50 @@ export const Connect = (props: ConnectProps) => {
   const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet' | 'ecosystem'>(null)
   const { status, connectors, connect } = useConnect()
   const { signMessageAsync } = useSignMessage()
+
+  const enabledProviderSet = useMemo(() => {
+    if (!props.enabledProviders) {
+      return undefined
+    }
+
+    return new Set(props.enabledProviders.map(provider => provider.toUpperCase() as WalletConfigurationProvider))
+  }, [props.enabledProviders])
+
+  const allowedChainIds = useMemo(() => {
+    if (!config?.chainIds || config.chainIds.length === 0) {
+      return undefined
+    }
+
+    return new Set(config.chainIds)
+  }, [config?.chainIds])
+
+  const filteredConnectors = useMemo(
+    () =>
+      (connectors as ExtendedConnector[]).filter(connector => {
+        const connectorChains = Array.isArray((connector as any).chains)
+          ? ((connector as any).chains as { id: number }[])
+          : undefined
+
+        if (allowedChainIds && connectorChains?.length) {
+          const connectorSupportsAllowedChain = connectorChains.some(chain => allowedChainIds.has(chain.id))
+          if (!connectorSupportsAllowedChain) {
+            return false
+          }
+        }
+
+        if (!enabledProviderSet) {
+          return true
+        }
+
+        const provider = getConnectorProvider(connector)
+        if (!provider) {
+          return true
+        }
+
+        return enabledProviderSet.has(provider)
+      }),
+    [connectors, enabledProviderSet, allowedChainIds]
+  )
 
   const connections = useConnections()
   const { data: waasStatusData } = useGetWaasStatus()
@@ -207,7 +272,7 @@ export const Connect = (props: ConnectProps) => {
   const hasSocialConnection = connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social')
   const hasPrimarySequenceConnection = hasSequenceWalletConnection || hasSocialConnection
 
-  const extendedConnectors = connectors as ExtendedConnector[]
+  const extendedConnectors = filteredConnectors as ExtendedConnector[]
 
   const sequenceConnectors = useMemo(
     () =>
@@ -336,7 +401,7 @@ export const Connect = (props: ConnectProps) => {
   })
 
   // EIP-6963 connectors will not have the _wallet property
-  const injectedConnectors: ExtendedConnector[] = connectors
+  const injectedConnectors: ExtendedConnector[] = filteredConnectors
     .filter(connector => {
       // Keep the connector when it is an EIP-6963 connector
       if (connector.type === 'injected') {

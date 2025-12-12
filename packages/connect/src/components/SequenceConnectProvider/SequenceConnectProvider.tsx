@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Card, Modal, ModalPrimitive, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
+import { Button, Card, Modal, ModalPrimitive, Spinner, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
@@ -20,6 +20,7 @@ import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
+import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
 import {
   type ConnectConfig,
   type DisplayedAsset,
@@ -45,7 +46,8 @@ export type SequenceConnectProviderProps = {
 }
 
 export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => {
-  const { config, children } = props
+  const { config: incomingConfig, children } = props
+  const { resolvedConfig: config, isLoading: isWalletConfigLoading, enabledProviders } = useResolvedConnectConfig(incomingConfig)
   const {
     defaultTheme = 'dark',
     signIn = {},
@@ -144,7 +146,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     if (!disableAnalytics) {
       getAnalyticsClient(config.projectAccessKey)
     }
-  }, [])
+  }, [disableAnalytics, config.projectAccessKey])
 
   useEffect(() => {
     if (theme !== defaultTheme) {
@@ -234,13 +236,21 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               }}
                               onClose={() => setOpenConnectModal(false)}
                             >
-                              <EpicAuthProvider>
-                                <Connect
-                                  onClose={() => setOpenConnectModal(false)}
-                                  emailConflictInfo={emailConflictInfo}
-                                  {...props}
-                                />
-                              </EpicAuthProvider>
+                              {isWalletConfigLoading ? (
+                                <div className="flex py-16 justify-center items-center">
+                                  <Spinner size="lg" />
+                                </div>
+                              ) : (
+                                <EpicAuthProvider>
+                                  <Connect
+                                    onClose={() => setOpenConnectModal(false)}
+                                    emailConflictInfo={emailConflictInfo}
+                                    {...props}
+                                    config={config}
+                                    enabledProviders={enabledProviders}
+                                  />
+                                </EpicAuthProvider>
+                              )}
                             </Modal>
                           )}
                           {pendingRequestConfirmation && (
