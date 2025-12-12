@@ -1,4 +1,4 @@
-export * from './CheckoutModal.js'
+export * from './CreditCardCheckout.js'
 export * from './Navigation.js'
 export * from './NavigationCheckout.js'
 export * from './TransferFundsModal.js'

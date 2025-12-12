@@ -6,13 +6,13 @@ import { AnimatePresence } from 'motion/react'
 import { useEffect, useState, type ReactNode } from 'react'
 
 import {
-  CheckoutModalContextProvider,
+  CreditCardCheckoutModalContextProvider,
   EnvironmentContextProvider,
   NavigationCheckoutContextProvider,
   NavigationContextProvider,
   TransactionStatusModalContextProvider,
   TransferFundsContextProvider,
-  type CheckoutSettings,
+  type CreditCardCheckoutSettings,
   type EnvironmentOverrides,
   type History,
   type HistoryCheckout,
@@ -21,7 +21,13 @@ import {
   type TransactionStatusSettings,
   type TransferFundsSettings
 } from '../../contexts/index.js'
-import { PendingCreditCardTransaction, TransactionError, TransactionStatus, TransactionSuccess, TransferToWallet } from '../../views/index.js'
+import {
+  PendingCreditCardTransaction,
+  TransactionError,
+  TransactionStatus,
+  TransactionSuccess,
+  TransferToWallet
+} from '../../views/index.js'
 import { NavigationHeader } from '../NavigationHeader.js'
 
 import { ForteController } from './ForteController.js'
@@ -45,10 +51,10 @@ const getDefaultLocationCheckout = (): NavigationCheckout => {
 }
 export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutProviderProps) => {
   const { theme, position } = useTheme()
-  const [openCheckoutModal, setOpenCheckoutModal] = useState<boolean>(false)
+  const [openCreditCardCheckoutModal, setOpenCreditCardCheckoutModal] = useState<boolean>(false)
   const [openTransferFundsModal, setOpenTransferFundsModal] = useState<boolean>(false)
   const [openTransactionStatusModal, setOpenTransactionStatusModal] = useState<boolean>(false)
-  const [settings, setSettings] = useState<CheckoutSettings>()
+  const [creditCardSettings, setCreditCardSettings] = useState<CreditCardCheckoutSettings>()
   const [transferFundsSettings, setTransferFundsSettings] = useState<TransferFundsSettings>()
   const [transactionStatusSettings, setTransactionStatusSettings] = useState<TransactionStatusSettings>()
   const [history, setHistory] = useState<History>([])
@@ -56,19 +62,10 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   const { customCSS } = useConnectConfigContext()
 
   const getDefaultLocation = (): Navigation => {
-    // skip the order summary for credit card checkout if no items provided
-    const orderSummaryItems = settings?.orderSummaryItems || []
-    const creditCardSettings = settings?.creditCardCheckout
-    if (orderSummaryItems.length === 0 && creditCardSettings) {
-      return {
-        location: 'transaction-pending',
-        params: {
-          creditCardCheckout: creditCardSettings
-        }
-      }
-    } else {
-      return {
-        location: 'select-method-checkout'
+    return {
+      location: 'transaction-pending',
+      params: {
+        creditCardCheckout: creditCardSettings!
       }
     }
   }
@@ -76,13 +73,13 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   // TODO: remove this navigation logic and all associated code, including components, once flows are migrated to updated checkout ui
   const navigation = history.length > 0 ? history[history.length - 1] : getDefaultLocation()
 
-  const triggerCheckout = (settings: CheckoutSettings) => {
-    setSettings(settings)
-    setOpenCheckoutModal(true)
+  const initiateCreditCardCheckout = (settings: CreditCardCheckoutSettings) => {
+    setCreditCardSettings(settings)
+    setOpenCreditCardCheckoutModal(true)
   }
 
-  const closeCheckout = () => {
-    setOpenCheckoutModal(false)
+  const closeCreditCardCheckout = () => {
+    setOpenCreditCardCheckoutModal(false)
   }
 
   const triggerTransactionStatusModal = (settings: TransactionStatusSettings) => {
@@ -145,10 +142,10 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
   }
 
   useEffect(() => {
-    if (openCheckoutModal) {
+    if (openCreditCardCheckoutModal) {
       setHistory([])
     }
-  }, [openCheckoutModal])
+  }, [openCreditCardCheckoutModal])
 
   return (
     <EnvironmentContextProvider
@@ -165,12 +162,11 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
             transactionStatusSettings
           }}
         >
-          <CheckoutModalContextProvider
+          <CreditCardCheckoutModalContextProvider
             value={{
-              triggerCheckout,
-              closeCheckout,
-              settings,
-              theme
+              initiateCreditCardCheckout,
+              closeCreditCardCheckout,
+              settings: creditCardSettings
             }}
           >
             <TransferFundsContextProvider
@@ -181,71 +177,71 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
               }}
             >
               <NavigationContextProvider value={{ history, setHistory, defaultLocation: getDefaultLocation() }}>
-              <NavigationCheckoutContextProvider
-                value={{
-                  history: checkoutHistory,
-                  setHistory: setCheckoutHistory,
-                  defaultLocation: getDefaultLocationCheckout()
-                }}
-              >
-                <ShadowRoot theme={theme} customCSS={customCSS}>
-                  <AnimatePresence>
-                    {openCheckoutModal && (
-                      <Modal
-                        contentProps={{
-                          style: {
-                            maxWidth: '540px',
-                            height: 'auto',
-                            ...getModalPositionCss(position)
-                          }
-                        }}
-                        scroll={false}
-                        onClose={() => setOpenCheckoutModal(false)}
-                      >
-                        <div id="sequence-kit-checkout-content">
-                          {getCheckoutHeader()}
-                          {getCheckoutContent()}
-                        </div>
-                      </Modal>
-                    )}
-                    {openTransferFundsModal && (
-                      <Modal
-                        contentProps={{
-                          style: {
-                            height: 'auto',
-                            ...getModalPositionCss(position)
-                          }
-                        }}
-                        onClose={closeTransferFunds}
-                      >
-                        <div id="sequence-kit-transfer-funds-modal">
-                          <NavigationHeader primaryText="Receive" />
-                          <TransferToWallet />
-                        </div>
-                      </Modal>
-                    )}
-                    {openTransactionStatusModal && (
-                      <Modal
-                        contentProps={{
-                          style: {
-                            height: 'auto',
-                            ...getModalPositionCss(position)
-                          }
-                        }}
-                        onClose={closeTransactionStatusModal}
-                      >
-                        <div id="sequence-kit-transaction-status-modal">
-                          <TransactionStatus />
-                        </div>
-                      </Modal>
-                    )}
-                  </AnimatePresence>
-                </ShadowRoot>
-                {children}
-              </NavigationCheckoutContextProvider>
-            </NavigationContextProvider>
+                <NavigationCheckoutContextProvider
+                  value={{
+                    history: checkoutHistory,
+                    setHistory: setCheckoutHistory,
+                    defaultLocation: getDefaultLocationCheckout()
+                  }}
+                >
+                  <ShadowRoot theme={theme} customCSS={customCSS}>
+                    <AnimatePresence>
+                      {openCreditCardCheckoutModal && (
+                        <Modal
+                          contentProps={{
+                            style: {
+                              maxWidth: '540px',
+                              height: 'auto',
+                              ...getModalPositionCss(position)
+                            }
+                          }}
+                          scroll={false}
+                          onClose={() => setOpenCreditCardCheckoutModal(false)}
+                        >
+                          <div id="sequence-kit-checkout-content">
+                            {getCheckoutHeader()}
+                            {getCheckoutContent()}
+                          </div>
+                        </Modal>
+                      )}
+                      {openTransferFundsModal && (
+                        <Modal
+                          contentProps={{
+                            style: {
+                              height: 'auto',
+                              ...getModalPositionCss(position)
+                            }
+                          }}
+                          onClose={closeTransferFunds}
+                        >
+                          <div id="sequence-kit-transfer-funds-modal">
+                            <NavigationHeader primaryText="Receive" />
+                            <TransferToWallet />
+                          </div>
+                        </Modal>
+                      )}
+                      {openTransactionStatusModal && (
+                        <Modal
+                          contentProps={{
+                            style: {
+                              height: 'auto',
+                              ...getModalPositionCss(position)
+                            }
+                          }}
+                          onClose={closeTransactionStatusModal}
+                        >
+                          <div id="sequence-kit-transaction-status-modal">
+                            <TransactionStatus />
+                          </div>
+                        </Modal>
+                      )}
+                    </AnimatePresence>
+                  </ShadowRoot>
+                  {children}
+                </NavigationCheckoutContextProvider>
+              </NavigationContextProvider>
             </TransferFundsContextProvider>
-          </CheckoutModalContextProvider>
+          </CreditCardCheckoutModalContextProvider>
         </TransactionStatusModalContextProvider>
       </ForteController>
     </EnvironmentContextProvider>

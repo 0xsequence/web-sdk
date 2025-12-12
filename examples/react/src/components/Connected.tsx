@@ -1,4 +1,4 @@
-import { useCheckoutModal, useTransactionStatusModal } from '@0xsequence/checkout'
+import { useCreditCardCheckoutModal, useTransactionStatusModal } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
@@ -31,16 +31,14 @@ import { Select } from './Select'
 const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 const checkoutProvider = searchParams.get('checkoutProvider')
-const onRampProvider = searchParams.get('onRampProvider')
 const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-transak-payment-erc1155-sale-native-token-testnet'
 
 export const Connected = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
-  const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
   const { address } = useAccount()
   const { setOpenWalletModal } = useOpenWalletModal()
-  const { triggerCheckout } = useCheckoutModal()
+  const { initiateCreditCardCheckout } = useCreditCardCheckoutModal()
   const { setIsSocialLinkOpen } = useSocialLink()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
@@ -360,30 +358,27 @@ export const Connected = () => {
     setIsCheckoutInfoModalOpen(true)
   }
 
-  // Convert to credit card flow
-  // const onClickSelectPayment = () => {
-  //   if (!address) {
-  //     return
-  //   }
+  const onClickInitiateCreditCardPayment = () => {
+    if (!address) {
+      return
+    }
 
-  //   const creditCardProvider = checkoutProvider || 'forte'
+    const creditCardProvider = checkoutProvider || 'forte'
 
-  //   openSelectPaymentModal({
-  //     recipientAddress: address,
-  //     creditCardProviders: [creditCardProvider],
-  //     onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-  //     onSuccess: (txnHash?: string) => {
-  //       console.log('success!', txnHash)
-  //     },
-  //     onError: (error: Error) => {
-  //       console.error(error)
-  //     },
-  //     onClose: () => {
-  //       console.log('modal closed!')
-  //     },
-  //     ...checkoutPresets[checkoutPreset as keyof typeof checkoutPresets](address || '')
-  //   })
-  // }
+    initiateCreditCardCheckout({
+      provider: creditCardProvider,
+      onSuccess: (txnHash?: string) => {
+        console.log('success!', txnHash)
+      },
+      onError: (error: Error) => {
+        console.error(error)
+      },
+      onClose: () => {
+        console.log('modal closed!')
+      },
+      ...checkoutPresets[checkoutPreset as keyof typeof checkoutPresets](address || '')
+    })
+  }
 
   const onCheckoutInfoConfirm = () => {
     setIsCheckoutInfoModalOpen(false)
@@ -411,7 +406,7 @@ export const Connected = () => {
           recipient: recipientAddress
         })
       })
-      triggerCheckout(checkoutSettings)
+      initiateCreditCardCheckout(checkoutSettings)
     }
   }
 
@@ -729,6 +724,12 @@ export const Connected = () => {
               Web SDK Checkout
             </Text>
 
+            <CardButton
+              title="NFT Credit Card Checkout"
+              description="Purchase an NFT using credit card"
+              onClick={onClickInitiateCreditCardPayment}
+            />
+
             {isDebugMode && (
               <>
                 <CardButton title="Generate EthAuth proof" description="Generate EthAuth proof" onClick={generateEthAuthProof} />
@@ -737,11 +738,6 @@ export const Connected = () => {
                   title="NFT Checkout"
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
-                />
-                <CardButton
-                  title="Custom Checkout"
-                  description="Hook for creating custom checkout UIs"
-                  onClick={() => setIsOpenCustomCheckout(true)}
                 />
 
                 <CardButton

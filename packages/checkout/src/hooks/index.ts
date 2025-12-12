@@ -1,6 +1,5 @@
-export * from './useCheckoutModal.js'
+export * from './useCreditCardCheckoutModal.js'
 export * from './useNavigation.js'
-export * from './useModalTheme.js'
 export * from './useTransactionStatusModal.js'
 export * from './useTransferFundsModal.js'
 export * from './useSkipOnCloseCallback.js'

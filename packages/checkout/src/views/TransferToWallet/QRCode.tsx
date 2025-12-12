@@ -23,4 +23,3 @@ export const QRCode = (props: QRCodeProps) => {
     </div>
   )
 }
-

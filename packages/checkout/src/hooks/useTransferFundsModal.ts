@@ -5,4 +5,3 @@ export const useTransferFundsModal = () => {
 
   return { openTransferFundsModal, closeTransferFundsModal, transferFundsSettings }
 }
-

@@ -8,7 +8,7 @@ import { formatUnits } from 'viem'
 import { EVENT_SOURCE } from '../constants/index.js'
 import { useFortePaymentController, type TransactionPendingNavigation } from '../contexts/index.js'
 import {
-  useCheckoutModal,
+  useCreditCardCheckoutModal,
   useFortePaymentIntent,
   useNavigation,
   useSkipOnCloseCallback,
@@ -45,7 +45,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
   const { analytics } = useAnalyticsContext()
   const { openTransactionStatusModal } = useTransactionStatusModal()
   const nav = useNavigation()
-  const { settings, closeCheckout } = useCheckoutModal()
+  const { settings, closeCreditCardCheckout } = useCreditCardCheckoutModal()
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
 
   const {
@@ -76,7 +76,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
 
   const tokenMetadata = tokensMetadata ? tokensMetadata[0] : undefined
 
-  const transakConfig = settings?.creditCardCheckout?.transakConfig
+  const transakConfig = settings?.transakConfig
 
   // Transak requires the recipient address to be the proxy address
   // so we need to replace the recipient address with the proxy address in the calldata
@@ -183,7 +183,7 @@ export const PendingCreditCardTransactionTransak = ({ skipOnCloseCallback }: Pen
           }
         })
 
-        closeCheckout()
+        closeCreditCardCheckout()
         openTransactionStatusModal({
           chainId: creditCardCheckout.chainId,
           currencyAddress: creditCardCheckout.currencyAddress,
@@ -279,7 +279,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
   const {
     params: { creditCardCheckout }
   } = nav.navigation as TransactionPendingNavigation
-  const { closeCheckout } = useCheckoutModal()
+  const { closeCreditCardCheckout } = useCreditCardCheckoutModal()
 
   const {
     data: tokenMetadatas,
@@ -351,7 +351,7 @@ export const PendingCreditCardTransactionForte = ({ skipOnCloseCallback }: Pendi
       creditCardCheckout
     })
     skipOnCloseCallback()
-    closeCheckout()
+    closeCreditCardCheckout()
   }, [paymentIntentData])
 
   const isError = isErrorTokenMetadata || isErrorPaymentIntent

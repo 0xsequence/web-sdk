@@ -1,6 +1,6 @@
 'use client'
 
-import type { CreditCardCheckout } from '../contexts/CheckoutModal.js'
+import type { CreditCardCheckoutSettings } from '../contexts/CreditCardCheckout.js'
 
 import { createGenericContext } from './genericContext.js'
 
@@ -31,7 +31,7 @@ export interface TransactionErrorNavigation {
 }
 
 export interface TransactionPendingParams {
-  creditCardCheckout: CreditCardCheckout
+  creditCardCheckout: CreditCardCheckoutSettings
 }
 
 export interface TransactionPendingNavigation {
