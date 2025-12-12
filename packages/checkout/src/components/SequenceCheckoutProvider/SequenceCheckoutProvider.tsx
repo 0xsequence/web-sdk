@@ -133,14 +133,6 @@ export const SequenceCheckoutProvider = ({ children, config }: SequenceCheckoutP
     }
   }
 
-  const getAddFundsHeader = () => {
-    const { location } = navigation
-    switch (location) {
-      default:
-        return <NavigationHeader primaryText="Add funds with credit card or debit card" />
-    }
-  }
-
   useEffect(() => {
     if (openCreditCardCheckoutModal) {
       setHistory([])

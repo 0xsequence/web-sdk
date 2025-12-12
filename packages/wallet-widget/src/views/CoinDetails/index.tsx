@@ -1,5 +1,5 @@
 import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
-import { AddIcon, Button, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
+import { Button, SendIcon, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalance, useGetTransactionHistory } from '@0xsequence/hooks'
 import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
@@ -88,15 +88,6 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress = '' }: T
     })
   }
 
-  const onClickAdd = () => {
-    setNavigation({
-      location: 'swap-coin',
-      params: {
-        chainId,
-        contractAddress
-      }
-    })
-  }
   return (
     <div>
       <div className="flex flex-col gap-10 pb-5 px-4 pt-0">

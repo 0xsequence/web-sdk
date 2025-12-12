@@ -9,7 +9,7 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, cn, Modal, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'

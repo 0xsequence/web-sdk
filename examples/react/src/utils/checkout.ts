@@ -1,4 +1,4 @@
-import { type CreditCardCheckoutSettings, type ForteConfig } from '@0xsequence/checkout'
+import { type CreditCardCheckoutSettings } from '@0xsequence/checkout'
 import { zeroAddress } from 'viem'
 import { encodeFunctionData, toHex } from 'viem'
 

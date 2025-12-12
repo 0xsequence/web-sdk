@@ -1,6 +1,5 @@
 'use client'
 
-import type { Theme } from '@0xsequence/design-system'
 import { type SequenceIndexer, type TransactionReceipt } from '@0xsequence/indexer'
 
 import { createGenericContext } from './genericContext.js'
