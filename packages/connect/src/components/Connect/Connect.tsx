@@ -33,8 +33,8 @@ import { useWaasLinkWallet } from '../../hooks/useWaasLinkWallet.js'
 import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
-import type { WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
 import { formatAddress, isEmailValid } from '../../utils/helpers.js'
+import type { WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
 import {
   AppleWaasConnectButton,
   ConnectButton,

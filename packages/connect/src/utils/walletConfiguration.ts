@@ -47,12 +47,33 @@ type WalletConfigurationOverrides = {
   enabledProviders?: WalletConfigurationProvider[]
 }
 
+type CachedWalletConfiguration = {
+  data: WalletConfigurationResponse
+  expiresAt: number
+}
+
+const CACHE_TTL_MS = 1000 * 60 * 60 * 4
 const allowedProviders: WalletConfigurationProvider[] = ['EMAIL', 'GOOGLE', 'APPLE', 'PASSKEY']
 const walletConfigurationPromises = new Map<string, Promise<WalletConfigurationResponse>>()
-const walletConfigurationCache = new Map<string, WalletConfigurationResponse>()
+const walletConfigurationCache = new Map<string, CachedWalletConfiguration>()
 
 export const normalizeWalletUrl = (walletUrl: string): string => {
   return walletUrl.replace(/\/+$/, '')
+}
+
+const getCachedWalletConfiguration = (normalizedUrl: string): WalletConfigurationResponse | undefined => {
+  const cached = walletConfigurationCache.get(normalizedUrl)
+
+  if (!cached) {
+    return undefined
+  }
+
+  if (Date.now() > cached.expiresAt) {
+    walletConfigurationCache.delete(normalizedUrl)
+    return undefined
+  }
+
+  return cached.data
 }
 
 export const fetchWalletConfiguration = async (walletUrl: string): Promise<WalletConfigurationResponse> => {
@@ -62,8 +83,9 @@ export const fetchWalletConfiguration = async (walletUrl: string): Promise<Walle
     throw new Error('walletUrl is required to fetch wallet configuration')
   }
 
-  if (walletConfigurationCache.has(normalizedUrl)) {
-    return walletConfigurationCache.get(normalizedUrl)!
+  const cached = getCachedWalletConfiguration(normalizedUrl)
+  if (cached) {
+    return cached
   }
 
   if (walletConfigurationPromises.has(normalizedUrl)) {
@@ -79,7 +101,7 @@ export const fetchWalletConfiguration = async (walletUrl: string): Promise<Walle
       }
 
       const result = (await response.json()) as WalletConfigurationResponse
-      walletConfigurationCache.set(normalizedUrl, result)
+      walletConfigurationCache.set(normalizedUrl, { data: result, expiresAt: Date.now() + CACHE_TTL_MS })
       return result
     } finally {
       walletConfigurationPromises.delete(normalizedUrl)
