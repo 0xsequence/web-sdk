@@ -10,7 +10,7 @@ import {
 } from '@0xsequence/connect'
 import { Button, Card, cn, Text } from '@0xsequence/design-system'
 import { useIndexerClient } from '@0xsequence/hooks'
-import { allNetworks, ChainId } from '@0xsequence/network'
+import { allNetworks } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
 import { useCallback, useEffect, useState, type ComponentProps } from 'react'
