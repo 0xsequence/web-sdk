@@ -1,12 +1,12 @@
 'use client'
 
-import { type CreditCardCheckout } from './CheckoutModal.js'
+import { type CreditCardCheckoutSettings } from './CreditCardCheckout.js'
 import { createGenericContext } from './genericContext.js'
 
 export interface FortePaymentData {
   paymentIntentId: string
   widgetData: any
-  creditCardCheckout: CreditCardCheckout
+  creditCardCheckout: CreditCardCheckoutSettings
 }
 
 export interface FortePaymentController {

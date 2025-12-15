@@ -3,18 +3,18 @@ import { allNetworks, ChainId } from '@0xsequence/network'
 import React, { useEffect } from 'react'
 
 import type { TransactionSuccessNavigation } from '../contexts/index.js'
-import { useCheckoutModal, useNavigation } from '../hooks/index.js'
+import { useCreditCardCheckoutModal, useNavigation } from '../hooks/index.js'
 
 export const TransactionSuccess = () => {
-  const { settings } = useCheckoutModal()
+  const { settings } = useCreditCardCheckoutModal()
   const nav = useNavigation()
   const navigation = nav.navigation as TransactionSuccessNavigation
 
-  const chainId = settings?.creditCardCheckout?.chainId || ChainId.POLYGON
+  const chainId = settings?.chainId || ChainId.POLYGON
   const network = allNetworks.find(n => n.chainId === chainId)
 
   useEffect(() => {
-    settings?.creditCardCheckout?.onSuccess?.(navigation.params.transactionHash, settings?.creditCardCheckout)
+    settings?.onSuccess?.(navigation.params.transactionHash, settings)
   }, [])
 
   return (

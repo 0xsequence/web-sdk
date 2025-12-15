@@ -1,13 +1,4 @@
-import {
-  TransactionOnRampProvider,
-  useAddFundsModal,
-  useCheckoutModal,
-  useERC1155SaleContractCheckout,
-  useSelectPaymentModal,
-  useSwapModal,
-  useTransactionStatusModal,
-  type SwapModalSettings
-} from '@0xsequence/checkout'
+import { useCreditCardCheckoutModal, useTransactionStatusModal } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   signEthAuthProof,
@@ -18,7 +9,7 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, cn, Modal, Scroll, Switch, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, cn, Modal, Switch, Text, TextInput } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { CardButton, Header, WalletListItem } from 'example-shared-components'
@@ -34,26 +25,20 @@ import { abi } from '../constants/nft-abi'
 import { delay, getCheckoutSettings, getOrderbookCalldata } from '../utils'
 import { checkoutPresets } from '../utils/checkout'
 
-import { CustomCheckout } from './CustomCheckout'
 import { Select } from './Select'
 
 // append ?debug to url to enable debug mode
 const searchParams = new URLSearchParams(location.search)
 const isDebugMode = searchParams.has('debug')
 const checkoutProvider = searchParams.get('checkoutProvider')
-const onRampProvider = searchParams.get('onRampProvider')
 const checkoutPreset = searchParams.get('checkoutPreset') || 'forte-transak-payment-erc1155-sale-native-token-testnet'
 
 export const Connected = () => {
   const { openTransactionStatusModal } = useTransactionStatusModal()
-  const [isOpenCustomCheckout, setIsOpenCustomCheckout] = React.useState(false)
   const { setOpenConnectModal } = useOpenConnectModal()
   const { address } = useAccount()
-  const { openSwapModal } = useSwapModal()
   const { setOpenWalletModal } = useOpenWalletModal()
-  const { triggerCheckout } = useCheckoutModal()
-  const { triggerAddFunds } = useAddFundsModal()
-  const { openSelectPaymentModal } = useSelectPaymentModal()
+  const { initiateCreditCardCheckout } = useCreditCardCheckoutModal()
   const { setIsSocialLinkOpen } = useSocialLink()
   const { data: walletClient } = useWalletClient()
   const storage = useStorage()
@@ -82,17 +67,6 @@ export const Connected = () => {
     error: sendUnsponsoredTransactionError,
     reset: resetSendUnsponsoredTransaction
   } = useSendTransaction()
-
-  const { openCheckoutModal, isLoading: erc1155CheckoutLoading } = useERC1155SaleContractCheckout({
-    chain: 137,
-    contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
-    wallet: address || '',
-    collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-    items: [{ tokenId: '1', quantity: '1' }],
-    onSuccess: txnHash => {
-      console.log('txnHash', txnHash)
-    }
-  })
 
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
@@ -384,43 +358,15 @@ export const Connected = () => {
     setIsCheckoutInfoModalOpen(true)
   }
 
-  const onClickSwap = () => {
-    const chainId = 137
-    const toTokenAddress = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
-    const toTokenAmount = '200000'
-    const data = encodeFunctionData({ abi: parseAbi(['function demo()']), functionName: 'demo', args: [] })
-
-    const swapModalSettings: SwapModalSettings = {
-      onSuccess: () => {
-        console.log('swap successful!')
-      },
-      chainId,
-      toTokenAddress,
-      toTokenAmount,
-      postSwapTransactions: [
-        {
-          to: '0x37470dac8a0255141745906c972e414b1409b470',
-          data
-        }
-      ],
-      title: 'Swap and Pay',
-      description: 'Select a token in your wallet to swap to 0.2 USDC.'
-    }
-
-    openSwapModal(swapModalSettings)
-  }
-
-  const onClickSelectPayment = () => {
+  const onClickInitiateCreditCardPayment = () => {
     if (!address) {
       return
     }
 
     const creditCardProvider = checkoutProvider || 'forte'
 
-    openSelectPaymentModal({
-      recipientAddress: address,
-      creditCardProviders: [creditCardProvider],
-      onRampProvider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
+    initiateCreditCardCheckout({
+      provider: creditCardProvider,
       onSuccess: (txnHash?: string) => {
         console.log('success!', txnHash)
       },
@@ -460,16 +406,8 @@ export const Connected = () => {
           recipient: recipientAddress
         })
       })
-      triggerCheckout(checkoutSettings)
+      initiateCreditCardCheckout(checkoutSettings)
     }
-  }
-
-  const onClickAddFunds = () => {
-    triggerAddFunds({
-      walletAddress: address || '',
-      provider: onRampProvider ? (onRampProvider as TransactionOnRampProvider) : TransactionOnRampProvider.transak,
-      transakOnRampKind: 'default'
-    })
   }
 
   const onClickConnect = () => {
@@ -786,7 +724,11 @@ export const Connected = () => {
               Web SDK Checkout
             </Text>
 
-            <CardButton title="Add Funds" description="Buy Cryptocurrency with a Credit Card" onClick={() => onClickAddFunds()} />
+            <CardButton
+              title="NFT Credit Card Checkout"
+              description="Purchase an NFT using credit card"
+              onClick={onClickInitiateCreditCardPayment}
+            />
 
             {isDebugMode && (
               <>
@@ -797,18 +739,6 @@ export const Connected = () => {
                   description="Set orderbook order id, token contract address and token id to test checkout (on Polygon)"
                   onClick={onClickCheckout}
                 />
-                <CardButton
-                  title="Custom Checkout"
-                  description="Hook for creating custom checkout UIs"
-                  onClick={() => setIsOpenCustomCheckout(true)}
-                />
-
-                <CardButton
-                  title="ERC1155 Checkout"
-                  description="Purchase with useERC1155SaleContractCheckout hook"
-                  onClick={openCheckoutModal}
-                  isPending={erc1155CheckoutLoading}
-                />
 
                 <CardButton
                   title="Transaction Status Modal"
@@ -817,18 +747,6 @@ export const Connected = () => {
                 />
               </>
             )}
-
-            <CardButton
-              title="Swap"
-              description="Seamlessly swap eligible currencies in your wallet to a target currency"
-              onClick={onClickSwap}
-            />
-
-            <CardButton
-              title="Checkout"
-              description="Purchase an NFT through various purchase methods"
-              onClick={onClickSelectPayment}
-            />
 
             {(chainId === ChainId.ARBITRUM_NOVA || chainId === ChainId.ARBITRUM_SEPOLIA || isWaasConnectionActive) && (
               <Text className="mt-4" variant="small-bold" color="muted">
@@ -951,25 +869,6 @@ export const Connected = () => {
                 />
               </div>
             </div>
-          </Modal>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {isOpenCustomCheckout && (
-          <Modal
-            contentProps={{
-              style: {
-                maxWidth: '400px',
-                height: 'auto',
-                ...getModalPositionCss('center')
-              }
-            }}
-            scroll={false}
-            onClose={() => setIsOpenCustomCheckout(false)}
-          >
-            <Scroll style={{ height: '600px' }}>
-              <CustomCheckout />
-            </Scroll>
           </Modal>
         )}
       </AnimatePresence>
