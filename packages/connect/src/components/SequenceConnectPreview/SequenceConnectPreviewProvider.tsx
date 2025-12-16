@@ -42,7 +42,13 @@ const resolveInlineBackground = (theme: Theme | undefined) => {
  */
 export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderProps) => {
   const { config: incomingConfig, children } = props
-  const { resolvedConfig: config, isLoading: isWalletConfigLoading, enabledProviders } = useResolvedConnectConfig(incomingConfig)
+  const {
+    resolvedConfig: config,
+    isLoading: isWalletConfigLoading,
+    enabledProviders,
+    isV3WalletSignedIn,
+    isAuthStatusLoading
+  } = useResolvedConnectConfig(incomingConfig)
 
   const {
     defaultTheme = 'dark',
@@ -104,6 +110,9 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
                       isInline
                       {...props}
                       config={config}
+                      resolvedConfig={config}
+                      isV3WalletSignedIn={isV3WalletSignedIn}
+                      isAuthStatusLoading={isAuthStatusLoading}
                       enabledProviders={enabledProviders}
                     />
                   )}

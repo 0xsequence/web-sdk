@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import type { ConnectConfig } from '../types.js'
+import { checkAuthStatus } from '../utils/checkAuthStatus.js'
 import {
+  cacheProjectName,
   fetchWalletConfiguration,
+  getCachedProjectName,
   mapWalletConfigurationToOverrides,
   mergeConnectConfigWithWalletConfiguration,
   normalizeWalletUrl,
@@ -13,6 +16,8 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
   const [resolvedConfig, setResolvedConfig] = useState<ConnectConfig>(config)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [enabledProviders, setEnabledProviders] = useState<WalletConfigurationProvider[] | undefined>(undefined)
+  const [isV3WalletSignedIn, setIsV3WalletSignedIn] = useState<boolean | null>(null)
+  const [isAuthStatusLoading, setIsAuthStatusLoading] = useState<boolean>(false)
 
   const normalizedWalletUrl = useMemo(() => {
     return config.walletUrl ? normalizeWalletUrl(config.walletUrl) : ''
@@ -21,21 +26,57 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
   useEffect(() => {
     setResolvedConfig(config)
     setEnabledProviders(undefined)
+    setIsV3WalletSignedIn(null)
+    setIsAuthStatusLoading(false)
   }, [config])
 
   useEffect(() => {
     let cancelled = false
 
+    const cachedProjectName = normalizedWalletUrl ? getCachedProjectName(normalizedWalletUrl) : undefined
+    const configWithCachedProjectName =
+      cachedProjectName && !config.signIn?.projectName
+        ? {
+            ...config,
+            signIn: {
+              ...config.signIn,
+              projectName: cachedProjectName
+            }
+          }
+        : config
+
     if (!normalizedWalletUrl) {
-      setResolvedConfig(config)
+      setResolvedConfig(configWithCachedProjectName)
       setEnabledProviders(undefined)
+      setIsV3WalletSignedIn(null)
       setIsLoading(false)
+      setIsAuthStatusLoading(false)
       return () => {
         cancelled = true
       }
     }
 
+    setResolvedConfig(configWithCachedProjectName)
     setIsLoading(true)
+    setIsAuthStatusLoading(true)
+
+    checkAuthStatus(normalizedWalletUrl)
+      .then(signedIn => {
+        if (!cancelled) {
+          setIsV3WalletSignedIn(signedIn)
+        }
+      })
+      .catch(error => {
+        if (!cancelled) {
+          console.warn('Failed to check auth status', error)
+          setIsV3WalletSignedIn(false)
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsAuthStatusLoading(false)
+        }
+      })
 
     fetchWalletConfiguration(normalizedWalletUrl)
       .then(remoteConfig => {
@@ -45,7 +86,10 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
 
         const overrides = mapWalletConfigurationToOverrides(remoteConfig)
         setEnabledProviders(overrides.enabledProviders)
-        setResolvedConfig(mergeConnectConfigWithWalletConfiguration(config, overrides))
+        setResolvedConfig(mergeConnectConfigWithWalletConfiguration(configWithCachedProjectName, overrides))
+        if (overrides.signIn?.projectName) {
+          cacheProjectName(normalizedWalletUrl, overrides.signIn.projectName)
+        }
       })
       .catch(error => {
         if (!cancelled) {
@@ -69,8 +113,10 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
     () => ({
       resolvedConfig,
       isLoading,
-      enabledProviders
+      enabledProviders,
+      isV3WalletSignedIn,
+      isAuthStatusLoading
     }),
-    [resolvedConfig, isLoading, enabledProviders]
+    [resolvedConfig, isLoading, enabledProviders, isV3WalletSignedIn, isAuthStatusLoading]
   )
 }

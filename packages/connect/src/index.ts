@@ -69,7 +69,11 @@ export { isTxRejected, sendTransactions, waitForTransactionReceipt } from './uti
 export { createContractPermission, createContractPermissions, createExplicitSessionConfig } from './utils/session/index.js'
 
 // Contexts
-export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'
+export {
+  ConnectConfigContextProvider,
+  useConnectConfigContext,
+  useOptionalConnectConfigContext
+} from './contexts/ConnectConfig.js'
 export { AnalyticsContextProvider, useAnalyticsContext } from './contexts/Analytics.js'
 export { ConnectModalContextProvider, useConnectModalContext } from './contexts/ConnectModal.js'
 export { ThemeContextProvider, useThemeContext } from './contexts/Theme.js'
@@ -118,6 +122,8 @@ export { useWaasSignInEmail } from './hooks/useWaasSignInEmail.js'
 export { useFeeOptions } from './hooks/useFeeOptions.js'
 export { useExplicitSessions } from './hooks/useExplicitSessions.js'
 export { useSequenceSessionState } from './hooks/useSequenceSessionState.js'
+export { useAuthStatus } from './hooks/useAuthStatus.js'
+export type { UseAuthStatusOptions, UseAuthStatusResult } from './hooks/useAuthStatus.js'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge/index.js'

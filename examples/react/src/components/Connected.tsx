@@ -37,6 +37,10 @@ export const Connected = () => {
 
   const { wallets, setActiveWallet, disconnectWallet } = useWallets()
 
+  useEffect(() => {
+    console.log('wallets changed', wallets, Date.now())
+  }, [wallets])
+
   const isV3WalletConnectionActive = wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
 
   const sessionState = useSequenceSessionState()
@@ -44,7 +48,7 @@ export const Connected = () => {
   const [hasPermission, setHasPermission] = React.useState(false)
   const [isCheckingPermission, setIsCheckingPermission] = React.useState(false)
 
-  console.log('sessionState', sessionState)
+  // console.log('sessionState', sessionState)
 
   const {
     data: implicitTestTxnData,

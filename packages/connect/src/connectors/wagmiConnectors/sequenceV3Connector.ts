@@ -39,6 +39,8 @@ export interface SequenceV3Connector extends Connector {
   setEmail: (email: string) => void
   auxData?: Record<string, unknown>
   readonly client: DappClient
+  /** The login method reported by the v3 client after authentication (e.g., ecosystem-v3, google, passkey, etc.) */
+  readonly loginMethod?: string
   readonly loginOptions?: {
     loginType?: SequenceV3LoginType
     loginStorageKey?: string
@@ -120,6 +122,9 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       },
       get client() {
         return client
+      },
+      get loginMethod() {
+        return client.loginMethod ?? undefined
       },
 
       auxData: undefined as Record<string, unknown> | undefined,

@@ -56,6 +56,7 @@ const CACHE_TTL_MS = 1000 * 60 * 60 * 4
 const allowedProviders: WalletConfigurationProvider[] = ['EMAIL', 'GOOGLE', 'APPLE', 'PASSKEY']
 const walletConfigurationPromises = new Map<string, Promise<WalletConfigurationResponse>>()
 const walletConfigurationCache = new Map<string, CachedWalletConfiguration>()
+const PROJECT_NAME_CACHE_KEY_PREFIX = '@0xsequence.wallet-config.projectName:'
 
 export const normalizeWalletUrl = (walletUrl: string): string => {
   const trimmed = walletUrl.trim()
@@ -126,7 +127,8 @@ const pickLogoUrl = (config: WalletConfigurationResponse): string | undefined =>
   ) as string[]
 
   const getLogoFromTheme = (theme?: WalletConfigurationTheme) => {
-    return theme?.fileAuthLogo?.src || theme?.fileHeaderLogo?.src
+    // Prefer header logo for more compact aspect ratios; fall back to auth logo
+    return theme?.fileHeaderLogo?.src || theme?.fileAuthLogo?.src
   }
 
   for (const themeKey of themeOrder) {
@@ -149,6 +151,33 @@ const normalizeEnabledProviders = (providers?: string[]): WalletConfigurationPro
     .filter((p): p is WalletConfigurationProvider => allowedProviders.includes(p as WalletConfigurationProvider))
 
   return normalized
+}
+
+const buildProjectNameCacheKey = (normalizedUrl: string) => `${PROJECT_NAME_CACHE_KEY_PREFIX}${normalizedUrl}`
+
+export const getCachedProjectName = (walletUrl: string): string | undefined => {
+  const normalizedUrl = normalizeWalletUrl(walletUrl)
+  if (!normalizedUrl) {
+    return undefined
+  }
+  try {
+    const cached = localStorage.getItem(buildProjectNameCacheKey(normalizedUrl))
+    return cached || undefined
+  } catch {
+    return undefined
+  }
+}
+
+export const cacheProjectName = (walletUrl: string, projectName: string) => {
+  const normalizedUrl = normalizeWalletUrl(walletUrl)
+  if (!normalizedUrl || !projectName) {
+    return
+  }
+  try {
+    localStorage.setItem(buildProjectNameCacheKey(normalizedUrl), projectName)
+  } catch {
+    // ignore storage failures
+  }
 }
 
 export const mapWalletConfigurationToOverrides = (config: WalletConfigurationResponse): WalletConfigurationOverrides => {
