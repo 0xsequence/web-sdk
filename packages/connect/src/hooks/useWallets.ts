@@ -350,6 +350,10 @@ export const useWallets = (): UseWalletsReturnType => {
     }
     const nextList = walletsFromConnections.list
     if (nextList.length === 0) {
+      // When there are no connections and wagmi isn't reconnecting, clear the stable list.
+      if (accountStatus !== 'connecting' && accountStatus !== 'reconnecting') {
+        setStableWallets([])
+      }
       return
     }
 
@@ -360,7 +364,7 @@ export const useWallets = (): UseWalletsReturnType => {
     return () => {
       clearTimeout(timer)
     }
-  }, [walletsFromConnections])
+  }, [walletsFromConnections, accountStatus])
 
   const setActiveWallet = async (walletAddress: string) => {
     const connection = connections.find(
