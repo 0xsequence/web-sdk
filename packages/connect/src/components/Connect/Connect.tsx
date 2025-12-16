@@ -993,7 +993,7 @@ export const Connect = (props: ConnectProps) => {
                 )}
 
                 {!hasPrimarySequenceConnection && (
-                  <div className="flex mt-6 gap-6 flex-col">
+                  <div className="flex mt-4 gap-6 flex-col">
                     <>
                       {showEcosystemConnectorSection && ecosystemConnector && (
                         <div
