@@ -52,7 +52,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     isLoading: isWalletConfigLoading,
     enabledProviders,
     isV3WalletSignedIn,
-    isAuthStatusLoading
+    isAuthStatusLoading,
+    walletConfigurationSignIn
   } = useResolvedConnectConfig(incomingConfig)
   const {
     defaultTheme = 'dark',
@@ -252,11 +253,12 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                     onClose={() => setOpenConnectModal(false)}
                                     emailConflictInfo={emailConflictInfo}
                                     {...props}
-                                    config={config}
+                                    config={incomingConfig}
                                     resolvedConfig={config}
                                     isV3WalletSignedIn={isV3WalletSignedIn}
                                     isAuthStatusLoading={isAuthStatusLoading}
                                     enabledProviders={enabledProviders}
+                                    walletConfigurationSignIn={walletConfigurationSignIn}
                                   />
                                 </EpicAuthProvider>
                               )}

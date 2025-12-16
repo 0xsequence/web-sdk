@@ -1,5 +1,3 @@
-import type { Theme } from '@0xsequence/design-system'
-
 import type { ConnectConfig } from '../types.js'
 
 export type WalletConfigurationProvider = 'EMAIL' | 'GOOGLE' | 'APPLE' | 'PASSKEY'
@@ -37,12 +35,11 @@ type WalletConfigurationResponse = {
   supportedChains?: number[]
 }
 
-type WalletConfigurationOverrides = {
+export type WalletConfigurationOverrides = {
   signIn?: {
     projectName?: string
     logoUrl?: string
   }
-  defaultTheme?: Theme
   chainIds?: number[]
   enabledProviders?: WalletConfigurationProvider[]
 }
@@ -184,10 +181,6 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
   const projectName = typeof config.name === 'string' && config.name.trim() ? config.name : undefined
   const logoUrl = pickLogoUrl(config)
 
-  const normalizedTheme = config.defaultTheme?.toLowerCase()
-  const defaultTheme: Theme | undefined =
-    normalizedTheme === 'dark' || normalizedTheme === 'light' ? (normalizedTheme as Theme) : undefined
-
   const chainIds = Array.isArray(config.supportedChains) && config.supportedChains.length > 0 ? config.supportedChains : undefined
 
   const enabledProviders = normalizeEnabledProviders(config.enabledProviders)
@@ -200,7 +193,6 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
             logoUrl
           }
         : undefined,
-    defaultTheme,
     chainIds,
     enabledProviders
   }
@@ -216,17 +208,6 @@ export const mergeConnectConfigWithWalletConfiguration = (
 
   const mergedConfig: ConnectConfig = {
     ...config
-  }
-
-  if (overrides.signIn) {
-    mergedConfig.signIn = {
-      ...config.signIn,
-      ...overrides.signIn
-    }
-  }
-
-  if (overrides.defaultTheme !== undefined) {
-    mergedConfig.defaultTheme = overrides.defaultTheme
   }
 
   if (overrides.chainIds !== undefined) {

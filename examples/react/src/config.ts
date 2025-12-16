@@ -4,6 +4,7 @@ import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
 import { parseEther } from 'viem'
 
+import { webSdkDemoLogoDataUrl } from './constants/index.js'
 import { getEmitterContractAddress } from './constants/permissions'
 
 // const searchParams = new URLSearchParams(location.search)
@@ -37,6 +38,8 @@ export const connectConfig: ConnectConfig = {
   projectAccessKey,
   walletUrl: DEFAULT_WALLET_URL,
   signIn: {
+    projectName: 'Web SDK Demo',
+    logoUrl: webSdkDemoLogoDataUrl,
     descriptiveSocials: true,
     disableTooltipForDescriptiveSocials: true
   },

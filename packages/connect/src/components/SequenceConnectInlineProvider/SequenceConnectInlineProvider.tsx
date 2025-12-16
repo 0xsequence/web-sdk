@@ -74,7 +74,8 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
     isLoading: isWalletConfigLoading,
     enabledProviders,
     isV3WalletSignedIn,
-    isAuthStatusLoading
+    isAuthStatusLoading,
+    walletConfigurationSignIn
   } = useResolvedConnectConfig(incomingConfig)
 
   const {
@@ -257,11 +258,12 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
                               emailConflictInfo={emailConflictInfo}
                               isInline
                               {...props}
-                              config={config}
+                              config={incomingConfig}
                               resolvedConfig={config}
                               isV3WalletSignedIn={isV3WalletSignedIn}
                               isAuthStatusLoading={isAuthStatusLoading}
                               enabledProviders={enabledProviders}
+                              walletConfigurationSignIn={walletConfigurationSignIn}
                             />
                           )}
                         </ThemeProvider>

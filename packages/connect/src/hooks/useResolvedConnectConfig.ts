@@ -9,6 +9,7 @@ import {
   mapWalletConfigurationToOverrides,
   mergeConnectConfigWithWalletConfiguration,
   normalizeWalletUrl,
+  type WalletConfigurationOverrides,
   type WalletConfigurationProvider
 } from '../utils/walletConfiguration.js'
 
@@ -16,6 +17,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
   const [resolvedConfig, setResolvedConfig] = useState<ConnectConfig>(config)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [enabledProviders, setEnabledProviders] = useState<WalletConfigurationProvider[] | undefined>(undefined)
+  const [walletConfigurationSignIn, setWalletConfigurationSignIn] = useState<WalletConfigurationOverrides['signIn']>()
   const [isV3WalletSignedIn, setIsV3WalletSignedIn] = useState<boolean | null>(null)
   const [isAuthStatusLoading, setIsAuthStatusLoading] = useState<boolean>(false)
 
@@ -26,6 +28,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
   useEffect(() => {
     setResolvedConfig(config)
     setEnabledProviders(undefined)
+    setWalletConfigurationSignIn(undefined)
     setIsV3WalletSignedIn(null)
     setIsAuthStatusLoading(false)
   }, [config])
@@ -34,20 +37,12 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
     let cancelled = false
 
     const cachedProjectName = normalizedWalletUrl ? getCachedProjectName(normalizedWalletUrl) : undefined
-    const configWithCachedProjectName =
-      cachedProjectName && !config.signIn?.projectName
-        ? {
-            ...config,
-            signIn: {
-              ...config.signIn,
-              projectName: cachedProjectName
-            }
-          }
-        : config
+    const cachedSignIn = cachedProjectName ? { projectName: cachedProjectName } : undefined
 
     if (!normalizedWalletUrl) {
-      setResolvedConfig(configWithCachedProjectName)
+      setResolvedConfig(config)
       setEnabledProviders(undefined)
+      setWalletConfigurationSignIn(undefined)
       setIsV3WalletSignedIn(null)
       setIsLoading(false)
       setIsAuthStatusLoading(false)
@@ -56,7 +51,8 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
       }
     }
 
-    setResolvedConfig(configWithCachedProjectName)
+    setResolvedConfig(config)
+    setWalletConfigurationSignIn(cachedSignIn)
     setIsLoading(true)
     setIsAuthStatusLoading(true)
 
@@ -86,7 +82,8 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
 
         const overrides = mapWalletConfigurationToOverrides(remoteConfig)
         setEnabledProviders(overrides.enabledProviders)
-        setResolvedConfig(mergeConnectConfigWithWalletConfiguration(configWithCachedProjectName, overrides))
+        setWalletConfigurationSignIn(overrides.signIn)
+        setResolvedConfig(mergeConnectConfigWithWalletConfiguration(config, overrides))
         if (overrides.signIn?.projectName) {
           cacheProjectName(normalizedWalletUrl, overrides.signIn.projectName)
         }
@@ -96,6 +93,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
           console.warn('Failed to fetch wallet configuration', error)
           setResolvedConfig(config)
           setEnabledProviders(undefined)
+          setWalletConfigurationSignIn(cachedSignIn)
         }
       })
       .finally(() => {
@@ -114,9 +112,10 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
       resolvedConfig,
       isLoading,
       enabledProviders,
+      walletConfigurationSignIn,
       isV3WalletSignedIn,
       isAuthStatusLoading
     }),
-    [resolvedConfig, isLoading, enabledProviders, isV3WalletSignedIn, isAuthStatusLoading]
+    [resolvedConfig, isLoading, enabledProviders, walletConfigurationSignIn, isV3WalletSignedIn, isAuthStatusLoading]
   )
 }

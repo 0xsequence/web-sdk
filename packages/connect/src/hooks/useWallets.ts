@@ -236,8 +236,7 @@ export const useWallets = (): UseWalletsReturnType => {
   const { disconnectAsync } = useDisconnect()
   const connectConfig = useOptionalConnectConfigContext()
   const normalizedWalletUrl = connectConfig?.walletUrl ? normalizeWalletUrl(connectConfig.walletUrl) : ''
-  const sequenceProjectName =
-    connectConfig?.signIn?.projectName || (normalizedWalletUrl ? getCachedProjectName(normalizedWalletUrl) : undefined)
+  const sequenceProjectName = normalizedWalletUrl ? getCachedProjectName(normalizedWalletUrl) : undefined
 
   const waasConnection = connections.find(c => (c.connector as ExtendedConnector)?.type === 'sequence-waas')
 
@@ -279,7 +278,7 @@ export const useWallets = (): UseWalletsReturnType => {
   }, [connections])
 
   const baseConnections: UseConnectionsReturnType = useMemo(() => {
-    const isReconnecting = accountStatus === 'connecting' || accountStatus === 'reconnecting'
+    const isReconnecting = accountStatus === 'reconnecting'
     if (connections.length === 0 && isReconnecting && lastKnownConnectionsRef.current.length > 0) {
       return lastKnownConnectionsRef.current
     }
@@ -352,8 +351,14 @@ export const useWallets = (): UseWalletsReturnType => {
     if (nextList.length === 0) {
       // When there are no connections and wagmi isn't reconnecting, clear the stable list.
       if (accountStatus !== 'connecting' && accountStatus !== 'reconnecting') {
-        setStableWallets([])
+        setStableWallets(prev => (prev.length === 0 ? prev : []))
       }
+      return
+    }
+
+    // If we have wallets and the stable list is empty, hydrate immediately to avoid an empty emission.
+    if (stableWallets.length === 0) {
+      setStableWallets(nextList)
       return
     }
 
@@ -364,7 +369,7 @@ export const useWallets = (): UseWalletsReturnType => {
     return () => {
       clearTimeout(timer)
     }
-  }, [walletsFromConnections, accountStatus])
+  }, [walletsFromConnections, accountStatus, stableWallets.length])
 
   const setActiveWallet = async (walletAddress: string) => {
     const connection = connections.find(
@@ -423,7 +428,6 @@ export const useWallets = (): UseWalletsReturnType => {
 
 const getConnectorName = (connector: Connector, sequenceProjectName?: string, ecosystemProjectName?: string) => {
   const connectorName = connector.name
-  const connectorWalletName = (connector._wallet as any)?.name
 
   if (sequenceProjectName && connector.type === 'sequence-v3-wallet') {
     return sequenceProjectName
@@ -433,7 +437,7 @@ const getConnectorName = (connector: Connector, sequenceProjectName?: string, ec
     return ecosystemProjectName
   }
 
-  return connectorWalletName ?? connectorName
+  return connectorName
 }
 
 const getSignInMethod = (connection: UseConnectionsReturnType[number]) => {

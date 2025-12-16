@@ -34,7 +34,7 @@ import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
 import { formatAddress, isEmailValid } from '../../utils/helpers.js'
-import type { WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
+import type { WalletConfigurationOverrides, WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
 import {
   AppleWaasConnectButton,
   ConnectButton,
@@ -89,6 +89,7 @@ interface ConnectProps extends SequenceConnectProviderProps {
   isV3WalletSignedIn?: boolean | null
   isAuthStatusLoading?: boolean
   resolvedConfig?: ConnectConfig
+  walletConfigurationSignIn?: WalletConfigurationOverrides['signIn']
 }
 
 export const Connect = (props: ConnectProps) => {
@@ -99,17 +100,21 @@ export const Connect = (props: ConnectProps) => {
   const { analytics } = useAnalyticsContext()
   const { hideExternalConnectOptions, hideConnectedWallets, hideSocialConnectOptions } = useWalletSettings()
 
-  const { onClose, emailConflictInfo, config: incomingConfig = {} as ConnectConfig, isInline = false } = props
-  const config = props.resolvedConfig ?? incomingConfig
+  const { onClose, emailConflictInfo, config: baseConfig = {} as ConnectConfig, isInline = false } = props
+  const config = props.resolvedConfig ?? baseConfig
   const isV3WalletSignedIn = props.isV3WalletSignedIn ?? null
   const isAuthStatusLoading = props.isAuthStatusLoading ?? false
+  const walletConfigurationSignIn = props.walletConfigurationSignIn
   const { signIn = {} } = config
+  const baseSignIn = baseConfig.signIn ?? {}
   const storage = useStorage()
 
   const descriptiveSocials = !!config?.signIn?.descriptiveSocials
   const showWalletAuthOptionsFirst = config?.signIn?.showWalletAuthOptionsFirst ?? false
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const projectName = config?.signIn?.projectName
+  const projectName = baseSignIn?.projectName
+  const ecosystemProjectName = walletConfigurationSignIn?.projectName ?? baseSignIn?.projectName
+  const ecosystemLogoUrl = walletConfigurationSignIn?.logoUrl ?? baseSignIn?.logoUrl
 
   const [email, setEmail] = useState('')
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
@@ -538,9 +543,8 @@ export const Connect = (props: ConnectProps) => {
 
     // Special handling for ecosystem connector - use config data for display
     if (connector._wallet?.isEcosystemWallet) {
-      const signInConfig = config?.signIn
-      const projectName = signInConfig?.projectName || connector._wallet.name
-      const logoUrl = signInConfig?.logoUrl
+      const projectName = ecosystemProjectName || connector._wallet.name
+      const logoUrl = ecosystemLogoUrl
 
       const renderEcosystemLogo = (logoProps: LogoProps) => (
         <Image
@@ -565,7 +569,7 @@ export const Connect = (props: ConnectProps) => {
         _wallet: {
           ...connector._wallet,
           name: projectName,
-          ctaText: signInConfig?.projectName ? `Connect with ${signInConfig.projectName}` : connector._wallet.ctaText,
+          ctaText: ecosystemProjectName ? `Connect with ${ecosystemProjectName}` : connector._wallet.ctaText,
           // Override logos if logoUrl is available
           ...(logoUrl && {
             logoDark: renderEcosystemLogo,
@@ -949,7 +953,7 @@ export const Connect = (props: ConnectProps) => {
               />
             ) : (
               <>
-                {!hasAnyConnection && <Banner config={config as ConnectConfig} />}
+                {!hasAnyConnection && <Banner config={baseConfig as ConnectConfig} />}
 
                 {showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
                   <WalletConnectorsSection />
