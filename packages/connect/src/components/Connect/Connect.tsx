@@ -555,8 +555,10 @@ export const Connect = (props: ConnectProps) => {
           style={{
             objectFit: 'contain',
             width: 'auto',
+            minWidth: '30px',
             height: '100%',
-            maxWidth: '100%',
+            minHeight: '30px',
+            maxWidth: '60px',
             maxHeight: '100%',
             ...logoProps.style
           }}

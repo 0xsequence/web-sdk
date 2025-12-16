@@ -124,8 +124,7 @@ const pickLogoUrl = (config: WalletConfigurationResponse): string | undefined =>
   ) as string[]
 
   const getLogoFromTheme = (theme?: WalletConfigurationTheme) => {
-    // Prefer header logo for more compact aspect ratios; fall back to auth logo
-    return theme?.fileHeaderLogo?.src || theme?.fileAuthLogo?.src
+    return theme?.fileAuthLogo?.src
   }
 
   for (const themeKey of themeOrder) {
