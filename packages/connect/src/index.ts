@@ -52,6 +52,7 @@ export * from './utils/session/constants.js'
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
+export { setChains } from './utils/setChains.js'
 export {
   capitalize,
   compareAddress,

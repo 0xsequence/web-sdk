@@ -99,7 +99,7 @@ export const createExampleConfig = (walletUrl: string) =>
     walletUrl: sanitizeWalletUrl(walletUrl),
     dappOrigin: window.location.origin,
     appName: 'Sequence Web SDK Demo',
-    defaultChainId: ChainId.OPTIMISM,
+    defaultChainId: ChainId.ARBITRUM_SEPOLIA,
     walletConnect: {
       projectId: walletConnectProjectId
     },
@@ -108,7 +108,7 @@ export const createExampleConfig = (walletUrl: string) =>
     enableImplicitSession: true,
     includeFeeOptionPermissions: true,
     explicitSessionParams: {
-      chainId: ChainId.OPTIMISM,
+      chainId: ChainId.ARBITRUM_SEPOLIA,
       nativeTokenSpending: {
         valueLimit: parseEther('0.1')
       },

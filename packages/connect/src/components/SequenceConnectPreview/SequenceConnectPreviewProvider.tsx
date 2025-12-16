@@ -10,6 +10,7 @@ import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
+import { useSyncWagmiChains } from '../../hooks/useSyncWagmiChains.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import { type ConnectConfig, type DisplayedAsset, type ExtendedConnector, type ModalPosition } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
@@ -66,6 +67,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
 
   const wagmiConfig = useConfig()
+  useSyncWagmiChains(config, wagmiConfig)
 
   const inlineBackground = resolveInlineBackground(theme)
 

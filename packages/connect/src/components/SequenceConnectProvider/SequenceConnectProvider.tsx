@@ -19,6 +19,7 @@ import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
+import { useSyncWagmiChains } from '../../hooks/useSyncWagmiChains.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import {
@@ -81,6 +82,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
   const wagmiConfig = useConfig()
+  useSyncWagmiChains(config, wagmiConfig)
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
   const [isWalletWidgetOpen, setIsWalletWidgetOpen] = useState<boolean>(false)

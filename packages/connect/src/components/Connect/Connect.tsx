@@ -293,7 +293,9 @@ export const Connect = (props: ConnectProps) => {
   // Safari aggressively blocks popups if window.open is not triggered directly from the click handler.
   // Pre-open the Sequence popup in the same gesture before we kick off the async wagmi connect flow.
   const preopenSequenceV3Popup = useCallback((connector: ExtendedConnector & SequenceV3Connector) => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+      return
+    }
 
     try {
       const client: any = connector.client
