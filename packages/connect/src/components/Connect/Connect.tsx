@@ -286,6 +286,31 @@ export const Connect = (props: ConnectProps) => {
 
   const extendedConnectors = filteredConnectors as ExtendedConnector[]
 
+  const isSequenceV3Connector = (connector: ExtendedConnector): connector is ExtendedConnector & SequenceV3Connector => {
+    return connector.type === SEQUENCE_V3_CONNECTOR_TYPE
+  }
+
+  // Safari aggressively blocks popups if window.open is not triggered directly from the click handler.
+  // Pre-open the Sequence popup in the same gesture before we kick off the async wagmi connect flow.
+  const preopenSequenceV3Popup = useCallback((connector: ExtendedConnector & SequenceV3Connector) => {
+    if (typeof window === 'undefined') return
+
+    try {
+      const client: any = connector.client
+      const transport = typeof client?.ensureTransport === 'function' ? client.ensureTransport() : client?.transport
+      const isPopupMode = (transport?.mode ?? client?.transportMode) === 'popup'
+
+      if (isPopupMode && typeof transport?.openWallet === 'function') {
+        // Use the same path used by connect requests so the opened window is reused.
+        transport.openWallet('/request/connect').catch(() => {
+          /* Ignore preopen failures; the main connect flow will try again */
+        })
+      }
+    } catch (error) {
+      console.warn('Failed to pre-open Sequence popup', error)
+    }
+  }, [])
+
   const sequenceConnectors = useMemo(
     () =>
       extendedConnectors.filter(
@@ -671,6 +696,10 @@ export const Connect = (props: ConnectProps) => {
     if (signIn.useMock && mockConnector) {
       handleConnect(mockConnector)
       return
+    }
+
+    if (isSequenceV3Connector(connector)) {
+      preopenSequenceV3Popup(connector)
     }
 
     if (connector._wallet.id === 'email') {
