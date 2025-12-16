@@ -272,16 +272,36 @@ export const useWallets = (): UseWalletsReturnType => {
   // Keep track of the last non-empty connections list so we can present stable data while wagmi reconnects.
   const lastKnownConnectionsRef = useRef<UseConnectionsReturnType>([])
   useEffect(() => {
-    if (connections.length > 0) {
-      lastKnownConnectionsRef.current = connections
+    const isRecovering = accountStatus === 'connecting' || accountStatus === 'reconnecting'
+
+    if (accountStatus === 'disconnected') {
+      lastKnownConnectionsRef.current = []
+      return
     }
-  }, [connections])
+
+    if (connections.length === 0) {
+      return
+    }
+
+    // Do not downgrade the cache while wagmi is recovering; otherwise we risk flickering counts.
+    if (connections.length < lastKnownConnectionsRef.current.length && isRecovering) {
+      return
+    }
+
+    lastKnownConnectionsRef.current = connections
+  }, [connections, accountStatus])
 
   const baseConnections: UseConnectionsReturnType = useMemo(() => {
-    const isReconnecting = accountStatus === 'reconnecting'
-    if (connections.length === 0 && isReconnecting && lastKnownConnectionsRef.current.length > 0) {
+    const isRecovering = accountStatus === 'connecting' || accountStatus === 'reconnecting'
+    const shouldUseCache =
+      isRecovering &&
+      lastKnownConnectionsRef.current.length > 0 &&
+      (connections.length === 0 || connections.length < lastKnownConnectionsRef.current.length)
+
+    if (shouldUseCache) {
       return lastKnownConnectionsRef.current
     }
+
     return connections
   }, [connections, accountStatus])
 
