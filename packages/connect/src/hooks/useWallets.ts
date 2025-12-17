@@ -5,6 +5,7 @@ import { useAPIClient } from '@0xsequence/hooks'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useAccount, useConnect, useConnections, useDisconnect, type Connector, type UseConnectionsReturnType } from 'wagmi'
 
+import { WALLET_LIST_DEBOUNCE_MS } from '../constants.js'
 import { useOptionalConnectConfigContext } from '../contexts/ConnectConfig.js'
 import type { ExtendedConnector } from '../types.js'
 import { getCachedProjectName, normalizeWalletUrl } from '../utils/walletConfiguration.js'
@@ -384,7 +385,7 @@ export const useWallets = (): UseWalletsReturnType => {
 
     const timer = setTimeout(() => {
       setStableWallets(prev => (areWalletListsEqual(prev, nextList) ? prev : nextList))
-    }, 120)
+    }, WALLET_LIST_DEBOUNCE_MS)
 
     return () => {
       clearTimeout(timer)

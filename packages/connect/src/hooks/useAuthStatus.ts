@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { checkAuthStatus } from '../utils/checkAuthStatus.js'
 
@@ -66,7 +66,7 @@ export const useAuthStatus = (walletUrl: string | undefined | null, options: Use
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | null>(null)
 
-  const checkStatus = async () => {
+  const checkStatus = useCallback(async () => {
     if (!walletUrl || !enabled) {
       setIsV3WalletSignedIn(null)
       setIsLoading(false)
@@ -87,7 +87,7 @@ export const useAuthStatus = (walletUrl: string | undefined | null, options: Use
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [walletUrl, enabled])
 
   useEffect(() => {
     if (!enabled || !walletUrl) {
@@ -106,7 +106,7 @@ export const useAuthStatus = (walletUrl: string | undefined | null, options: Use
         clearInterval(intervalId)
       }
     }
-  }, [walletUrl, enabled, refetchInterval])
+  }, [checkStatus, refetchInterval])
 
   return {
     isV3WalletSignedIn,
