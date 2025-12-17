@@ -245,7 +245,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               }}
                               onClose={() => setOpenConnectModal(false)}
                             >
-                              {isWalletConfigLoading ? (
+                              {isWalletConfigLoading || isAuthStatusLoading ? (
                                 <div className="flex py-16 justify-center items-center">
                                   <Spinner size="lg" />
                                 </div>

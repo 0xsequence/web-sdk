@@ -250,7 +250,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
                       <div id="kit-provider" className="h-full w-full flex flex-col" style={{ background: inlineBackground }}>
                         <style>{styles + styleProperties + (customCSS ? `\n\n${customCSS}` : '')}</style>
                         <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                          {isWalletConfigLoading ? (
+                          {isWalletConfigLoading || isAuthStatusLoading ? (
                             <div className="flex py-8 justify-center items-center">
                               <Spinner size="lg" />
                             </div>

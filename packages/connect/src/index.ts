@@ -103,6 +103,7 @@ export {
 export { useOpenConnectModal } from './hooks/useOpenConnectModal.js'
 export { useTheme } from './hooks/useTheme.js'
 export { useWalletSettings } from './hooks/useWalletSettings.js'
+export { useResolvedConnectConfig } from './hooks/useResolvedConnectConfig.js'
 
 export { useSignInEmail } from './hooks/useSignInEmail.js'
 export { useProjectAccessKey } from './hooks/useProjectAccessKey.js'

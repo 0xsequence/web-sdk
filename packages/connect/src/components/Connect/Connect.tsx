@@ -498,9 +498,9 @@ export const Connect = (props: ConnectProps) => {
   // For v3 connectors: show ecosystem if logged in (from status.js check), otherwise show regular v3 connectors
   // Only apply this filtering if we have v3 connectors and auth status has been checked
   const visibleV3ConnectorIds = useMemo(() => {
-    // Wait for auth status to avoid swapping connector lists after the view is shown
+    // While loading, show regular v3 socials to keep layout stable
     if (isAuthStatusLoading || isV3WalletSignedIn === null) {
-      return new Set<string>()
+      return new Set(regularV3Connectors.map(c => c.uid))
     }
 
     // Only apply auth-based filtering if we have v3 connectors
@@ -516,8 +516,8 @@ export const Connect = (props: ConnectProps) => {
       // Not logged in (status.js returned authState !== 'signed-in'): show regular v3 connectors (not ecosystem)
       return new Set(regularV3Connectors.map(c => c.uid))
     }
-    // Fallback: default to no v3 connectors if state is unknown
-    return new Set<string>()
+    // Fallback: default to showing standard v3 socials to avoid empty space
+    return new Set(regularV3Connectors.map(c => c.uid))
   }, [isAuthStatusLoading, isV3WalletSignedIn, ecosystemConnector, regularV3Connectors, sequenceConnectors.length])
 
   const socialAuthConnectors = extendedConnectors

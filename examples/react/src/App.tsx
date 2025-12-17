@@ -1,4 +1,4 @@
-import { SequenceConnect } from '@0xsequence/connect'
+import { SequenceConnect, useResolvedConnectConfig } from '@0xsequence/connect'
 import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
 import { useCallback, useMemo, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -18,7 +18,24 @@ export const App = () => {
     setWalletUrl(sanitizedUrl)
   }, [])
 
-  const config = useMemo(() => createExampleConfig(walletUrl), [walletUrl])
+  const baseConfig = useMemo(() => createExampleConfig(walletUrl), [walletUrl])
+  const { resolvedConfig: resolvedConnectConfig, walletConfigurationSignIn } = useResolvedConnectConfig(baseConfig.connectConfig)
+
+  const config = useMemo(() => {
+    const baseSignIn = baseConfig.connectConfig.signIn ?? {}
+    const resolvedSignIn = walletConfigurationSignIn ?? {}
+    return {
+      ...baseConfig,
+      connectConfig: {
+        ...resolvedConnectConfig,
+        signIn: {
+          ...baseSignIn,
+          projectName: resolvedSignIn.projectName ?? baseSignIn.projectName,
+          logoUrl: resolvedSignIn.logoUrl ?? baseSignIn.logoUrl
+        }
+      }
+    }
+  }, [baseConfig, resolvedConnectConfig, walletConfigurationSignIn])
 
   return (
     <SequenceConnect config={config}>
