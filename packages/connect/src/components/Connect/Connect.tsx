@@ -34,7 +34,7 @@ import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
 import { formatAddress, isEmailValid } from '../../utils/helpers.js'
-import type { WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
+import type { WalletConfigurationOverrides, WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
 import {
   AppleWaasConnectButton,
   ConnectButton,
@@ -86,6 +86,10 @@ interface ConnectProps extends SequenceConnectProviderProps {
   onClose: () => void
   isInline?: boolean
   enabledProviders?: WalletConfigurationProvider[]
+  isV3WalletSignedIn?: boolean | null
+  isAuthStatusLoading?: boolean
+  resolvedConfig?: ConnectConfig
+  walletConfigurationSignIn?: WalletConfigurationOverrides['signIn']
 }
 
 export const Connect = (props: ConnectProps) => {
@@ -96,19 +100,26 @@ export const Connect = (props: ConnectProps) => {
   const { analytics } = useAnalyticsContext()
   const { hideExternalConnectOptions, hideConnectedWallets, hideSocialConnectOptions } = useWalletSettings()
 
-  const { onClose, emailConflictInfo, config = {} as ConnectConfig, isInline = false } = props
+  const { onClose, emailConflictInfo, config: baseConfig = {} as ConnectConfig, isInline = false } = props
+  const config = props.resolvedConfig ?? baseConfig
+  const isV3WalletSignedIn = props.isV3WalletSignedIn ?? null
+  const isAuthStatusLoading = props.isAuthStatusLoading ?? false
+  const walletConfigurationSignIn = props.walletConfigurationSignIn
   const { signIn = {} } = config
+  const baseSignIn = baseConfig.signIn ?? {}
   const storage = useStorage()
 
   const descriptiveSocials = !!config?.signIn?.descriptiveSocials
   const showWalletAuthOptionsFirst = config?.signIn?.showWalletAuthOptionsFirst ?? false
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const projectName = config?.signIn?.projectName
+  const projectName = baseSignIn?.projectName
+  const ecosystemProjectName = walletConfigurationSignIn?.projectName ?? baseSignIn?.projectName
+  const ecosystemLogoUrl = walletConfigurationSignIn?.logoUrl ?? baseSignIn?.logoUrl
 
   const [email, setEmail] = useState('')
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
 
-  const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet' | 'ecosystem'>(null)
+  const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet'>(null)
   const { status, connectors, connect } = useConnect()
   const { signMessageAsync } = useSignMessage()
 
@@ -271,8 +282,36 @@ export const Connect = (props: ConnectProps) => {
   const hasSequenceWalletConnection = hasV3Wallet || hasWaasWallet
   const hasSocialConnection = connections.some(c => (c.connector as ExtendedConnector)?._wallet?.type === 'social')
   const hasPrimarySequenceConnection = hasSequenceWalletConnection || hasSocialConnection
+  const hasAnyConnection = connections.length > 0
 
   const extendedConnectors = filteredConnectors as ExtendedConnector[]
+
+  const isSequenceV3Connector = (connector: ExtendedConnector): connector is ExtendedConnector & SequenceV3Connector => {
+    return connector.type === SEQUENCE_V3_CONNECTOR_TYPE
+  }
+
+  // Safari aggressively blocks popups if window.open is not triggered directly from the click handler.
+  // Pre-open the Sequence popup in the same gesture before we kick off the async wagmi connect flow.
+  const preopenSequenceV3Popup = useCallback((connector: ExtendedConnector & SequenceV3Connector) => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    try {
+      const client: any = connector.client
+      const transport = typeof client?.ensureTransport === 'function' ? client.ensureTransport() : client?.transport
+      const isPopupMode = (transport?.mode ?? client?.transportMode) === 'popup'
+
+      if (isPopupMode && typeof transport?.openWallet === 'function') {
+        // Use the same path used by connect requests so the opened window is reused.
+        transport.openWallet('/request/connect').catch(() => {
+          /* Ignore preopen failures; the main connect flow will try again */
+        })
+      }
+    } catch (error) {
+      console.warn('Failed to pre-open Sequence popup', error)
+    }
+  }, [])
 
   const sequenceConnectors = useMemo(
     () =>
@@ -444,12 +483,55 @@ export const Connect = (props: ConnectProps) => {
       }
     })
 
-  const ecosystemConnectors = extendedConnectors.filter(c => c._wallet?.isEcosystemWallet)
+  const ecosystemConnector = extendedConnectors.find(c => c._wallet?.isEcosystemWallet)
+
+  // Filter v3 connectors based on login status from status.js endpoint
+  // If logged in: only show ecosystem connector
+  // If not logged in: show regular v3 connectors (apple, passkey, google, etc.) but NOT ecosystem
+  // This logic only applies to v3 connectors (type === SEQUENCE_V3_CONNECTOR_TYPE)
+  const v3SocialConnectors = useMemo(
+    () => sequenceConnectors.filter(c => c._wallet?.type === 'social' && !c._wallet?.id.includes('email')),
+    [sequenceConnectors]
+  )
+  const regularV3Connectors = useMemo(() => v3SocialConnectors.filter(c => !c._wallet?.isEcosystemWallet), [v3SocialConnectors])
+
+  // For v3 connectors: show ecosystem if logged in (from status.js check), otherwise show regular v3 connectors
+  // Only apply this filtering if we have v3 connectors and auth status has been checked
+  const visibleV3ConnectorIds = useMemo(() => {
+    // While loading, show regular v3 socials to keep layout stable
+    if (isAuthStatusLoading || isV3WalletSignedIn === null) {
+      return new Set(regularV3Connectors.map(c => c.uid))
+    }
+
+    // Only apply auth-based filtering if we have v3 connectors
+    if (sequenceConnectors.length === 0) {
+      // No v3 connectors, return empty set (will be filtered out anyway)
+      return new Set<string>()
+    }
+
+    if (isV3WalletSignedIn === true) {
+      // Logged in (status.js returned authState === 'signed-in'): only show ecosystem connector
+      return ecosystemConnector ? new Set([ecosystemConnector.uid]) : new Set<string>()
+    } else if (isV3WalletSignedIn === false) {
+      // Not logged in (status.js returned authState !== 'signed-in'): show regular v3 connectors (not ecosystem)
+      return new Set(regularV3Connectors.map(c => c.uid))
+    }
+    // Fallback: default to showing standard v3 socials to avoid empty space
+    return new Set(regularV3Connectors.map(c => c.uid))
+  }, [isAuthStatusLoading, isV3WalletSignedIn, ecosystemConnector, regularV3Connectors, sequenceConnectors.length])
 
   const socialAuthConnectors = extendedConnectors
     .filter(c => c._wallet?.type === 'social')
     .filter(c => !c._wallet?.id.includes('email'))
-    .filter(c => !c._wallet?.isEcosystemWallet)
+    .filter(c => {
+      // For v3 connectors, use the filtered list based on login status
+      const isV3Connector = c.type === SEQUENCE_V3_CONNECTOR_TYPE
+      if (isV3Connector) {
+        return visibleV3ConnectorIds.has(c.uid)
+      }
+      // For non-v3 connectors, exclude ecosystem wallets
+      return !c._wallet?.isEcosystemWallet
+    })
     .sort((a, b) => {
       const isPasskey = (wallet?: ExtendedConnector['_wallet']) => wallet?.id === 'passkey-v3'
       if (isPasskey(a._wallet) && !isPasskey(b._wallet)) {
@@ -466,7 +548,9 @@ export const Connect = (props: ConnectProps) => {
     return hasPrimarySequenceConnection ? true : !connector._wallet?.isEcosystemWallet
   })
 
-  const shouldHideStandardSocial = ecosystemConnectors.length > 0
+  // For v3: hide standard social only if logged in and ecosystem connector exists
+  // For non-v3: hide standard social if ecosystem connector exists
+  const shouldHideStandardSocial = isV3WalletSignedIn === true ? !!ecosystemConnector : false
 
   const emailConnector =
     !hideSocialConnectOptions && !shouldHideStandardSocial
@@ -482,6 +566,48 @@ export const Connect = (props: ConnectProps) => {
       onConnect,
       isDescriptive: options?.isDescriptive,
       disableTooltip: options?.disableTooltip
+    }
+
+    // Special handling for ecosystem connector - use config data for display
+    if (connector._wallet?.isEcosystemWallet) {
+      const projectName = ecosystemProjectName || connector._wallet.name
+      const logoUrl = ecosystemLogoUrl
+
+      const renderEcosystemLogo = (logoProps: LogoProps) => (
+        <Image
+          src={logoUrl || ''}
+          alt={projectName}
+          disableAnimation
+          {...logoProps}
+          style={{
+            objectFit: 'contain',
+            width: 'auto',
+            minWidth: '30px',
+            height: '100%',
+            minHeight: '30px',
+            maxWidth: '60px',
+            maxHeight: '100%',
+            ...logoProps.style
+          }}
+        />
+      )
+
+      // Create a modified connector with config-based display properties
+      const displayConnector: ExtendedConnector = {
+        ...connector,
+        _wallet: {
+          ...connector._wallet,
+          name: projectName,
+          ctaText: ecosystemProjectName ? `Connect with ${ecosystemProjectName}` : connector._wallet.ctaText,
+          // Override logos if logoUrl is available
+          ...(logoUrl && {
+            logoDark: renderEcosystemLogo,
+            logoLight: renderEcosystemLogo
+          })
+        }
+      }
+
+      return <ConnectButton {...commonProps} connector={displayConnector} />
     }
 
     switch (connector._wallet?.id) {
@@ -574,6 +700,10 @@ export const Connect = (props: ConnectProps) => {
       return
     }
 
+    if (isSequenceV3Connector(connector)) {
+      preopenSequenceV3Popup(connector)
+    }
+
     if (connector._wallet.id === 'email') {
       const email = prompt('Auto-email login, please specify the email address:')
 
@@ -651,15 +781,14 @@ export const Connect = (props: ConnectProps) => {
     }
   }, [emailConflictInfo])
 
-  const showEcosystemConnectorSection = !hideSocialConnectOptions && ecosystemConnectors.length > 0
+  // For v3: only show ecosystem connector section if logged in
+  // For non-v3: show ecosystem connector section if it exists
+  const showEcosystemConnectorSection = !hideSocialConnectOptions && !!ecosystemConnector && isV3WalletSignedIn === true
   const showSocialConnectorSection = !hideSocialConnectOptions && !shouldHideStandardSocial && socialAuthConnectors.length > 0
   const showEmailInputSection = !hideSocialConnectOptions && !shouldHideStandardSocial && !!emailConnector
 
-  const showMoreEcosystemOptions = ecosystemConnectors.length > MAX_ITEM_PER_ROW
   const showMoreSocialOptions = socialAuthConnectors.length > MAX_ITEM_PER_ROW
   const showMoreWalletOptions = walletConnectors.length > MAX_ITEM_PER_ROW
-  const ecosystemConnectorsPerRow =
-    showMoreEcosystemOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : ecosystemConnectors.length
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
@@ -736,19 +865,9 @@ export const Connect = (props: ConnectProps) => {
 
   if (showExtendedList) {
     const SEARCHABLE_TRESHOLD = 8
-    const connectorsForModal =
-      showExtendedList === 'social'
-        ? socialAuthConnectors
-        : showExtendedList === 'ecosystem'
-          ? ecosystemConnectors
-          : walletConnectors
+    const connectorsForModal = showExtendedList === 'social' ? socialAuthConnectors : walletConnectors
     const searchable = connectorsForModal.length > SEARCHABLE_TRESHOLD
-    const title =
-      showExtendedList === 'social'
-        ? 'Continue with a social account'
-        : showExtendedList === 'ecosystem'
-          ? 'Connect with an ecosystem wallet'
-          : 'Choose a wallet'
+    const title = showExtendedList === 'social' ? 'Continue with a social account' : 'Choose a wallet'
 
     return (
       <ExtendedWalletList
@@ -867,34 +986,25 @@ export const Connect = (props: ConnectProps) => {
               />
             ) : (
               <>
-                {!hasPrimarySequenceConnection && <Banner config={config as ConnectConfig} />}
+                {!hasAnyConnection && <Banner config={baseConfig as ConnectConfig} />}
 
                 {showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
                   <WalletConnectorsSection />
                 )}
 
                 {!hasPrimarySequenceConnection && (
-                  <div className="flex mt-6 gap-6 flex-col">
+                  <div className="flex mt-4 gap-6 flex-col">
                     <>
-                      {showEcosystemConnectorSection && (
+                      {showEcosystemConnectorSection && ecosystemConnector && (
                         <div
                           className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
                         >
-                          {ecosystemConnectors.slice(0, ecosystemConnectorsPerRow).map(connector => {
-                            return (
-                              <div className="w-full" key={connector.uid}>
-                                {renderConnectorButton(connector, {
-                                  isDescriptive: descriptiveSocials,
-                                  disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
-                                })}
-                              </div>
-                            )
-                          })}
-                          {showMoreEcosystemOptions && (
-                            <div className="w-full">
-                              <ShowAllWalletsButton onClick={() => setShowExtendedList('ecosystem')} />
-                            </div>
-                          )}
+                          <div className="w-full">
+                            {renderConnectorButton(ecosystemConnector, {
+                              isDescriptive: descriptiveSocials,
+                              disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
+                            })}
+                          </div>
                         </div>
                       )}
                       {!hideSocialConnectOptions && showSocialConnectorSection && (

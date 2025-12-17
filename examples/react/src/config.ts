@@ -4,6 +4,7 @@ import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
 import { parseEther } from 'viem'
 
+import { webSdkDemoLogoDataUrl } from './constants/index.js'
 import { getEmitterContractAddress } from './constants/permissions'
 
 // const searchParams = new URLSearchParams(location.search)
@@ -37,6 +38,8 @@ export const connectConfig: ConnectConfig = {
   projectAccessKey,
   walletUrl: DEFAULT_WALLET_URL,
   signIn: {
+    projectName: 'Web SDK Demo',
+    logoUrl: webSdkDemoLogoDataUrl,
     descriptiveSocials: true,
     disableTooltipForDescriptiveSocials: true
   },
@@ -96,7 +99,7 @@ export const createExampleConfig = (walletUrl: string) =>
     walletUrl: sanitizeWalletUrl(walletUrl),
     dappOrigin: window.location.origin,
     appName: 'Sequence Web SDK Demo',
-    defaultChainId: ChainId.OPTIMISM,
+    defaultChainId: ChainId.ARBITRUM_SEPOLIA,
     walletConnect: {
       projectId: walletConnectProjectId
     },
@@ -105,7 +108,7 @@ export const createExampleConfig = (walletUrl: string) =>
     enableImplicitSession: true,
     includeFeeOptionPermissions: true,
     explicitSessionParams: {
-      chainId: ChainId.OPTIMISM,
+      chainId: ChainId.ARBITRUM_SEPOLIA,
       nativeTokenSpending: {
         valueLimit: parseEther('0.1')
       },

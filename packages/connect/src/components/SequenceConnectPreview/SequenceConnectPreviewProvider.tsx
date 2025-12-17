@@ -10,6 +10,7 @@ import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
+import { useSyncWagmiChains } from '../../hooks/useSyncWagmiChains.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import { type ConnectConfig, type DisplayedAsset, type ExtendedConnector, type ModalPosition } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
@@ -42,7 +43,14 @@ const resolveInlineBackground = (theme: Theme | undefined) => {
  */
 export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderProps) => {
   const { config: incomingConfig, children } = props
-  const { resolvedConfig: config, isLoading: isWalletConfigLoading, enabledProviders } = useResolvedConnectConfig(incomingConfig)
+  const {
+    resolvedConfig: config,
+    isLoading: isWalletConfigLoading,
+    enabledProviders,
+    isV3WalletSignedIn,
+    isAuthStatusLoading,
+    walletConfigurationSignIn
+  } = useResolvedConnectConfig(incomingConfig)
 
   const {
     defaultTheme = 'dark',
@@ -59,6 +67,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
 
   const wagmiConfig = useConfig()
+  useSyncWagmiChains(config, wagmiConfig)
 
   const inlineBackground = resolveInlineBackground(theme)
 
@@ -103,8 +112,12 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
                       emailConflictInfo={emailConflictInfo}
                       isInline
                       {...props}
-                      config={config}
+                      config={incomingConfig}
+                      resolvedConfig={config}
+                      isV3WalletSignedIn={isV3WalletSignedIn}
+                      isAuthStatusLoading={isAuthStatusLoading}
                       enabledProviders={enabledProviders}
+                      walletConfigurationSignIn={walletConfigurationSignIn}
                     />
                   )}
                 </ThemeProvider>

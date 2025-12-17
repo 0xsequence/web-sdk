@@ -3,7 +3,7 @@ import type { CreateConnectorFn } from 'wagmi'
 import { appleV3 } from '../connectors/apple/applev3.js'
 import { appleWaas } from '../connectors/apple/appleWaas.js'
 import { coinbaseWallet } from '../connectors/coinbaseWallet/coinbaseWallet.js'
-import { ecosystemV3, type EcosystemWalletDefinition } from '../connectors/ecosystem/ecosystemV3.js'
+import { ecosystemV3 } from '../connectors/ecosystem/ecosystemV3.js'
 import { emailV3 } from '../connectors/email/emailv3.js'
 import { emailWaas } from '../connectors/email/emailWaas.js'
 import { epicWaas } from '../connectors/epic/epicWaas.js'
@@ -50,7 +50,6 @@ export interface DefaultV3ConnectorOptions extends CommonConnectorOptions {
     | {
         projectId: string
       }
-  ecosystemWallets?: EcosystemWalletDefinition[]
   additionalWallets?: Wallet[]
   /**
    * @deprecated, use connectors.walletConnect.projectId instead
@@ -263,12 +262,10 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
 export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): CreateConnectorFn[] => {
   const { projectAccessKey, walletUrl, dappOrigin, defaultChainId = 1 } = options
   const appName = resolveAppName(options)
-  const hasEcosystemWallets = Array.isArray(options.ecosystemWallets) && options.ecosystemWallets.length > 0
-  const shouldIncludeStandardSocialWallets = !hasEcosystemWallets
 
   const wallets: Wallet[] = []
 
-  if (shouldIncludeStandardSocialWallets && options.email !== false) {
+  if (options.email !== false) {
     if (!walletUrl || !dappOrigin) {
       throw new Error('Email wallet requires walletUrl and dappOrigin to be set')
     }
@@ -287,7 +284,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
     )
   }
 
-  if (shouldIncludeStandardSocialWallets && options.google !== false) {
+  if (options.google !== false) {
     if (!walletUrl || !dappOrigin) {
       throw new Error('Google wallet requires walletUrl and dappOrigin to be set')
     }
@@ -306,7 +303,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
     )
   }
 
-  if (shouldIncludeStandardSocialWallets && options.apple !== false) {
+  if (options.apple !== false) {
     if (!walletUrl || !dappOrigin) {
       throw new Error('Apple wallet requires walletUrl and dappOrigin to be set')
     }
@@ -325,7 +322,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
     )
   }
 
-  if (shouldIncludeStandardSocialWallets && options.passkey !== false) {
+  if (options.passkey !== false) {
     if (!walletUrl || !dappOrigin) {
       throw new Error('Passkey wallet requires walletUrl and dappOrigin to be set')
     }
@@ -344,33 +341,20 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
     )
   }
 
-  if (options.ecosystemWallets && options.ecosystemWallets.length > 0) {
-    if (!walletUrl || !dappOrigin) {
-      throw new Error('Ecosystem wallets require walletUrl and dappOrigin to be set')
-    }
-    options.ecosystemWallets.forEach(ecosystemWallet => {
-      wallets.push(
-        ecosystemV3({
-          projectAccessKey: projectAccessKey,
-          walletUrl: walletUrl,
-          defaultNetwork: defaultChainId,
-          dappOrigin: dappOrigin,
-          explicitSessionParams: options.explicitSessionParams,
-          enableImplicitSession: options.enableImplicitSession,
-          includeFeeOptionPermissions: options.includeFeeOptionPermissions,
-          nodesUrl: options.nodesUrl,
-          relayerUrl: options.relayerUrl,
-          id: ecosystemWallet.id,
-          name: ecosystemWallet.name,
-          logoDark: ecosystemWallet.logoDark,
-          logoLight: ecosystemWallet.logoLight,
-          monochromeLogoDark: ecosystemWallet.monochromeLogoDark,
-          monochromeLogoLight: ecosystemWallet.monochromeLogoLight,
-          ctaText: ecosystemWallet.ctaText,
-          loginType: ecosystemWallet.loginType
-        })
-      )
-    })
+  if (walletUrl && dappOrigin) {
+    wallets.push(
+      ecosystemV3({
+        projectAccessKey: projectAccessKey,
+        walletUrl: walletUrl,
+        defaultNetwork: defaultChainId,
+        dappOrigin: dappOrigin,
+        explicitSessionParams: options.explicitSessionParams,
+        enableImplicitSession: options.enableImplicitSession,
+        includeFeeOptionPermissions: options.includeFeeOptionPermissions,
+        nodesUrl: options.nodesUrl,
+        relayerUrl: options.relayerUrl
+      })
+    )
   }
 
   if (options.metaMask !== false) {

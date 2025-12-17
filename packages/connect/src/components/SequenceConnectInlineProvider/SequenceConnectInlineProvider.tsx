@@ -19,6 +19,7 @@ import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
+import { useSyncWagmiChains } from '../../hooks/useSyncWagmiChains.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import { styleProperties } from '../../styleProperties.js'
@@ -69,7 +70,14 @@ const resolveInlineBackground = (theme: Theme | undefined) => {
  */
 export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProviderProps) => {
   const { config: incomingConfig, children } = props
-  const { resolvedConfig: config, isLoading: isWalletConfigLoading, enabledProviders } = useResolvedConnectConfig(incomingConfig)
+  const {
+    resolvedConfig: config,
+    isLoading: isWalletConfigLoading,
+    enabledProviders,
+    isV3WalletSignedIn,
+    isAuthStatusLoading,
+    walletConfigurationSignIn
+  } = useResolvedConnectConfig(incomingConfig)
 
   const {
     defaultTheme = 'dark',
@@ -96,6 +104,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
   const wagmiConfig = useConfig()
+  useSyncWagmiChains(config, wagmiConfig)
   const storage = useStorage()
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
@@ -241,7 +250,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
                       <div id="kit-provider" className="h-full w-full flex flex-col" style={{ background: inlineBackground }}>
                         <style>{styles + styleProperties + (customCSS ? `\n\n${customCSS}` : '')}</style>
                         <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                          {isWalletConfigLoading ? (
+                          {isWalletConfigLoading || isAuthStatusLoading ? (
                             <div className="flex py-8 justify-center items-center">
                               <Spinner size="lg" />
                             </div>
@@ -251,8 +260,12 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
                               emailConflictInfo={emailConflictInfo}
                               isInline
                               {...props}
-                              config={config}
+                              config={incomingConfig}
+                              resolvedConfig={config}
+                              isV3WalletSignedIn={isV3WalletSignedIn}
+                              isAuthStatusLoading={isAuthStatusLoading}
                               enabledProviders={enabledProviders}
+                              walletConfigurationSignIn={walletConfigurationSignIn}
                             />
                           )}
                         </ThemeProvider>

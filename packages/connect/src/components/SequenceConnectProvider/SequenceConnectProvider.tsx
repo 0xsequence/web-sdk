@@ -19,6 +19,7 @@ import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
 import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
+import { useSyncWagmiChains } from '../../hooks/useSyncWagmiChains.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import {
@@ -47,7 +48,14 @@ export type SequenceConnectProviderProps = {
 
 export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => {
   const { config: incomingConfig, children } = props
-  const { resolvedConfig: config, isLoading: isWalletConfigLoading, enabledProviders } = useResolvedConnectConfig(incomingConfig)
+  const {
+    resolvedConfig: config,
+    isLoading: isWalletConfigLoading,
+    enabledProviders,
+    isV3WalletSignedIn,
+    isAuthStatusLoading,
+    walletConfigurationSignIn
+  } = useResolvedConnectConfig(incomingConfig)
   const {
     defaultTheme = 'dark',
     signIn = {},
@@ -74,6 +82,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
   const { address, isConnected } = useAccount()
   const wagmiConfig = useConfig()
+  useSyncWagmiChains(config, wagmiConfig)
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
   const [isWalletWidgetOpen, setIsWalletWidgetOpen] = useState<boolean>(false)
@@ -236,7 +245,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               }}
                               onClose={() => setOpenConnectModal(false)}
                             >
-                              {isWalletConfigLoading ? (
+                              {isWalletConfigLoading || isAuthStatusLoading ? (
                                 <div className="flex py-16 justify-center items-center">
                                   <Spinner size="lg" />
                                 </div>
@@ -246,8 +255,12 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                     onClose={() => setOpenConnectModal(false)}
                                     emailConflictInfo={emailConflictInfo}
                                     {...props}
-                                    config={config}
+                                    config={incomingConfig}
+                                    resolvedConfig={config}
+                                    isV3WalletSignedIn={isV3WalletSignedIn}
+                                    isAuthStatusLoading={isAuthStatusLoading}
                                     enabledProviders={enabledProviders}
+                                    walletConfigurationSignIn={walletConfigurationSignIn}
                                   />
                                 </EpicAuthProvider>
                               )}

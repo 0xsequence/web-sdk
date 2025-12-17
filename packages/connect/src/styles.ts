@@ -44,6 +44,7 @@ export const styles = String.raw`
     --radius-2xl: 1rem;
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --animate-spin: spin 1s linear infinite;
+    --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     --blur-xs: 4px;
     --blur-md: 12px;
     --default-transition-duration: 150ms;
@@ -318,9 +319,6 @@ export const styles = String.raw`
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
-  .mt-0 {
-    margin-top: calc(var(--spacing) * 0);
-  }
   .mt-1 {
     margin-top: calc(var(--spacing) * 1);
   }
@@ -345,17 +343,8 @@ export const styles = String.raw`
   .-mr-\[1px\] {
     margin-right: calc(1px * -1);
   }
-  .mr-3 {
-    margin-right: calc(var(--spacing) * 3);
-  }
   .mr-4 {
     margin-right: calc(var(--spacing) * 4);
-  }
-  .mr-10 {
-    margin-right: calc(var(--spacing) * 10);
-  }
-  .mr-12 {
-    margin-right: calc(var(--spacing) * 12);
   }
   .-mb-\[1px\] {
     margin-bottom: calc(1px * -1);
@@ -365,9 +354,6 @@ export const styles = String.raw`
   }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
-  }
-  .mb-3 {
-    margin-bottom: calc(var(--spacing) * 3);
   }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
@@ -455,15 +441,6 @@ export const styles = String.raw`
   }
   .h-16 {
     height: calc(var(--spacing) * 16);
-  }
-  .h-24 {
-    height: calc(var(--spacing) * 24);
-  }
-  .h-200 {
-    height: calc(var(--spacing) * 200);
-  }
-  .h-400 {
-    height: calc(var(--spacing) * 400);
   }
   .h-\[1px\] {
     height: 1px;
@@ -612,9 +589,6 @@ export const styles = String.raw`
   .w-\[148px\] {
     width: 148px;
   }
-  .w-auto {
-    width: auto;
-  }
   .w-fit {
     width: fit-content;
   }
@@ -632,9 +606,6 @@ export const styles = String.raw`
   }
   .max-w-full {
     max-width: 100%;
-  }
-  .max-w-md {
-    max-width: var(--container-md);
   }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
@@ -700,6 +671,9 @@ export const styles = String.raw`
   }
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+  }
+  .animate-pulse {
+    animation: var(--animate-pulse);
   }
   .animate-skeleton {
     animation: skeleton 1s ease infinite;
@@ -817,9 +791,6 @@ export const styles = String.raw`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .overflow-auto {
-    overflow: auto;
-  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -875,21 +846,9 @@ export const styles = String.raw`
     border-top-left-radius: var(--radius-2xl);
     border-top-right-radius: var(--radius-2xl);
   }
-  .rounded-t-none {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-  .rounded-t-xl {
-    border-top-left-radius: var(--radius-xl);
-    border-top-right-radius: var(--radius-xl);
-  }
   .rounded-b-none {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-  }
-  .rounded-b-xl {
-    border-bottom-right-radius: var(--radius-xl);
-    border-bottom-left-radius: var(--radius-xl);
   }
   .border {
     border-style: var(--tw-border-style);
@@ -934,12 +893,6 @@ export const styles = String.raw`
   }
   .border-border-normal {
     border-color: var(--seq-color-border-normal);
-  }
-  .border-primary {
-    border-color: var(--seq-color-primary);
-  }
-  .border-red-500 {
-    border-color: var(--color-red-500);
   }
   .border-transparent {
     border-color: transparent;
@@ -1006,10 +959,6 @@ export const styles = String.raw`
   }
   .bg-white {
     background-color: var(--color-white);
-  }
-  .bg-gradient-to-r {
-    --tw-gradient-position: to right in oklab;
-    background-image: linear-gradient(var(--tw-gradient-stops));
   }
   .bg-gradient-primary {
     background-image: var(--seq-color-gradient-primary);
@@ -1083,9 +1032,6 @@ export const styles = String.raw`
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
   }
-  .px-8 {
-    padding-inline: calc(var(--spacing) * 8);
-  }
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
@@ -1097,9 +1043,6 @@ export const styles = String.raw`
   }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
-  }
-  .py-5 {
-    padding-block: calc(var(--spacing) * 5);
   }
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
@@ -1139,9 +1082,6 @@ export const styles = String.raw`
   }
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
-  }
-  .pr-16 {
-    padding-right: calc(var(--spacing) * 16);
   }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
@@ -1236,10 +1176,6 @@ export const styles = String.raw`
     --tw-leading: calc(var(--spacing) * 0);
     line-height: calc(var(--spacing) * 0);
   }
-  .leading-1 {
-    --tw-leading: calc(var(--spacing) * 1);
-    line-height: calc(var(--spacing) * 1);
-  }
   .leading-4 {
     --tw-leading: calc(var(--spacing) * 4);
     line-height: calc(var(--spacing) * 4);
@@ -1318,9 +1254,6 @@ export const styles = String.raw`
   }
   .text-black {
     color: var(--color-black);
-  }
-  .text-gray-500 {
-    color: var(--color-gray-500);
   }
   .text-info {
     color: var(--seq-color-info);
@@ -2467,6 +2400,11 @@ export const styles = String.raw`
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
   }
 }
 @keyframes skeleton {

@@ -52,6 +52,7 @@ export * from './utils/session/constants.js'
 
 // Utils
 export { getConnectWallets } from './utils/getConnectWallets.js'
+export { setChains } from './utils/setChains.js'
 export {
   capitalize,
   compareAddress,
@@ -69,7 +70,11 @@ export { isTxRejected, sendTransactions, waitForTransactionReceipt } from './uti
 export { createContractPermission, createContractPermissions, createExplicitSessionConfig } from './utils/session/index.js'
 
 // Contexts
-export { ConnectConfigContextProvider, useConnectConfigContext } from './contexts/ConnectConfig.js'
+export {
+  ConnectConfigContextProvider,
+  useConnectConfigContext,
+  useOptionalConnectConfigContext
+} from './contexts/ConnectConfig.js'
 export { AnalyticsContextProvider, useAnalyticsContext } from './contexts/Analytics.js'
 export { ConnectModalContextProvider, useConnectModalContext } from './contexts/ConnectModal.js'
 export { ThemeContextProvider, useThemeContext } from './contexts/Theme.js'
@@ -98,6 +103,7 @@ export {
 export { useOpenConnectModal } from './hooks/useOpenConnectModal.js'
 export { useTheme } from './hooks/useTheme.js'
 export { useWalletSettings } from './hooks/useWalletSettings.js'
+export { useResolvedConnectConfig } from './hooks/useResolvedConnectConfig.js'
 
 export { useSignInEmail } from './hooks/useSignInEmail.js'
 export { useProjectAccessKey } from './hooks/useProjectAccessKey.js'
@@ -118,6 +124,8 @@ export { useWaasSignInEmail } from './hooks/useWaasSignInEmail.js'
 export { useFeeOptions } from './hooks/useFeeOptions.js'
 export { useExplicitSessions } from './hooks/useExplicitSessions.js'
 export { useSequenceSessionState } from './hooks/useSequenceSessionState.js'
+export { useAuthStatus } from './hooks/useAuthStatus.js'
+export type { UseAuthStatusOptions, UseAuthStatusResult } from './hooks/useAuthStatus.js'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge/index.js'

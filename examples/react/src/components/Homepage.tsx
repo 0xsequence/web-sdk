@@ -29,6 +29,9 @@ export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
   const normalizedInput = sanitizeWalletUrl(walletUrlInput)
   const isDirty = normalizedInput !== walletUrl
 
+  console.log('wallets.lenght', wallets.length)
+  console.log('wallets', wallets)
+
   return (
     <main>
       {wallets.length === 0 ? (

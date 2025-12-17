@@ -1,5 +1,3 @@
-import type { Theme } from '@0xsequence/design-system'
-
 import type { ConnectConfig } from '../types.js'
 
 export type WalletConfigurationProvider = 'EMAIL' | 'GOOGLE' | 'APPLE' | 'PASSKEY'
@@ -37,12 +35,11 @@ type WalletConfigurationResponse = {
   supportedChains?: number[]
 }
 
-type WalletConfigurationOverrides = {
+export type WalletConfigurationOverrides = {
   signIn?: {
     projectName?: string
     logoUrl?: string
   }
-  defaultTheme?: Theme
   chainIds?: number[]
   enabledProviders?: WalletConfigurationProvider[]
 }
@@ -56,6 +53,7 @@ const CACHE_TTL_MS = 1000 * 60 * 60 * 4
 const allowedProviders: WalletConfigurationProvider[] = ['EMAIL', 'GOOGLE', 'APPLE', 'PASSKEY']
 const walletConfigurationPromises = new Map<string, Promise<WalletConfigurationResponse>>()
 const walletConfigurationCache = new Map<string, CachedWalletConfiguration>()
+const PROJECT_NAME_CACHE_KEY_PREFIX = '@0xsequence.wallet-config.projectName:'
 
 export const normalizeWalletUrl = (walletUrl: string): string => {
   const trimmed = walletUrl.trim()
@@ -126,7 +124,7 @@ const pickLogoUrl = (config: WalletConfigurationResponse): string | undefined =>
   ) as string[]
 
   const getLogoFromTheme = (theme?: WalletConfigurationTheme) => {
-    return theme?.fileAuthLogo?.src || theme?.fileHeaderLogo?.src
+    return theme?.fileAuthLogo?.src
   }
 
   for (const themeKey of themeOrder) {
@@ -151,13 +149,36 @@ const normalizeEnabledProviders = (providers?: string[]): WalletConfigurationPro
   return normalized
 }
 
+const buildProjectNameCacheKey = (normalizedUrl: string) => `${PROJECT_NAME_CACHE_KEY_PREFIX}${normalizedUrl}`
+
+export const getCachedProjectName = (walletUrl: string): string | undefined => {
+  const normalizedUrl = normalizeWalletUrl(walletUrl)
+  if (!normalizedUrl) {
+    return undefined
+  }
+  try {
+    const cached = localStorage.getItem(buildProjectNameCacheKey(normalizedUrl))
+    return cached || undefined
+  } catch {
+    return undefined
+  }
+}
+
+export const cacheProjectName = (walletUrl: string, projectName: string) => {
+  const normalizedUrl = normalizeWalletUrl(walletUrl)
+  if (!normalizedUrl || !projectName) {
+    return
+  }
+  try {
+    localStorage.setItem(buildProjectNameCacheKey(normalizedUrl), projectName)
+  } catch {
+    // ignore storage failures
+  }
+}
+
 export const mapWalletConfigurationToOverrides = (config: WalletConfigurationResponse): WalletConfigurationOverrides => {
   const projectName = typeof config.name === 'string' && config.name.trim() ? config.name : undefined
   const logoUrl = pickLogoUrl(config)
-
-  const normalizedTheme = config.defaultTheme?.toLowerCase()
-  const defaultTheme: Theme | undefined =
-    normalizedTheme === 'dark' || normalizedTheme === 'light' ? (normalizedTheme as Theme) : undefined
 
   const chainIds = Array.isArray(config.supportedChains) && config.supportedChains.length > 0 ? config.supportedChains : undefined
 
@@ -171,7 +192,6 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
             logoUrl
           }
         : undefined,
-    defaultTheme,
     chainIds,
     enabledProviders
   }
@@ -187,17 +207,6 @@ export const mergeConnectConfigWithWalletConfiguration = (
 
   const mergedConfig: ConnectConfig = {
     ...config
-  }
-
-  if (overrides.signIn) {
-    mergedConfig.signIn = {
-      ...config.signIn,
-      ...overrides.signIn
-    }
-  }
-
-  if (overrides.defaultTheme !== undefined) {
-    mergedConfig.defaultTheme = overrides.defaultTheme
   }
 
   if (overrides.chainIds !== undefined) {
