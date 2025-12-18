@@ -1,3 +1,4 @@
+import { WALLET_CONFIGURATION_TIMEOUT_MS } from '../constants.js'
 import type { ConnectConfig } from '../types.js'
 
 export type WalletConfigurationProvider = 'EMAIL' | 'GOOGLE' | 'APPLE' | 'PASSKEY'
@@ -97,8 +98,13 @@ export const fetchWalletConfiguration = async (walletUrl: string): Promise<Walle
   }
 
   const request = (async () => {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), WALLET_CONFIGURATION_TIMEOUT_MS)
+
     try {
-      const response = await fetch(`${normalizedUrl}/api/wallet-configuration`)
+      const response = await fetch(`${normalizedUrl}/api/wallet-configuration`, {
+        signal: controller.signal
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch wallet configuration: ${response.statusText}`)
@@ -107,7 +113,13 @@ export const fetchWalletConfiguration = async (walletUrl: string): Promise<Walle
       const result = (await response.json()) as WalletConfigurationResponse
       walletConfigurationCache.set(normalizedUrl, { data: result, expiresAt: Date.now() + CACHE_TTL_MS })
       return result
+    } catch (error) {
+      if ((error as Error | undefined)?.name === 'AbortError') {
+        throw new Error('Wallet configuration request was cancelled')
+      }
+      throw error
     } finally {
+      clearTimeout(timeoutId)
       walletConfigurationPromises.delete(normalizedUrl)
     }
   })()

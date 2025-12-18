@@ -19,10 +19,10 @@ export const WALLET_LIST_DEBOUNCE_MS = 120
  * Timeout in milliseconds for the auth status JSONP request.
  *
  * If the JSONP callback is not invoked within this time, we assume
- * the user is not authenticated. 5 seconds is generous enough to handle
- * slow networks while not leaving users waiting indefinitely.
+ * the user is not authenticated. 3 seconds balances slow networks while
+ * avoiding long hangs on blocked requests.
  */
-export const AUTH_STATUS_TIMEOUT_MS = 5000
+export const AUTH_STATUS_TIMEOUT_MS = 3000
 
 /**
  * Minimum supported wagmi version for internal API access.
@@ -31,3 +31,11 @@ export const AUTH_STATUS_TIMEOUT_MS = 5000
  * This constant documents which version the implementation was tested against.
  */
 export const WAGMI_MIN_TESTED_VERSION = '2.0.0'
+
+/**
+ * Timeout in milliseconds for fetching wallet configuration.
+ *
+ * Prevents the UI from getting stuck when the request is slow, blocked by CORS,
+ * or cancelled by the browser.
+ */
+export const WALLET_CONFIGURATION_TIMEOUT_MS = 3000
