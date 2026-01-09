@@ -19,7 +19,7 @@ import {
 } from '@0xsequence/hooks'
 import { useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { EVENT_SOURCE, EVENT_TYPES } from '../../constants/analytics.js'
 import { useNavigation } from '../../hooks/index.js'
@@ -34,7 +34,7 @@ interface SwapListProps {
 export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: SwapListProps) => {
   const { clearCachedBalances } = useClearCachedBalances()
   const { setNavigation } = useNavigation()
-  const { address: userAddress, connector } = useAccount()
+  const { address: userAddress, connector } = useConnection()
   const [isTxsPending, setIsTxsPending] = useState(false)
   const [isErrorTx, setIsErrorTx] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()

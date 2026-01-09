@@ -118,7 +118,11 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       })
     },
 
-    async connect(_connectInfo) {
+    async connect<withCapabilities extends boolean = false>(_connectInfo?: {
+      chainId?: number
+      isReconnecting?: boolean
+      withCapabilities?: withCapabilities | boolean
+    }) {
       const provider = await this.getProvider()
       const isSignedIn = await provider.sequenceWaas.isSignedIn()
 
@@ -171,6 +175,9 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
 
       const accounts = await this.getAccounts()
+      const resolvedAccounts = (
+        _connectInfo?.withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
+      ) as never
 
       if (accounts.length) {
         await config.storage?.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)
@@ -179,7 +186,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
 
       return {
-        accounts,
+        accounts: resolvedAccounts,
         chainId: await this.getChainId()
       }
     },

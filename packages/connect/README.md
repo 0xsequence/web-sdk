@@ -147,12 +147,12 @@ Wallet selection is done through a modal which can be called programmatically.
 
 ```js
 import { useOpenConnectModal } from '@0xsequence/connect'
-import { useDisconnect, useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 const MyReactComponent = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
 
-  const { isConnected } = useAccount()
+  const { isConnected } = useConnection()
 
   const onClick = () => {
     setOpenConnectModal(true)

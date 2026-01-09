@@ -14,7 +14,7 @@ import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'exam
 import React, { useEffect } from 'react'
 import { encodeFunctionData, formatUnits, parseAbi, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
-import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
@@ -25,7 +25,7 @@ import { Select } from './Select'
 
 export const Connected = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
-  const { address } = useAccount()
+  const { address } = useConnection()
 
   const { setOpenWalletModal } = useOpenWalletModal()
 

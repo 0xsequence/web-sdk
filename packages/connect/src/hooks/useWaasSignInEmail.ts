@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useAccount, useConfig } from 'wagmi'
+import { useConfig, useConnection } from 'wagmi'
 
 import { LocalStorageKey } from '../constants/localStorage.js'
 
 export const useWaasSignInEmail = () => {
   const { storage } = useConfig()
-  const { isConnected } = useAccount()
+  const { isConnected } = useConnection()
   const [email, setEmail] = useState<null | string>(null)
 
   const storeEmail = async () => {

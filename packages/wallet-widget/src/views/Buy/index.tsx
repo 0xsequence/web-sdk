@@ -1,12 +1,12 @@
 import { TransactionOnRampProvider, useAddFundsModal } from '@0xsequence/checkout'
 import { useWallets } from '@0xsequence/connect'
 import { AddIcon, Text } from '@0xsequence/design-system'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect.js'
 
 export const Buy = () => {
-  const { address } = useAccount()
+  const { address } = useConnection()
   const { setActiveWallet } = useWallets()
   const { triggerAddFunds } = useAddFundsModal()
 

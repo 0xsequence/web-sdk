@@ -30,7 +30,7 @@ export const AUTH_STATUS_TIMEOUT_MS = 3000
  * The setChains utility accesses wagmi's internal API (`config._internal`).
  * This constant documents which version the implementation was tested against.
  */
-export const WAGMI_MIN_TESTED_VERSION = '2.0.0'
+export const WAGMI_MIN_TESTED_VERSION = '3.2.0'
 
 /**
  * Timeout in milliseconds for fetching wallet configuration.

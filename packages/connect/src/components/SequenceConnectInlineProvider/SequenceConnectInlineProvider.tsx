@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, useState, type ReactNode } from 'react'
 import { hexToString, type Hex } from 'viem'
-import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
+import { useConfig, useConnection, useConnections, type Connector } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants/index.js'
 import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
@@ -102,7 +102,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
-  const { address, isConnected } = useAccount()
+  const { address, isConnected } = useConnection()
   const wagmiConfig = useConfig()
   useSyncWagmiChains(config, wagmiConfig)
   const storage = useStorage()

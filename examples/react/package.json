@@ -32,9 +32,9 @@
     "react-router-dom": "^7.5.3",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3",
-    "ox": "^0.7.2",
+    "ox": "^0.11.3",
     "viem": "^2.28.1",
-    "wagmi": "^2.15.1"
+    "wagmi": "^3.2.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.4",

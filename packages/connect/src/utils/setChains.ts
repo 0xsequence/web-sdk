@@ -7,7 +7,7 @@ import { WAGMI_MIN_TESTED_VERSION } from '../constants.js'
  * Dynamically updates the chains and transports in a wagmi config at runtime.
  *
  * **Important**: This function accesses wagmi's internal `_internal` API which is
- * not part of the public interface. This was tested against wagmi v2.x and may
+ * not part of the public interface. This was tested against wagmi v3.x and may
  * break in future wagmi versions if the internal structure changes.
  *
  * @param config - The wagmi Config instance to modify

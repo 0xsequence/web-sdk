@@ -35,13 +35,20 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
 
     async setup() {},
 
-    async connect() {
+    async connect<withCapabilities extends boolean = false>(_connectInfo?: {
+      chainId?: number
+      isReconnecting?: boolean
+      withCapabilities?: withCapabilities | boolean
+    }) {
       provider = await passportInstance.connectEvm({
         announceProvider: false
       })
       const accounts = await this.getAccounts()
+      const resolvedAccounts = (
+        _connectInfo?.withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
+      ) as never
       const chainId = await this.getChainId()
-      return { accounts, chainId }
+      return { accounts: resolvedAccounts, chainId }
     },
 
     async disconnect() {

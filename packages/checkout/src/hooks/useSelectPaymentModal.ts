@@ -31,10 +31,10 @@ type UseSelectPaymentModalReturnType = {
  * ```tsx
  * import { useSelectPaymentModal } from '@0xsequence/checkout'
  * import { encodeFunctionData, toHex } from 'viem'
- * import { useAccount } from 'wagmi'
+ * import { useConnection } from 'wagmi'
  *
  * const YourComponent = () => {
- *   const { address } = useAccount()
+ *   const { address } = useConnection()
  *   const { openSelectPaymentModal } = useSelectPaymentModal()
  *
  *   const handleCheckout = () => {

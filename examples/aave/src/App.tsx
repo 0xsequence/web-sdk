@@ -9,7 +9,7 @@ import {
 import { supplyERC20Calldata, supplyETHCalldata, withdrawERC20Calldata, withdrawETHCalldata } from '@contractjs/aave-v3'
 import { useEffect, useState } from 'react'
 import { encodeFunctionData, formatUnits, maxUint256, parseAbi, parseEther, parseUnits } from 'viem'
-import { useAccount, useBalance, useDisconnect, useSendTransaction } from 'wagmi'
+import { useBalance, useConnection, useDisconnect, useSendTransaction } from 'wagmi'
 
 import { AAVE_V3_POOL_ADDRESS_ARBITRUM, AAVE_V3_WRAPPED_TOKEN_GATEWAY_ADDRESS_ARBITRUM, USDC_ADDRESS_ARBITRUM } from './config'
 
@@ -19,8 +19,8 @@ const AWETH_ADDRESS = '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8'
 function App() {
   const { setOpenConnectModal } = useOpenConnectModal()
 
-  const { isConnected, address } = useAccount()
-  const { disconnect } = useDisconnect()
+  const { isConnected, address } = useConnection()
+  const disconnect = useDisconnect()
 
   // State for input fields
   const [supplyAmount, setSupplyAmount] = useState('')
@@ -154,7 +154,7 @@ function App() {
     errorCallTestContract
 
   const handleConnect = () => setOpenConnectModal(true)
-  const handleDisconnect = () => disconnect()
+  const handleDisconnect = () => disconnect.mutate()
 
   const handleSupply = (isNative: boolean = false) => {
     if (isNative) {

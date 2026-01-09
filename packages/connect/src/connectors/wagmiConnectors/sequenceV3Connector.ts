@@ -139,8 +139,18 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
         }
       },
 
-      async connect() {
+      async connect<withCapabilities extends boolean = false>(_connectInfo?: {
+        chainId?: number
+        isReconnecting?: boolean
+        withCapabilities?: withCapabilities | boolean
+      }) {
         const accounts = await provider.request({ method: 'eth_requestAccounts' })
+        const normalizedAccounts = accounts.map((account: string) => getAddress(account))
+        const resolvedAccounts = (
+          _connectInfo?.withCapabilities
+            ? normalizedAccounts.map((address: string) => ({ address, capabilities: {} }))
+            : normalizedAccounts
+        ) as never
         if (accounts.length) {
           if (loginStorageKey) {
             await config.storage?.setItem(LocalStorageKey.V3ActiveLoginType, loginStorageKey)
@@ -151,7 +161,7 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
           throw new Error('No accounts found')
         }
         const chainId = await this.getChainId()
-        return { accounts, chainId }
+        return { accounts: resolvedAccounts, chainId }
       },
 
       async disconnect() {

@@ -3,7 +3,7 @@
 import { SequenceAPIClient, type GetLinkedWalletsRequest, type LinkedWallet } from '@0xsequence/api'
 import { useAPIClient } from '@0xsequence/hooks'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useAccount, useConnect, useConnections, useDisconnect, type Connector, type UseConnectionsReturnType } from 'wagmi'
+import { useConnect, useConnection, useConnections, useDisconnect, type Connector, type UseConnectionsReturnType } from 'wagmi'
 
 import { WALLET_LIST_DEBOUNCE_MS } from '../constants.js'
 import { useOptionalConnectConfigContext } from '../contexts/ConnectConfig.js'
@@ -231,10 +231,10 @@ export interface UseWalletsReturnType {
  */
 
 export const useWallets = (): UseWalletsReturnType => {
-  const { address, status: accountStatus } = useAccount()
+  const { address, status: accountStatus } = useConnection()
   const connections = useConnections()
-  const { connectAsync } = useConnect()
-  const { disconnectAsync } = useDisconnect()
+  const connect = useConnect()
+  const disconnect = useDisconnect()
   const connectConfig = useOptionalConnectConfigContext()
   const normalizedWalletUrl = connectConfig?.walletUrl ? normalizeWalletUrl(connectConfig.walletUrl) : ''
   const sequenceProjectName = normalizedWalletUrl ? getCachedProjectName(normalizedWalletUrl) : undefined
@@ -412,7 +412,7 @@ export const useWallets = (): UseWalletsReturnType => {
     }
 
     try {
-      await connectAsync({ connector: connectionToUse.connector })
+      await connect.mutateAsync({ connector: connectionToUse.connector })
     } catch (error) {
       console.error('Failed to set active wallet:', error)
     }
@@ -432,7 +432,7 @@ export const useWallets = (): UseWalletsReturnType => {
     }
 
     try {
-      await disconnectAsync({ connector: connection.connector })
+      await disconnect.mutateAsync({ connector: connection.connector })
     } catch (error) {
       console.error('Failed to disconnect wallet:', error)
     }

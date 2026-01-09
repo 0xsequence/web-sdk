@@ -78,11 +78,11 @@ const getTransactionHistorySummary = async (
  * @example
  * ```tsx
  * import { useGetTransactionHistorySummary } from '@0xsequence/hooks'
- * import { useAccount } from 'wagmi'
+ * import { useConnection } from 'wagmi'
  *
  * // Basic usage in a component
  * const TransactionHistory = () => {
- *   const { address: accountAddress } = useAccount()
+ *   const { address: accountAddress } = useConnection()
  *   const {
  *     data: transactionHistory = [],
  *     isLoading: isLoadingTransactionHistory
