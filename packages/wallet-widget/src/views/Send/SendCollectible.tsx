@@ -26,7 +26,7 @@ import { useClearCachedBalances, useGetSingleTokenBalance, useIndexerClient } fr
 import type { ContractType, TokenBalance } from '@0xsequence/indexer'
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, useConfig, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+import { useChainId, useConfig, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { AllButActiveWalletSelect } from '../../components/Select/AllButActiveWalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
@@ -51,7 +51,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
-  const { address: accountAddress = '', connector } = useAccount()
+  const { address: accountAddress = '', connector } = useConnection()
   const indexerClient = useIndexerClient(chainId)
   const publicClient = usePublicClient({ chainId })
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased

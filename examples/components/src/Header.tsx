@@ -11,7 +11,7 @@ import {
 } from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useState } from 'react'
-import { useAccount, useChainId, useChains, useDisconnect, useSwitchChain } from 'wagmi'
+import { useChainId, useChains, useConnection, useDisconnect, useSwitchChain } from 'wagmi'
 
 export const Header = () => {
   return (
@@ -32,8 +32,8 @@ export const Header = () => {
 
 const AccountMenu = () => {
   const [isOpen, toggleOpen] = useState(false)
-  const { address, connector } = useAccount()
-  const { disconnect } = useDisconnect()
+  const { address, connector } = useConnection()
+  const disconnect = useDisconnect()
 
   return (
     <PopoverPrimitive.Root open={isOpen} onOpenChange={toggleOpen}>
@@ -82,7 +82,7 @@ const AccountMenu = () => {
                   variant="emphasis"
                   rightIcon={SignoutIcon}
                   label="Sign out"
-                  onClick={() => disconnect()}
+                  onClick={() => disconnect.mutate()}
                 />
               </div>
             </Card>

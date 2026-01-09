@@ -19,7 +19,7 @@ import { genUserId } from '@databeat/tracker'
 import { clsx } from 'clsx'
 import { useCallback, useEffect, useMemo, useState, type ChangeEventHandler, type ReactNode } from 'react'
 import { appleAuthHelpers, useScript } from 'react-apple-signin-auth'
-import { useConnect, useConnections, useSignMessage } from 'wagmi'
+import { useConnect, useConnections, useConnectors, useSignMessage } from 'wagmi'
 
 import type { SequenceV3Connector } from '../../connectors/wagmiConnectors/sequenceV3Connector.js'
 import { EVENT_SOURCE } from '../../constants/analytics.js'
@@ -120,7 +120,9 @@ export const Connect = (props: ConnectProps) => {
   const [showEmailWaasPinInput, setShowEmailWaasPinInput] = useState(false)
 
   const [showExtendedList, setShowExtendedList] = useState<null | 'social' | 'wallet'>(null)
-  const { status, connectors, connect } = useConnect()
+  const connect = useConnect()
+  const { status } = connect
+  const connectors = useConnectors()
   const { signMessageAsync } = useSignMessage()
 
   const enabledProviderSet = useMemo(() => {
@@ -448,13 +450,14 @@ export const Connect = (props: ConnectProps) => {
       }
 
       // We check if SDK-generated connectors is actually an injected connector
-      const isMetamaskInjected = window.ethereum?.isMetaMask
+      const injectedProvider = typeof window !== 'undefined' ? (window as any).ethereum : undefined
+      const isMetamaskInjected = injectedProvider?.isMetaMask
 
       if ((connector as ExtendedConnector)._wallet?.id === 'metamask-wallet' && isMetamaskInjected) {
         return true
       }
 
-      const isCoinbaseInjected = window.ethereum?.isCoinbaseWallet
+      const isCoinbaseInjected = injectedProvider?.isCoinbaseWallet
 
       if ((connector as ExtendedConnector)._wallet?.id === 'coinbase-wallet' && isCoinbaseInjected) {
         return true
@@ -646,7 +649,7 @@ export const Connect = (props: ConnectProps) => {
       await sequenceWaaS.signIn({ guest: true }, 'Guest')
     }
 
-    return connect(
+    return connect.mutate(
       { connector },
       {
         onSuccess: result => {

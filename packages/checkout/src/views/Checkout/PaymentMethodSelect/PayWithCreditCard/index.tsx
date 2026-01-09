@@ -1,7 +1,7 @@
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import { useClearCachedBalances, useGetContractInfo } from '@0xsequence/hooks'
 import { findSupportedNetwork } from '@0xsequence/network'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import type { CheckoutSettings } from '../../../../contexts/CheckoutModal.js'
 import { useCheckoutModal, useSelectPaymentModal } from '../../../../hooks/index.js'
@@ -30,7 +30,7 @@ export const PayWithCreditCardTab = ({ skipOnCloseCallback }: PayWithCreditCardT
     ...rest
   } = selectPaymentSettings!
 
-  const { address: userAddress } = useAccount()
+  const { address: userAddress } = useConnection()
   const { clearCachedBalances } = useClearCachedBalances()
   const { triggerCheckout } = useCheckoutModal()
   const network = findSupportedNetwork(chain)

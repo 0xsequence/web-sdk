@@ -21,7 +21,7 @@ import { TransactionOnRampProvider } from '@0xsequence/marketplace'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useState, type RefObject } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, usePublicClient, useReadContract, useSwitchChain, useWalletClient } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useReadContract, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { ERC_20_CONTRACT_ABI } from '../../../../constants/abi.js'
 import { EVENT_SOURCE } from '../../../../constants/index.js'
@@ -85,7 +85,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
 
-  const { address: userAddress, connector } = useAccount()
+  const { address: userAddress, connector } = useConnection()
   const {
     data: walletClient,
     isLoading: isLoadingWalletClient,

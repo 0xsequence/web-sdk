@@ -10,7 +10,7 @@ import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
+import { useConnection, usePublicClient, useReadContract, useWalletClient } from 'wagmi'
 
 import { ERC_20_CONTRACT_ABI } from '../../constants/abi.js'
 import type { Collectible } from '../../contexts/SelectPaymentModal.js'
@@ -81,7 +81,7 @@ export const useCryptoPayment = ({
   slippageBps
 }: UseCryptoPaymentArgs): UseCryptoPaymentReturn => {
   const [selectedCurrencyAddress, setSelectedCurrencyAddress] = useState<string | undefined>(undefined)
-  const { address: userAddress, connector } = useAccount()
+  const { address: userAddress, connector } = useConnection()
   const network = findSupportedNetwork(chain)
   const chainId = network?.chainId || 137
   const isNativeCurrency = compareAddress(currencyAddress, zeroAddress)

@@ -17,7 +17,7 @@ import { AbiFunction } from 'ox'
 import React, { useEffect } from 'react'
 import { formatUnits } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
-import { useAccount, useChainId, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
@@ -27,7 +27,7 @@ import { Select } from './Select'
 
 export const Connected = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
-  const { address } = useAccount()
+  const { address } = useConnection()
 
   const { setOpenWalletModal } = useOpenWalletModal()
 

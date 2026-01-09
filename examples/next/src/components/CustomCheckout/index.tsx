@@ -5,12 +5,12 @@ import { CryptoOption } from '@0xsequence/connect'
 import { Button, Image, NetworkImage, Spinner, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 import { encodeFunctionData, toHex } from 'viem'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import { ERC_1155_SALE_CONTRACT } from '../../constants/erc1155-sale-contract'
 
 export const CustomCheckout = () => {
-  const { address } = useAccount()
+  const { address } = useConnection()
 
   // NATIVE token sale
   // const currencyAddress = zeroAddress

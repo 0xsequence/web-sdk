@@ -8,6 +8,19 @@ export interface BaseImmutableConnectorOptions {
   environment: Environment
 }
 
+type ConnectAccounts<withCapabilities extends boolean> = withCapabilities extends true
+  ? readonly { address: Address; capabilities: Record<string, unknown> }[]
+  : readonly Address[]
+
+const resolveConnectAccounts = <withCapabilities extends boolean>(
+  accounts: readonly Address[],
+  withCapabilities?: withCapabilities | boolean
+): ConnectAccounts<withCapabilities> => {
+  return (
+    withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
+  ) as ConnectAccounts<withCapabilities>
+}
+
 immutableConnector.type = 'immutable' as const
 
 export function immutableConnector(params: BaseImmutableConnectorOptions) {
@@ -35,13 +48,18 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
 
     async setup() {},
 
-    async connect() {
+    async connect<withCapabilities extends boolean = false>(_connectInfo?: {
+      chainId?: number
+      isReconnecting?: boolean
+      withCapabilities?: withCapabilities | boolean
+    }) {
       provider = await passportInstance.connectEvm({
         announceProvider: false
       })
       const accounts = await this.getAccounts()
+      const resolvedAccounts = resolveConnectAccounts(accounts, _connectInfo?.withCapabilities)
       const chainId = await this.getChainId()
-      return { accounts, chainId }
+      return { accounts: resolvedAccounts, chainId }
     },
 
     async disconnect() {

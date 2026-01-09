@@ -1,10 +1,10 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import { SharedContextProvider } from '../../../contexts/Shared.js'
 
 export const SharedProvider = ({ children }: { children: ReactNode }) => {
-  const { connector } = useAccount()
+  const { connector } = useConnection()
 
   const [isGuest, setIsGuest] = useState<boolean>(false)
   const [signInDisplay, setSignInDisplay] = useState<string>('')

@@ -3,7 +3,7 @@
 // import { observable } from 'micro-observables'
 // import { useEffect, useRef } from 'react'
 // import { ReactNode } from 'react'
-// import { useAccount } from 'wagmi'
+// import { useConnection } from 'wagmi'
 
 // import { WalletConnectContextProvider } from '../../../contexts/WalletConnect'
 // import { useSettings } from '../../../hooks'
@@ -22,7 +22,7 @@
 // }
 
 // export const WalletConnectProvider: React.FC<WalletConnectProviderProps> = ({ children }) => {
-//   const { address } = useAccount()
+//   const { address } = useConnection()
 //   const { selectedNetworks } = useSettings()
 
 //   const isReadyObservable = observable<boolean>(false)
