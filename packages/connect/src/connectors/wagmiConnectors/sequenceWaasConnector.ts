@@ -16,7 +16,8 @@ import {
   toHex,
   TransactionRejectedRpcError,
   UserRejectedRequestError,
-  zeroAddress
+  zeroAddress,
+  type Address
 } from 'viem'
 import { createConnector } from 'wagmi'
 
@@ -39,6 +40,19 @@ export interface SequenceWaasConnectConfig {
 export type BaseSequenceWaasConnectorOptions = SequenceConfig & SequenceWaasConnectConfig & Partial<ExtendedSequenceConfig>
 
 sequenceWaasWallet.type = 'sequence-waas' as const
+
+type ConnectAccounts<withCapabilities extends boolean> = withCapabilities extends true
+  ? readonly { address: Address; capabilities: Record<string, unknown> }[]
+  : readonly Address[]
+
+const resolveConnectAccounts = <withCapabilities extends boolean>(
+  accounts: readonly Address[],
+  withCapabilities?: withCapabilities | boolean
+): ConnectAccounts<withCapabilities> => {
+  return (
+    withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
+  ) as ConnectAccounts<withCapabilities>
+}
 
 export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
   type Provider = SequenceWaasProvider
@@ -175,9 +189,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
 
       const accounts = await this.getAccounts()
-      const resolvedAccounts = (
-        _connectInfo?.withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
-      ) as never
+      const resolvedAccounts = resolveConnectAccounts(accounts, _connectInfo?.withCapabilities)
 
       if (accounts.length) {
         await config.storage?.setItem(LocalStorageKey.WaasActiveLoginType, params.loginType)

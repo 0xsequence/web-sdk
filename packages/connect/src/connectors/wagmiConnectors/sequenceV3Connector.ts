@@ -34,6 +34,19 @@ import { createConnector, type Connector } from 'wagmi'
 // Helper types
 type EIP1193RequestArgs = Parameters<EIP1193RequestFn>[0]
 
+type ConnectAccounts<withCapabilities extends boolean> = withCapabilities extends true
+  ? readonly { address: Address; capabilities: Record<string, unknown> }[]
+  : readonly Address[]
+
+const resolveConnectAccounts = <withCapabilities extends boolean>(
+  accounts: readonly Address[],
+  withCapabilities?: withCapabilities | boolean
+): ConnectAccounts<withCapabilities> => {
+  return (
+    withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
+  ) as ConnectAccounts<withCapabilities>
+}
+
 export interface SequenceV3Connector extends Connector {
   type: 'sequence-v3-wallet'
   setEmail: (email: string) => void
@@ -146,11 +159,7 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       }) {
         const accounts = await provider.request({ method: 'eth_requestAccounts' })
         const normalizedAccounts = accounts.map((account: string) => getAddress(account))
-        const resolvedAccounts = (
-          _connectInfo?.withCapabilities
-            ? normalizedAccounts.map((address: string) => ({ address, capabilities: {} }))
-            : normalizedAccounts
-        ) as never
+        const resolvedAccounts = resolveConnectAccounts(normalizedAccounts, _connectInfo?.withCapabilities)
         if (accounts.length) {
           if (loginStorageKey) {
             await config.storage?.setItem(LocalStorageKey.V3ActiveLoginType, loginStorageKey)

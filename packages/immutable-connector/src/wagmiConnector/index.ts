@@ -8,6 +8,19 @@ export interface BaseImmutableConnectorOptions {
   environment: Environment
 }
 
+type ConnectAccounts<withCapabilities extends boolean> = withCapabilities extends true
+  ? readonly { address: Address; capabilities: Record<string, unknown> }[]
+  : readonly Address[]
+
+const resolveConnectAccounts = <withCapabilities extends boolean>(
+  accounts: readonly Address[],
+  withCapabilities?: withCapabilities | boolean
+): ConnectAccounts<withCapabilities> => {
+  return (
+    withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
+  ) as ConnectAccounts<withCapabilities>
+}
+
 immutableConnector.type = 'immutable' as const
 
 export function immutableConnector(params: BaseImmutableConnectorOptions) {
@@ -44,9 +57,7 @@ export function immutableConnector(params: BaseImmutableConnectorOptions) {
         announceProvider: false
       })
       const accounts = await this.getAccounts()
-      const resolvedAccounts = (
-        _connectInfo?.withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts
-      ) as never
+      const resolvedAccounts = resolveConnectAccounts(accounts, _connectInfo?.withCapabilities)
       const chainId = await this.getChainId()
       return { accounts: resolvedAccounts, chainId }
     },
