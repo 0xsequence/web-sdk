@@ -8,13 +8,19 @@ import {
 } from '@0xsequence/connect'
 import { supplyERC20Calldata, supplyETHCalldata, withdrawERC20Calldata, withdrawETHCalldata } from '@contractjs/aave-v3'
 import { useEffect, useState } from 'react'
-import { encodeFunctionData, formatUnits, maxUint256, parseAbi, parseEther, parseUnits } from 'viem'
-import { useBalance, useConnection, useDisconnect, useSendTransaction } from 'wagmi'
+import { encodeFunctionData, erc20Abi, formatUnits, maxUint256, parseAbi, parseEther, parseUnits } from 'viem'
+import { useBalance, useConnection, useDisconnect, useReadContract, useSendTransaction } from 'wagmi'
 
 import { AAVE_V3_POOL_ADDRESS_ARBITRUM, AAVE_V3_WRAPPED_TOKEN_GATEWAY_ADDRESS_ARBITRUM, USDC_ADDRESS_ARBITRUM } from './config'
 
 const AUSDC_ADDRESS = '0x724dc807b04555b71ed48a6896b6F41593b8C637'
 const AWETH_ADDRESS = '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8'
+const AUSDC_DECIMALS = 6
+const AWETH_DECIMALS = 18
+const USDC_DECIMALS = 6
+const AUSDC_SYMBOL = 'aUSDC'
+const AWETH_SYMBOL = 'aWETH'
+const USDC_SYMBOL = 'USDC'
 
 function App() {
   const { setOpenConnectModal } = useOpenConnectModal()
@@ -33,11 +39,34 @@ function App() {
 
   // State for session info
   const [sessionsInfo, setSessionsInfo] = useState<ExplicitSession[]>([])
+  const walletAddress = address as `0x${string}` | undefined
+  const isWalletAddressReady = Boolean(walletAddress)
 
   // Balance Hooks
-  const { data: aUsdcBalance, refetch: refetchAusdcBalance } = useBalance({ address, token: AUSDC_ADDRESS, chainId: 42161 })
-  const { data: aWethBalance, refetch: refetchAwethBalance } = useBalance({ address, token: AWETH_ADDRESS, chainId: 42161 })
-  const { data: usdcBalance } = useBalance({ address, token: USDC_ADDRESS_ARBITRUM, chainId: 42161 })
+  const { data: aUsdcBalance, refetch: refetchAusdcBalance } = useReadContract({
+    address: AUSDC_ADDRESS as `0x${string}`,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: walletAddress ? [walletAddress] : undefined,
+    chainId: 42161,
+    query: { enabled: isWalletAddressReady }
+  })
+  const { data: aWethBalance, refetch: refetchAwethBalance } = useReadContract({
+    address: AWETH_ADDRESS as `0x${string}`,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: walletAddress ? [walletAddress] : undefined,
+    chainId: 42161,
+    query: { enabled: isWalletAddressReady }
+  })
+  const { data: usdcBalance } = useReadContract({
+    address: USDC_ADDRESS_ARBITRUM as `0x${string}`,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: walletAddress ? [walletAddress] : undefined,
+    chainId: 42161,
+    query: { enabled: isWalletAddressReady }
+  })
 
   // Session hooks
   const { getExplicitSessions, modifyExplicitSession, addExplicitSession } = useExplicitSessions()
@@ -309,13 +338,13 @@ function App() {
                 <div className="flex flex-col gap-2">
                   {' '}
                   <p>Native Balance:</p>
-                  <p className="address-mono">{nativeBalanceData.formatted}</p>
+                  <p className="address-mono">{formatUnits(nativeBalanceData.value, nativeBalanceData.decimals)}</p>
                 </div>
 
                 <div className="flex flex-col gap-2 mt-2">
                   <p>USDC Balance:</p>
                   <p className="address-mono">
-                    {usdcBalance ? `${parseFloat(usdcBalance.formatted).toFixed(5)} ${usdcBalance.symbol}` : '0.00'}
+                    {usdcBalance ? `${parseFloat(formatUnits(usdcBalance, USDC_DECIMALS)).toFixed(5)} ${USDC_SYMBOL}` : '0.00'}
                   </p>
                 </div>
               </div>
@@ -341,7 +370,9 @@ function App() {
                       <p className="pool-apy">APY 4.68%</p>
                       <p className="pool-balance">
                         Pool Balance:{' '}
-                        {aUsdcBalance ? `${parseFloat(aUsdcBalance.formatted).toFixed(5)} ${aUsdcBalance.symbol}` : '0.00'}
+                        {aUsdcBalance
+                          ? `${parseFloat(formatUnits(aUsdcBalance, AUSDC_DECIMALS)).toFixed(5)} ${AUSDC_SYMBOL}`
+                          : '0.00'}
                       </p>
                     </div>
                   </div>
@@ -393,7 +424,9 @@ function App() {
                       <p className="pool-apy">APY 1.68%</p>
                       <p className="pool-balance">
                         Pool Balance:{' '}
-                        {aWethBalance ? `${parseFloat(aWethBalance.formatted).toFixed(5)} ${aWethBalance.symbol}` : '0.00'}
+                        {aWethBalance
+                          ? `${parseFloat(formatUnits(aWethBalance, AWETH_DECIMALS)).toFixed(5)} ${AWETH_SYMBOL}`
+                          : '0.00'}
                       </p>
                     </div>
                   </div>

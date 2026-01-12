@@ -565,9 +565,6 @@ importers:
       '@react-oauth/google':
         specifier: ^0.11.1
         version: 0.11.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tailwindcss/cli':
-        specifier: ^4.1.11
-        version: 4.1.17
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -580,9 +577,6 @@ importers:
       react-apple-signin-auth:
         specifier: ^1.1.0
         version: 1.1.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      tailwindcss:
-        specifier: ^4.1.11
-        version: 4.1.17
       uuid:
         specifier: ^10.0.0
         version: 10.0.0
@@ -599,6 +593,9 @@ importers:
       '@metamask/sdk':
         specifier: ~0.33.1
         version: 0.33.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@tailwindcss/cli':
+        specifier: ^4.1.11
+        version: 4.1.17
       '@tanstack/react-query':
         specifier: ^5.74.11
         version: 5.90.10(react@19.1.0)
@@ -620,6 +617,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
+      tailwindcss:
+        specifier: ^4.1.11
+        version: 4.1.17
       viem:
         specifier: ^2.28.1
         version: 2.40.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.22.4)
@@ -719,9 +719,6 @@ importers:
       '@0xsequence/design-system':
         specifier: 2.1.11
         version: 2.1.11(@types/react-dom@19.2.3(@types/react@19.2.6))(@types/react@19.2.6)(motion@12.23.24(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@0xsequence/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@0xsequence/indexer':
         specifier: '>=2.3.38'
         version: 2.3.38
@@ -756,6 +753,9 @@ importers:
       '@0xsequence/connect':
         specifier: workspace:*
         version: link:../connect
+      '@0xsequence/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@tanstack/react-query':
         specifier: ^5.74.11
         version: 5.90.10(react@19.1.0)

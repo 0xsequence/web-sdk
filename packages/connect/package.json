@@ -51,11 +51,9 @@
     "@0xsequence/provider": "^2.3.38",
     "@0xsequence/utils": "^2.3.38",
     "@0xsequence/waas": "^2.3.38",
-    "@tailwindcss/cli": "^4.1.11",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
-    "tailwindcss": "^4.1.11",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
@@ -93,10 +91,12 @@
     "@types/uuid": "^9.0.8",
     "@metamask/sdk": "~0.33.1",
     "@walletconnect/ethereum-provider": "^2.21.1",
+    "@tailwindcss/cli": "^4.1.11",
     "concurrently": "^9.1.2",
     "ethers": "^6.13.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.11",
     "viem": "^2.28.1",
     "wagmi": "^3.2.0"
   }
