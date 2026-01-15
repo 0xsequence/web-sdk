@@ -48,6 +48,8 @@ export type SequenceConnectInlineProviderProps = {
   config: ConnectConfig
 }
 
+const DEFAULT_DISPLAYED_ASSETS: DisplayedAsset[] = []
+
 const resolveInlineBackground = (theme: Theme | undefined) => {
   if (theme && typeof theme === 'object' && 'colors' in theme) {
     const background = (theme as any).colors?.backgroundPrimary
@@ -83,7 +85,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
     defaultTheme = 'dark',
     signIn = {},
     position = 'center',
-    displayedAssets: displayedAssetsSetting = [],
+    displayedAssets: displayedAssetsSetting = DEFAULT_DISPLAYED_ASSETS,
     readOnlyNetworks,
     ethAuth = {} as EthAuthSettings,
     disableAnalytics = false,

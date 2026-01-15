@@ -46,6 +46,8 @@ export type SequenceConnectProviderProps = {
   config: ConnectConfig
 }
 
+const DEFAULT_DISPLAYED_ASSETS: DisplayedAsset[] = []
+
 export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => {
   const { config: incomingConfig, children } = props
   const {
@@ -60,7 +62,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     defaultTheme = 'dark',
     signIn = {},
     position = 'center',
-    displayedAssets: displayedAssetsSetting = [],
+    displayedAssets: displayedAssetsSetting = DEFAULT_DISPLAYED_ASSETS,
     readOnlyNetworks,
     ethAuth = {} as EthAuthSettings,
     disableAnalytics = false,
