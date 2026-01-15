@@ -42,6 +42,7 @@ export type WalletConfigurationOverrides = {
     logoUrl?: string
   }
   chainIds?: number[]
+  defaultChainId?: number
   enabledProviders?: WalletConfigurationProvider[]
 }
 
@@ -193,6 +194,7 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
   const logoUrl = pickLogoUrl(config)
 
   const chainIds = Array.isArray(config.supportedChains) && config.supportedChains.length > 0 ? config.supportedChains : undefined
+  const defaultChainId = chainIds?.[0]
 
   const enabledProviders = normalizeEnabledProviders(config.enabledProviders)
 
@@ -205,6 +207,7 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
           }
         : undefined,
     chainIds,
+    defaultChainId,
     enabledProviders
   }
 }
@@ -223,6 +226,10 @@ export const mergeConnectConfigWithWalletConfiguration = (
 
   if (overrides.chainIds !== undefined) {
     mergedConfig.chainIds = overrides.chainIds
+  }
+
+  if (overrides.defaultChainId !== undefined && mergedConfig.defaultChainId === undefined) {
+    mergedConfig.defaultChainId = overrides.defaultChainId
   }
 
   return mergedConfig

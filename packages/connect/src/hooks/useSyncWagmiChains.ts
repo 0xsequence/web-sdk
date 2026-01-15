@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { type Chain, type Transport } from 'viem'
-import { type Config } from 'wagmi'
+import { type Config, type Connector } from 'wagmi'
 
 import { getDefaultChains } from '../config/defaultChains.js'
 import { getDefaultTransports } from '../config/defaultTransports.js'
@@ -18,6 +18,7 @@ const haveSameChainIds = (current: readonly Chain[], next: readonly Chain[]) => 
 export const useSyncWagmiChains = (config: ConnectConfig, wagmiConfig: Config) => {
   const initialChainsRef = useRef<readonly [Chain, ...Chain[]] | undefined>(undefined)
   const initialTransportsRef = useRef<Record<number, Transport> | undefined>(undefined)
+  const lastDefaultChainIdRef = useRef<number | undefined>(undefined)
 
   useEffect(() => {
     const chainState = ((wagmiConfig as any)._internal?.chains?.getState?.() ?? wagmiConfig.chains) as readonly [
@@ -58,4 +59,25 @@ export const useSyncWagmiChains = (config: ConnectConfig, wagmiConfig: Config) =
       transports
     })
   }, [config.chainIds, config.projectAccessKey, wagmiConfig])
+
+  useEffect(() => {
+    const targetChainId = config.defaultChainId
+    if (!targetChainId || lastDefaultChainIdRef.current === targetChainId) {
+      return
+    }
+
+    lastDefaultChainIdRef.current = targetChainId
+
+    const connectors = wagmiConfig.connectors as readonly Connector[]
+    const sequenceConnectors = connectors.filter(
+      (connector): connector is Connector & { switchChain: (args: { chainId: number }) => Promise<unknown> } =>
+        connector.type === 'sequence-v3-wallet' && typeof connector.switchChain === 'function'
+    )
+
+    sequenceConnectors.forEach(connector => {
+      connector.switchChain?.({ chainId: targetChainId }).catch(error => {
+        console.warn('[useSyncWagmiChains] Failed to apply defaultChainId', error)
+      })
+    })
+  }, [config.defaultChainId, wagmiConfig])
 }
