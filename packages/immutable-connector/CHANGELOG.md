@@ -1,5 +1,16 @@
 # @0xsequence/immutable-connector
 
+## 6.0.0-beta.0
+
+### Major Changes
+
+- Connect package improvements for v6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/connect@6.0.0-beta.0
+
 ## 5.4.8
 
 ### Patch Changes

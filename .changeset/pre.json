@@ -1,0 +1,18 @@
+{
+  "mode": "exit",
+  "tag": "beta",
+  "initialVersions": {
+    "example-aave": "0.0.0",
+    "example-next": "1.0.4",
+    "example-react": "1.0.4",
+    "example-react-waas": "1.0.0",
+    "@0xsequence/checkout": "5.4.8",
+    "@0xsequence/connect": "5.4.8",
+    "@0xsequence/hooks": "5.4.8",
+    "@0xsequence/immutable-connector": "5.4.8",
+    "@0xsequence/wallet-widget": "5.4.8"
+  },
+  "changesets": [
+    "large-mails-peel"
+  ]
+}

@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.0-beta.0
+
+### Major Changes
+
+- Connect package improvements for v6
+
 ## 5.4.8
 
 ### Patch Changes
