@@ -26,6 +26,18 @@ export interface CommonConnectorOptions {
   defaultChainId?: number
 }
 
+const resolveDappOrigin = (dappOrigin?: string) => {
+  if (dappOrigin) {
+    return dappOrigin
+  }
+
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+
+  return undefined
+}
+
 const resolveAppName = (options: CommonConnectorOptions & { signIn?: { projectName?: string } }) => {
   if (options.appName) {
     return options.appName
@@ -261,12 +273,13 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
 
 export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): CreateConnectorFn[] => {
   const { projectAccessKey, walletUrl, dappOrigin, defaultChainId = 1 } = options
+  const resolvedDappOrigin = resolveDappOrigin(dappOrigin)
   const appName = resolveAppName(options)
 
   const wallets: Wallet[] = []
 
   if (options.email !== false) {
-    if (!walletUrl || !dappOrigin) {
+    if (!walletUrl || !resolvedDappOrigin) {
       throw new Error('Email wallet requires walletUrl and dappOrigin to be set')
     }
     wallets.push(
@@ -274,7 +287,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
-        dappOrigin: dappOrigin,
+        dappOrigin: resolvedDappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
@@ -285,7 +298,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
   }
 
   if (options.google !== false) {
-    if (!walletUrl || !dappOrigin) {
+    if (!walletUrl || !resolvedDappOrigin) {
       throw new Error('Google wallet requires walletUrl and dappOrigin to be set')
     }
     wallets.push(
@@ -293,7 +306,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
-        dappOrigin: dappOrigin,
+        dappOrigin: resolvedDappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
@@ -304,7 +317,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
   }
 
   if (options.apple !== false) {
-    if (!walletUrl || !dappOrigin) {
+    if (!walletUrl || !resolvedDappOrigin) {
       throw new Error('Apple wallet requires walletUrl and dappOrigin to be set')
     }
     wallets.push(
@@ -312,7 +325,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
-        dappOrigin: dappOrigin,
+        dappOrigin: resolvedDappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
@@ -323,7 +336,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
   }
 
   if (options.passkey !== false) {
-    if (!walletUrl || !dappOrigin) {
+    if (!walletUrl || !resolvedDappOrigin) {
       throw new Error('Passkey wallet requires walletUrl and dappOrigin to be set')
     }
     wallets.push(
@@ -331,7 +344,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
-        dappOrigin: dappOrigin,
+        dappOrigin: resolvedDappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
@@ -341,13 +354,13 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
     )
   }
 
-  if (walletUrl && dappOrigin) {
+  if (walletUrl && resolvedDappOrigin) {
     wallets.push(
       ecosystemV3({
         projectAccessKey: projectAccessKey,
         walletUrl: walletUrl,
         defaultNetwork: defaultChainId,
-        dappOrigin: dappOrigin,
+        dappOrigin: resolvedDappOrigin,
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
