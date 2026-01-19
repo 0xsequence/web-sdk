@@ -91,6 +91,17 @@ export const useSettings = (): Settings => {
     let selectedNetworks: number[] = allNetworks
     let showCollections = false
 
+    // SSR guard - localStorage is not available on the server
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      return {
+        hideUnlistedTokensObservable: observable(hideUnlistedTokens),
+        fiatCurrencyObservable: observable(fiatCurrency),
+        selectedWalletsObservable: observable(selectedWallets),
+        selectedNetworksObservable: observable(selectedNetworks),
+        showCollectionsObservable: observable(showCollections)
+      }
+    }
+
     try {
       const settingsStorage = localStorage.getItem(LocalStorageKey.Settings)
 
@@ -208,6 +219,11 @@ export const useSettings = (): Settings => {
   }
 
   const updateLocalStorage = () => {
+    // SSR guard - localStorage is not available on the server
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      return
+    }
+
     const newSettings = {
       hideUnlistedTokens: hideUnlistedTokensObservable.get(),
       fiatCurrency: fiatCurrencyObservable.get(),
