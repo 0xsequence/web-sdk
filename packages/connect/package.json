@@ -22,7 +22,12 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "!src/**/*.test.ts",
+    "!src/**/*.test.tsx",
+    "!src/**/*.test-d.ts"
   ],
   "scripts": {
     "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm && pnpm build:cjs",
