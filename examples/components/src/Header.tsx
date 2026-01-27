@@ -127,26 +127,28 @@ const NetworkSelect = () => {
       {isOpen && (
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content side="bottom" sideOffset={8} align="end" asChild>
-            <Card className="flex z-20 bg-background-raised backdrop-blur-md relative p-2 flex-col gap-2">
-              {chains.map(chain => (
-                <Button
-                  className="w-full"
-                  key={chain.id}
-                  shape="square"
-                  onClick={() => {
-                    switchChain({ chainId: chain.id })
-                    toggleOpen(false)
-                  }}
-                  leftIcon={() => <NetworkImage chainId={chain.id} size="sm" />}
-                  label={
-                    <div className="flex items-center gap-2">
-                      <Text variant="normal" fontWeight="bold" color="primary">
-                        {chain.name}
-                      </Text>
-                    </div>
-                  }
-                />
-              ))}
+            <Card className="flex z-20 bg-background-raised backdrop-blur-md relative flex-col overflow-hidden">
+              <div className="flex flex-col gap-2 max-h-[320px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                {chains.map(chain => (
+                  <Button
+                    className="w-full min-h-[44px] h-12"
+                    key={chain.id}
+                    shape="square"
+                    onClick={() => {
+                      switchChain({ chainId: chain.id })
+                      toggleOpen(false)
+                    }}
+                    leftIcon={() => <NetworkImage chainId={chain.id} size="sm" />}
+                    label={
+                      <div className="flex items-center gap-2">
+                        <Text variant="normal" fontWeight="bold" color="primary">
+                          {chain.name}
+                        </Text>
+                      </div>
+                    }
+                  />
+                ))}
+              </div>
             </Card>
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
