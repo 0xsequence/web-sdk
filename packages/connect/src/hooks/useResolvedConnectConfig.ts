@@ -7,8 +7,8 @@ import { checkAuthStatus } from '../utils/checkAuthStatus.js'
 import {
   cacheProjectName,
   fetchWalletConfiguration,
-  getCachedWalletConfiguration,
   getCachedProjectName,
+  getCachedWalletConfiguration,
   mapWalletConfigurationToOverrides,
   mergeConnectConfigWithWalletConfiguration,
   normalizeWalletUrl,
