@@ -2,27 +2,33 @@ import {
   signEthAuthProof,
   useExplicitSessions,
   useFeeOptions,
+  useHasPermission,
   useOpenConnectModal,
+  useSendWalletTransaction,
   useSequenceSessionState,
   useStorage,
   useWallets,
-  validateEthProof,
-  type ParameterRule,
-  type Permission
+  validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, Text } from '@0xsequence/design-system'
+import { Button, Card, Divider, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import { AbiFunction } from 'ox'
 import React, { useEffect } from 'react'
-import { formatUnits, zeroAddress } from 'viem'
+import { encodeFunctionData, formatUnits, zeroAddress } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
-import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient } from 'wagmi'
 
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
-import { EMITTER_ABI, getEmitterContractAddress, getSessionConfigForType, PermissionsType } from '../constants/permissions'
+import {
+  EMITTER_ABI,
+  getEmitterContractAddress,
+  getSessionConfigForType,
+  PermissionsType,
+  USDC_ADDRESS
+} from '../constants/permissions'
 
 import { Select } from './Select'
 
@@ -46,7 +52,6 @@ export const Connected = () => {
   const sessionState = useSequenceSessionState()
 
   const [hasPermission, setHasPermission] = React.useState(false)
-  const [isCheckingPermission, setIsCheckingPermission] = React.useState(false)
 
   // console.log('sessionState', sessionState)
 
@@ -57,7 +62,13 @@ export const Connected = () => {
     error: sendImplicitTestTransactionError,
     reset: resetImplicitTestTransaction
   } = useSendTransaction()
-  const { data: txnData2, isPending: isPendingMintTxn, writeContract, reset: resetWriteContract } = useWriteContract()
+  const {
+    data: mintTxnData,
+    sendTransaction: sendMintWalletTransaction,
+    isLoading: isPendingMintTxn,
+    error: mintTxnError,
+    reset: resetMintWalletTransaction
+  } = useSendWalletTransaction()
   const {
     data: txnData3,
     sendTransaction: sendUnsponsoredTransaction,
@@ -74,6 +85,14 @@ export const Connected = () => {
     reset: resetPermissionedTxn
   } = useSendTransaction()
 
+  const {
+    data: walletTxnData,
+    sendTransaction: sendWalletTransaction,
+    isLoading: isPendingWalletTransaction,
+    error: sendWalletTransactionError,
+    reset: resetWalletTransaction
+  } = useSendWalletTransaction()
+
   const [isSigningMessage, setIsSigningMessage] = React.useState(false)
   const [isMessageValid, setIsMessageValid] = React.useState<boolean | undefined>()
   const [messageSig, setMessageSig] = React.useState<string | undefined>()
@@ -88,6 +107,7 @@ export const Connected = () => {
   const [lastTxnDataHash2, setLastTxnDataHash2] = React.useState<string | undefined>()
   const [lastTxnDataHash3, setLastTxnDataHash3] = React.useState<string | undefined>()
   const [lastPermissionedTxnDataHash, setLastPermissionedTxnDataHash] = React.useState<string | undefined>()
+  const [lastWalletTxnDataHash, setLastWalletTxnDataHash] = React.useState<string | undefined>()
 
   const chainId = useChainId()
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useFeeOptions()
@@ -96,6 +116,7 @@ export const Connected = () => {
 
   const { addExplicitSession, isLoading: isAddingExplicitSession, error: addExplicitSessionError } = useExplicitSessions()
   const [permissionType, setPermissionType] = React.useState<PermissionsType>('contractCall')
+  const { checkPermission, isLoading: isCheckingPermission, error: checkPermissionError } = useHasPermission()
 
   const [hasImplicitSession, setHasImplicitSession] = React.useState(false)
 
@@ -108,135 +129,76 @@ export const Connected = () => {
 
       setHasImplicitSession(sessionState.sessions.some(s => s.type === 'implicit'))
 
-      // 1. Get all sessions (without pre-filtering by chainId)
-      const sessions = sessionState.sessions.filter(s => s.type === 'explicit')
-
-      if (sessions.length === 0) {
-        setHasPermission(false)
-        return
-      }
-
-      setIsCheckingPermission(true)
-      setHasPermission(false) // Assume no permission until one is found
-
       try {
-        const expectedSessionConfig = getSessionConfigForType(window.location.origin, chainId, permissionType)
-
-        if (!expectedSessionConfig || !expectedSessionConfig.permissions) {
+        if (permissionType === 'none') {
           setHasPermission(true)
           return
         }
 
-        // 2. Check all sessionSigners to see if any have the expected permission config
-        for (const session of sessions) {
-          console.log('Checking permissions for signer:', session, 'on chainId:', chainId)
-          console.log('existingPermissionConfig:', session)
-
-          // Validate the received permission config
-          if (
-            !session ||
-            !('permissions' in session) ||
-            !session.permissions ||
-            // We need to check the chainId from the returned config
-            session.chainId !== chainId
-          ) {
-            // This signer does not have valid permissions for the current chain, try the next one.
-            continue
-          }
-
-          const arePermissionsSubset = (expectedPerms: Permission[], existingPerms: Permission[]) => {
-            if (expectedPerms.length > existingPerms.length) {
-              return false
+        const emitterTxData = encodeFunctionData({
+          abi: [
+            {
+              type: 'function',
+              name: 'explicitEmit',
+              stateMutability: 'nonpayable',
+              inputs: [],
+              outputs: []
             }
-            if (expectedPerms.length === 0) {
-              return true
-            }
+          ],
+          functionName: 'explicitEmit'
+        })
 
-            // Helper to compare two Uint8Arrays by their contents
-            const areByteArraysEqual = (a: Uint8Array, b: Uint8Array): boolean => {
-              if (a.length !== b.length) {
-                return false
-              }
-              for (let i = 0; i < a.length; i++) {
-                if (a[i] !== b[i]) {
-                  return false
-                }
-              }
-              return true
-            }
+        const txs = []
 
-            // Helper to compare two arrays of rules, order-independent
-            const compareRulesets = (rulesA: ParameterRule[], rulesB: ParameterRule[]) => {
-              if (rulesA.length !== rulesB.length) {
-                return false
-              }
-              if (rulesA.length === 0) {
-                return true
-              }
-
-              const matchedB = new Array(rulesB.length).fill(false)
-              return rulesA.every(ruleA => {
-                const foundMatch = rulesB.some((ruleB, index) => {
-                  if (matchedB[index]) {
-                    return false
-                  }
-                  // Compare individual rule properties, using the byte array helper for mask and value
-                  if (
-                    ruleA.cumulative === ruleB.cumulative &&
-                    areByteArraysEqual(ruleA.mask, ruleB.mask) &&
-                    ruleA.offset === ruleB.offset &&
-                    ruleA.operation === ruleB.operation &&
-                    areByteArraysEqual(ruleA.value, ruleB.value)
-                  ) {
-                    matchedB[index] = true
-                    return true
-                  }
-                  return false
-                })
-                return foundMatch
-              })
-            }
-
-            const matchedExisting = new Array(existingPerms.length).fill(false)
-
-            // Main logic: check if every expected permission is present in existing permissions
-            return expectedPerms.every(expectedPerm => {
-              return existingPerms.some((existingPerm, index) => {
-                if (matchedExisting[index]) {
-                  return false
-                }
-
-                const isTargetMatch = expectedPerm.target.toLowerCase() === existingPerm.target.toLowerCase()
-                const areRulesMatch = compareRulesets(expectedPerm.rules ?? [], existingPerm.rules ?? [])
-
-                if (isTargetMatch && areRulesMatch) {
-                  matchedExisting[index] = true
-                  return true
-                }
-                return false
-              })
-            })
-          }
-
-          const isSubset = arePermissionsSubset(expectedSessionConfig.permissions, session.permissions)
-          console.log('isSubset for signer', session.sessionAddress, ':', isSubset)
-
-          // If we find a signer that has the required permissions, we can stop checking
-          if (isSubset) {
-            setHasPermission(true)
-            break
-          }
+        if (permissionType === 'contractCall' || permissionType === 'combined') {
+          txs.push({
+            to: getEmitterContractAddress(window.location.origin),
+            data: emitterTxData
+          })
         }
+
+        if (permissionType === 'usdcTransfer' || permissionType === 'combined') {
+          if (chainId !== ChainId.OPTIMISM) {
+            setHasPermission(false)
+            return
+          }
+          const usdcTransferData = encodeFunctionData({
+            abi: [
+              {
+                type: 'function',
+                name: 'transfer',
+                stateMutability: 'nonpayable',
+                inputs: [
+                  { name: 'to', type: 'address' },
+                  { name: 'value', type: 'uint256' }
+                ],
+                outputs: [{ name: '', type: 'bool' }]
+              }
+            ],
+            functionName: 'transfer',
+            args: [address, 1n]
+          })
+          txs.push({
+            to: USDC_ADDRESS,
+            data: usdcTransferData
+          })
+        }
+
+        if (txs.length === 0) {
+          setHasPermission(false)
+          return
+        }
+
+        const allowed = await checkPermission({ chainId, transactions: txs })
+        setHasPermission(allowed)
       } catch (error) {
         console.error('Failed to check permissions:', error)
         setHasPermission(false)
-      } finally {
-        setIsCheckingPermission(false)
       }
     }
 
     checkPermissions()
-  }, [sessionState, address, chainId, permissionType, isV3WalletConnectionActive])
+  }, [sessionState, address, chainId, permissionType, isV3WalletConnectionActive, checkPermission])
 
   useEffect(() => {
     if (pendingFeeOptionConfirmation) {
@@ -268,6 +230,18 @@ export const Connected = () => {
     }
   }, [sendUnsponsoredTransactionError])
 
+  useEffect(() => {
+    if (!mintTxnError) {
+      return
+    }
+
+    if (mintTxnError instanceof Error) {
+      console.error(mintTxnError.cause)
+    } else {
+      console.error(mintTxnError)
+    }
+  }, [mintTxnError])
+
   const [feeOptionAlert, setFeeOptionAlert] = React.useState<AlertProps | undefined>(undefined)
 
   const networkForCurrentChainId = allNetworks.find(n => n.chainId === chainId)!
@@ -296,8 +270,8 @@ export const Connected = () => {
     if (implicitTestTxnData) {
       setLastImplicitTestTxnDataHash((implicitTestTxnData as any).hash ?? implicitTestTxnData)
     }
-    if (txnData2) {
-      setLastTxnDataHash2((txnData2 as any).hash ?? txnData2)
+    if (mintTxnData) {
+      setLastTxnDataHash2((mintTxnData as any).hash ?? mintTxnData)
     }
     if (txnData3) {
       setLastTxnDataHash3((txnData3 as any).hash ?? txnData3)
@@ -305,7 +279,10 @@ export const Connected = () => {
     if (permissionedTxnData) {
       setLastPermissionedTxnDataHash((permissionedTxnData as any).hash ?? permissionedTxnData)
     }
-  }, [implicitTestTxnData, txnData2, txnData3, permissionedTxnData])
+    if (walletTxnData) {
+      setLastWalletTxnDataHash(walletTxnData)
+    }
+  }, [implicitTestTxnData, mintTxnData, txnData3, permissionedTxnData, walletTxnData])
 
   const domain = {
     name: 'Sequence Example',
@@ -493,6 +470,19 @@ export const Connected = () => {
     })
   }
 
+  const runSendWalletTransaction = async () => {
+    if (!walletClient) {
+      return
+    }
+    sendWalletTransaction({
+      chainId,
+      transaction: {
+        to: getEmitterContractAddress(window.location.origin),
+        data: AbiFunction.getSelector(EMITTER_ABI[0])
+      }
+    })
+  }
+
   const runSendUnsponsoredTransaction = async () => {
     if (!walletClient) {
       return
@@ -504,17 +494,22 @@ export const Connected = () => {
   }
 
   const runMintNFT = async () => {
-    if (!walletClient) {
+    if (!address) {
       return
     }
 
-    const [account] = await walletClient.getAddresses()
-
-    writeContract({
-      address: '0x0d402C63cAe0200F0723B3e6fa0914627a48462E',
+    const data = encodeFunctionData({
       abi,
       functionName: 'awardItem',
-      args: [account, 'https://dev-metadata.sequence.app/projects/277/collections/62/tokens/0.json']
+      args: [address, 'https://dev-metadata.sequence.app/projects/277/collections/62/tokens/0.json']
+    })
+
+    sendMintWalletTransaction({
+      chainId,
+      transaction: {
+        to: '0x0d402C63cAe0200F0723B3e6fa0914627a48462E',
+        data
+      }
     })
   }
 
@@ -527,12 +522,14 @@ export const Connected = () => {
     setLastTxnDataHash2(undefined)
     setLastTxnDataHash3(undefined)
     setLastPermissionedTxnDataHash(undefined)
+    setLastWalletTxnDataHash(undefined)
     setIsMessageValid(undefined)
     setTypedDataSig(undefined)
-    resetWriteContract()
+    resetMintWalletTransaction()
     resetSendUnsponsoredTransaction()
     resetImplicitTestTransaction()
     resetPermissionedTxn()
+    resetWalletTransaction()
   }, [chainId, address])
 
   return (
@@ -631,7 +628,7 @@ export const Connected = () => {
             {hasImplicitSession && (
               <>
                 <Text className="mt-4" variant="small-bold" color="muted">
-                  Test Implicit Permission transactions
+                  with Implicit permission
                 </Text>
 
                 <CardButton
@@ -654,10 +651,12 @@ export const Connected = () => {
               </>
             )}
 
+            <Divider />
+
             {isV3WalletConnectionActive && (
               <>
                 <Text variant="small-bold" className="mt-4" color="muted">
-                  with V3 Explicit Permissions
+                  with Explicit permission
                 </Text>
 
                 <div className="mb-2">
@@ -681,6 +680,11 @@ export const Connected = () => {
                     {!isCheckingPermission && hasPermission && permissionType !== 'none' && (
                       <Text variant="small" color="positive">
                         Permission already granted for this session.
+                      </Text>
+                    )}
+                    {checkPermissionError && (
+                      <Text variant="small" color="negative">
+                        Permission check failed: {checkPermissionError.message}
                       </Text>
                     )}
                   </div>
@@ -731,6 +735,29 @@ export const Connected = () => {
                 {permissionedTxnError && (
                   <Text className="ml-4" variant="small" color="negative">
                     Transaction failed: {permissionedTxnError.message}
+                  </Text>
+                )}
+
+                <CardButton
+                  title="Send via wallet popup"
+                  description="Always opens the wallet popup (no permission check)."
+                  isPending={isPendingWalletTransaction}
+                  onClick={runSendWalletTransaction}
+                />
+                {networkForCurrentChainId.blockExplorer && lastWalletTxnDataHash && (
+                  <Text className="ml-4" variant="small" underline color="primary" asChild>
+                    <a
+                      href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${lastWalletTxnDataHash}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View wallet transaction on {networkForCurrentChainId.blockExplorer.name}
+                    </a>
+                  </Text>
+                )}
+                {sendWalletTransactionError && (
+                  <Text className="ml-4" variant="small" color="negative">
+                    Wallet transaction failed: {sendWalletTransactionError.message}
                   </Text>
                 )}
               </>
@@ -910,12 +937,17 @@ export const Connected = () => {
                 onClick={runMintNFT}
               />
             )}
+            {mintTxnError && (
+              <Text className="ml-4" variant="small" color="negative">
+                Mint failed: {mintTxnError.message}
+              </Text>
+            )}
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash2 &&
-              ((txnData2 as any)?.chainId === chainId || txnData2) && (
+              ((mintTxnData as any)?.chainId === chainId || mintTxnData) && (
                 <Text className="ml-4" variant="small" underline color="primary" asChild>
                   <a
-                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
+                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(mintTxnData as any).hash ?? mintTxnData}`}
                     target="_blank"
                     rel="noreferrer"
                   >

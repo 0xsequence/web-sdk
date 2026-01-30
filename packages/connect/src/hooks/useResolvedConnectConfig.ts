@@ -47,10 +47,7 @@ const getInitialCachedState = (config: ConnectConfig) => {
   }
 }
 
-const areOverridesEqual = (
-  left: WalletConfigurationOverrides | undefined,
-  right: WalletConfigurationOverrides | undefined
-) => {
+const areOverridesEqual = (left: WalletConfigurationOverrides | undefined, right: WalletConfigurationOverrides | undefined) => {
   if (!left && !right) {
     return true
   }
@@ -135,8 +132,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
     const cachedProjectName = normalizedWalletUrl ? getCachedProjectName(normalizedWalletUrl) : undefined
     const cachedWalletConfiguration = normalizedWalletUrl ? getCachedWalletConfiguration(normalizedWalletUrl) : undefined
     const cachedOverrides = cachedWalletConfiguration ? mapWalletConfigurationToOverrides(cachedWalletConfiguration) : undefined
-    const cachedSignIn =
-      cachedOverrides?.signIn || (cachedProjectName ? { projectName: cachedProjectName } : undefined)
+    const cachedSignIn = cachedOverrides?.signIn || (cachedProjectName ? { projectName: cachedProjectName } : undefined)
 
     if (!normalizedWalletUrl) {
       setResolvedConfig(config)

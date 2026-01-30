@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/dapp-client": "3.0.0-beta.4",
+    "@0xsequence/dapp-client": "3.0.0-beta.12",
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
     "@0xsequence/design-system": "2.1.11",

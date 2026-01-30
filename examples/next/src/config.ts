@@ -3,7 +3,7 @@ import { ConnectConfig, createConfig, createContractPermission } from '@0xsequen
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
-import { parseEther, zeroAddress } from 'viem'
+import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'
 
 import { getEmitterContractAddress } from './constants/permissions'
@@ -130,11 +130,8 @@ export const config = createConfig({
   includeFeeOptionPermissions: true,
   explicitSessionParams: {
     chainId: ChainId.OPTIMISM,
-    nativeTokenSpending: {
-      valueLimit: parseEther('0.1')
-    },
     expiresIn: {
-      days: 1
+      minutes: 3
     },
     permissions: [
       createContractPermission({

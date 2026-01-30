@@ -2,7 +2,6 @@ import { ConnectConfig, createConfig, createContractPermission } from '@0xsequen
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
-import { parseEther } from 'viem'
 
 import { webSdkDemoLogoDataUrl } from './constants/index.js'
 import { getEmitterContractAddress } from './constants/permissions'
@@ -109,11 +108,8 @@ export const createExampleConfig = (walletUrl: string) =>
     includeFeeOptionPermissions: true,
     explicitSessionParams: {
       chainId: ChainId.ARBITRUM_SEPOLIA,
-      nativeTokenSpending: {
-        valueLimit: parseEther('0.1')
-      },
       expiresIn: {
-        days: 1
+        minutes: 3
       },
       permissions: [
         createContractPermission({

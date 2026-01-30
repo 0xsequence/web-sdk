@@ -4,20 +4,21 @@ import {
   useExplicitSessions,
   useFeeOptions,
   useOpenConnectModal,
+  useSendWalletTransaction,
   useSequenceSessionState,
   useWallets,
   type ParameterRule,
   type Permission
 } from '@0xsequence/connect'
-import { Button, Card, Text } from '@0xsequence/design-system'
+import { Button, Card, Divider, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/network'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import { AbiFunction } from 'ox'
 import React, { useEffect } from 'react'
-import { formatUnits } from 'viem'
+import { encodeFunctionData, formatUnits } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
-import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient } from 'wagmi'
 
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
@@ -51,7 +52,13 @@ export const Connected = () => {
     error: sendImplicitTestTransactionError,
     reset: resetImplicitTestTransaction
   } = useSendTransaction()
-  const { data: txnData2, isPending: isPendingMintTxn, writeContract, reset: resetWriteContract } = useWriteContract()
+  const {
+    data: mintTxnData,
+    sendTransaction: sendMintWalletTransaction,
+    isLoading: isPendingMintTxn,
+    error: mintTxnError,
+    reset: resetMintWalletTransaction
+  } = useSendWalletTransaction()
   const {
     data: txnData3,
     sendTransaction: sendUnsponsoredTransaction,
@@ -272,8 +279,8 @@ export const Connected = () => {
     if (implicitTestTxnData) {
       setLastImplicitTestTxnDataHash((implicitTestTxnData as any).hash ?? implicitTestTxnData)
     }
-    if (txnData2) {
-      setLastTxnDataHash2((txnData2 as any).hash ?? txnData2)
+    if (mintTxnData) {
+      setLastTxnDataHash2((mintTxnData as any).hash ?? mintTxnData)
     }
     if (txnData3) {
       setLastTxnDataHash3((txnData3 as any).hash ?? txnData3)
@@ -281,7 +288,7 @@ export const Connected = () => {
     if (permissionedTxnData) {
       setLastPermissionedTxnDataHash((permissionedTxnData as any).hash ?? permissionedTxnData)
     }
-  }, [implicitTestTxnData, txnData2, txnData3, permissionedTxnData])
+  }, [implicitTestTxnData, mintTxnData, txnData3, permissionedTxnData])
 
   const domain = {
     name: 'Sequence Example',
@@ -505,17 +512,22 @@ export const Connected = () => {
   }
 
   const runMintNFT = async () => {
-    if (!walletClient) {
+    if (!address) {
       return
     }
 
-    const [account] = await walletClient.getAddresses()
-
-    writeContract({
-      address: '0x0d402C63cAe0200F0723B3e6fa0914627a48462E',
+    const data = encodeFunctionData({
       abi,
       functionName: 'awardItem',
-      args: [account, 'https://dev-metadata.sequence.app/projects/277/collections/62/tokens/0.json']
+      args: [address, 'https://dev-metadata.sequence.app/projects/277/collections/62/tokens/0.json']
+    })
+
+    sendMintWalletTransaction({
+      chainId,
+      transaction: {
+        to: '0x0d402C63cAe0200F0723B3e6fa0914627a48462E',
+        data
+      }
     })
   }
 
@@ -530,11 +542,18 @@ export const Connected = () => {
     setLastPermissionedTxnDataHash(undefined)
     setIsMessageValid(undefined)
     setTypedDataSig(undefined)
-    resetWriteContract()
+    resetMintWalletTransaction()
     resetSendUnsponsoredTransaction()
     resetImplicitTestTransaction()
     resetPermissionedTxn()
-  }, [address, chainId, resetImplicitTestTransaction, resetPermissionedTxn, resetSendUnsponsoredTransaction, resetWriteContract])
+  }, [
+    address,
+    chainId,
+    resetImplicitTestTransaction,
+    resetPermissionedTxn,
+    resetSendUnsponsoredTransaction,
+    resetMintWalletTransaction
+  ])
 
   return (
     <>
@@ -632,7 +651,7 @@ export const Connected = () => {
             {hasImplicitSession && (
               <>
                 <Text className="mt-4" variant="small-bold" color="muted">
-                  Test Implicit Permission transactions
+                  with Implicit permission
                 </Text>
 
                 <CardButton
@@ -655,10 +674,12 @@ export const Connected = () => {
               </>
             )}
 
+            <Divider />
+
             {isV3WalletConnectionActive && (
               <>
                 <Text variant="small-bold" className="mt-4" color="muted">
-                  with V3 Explicit Permissions
+                  with Explicit permission
                 </Text>
 
                 <div className="mb-2">
@@ -898,12 +919,17 @@ export const Connected = () => {
                 onClick={runMintNFT}
               />
             )}
+            {mintTxnError && (
+              <Text className="ml-4" variant="small" color="negative">
+                Mint failed: {mintTxnError.message}
+              </Text>
+            )}
             {networkForCurrentChainId.blockExplorer &&
               lastTxnDataHash2 &&
-              ((txnData2 as any)?.chainId === chainId || txnData2) && (
+              ((mintTxnData as any)?.chainId === chainId || mintTxnData) && (
                 <Text className="ml-4" variant="small" underline color="primary" asChild>
                   <a
-                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(txnData2 as any).hash ?? txnData2}`}
+                    href={`${networkForCurrentChainId.blockExplorer.rootUrl}/tx/${(mintTxnData as any).hash ?? mintTxnData}`}
                     target="_blank"
                     rel="noreferrer"
                   >

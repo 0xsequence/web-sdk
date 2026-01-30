@@ -136,7 +136,7 @@ export type ExplicitSessionParams = {
   /**
    * An object ({@link NativeTokenSpending}) that defines the maximum amount of native currency that can be spent during the session and allowed recipients for the native currency.
    */
-  nativeTokenSpending: NativeTokenSpending
+  nativeTokenSpending?: NativeTokenSpending
 
   /**
    * The desired duration of the session. {@link SessionDuration}
