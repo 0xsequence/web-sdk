@@ -16,7 +16,7 @@ import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import { AbiFunction } from 'ox'
 import React, { useEffect } from 'react'
-import { encodeFunctionData, formatUnits, zeroAddress } from 'viem'
+import { encodeFunctionData, formatUnits, zeroAddress, type TransactionRequest } from 'viem'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient } from 'wagmi'
 
@@ -148,11 +148,11 @@ export const Connected = () => {
           functionName: 'explicitEmit'
         })
 
-        const txs = []
+        const txs: TransactionRequest[] = []
 
         if (permissionType === 'contractCall' || permissionType === 'combined') {
           txs.push({
-            to: getEmitterContractAddress(window.location.origin),
+            to: getEmitterContractAddress(window.location.origin) as `0x${string}`,
             data: emitterTxData
           })
         }
@@ -179,7 +179,7 @@ export const Connected = () => {
             args: [address, 1n]
           })
           txs.push({
-            to: USDC_ADDRESS,
+            to: USDC_ADDRESS as `0x${string}`,
             data: usdcTransferData
           })
         }
