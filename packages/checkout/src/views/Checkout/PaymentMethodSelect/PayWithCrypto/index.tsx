@@ -741,7 +741,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
               fontSize: '24px'
             }}
           >
-            {`${displayPrice} ${dataCurrencyInfo?.symbol}`}
+            {`${displayPrice} ${selectedCurrencyInfo?.symbol}`}
           </Text>
           <div>
             <Text color="text50" variant="xsmall" fontWeight="normal">
