@@ -6,6 +6,8 @@ export const AAVE_V3_POOL_ADDRESS_ARBITRUM = '0x794a61358D6845594F94dc1DB02A252b
 export const AAVE_V3_WRAPPED_TOKEN_GATEWAY_ADDRESS_ARBITRUM = '0x5283BEcEd7ADF6D003225C13896E536f2D4264FF'
 export const ALLOWED_RECEIVER = '0xBa47299A5B0d402375BA9A300c28D6Aa4fE788FA'
 
+// const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+
 export const config = createConfig({
   projectAccessKey: 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y',
   signIn: {
@@ -19,8 +21,8 @@ export const config = createConfig({
     indexerUrl: 'https://dev-indexer.sequence.app',
     builderUrl: 'https://dev-api.sequence.build'
   },
-  // walletUrl: 'https://v3.sequence-dev.app',
-  walletUrl: 'http://localhost:5173',
+  walletUrl: 'https://v3.sequence-dev.app',
+  // walletUrl: 'http://localhost:5173',
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
   nodesUrl: 'https://dev-nodes.sequence.app/{network}',
