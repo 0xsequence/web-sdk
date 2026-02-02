@@ -245,6 +245,12 @@ body {
   flex-grow: 1;
 }
 
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 /* Status Box Styles */
 .status-box {
   padding: 1rem;

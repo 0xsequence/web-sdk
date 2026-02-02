@@ -33,7 +33,8 @@ export function createConfig<T extends WalletType>(
   const { projectAccessKey, chainIds, wagmiConfig, ...rest } = options
 
   const chains = wagmiConfig?.chains || getDefaultChains(chainIds)
-  const transports = wagmiConfig?.transports || getDefaultTransports(chains, projectAccessKey)
+  const nodesUrl = 'nodesUrl' in options ? options.nodesUrl : undefined
+  const transports = wagmiConfig?.transports || getDefaultTransports(chains, projectAccessKey, nodesUrl)
   const connectors = wagmiConfig?.connectors || getDefaultConnectors(walletType, options)
 
   return {

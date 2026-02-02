@@ -126,6 +126,10 @@ export { useExplicitSessions } from './hooks/useExplicitSessions.js'
 export { useSequenceSessionState } from './hooks/useSequenceSessionState.js'
 export { useAuthStatus } from './hooks/useAuthStatus.js'
 export type { UseAuthStatusOptions, UseAuthStatusResult } from './hooks/useAuthStatus.js'
+export { useHasPermission } from './hooks/useHasPermission.js'
+export { useSendWalletTransaction } from './hooks/useSendWalletTransaction.js'
+export type { HasPermissionParams, UseHasPermissionReturnType } from './hooks/useHasPermission.js'
+export type { SendWalletTransactionParams, UseSendWalletTransactionReturnType } from './hooks/useSendWalletTransaction.js'
 
 // Components
 export { NetworkBadge } from './components/NetworkBadge/index.js'

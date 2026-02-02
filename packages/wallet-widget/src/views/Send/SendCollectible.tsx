@@ -3,6 +3,7 @@ import {
   truncateAtMiddle,
   useAnalyticsContext,
   useFeeOptions,
+  useSendWalletTransaction,
   useWaasFeeOptions,
   useWallets,
   waitForTransactionReceipt,
@@ -68,6 +69,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   const [pendingV3FeeConfirmation, confirmV3FeeOption, rejectV3FeeOption] = useFeeOptions()
   const [pendingWaasFeeConfirmation, confirmWaasFeeOption, rejectWaasFeeOption] = useWaasFeeOptions()
+  const { sendTransactionAsync: sendWalletTransactionAsync } = useSendWalletTransaction()
 
   const connectorType = (connector as ExtendedConnector | undefined)?.type
   const isWaasConnectorActive = connectorType === 'sequence-waas'
@@ -249,7 +251,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       await switchChainAsync({ chainId })
     }
 
-    if (!walletClient) {
+    if (!walletClient && !isSequenceV3ConnectorActive) {
       console.error('Wallet client not found')
       setErrorMsg('Wallet client not available. Please ensure your wallet is connected.')
       setIsSendTxnPending(false)
@@ -265,33 +267,51 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     try {
       switch (contractType) {
         case 'ERC721':
-          console.log('Sending ERC721 via walletClient')
           txData = encodeFunctionData({
             abi: ERC_721_ABI,
             functionName: 'safeTransferFrom',
             args: [accountAddress, toAddress, tokenId]
           })
-          txHash = await walletClient.sendTransaction({
-            account: accountAddress as `0x${string}`,
-            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: txData,
-            chain: chains.find(c => c.id === chainId)
-          })
+          if (isSequenceV3ConnectorActive) {
+            txHash = (await sendWalletTransactionAsync({
+              chainId,
+              transaction: {
+                to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+                data: txData
+              }
+            })) as Hex
+          } else {
+            txHash = await walletClient!.sendTransaction({
+              account: accountAddress as `0x${string}`,
+              to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+              data: txData,
+              chain: chains.find(c => c.id === chainId)
+            })
+          }
           break
         case 'ERC1155':
         default:
-          console.log('Sending ERC1155 via walletClient')
           txData = encodeFunctionData({
             abi: ERC_1155_ABI,
             functionName: 'safeBatchTransferFrom',
             args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
           })
-          txHash = await walletClient.sendTransaction({
-            account: accountAddress as `0x${string}`,
-            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: txData,
-            chain: chains.find(c => c.id === chainId)
-          })
+          if (isSequenceV3ConnectorActive) {
+            txHash = (await sendWalletTransactionAsync({
+              chainId,
+              transaction: {
+                to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+                data: txData
+              }
+            })) as Hex
+          } else {
+            txHash = await walletClient!.sendTransaction({
+              account: accountAddress as `0x${string}`,
+              to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+              data: txData,
+              chain: chains.find(c => c.id === chainId)
+            })
+          }
       }
 
       // Handle successful transaction submission

@@ -70,6 +70,7 @@ export interface ConnectConfig {
   waasConfigKey?: string
   walletUrl?: string
   chainIds?: number[]
+  defaultChainId?: number
   disableAnalytics?: boolean
   defaultTheme?: Theme
   position?: ModalPosition

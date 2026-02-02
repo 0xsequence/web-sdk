@@ -4,7 +4,10 @@ import {
   CryptoOption,
   formatDisplay,
   sendTransactions,
+  TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext,
+  useSendWalletTransaction,
+  waitForTransactionReceipt,
   type ExtendedConnector
 } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
@@ -17,6 +20,7 @@ import {
   useGetTokenBalancesSummary,
   useIndexerClient
 } from '@0xsequence/hooks'
+import { TransactionStatus } from '@0xsequence/indexer'
 import { useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useChainId, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
@@ -40,9 +44,11 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
   const [selectedCurrency, setSelectedCurrency] = useState<string>()
   const publicClient = usePublicClient({ chainId })
   const { data: walletClient } = useWalletClient({ chainId })
+  const { sendTransactionAsync: sendWalletTransactionAsync } = useSendWalletTransaction()
   const { switchChainAsync } = useSwitchChain()
 
   const isConnectorSequenceBased = (connector as ExtendedConnector).type?.includes('sequence')
+  const isSequenceV3Connector = connector?.id?.includes('sequence-v3-wallet')
   // the isSequenceBased flag is not set on the connector. We need to fix this
   // const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
   const { analytics } = useAnalyticsContext()
@@ -122,13 +128,19 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
   const isLoading = swapRoutesIsLoading || isLoadingCurrencyInfo || tokenBalancesIsLoading
 
   const onClickProceed = async () => {
-    if (!userAddress || !publicClient || !walletClient || !connector) {
+    if (!userAddress || !publicClient || !connector) {
+      return
+    }
+    if (!walletClient && !isSequenceV3Connector) {
       return
     }
 
     setIsErrorTx(false)
     setIsTxsPending(true)
     try {
+      if (!isCorrectChainId && isConnectorSequenceBased) {
+        await switchChainAsync({ chainId })
+      }
       const swapOption = swapRoutes.flatMap(route => route.fromTokens).find(option => option.address === selectedCurrency)
       const isSwapNativeToken = compareAddress(zeroAddress, swapOption?.address || '')
 
@@ -163,34 +175,69 @@ export const SwapList = ({ chainId, contractAddress, amount, slippageBps }: Swap
         return swapTransactions
       }
 
-      const walletClientChainId = await walletClient.getChainId()
-      if (walletClientChainId !== chainId) {
-        await walletClient.switchChain({ id: chainId })
-      }
-
-      const txs = await sendTransactions({
-        connector,
-        walletClient,
-        publicClient,
-        chainId,
-        indexerClient,
-        senderAddress: userAddress,
-        transactions: [...getSwapTransactions()]
-      })
-
-      if (txs.length === 0) {
-        throw new Error('No transactions to send')
-      }
-
+      const swapTransactions = getSwapTransactions()
       let txHash: string | undefined
 
-      for (const [index, tx] of txs.entries()) {
-        const currentTxHash = await tx()
+      if (isSequenceV3Connector) {
+        if (swapTransactions.length === 0) {
+          throw new Error('No transactions to send')
+        }
 
-        const isLastTransaction = index === txs.length - 1
+        for (const [index, transaction] of swapTransactions.entries()) {
+          const currentTxHash = await sendWalletTransactionAsync({
+            chainId,
+            transaction: {
+              to: transaction.to,
+              data: transaction.data,
+              value: transaction.value
+            }
+          })
 
-        if (isLastTransaction) {
-          txHash = currentTxHash
+          if (index === swapTransactions.length - 1) {
+            txHash = currentTxHash
+          }
+        }
+
+        if (txHash && publicClient) {
+          const { txnStatus } = await waitForTransactionReceipt({
+            indexerClient,
+            txnHash: txHash as Hex,
+            publicClient,
+            confirmations: TRANSACTION_CONFIRMATIONS_DEFAULT
+          })
+
+          if (txnStatus === TransactionStatus.FAILED) {
+            throw new Error('Transaction failed')
+          }
+        }
+      } else {
+        const walletClientChainId = await walletClient!.getChainId()
+        if (walletClientChainId !== chainId) {
+          await walletClient!.switchChain({ id: chainId })
+        }
+
+        const txs = await sendTransactions({
+          connector,
+          walletClient: walletClient!,
+          publicClient,
+          chainId,
+          indexerClient,
+          senderAddress: userAddress,
+          transactions: [...swapTransactions]
+        })
+
+        if (txs.length === 0) {
+          throw new Error('No transactions to send')
+        }
+
+        for (const [index, tx] of txs.entries()) {
+          const currentTxHash = await tx()
+
+          const isLastTransaction = index === txs.length - 1
+
+          if (isLastTransaction) {
+            txHash = currentTxHash
+          }
         }
       }
 

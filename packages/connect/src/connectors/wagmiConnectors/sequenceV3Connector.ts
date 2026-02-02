@@ -12,8 +12,7 @@ import {
   type ExplicitSessionConfig,
   type FeeOption,
   type FeeToken,
-  type GetFeeTokensResponse,
-  type TransactionRequest as DappClientTransactionRequest
+  type GetFeeTokensResponse
 } from '@0xsequence/dapp-client'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -498,76 +497,105 @@ export class SequenceV3Provider implements EIP1193Provider {
           })
         }
         const tx = params[0] as TransactionRequest
+        if (!tx.to) {
+          throw new RpcError(new Error('Transaction requires a "to" address.'), {
+            code: -32602,
+            shortMessage: 'Invalid transaction params'
+          })
+        }
         const transactions = [{ to: tx.to!, value: BigInt(tx.value?.toString() ?? '0'), data: tx.data ?? '0x' }]
 
-        const hasPermission = await this.client.hasPermission(this.currentChainId, transactions)
-
-        if (hasPermission) {
-          // @note feeConfirmationHandler will only be defined if the useFeeOptions hook is used anywhere in the app
-          // if it is not used, we do not query fee options at all
-          if (this.feeConfirmationHandler) {
-            const feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
-            let selectedFeeOption: FeeOption | undefined
-
-            if (feeOptions && feeOptions.length > 0) {
-              const id = uuidv4()
-              const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
-
-              if (!confirmation.confirmed) {
-                throw new RpcError(new Error('User rejected the request.'), {
-                  code: 4001,
-                  shortMessage: 'User rejected send transaction request.'
-                })
-              }
-
-              if (id !== confirmation.id) {
-                throw new RpcError(new Error('User confirmation ids do not match'), {
-                  code: -32000,
-                  shortMessage: 'Confirmation ID mismatch'
-                })
-              }
-              selectedFeeOption = confirmation.feeOption
-            }
-            // @note if dApp has permission and there is a confirmation handler
-            // if there is no selectedFeeOption, dapp should sponsor the transaction or network used should be testnet
-            return this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
-          } else {
-            // @note if dApp has permission but there is no confirmation handler, in this case dapp should sponsor the transaction
-            return this.client.sendTransaction(this.currentChainId, transactions)
-          }
-        } else {
-          return new Promise((resolve, reject) => {
-            const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
-              unsubscribe()
-              if (data.error) {
-                reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
-              } else {
-                resolve(data.response.transactionHash)
-              }
-            })
-
-            if (!tx.to) {
-              const error = new RpcError(new Error('Transaction requires a "to" address.'), {
-                code: -32602,
-                shortMessage: 'Invalid transaction params'
+        // @note feeConfirmationHandler will only be defined if the useFeeOptions hook is used anywhere in the app
+        // if it is not used, we do not query fee options at all
+        if (this.feeConfirmationHandler) {
+          let feeOptions: FeeOption[] = []
+          try {
+            feeOptions = await this.client.getFeeOptions(this.currentChainId, transactions)
+          } catch (error) {
+            if (error instanceof Error && /signer supporting call is expired/i.test(error.message)) {
+              throw new RpcError(new Error('Explicit session expired.'), {
+                code: -32000,
+                shortMessage: 'Session expired'
               })
-              unsubscribe()
-              reject(error)
-              return
             }
-
-            const walletTransactionRequest: DappClientTransactionRequest = {
-              to: tx.to,
-              value: tx.value,
-              data: tx.data,
-              gasLimit: tx.gas
+            let missingPermissionsDetail = ''
+            let missingPermissionsShort = ''
+            try {
+              const perCall = await Promise.all(
+                transactions.map(async (tx, index) => {
+                  const allowed = await this.client.hasPermission(this.currentChainId, [tx])
+                  return { index, allowed, tx }
+                })
+              )
+              const denied = perCall.filter(item => !item.allowed)
+              if (denied.length > 0) {
+                const deniedSummary = denied
+                  .map(
+                    item =>
+                      `[${item.index}] to=${item.tx.to}, value=${item.tx.value ?? 0n}, selector=${getSelector(item.tx.data)}, data=${String(item.tx.data ?? '0x').slice(0, 42)}...`
+                  )
+                  .join(', ')
+                missingPermissionsDetail = ` Missing permission for call(s): ${deniedSummary}.`
+                missingPermissionsShort = `Missing permission for ${denied.length} call(s).`
+              }
+            } catch {
+              // ignore secondary permission probing errors
             }
-
-            this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch((err: unknown) => {
-              unsubscribe()
-              reject(err)
+            const message = formatProviderError(error)
+            const shortMessage = missingPermissionsShort || 'Missing permission for transaction.'
+            const baseMessage = `Missing permission for transaction.${missingPermissionsDetail}`
+            const detailsMessage = message ? ` Underlying error: ${message}.` : ''
+            throw new RpcError(new Error(`${baseMessage}${detailsMessage}`), {
+              code: -32000,
+              shortMessage
             })
-          })
+          }
+          let selectedFeeOption: FeeOption | undefined
+
+          if (feeOptions && feeOptions.length > 0) {
+            const id = uuidv4()
+            const confirmation = await this.feeConfirmationHandler.confirmFeeOption(id, feeOptions, [tx], this.currentChainId)
+
+            if (!confirmation.confirmed) {
+              throw new RpcError(new Error('User rejected the request.'), {
+                code: 4001,
+                shortMessage: 'User rejected send transaction request.'
+              })
+            }
+
+            if (id !== confirmation.id) {
+              throw new RpcError(new Error('User confirmation ids do not match'), {
+                code: -32000,
+                shortMessage: 'Confirmation ID mismatch'
+              })
+            }
+            selectedFeeOption = confirmation.feeOption
+          }
+          // @note if there is no selectedFeeOption, dapp should sponsor the transaction or network used should be testnet
+          try {
+            return await this.client.sendTransaction(this.currentChainId, transactions, selectedFeeOption)
+          } catch (error) {
+            if (error instanceof Error && /signer supporting call is expired/i.test(error.message)) {
+              throw new RpcError(new Error('Explicit session expired.'), {
+                code: -32000,
+                shortMessage: 'Session expired'
+              })
+            }
+            throw error
+          }
+        }
+
+        // @note if there is no confirmation handler, dapp should sponsor the transaction
+        try {
+          return await this.client.sendTransaction(this.currentChainId, transactions)
+        } catch (error) {
+          if (error instanceof Error && /signer supporting call is expired/i.test(error.message)) {
+            throw new RpcError(new Error('Explicit session expired.'), {
+              code: -32000,
+              shortMessage: 'Session expired'
+            })
+          }
+          throw error
         }
       }
 
@@ -621,4 +649,28 @@ function applyTemplate(template: string, values: Record<string, string>) {
     }
     return value
   })
+}
+
+const getSelector = (data: unknown) => {
+  if (typeof data !== 'string') {
+    return 'unknown'
+  }
+  if (!data.startsWith('0x') || data.length < 10) {
+    return 'unknown'
+  }
+  return data.slice(0, 10)
+}
+
+const formatProviderError = (error: unknown) => {
+  if (!error) {
+    return 'Unknown error.'
+  }
+  if (error instanceof Error) {
+    const cause = (error as any).cause
+    if (cause instanceof Error && cause.message) {
+      return `${error.message} (${cause.message})`
+    }
+    return error.message
+  }
+  return String(error)
 }
