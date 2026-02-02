@@ -1,5 +1,14 @@
 # @0xsequence/connect
 
+## 6.0.0-beta.1
+
+### Patch Changes
+
+- 6.0.0 beta fixes
+
+- Updated dependencies []:
+  - @0xsequence/hooks@6.0.0-beta.1
+
 ## 6.0.0-beta.0
 
 ### Major Changes

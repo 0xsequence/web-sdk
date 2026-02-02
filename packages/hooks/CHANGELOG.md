@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.0-beta.1
+
+### Patch Changes
+
+- 6.0.0 beta fixes
+
 ## 6.0.0-beta.0
 
 ### Major Changes

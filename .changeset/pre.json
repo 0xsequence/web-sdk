@@ -6,13 +6,14 @@
     "example-next": "1.0.4",
     "example-react": "1.0.4",
     "example-react-waas": "1.0.0",
-    "@0xsequence/checkout": "5.4.8",
-    "@0xsequence/connect": "5.4.8",
-    "@0xsequence/hooks": "5.4.8",
-    "@0xsequence/immutable-connector": "5.4.8",
-    "@0xsequence/wallet-widget": "5.4.8"
+    "@0xsequence/checkout": "6.0.0-beta.0",
+    "@0xsequence/connect": "6.0.0-beta.0",
+    "@0xsequence/hooks": "6.0.0-beta.0",
+    "@0xsequence/immutable-connector": "6.0.0-beta.0",
+    "@0xsequence/wallet-widget": "6.0.0-beta.0"
   },
   "changesets": [
-    "large-mails-peel"
+    "large-mails-peel",
+    "small-cameras-think"
   ]
 }
