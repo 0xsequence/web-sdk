@@ -2,7 +2,7 @@ import { sequence } from '0xsequence'
 import type { ETHAuthProof } from '@0xsequence/auth'
 import type { ChainIdLike } from '@0xsequence/network'
 import type { ConnectOptions, SequenceProvider } from '@0xsequence/provider'
-import { getAddress, UserRejectedRequestError } from 'viem'
+import { getAddress, UserRejectedRequestError, type Address } from 'viem'
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
@@ -16,6 +16,26 @@ export interface BaseSequenceConnectorOptions {
 }
 
 sequenceWallet.type = 'sequence' as const
+
+type AccountWithCapabilities = {
+  address: Address
+  capabilities: Record<string, unknown>
+}
+
+type ConnectAccounts<withCapabilities extends boolean> = withCapabilities extends true
+  ? readonly AccountWithCapabilities[]
+  : readonly Address[]
+
+const formatConnectAccounts = <withCapabilities extends boolean>(
+  accounts: readonly Address[],
+  withCapabilities?: withCapabilities | boolean
+): ConnectAccounts<withCapabilities> => {
+  if (withCapabilities) {
+    return accounts.map(address => ({ address, capabilities: {} })) as unknown as ConnectAccounts<withCapabilities>
+  }
+
+  return accounts as ConnectAccounts<withCapabilities>
+}
 
 export function sequenceWallet(params: BaseSequenceConnectorOptions) {
   const { defaultNetwork, connect, walletAppURL } = params
@@ -56,105 +76,23 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     [LocalStorageKey.WaasSignInEmail]: string | null
   }
 
-  return createConnector<Provider, Properties, StorageItem>(config => ({
-    id: 'sequence',
-    name: 'Sequence',
-    type: sequenceWallet.type,
-    params,
+  return createConnector<Provider, Properties, StorageItem>(config => {
+    let providerInstance: SequenceProvider | undefined
 
-    setEmail(email: string) {
-      if (params.connect.settings) {
-        params.connect.settings.signInWithEmail = email
-      }
-    },
-
-    async setup() {
-      const provider = await this.getProvider()
-      provider.on('chainChanged', (chainIdHex: string) => {
-        config.emitter.emit('change', { chainId: normalizeChainId(chainIdHex) })
-      })
-
-      provider.on('disconnect', () => {
-        this.onDisconnect()
-      })
-    },
-
-    async connect() {
-      const provider = await this.getProvider()
-
-      if (!provider.isConnected()) {
-        const localStorageTheme = await config.storage?.getItem(LocalStorageKey.Theme)
-        const ethAuthSettings = (await config.storage?.getItem(LocalStorageKey.EthAuthSettings)) ?? {}
-
-        const connectOptionsWithTheme = {
-          authorize: true,
-          askForEmail: true,
-          ...ethAuthSettings,
-          ...connect,
-          settings: {
-            theme: localStorageTheme || 'dark',
-            ...connect?.settings
-          }
-        }
-
-        const e = await provider.connect(connectOptionsWithTheme)
-        if (e.error) {
-          throw new UserRejectedRequestError(new Error(e.error))
-        }
-        if (!e.connected) {
-          throw new UserRejectedRequestError(new Error('Wallet connection rejected'))
-        }
-
-        const proofString = e.proof?.proofString
-        const proofTypedData = e.proof?.typedData
-        if (proofString && proofTypedData) {
-          const jsonEthAuthProof: ETHAuthProof = {
-            proofString,
-            typedData: proofTypedData
-          }
-
-          await config.storage?.setItem(LocalStorageKey.EthAuthProof, jsonEthAuthProof)
-        }
-
-        // Save the email used to sign in
-        await config.storage?.setItem(LocalStorageKey.WaasSignInEmail, e.email || null)
+    const getProvider = async (_parameters?: { chainId?: number | undefined }) => {
+      if (providerInstance) {
+        return providerInstance
       }
 
-      const accounts = await this.getAccounts()
-
-      return {
-        accounts: [...accounts],
-        chainId: provider.getChainId()
-      }
-    },
-
-    async disconnect() {
-      const provider = await this.getProvider()
-
-      provider.disconnect()
-
-      await config.storage?.removeItem(LocalStorageKey.WaasSignInEmail)
-    },
-
-    async getAccounts() {
-      const provider = await this.getProvider()
-      const signer = provider.getSigner()
-      const account = getAddress(await signer.getAddress())
-
-      return [account]
-    },
-
-    async getProvider() {
       try {
-        const provider = sequence.getWallet()
-
-        return provider
+        providerInstance = sequence.getWallet()
+        return providerInstance
       } catch (err) {
         if (!projectAccessKey) {
           throw 'projectAccessKey not found'
         }
 
-        const provider = sequence.initWallet(projectAccessKey, {
+        providerInstance = sequence.initWallet(projectAccessKey, {
           defaultNetwork,
           transports: {
             walletAppURL: walletAppURL || 'https://sequence.app'
@@ -163,56 +101,159 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
           analytics: false
         })
 
-        const chainId = provider.getChainId()
+        const chainId = providerInstance.getChainId()
         config.emitter.emit('change', { chainId: normalizeChainId(chainId) })
 
-        return provider
+        return providerInstance
       }
-    },
-
-    async isAuthorized() {
-      try {
-        const account = await this.getAccounts()
-        return !!account
-      } catch (e) {
-        return false
-      }
-    },
-
-    async switchChain({ chainId }) {
-      const provider = await this.getProvider()
-
-      const chain = config.chains.find(c => c.id === chainId) || config.chains[0]
-      provider.setDefaultChainId(normalizeChainId(chainId))
-
-      config.emitter.emit('change', { chainId })
-
-      return chain
-    },
-
-    async getChainId() {
-      const provider = await this.getProvider()
-      const chainId = provider.getChainId()
-
-      return chainId
-    },
-
-    async onAccountsChanged(accounts) {
-      return { account: accounts[0] }
-    },
-
-    async onChainChanged(chain) {
-      const provider = await this.getProvider()
-
-      config.emitter.emit('change', { chainId: normalizeChainId(chain) })
-      provider.setDefaultChainId(normalizeChainId(chain))
-    },
-
-    async onConnect(_connectinfo) {},
-
-    async onDisconnect() {
-      await config.storage?.removeItem(LocalStorageKey.EthAuthProof)
-      config.emitter.emit('disconnect')
     }
-  }))
+
+    const disconnect = async () => {
+      const provider = await getProvider()
+
+      provider.disconnect()
+
+      await config.storage?.removeItem(LocalStorageKey.WaasSignInEmail)
+    }
+
+    const getAccounts = async () => {
+      const provider = await getProvider()
+      const signer = provider.getSigner()
+      const account = getAddress(await signer.getAddress())
+
+      return [account]
+    }
+
+    const getChainId = async () => {
+      const provider = await getProvider()
+      return provider.getChainId()
+    }
+
+    return {
+      id: 'sequence',
+      name: 'Sequence',
+      type: sequenceWallet.type,
+      params,
+
+      setEmail(email: string) {
+        if (params.connect.settings) {
+          params.connect.settings.signInWithEmail = email
+        }
+      },
+
+      async setup() {
+        const provider = await getProvider()
+        provider.on('chainChanged', (chainIdHex: string) => {
+          config.emitter.emit('change', { chainId: normalizeChainId(chainIdHex) })
+        })
+
+        provider.on('disconnect', () => {
+          this.onDisconnect()
+        })
+      },
+
+      async connect<withCapabilities extends boolean = false>(parameters?: {
+        chainId?: number | undefined
+        isReconnecting?: boolean | undefined
+        withCapabilities?: withCapabilities | boolean | undefined
+      }) {
+        const provider = await getProvider()
+
+        if (parameters?.chainId) {
+          provider.setDefaultChainId(normalizeChainId(parameters.chainId))
+        }
+
+        if (!provider.isConnected()) {
+          const localStorageTheme = await config.storage?.getItem(LocalStorageKey.Theme)
+          const ethAuthSettings = (await config.storage?.getItem(LocalStorageKey.EthAuthSettings)) ?? {}
+
+          const connectOptionsWithTheme = {
+            authorize: true,
+            askForEmail: true,
+            ...ethAuthSettings,
+            ...connect,
+            settings: {
+              theme: localStorageTheme || 'dark',
+              ...connect?.settings
+            }
+          }
+
+          const e = await provider.connect(connectOptionsWithTheme)
+          if (e.error) {
+            throw new UserRejectedRequestError(new Error(e.error))
+          }
+          if (!e.connected) {
+            throw new UserRejectedRequestError(new Error('Wallet connection rejected'))
+          }
+
+          const proofString = e.proof?.proofString
+          const proofTypedData = e.proof?.typedData
+          if (proofString && proofTypedData) {
+            const jsonEthAuthProof: ETHAuthProof = {
+              proofString,
+              typedData: proofTypedData
+            }
+
+            await config.storage?.setItem(LocalStorageKey.EthAuthProof, jsonEthAuthProof)
+          }
+
+          // Save the email used to sign in
+          await config.storage?.setItem(LocalStorageKey.WaasSignInEmail, e.email || null)
+        }
+
+        const accounts = await getAccounts()
+
+        return {
+          accounts: formatConnectAccounts(accounts, parameters?.withCapabilities),
+          chainId: provider.getChainId()
+        }
+      },
+
+      disconnect,
+
+      getAccounts,
+
+      getProvider,
+
+      async isAuthorized() {
+        try {
+          const account = await getAccounts()
+          return !!account
+        } catch (e) {
+          return false
+        }
+      },
+
+      async switchChain({ chainId }) {
+        const provider = await getProvider()
+
+        const chain = config.chains.find(c => c.id === chainId) || config.chains[0]
+        provider.setDefaultChainId(normalizeChainId(chainId))
+
+        config.emitter.emit('change', { chainId })
+
+        return chain
+      },
+
+      getChainId,
+
+      async onAccountsChanged(accounts) {
+        return { account: accounts[0] }
+      },
+
+      async onChainChanged(chain) {
+        const provider = await getProvider()
+
+        config.emitter.emit('change', { chainId: normalizeChainId(chain) })
+        provider.setDefaultChainId(normalizeChainId(chain))
+      },
+
+      async onConnect(_connectinfo) {},
+
+      async onDisconnect() {
+        await config.storage?.removeItem(LocalStorageKey.EthAuthProof)
+        config.emitter.emit('disconnect')
+      }
+    }
+  })
 }

@@ -7,8 +7,12 @@ export const styles = String.raw`
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-violet-600: oklch(54.1% 0.281 293.009);
+    --color-gray-200: oklch(92.8% 0.006 264.531);
+    --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-gray-500: oklch(55.1% 0.027 264.364);
+    --color-gray-900: oklch(21% 0.034 264.665);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -923,6 +927,12 @@ export const styles = String.raw`
   .border-border-normal {
     border-color: var(--seq-color-border-normal);
   }
+  .border-gray-200 {
+    border-color: var(--color-gray-200);
+  }
+  .border-gray-300 {
+    border-color: var(--color-gray-300);
+  }
   .border-primary {
     border-color: var(--seq-color-primary);
   }
@@ -964,6 +974,9 @@ export const styles = String.raw`
   }
   .bg-background-secondary {
     background-color: var(--seq-color-background-secondary);
+  }
+  .bg-blue-500 {
+    background-color: var(--color-blue-500);
   }
   .bg-border-normal {
     background-color: var(--seq-color-border-normal);
@@ -1297,6 +1310,9 @@ export const styles = String.raw`
   }
   .text-gray-500 {
     color: var(--color-gray-500);
+  }
+  .text-gray-900 {
+    color: var(--color-gray-900);
   }
   .text-info {
     color: var(--seq-color-info);
