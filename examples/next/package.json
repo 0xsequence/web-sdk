@@ -25,8 +25,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.11",
-    "viem": "^2.28.1",
-    "wagmi": "^2.15.1"
+    "viem": "^2.41.2",
+    "wagmi": "^2.18.0"
   },
   "devDependencies": {
     "@types/node": "^20.17.32",
