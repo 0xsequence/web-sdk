@@ -1,5 +1,5 @@
 import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
-import { ContractVerificationStatus } from '@0xsequence/indexer'
+import { ContractVerificationStatus, type TokenBalance } from '@0xsequence/indexer'
 import { useEffect } from 'react'
 
 export const useGetAllTokensDetails = ({
@@ -10,7 +10,7 @@ export const useGetAllTokensDetails = ({
   accountAddresses: string[]
   chainIds: number[]
   hideUnlistedTokens: boolean
-}) => {
+}): { data: TokenBalance[]; isLoading: boolean } => {
   const {
     data: tokenBalancesData,
     isLoading,
