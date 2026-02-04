@@ -21,11 +21,11 @@
   ],
   "scripts": {
     "build": "pnpm build:clean && pnpm build:esm && pnpm build:cjs",
-    "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build:cjs": "tsc --module node16 --moduleResolution node16 --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
     "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
-    "dev": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
+    "dev": "tsc --watch --module es2022 --moduleResolution bundler --declaration --declarationMap --outDir dist/esm",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
