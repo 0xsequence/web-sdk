@@ -178,6 +178,15 @@ export const TRAILS_CUSTOM_CSS = `
   background: linear-gradient(89.69deg, #3a0ec7 0.27%, #6229e0 99.73%) !important;
   opacity: 0.9;
 }
+/* Polygon button colors - Fix active state to show purple */
+.bg-polygon-500,
+.dark .bg-polygon-500 {
+  background-color: #6c00f6 !important;
+}
+.hover\\:bg-polygon-600:hover,
+.dark .hover\\:bg-polygon-600:hover {
+  background-color: #5a00cc !important;
+}
 `
 
 /**

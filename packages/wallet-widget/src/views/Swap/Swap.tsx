@@ -28,6 +28,8 @@ export const Swap = () => {
       theme="dark"
       mode="swap"
       customCss={TRAILS_CUSTOM_CSS}
+      hideDisconnect={true}
+      hideAddWallet={true}
     />
   )
 }
