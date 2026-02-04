@@ -18,8 +18,6 @@ import {
   SettingsWallets,
   // QrScan,
   Swap,
-  SwapCoin,
-  SwapList,
   TransactionDetails
 } from '../../../views/index.js'
 import { NavigationHeader } from '../../NavigationHeader/index.js'
@@ -84,16 +82,6 @@ export const getContent = (navigation: Navigation) => {
       return <CollectionDetails contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
     case 'transaction-details':
       return <TransactionDetails transaction={navigation.params.transaction} />
-    case 'swap-coin':
-      return <SwapCoin contractAddress={navigation.params.contractAddress} chainId={navigation.params.chainId} />
-    case 'swap-coin-list':
-      return (
-        <SwapList
-          contractAddress={navigation.params.contractAddress}
-          chainId={navigation.params.chainId}
-          amount={navigation.params.amount}
-        />
-      )
     case 'home':
     default:
       return <Home />

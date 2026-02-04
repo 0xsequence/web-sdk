@@ -8,7 +8,7 @@ import { useObservable } from 'micro-observables'
 import { useEffect, useMemo } from 'react'
 import { useConfig } from 'wagmi'
 
-import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings, useSwap } from '../../hooks/index.js'
+import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings } from '../../hooks/index.js'
 import { useGetAllCollections } from '../../hooks/useGetAllCollections.js'
 import { useNavigationHeader } from '../../hooks/useNavigationHeader.js'
 import { computeBalanceFiat, type TokenBalanceWithDetails } from '../../utils/index.js'
@@ -36,7 +36,6 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
   } = useSettings()
   const { wallets, setActiveWallet } = useWallets()
   const { search, selectedTab, setSearch, setSelectedTab } = useNavigationHeader()
-  const { lifiTokens } = useSwap()
 
   const selectedNetworks = useObservable(selectedNetworksObservable)
   const selectedWallets = useObservable(selectedWalletsObservable)
@@ -71,14 +70,8 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     _type: 'collection' as const
   }))
 
-  const tokenBalancesWithLifiSupport = tokenBalancesData?.filter(b =>
-    lifiTokens.some(token => token.chainId === b.chainId && token.contractAddress === b.contractAddress)
-  )
-
   const coinBalancesUnordered =
-    (variant === 'swap' ? tokenBalancesWithLifiSupport : tokenBalancesData)?.filter(
-      b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)
-    ) || []
+    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
 
   const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
