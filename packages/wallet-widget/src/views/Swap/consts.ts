@@ -195,11 +195,7 @@ export const TRAILS_CUSTOM_CSS = `
  */
 export const SERVICES = {
   sequenceApi: 'https://${prefix}api.sequence.app',
-  metadata: 'https://${prefix}metadata.sequence.app',
-  indexer: 'https://${prefix}${network}-indexer.sequence.app',
   indexerGateway: 'https://${prefix}indexer.sequence.app',
   nodeGateway: 'https://${prefix}nodes.sequence.app',
-  marketplaceApi: 'https://${prefix}marketplace-api.sequence.app',
-  builderRpcApi: 'https://${prefix}api.sequence.build',
   trailsApi: 'https://${prefix}trails-api.sequence${postfix}.app'
 }
