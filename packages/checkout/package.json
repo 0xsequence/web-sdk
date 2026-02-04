@@ -30,23 +30,23 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "2.1.11",
-    "@0xsequence/marketplace": "^2.3.38",
+    "@0xsequence/design-system": "catalog:",
+    "@0xsequence/marketplace": "catalog:",
     "date-fns": "^4.1.0",
-    "fuse.js": "^7.1.0",
-    "motion": "^12.9.2",
+    "fuse.js": "catalog:",
+    "motion": "catalog:",
     "pako": "^2.1.0",
-    "qrcode.react": "^4.2.0"
+    "qrcode.react": "catalog:"
   },
   "peerDependencies": {
-    "0xsequence": ">= 2.3.38",
-    "@0xsequence/api": ">=2.3.38",
+    "0xsequence": "catalog:",
+    "@0xsequence/api": "catalog:",
     "@0xsequence/connect": "workspace:*",
     "@0xsequence/hooks": "workspace:*",
-    "@0xsequence/indexer": ">= 2.3.38",
-    "@0xsequence/metadata": ">= 2.3.38",
-    "@0xsequence/network": ">= 2.3.38",
-    "@0xsequence/waas": ">= 2.3.38",
+    "@0xsequence/indexer": "catalog:",
+    "@0xsequence/metadata": "catalog:",
+    "@0xsequence/network": "catalog:",
+    "@0xsequence/waas": "catalog:",
     "@tanstack/react-query": ">= 5",
     "ethers": ">= 6.13.0",
     "react": ">= 17",
@@ -56,13 +56,13 @@
   },
   "devDependencies": {
     "@0xsequence/connect": "workspace:*",
-    "@tanstack/react-query": "^5.74.11",
+    "@tanstack/react-query": "catalog:",
     "@types/pako": "^2.0.3",
-    "ethers": "^6.13.7",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "viem": "^2.28.1",
-    "vite": "^5.4.19",
-    "wagmi": "^2.15.1"
+    "ethers": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "viem": "catalog:",
+    "vite": "catalog:",
+    "wagmi": "catalog:"
   }
 }
