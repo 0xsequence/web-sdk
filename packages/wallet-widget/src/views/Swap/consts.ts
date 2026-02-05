@@ -93,8 +93,6 @@ export const TRAILS_CUSTOM_CSS = `
   --trails-shadow: 0 4px 6px -1px rgba(0 0 0 / 0.1), 0 2px 4px -1px rgba(0 0 0 / 0.06) !important;
   
   /* Primary Button */
-  --trails-primary: rgb(255 255 255) !important;
-  --trails-primary-hover: rgba(255 255 255 / 0.9) !important;
   --trails-primary-disabled: rgb(63 63 70) !important;
   --trails-primary-disabled-text: rgb(113 113 122) !important;
   
@@ -177,15 +175,6 @@ export const TRAILS_CUSTOM_CSS = `
 .hover\\:bg-blue-600:hover {
   background: linear-gradient(89.69deg, #3a0ec7 0.27%, #6229e0 99.73%) !important;
   opacity: 0.9;
-}
-/* Polygon button colors - Fix active state to show purple */
-.bg-polygon-500,
-.dark .bg-polygon-500 {
-  background-color: #6c00f6 !important;
-}
-.hover\\:bg-polygon-600:hover,
-.dark .hover\\:bg-polygon-600:hover {
-  background-color: #5a00cc !important;
 }
 `
 
