@@ -6,14 +6,14 @@
   "author": "Horizon Blockchain Games",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "dist/cjs/wallet-widget/src/index.js",
-  "module": "dist/esm/wallet-widget/src/index.js",
-  "types": "dist/esm/wallet-widget/src/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "require": "./dist/cjs/wallet-widget/src/index.js",
-      "import": "./dist/esm/wallet-widget/src/index.js"
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
     }
   },
   "files": [
