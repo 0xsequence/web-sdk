@@ -178,6 +178,16 @@ export const TRAILS_CUSTOM_CSS = `
 }
 `
 
+export const TRAILS_CUSTOM_CSS_LIGHT = `
+  --trails-bg-primary: bg-background-primary !important; 
+
+  .shadow-xl {
+    --tw-shadow: 0 0 #0000 !important;
+    --tw-shadow-colored: 0 0 #0000 !important;
+    box-shadow: none !important;
+  }
+`
+
 /**
  * Sequence API service endpoints with template placeholders
  * for environment-specific prefixes and postfixes

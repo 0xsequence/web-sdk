@@ -1,8 +1,9 @@
 import { TrailsWidget } from '0xtrails'
+import { useConnectConfigContext, useTheme } from '@0xsequence/connect'
 import { useConfig } from '@0xsequence/hooks'
 import { useAccount } from 'wagmi'
 
-import { TRAILS_CUSTOM_CSS } from '../Swap/consts.js'
+import { TRAILS_CUSTOM_CSS, TRAILS_CUSTOM_CSS_LIGHT } from '../Swap/consts.js'
 import {
   getEnvironmentFromApiUrl,
   sequenceApiURL,
@@ -14,6 +15,8 @@ import {
 export const Buy = () => {
   const { address } = useAccount()
   const config = useConfig()
+  const { theme } = useTheme()
+  const { trailsCustomCSS } = useConnectConfigContext()
 
   // Determine environment from config
   const environment = getEnvironmentFromApiUrl(config.env.apiUrl)
@@ -23,6 +26,11 @@ export const Buy = () => {
   const sequenceIndexerUrl = sequenceIndexerURL(environment)
   const sequenceNodeGatewayUrl = sequenceNodeGatewayURL(environment)
   const sequenceApiUrl = sequenceApiURL(environment)
+  const trailsTheme = typeof theme === 'string' && theme === 'light' ? 'light' : 'dark'
+  const resolvedCustomCss =
+    typeof trailsCustomCSS === 'string'
+      ? trailsCustomCSS
+      : trailsCustomCSS?.[trailsTheme] || (trailsTheme === 'dark' ? TRAILS_CUSTOM_CSS : TRAILS_CUSTOM_CSS_LIGHT)
 
   return (
     <TrailsWidget
@@ -33,10 +41,10 @@ export const Buy = () => {
       appUrl="https://sequence.app"
       sequenceApiUrl={sequenceApiUrl}
       renderInline={true}
-      theme="dark"
+      theme={trailsTheme}
       mode="fund"
       toAddress={address || null}
-      customCss={TRAILS_CUSTOM_CSS}
+      customCss={resolvedCustomCss}
       hideDisconnect={true}
       hideAddWallet={true}
     />

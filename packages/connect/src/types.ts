@@ -85,6 +85,7 @@ export interface ConnectConfig {
   hideSocialConnectOptions?: boolean
   hideConnectedWallets?: boolean
   customCSS?: string
+  trailsCustomCSS?: string | { light?: string; dark?: string }
   embeddedWalletTitle?: string
   renderInline?: boolean
   onConnectSuccess?: (address: string) => void
