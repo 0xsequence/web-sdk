@@ -1,32 +1,44 @@
-import { TransactionOnRampProvider, useAddFundsModal } from '@0xsequence/checkout'
-import { useWallets } from '@0xsequence/connect'
-import { AddIcon, Text } from '@0xsequence/design-system'
+import { TrailsWidget } from '0xtrails'
+import { useConfig } from '@0xsequence/hooks'
 import { useAccount } from 'wagmi'
 
-import { WalletSelect } from '../../components/Select/WalletSelect.js'
+import { TRAILS_CUSTOM_CSS } from '../Swap/consts.js'
+import {
+  getEnvironmentFromApiUrl,
+  sequenceApiURL,
+  sequenceIndexerURL,
+  sequenceNodeGatewayURL,
+  trailsApiURL
+} from '../Swap/utils.js'
 
 export const Buy = () => {
   const { address } = useAccount()
-  const { setActiveWallet } = useWallets()
-  const { triggerAddFunds } = useAddFundsModal()
+  const config = useConfig()
 
-  const onClickWallet = (address: string) => {
-    setActiveWallet(address)
-  }
+  // Determine environment from config
+  const environment = getEnvironmentFromApiUrl(config.env.apiUrl)
 
-  const onClickAddFunds = () => {
-    triggerAddFunds({ walletAddress: address || '', provider: TransactionOnRampProvider.transak })
-  }
+  // Generate all required URLs
+  const trailsApiUrl = trailsApiURL(environment)
+  const sequenceIndexerUrl = sequenceIndexerURL(environment)
+  const sequenceNodeGatewayUrl = sequenceNodeGatewayURL(environment)
+  const sequenceApiUrl = sequenceApiURL(environment)
 
   return (
-    <div className="flex flex-col justify-center items-center px-4 pb-6 gap-4 w-full">
-      <WalletSelect selectedWallet={address || ''} onClick={onClickWallet} />
-      <div className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer">
-        <AddIcon color="white" />
-        <Text variant="normal" fontWeight="bold" color="primary" onClick={onClickAddFunds}>
-          Add Funds to Selected Wallet
-        </Text>
-      </div>
-    </div>
+    <TrailsWidget
+      apiKey={config.projectAccessKey}
+      trailsApiUrl={trailsApiUrl}
+      sequenceIndexerUrl={sequenceIndexerUrl}
+      sequenceNodeGatewayUrl={sequenceNodeGatewayUrl}
+      appUrl="https://sequence.app"
+      sequenceApiUrl={sequenceApiUrl}
+      renderInline={true}
+      theme="dark"
+      mode="fund"
+      toAddress={address || null}
+      customCss={TRAILS_CUSTOM_CSS}
+      hideDisconnect={true}
+      hideAddWallet={true}
+    />
   )
 }

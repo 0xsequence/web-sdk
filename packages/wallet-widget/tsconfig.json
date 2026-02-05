@@ -11,10 +11,6 @@
     "strict": true,
     // "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-    "paths": {
-      "@0xsequence/checkout": ["../checkout/src/index.ts"],
-      "@0xsequence/checkout/*": ["../checkout/src/*"]
-    },
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "sourceMap": true,

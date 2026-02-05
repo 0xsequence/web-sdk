@@ -1,6 +1,5 @@
 'use client'
 
-import { SequenceCheckoutProvider, useAddFundsModal } from '@0xsequence/checkout'
 import {
   getModalPositionCss,
   ShadowRoot,
@@ -39,17 +38,14 @@ const DEFAULT_LOCATION: Navigation = {
 
 export const SequenceWalletProvider = (props: SequenceWalletProviderProps) => {
   return (
-    <SequenceCheckoutProvider>
-      <WalletContentRefProvider>
-        <WalletContent {...props} />
-      </WalletContentRefProvider>
-    </SequenceCheckoutProvider>
+    <WalletContentRefProvider>
+      <WalletContent {...props} />
+    </WalletContentRefProvider>
   )
 }
 
 export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
-  const { isAddFundsModalOpen } = useAddFundsModal()
   const { isConnectModalOpen } = useOpenConnectModal()
   const { isSocialLinkOpen } = useSocialLink()
   const { address } = useAccount()
@@ -118,7 +114,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
             <NavigationHeaderContextProvider value={{ search, selectedTab, setSearch, setSelectedTab }}>
               <ShadowRoot theme={theme} customCSS={customCSS}>
                 <AnimatePresence>
-                  {openWalletModal && !isAddFundsModalOpen && !isConnectModalOpen && !isSocialLinkOpen && (
+                  {openWalletModal && !isConnectModalOpen && !isSocialLinkOpen && (
                     <Modal
                       contentProps={{
                         className: 'border border-border-normal',
