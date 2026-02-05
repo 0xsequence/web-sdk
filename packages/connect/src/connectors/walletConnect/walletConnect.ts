@@ -1,6 +1,6 @@
+import type { Address } from 'viem'
 import { createConnector } from 'wagmi'
 import { walletConnect as walletConnectbase, type WalletConnectParameters } from 'wagmi/connectors'
-import type { Address } from 'viem'
 
 import type { Wallet } from '../../types.js'
 
