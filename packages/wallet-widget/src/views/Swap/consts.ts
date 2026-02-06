@@ -187,14 +187,3 @@ export const TRAILS_CUSTOM_CSS_LIGHT = `
     box-shadow: none !important;
   }
 `
-
-/**
- * Sequence API service endpoints with template placeholders
- * for environment-specific prefixes and postfixes
- */
-export const SERVICES = {
-  sequenceApi: 'https://${prefix}api.sequence.app',
-  indexerGateway: 'https://${prefix}indexer.sequence.app',
-  nodeGateway: 'https://${prefix}nodes.sequence.app',
-  trailsApi: 'https://${prefix}trails-api.sequence${postfix}.app'
-}

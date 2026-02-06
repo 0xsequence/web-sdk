@@ -4,13 +4,6 @@ import { useConfig } from '@0xsequence/hooks'
 import { useAccount } from 'wagmi'
 
 import { TRAILS_CUSTOM_CSS, TRAILS_CUSTOM_CSS_LIGHT } from '../../views/Swap/consts.js'
-import {
-  getEnvironmentFromApiUrl,
-  sequenceApiURL,
-  sequenceIndexerURL,
-  sequenceNodeGatewayURL,
-  trailsApiURL
-} from '../../views/Swap/utils.js'
 
 export const Buy = () => {
   const { address } = useAccount()
@@ -18,14 +11,10 @@ export const Buy = () => {
   const { theme } = useTheme()
   const { trailsCustomCSS } = useConnectConfigContext()
 
-  // Determine environment from config
-  const environment = getEnvironmentFromApiUrl(config.env.apiUrl)
-
-  // Generate all required URLs
-  const trailsApiUrl = trailsApiURL(environment)
-  const sequenceIndexerUrl = sequenceIndexerURL(environment)
-  const sequenceNodeGatewayUrl = sequenceNodeGatewayURL(environment)
-  const sequenceApiUrl = sequenceApiURL(environment)
+  const trailsApiUrl = config.env.trailsApiUrl
+  const sequenceIndexerUrl = config.env.indexerUrl
+  const sequenceNodeGatewayUrl = config.env.nodeGatewayUrl
+  const sequenceApiUrl = config.env.apiUrl
   const trailsTheme = typeof theme === 'string' && theme === 'light' ? 'light' : 'dark'
   const resolvedCustomCss =
     typeof trailsCustomCSS === 'string'

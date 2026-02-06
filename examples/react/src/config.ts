@@ -24,7 +24,7 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
 
 export const connectConfig: ConnectConfig = {
   projectAccessKey,
-  defaultTheme: 'dark',
+  defaultTheme: 'light',
   signIn: {
     projectName: 'Sequence Web SDK Demo',
     useMock: isDebugMode,
@@ -70,6 +70,8 @@ export const connectConfig: ConnectConfig = {
         metadataUrl: 'https://dev-metadata.sequence.app',
         apiUrl: 'https://dev-api.sequence.app',
         indexerUrl: 'https://dev-indexer.sequence.app',
+        nodeGatewayUrl: 'https://dev-nodes.sequence.app',
+        trailsApiUrl: 'https://dev-trails-api.sequence-dev.app',
         builderUrl: 'https://dev-api.sequence.build'
       }
     : undefined
