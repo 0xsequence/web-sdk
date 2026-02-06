@@ -24,7 +24,7 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
 
 export const connectConfig: ConnectConfig = {
   projectAccessKey,
-  defaultTheme: 'light',
+  defaultTheme: 'dark',
   signIn: {
     projectName: 'Sequence Web SDK Demo',
     useMock: isDebugMode,
