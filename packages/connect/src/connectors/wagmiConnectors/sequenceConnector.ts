@@ -69,7 +69,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     },
 
     async setup() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceProvider
       provider.on('chainChanged', (chainIdHex: string) => {
         config.emitter.emit('change', { chainId: normalizeChainId(chainIdHex) })
       })
@@ -79,8 +79,8 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       })
     },
 
-    async connect() {
-      const provider = await this.getProvider()
+    async connect({ withCapabilities } = {}) {
+      const provider = (await this.getProvider()) as SequenceProvider
 
       if (!provider.isConnected()) {
         const localStorageTheme = await config.storage?.getItem(LocalStorageKey.Theme)
@@ -123,13 +123,16 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
       const accounts = await this.getAccounts()
 
       return {
-        accounts: [...accounts],
+        // TODO(wagmi v3): `as never` can be removed when wagmi makes `withCapabilities: true` the default
+        // see: https://github.com/wevm/wagmi/blob/main/packages/core/src/connectors/createConnector.ts
+        // ref: https://github.com/wevm/wagmi/blob/main/packages/connectors/src/safe.ts
+        accounts: (withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts) as never,
         chainId: provider.getChainId()
       }
     },
 
     async disconnect() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceProvider
 
       provider.disconnect()
 
@@ -137,7 +140,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     },
 
     async getAccounts() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceProvider
       const signer = provider.getSigner()
       const account = getAddress(await signer.getAddress())
 
@@ -180,7 +183,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     },
 
     async switchChain({ chainId }) {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceProvider
 
       const chain = config.chains.find(c => c.id === chainId) || config.chains[0]
       provider.setDefaultChainId(normalizeChainId(chainId))
@@ -191,7 +194,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     },
 
     async getChainId() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceProvider
       const chainId = provider.getChainId()
 
       return chainId
@@ -202,7 +205,7 @@ export function sequenceWallet(params: BaseSequenceConnectorOptions) {
     },
 
     async onChainChanged(chain) {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceProvider
 
       config.emitter.emit('change', { chainId: normalizeChainId(chain) })
       provider.setDefaultChainId(normalizeChainId(chain))

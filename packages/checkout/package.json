@@ -51,8 +51,8 @@
     "ethers": ">= 6.13.0",
     "react": ">= 17",
     "react-dom": ">= 17",
-    "viem": ">= 2.28.0",
-    "wagmi": ">= 2.15.0"
+    "viem": ">= 2.44.0",
+    "wagmi": ">= 2.19.0"
   },
   "devDependencies": {
     "@0xsequence/connect": "workspace:*",
@@ -61,8 +61,8 @@
     "ethers": "^6.13.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "viem": "^2.28.1",
+    "viem": "^2.44.4",
     "vite": "^5.4.19",
-    "wagmi": "^2.15.1"
+    "wagmi": "^2.19.5"
   }
 }
