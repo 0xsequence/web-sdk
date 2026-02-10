@@ -90,11 +90,7 @@ export const CoinDetails = ({ contractAddress, chainId, accountAddress = '' }: T
 
   const onClickAdd = () => {
     setNavigation({
-      location: 'swap-coin',
-      params: {
-        chainId,
-        contractAddress
-      }
+      location: 'swap'
     })
   }
   return (

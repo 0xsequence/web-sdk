@@ -97,8 +97,7 @@ export const HomeHeader = () => {
 
           {isOperationMenuOpen && (
             <PopoverPrimitive.Content
-              className="flex flex-col p-2 gap-2 z-30 rounded-xl border border-border-normal"
-              style={{ background: 'rgb(25, 25, 25)' }}
+              className="flex flex-col p-2 gap-2 z-30 rounded-xl border border-border-normal bg-background-primary"
               asChild
               side="bottom"
               sideOffset={8}
@@ -112,7 +111,7 @@ export const HomeHeader = () => {
                     onClickSend()
                   }}
                 >
-                  <ArrowUpIcon color="white" />
+                  <ArrowUpIcon className="text-primary" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Send
                   </Text>
@@ -123,7 +122,7 @@ export const HomeHeader = () => {
                     onClickSwap()
                   }}
                 >
-                  <SwapIcon color="white" />
+                  <SwapIcon className="text-primary" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Swap
                   </Text>
@@ -134,7 +133,7 @@ export const HomeHeader = () => {
                     onClickReceive()
                   }}
                 >
-                  <ScanIcon color="white" />
+                  <ScanIcon className="text-primary" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Receive
                   </Text>
@@ -145,7 +144,7 @@ export const HomeHeader = () => {
                     onClickBuy()
                   }}
                 >
-                  <AddIcon color="white" />
+                  <AddIcon className="text-primary" />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Buy
                   </Text>

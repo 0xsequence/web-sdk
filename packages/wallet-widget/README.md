@@ -51,3 +51,21 @@ const MyComponent = () => {
   return <button onClick={onClick}>open wallet</button>
 }
 ```
+
+# Trails widget customization
+
+You can override the Trails widget styling via the connect config. Provide a single CSS string or per-theme values:
+
+```js
+import { SequenceConnect, createConfig } from '@0xsequence/connect'
+
+const config = createConfig('waas', {
+  projectAccessKey: '<your-project-access-key>',
+  waasConfigKey: '<your-waas-config-key>',
+  defaultTheme: 'light',
+  trailsCustomCSS: {
+    light: '/* custom light theme CSS */',
+    dark: '/* custom dark theme CSS */'
+  }
+})
+```

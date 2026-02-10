@@ -43,6 +43,7 @@ interface CreateConfigOptions {
   defaultTheme?: Theme
   position?: ModalPosition
   customCSS?: string // Injected into shadow dom
+  trailsCustomCSS?: string | { light?: string; dark?: string }
   signIn?: {
     logoUrl?: string
     projectName?: string

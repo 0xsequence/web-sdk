@@ -7,6 +7,8 @@ export interface SequenceHooksEnv {
   metadataUrl: string
   apiUrl: string
   indexerUrl: string
+  nodeGatewayUrl: string
+  trailsApiUrl: string
   imageProxyUrl: string
   builderUrl: string
 }
@@ -29,6 +31,8 @@ const defaultEnv: Required<SequenceHooksEnv> = {
   metadataUrl: 'https://metadata.sequence.app',
   apiUrl: 'https://api.sequence.app',
   indexerUrl: 'https://indexer.sequence.app',
+  nodeGatewayUrl: 'https://nodes.sequence.app',
+  trailsApiUrl: 'https://trails-api.sequence.app',
   imageProxyUrl: 'https://imgproxy.sequence.xyz/',
   builderUrl: 'https://api.sequence.build'
 }
