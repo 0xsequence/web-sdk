@@ -1,3 +1,4 @@
+import type { ETHAuthProof } from '@0xsequence/auth'
 import {
   createContractPermission,
   createExplicitSessionConfig,
@@ -46,6 +47,46 @@ const resolveConnectAccounts = <withCapabilities extends boolean>(
   ) as ConnectAccounts<withCapabilities>
 }
 
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
+
+const normalizeEthAuthProof = (value: unknown): ETHAuthProof | undefined => {
+  if (!isRecord(value)) {
+    return undefined
+  }
+
+  const proofString = value.proofString
+  const typedData = value.typedData
+  if (typeof proofString !== 'string' || !isRecord(typedData)) {
+    return undefined
+  }
+
+  return {
+    proofString,
+    typedData: typedData as unknown as ETHAuthProof['typedData']
+  }
+}
+
+const extractEthAuthProof = (value: unknown): ETHAuthProof | undefined => {
+  const directProof = normalizeEthAuthProof(value)
+  if (directProof) {
+    return directProof
+  }
+
+  if (!isRecord(value)) {
+    return undefined
+  }
+
+  const nestedCandidates = [value.proof, value.response, isRecord(value.response) ? value.response.proof : undefined]
+  for (const candidate of nestedCandidates) {
+    const normalizedProof = normalizeEthAuthProof(candidate)
+    if (normalizedProof) {
+      return normalizedProof
+    }
+  }
+
+  return undefined
+}
+
 export interface SequenceV3Connector extends Connector {
   type: 'sequence-v3-wallet'
   setEmail: (email: string) => void
@@ -92,6 +133,7 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
   }
   type StorageItem = {
     [LocalStorageKey.V3ActiveLoginType]: string
+    [LocalStorageKey.EthAuthProof]: ETHAuthProof
   }
 
   const client = new DappClient(params.walletUrl, params.dappOrigin, params.projectAccessKey, {
@@ -165,6 +207,10 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
           } else {
             await config.storage?.removeItem(LocalStorageKey.V3ActiveLoginType)
           }
+          const proof = provider.consumeLatestEthAuthProof()
+          if (proof) {
+            await config.storage?.setItem(LocalStorageKey.EthAuthProof, proof)
+          }
         } else {
           throw new Error('No accounts found')
         }
@@ -173,6 +219,8 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       },
 
       async disconnect() {
+        provider.clearLatestEthAuthProof()
+        await config.storage?.removeItem(LocalStorageKey.EthAuthProof)
         await config.storage?.removeItem(LocalStorageKey.V3ActiveLoginType)
         await client.disconnect()
       },
@@ -233,6 +281,8 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       },
 
       async onDisconnect() {
+        provider.clearLatestEthAuthProof()
+        await config.storage?.removeItem(LocalStorageKey.EthAuthProof)
         // The 'sessionsUpdated' listener will handle the disconnect event
       }
     }
@@ -249,6 +299,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private loginType?: SequenceV3LoginType
   private initialSessionConfig?: ExplicitSessionConfig
   private includeFeeOptionPermissions?: boolean
+  private latestEthAuthProof?: ETHAuthProof
 
   email?: string
 
@@ -260,6 +311,16 @@ export class SequenceV3Provider implements EIP1193Provider {
   }
 
   public feeConfirmationHandler?: FeeOptionConfirmationHandler
+
+  public consumeLatestEthAuthProof() {
+    const proof = this.latestEthAuthProof
+    this.latestEthAuthProof = undefined
+    return proof
+  }
+
+  public clearLatestEthAuthProof() {
+    this.latestEthAuthProof = undefined
+  }
 
   private readonly listeners = new Map<keyof EIP1193EventMap, Array<(...args: any[]) => void>>()
 
@@ -324,6 +385,7 @@ export class SequenceV3Provider implements EIP1193Provider {
       }
 
       case 'eth_requestAccounts': {
+        this.latestEthAuthProof = undefined
         if (this.client.isInitialized) {
           const address = this.client.getWalletAddress()
           return address ? [getAddress(address)] : []
@@ -379,7 +441,7 @@ export class SequenceV3Provider implements EIP1193Provider {
           }
         }
 
-        await this.client.connect(
+        const connectResult = await this.client.connect(
           this.currentChainId,
           this.initialSessionConfig
             ? {
@@ -403,6 +465,7 @@ export class SequenceV3Provider implements EIP1193Provider {
             ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
           }
         )
+        this.latestEthAuthProof = extractEthAuthProof(connectResult)
         const walletAddress = this.client.getWalletAddress()
         if (!walletAddress) {
           throw new RpcError(new Error('User rejected the request.'), { code: 4001, shortMessage: 'User rejected the request.' })
