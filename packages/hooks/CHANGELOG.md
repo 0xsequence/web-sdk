@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.0-beta.2
+
+### Patch Changes
+
+- ethauth support
+
 ## 6.0.0-beta.1
 
 ### Patch Changes
