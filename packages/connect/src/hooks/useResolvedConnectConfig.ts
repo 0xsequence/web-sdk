@@ -13,7 +13,8 @@ import {
   mergeConnectConfigWithWalletConfiguration,
   normalizeWalletUrl,
   type WalletConfigurationOverrides,
-  type WalletConfigurationProvider
+  type WalletConfigurationProvider,
+  type WalletConfigurationSdkConfig
 } from '../utils/walletConfiguration.js'
 
 const getInitialCachedState = (config: ConnectConfig) => {
@@ -21,7 +22,8 @@ const getInitialCachedState = (config: ConnectConfig) => {
     return {
       resolvedConfig: config,
       enabledProviders: undefined,
-      walletConfigurationSignIn: undefined
+      walletConfigurationSignIn: undefined,
+      sdkConfig: undefined
     }
   }
 
@@ -30,7 +32,8 @@ const getInitialCachedState = (config: ConnectConfig) => {
     return {
       resolvedConfig: config,
       enabledProviders: undefined,
-      walletConfigurationSignIn: undefined
+      walletConfigurationSignIn: undefined,
+      sdkConfig: undefined
     }
   }
 
@@ -43,7 +46,8 @@ const getInitialCachedState = (config: ConnectConfig) => {
   return {
     resolvedConfig: cachedOverrides ? mergeConnectConfigWithWalletConfiguration(config, cachedOverrides) : config,
     enabledProviders: cachedOverrides?.enabledProviders,
-    walletConfigurationSignIn
+    walletConfigurationSignIn,
+    sdkConfig: cachedOverrides?.sdkConfig
   }
 }
 
@@ -97,6 +101,21 @@ const areOverridesEqual = (left: WalletConfigurationOverrides | undefined, right
     }
   }
 
+  const leftSdkConfig = left.sdkConfig
+  const rightSdkConfig = right.sdkConfig
+  if (leftSdkConfig || rightSdkConfig) {
+    if (!leftSdkConfig || !rightSdkConfig) {
+      return false
+    }
+    if (
+      leftSdkConfig.brandedSignIn !== rightSdkConfig.brandedSignIn ||
+      leftSdkConfig.signInButtonTitle !== rightSdkConfig.signInButtonTitle ||
+      leftSdkConfig.signInButtonLogo !== rightSdkConfig.signInButtonLogo
+    ) {
+      return false
+    }
+  }
+
   return true
 }
 
@@ -110,6 +129,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
   const [walletConfigurationSignIn, setWalletConfigurationSignIn] = useState<WalletConfigurationOverrides['signIn']>(
     initialCachedState.walletConfigurationSignIn
   )
+  const [sdkConfig, setSdkConfig] = useState<WalletConfigurationSdkConfig | undefined>(initialCachedState.sdkConfig)
   const [isV3WalletSignedIn, setIsV3WalletSignedIn] = useState<boolean | null>(null)
   const [isAuthStatusLoading, setIsAuthStatusLoading] = useState<boolean>(false)
 
@@ -122,6 +142,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
     setResolvedConfig(cachedState.resolvedConfig)
     setEnabledProviders(cachedState.enabledProviders)
     setWalletConfigurationSignIn(cachedState.walletConfigurationSignIn)
+    setSdkConfig(cachedState.sdkConfig)
     setIsV3WalletSignedIn(null)
     setIsAuthStatusLoading(false)
   }, [config])
@@ -138,6 +159,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
       setResolvedConfig(config)
       setEnabledProviders(undefined)
       setWalletConfigurationSignIn(undefined)
+      setSdkConfig(undefined)
       setIsV3WalletSignedIn(null)
       setIsLoading(false)
       setIsAuthStatusLoading(false)
@@ -149,6 +171,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
     setResolvedConfig(cachedOverrides ? mergeConnectConfigWithWalletConfiguration(config, cachedOverrides) : config)
     setEnabledProviders(cachedOverrides?.enabledProviders)
     setWalletConfigurationSignIn(cachedSignIn)
+    setSdkConfig(cachedOverrides?.sdkConfig)
     setIsLoading(true)
     setIsAuthStatusLoading(true)
 
@@ -180,6 +203,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
         if (!areOverridesEqual(cachedOverrides, overrides)) {
           setEnabledProviders(overrides.enabledProviders)
           setWalletConfigurationSignIn(overrides.signIn)
+          setSdkConfig(overrides.sdkConfig)
           setResolvedConfig(mergeConnectConfigWithWalletConfiguration(config, overrides))
         }
         if (overrides.signIn?.projectName) {
@@ -192,6 +216,7 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
           setResolvedConfig(cachedOverrides ? mergeConnectConfigWithWalletConfiguration(config, cachedOverrides) : config)
           setEnabledProviders(cachedOverrides?.enabledProviders)
           setWalletConfigurationSignIn(cachedSignIn)
+          setSdkConfig(cachedOverrides?.sdkConfig)
         }
       })
       .finally(() => {
@@ -211,9 +236,10 @@ export const useResolvedConnectConfig = (config: ConnectConfig) => {
       isLoading,
       enabledProviders,
       walletConfigurationSignIn,
+      sdkConfig,
       isV3WalletSignedIn,
       isAuthStatusLoading
     }),
-    [resolvedConfig, isLoading, enabledProviders, walletConfigurationSignIn, isV3WalletSignedIn, isAuthStatusLoading]
+    [resolvedConfig, isLoading, enabledProviders, walletConfigurationSignIn, sdkConfig, isV3WalletSignedIn, isAuthStatusLoading]
   )
 }

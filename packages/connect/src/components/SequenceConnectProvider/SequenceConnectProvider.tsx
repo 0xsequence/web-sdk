@@ -56,7 +56,8 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     enabledProviders,
     isV3WalletSignedIn,
     isAuthStatusLoading,
-    walletConfigurationSignIn
+    walletConfigurationSignIn,
+    sdkConfig
   } = useResolvedConnectConfig(incomingConfig)
   const {
     defaultTheme = 'dark',
@@ -270,6 +271,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                     isAuthStatusLoading={isAuthStatusLoading}
                                     enabledProviders={enabledProviders}
                                     walletConfigurationSignIn={walletConfigurationSignIn}
+                                    sdkConfig={sdkConfig}
                                   />
                                 </EpicAuthProvider>
                               )}
