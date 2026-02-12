@@ -1,5 +1,14 @@
 # @0xsequence/connect
 
+## 6.0.0-beta.3
+
+### Patch Changes
+
+- ethauth fixes
+
+- Updated dependencies []:
+  - @0xsequence/hooks@6.0.0-beta.3
+
 ## 6.0.0-beta.2
 
 ### Patch Changes
