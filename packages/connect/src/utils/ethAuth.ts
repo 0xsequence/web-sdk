@@ -10,7 +10,6 @@ import type { StorageItem } from '../types.js'
 const matchesExpectedProofClaims = (
   decodedProof: Awaited<ReturnType<ETHAuth['decodeProof']>>,
   normalizedWalletAddress: string,
-  expectedApp: string,
   expectedOrigin: string | undefined,
   expectedNonce: number | undefined
 ) => {
@@ -20,7 +19,6 @@ const matchesExpectedProofClaims = (
 
   return (
     decodedProof.address.toLowerCase() === normalizedWalletAddress &&
-    (decodedProof.claims.app || 'app') === expectedApp &&
     (decodedProof.claims.ogn ?? undefined) === (expectedOrigin ?? undefined) &&
     (decodedProof.claims.n ?? undefined) === (expectedNonce ?? undefined) &&
     isNotExpired
@@ -57,13 +55,7 @@ export const signEthAuthProof = async (
   if (proofInformation) {
     try {
       const decodedProof = await ethAuth.decodeProof(proofInformation.proofString, true)
-      const isMatchingProof = matchesExpectedProofClaims(
-        decodedProof,
-        normalizedWalletAddress,
-        expectedApp,
-        expectedOrigin,
-        expectedNonce
-      )
+      const isMatchingProof = matchesExpectedProofClaims(decodedProof, normalizedWalletAddress, expectedOrigin, expectedNonce)
 
       if (isMatchingProof) {
         return proofInformation
@@ -82,13 +74,7 @@ export const signEthAuthProof = async (
   if (dappClientProof?.ewtString) {
     try {
       const decodedProof = await ethAuth.decodeProof(dappClientProof.ewtString, true)
-      const isMatchingProof = matchesExpectedProofClaims(
-        decodedProof,
-        normalizedWalletAddress,
-        expectedApp,
-        expectedOrigin,
-        expectedNonce
-      )
+      const isMatchingProof = matchesExpectedProofClaims(decodedProof, normalizedWalletAddress, expectedOrigin, expectedNonce)
 
       if (isMatchingProof) {
         const normalizedProof: ETHAuthProof = {
