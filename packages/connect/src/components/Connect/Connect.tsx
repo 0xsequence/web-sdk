@@ -518,16 +518,21 @@ export const Connect = (props: ConnectProps) => {
       return new Set<string>()
     }
 
-    if (isV3WalletSignedIn === true) {
-      // Logged in (status.js returned authState === 'signed-in'): only show ecosystem connector
+    if (isV3WalletSignedIn === true && sdkConfig?.brandedSignIn === true) {
+      // Logged in and branded sign-in enabled: only show ecosystem connector
       return ecosystemConnector ? new Set([ecosystemConnector.uid]) : new Set<string>()
-    } else if (isV3WalletSignedIn === false) {
-      // Not logged in (status.js returned authState !== 'signed-in'): show regular v3 connectors (not ecosystem)
+    } else {
+      // Not logged in, or branded sign-in disabled: show regular v3 connectors (not ecosystem)
       return new Set(regularV3Connectors.map(c => c.uid))
     }
-    // Fallback: default to showing standard v3 socials to avoid empty space
-    return new Set(regularV3Connectors.map(c => c.uid))
-  }, [isAuthStatusLoading, isV3WalletSignedIn, ecosystemConnector, regularV3Connectors, sequenceConnectors.length])
+  }, [
+    isAuthStatusLoading,
+    isV3WalletSignedIn,
+    ecosystemConnector,
+    regularV3Connectors,
+    sequenceConnectors.length,
+    sdkConfig?.brandedSignIn
+  ])
 
   const socialAuthConnectors = extendedConnectors
     .filter(c => c._wallet?.type === 'social')

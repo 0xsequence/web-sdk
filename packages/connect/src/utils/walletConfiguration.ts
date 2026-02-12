@@ -37,7 +37,7 @@ type WalletConfigurationResponse = {
   sdkConfig?: {
     brandedSignIn?: boolean
     signInButtonTitle?: string | null
-    signInButtonLogo?: string | null
+    signInButtonLogo?: string | { src?: string } | null
   }
 }
 
@@ -272,7 +272,10 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
     ? {
         brandedSignIn: config.sdkConfig.brandedSignIn,
         signInButtonTitle: config.sdkConfig.signInButtonTitle ?? undefined,
-        signInButtonLogo: config.sdkConfig.signInButtonLogo ?? undefined
+        signInButtonLogo:
+          (typeof config.sdkConfig.signInButtonLogo === 'object' && config.sdkConfig.signInButtonLogo !== null
+            ? (config.sdkConfig.signInButtonLogo as { src?: string }).src
+            : config.sdkConfig.signInButtonLogo) ?? undefined
       }
     : undefined
 
