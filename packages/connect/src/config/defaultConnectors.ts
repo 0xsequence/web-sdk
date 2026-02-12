@@ -14,7 +14,7 @@ import { metaMask } from '../connectors/metaMask/metaMask.js'
 import { passkeyV3 } from '../connectors/passkey/passkeyV3.js'
 import { walletConnect } from '../connectors/walletConnect/walletConnect.js'
 import { XWaas } from '../connectors/X/XWaas.js'
-import type { Wallet, WalletType } from '../types.js'
+import type { EthAuthSettings, Wallet, WalletType } from '../types.js'
 import { getConnectWallets } from '../utils/getConnectWallets.js'
 import type { ExplicitSessionParams } from '../utils/session/types.js'
 
@@ -51,6 +51,9 @@ const resolveAppName = (options: CommonConnectorOptions & { signIn?: { projectNa
 }
 
 export interface DefaultV3ConnectorOptions extends CommonConnectorOptions {
+  signIn?: {
+    projectName?: string
+  }
   email?: boolean
   google?: boolean
   apple?: boolean
@@ -70,8 +73,28 @@ export interface DefaultV3ConnectorOptions extends CommonConnectorOptions {
   explicitSessionParams?: ExplicitSessionParams
   includeFeeOptionPermissions?: boolean
   enableImplicitSession?: boolean
+  ethAuth?: EthAuthSettings | false
   nodesUrl?: string
   relayerUrl?: string
+}
+
+const resolveV3EthAuthSettings = (
+  options: DefaultV3ConnectorOptions,
+  defaultAppName: string,
+  defaultOrigin?: string
+): EthAuthSettings | false => {
+  if (options.ethAuth === false) {
+    return false
+  }
+
+  const ethAuth = options.ethAuth ?? {}
+
+  return {
+    app: ethAuth.app ?? (defaultAppName || 'app'),
+    origin: ethAuth.origin ?? defaultOrigin,
+    expiry: ethAuth.expiry,
+    nonce: ethAuth.nonce
+  }
 }
 
 export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
@@ -275,6 +298,8 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
   const { projectAccessKey, walletUrl, dappOrigin, defaultChainId = 1 } = options
   const resolvedDappOrigin = resolveDappOrigin(dappOrigin)
   const appName = resolveAppName(options)
+  const defaultEthAuthAppName = options.signIn?.projectName || 'app'
+  const ethAuth = resolveV3EthAuthSettings(options, defaultEthAuthAppName, resolvedDappOrigin)
 
   const wallets: Wallet[] = []
 
@@ -291,6 +316,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
+        ethAuth,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
@@ -310,6 +336,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
+        ethAuth,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
@@ -329,6 +356,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
+        ethAuth,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
@@ -348,6 +376,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
+        ethAuth,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })
@@ -364,6 +393,7 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
         explicitSessionParams: options.explicitSessionParams,
         enableImplicitSession: options.enableImplicitSession,
         includeFeeOptionPermissions: options.includeFeeOptionPermissions,
+        ethAuth,
         nodesUrl: options.nodesUrl,
         relayerUrl: options.relayerUrl
       })

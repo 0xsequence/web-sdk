@@ -84,7 +84,8 @@ export interface ConnectConfig {
   }
   displayedAssets?: DisplayedAsset[]
   readOnlyNetworks?: number[]
-  ethAuth?: EthAuthSettings
+  /** ETHAuth is enabled by default when omitted. Set to `false` to disable. */
+  ethAuth?: EthAuthSettings | false
   env?: Partial<SequenceHooksEnv>
   hideExternalConnectOptions?: boolean
   hideSocialConnectOptions?: boolean

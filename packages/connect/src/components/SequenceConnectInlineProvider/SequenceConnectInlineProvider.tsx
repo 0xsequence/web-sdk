@@ -87,7 +87,7 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
     position = 'center',
     displayedAssets: displayedAssetsSetting = DEFAULT_DISPLAYED_ASSETS,
     readOnlyNetworks,
-    ethAuth = {} as EthAuthSettings,
+    ethAuth: ethAuthConfig,
     disableAnalytics = false,
     hideExternalConnectOptions = false,
     hideConnectedWallets = false,
@@ -98,7 +98,9 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
 
   const defaultAppName = signIn.projectName || 'app'
 
-  const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth
+  const isEthAuthEnabled = ethAuthConfig !== false
+  const ethAuth: EthAuthSettings | undefined = isEthAuthEnabled ? (ethAuthConfig ?? {}) : undefined
+  const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth ?? {}
 
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
@@ -200,13 +202,18 @@ export const SequenceConnectInlineProvider = (props: SequenceConnectInlineProvid
     // EthAuth
     // note: keep an eye out for potential race-conditions, though they shouldn't occur.
     // If there are race conditions, the settings could be a function executed prior to being passed to wagmi
-    storage?.setItem(LocalStorageKey.EthAuthSettings, {
-      expiry,
-      app,
-      origin: origin || location.origin,
-      nonce
-    })
-  }, [theme, ethAuth])
+    if (isEthAuthEnabled) {
+      storage?.setItem(LocalStorageKey.EthAuthSettings, {
+        expiry,
+        app,
+        origin: origin || location.origin,
+        nonce
+      })
+    } else {
+      storage?.removeItem(LocalStorageKey.EthAuthSettings)
+      storage?.removeItem(LocalStorageKey.EthAuthProof)
+    }
+  }, [theme, isEthAuthEnabled, storage, expiry, app, origin, nonce])
 
   useEffect(() => {
     setDisplayedAssets(displayedAssetsSetting)

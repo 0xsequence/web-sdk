@@ -1431,6 +1431,9 @@ export const styles = String.raw`
     -webkit-user-select: none;
     user-select: none;
   }
+  .\[connect\:getDefaultV3Connectors\] {
+    connect: getDefaultV3Connectors;
+  }
   .ring-inset {
     --tw-ring-inset: inset;
   }

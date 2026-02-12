@@ -16,7 +16,8 @@ import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import { AbiFunction } from 'ox'
 import React, { useEffect } from 'react'
-import { encodeFunctionData, formatUnits, zeroAddress, type TransactionRequest } from 'viem'
+import { createPublicClient, encodeFunctionData, formatUnits, http, zeroAddress, type TransactionRequest } from 'viem'
+import { polygon } from 'viem/chains'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
 import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient } from 'wagmi'
 
@@ -259,8 +260,30 @@ export const Connected = () => {
       console.log('proof:', proof)
 
       // @ts-ignore
-      const isValid = await validateEthProof(walletClient, publicClient, proof)
-      console.log('isValid?:', isValid)
+      const isValidOnCurrentChain = await validateEthProof(walletClient, publicClient, proof)
+
+      if (isValidOnCurrentChain) {
+        console.log('[ETHAuth validate] success chain:', chainId)
+        console.log('isValid?: true (current chain)', { chainId })
+        return
+      }
+
+      if (chainId === polygon.id) {
+        console.log('isValid?: false', { attemptedChains: [chainId] })
+        return
+      }
+
+      const polygonClient = createPublicClient({
+        chain: polygon,
+        transport: http(polygon.rpcUrls.default.http[0] ?? 'https://polygon-rpc.com')
+      })
+
+      // @ts-ignore
+      const isValidOnPolygon = await validateEthProof(walletClient, polygonClient, proof)
+      if (isValidOnPolygon) {
+        console.log('[ETHAuth validate] success chain:', polygon.id)
+      }
+      console.log('isValid?:', isValidOnPolygon, { attemptedChains: [chainId, polygon.id] })
     } catch (e) {
       console.error(e)
     }

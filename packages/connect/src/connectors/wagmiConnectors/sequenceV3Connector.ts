@@ -1,13 +1,4 @@
 import {
-  createContractPermission,
-  createExplicitSessionConfig,
-  getNetwork,
-  LocalStorageKey,
-  SEQUENCE_VALUE_FORWARDER,
-  type ExplicitSessionParams,
-  type Permission
-} from '@0xsequence/connect'
-import {
   DappClient,
   type ExplicitSessionConfig,
   type FeeOption,
@@ -29,6 +20,13 @@ import {
   type TypedData
 } from 'viem'
 import { createConnector, type Connector } from 'wagmi'
+
+import { LocalStorageKey } from '../../constants/localStorage.js'
+import type { EthAuthSettings } from '../../types.js'
+import { getNetwork } from '../../utils/networks.js'
+import { SEQUENCE_VALUE_FORWARDER } from '../../utils/session/constants.js'
+import { createContractPermission, createExplicitSessionConfig } from '../../utils/session/index.js'
+import type { ExplicitSessionParams, Permission } from '../../utils/session/types.js'
 
 // Helper types
 type EIP1193RequestArgs = Parameters<EIP1193RequestFn>[0]
@@ -71,6 +69,7 @@ export interface BaseSequenceV3ConnectorOptions {
   explicitSessionParams?: ExplicitSessionParams
   enableImplicitSession?: boolean
   includeFeeOptionPermissions?: boolean
+  ethAuth?: EthAuthSettings | false
   nodesUrl?: string
   relayerUrl?: string
 }
@@ -106,7 +105,8 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     params.loginType,
     params.explicitSessionParams ? createExplicitSessionConfig(params.explicitSessionParams) : undefined,
     params.enableImplicitSession,
-    params.includeFeeOptionPermissions
+    params.includeFeeOptionPermissions,
+    params.ethAuth
   )
 
   const loginStorageKey = params.loginStorageKey ?? params.loginType
@@ -249,6 +249,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private loginType?: SequenceV3LoginType
   private initialSessionConfig?: ExplicitSessionConfig
   private includeFeeOptionPermissions?: boolean
+  private ethAuth?: EthAuthSettings | false
 
   email?: string
 
@@ -271,7 +272,8 @@ export class SequenceV3Provider implements EIP1193Provider {
     loginType?: SequenceV3LoginType,
     initialSessionConfig?: ExplicitSessionConfig,
     enableImplicitSession?: boolean,
-    includeFeeOptionPermissions?: boolean
+    includeFeeOptionPermissions?: boolean,
+    ethAuth?: EthAuthSettings | false
   ) {
     this.currentChainId = defaultNetwork
     this.nodesUrl = nodesUrl
@@ -280,6 +282,15 @@ export class SequenceV3Provider implements EIP1193Provider {
     this.projectAccessKey = projectAccessKey
     this.enableImplicitSession = enableImplicitSession
     this.includeFeeOptionPermissions = includeFeeOptionPermissions || false
+    this.ethAuth = ethAuth
+  }
+
+  private resolveEthAuthSettings(): EthAuthSettings | undefined {
+    if (this.ethAuth === false) {
+      return undefined
+    }
+
+    return this.ethAuth ?? {}
   }
 
   on<TEvent extends keyof EIP1193EventMap>(event: TEvent, listener: EIP1193EventMap[TEvent]): void {
@@ -379,6 +390,8 @@ export class SequenceV3Provider implements EIP1193Provider {
           }
         }
 
+        const ethAuth = this.resolveEthAuthSettings()
+
         await this.client.connect(
           this.currentChainId,
           this.initialSessionConfig
@@ -400,7 +413,8 @@ export class SequenceV3Provider implements EIP1193Provider {
           {
             ...(this.loginType ? { preferredLoginMethod: this.loginType } : {}),
             ...(this.loginType === 'email' && this.email ? { email: this.email } : {}),
-            ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {})
+            ...(this.enableImplicitSession ? { includeImplicitSession: this.enableImplicitSession } : {}),
+            ...(ethAuth ? { ethAuth } : {})
           }
         )
         const walletAddress = this.client.getWalletAddress()
