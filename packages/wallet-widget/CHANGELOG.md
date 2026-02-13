@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 6.0.0-beta.4
+
+### Patch Changes
+
+- Ecosystem wallet config update
+
+- Updated dependencies []:
+  - @0xsequence/checkout@6.0.0-beta.4
+  - @0xsequence/connect@6.0.0-beta.4
+  - @0xsequence/hooks@6.0.0-beta.4
+
 ## 6.0.0-beta.3
 
 ### Patch Changes

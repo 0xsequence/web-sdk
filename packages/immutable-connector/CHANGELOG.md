@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 6.0.0-beta.4
+
+### Patch Changes
+
+- Ecosystem wallet config update
+
+- Updated dependencies []:
+  - @0xsequence/connect@6.0.0-beta.4
+
 ## 6.0.0-beta.3
 
 ### Patch Changes

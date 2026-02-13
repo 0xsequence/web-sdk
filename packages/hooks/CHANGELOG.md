@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.0-beta.4
+
+### Patch Changes
+
+- Ecosystem wallet config update
+
 ## 6.0.0-beta.3
 
 ### Patch Changes
