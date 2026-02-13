@@ -34,6 +34,17 @@ type WalletConfigurationResponse = {
   themes?: Record<string, WalletConfigurationTheme>
   enabledProviders?: string[]
   supportedChains?: number[]
+  sdkConfig?: {
+    brandedSignIn?: boolean
+    signInButtonTitle?: string | null
+    signInButtonLogo?: string | { src?: string } | null
+  }
+}
+
+export type WalletConfigurationSdkConfig = {
+  brandedSignIn?: boolean
+  signInButtonTitle?: string
+  signInButtonLogo?: string
 }
 
 export type WalletConfigurationOverrides = {
@@ -44,6 +55,7 @@ export type WalletConfigurationOverrides = {
   chainIds?: number[]
   defaultChainId?: number
   enabledProviders?: WalletConfigurationProvider[]
+  sdkConfig?: WalletConfigurationSdkConfig
 }
 
 type CachedWalletConfiguration = {
@@ -256,6 +268,17 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
 
   const enabledProviders = normalizeEnabledProviders(config.enabledProviders)
 
+  const sdkConfig: WalletConfigurationSdkConfig | undefined = config.sdkConfig
+    ? {
+        brandedSignIn: config.sdkConfig.brandedSignIn,
+        signInButtonTitle: config.sdkConfig.signInButtonTitle ?? undefined,
+        signInButtonLogo:
+          (typeof config.sdkConfig.signInButtonLogo === 'object' && config.sdkConfig.signInButtonLogo !== null
+            ? (config.sdkConfig.signInButtonLogo as { src?: string }).src
+            : config.sdkConfig.signInButtonLogo) ?? undefined
+      }
+    : undefined
+
   return {
     signIn:
       projectName || logoUrl
@@ -266,7 +289,8 @@ export const mapWalletConfigurationToOverrides = (config: WalletConfigurationRes
         : undefined,
     chainIds,
     defaultChainId,
-    enabledProviders
+    enabledProviders,
+    sdkConfig
   }
 }
 

@@ -34,7 +34,11 @@ import { useWallets } from '../../hooks/useWallets.js'
 import { useWalletSettings } from '../../hooks/useWalletSettings.js'
 import type { ConnectConfig, ExtendedConnector, LogoProps } from '../../types.js'
 import { formatAddress, isEmailValid } from '../../utils/helpers.js'
-import type { WalletConfigurationOverrides, WalletConfigurationProvider } from '../../utils/walletConfiguration.js'
+import type {
+  WalletConfigurationOverrides,
+  WalletConfigurationProvider,
+  WalletConfigurationSdkConfig
+} from '../../utils/walletConfiguration.js'
 import {
   AppleWaasConnectButton,
   ConnectButton,
@@ -90,6 +94,7 @@ interface ConnectProps extends SequenceConnectProviderProps {
   isAuthStatusLoading?: boolean
   resolvedConfig?: ConnectConfig
   walletConfigurationSignIn?: WalletConfigurationOverrides['signIn']
+  sdkConfig?: WalletConfigurationSdkConfig
 }
 
 export const Connect = (props: ConnectProps) => {
@@ -105,6 +110,7 @@ export const Connect = (props: ConnectProps) => {
   const isV3WalletSignedIn = props.isV3WalletSignedIn ?? null
   const isAuthStatusLoading = props.isAuthStatusLoading ?? false
   const walletConfigurationSignIn = props.walletConfigurationSignIn
+  const sdkConfig = props.sdkConfig
   const { signIn = {} } = config
   const baseSignIn = baseConfig.signIn ?? {}
   const storage = useStorage()
@@ -512,16 +518,21 @@ export const Connect = (props: ConnectProps) => {
       return new Set<string>()
     }
 
-    if (isV3WalletSignedIn === true) {
-      // Logged in (status.js returned authState === 'signed-in'): only show ecosystem connector
+    if (isV3WalletSignedIn === true && sdkConfig?.brandedSignIn === true) {
+      // Logged in and branded sign-in enabled: only show ecosystem connector
       return ecosystemConnector ? new Set([ecosystemConnector.uid]) : new Set<string>()
-    } else if (isV3WalletSignedIn === false) {
-      // Not logged in (status.js returned authState !== 'signed-in'): show regular v3 connectors (not ecosystem)
+    } else {
+      // Not logged in, or branded sign-in disabled: show regular v3 connectors (not ecosystem)
       return new Set(regularV3Connectors.map(c => c.uid))
     }
-    // Fallback: default to showing standard v3 socials to avoid empty space
-    return new Set(regularV3Connectors.map(c => c.uid))
-  }, [isAuthStatusLoading, isV3WalletSignedIn, ecosystemConnector, regularV3Connectors, sequenceConnectors.length])
+  }, [
+    isAuthStatusLoading,
+    isV3WalletSignedIn,
+    ecosystemConnector,
+    regularV3Connectors,
+    sequenceConnectors.length,
+    sdkConfig?.brandedSignIn
+  ])
 
   const socialAuthConnectors = extendedConnectors
     .filter(c => c._wallet?.type === 'social')
@@ -551,9 +562,8 @@ export const Connect = (props: ConnectProps) => {
     return hasPrimarySequenceConnection ? true : !connector._wallet?.isEcosystemWallet
   })
 
-  // For v3: hide standard social only if logged in and ecosystem connector exists
-  // For non-v3: hide standard social if ecosystem connector exists
-  const shouldHideStandardSocial = isV3WalletSignedIn === true ? !!ecosystemConnector : false
+  // When brandedSignIn is enabled, hide standard social connectors in favor of the ecosystem button
+  const shouldHideStandardSocial = sdkConfig?.brandedSignIn === true
 
   const emailConnector =
     !hideSocialConnectOptions && !shouldHideStandardSocial
@@ -574,7 +584,13 @@ export const Connect = (props: ConnectProps) => {
     // Special handling for ecosystem connector - use config data for display
     if (connector._wallet?.isEcosystemWallet) {
       const projectName = ecosystemProjectName || connector._wallet.name
-      const logoUrl = ecosystemLogoUrl
+      const logoUrl = sdkConfig?.brandedSignIn && sdkConfig?.signInButtonLogo ? sdkConfig.signInButtonLogo : ecosystemLogoUrl
+      const ctaText =
+        sdkConfig?.brandedSignIn && sdkConfig?.signInButtonTitle
+          ? sdkConfig.signInButtonTitle
+          : ecosystemProjectName
+            ? `Connect with ${ecosystemProjectName}`
+            : connector._wallet.ctaText
 
       const renderEcosystemLogo = (logoProps: LogoProps) => (
         <Image
@@ -601,7 +617,7 @@ export const Connect = (props: ConnectProps) => {
         _wallet: {
           ...connector._wallet,
           name: projectName,
-          ctaText: ecosystemProjectName ? `Connect with ${ecosystemProjectName}` : connector._wallet.ctaText,
+          ctaText,
           // Override logos if logoUrl is available
           ...(logoUrl && {
             logoDark: renderEcosystemLogo,
@@ -784,9 +800,8 @@ export const Connect = (props: ConnectProps) => {
     }
   }, [emailConflictInfo])
 
-  // For v3: only show ecosystem connector section if logged in
-  // For non-v3: show ecosystem connector section if it exists
-  const showEcosystemConnectorSection = !hideSocialConnectOptions && !!ecosystemConnector && isV3WalletSignedIn === true
+  // Show ecosystem connector section when brandedSignIn is enabled
+  const showEcosystemConnectorSection = !hideSocialConnectOptions && !!ecosystemConnector && sdkConfig?.brandedSignIn === true
   const showSocialConnectorSection = !hideSocialConnectOptions && !shouldHideStandardSocial && socialAuthConnectors.length > 0
   const showEmailInputSection = !hideSocialConnectOptions && !shouldHideStandardSocial && !!emailConnector
 
