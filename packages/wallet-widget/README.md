@@ -1,53 +1,83 @@
-# Sequence Web SDK Wallet
 
-<div align="center">
-  <img src="../../public/docs/embedded-wallet.png">
-</div>
+# Sequence Wallet Widget SDK
 
-Embedded wallet allowing to display and send collectibles and coins.
+[@0xsequence/wallet-widget](https://www.npmjs.com/package/@0xsequence/wallet-widget/v/0.0.0-20250924112110) is a production ready wallet widget with built-in swap, transaction history, inventory, fiat onramp and more, designed to be used in your own application with a few lines of code.
 
-# Installing the module
+## Key Features
 
-First install the package:
+- UI/UX ready 
+- Multichain interface
+- Swaps
+- Transaction history
+- Coin and NFT Inventory
+- Fund your wallet with fiat or crypto
+- Wallet management (settings, wallet linking, etc...)
+- Send and receive crypto with QR code
+- Filters and customization options
 
+# Quickstart
+
+1. First make sure you have installed and setup [@0xsequence/connect](https://www.npmjs.com/package/@0xsequence/connect/v/0.0.0-20250924112110)
+
+2. Install the package:
 ```bash
-npm install @0xsequence/wallet-widget
+npm install @0xsequence/wallet-widget @0xsequence/checkout @0xsequence/hooks
 # or
-pnpm install @0xsequence/wallet-widget
+pnpm install @0xsequence/wallet-widget @0xsequence/checkout @0xsequence/hooks
 # or
-yarn add @0xsequence/wallet-widget
+yarn add @0xsequence/wallet-widget @0xsequence/checkout @0xsequence/hooks
 ```
 
-Then the wallet provider module must placed below the Sequence Web SDK Core provider.
+3. Wrap your app with the SequenceWalletProvider.
 
-```js
-import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
+```typescript [main.tsx]
+    import React from "react";
+    import ReactDOM from "react-dom/client";
+    import "./index.css";
+    import { config } from "./config";
 
-const App = () => {
+    import App from "./App";
+    import { SequenceWalletProvider } from "@0xsequence/wallet-widget";
+    import { SequenceConnect } from "@0xsequence/connect";
+
+    function Dapp() {
+        return (
+            <SequenceConnect config={config}>
+                <SequenceWalletProvider>
+                    <App />
+                </SequenceWalletProvider>
+            </SequenceConnect>
+        );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+        <Dapp />
+    </React.StrictMode>
+    );
+```
+
+4. Trigger the wallet widget 
+
+```typescript [App.tsx]
+import { useOpenWalletModal } from '@0xsequence/wallet-widget'
+
+function App() {
+  const { setOpenWalletModal } = useOpenWalletModal()
+  
+  const handleViewWalletWidget = () => {
+    setOpenWalletModal(true) 
+  }
+  
   return (
-    <SequenceConnect config={config}>
-      <SequenceWalletProvider>
-        <Page />
-      </SequenceWalletProvider>
-    </WagmiProvider>
+    <button 
+      onClick={handleViewWalletWidget}
+      title="Wallet Widget"
+    >
+      View your wallet
+    </button>
   )
 }
 ```
 
-# Opening the embedded wallet
-
-The embedded wallet modal can be summoded with the `useOpenWalletModal` hook.
-
-```js
-import { useOpenWalletModal } from '@0xsequence/wallet-widget'
-
-const MyComponent = () => {
-  const { setOpenWalletModal } = useOpenWalletModal()
-
-  const onClick = () => {
-    setOpenWalletModal(true)
-  }
-
-  return <button onClick={onClick}>open wallet</button>
-}
-```
+### For more information, please visit the [Wallet Widget SDK documentation](https://docs.sequence.xyz/sdk/web/wallet-widget-sdk/getting-started).

@@ -5,7 +5,7 @@ import { SequenceConnect } from '@0xsequence/connect'
 import { SequenceWalletProvider } from '@0xsequence/wallet-widget'
 import { State } from 'wagmi'
 
-import { config } from '../config'
+import { checkoutConfig, config } from '../config'
 
 export interface ProvidersProps {
   children: React.ReactNode
@@ -18,7 +18,7 @@ export const Providers = (props: ProvidersProps) => {
   return (
     <SequenceConnect config={config} initialState={initialState}>
       <SequenceWalletProvider>
-        <SequenceCheckoutProvider>{children}</SequenceCheckoutProvider>
+        <SequenceCheckoutProvider config={checkoutConfig}>{children}</SequenceCheckoutProvider>
       </SequenceWalletProvider>
     </SequenceConnect>
   )

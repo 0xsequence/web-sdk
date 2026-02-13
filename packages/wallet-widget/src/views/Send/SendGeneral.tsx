@@ -1,12 +1,12 @@
 import { useWallets } from '@0xsequence/connect'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import { GeneralList } from '../../components/SearchLists/index.js'
 import { WalletSelect } from '../../components/Select/WalletSelect.js'
 
 export const SendGeneral = () => {
   const { setActiveWallet } = useWallets()
-  const { address } = useAccount()
+  const { address } = useConnection()
 
   const onClickWallet = (address: string) => {
     setActiveWallet(address)

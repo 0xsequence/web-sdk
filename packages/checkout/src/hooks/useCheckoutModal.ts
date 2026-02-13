@@ -30,7 +30,7 @@ type UseCheckoutModalReturnType = {
  * import { getOrderbookCalldata } from '../utils'
  *
  * const YourComponent = () => {
- *   const { address } = useAccount()
+ *   const { address } = useConnection()
  *   const { triggerCheckout } = useCheckoutModal()
  *
  *   const handleCheckout = () => {

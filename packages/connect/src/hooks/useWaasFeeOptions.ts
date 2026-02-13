@@ -2,8 +2,7 @@
 
 import { useIndexerClient } from '@0xsequence/hooks'
 import { ContractVerificationStatus } from '@0xsequence/indexer'
-import type { FeeOption } from '@0xsequence/waas'
-import type { ethers } from 'ethers'
+import type { FeeOption, Transaction } from '@0xsequence/waas'
 import { useEffect, useState } from 'react'
 import { formatUnits } from 'viem'
 import type { Connector } from 'wagmi'
@@ -11,135 +10,58 @@ import { useConnections } from 'wagmi'
 
 import { Deferred } from '../utils/deferred.js'
 
-// --- Shared State Management ---
+// Shared state across hook instances
 let sharedPendingConfirmation: WaasFeeOptionConfirmation | undefined = undefined
 let sharedDeferred: Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> | undefined = undefined
 let listeners: React.Dispatch<React.SetStateAction<WaasFeeOptionConfirmation | undefined>>[] = []
 
 const notifyListeners = (state: WaasFeeOptionConfirmation | undefined) => listeners.forEach(listener => listener(state))
 
-/**
- * Extended FeeOption type that includes balance information
- */
 export type FeeOptionExtended = FeeOption & {
-  /** Raw balance string */
   balance: string
-  /** Formatted balance with proper decimals */
   balanceFormatted: string
-  /** Indicates if the wallet has enough balance to pay the fee */
   hasEnoughBalanceForFee: boolean
 }
 
-/**
- * Fee option confirmation data structure
- */
 export type WaasFeeOptionConfirmation = {
-  /** Unique identifier for the fee confirmation */
   id: string
-  /** Available fee options with balance information */
   options: FeeOptionExtended[] | FeeOption[]
-  /** Chain ID where the transaction will be executed */
   chainId: number
 }
 
-/**
- * Return type for the useWaasFeeOptions hook
- */
 export type UseWaasFeeOptionsReturnType = [
   pendingFeeOptionConfirmation: WaasFeeOptionConfirmation | undefined,
   confirmPendingFeeOption: (id: string, feeTokenAddress: string | null) => void,
   rejectPendingFeeOption: (id: string) => void
 ]
 
-/**
- * Options for the useWaasFeeOptions hook
- *
- * @property {boolean} skipFeeBalanceCheck - Whether to skip checking token balances (default: false)
- */
 export interface WaasFeeOptionsConfig {
-  /** Whether to skip checking token balances (default: false) */
   skipFeeBalanceCheck?: boolean
   chainIdOverride?: number
 }
 
-/**
- * Hook for handling WaaS (Wallet as a Service) fee options for unsponsored transactions
- *
- * This hook provides functionality to:
- * - Get available fee options for a transaction in Native Token and ERC20's
- * - Provide user wallet balances for each fee option
- * - Confirm or reject fee selections
- *
- * @param options - Configuration options for the hook {@link WaasFeeOptionsConfig}
- * @returns Array containing the confirmation state and control functions {@link UseWaasFeeOptionsReturnType}
- *
- * @example
- * ```tsx
- *   // Use the hook with default balance checking, this will fetch the user's wallet balances for each fee option and provide them in the UseWaasFeeOptionsReturn
- *   const [
- *     pendingFeeOptionConfirmation,
- *     confirmPendingFeeOption,
- *     rejectPendingFeeOption
- *   ] = useWaasFeeOptions();
- *
- *   // Or skip balance checking if needed
- *   // const [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption] =
- *   //   useWaasFeeOptions({ skipFeeBalanceCheck: true });
- *
- *   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = useState<string>();
- *   const [feeOptionAlert, setFeeOptionAlert] = useState<AlertProps>();
- *
- *   // Initialize with first option when fee options become available
- *   useEffect(() => {
- *     if (pendingFeeOptionConfirmation) {
- *       console.log('Pending fee options: ', pendingFeeOptionConfirmation.options)
- *     }
- *   }, [pendingFeeOptionConfirmation]);
- *
- * ```
- */
 export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOptionsReturnType {
-  const { skipFeeBalanceCheck = false } = options || {}
-  const connections = useConnections()
-  const waasConnector: Connector | undefined = connections.find((c: any) => c.connector.id.includes('waas'))?.connector
+  const { skipFeeBalanceCheck = false, chainIdOverride } = options ?? {}
+
   const [pendingFeeOptionConfirmation, setPendingFeeOptionConfirmation] = useState<WaasFeeOptionConfirmation | undefined>(
     sharedPendingConfirmation
   )
-  const indexerClient = useIndexerClient(options?.chainIdOverride ? options.chainIdOverride : (connections[0]?.chainId ?? 1))
-  /**
-   * Confirms the selected fee option
-   * @param id - The fee confirmation ID
-   * @param feeTokenAddress - The address of the token to use for fee payment (null for native token)
-   */
-  function confirmPendingFeeOption(id: string, feeTokenAddress: string | null) {
-    if (sharedDeferred && sharedPendingConfirmation?.id === id) {
-      sharedDeferred.resolve({ id, feeTokenAddress, confirmed: true })
-      sharedDeferred = undefined
-      notifyListeners(undefined)
-    }
-  }
+  const [confirmPromise, setConfirmPromise] = useState<Deferred<{
+    id: string
+    feeTokenAddress?: string | null
+    confirmed: boolean
+  }> | null>(null)
 
-  /**
-   * Rejects the current fee option confirmation
-   * @param id - The fee confirmation ID to reject
-   */
-  function rejectPendingFeeOption(id: string) {
-    if (sharedDeferred && sharedPendingConfirmation?.id === id) {
-      sharedDeferred.resolve({ id, feeTokenAddress: undefined, confirmed: false })
-      sharedDeferred = undefined
-      sharedPendingConfirmation = undefined
-      notifyListeners(undefined)
-    }
-  }
+  const connections = useConnections()
+  const waasConnection = connections.find(c => c.connector.id.includes('waas'))
+  const waasConnector = waasConnection?.connector
+  const chainIdForIndexer = chainIdOverride ?? waasConnection?.chainId ?? 1
+  const indexerClient = useIndexerClient(chainIdForIndexer)
 
   useEffect(() => {
-    // Subscribe to shared state changes
     listeners.push(setPendingFeeOptionConfirmation)
-    // Set initial state in case it changed between component initialization and effect execution
-    setPendingFeeOptionConfirmation(sharedPendingConfirmation)
-
     return () => {
-      listeners = listeners.filter(l => l !== setPendingFeeOptionConfirmation)
+      listeners = listeners.filter(listener => listener !== setPendingFeeOptionConfirmation)
     }
   }, [])
 
@@ -153,72 +75,148 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
       return
     }
 
-    const originalHandler = waasProvider.feeConfirmationHandler
-
     waasProvider.feeConfirmationHandler = {
-      async confirmFeeOption(
-        id: string,
-        options: FeeOption[],
-        txs: ethers.Transaction[],
-        chainId: number
-      ): Promise<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }> {
-        const pending = new Deferred<{ id: string; feeTokenAddress?: string | null; confirmed: boolean }>()
-        // Store the deferred promise in the shared scope
-        sharedDeferred = pending
-        // Clear any previous stale state immediately
+      confirmFeeOption: async (id: string, options: FeeOption[], _txs: Transaction[], chainId: number) => {
+        if (skipFeeBalanceCheck) {
+          sharedPendingConfirmation = { id, options, chainId: chainIdOverride ?? chainId }
+          sharedDeferred = new Deferred()
+          notifyListeners(sharedPendingConfirmation)
+
+          const confirmation = await sharedDeferred.promise
+          sharedPendingConfirmation = undefined
+          sharedDeferred = undefined
+          notifyListeners(sharedPendingConfirmation)
+          return confirmation
+        }
+
+        const accountAddress = waasConnection?.accounts?.[0]
+        const balances = await indexerClient.getTokenBalancesDetails({
+          filter: {
+            accountAddresses: accountAddress ? [accountAddress] : [],
+            omitNativeBalances: false
+          }
+        })
+
+        const optionsWithBalances: FeeOptionExtended[] = options.map((option: FeeOption) => {
+          const { token, value } = option
+          const decimals = token.decimals ?? 18
+          const rawValue = BigInt(value)
+          const balance = token.contractAddress
+            ? BigInt(balances.balances.find(({ contractAddress }) => contractAddress === token.contractAddress)?.balance ?? '0')
+            : BigInt(balances.nativeBalances?.[0]?.balance ?? '0')
+
+          return {
+            ...option,
+            balance: balance.toString(),
+            balanceFormatted: formatUnits(balance, decimals),
+            hasEnoughBalanceForFee: balance >= rawValue
+          }
+        })
+
+        if (optionsWithBalances.length === 0) {
+          throw new Error('No fee options with user balance available')
+        }
+
+        sharedPendingConfirmation = {
+          id,
+          options: optionsWithBalances,
+          chainId: chainIdOverride ?? chainId
+        }
+
+        sharedDeferred = new Deferred()
+        notifyListeners(sharedPendingConfirmation)
+
+        const confirmation = await sharedDeferred.promise
         sharedPendingConfirmation = undefined
-        notifyListeners(undefined)
-
-        const accountAddress = connections[0]?.accounts[0]
-        if (!accountAddress) {
-          throw new Error('No account address available')
-        }
-
-        if (!skipFeeBalanceCheck) {
-          const optionsWithBalances = await Promise.all(
-            options.map(async option => {
-              if (option.token.contractAddress) {
-                const tokenBalances = await indexerClient.getTokenBalancesByContract({
-                  filter: {
-                    accountAddresses: [accountAddress],
-                    contractStatus: ContractVerificationStatus.ALL,
-                    contractAddresses: [option.token.contractAddress]
-                  },
-                  omitMetadata: true
-                })
-                const tokenBalance = tokenBalances.balances[0]?.balance
-                return {
-                  ...option,
-                  balanceFormatted: option.token.decimals
-                    ? formatUnits(BigInt(tokenBalances.balances[0]?.balance ?? '0'), option.token.decimals)
-                    : (tokenBalances.balances[0]?.balance ?? '0'),
-                  balance: tokenBalances.balances[0]?.balance ?? '0',
-                  hasEnoughBalanceForFee: tokenBalance ? BigInt(option.value) <= BigInt(tokenBalance) : false
-                }
-              }
-              const nativeBalance = await indexerClient.getNativeTokenBalance({ accountAddress })
-              return {
-                ...option,
-                balanceFormatted: formatUnits(BigInt(nativeBalance.balance.balance), 18),
-                balance: nativeBalance.balance.balance,
-                hasEnoughBalanceForFee: BigInt(option.value) <= BigInt(nativeBalance.balance.balance)
-              }
-            })
-          )
-          sharedPendingConfirmation = { id, options: optionsWithBalances, chainId }
-          notifyListeners(sharedPendingConfirmation)
-        } else {
-          sharedPendingConfirmation = { id, options, chainId }
-          notifyListeners(sharedPendingConfirmation)
-        }
-        return pending.promise
+        sharedDeferred = undefined
+        notifyListeners(sharedPendingConfirmation)
+        return confirmation
       }
     }
+  }, [waasConnector, indexerClient, skipFeeBalanceCheck, chainIdOverride])
 
-    return () => {
-      waasProvider.feeConfirmationHandler = originalHandler
+  useEffect(() => {
+    if (!pendingFeeOptionConfirmation) {
+      setConfirmPromise(null)
+      return
     }
-  }, [waasConnector, indexerClient])
+    setConfirmPromise(sharedDeferred ?? null)
+  }, [pendingFeeOptionConfirmation])
+
+  const confirmPendingFeeOption = (id: string, feeTokenAddress: string | null) => {
+    if (!confirmPromise) {
+      return
+    }
+    confirmPromise.resolve({ id, feeTokenAddress, confirmed: true })
+  }
+
+  const rejectPendingFeeOption = (id: string) => {
+    if (!confirmPromise) {
+      return
+    }
+    confirmPromise.resolve({ id, confirmed: false })
+  }
 
   return [pendingFeeOptionConfirmation, confirmPendingFeeOption, rejectPendingFeeOption]
+}
+
+export const getTokenName = (txs: Transaction[], tokenAddress: string | null) => {
+  const isNativeToken = tokenAddress == null
+  const token = isNativeToken
+    ? { symbol: 'ETH', address: tokenAddress, decimal: 18 }
+    : {
+        symbol: (txs[0] as any)?.data?.token?.symbol,
+        address: (txs[0] as any)?.data?.token?.contractAddress,
+        decimal: (txs[0] as any)?.data?.token?.decimals
+      }
+  return token?.symbol
+}
+
+export const getTransactionMetadata = async (txs: Transaction[], connector: Connector | undefined, chainId: number) => {
+  const metadata = await Promise.all(
+    txs.map(async tx => {
+      const txData = tx as any
+      const erc20TokenAddress: string | null = txData?.data?.token?.contractAddress
+
+      const res = {
+        chainId,
+        tokenName: getTokenName(txs, erc20TokenAddress),
+        isNativeToken: erc20TokenAddress == null,
+        erc20TokenAddress,
+        erc20TokenDecimals: txData?.data?.token?.decimals,
+        recipient: await (connector as any)?.getAccount?.(),
+        isContract: undefined as undefined | boolean,
+        verificationStatus: undefined as undefined | ContractVerificationStatus,
+        abi: txData?.data?.contractMetadata?.abi,
+        functionName: txData?.data?.functionSignature?.functionName,
+        functionSignature: txData?.data?.functionSignature?.functionSignature
+      }
+
+      const receiver = txData?.to as string
+      if (!receiver) {
+        return res
+      }
+
+      try {
+        const rc = await (connector as any)?.getPublicClient?.({ chainId })?.getBytecode({ address: receiver as `0x${string}` })
+        if (rc && rc.length > 2) {
+          res.isContract = true
+          const { verifiedContractAddress, contractInfo } =
+            txData?.data?.contractMetadata || txData?.data?.contractMetadataPreview || {}
+          if (verifiedContractAddress && contractInfo?.status) {
+            res.verificationStatus = contractInfo.status
+          }
+        } else {
+          res.isContract = false
+        }
+      } catch (error) {
+        console.log('error checking if address is a contract: ', error)
+        res.isContract = false
+      }
+
+      return res
+    })
+  )
+
+  return metadata
 }

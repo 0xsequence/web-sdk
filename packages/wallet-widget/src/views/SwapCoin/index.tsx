@@ -4,7 +4,7 @@ import { useGetCoinPrices, useGetExchangeRate, useGetSingleTokenBalance } from '
 import type { TokenBalance } from '@0xsequence/indexer'
 import { useRef, useState, type ChangeEvent } from 'react'
 import { parseUnits, zeroAddress } from 'viem'
-import { useAccount, useConfig } from 'wagmi'
+import { useConfig, useConnection } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
@@ -19,7 +19,7 @@ export interface SwapCoinProps {
 export const SwapCoin = ({ contractAddress, chainId }: SwapCoinProps) => {
   const { setNavigation } = useNavigation()
   const { chains } = useConfig()
-  const { address: accountAddress } = useAccount()
+  const { address: accountAddress } = useConnection()
 
   const amountInputRef = useRef<HTMLInputElement>(null)
   const { fiatCurrency } = useSettings()

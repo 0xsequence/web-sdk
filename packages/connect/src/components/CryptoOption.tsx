@@ -35,7 +35,7 @@ export const CryptoOption = ({
     <Card className="flex w-full justify-between p-4 cursor-pointer" onClick={onClickCard}>
       <div className="flex flex-row gap-3">
         <div className="w-fit">
-          <TokenImage src={iconUrl} size="lg" symbol={symbol} withNetwork={chainId} disableAnimation />
+          <TokenImage src={iconUrl} size="lg" symbol={symbol} withNetwork={chainId} />
         </div>
         <div className="flex flex-col justify-center">
           <Text

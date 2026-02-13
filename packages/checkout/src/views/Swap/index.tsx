@@ -11,7 +11,7 @@ import {
 import { findSupportedNetwork } from '@0xsequence/network'
 import { useEffect, useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useSwapModal, useTransactionStatusModal } from '../../hooks/index.js'
@@ -33,7 +33,7 @@ export const Swap = () => {
     customSwapErrorMessage,
     onSuccess = () => {}
   } = swapModalSettings!
-  const { address: userAddress, connector } = useAccount()
+  const { address: userAddress, connector } = useConnection()
   const [isTxsPending, setIsTxsPending] = useState(false)
   const [isError, setIsError] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState<string>()

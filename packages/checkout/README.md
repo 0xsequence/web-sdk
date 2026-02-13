@@ -140,10 +140,10 @@ The `@0xsequence/checkout` library indeed simplifies the integration of Web3 pay
 
 ```js
 import { useERC1155SaleContractCheckout } from "@0xsequence/checkout";
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
 
 const MyComponent = () => {
-  const { address: userAddress } = useAccount();
+  const { address: userAddress } = useConnection();
   const { openCheckoutModal } = useERC1155SaleContractCheckout({
     chain: 80001, // chainId of the chain the collectible is on
     contractAddress: "0x0327b2f274e04d292e74a06809bcd687c63a4ba4", // address of the contract handling the minting function

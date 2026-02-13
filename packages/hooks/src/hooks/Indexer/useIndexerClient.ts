@@ -29,7 +29,7 @@ import { useNetwork } from '../useNetwork.js'
  * const TokenBalanceChecker = () => {
  *   const chainId = useChainId()
  *   const indexerClient = useIndexerClient(chainId)
- *   const { address } = useAccount()
+ *   const { address } = useConnection()
  *
  *   const checkBalance = async () => {
  *     // Get native token balance

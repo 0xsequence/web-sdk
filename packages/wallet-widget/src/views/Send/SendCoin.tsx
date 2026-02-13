@@ -4,8 +4,8 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   useAnalyticsContext,
-  useCheckWaasFeeOptions,
-  useWaasConfirmationHandler,
+  useFeeOptions,
+  useSendWalletTransaction,
   useWaasFeeOptions,
   useWallets,
   waitForTransactionReceipt,
@@ -31,9 +31,9 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
-import { useEffect, useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, type Hex } from 'viem'
-import { useAccount, useChainId, useConfig, useConnections, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+import { useChainId, useConfig, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { AllButActiveWalletSelect } from '../../components/Select/AllButActiveWalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
@@ -59,9 +59,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
-  const { address: accountAddress = '', connector } = useAccount()
+  const { address: accountAddress = '', connector } = useConnection()
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
-  const isConnectorWaas = !!(connector as ExtendedConnector)?.type?.includes('waas')
+
   const isCorrectChainId = connectedChainId === chainId
   const { switchChainAsync } = useSwitchChain()
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -70,19 +70,32 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
   const [toAddress, setToAddress] = useState<string>('')
   const { data: walletClient } = useWalletClient()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
-  const [showConfirmation, setShowConfirmation] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
-  const [feeOptions, setFeeOptions] = useState<
-    | {
-        options: any[]
-        chainId: number
-      }
-    | undefined
-  >()
-  const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
-  const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
+
+  const [pendingV3FeeConfirmation, confirmV3FeeOption, rejectV3FeeOption] = useFeeOptions()
+  const [pendingWaasFeeConfirmation, confirmWaasFeeOption, rejectWaasFeeOption] = useWaasFeeOptions()
+  const { sendTransactionAsync: sendWalletTransactionAsync } = useSendWalletTransaction()
+
+  const connectorType = (connector as ExtendedConnector | undefined)?.type
+  const isWaasConnectorActive = connectorType === 'sequence-waas'
+  const isSequenceV3ConnectorActive =
+    connectorType === 'sequence-v3-wallet' || wallets.some(w => w.id === 'sequence-v3-wallet' && w.isActive)
+
+  const activeFeeConfirmation = isWaasConnectorActive
+    ? pendingWaasFeeConfirmation
+    : isSequenceV3ConnectorActive
+      ? pendingV3FeeConfirmation
+      : undefined
+
+  const feeOptions = activeFeeConfirmation
+    ? {
+        options: activeFeeConfirmation.options as any[],
+        chainId: activeFeeConfirmation.chainId
+      }
+    : undefined
+
+  const isConfirmationVisible = Boolean(activeFeeConfirmation)
 
   const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
@@ -102,28 +115,16 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
   const isLoading = isLoadingBalances || isLoadingCoinPrices || isLoadingConversionRate
 
-  // Handle fee option confirmation when pendingFeeOption is available
-  useEffect(() => {
-    if (pendingFeeOption && selectedFeeTokenAddress !== null) {
-      confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
-    }
-  }, [pendingFeeOption, selectedFeeTokenAddress])
-
   // Control back button when showing confirmation
   useEffect(() => {
-    setIsBackButtonEnabled(!showConfirmation)
-  }, [showConfirmation, setIsBackButtonEnabled])
-
-  const connections = useConnections()
-  const waasConnector = connections.find(c => c.connector.id.includes('waas'))?.connector
-
-  const [pendingRequestConfirmation, confirmPendingRequest] = useWaasConfirmationHandler(waasConnector)
+    setIsBackButtonEnabled(!isConfirmationVisible)
+  }, [isConfirmationVisible, setIsBackButtonEnabled])
 
   useEffect(() => {
-    if (pendingRequestConfirmation) {
-      confirmPendingRequest(pendingRequestConfirmation.id)
+    if (!feeOptions?.options?.length) {
+      setSelectedFeeTokenAddress(null)
     }
-  }, [pendingRequestConfirmation])
+  }, [feeOptions?.options?.length])
 
   if (isLoading) {
     return null
@@ -179,7 +180,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     setToAddress('')
   }
 
-  const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
+  const handleSendClick = async (e: FormEvent<HTMLFormElement>) => {
     setErrorMsg(null)
     e.preventDefault()
 
@@ -187,46 +188,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       await switchChainAsync({ chainId })
     }
 
-    if (!isConnectorWaas) {
-      executeTransaction()
-      return
-    }
-
-    setIsCheckingFeeOptions(true)
-
-    const sendAmount = parseUnits(amountToSendFormatted, decimals)
-    let transaction
-
-    if (isNativeCoin) {
-      transaction = {
-        to: toAddress as `0x${string}`,
-        value: BigInt(sendAmount.toString())
-      }
-    } else {
-      transaction = {
-        to: tokenBalance?.contractAddress as `0x${string}`,
-        data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] })
-      }
-    }
-
-    // Check fee options before showing confirmation
-    const feeOptionsResult = await checkFeeOptions({
-      transactions: [transaction],
-      chainId
-    })
-
-    setFeeOptions(
-      feeOptionsResult?.feeOptions
-        ? {
-            options: feeOptionsResult.feeOptions,
-            chainId
-          }
-        : undefined
-    )
-
-    setShowConfirmation(true)
-
-    setIsCheckingFeeOptions(false)
+    executeTransaction()
   }
 
   const executeTransaction = async () => {
@@ -234,7 +196,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
       await switchChainAsync({ chainId })
     }
 
-    if (!walletClient) {
+    if (!walletClient && !isSequenceV3ConnectorActive) {
       console.error('Wallet client not found')
       setErrorMsg('Wallet client not available. Please ensure your wallet is connected.')
       setIsSendTxnPending(false)
@@ -248,19 +210,40 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
 
     try {
       if (isNativeCoin) {
-        txHash = await walletClient.sendTransaction({
-          account: accountAddress as `0x${string}`,
-          to: toAddress as `0x${string}`,
-          value: BigInt(sendAmount.toString()),
-          chain: chains.find(c => c.id === chainId)
-        })
+        if (isSequenceV3ConnectorActive) {
+          txHash = (await sendWalletTransactionAsync({
+            chainId,
+            transaction: {
+              to: toAddress as `0x${string}`,
+              value: BigInt(sendAmount.toString())
+            }
+          })) as Hex
+        } else {
+          txHash = await walletClient!.sendTransaction({
+            account: accountAddress as `0x${string}`,
+            to: toAddress as `0x${string}`,
+            value: BigInt(sendAmount.toString()),
+            chain: chains.find(c => c.id === chainId)
+          })
+        }
       } else {
-        txHash = await walletClient.sendTransaction({
-          account: accountAddress as `0x${string}`,
-          to: tokenBalance?.contractAddress as `0x${string}`,
-          data: encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] }),
-          chain: chains.find(c => c.id === chainId)
-        })
+        const data = encodeFunctionData({ abi: ERC_20_ABI, functionName: 'transfer', args: [toAddress, toHex(sendAmount)] })
+        if (isSequenceV3ConnectorActive) {
+          txHash = (await sendWalletTransactionAsync({
+            chainId,
+            transaction: {
+              to: tokenBalance?.contractAddress as `0x${string}`,
+              data
+            }
+          })) as Hex
+        } else {
+          txHash = await walletClient!.sendTransaction({
+            account: accountAddress as `0x${string}`,
+            to: tokenBalance?.contractAddress as `0x${string}`,
+            data,
+            chain: chains.find(c => c.id === chainId)
+          })
+        }
       }
 
       // Handle successful transaction submission
@@ -317,9 +300,55 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
     }
   }
 
+  const handleConfirmationSubmit = () => {
+    if (!activeFeeConfirmation) {
+      executeTransaction()
+      return
+    }
+
+    if (!selectedFeeTokenAddress) {
+      return
+    }
+
+    const selectedOption = activeFeeConfirmation.options.find(
+      option => (option.token.contractAddress ?? zeroAddress) === selectedFeeTokenAddress
+    )
+
+    if (!selectedOption) {
+      console.error('Unable to resolve the selected fee option.')
+      return
+    }
+
+    if (isWaasConnectorActive) {
+      const feeTokenAddress = selectedFeeTokenAddress === zeroAddress ? null : selectedFeeTokenAddress
+      confirmWaasFeeOption(activeFeeConfirmation.id, feeTokenAddress)
+      return
+    }
+
+    if (!selectedOption.token.contractAddress) {
+      console.error('Unable to resolve the selected fee option.')
+      return
+    }
+
+    confirmV3FeeOption(activeFeeConfirmation.id, selectedOption.token.contractAddress)
+  }
+
+  const handleConfirmationCancel = () => {
+    if (activeFeeConfirmation) {
+      if (isWaasConnectorActive) {
+        rejectWaasFeeOption(activeFeeConfirmation.id)
+      } else if (isSequenceV3ConnectorActive) {
+        rejectV3FeeOption(activeFeeConfirmation.id)
+      }
+    }
+
+    setSelectedFeeTokenAddress(null)
+    setIsSendTxnPending(false)
+  }
+
   return (
     <form className="flex px-4 pb-4 gap-2 flex-col" onSubmit={handleSendClick}>
-      {!showConfirmation && (
+      {!isConfirmationVisible && (
         <>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <SendItemInfo
@@ -399,7 +428,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           )}
 
           <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
-            {isCheckingFeeOptions ? (
+            {isSendTxnPending ? (
               <Spinner />
             ) : (
               <Button
@@ -407,7 +436,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 variant="primary"
                 size="lg"
                 type="submit"
-                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
+                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || isSendTxnPending}
                 label="Send"
                 rightIcon={ChevronRightIcon}
               />
@@ -415,7 +444,7 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           </div>
         </>
       )}
-      {showConfirmation && (
+      {isConfirmationVisible && (
         <TransactionConfirmation
           name={name}
           symbol={symbol}
@@ -430,14 +459,10 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
-          isLoading={isSendTxnPending}
+          isLoading={false}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
-          onConfirm={() => {
-            executeTransaction()
-          }}
-          onCancel={() => {
-            setShowConfirmation(false)
-          }}
+          onConfirm={handleConfirmationSubmit}
+          onCancel={handleConfirmationCancel}
         />
       )}
     </form>
