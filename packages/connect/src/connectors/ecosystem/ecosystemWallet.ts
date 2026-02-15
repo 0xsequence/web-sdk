@@ -52,13 +52,13 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
       }
     },
 
-    async connect(_connectInfo) {
-      const provider = await this.getProvider()
+    async connect({ withCapabilities, ..._connectInfo } = {}) {
+      const provider = (await this.getProvider()) as EcosystemWalletTransportProvider
       let walletAddress = provider.transport.getWalletAddress()
 
       if (!walletAddress) {
         try {
-          const res = await provider.transport.connect(this.auxData)
+          const res = await provider.transport.connect(this.auxData as Record<string, unknown> | undefined)
           walletAddress = res.walletAddress
         } catch (e) {
           console.log(e)
@@ -67,19 +67,24 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
         }
       }
 
+      const account = getAddress(walletAddress)
+
       return {
-        accounts: [getAddress(walletAddress)],
+        // TODO(wagmi v3): `as never` can be removed when wagmi makes `withCapabilities: true` the default
+        // see: https://github.com/wevm/wagmi/blob/main/packages/core/src/connectors/createConnector.ts
+        // ref: https://github.com/wevm/wagmi/blob/main/packages/connectors/src/safe.ts
+        accounts: (withCapabilities ? [{ address: account, capabilities: {} }] : [account]) as never,
         chainId: await this.getChainId()
       }
     },
 
     async disconnect() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as EcosystemWalletTransportProvider
       provider.transport.disconnect()
     },
 
     async getAccounts() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as EcosystemWalletTransportProvider
       const address = provider.transport.getWalletAddress()
 
       if (address) {
@@ -94,12 +99,12 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
     },
 
     async isAuthorized() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as EcosystemWalletTransportProvider
       return provider.transport.getWalletAddress() !== undefined
     },
 
     async switchChain({ chainId }) {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as EcosystemWalletTransportProvider
       const chain = config.chains.find(c => c.id === chainId) || config.chains[0]
 
       await provider.request({
@@ -113,7 +118,7 @@ export function ecosystemWallet(params: BaseEcosystemConnectorOptions) {
     },
 
     async getChainId() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as EcosystemWalletTransportProvider
       return Number(provider.getChainId())
     },
 
