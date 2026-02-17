@@ -120,8 +120,8 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       })
     },
 
-    async connect(_connectInfo) {
-      const provider = await this.getProvider()
+    async connect({ withCapabilities, ..._connectInfo } = {}) {
+      const provider = (await this.getProvider()) as SequenceWaasProvider
       const isSignedIn = await provider.sequenceWaas.isSignedIn()
 
       if (!isSignedIn) {
@@ -181,13 +181,16 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
       }
 
       return {
-        accounts,
+        // TODO(wagmi v3): `as never` can be removed when wagmi makes `withCapabilities: true` the default
+        // see: https://github.com/wevm/wagmi/blob/main/packages/core/src/connectors/createConnector.ts
+        // ref: https://github.com/wevm/wagmi/blob/main/packages/connectors/src/safe.ts
+        accounts: (withCapabilities ? accounts.map(address => ({ address, capabilities: {} })) : accounts) as never,
         chainId: await this.getChainId()
       }
     },
 
     async disconnect() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceWaasProvider
 
       try {
         await provider.sequenceWaas.dropSession({ sessionId: await provider.sequenceWaas.getSessionId(), strict: false })
@@ -202,7 +205,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
 
     async getAccounts() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceWaasProvider
 
       try {
         const isSignedIn = await provider.sequenceWaas.isSignedIn()
@@ -223,7 +226,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
 
     async isAuthorized() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceWaasProvider
 
       const activeWaasOption = await config.storage?.getItem(LocalStorageKey.WaasActiveLoginType)
       if (params.loginType !== activeWaasOption) {
@@ -237,7 +240,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
 
     async switchChain({ chainId }) {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceWaasProvider
       const chain = config.chains.find(c => c.id === chainId) || config.chains[0]
 
       await provider.request({
@@ -251,7 +254,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     },
 
     async getChainId() {
-      const provider = await this.getProvider()
+      const provider = (await this.getProvider()) as SequenceWaasProvider
       return Number(provider.getChainId())
     },
 
