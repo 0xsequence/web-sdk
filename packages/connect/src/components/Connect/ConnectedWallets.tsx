@@ -51,7 +51,9 @@ export const ConnectedWallets = ({
     const readOnlyLinkedWallets = (linkedWallets ?? [])
       .filter(lw => !wallets.some(w => w.address.toLowerCase() === lw.linkedWalletAddress.toLowerCase()))
       .map(lw => {
-        const connector = connectors.find(c => c.name == lw.walletType)
+        const connector = connectors?.find(
+          c => c.name === lw.walletType || c._wallet?.id === lw.walletType || c._wallet?.name === lw.walletType
+        )
 
         return {
           name: lw.walletType || 'Linked Wallet',
@@ -60,7 +62,7 @@ export const ConnectedWallets = ({
           isActive: false,
           isLinked: true,
           isReadOnly: true,
-          onReconnect: connector ? () => connectWallet(connector) : undefined,
+          onReconnect: connector && connectWallet ? () => connectWallet(connector) : undefined,
           onDisconnect: () => {}, // No-op for read-only wallets
           onUnlink: () => {
             unlinkWallet(lw.linkedWalletAddress)
@@ -77,7 +79,8 @@ export const ConnectedWallets = ({
       isLinked: linkedWallets?.some(lw => lw.linkedWalletAddress.toLowerCase() === wallet.address.toLowerCase()) ?? false,
       isReadOnly: false,
       onDisconnect: () => disconnectWallet(wallet.address),
-      onUnlink: () => {} // No-op for connected wallets
+      onUnlink: () => {}, // No-op for connected wallets
+      embeddedWalletTitle
     }))
 
     // Sort wallets: embedded first, then by name and address

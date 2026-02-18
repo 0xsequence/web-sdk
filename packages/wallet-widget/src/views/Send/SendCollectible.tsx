@@ -2,8 +2,8 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   truncateAtMiddle,
   useAnalyticsContext,
-  useCheckWaasFeeOptions,
-  useWaasConfirmationHandler,
+  useFeeOptions,
+  useSendWalletTransaction,
   useWaasFeeOptions,
   useWallets,
   waitForTransactionReceipt,
@@ -25,9 +25,9 @@ import {
 } from '@0xsequence/design-system'
 import { useClearCachedBalances, useGetSingleTokenBalance, useIndexerClient } from '@0xsequence/hooks'
 import type { ContractType, TokenBalance } from '@0xsequence/indexer'
-import { useEffect, useRef, useState, type ChangeEvent } from 'react'
-import { encodeFunctionData, formatUnits, parseUnits, toHex, type Hex } from 'viem'
-import { useAccount, useChainId, useConfig, useConnections, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { encodeFunctionData, formatUnits, parseUnits, toHex, zeroAddress, type Hex } from 'viem'
+import { useChainId, useConfig, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { AllButActiveWalletSelect } from '../../components/Select/AllButActiveWalletSelect.js'
 import { SendItemInfo } from '../../components/SendItemInfo.js'
@@ -52,11 +52,10 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const { analytics } = useAnalyticsContext()
   const { chains } = useConfig()
   const connectedChainId = useChainId()
-  const { address: accountAddress = '', connector } = useAccount()
+  const { address: accountAddress = '', connector } = useConnection()
   const indexerClient = useIndexerClient(chainId)
   const publicClient = usePublicClient({ chainId })
   const isConnectorSequenceBased = !!(connector as ExtendedConnector)?._wallet?.isSequenceBased
-  const isConnectorWaas = !!(connector as ExtendedConnector)?.type?.includes('waas')
   const isCorrectChainId = connectedChainId === chainId
   const { clearCachedBalances } = useClearCachedBalances()
   const { switchChainAsync } = useSwitchChain()
@@ -66,18 +65,30 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   const [showAmountControls, setShowAmountControls] = useState<boolean>(false)
   const { data: walletClient } = useWalletClient()
   const [isSendTxnPending, setIsSendTxnPending] = useState(false)
-  const [showConfirmation, setShowConfirmation] = useState(false)
-  const [feeOptions, setFeeOptions] = useState<
-    | {
-        options: any[]
-        chainId: number
-      }
-    | undefined
-  >()
-  const [isCheckingFeeOptions, setIsCheckingFeeOptions] = useState(false)
   const [selectedFeeTokenAddress, setSelectedFeeTokenAddress] = useState<string | null>(null)
-  const checkFeeOptions = useCheckWaasFeeOptions()
-  const [pendingFeeOption, confirmFeeOption, _rejectFeeOption] = useWaasFeeOptions()
+
+  const [pendingV3FeeConfirmation, confirmV3FeeOption, rejectV3FeeOption] = useFeeOptions()
+  const [pendingWaasFeeConfirmation, confirmWaasFeeOption, rejectWaasFeeOption] = useWaasFeeOptions()
+  const { sendTransactionAsync: sendWalletTransactionAsync } = useSendWalletTransaction()
+
+  const connectorType = (connector as ExtendedConnector | undefined)?.type
+  const isWaasConnectorActive = connectorType === 'sequence-waas'
+  const isSequenceV3ConnectorActive =
+    connectorType === 'sequence-v3-wallet' || wallets.some(wallet => wallet.id === 'sequence-v3-wallet' && wallet.isActive)
+
+  const activeFeeConfirmation = isWaasConnectorActive
+    ? pendingWaasFeeConfirmation
+    : isSequenceV3ConnectorActive
+      ? pendingV3FeeConfirmation
+      : undefined
+
+  const feeOptions = activeFeeConfirmation
+    ? {
+        options: activeFeeConfirmation.options as any[],
+        chainId: activeFeeConfirmation.chainId
+      }
+    : undefined
+  const isConfirmationVisible = Boolean(activeFeeConfirmation)
 
   const { data: tokenBalance, isLoading: isLoadingBalances } = useGetSingleTokenBalance({
     chainId,
@@ -106,25 +117,14 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
   }, [tokenBalance])
 
   useEffect(() => {
-    if (pendingFeeOption && selectedFeeTokenAddress !== null) {
-      confirmFeeOption(pendingFeeOption.id, selectedFeeTokenAddress)
-    }
-  }, [pendingFeeOption, selectedFeeTokenAddress])
+    setIsBackButtonEnabled(!isConfirmationVisible)
+  }, [isConfirmationVisible, setIsBackButtonEnabled])
 
   useEffect(() => {
-    setIsBackButtonEnabled(!showConfirmation)
-  }, [showConfirmation, setIsBackButtonEnabled])
-
-  const connections = useConnections()
-  const waasConnector = connections.find(c => c.connector.id.includes('waas'))?.connector
-
-  const [pendingRequestConfirmation, confirmPendingRequest] = useWaasConfirmationHandler(waasConnector)
-
-  useEffect(() => {
-    if (pendingRequestConfirmation) {
-      confirmPendingRequest(pendingRequestConfirmation.id)
+    if (!feeOptions?.options?.length) {
+      setSelectedFeeTokenAddress(null)
     }
-  }, [pendingRequestConfirmation])
+  }, [feeOptions?.options?.length])
 
   const isLoading = isLoadingBalances
 
@@ -189,7 +189,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     setToAddress('')
   }
 
-  const handleSendClick = async (e: ChangeEvent<HTMLFormElement>) => {
+  const handleSendClick = async (e: FormEvent<HTMLFormElement>) => {
     setErrorMsg(null)
     e.preventDefault()
 
@@ -197,57 +197,53 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       await switchChainAsync({ chainId })
     }
 
-    if (!isConnectorWaas) {
+    executeTransaction()
+  }
+
+  const handleConfirmationSubmit = () => {
+    if (!activeFeeConfirmation) {
       executeTransaction()
       return
     }
 
-    setIsCheckingFeeOptions(true)
-
-    const sendAmount = parseUnits(amountToSendFormatted, decimals)
-    let transaction
-
-    switch (contractType) {
-      case 'ERC721':
-        transaction = {
-          to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-          data: encodeFunctionData({
-            abi: ERC_721_ABI,
-            functionName: 'safeTransferFrom',
-            args: [accountAddress, toAddress, tokenId]
-          })
-        }
-        break
-      case 'ERC1155':
-      default:
-        transaction = {
-          to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-          data: encodeFunctionData({
-            abi: ERC_1155_ABI,
-            functionName: 'safeBatchTransferFrom',
-            args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
-          })
-        }
+    if (!selectedFeeTokenAddress) {
+      return
     }
 
-    // Check fee options before showing confirmation
-    const feeOptionsResult = await checkFeeOptions({
-      transactions: [transaction],
-      chainId
-    })
-
-    setFeeOptions(
-      feeOptionsResult?.feeOptions
-        ? {
-            options: feeOptionsResult.feeOptions,
-            chainId
-          }
-        : undefined
+    const selectedOption = activeFeeConfirmation.options.find(
+      option => (option.token.contractAddress ?? zeroAddress) === selectedFeeTokenAddress
     )
 
-    setShowConfirmation(true)
+    if (!selectedOption) {
+      console.error('Unable to resolve the selected fee option.')
+      return
+    }
 
-    setIsCheckingFeeOptions(false)
+    if (isWaasConnectorActive) {
+      const feeTokenAddress = selectedFeeTokenAddress === zeroAddress ? null : selectedFeeTokenAddress
+      confirmWaasFeeOption(activeFeeConfirmation.id, feeTokenAddress)
+      return
+    }
+
+    if (!selectedOption.token.contractAddress) {
+      console.error('Unable to resolve the selected fee option.')
+      return
+    }
+
+    confirmV3FeeOption(activeFeeConfirmation.id, selectedOption.token.contractAddress)
+  }
+
+  const handleConfirmationCancel = () => {
+    if (activeFeeConfirmation) {
+      if (isWaasConnectorActive) {
+        rejectWaasFeeOption(activeFeeConfirmation.id)
+      } else if (isSequenceV3ConnectorActive) {
+        rejectV3FeeOption(activeFeeConfirmation.id)
+      }
+    }
+
+    setSelectedFeeTokenAddress(null)
+    setIsSendTxnPending(false)
   }
 
   const executeTransaction = async () => {
@@ -255,7 +251,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
       await switchChainAsync({ chainId })
     }
 
-    if (!walletClient) {
+    if (!walletClient && !isSequenceV3ConnectorActive) {
       console.error('Wallet client not found')
       setErrorMsg('Wallet client not available. Please ensure your wallet is connected.')
       setIsSendTxnPending(false)
@@ -271,33 +267,51 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
     try {
       switch (contractType) {
         case 'ERC721':
-          console.log('Sending ERC721 via walletClient')
           txData = encodeFunctionData({
             abi: ERC_721_ABI,
             functionName: 'safeTransferFrom',
             args: [accountAddress, toAddress, tokenId]
           })
-          txHash = await walletClient.sendTransaction({
-            account: accountAddress as `0x${string}`,
-            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: txData,
-            chain: chains.find(c => c.id === chainId)
-          })
+          if (isSequenceV3ConnectorActive) {
+            txHash = (await sendWalletTransactionAsync({
+              chainId,
+              transaction: {
+                to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+                data: txData
+              }
+            })) as Hex
+          } else {
+            txHash = await walletClient!.sendTransaction({
+              account: accountAddress as `0x${string}`,
+              to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+              data: txData,
+              chain: chains.find(c => c.id === chainId)
+            })
+          }
           break
         case 'ERC1155':
         default:
-          console.log('Sending ERC1155 via walletClient')
           txData = encodeFunctionData({
             abi: ERC_1155_ABI,
             functionName: 'safeBatchTransferFrom',
             args: [accountAddress, toAddress, [tokenId], [toHex(sendAmount)], toHex(new Uint8Array())]
           })
-          txHash = await walletClient.sendTransaction({
-            account: accountAddress as `0x${string}`,
-            to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
-            data: txData,
-            chain: chains.find(c => c.id === chainId)
-          })
+          if (isSequenceV3ConnectorActive) {
+            txHash = (await sendWalletTransactionAsync({
+              chainId,
+              transaction: {
+                to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+                data: txData
+              }
+            })) as Hex
+          } else {
+            txHash = await walletClient!.sendTransaction({
+              account: accountAddress as `0x${string}`,
+              to: (tokenBalance as TokenBalance).contractAddress as `0x${string}`,
+              data: txData,
+              chain: chains.find(c => c.id === chainId)
+            })
+          }
       }
 
       // Handle successful transaction submission
@@ -362,7 +376,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
 
   return (
     <form className="flex px-4 pb-4 gap-2 flex-col" onSubmit={handleSendClick}>
-      {!showConfirmation && (
+      {!isConfirmationVisible && (
         <>
           <div className="flex bg-background-secondary rounded-xl p-4 gap-2 flex-col">
             <SendItemInfo
@@ -445,7 +459,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
             </Text>
           )}
           <div className="flex items-center justify-center mt-2" style={{ height: '52px' }}>
-            {isCheckingFeeOptions ? (
+            {isSendTxnPending ? (
               <Spinner />
             ) : (
               <Button
@@ -453,7 +467,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
                 variant="primary"
                 size="lg"
                 type="submit"
-                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds}
+                disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || isSendTxnPending}
                 label="Send"
                 rightIcon={ChevronRightIcon}
               />
@@ -461,7 +475,7 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           </div>
         </>
       )}
-      {showConfirmation && (
+      {isConfirmationVisible && (
         <TransactionConfirmation
           name={name}
           symbol=""
@@ -476,14 +490,10 @@ export const SendCollectible = ({ chainId, contractAddress, tokenId }: SendColle
           onSelectFeeOption={feeTokenAddress => {
             setSelectedFeeTokenAddress(feeTokenAddress)
           }}
-          isLoading={isSendTxnPending}
+          isLoading={false}
           disabled={!isCorrectChainId && !isConnectorSequenceBased}
-          onConfirm={() => {
-            executeTransaction()
-          }}
-          onCancel={() => {
-            setShowConfirmation(false)
-          }}
+          onConfirm={handleConfirmationSubmit}
+          onCancel={handleConfirmationCancel}
         />
       )}
     </form>

@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/wallet-widget",
-  "version": "5.4.8",
+  "version": "6.0.0-beta.4",
   "description": "Wallet UI for Sequence Web SDK",
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/wallet-widget",
   "author": "Sequence Platforms ULC",
@@ -32,7 +32,6 @@
   "dependencies": {
     "0xtrails": "^0.11.0",
     "@0xsequence/design-system": "2.1.11",
-    "@0xsequence/hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.1.11",
     "dayjs": "^1.11.13",
     "fuse.js": "^7.1.0",
@@ -52,8 +51,8 @@
     "ethers": ">= 6.13.0",
     "react": ">= 17",
     "react-dom": ">= 17",
-    "viem": ">= 2.44.0",
-    "wagmi": ">= 2.19.0"
+    "viem": ">= 2.45.0",
+    "wagmi": ">= 3.2.0"
   },
   "devDependencies": {
     "@0xsequence/checkout": "workspace:*",
@@ -63,7 +62,7 @@
     "ethers": "^6.13.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "viem": "^2.44.4",
-    "wagmi": "^2.19.5"
+    "viem": "^2.45.1",
+    "wagmi": "^3.2.0"
   }
 }

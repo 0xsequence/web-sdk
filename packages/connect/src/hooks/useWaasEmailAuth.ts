@@ -1,3 +1,5 @@
+'use client'
+
 import { SequenceWaaS, type SignInResponse } from '@0xsequence/waas'
 import { useState } from 'react'
 

@@ -2,12 +2,12 @@ import { useWallets } from '@0xsequence/connect'
 import { Button, CopyIcon, ShareIcon, Text } from '@0xsequence/design-system'
 import { useClipboard } from '@0xsequence/hooks'
 import { QRCodeCanvas } from 'qrcode.react'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import { WalletSelect } from '../../components/Select/WalletSelect.js'
 
 export const Receive = () => {
-  const { address } = useAccount()
+  const { address } = useConnection()
   const { setActiveWallet } = useWallets()
   const [isCopied, setCopied] = useClipboard({ timeout: 4000 })
 

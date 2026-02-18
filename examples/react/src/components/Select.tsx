@@ -34,7 +34,7 @@ const SelectItem = forwardRef(({ children, className, ...props }: SelectPrimitiv
 })
 
 export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement>) => {
-  const { name, label, options, onValueChange, value } = props
+  const { name, label, options, value, onValueChange } = props
 
   return (
     <Field id={name} label={label} labelLocation={'top'} className="grid whitespace-nowrap">
@@ -46,8 +46,7 @@ export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement
             'inline-flex items-center justify-between gap-1 p-4 h-[52px] bg-background-primary rounded-xl',
             'text-base font-medium text-primary select-none cursor-pointer border-none',
             'outline-hidden ring-inset ring-1 ring-border-normal focus-within:ring-2 focus-within:ring-border-focus focus-within:opacity-100',
-            '[&:has(:disabled)]:cursor-default [&:has(:disabled)]:opacity-50',
-            '[&:has(:disabled):hover]:cursor-default [&:has(:disabled):hover]:opacity-50'
+            '[&:has(:disabled)]:cursor-default [&:has(:disabled):hover]:cursor-default [&:has(:disabled):hover]:opacity-50'
           )}
           ref={ref}
         >
@@ -62,7 +61,7 @@ export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement
             position="popper"
             side="bottom"
             align="start"
-            className="mt-2 p-1 bg-background-backdrop backdrop-blur-md min-w-[var(--radix-select-trigger-width)] rounded-lg overflow-hidden z-30 outline-hidden ring-inset focus-within:ring-2 focus-within:ring-border-focus max-h-[360px] overflow-y-auto"
+            className="mt-2 p-1 bg-background-backdrop backdrop-blur-md min-w-(--radix-select-trigger-width) rounded-lg overflow-hidden z-30 outline-hidden ring-inset focus-within:ring-2 focus-within:ring-border-focus max-h-[360px] overflow-y-auto"
           >
             <SelectPrimitive.Viewport>
               <SelectPrimitive.Group className="flex flex-col gap-0.5">

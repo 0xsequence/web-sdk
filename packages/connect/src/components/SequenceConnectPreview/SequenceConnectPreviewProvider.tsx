@@ -1,6 +1,6 @@
 'use client'
 
-import { ThemeProvider, type Theme } from '@0xsequence/design-system'
+import { Spinner, ThemeProvider, type Theme } from '@0xsequence/design-system'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { useState, type ReactNode } from 'react'
 import { useConfig } from 'wagmi'
@@ -9,6 +9,8 @@ import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
 import { ConnectConfigContextProvider } from '../../contexts/ConnectConfig.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
+import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
+import { useSyncWagmiChains } from '../../hooks/useSyncWagmiChains.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import { type ConnectConfig, type DisplayedAsset, type ExtendedConnector, type ModalPosition } from '../../types.js'
 import { Connect } from '../Connect/Connect.js'
@@ -18,6 +20,21 @@ export type SequenceConnectProviderProps = {
   config: ConnectConfig
 }
 
+const resolveInlineBackground = (theme: Theme | undefined) => {
+  if (theme && typeof theme === 'object' && 'colors' in theme) {
+    const background = (theme as any).colors?.backgroundPrimary
+    if (background) {
+      return background as string
+    }
+  }
+
+  if (typeof theme === 'string') {
+    return theme === 'light' ? '#f6f6f6' : '#000'
+  }
+
+  return '#000'
+}
+
 /**
  * @internal
  * Preview version of SequenceConnectProvider component.
@@ -25,7 +42,15 @@ export type SequenceConnectProviderProps = {
  * It provides the same functionality as SequenceConnectProvider but only for preview purposes.
  */
 export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderProps) => {
-  const { config, children } = props
+  const { config: incomingConfig, children } = props
+  const {
+    resolvedConfig: config,
+    isLoading: isWalletConfigLoading,
+    enabledProviders,
+    isV3WalletSignedIn,
+    isAuthStatusLoading,
+    walletConfigurationSignIn
+  } = useResolvedConnectConfig(incomingConfig)
 
   const {
     defaultTheme = 'dark',
@@ -42,6 +67,9 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
 
   const wagmiConfig = useConfig()
+  useSyncWagmiChains(config, wagmiConfig)
+
+  const inlineBackground = resolveInlineBackground(theme)
 
   const googleWaasConnector = wagmiConfig.connectors.find(
     c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
@@ -72,9 +100,26 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
                 hideSocialConnectOptions
               }}
             >
-              <div id="kit-provider">
+              <div id="kit-provider" style={{ background: inlineBackground }}>
                 <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
-                  <Connect onClose={() => {}} emailConflictInfo={emailConflictInfo} isInline {...props} />
+                  {isWalletConfigLoading ? (
+                    <div className="flex py-8 justify-center items-center">
+                      <Spinner size="lg" />
+                    </div>
+                  ) : (
+                    <Connect
+                      onClose={() => {}}
+                      emailConflictInfo={emailConflictInfo}
+                      isInline
+                      {...props}
+                      config={incomingConfig}
+                      resolvedConfig={config}
+                      isV3WalletSignedIn={isV3WalletSignedIn}
+                      isAuthStatusLoading={isAuthStatusLoading}
+                      enabledProviders={enabledProviders}
+                      walletConfigurationSignIn={walletConfigurationSignIn}
+                    />
+                  )}
                 </ThemeProvider>
               </div>
               {children}

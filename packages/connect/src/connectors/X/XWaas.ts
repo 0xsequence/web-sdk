@@ -1,5 +1,5 @@
 import type { Wallet } from '../../types.js'
-import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/index.js'
+import { sequenceWaasWallet, type BaseSequenceWaasConnectorOptions } from '../wagmiConnectors/sequenceWaasConnector.js'
 
 import { getXLogo } from './XLogo.js'
 

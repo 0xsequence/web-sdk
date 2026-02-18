@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/immutable-connector",
-  "version": "5.4.8",
+  "version": "6.0.0-beta.4",
   "description": "Immutable connector for Sequence Kit",
   "repository": "https://github.com/0xsequence/web-sdk/tree/master/packages/immutable-connector",
   "author": "Sequence Platforms ULC",
@@ -40,7 +40,7 @@
     "ethers": "^6.13.0",
     "react": ">= 17 < 19",
     "react-dom": ">= 17 < 19",
-    "viem": "^2.44.4",
-    "wagmi": "^2.19.5"
+    "viem": "^2.45.1",
+    "wagmi": "^3.2.0"
   }
 }

@@ -12,7 +12,10 @@ export default tseslint.config(
     ignores: ['packages/*/dist'],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020
+      ecmaVersion: 2020,
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname
+      }
     },
     plugins: {
       import: importPlugin
@@ -46,8 +49,8 @@ export default tseslint.config(
             caseInsensitive: true
           },
           named: {
-	    enabled: true,
-            types: "types-last"
+            enabled: true,
+            types: 'types-last'
           },
           pathGroups: [
             {

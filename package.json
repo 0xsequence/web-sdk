@@ -21,6 +21,7 @@
     "changeset:version": "changeset version",
     "changeset:publish": "pnpm build && changeset publish",
     "dev:react": "pnpm --filter example-react dev",
+    "dev:aave": "pnpm --filter example-aave dev",
     "debug:react": "DEBUG=true pnpm dev:react",
     "serve:react": "pnpm --filter example-react serve",
     "build:react": "pnpm --filter example-react build",
@@ -30,6 +31,10 @@
     "dev:next": "pnpm --filter example-next dev",
     "serve:next": "pnpm --filter example-next start",
     "build:next": "pnpm --filter example-next build",
+    "dev:react-waas": "pnpm --filter example-react-waas dev",
+    "debug:react-waas": "DEBUG=true pnpm dev:react-waas",
+    "serve:react-waas": "pnpm --filter example-react-waas serve",
+    "build:react-waas": "pnpm --filter example-react-waas build",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -44,7 +49,6 @@
     "eslint": "^9.25.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "ethers": "^6.13.7",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "react": "^19.1.0",
@@ -53,8 +57,8 @@
     "turbo": "2.0.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.1",
-    "viem": "^2.44.4",
-    "wagmi": "^2.19.5"
+    "viem": "^2.45.1",
+    "wagmi": "3.2.0"
   },
   "resolutions": {},
   "packageManager": "pnpm@10.24.0"

@@ -1,6 +1,6 @@
 {
   "name": "@0xsequence/connect",
-  "version": "5.4.8",
+  "version": "6.0.0-beta.4",
   "description": "Connect package for Sequence Web SDK",
   "keywords": [
     "sequence",
@@ -28,7 +28,7 @@
     "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm && pnpm build:cjs",
     "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
     "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
-    "build:css": "node scripts/build-css.js",
+    "build:css": "node scripts/build-css.js && prettier --write src/styles.ts",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
     "dev": "pnpm run writeVersion && concurrently \"pnpm dev:tsc\"  \"pnpm watch-css\"",
@@ -39,6 +39,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@0xsequence/dapp-client": "3.0.0-beta.16",
     "@0xsequence/api": ">=2.3.38",
     "@0xsequence/auth": "^2.3.38",
     "@0xsequence/core": "^2.3.38",
@@ -50,36 +51,53 @@
     "@0xsequence/provider": "^2.3.38",
     "@0xsequence/utils": "^2.3.38",
     "@0xsequence/waas": "^2.3.38",
-    "@tailwindcss/cli": "^4.1.11",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
-    "tailwindcss": "^4.1.11",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
     "0xsequence": ">= 2.3.38",
     "@0xsequence/hooks": "workspace:*",
+    "@coinbase/wallet-sdk": "^4.3.6",
     "@databeat/tracker": "^0.9.3",
+    "@metamask/sdk": "~0.33.1",
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-query": ">= 5",
+    "@walletconnect/ethereum-provider": "^2.21.1",
     "ethers": ">=6.13.0",
     "react": ">= 17",
     "react-apple-signin-auth": "^1.1.0",
     "react-dom": ">= 17",
-    "viem": ">= 2.44.0",
-    "wagmi": ">= 2.19.0"
+    "viem": ">= 2.45.0",
+    "wagmi": ">= 3.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@coinbase/wallet-sdk": {
+      "optional": true
+    },
+    "@metamask/sdk": {
+      "optional": true
+    },
+    "@walletconnect/ethereum-provider": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "0xsequence": "^2.3.38",
     "@0xsequence/hooks": "workspace:*",
+    "@coinbase/wallet-sdk": "^4.3.6",
     "@tanstack/react-query": "^5.74.11",
     "@types/uuid": "^9.0.8",
+    "@metamask/sdk": "~0.33.1",
+    "@walletconnect/ethereum-provider": "^2.21.1",
+    "@tailwindcss/cli": "^4.1.11",
     "concurrently": "^9.1.2",
     "ethers": "^6.13.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "viem": "^2.44.4",
-    "wagmi": "^2.19.5"
+    "tailwindcss": "^4.1.11",
+    "viem": "^2.45.1",
+    "wagmi": "^3.2.0"
   }
 }

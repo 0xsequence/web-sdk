@@ -1,22 +1,33 @@
-import { SequenceCheckoutConfig } from '@0xsequence/checkout'
-import { ConnectConfig, createConfig, WalletType } from '@0xsequence/connect'
-import { immutable } from '@0xsequence/immutable-connector'
+import { ConnectConfig, createConfig, createContractPermission } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/network'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
-import { zeroAddress } from 'viem'
 
-const searchParams = new URLSearchParams(location.search)
+import { webSdkDemoLogoDataUrl } from './constants/index.js'
+import { getEmitterContractAddress } from './constants/permissions'
 
-// append ?type=waas|universal to url to switch between wallet types
-const walletType: WalletType = searchParams.get('type') === 'universal' ? 'universal' : 'waas'
+// const searchParams = new URLSearchParams(location.search)
 
 // append ?debug to url to enable debug mode
-const isDebugMode = searchParams.has('debug')
+// const isDebugMode = searchParams.has('debug')
 // @ts-ignore
-const isDev = __SEQUENCE_WEB_SDK_IS_DEV__
-const projectAccessKey = isDev ? 'AQAAAAAAAAbRfXdDS5e-ZD2pNeMcCtNnij4' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
+const isDev = false
+const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
+export const WALLET_URL_STORAGE_KEY = 'sequence-react-example.walletUrl'
+export const DEFAULT_WALLET_URL = 'https://immutable.ecosystem-demo.xyz'
+// export const DEFAULT_WALLET_URL = 'https://v3.sequence-dev.app/'
+
+export const sanitizeWalletUrl = (walletUrl: string): string => {
+  const trimmed = walletUrl.trim()
+
+  if (!trimmed || trimmed.endsWith('://')) {
+    return DEFAULT_WALLET_URL
+  }
+
+  const withoutTrailingSlash = trimmed.replace(/\/+$/, '')
+  return withoutTrailingSlash || DEFAULT_WALLET_URL
+}
 
 export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
   [ChainId.ARBITRUM_NOVA]: '0x37470dac8a0255141745906c972e414b1409b470'
@@ -24,11 +35,12 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
 
 export const connectConfig: ConnectConfig = {
   projectAccessKey,
-  defaultTheme: 'dark',
+  walletUrl: DEFAULT_WALLET_URL,
   signIn: {
-    projectName: 'Sequence Web SDK Demo',
-    useMock: isDebugMode,
-    showWalletAuthOptionsFirst: false
+    projectName: 'Web SDK Demo',
+    logoUrl: webSdkDemoLogoDataUrl,
+    descriptiveSocials: true,
+    disableTooltipForDescriptiveSocials: true
   },
   // Custom css injected into shadow dom
   // customCSS: `
@@ -36,34 +48,7 @@ export const connectConfig: ConnectConfig = {
   //     color: red !important;
   //   }
   // `,
-  displayedAssets: [
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Native token
-    {
-      contractAddress: zeroAddress,
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_NOVA
-    },
-    // Waas demo NFT
-    {
-      contractAddress: '0x0d402c63cae0200f0723b3e6fa0914627a48462e',
-      chainId: ChainId.ARBITRUM_SEPOLIA
-    },
-    // Skyweaver assets
-    {
-      contractAddress: '0x631998e91476da5b870d741192fc5cbc55f5a52e',
-      chainId: ChainId.POLYGON
-    }
-  ],
-  readOnlyNetworks: [ChainId.OPTIMISM],
+  displayedAssets: [],
   env: isDev
     ? {
         indexerGatewayUrl: 'https://dev-indexer.sequence.app',
@@ -90,103 +75,49 @@ export const passportInstance = new passport.Passport({
   scope: 'openid offline_access email transact'
 })
 
-export const config =
-  walletType === 'waas'
-    ? createConfig('waas', {
-        ...connectConfig,
-        appName: 'Sequence Web SDK Demo',
-        chainIds: [
-          ChainId.ARBITRUM_NOVA,
-          ChainId.ARBITRUM_SEPOLIA,
-          ChainId.POLYGON,
-          ChainId.IMMUTABLE_ZKEVM,
-          ChainId.IMMUTABLE_ZKEVM_TESTNET,
-          ChainId.BASE_SEPOLIA,
-          ChainId.BASE,
-          ChainId.SEPOLIA
-        ],
-        defaultChainId: ChainId.ARBITRUM_NOVA,
-        waasConfigKey: isDebugMode
-          ? 'eyJwcm9qZWN0SWQiOjY5NCwicnBjU2VydmVyIjoiaHR0cHM6Ly9kZXYtd2Fhcy5zZXF1ZW5jZS5hcHAiLCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI1NGF0bjV1cGk2M3FjNTlhMWVtM3ZiaHJzbiJ9'
-          : 'eyJwcm9qZWN0SWQiOjE2ODE1LCJlbWFpbFJlZ2lvbiI6ImNhLWNlbnRyYWwtMSIsImVtYWlsQ2xpZW50SWQiOiI2N2V2NXVvc3ZxMzVmcGI2OXI3NnJoYnVoIiwicnBjU2VydmVyIjoiaHR0cHM6Ly93YWFzLnNlcXVlbmNlLmFwcCJ9',
-        enableConfirmationModal: localStorage.getItem('confirmationEnabled') === 'true',
-
-        guest: true,
-        email: true,
-        google: {
-          clientId: isDebugMode
-            ? '603294233249-6h5saeg2uiu8akpcbar3r2aqjp6j7oem.apps.googleusercontent.com'
-            : '970987756660-35a6tc48hvi8cev9cnknp0iugv9poa23.apps.googleusercontent.com'
-        },
-        apple: {
-          clientId: 'com.horizon.sequence.waas',
-          redirectURI: window.location.origin + window.location.pathname
-        },
-        X: {
-          clientId: 'MVZ6aHMyNmMtSF9mNHVldFR6TV86MTpjaQ',
-          redirectURI: window.location.origin + '/auth-callback-X'
-        },
-        walletConnect: {
-          projectId: walletConnectProjectId
-        },
-        additionalWallets: [
-          immutable({
-            passportInstance,
-            environment: Environment.SANDBOX
-          })
-        ]
-      })
-    : createConfig('universal', {
-        ...connectConfig,
-        appName: 'Sequence Web SDK Demo',
-        chainIds: [
-          ChainId.ARBITRUM_NOVA,
-          ChainId.ARBITRUM,
-          ChainId.ARBITRUM_SEPOLIA,
-          ChainId.POLYGON,
-          ChainId.IMMUTABLE_ZKEVM,
-          ChainId.IMMUTABLE_ZKEVM_TESTNET,
-          ChainId.BASE_SEPOLIA,
-          ChainId.BASE,
-          ChainId.SEPOLIA
-        ],
-        defaultChainId: ChainId.ARBITRUM_NOVA,
-
-        walletConnect: {
-          projectId: walletConnectProjectId
-        },
-        additionalWallets: [
-          immutable({
-            passportInstance,
-            environment: Environment.SANDBOX
-          })
-        ]
-      })
-
-export const getErc1155SaleContractConfig = (walletAddress: string) => ({
-  chain: 137,
-  // ERC20 token sale
-  contractAddress: '0xe65b75eb7c58ffc0bf0e671d64d0e1c6cd0d3e5b',
-  collectionAddress: '0xdeb398f41ccd290ee5114df7e498cf04fac916cb',
-  // Native token sale
-  // contractAddress: '0xf0056139095224f4eec53c578ab4de1e227b9597',
-  // collectionAddress: '0x92473261f2c26f2264429c451f70b0192f858795',
-  wallet: walletAddress,
-  items: [
-    {
-      tokenId: '1',
-      quantity: '1'
-    }
-  ],
-  onSuccess: () => {
-    console.log('success')
+export const loadWalletUrl = (): string => {
+  if (typeof window === 'undefined') {
+    return DEFAULT_WALLET_URL
   }
-})
 
-export const checkoutConfig: SequenceCheckoutConfig = {
-  env: isDev
-    ? {
-        forteWidgetUrl: 'https://payments.sandbox.lemmax.com/forte-payments-widget.js'
-      }
-    : undefined
+  const stored = window.localStorage.getItem(WALLET_URL_STORAGE_KEY)
+  return sanitizeWalletUrl(stored ?? DEFAULT_WALLET_URL)
 }
+
+export const persistWalletUrl = (walletUrl: string) => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const sanitized = sanitizeWalletUrl(walletUrl)
+
+  window.localStorage.setItem(WALLET_URL_STORAGE_KEY, sanitized)
+}
+
+export const createExampleConfig = (walletUrl: string) =>
+  createConfig({
+    ...connectConfig,
+    walletUrl: sanitizeWalletUrl(walletUrl),
+    dappOrigin: window.location.origin,
+    appName: 'Sequence Web SDK Demo',
+    defaultChainId: ChainId.ARBITRUM_SEPOLIA,
+    walletConnect: {
+      projectId: walletConnectProjectId
+    },
+    nodesUrl: isDev ? 'https://dev-nodes.sequence.app/{network}' : 'https://nodes.sequence.app/{network}',
+    relayerUrl: isDev ? 'https://dev-{network}-relayer.sequence.app' : 'https://{network}-relayer.sequence.app',
+    enableImplicitSession: true,
+    includeFeeOptionPermissions: true,
+    explicitSessionParams: {
+      chainId: ChainId.ARBITRUM_SEPOLIA,
+      expiresIn: {
+        minutes: 3
+      },
+      permissions: [
+        createContractPermission({
+          address: getEmitterContractAddress(window.location.origin),
+          functionSignature: 'function explicitEmit()'
+        })
+      ]
+    }
+  })

@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Card, Modal, ModalPrimitive, Text, type Theme } from '@0xsequence/design-system'
+import { Button, Card, Modal, ModalPrimitive, Spinner, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { ChainId } from '@0xsequence/network'
 import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, useState } from 'react'
 import { hexToString, type Hex } from 'viem'
-import { useAccount, useConfig, useConnections, type Connector } from 'wagmi'
+import { useConfig, useConnection, useConnections, type Connector } from 'wagmi'
 
 import { DEFAULT_SESSION_EXPIRATION, LocalStorageKey, WEB_SDK_VERSION } from '../../constants/index.js'
 import { AnalyticsContextProvider } from '../../contexts/Analytics.js'
@@ -17,7 +17,9 @@ import { ConnectModalContextProvider } from '../../contexts/ConnectModal.js'
 import { SocialLinkContextProvider } from '../../contexts/SocialLink.js'
 import { ThemeContextProvider } from '../../contexts/Theme.js'
 import { WalletConfigContextProvider } from '../../contexts/WalletConfig.js'
+import { useResolvedConnectConfig } from '../../hooks/useResolvedConnectConfig.js'
 import { useStorage } from '../../hooks/useStorage.js'
+import { useSyncWagmiChains } from '../../hooks/useSyncWagmiChains.js'
 import { useWaasConfirmationHandler } from '../../hooks/useWaasConfirmationHandler.js'
 import { useEmailConflict } from '../../hooks/useWaasEmailConflict.js'
 import {
@@ -44,15 +46,26 @@ export type SequenceConnectProviderProps = {
   config: ConnectConfig
 }
 
+const DEFAULT_DISPLAYED_ASSETS: DisplayedAsset[] = []
+
 export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => {
-  const { config, children } = props
+  const { config: incomingConfig, children } = props
+  const {
+    resolvedConfig: config,
+    isLoading: isWalletConfigLoading,
+    enabledProviders,
+    isV3WalletSignedIn,
+    isAuthStatusLoading,
+    walletConfigurationSignIn,
+    sdkConfig
+  } = useResolvedConnectConfig(incomingConfig)
   const {
     defaultTheme = 'dark',
     signIn = {},
     position = 'center',
-    displayedAssets: displayedAssetsSetting = [],
+    displayedAssets: displayedAssetsSetting = DEFAULT_DISPLAYED_ASSETS,
     readOnlyNetworks,
-    ethAuth = {} as EthAuthSettings,
+    ethAuth: ethAuthConfig,
     disableAnalytics = false,
     hideExternalConnectOptions = false,
     hideConnectedWallets = false,
@@ -63,20 +76,23 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
 
   const defaultAppName = signIn.projectName || 'app'
 
-  const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth
+  const isEthAuthEnabled = ethAuthConfig !== false
+  const ethAuth: EthAuthSettings | undefined = isEthAuthEnabled ? (ethAuthConfig ?? {}) : undefined
+  const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth ?? {}
 
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
   const [analytics, setAnalytics] = useState<SequenceClient['analytics']>()
-  const { address, isConnected } = useAccount()
+  const { address, isConnected } = useConnection()
   const wagmiConfig = useConfig()
-  const storage = useStorage()
+  useSyncWagmiChains(config, wagmiConfig)
   const connections = useConnections()
   const waasConnector: Connector | undefined = connections.find(c => c.connector.id.includes('waas'))?.connector
-
   const [isWalletWidgetOpen, setIsWalletWidgetOpen] = useState<boolean>(false)
+
+  const storage = useStorage()
 
   useEffect(() => {
     const handleWalletModalStateChange = (event: Event) => {
@@ -99,7 +115,14 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const googleWaasConnector = wagmiConfig.connectors.find(
     c => c.id === 'sequence-waas' && (c as ExtendedConnector)._wallet.id === 'google-waas'
   ) as ExtendedConnector | undefined
-  const googleClientId: string = (googleWaasConnector as any)?.params?.googleClientId || ''
+
+  // Google OAuth is required for the WaaS Google connector. Prefer the connector's clientId,
+  // then fall back to the new config.google.clientId, and finally the deprecated googleClientId flag.
+  const googleClientId: string =
+    (googleWaasConnector as any)?.params?.googleClientId ||
+    (config as any)?.google?.clientId ||
+    (config as any)?.googleClientId ||
+    ''
 
   const getAnalyticsClient = (projectAccessKey: string) => {
     // @ts-ignore-next-line
@@ -137,7 +160,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     if (!disableAnalytics) {
       getAnalyticsClient(config.projectAccessKey)
     }
-  }, [])
+  }, [disableAnalytics, config.projectAccessKey])
 
   useEffect(() => {
     if (theme !== defaultTheme) {
@@ -163,16 +186,21 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
     // EthAuth
     // note: keep an eye out for potential race-conditions, though they shouldn't occur.
     // If there are race conditions, the settings could be a function executed prior to being passed to wagmi
-    storage?.setItem(LocalStorageKey.EthAuthSettings, {
-      expiry,
-      app,
-      origin: origin || location.origin,
-      nonce
-    })
-  }, [theme, ethAuth])
+    if (isEthAuthEnabled) {
+      storage?.setItem(LocalStorageKey.EthAuthSettings, {
+        expiry,
+        app,
+        origin: origin || location.origin,
+        nonce
+      })
+    } else {
+      storage?.removeItem(LocalStorageKey.EthAuthSettings)
+      storage?.removeItem(LocalStorageKey.EthAuthProof)
+    }
+  }, [theme, isEthAuthEnabled, storage, expiry, app, origin, nonce])
 
   useEffect(() => {
-    setDisplayedAssets(displayedAssets)
+    setDisplayedAssets(displayedAssetsSetting)
   }, [displayedAssetsSetting])
 
   const { isEmailConflictOpen, emailConflictInfo, toggleEmailConflictModal } = useEmailConflict()
@@ -195,10 +223,10 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
             setPosition: setModalPosition
           }}
         >
-          <GoogleOAuthProvider clientId={googleClientId}>
-            <ConnectModalContextProvider
-              value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
-            >
+          <ConnectModalContextProvider
+            value={{ isConnectModalOpen: openConnectModal, setOpenConnectModal, openConnectModalState: openConnectModal }}
+          >
+            <GoogleOAuthProvider clientId={googleClientId || ''}>
               <WalletConfigContextProvider
                 value={{
                   setDisplayedAssets,
@@ -210,9 +238,9 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                 }}
               >
                 <AnalyticsContextProvider value={{ setAnalytics, analytics }}>
-                  <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey, setIsSocialLinkOpen }}>
-                    <ShadowRoot theme={theme} customCSS={customCSS}>
-                      <EpicAuthProvider>
+                  <ToastProvider>
+                    <SocialLinkContextProvider value={{ isSocialLinkOpen, waasConfigKey, setIsSocialLinkOpen }}>
+                      <ShadowRoot theme={theme} customCSS={customCSS}>
                         <AnimatePresence>
                           {openConnectModal && (
                             <Modal
@@ -227,14 +255,28 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               }}
                               onClose={() => setOpenConnectModal(false)}
                             >
-                              <Connect
-                                onClose={() => setOpenConnectModal(false)}
-                                emailConflictInfo={emailConflictInfo}
-                                {...props}
-                              />
+                              {isWalletConfigLoading || isAuthStatusLoading ? (
+                                <div className="flex py-16 justify-center items-center">
+                                  <Spinner size="lg" />
+                                </div>
+                              ) : (
+                                <EpicAuthProvider>
+                                  <Connect
+                                    onClose={() => setOpenConnectModal(false)}
+                                    emailConflictInfo={emailConflictInfo}
+                                    {...props}
+                                    config={incomingConfig}
+                                    resolvedConfig={config}
+                                    isV3WalletSignedIn={isV3WalletSignedIn}
+                                    isAuthStatusLoading={isAuthStatusLoading}
+                                    enabledProviders={enabledProviders}
+                                    walletConfigurationSignIn={walletConfigurationSignIn}
+                                    sdkConfig={sdkConfig}
+                                  />
+                                </EpicAuthProvider>
+                              )}
                             </Modal>
                           )}
-
                           {pendingRequestConfirmation && (
                             <Modal
                               scroll={false}
@@ -333,7 +375,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               </div>
                             </Modal>
                           )}
-
                           {isEmailConflictOpen && emailConflictInfo && (
                             <Modal
                               size="sm"
@@ -367,7 +408,6 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               </div>
                             </Modal>
                           )}
-
                           {isSocialLinkOpen &&
                             (waasConnector ? (
                               <Modal size="sm" scroll={false} onClose={() => setIsSocialLinkOpen(false)}>
@@ -381,14 +421,14 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               </Modal>
                             ))}
                         </AnimatePresence>
-                      </EpicAuthProvider>
-                    </ShadowRoot>
-                    {children}
-                  </SocialLinkContextProvider>
+                      </ShadowRoot>
+                      {children}
+                    </SocialLinkContextProvider>
+                  </ToastProvider>
                 </AnalyticsContextProvider>
               </WalletConfigContextProvider>
-            </ConnectModalContextProvider>
-          </GoogleOAuthProvider>
+            </GoogleOAuthProvider>
+          </ConnectModalContextProvider>
         </ThemeContextProvider>
       </ConnectConfigContextProvider>
     </SequenceHooksProvider>

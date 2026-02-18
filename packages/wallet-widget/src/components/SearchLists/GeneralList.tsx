@@ -2,10 +2,10 @@ import { compareAddress, getNativeTokenInfoByChainId, useWallets } from '@0xsequ
 import { cn, Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'
 import type { ContractInfo, Transaction, TxnTransfer } from '@0xsequence/indexer'
-import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useObservable } from 'micro-observables'
 import { useEffect, useMemo } from 'react'
+import { zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings } from '../../hooks/index.js'
@@ -70,7 +70,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
   }))
 
   const coinBalancesUnordered =
-    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, ethers.ZeroAddress)) || []
+    tokenBalancesData?.filter(b => b.contractType === 'ERC20' || compareAddress(b.contractAddress, zeroAddress)) || []
 
   const { data: coinPrices = [], isLoading: isLoadingCoinPrices } = useGetCoinPrices(
     coinBalancesUnordered.map(token => ({
@@ -145,7 +145,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
         name: 'coinName',
         getFn: (item: any) => {
           if (item._type === 'coin') {
-            if (compareAddress(item.contractAddress, ethers.ZeroAddress)) {
+            if (compareAddress(item.contractAddress, zeroAddress)) {
               const nativeTokenInfo = getNativeTokenInfoByChainId(item.chainId, chains)
               return nativeTokenInfo.name
             }
@@ -198,7 +198,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
         getFn: (item: any) => {
           if (item._type === 'transaction') {
             const hasNativeToken = item.transfers?.some((transfer: TxnTransfer) =>
-              compareAddress(transfer.contractInfo?.address || '', ethers.ZeroAddress)
+              compareAddress(transfer.contractInfo?.address || '', zeroAddress)
             )
             if (hasNativeToken) {
               const nativeTokenInfo = getNativeTokenInfoByChainId(item.chainId, chains)

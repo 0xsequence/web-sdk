@@ -35,8 +35,8 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
   isLinked,
   isReadOnly,
   onDisconnect,
-  onUnlink,
-  onReconnect
+  onReconnect,
+  onUnlink
 }) => {
   const [showUnlinkConfirm, setShowUnlinkConfirm] = useState(false)
   const [isUnlinking, setIsUnlinking] = useState(false)

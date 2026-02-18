@@ -4,5 +4,7 @@ export {
   EpicWaasConnectButton,
   getLogo,
   GoogleWaasConnectButton,
-  ShowAllWalletsButton
+  GuestWaasConnectButton,
+  ShowAllWalletsButton,
+  XWaasConnectButton
 } from './ConnectButton.js'

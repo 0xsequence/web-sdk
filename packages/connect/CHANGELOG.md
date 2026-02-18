@@ -1,5 +1,52 @@
 # @0xsequence/connect
 
+## 6.0.0-beta.4
+
+### Patch Changes
+
+- Ecosystem wallet config update
+
+- Updated dependencies []:
+  - @0xsequence/hooks@6.0.0-beta.4
+
+## 6.0.0-beta.3
+
+### Patch Changes
+
+- ethauth fixes
+
+- Updated dependencies []:
+  - @0xsequence/hooks@6.0.0-beta.3
+
+## 6.0.0-beta.2
+
+### Patch Changes
+
+- ethauth support
+
+- Updated dependencies []:
+  - @0xsequence/hooks@6.0.0-beta.2
+
+## 6.0.0-beta.1
+
+### Patch Changes
+
+- 6.0.0 beta fixes
+
+- Updated dependencies []:
+  - @0xsequence/hooks@6.0.0-beta.1
+
+## 6.0.0-beta.0
+
+### Major Changes
+
+- Connect package improvements for v6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @0xsequence/hooks@6.0.0-beta.0
+
 ## 5.4.8
 
 ### Patch Changes
