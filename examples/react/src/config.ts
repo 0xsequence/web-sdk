@@ -70,6 +70,8 @@ export const connectConfig: ConnectConfig = {
         metadataUrl: 'https://dev-metadata.sequence.app',
         apiUrl: 'https://dev-api.sequence.app',
         indexerUrl: 'https://dev-indexer.sequence.app',
+        nodeGatewayUrl: 'https://dev-nodes.sequence.app',
+        trailsApiUrl: 'https://dev-trails-api.sequence-dev.app',
         builderUrl: 'https://dev-api.sequence.build'
       }
     : undefined

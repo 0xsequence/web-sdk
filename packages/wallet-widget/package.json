@@ -30,6 +30,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "0xtrails": "^0.11.0",
     "@0xsequence/design-system": "2.1.11",
     "@0xsequence/hooks": "workspace:*",
     "@radix-ui/react-popover": "^1.1.11",
