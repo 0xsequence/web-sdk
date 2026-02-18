@@ -30,7 +30,7 @@
     "react-router-dom": "^7.5.3",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3",
-    "viem": "^2.40.3",
+    "viem": "^2.45.1",
     "wagmi": "^3.2.0"
   },
   "devDependencies": {

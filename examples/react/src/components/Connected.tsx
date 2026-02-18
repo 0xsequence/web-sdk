@@ -19,7 +19,7 @@ import React, { useEffect } from 'react'
 import { createPublicClient, encodeFunctionData, formatUnits, http, zeroAddress, type TransactionRequest } from 'viem'
 import { polygon } from 'viem/chains'
 import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
-import { useChainId, useConnection, usePublicClient, useSendTransaction, useWalletClient } from 'wagmi'
+import { useChainId, useConnection, usePublicClient, useSendTransaction, useSwitchChain, useWalletClient } from 'wagmi'
 
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
@@ -33,9 +33,38 @@ import {
 
 import { Select } from './Select'
 
+const INITIAL_V3_CHAIN_ID_STORAGE_KEY = 'sequence.example.initialV3ChainId'
+
+const getStoredInitialV3ChainId = (): number | undefined => {
+  if (typeof window === 'undefined') {
+    return undefined
+  }
+
+  const storedValue = window.localStorage.getItem(INITIAL_V3_CHAIN_ID_STORAGE_KEY)
+  if (!storedValue) {
+    return undefined
+  }
+
+  const parsed = Number(storedValue)
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : undefined
+}
+
+const setStoredInitialV3ChainId = (chainId?: number) => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  if (!chainId) {
+    window.localStorage.removeItem(INITIAL_V3_CHAIN_ID_STORAGE_KEY)
+    return
+  }
+
+  window.localStorage.setItem(INITIAL_V3_CHAIN_ID_STORAGE_KEY, String(chainId))
+}
+
 export const Connected = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
-  const { address } = useConnection()
+  const { address, chainId: connectedChainId } = useConnection()
 
   const { setOpenWalletModal } = useOpenWalletModal()
 
@@ -111,6 +140,7 @@ export const Connected = () => {
   const [lastWalletTxnDataHash, setLastWalletTxnDataHash] = React.useState<string | undefined>()
 
   const chainId = useChainId()
+  const { switchChainAsync } = useSwitchChain()
   const [pendingFeeOptionConfirmation, confirmPendingFeeOption] = useFeeOptions()
 
   const [selectedFeeOptionTokenName, setSelectedFeeOptionTokenName] = React.useState<string | undefined>()
@@ -120,6 +150,53 @@ export const Connected = () => {
   const { checkPermission, isLoading: isCheckingPermission, error: checkPermissionError } = useHasPermission()
 
   const [hasImplicitSession, setHasImplicitSession] = React.useState(false)
+  const [initialV3ChainId, setInitialV3ChainId] = React.useState<number | undefined>(() => getStoredInitialV3ChainId())
+
+  useEffect(() => {
+    if (!isV3WalletConnectionActive) {
+      setInitialV3ChainId(undefined)
+      setStoredInitialV3ChainId(undefined)
+      return
+    }
+
+    if (initialV3ChainId) {
+      return
+    }
+
+    if (connectedChainId) {
+      setInitialV3ChainId(connectedChainId)
+      setStoredInitialV3ChainId(connectedChainId)
+      return
+    }
+
+    if (chainId) {
+      setInitialV3ChainId(chainId)
+      setStoredInitialV3ChainId(chainId)
+      return
+    }
+
+    let isCancelled = false
+    const resolveInitialChain = async () => {
+      if (!walletClient) {
+        return
+      }
+      try {
+        const walletChainId = await walletClient.getChainId()
+        if (!isCancelled) {
+          setInitialV3ChainId(walletChainId)
+          setStoredInitialV3ChainId(walletChainId)
+        }
+      } catch (error) {
+        console.error('Failed to resolve initial V3 chain id:', error)
+      }
+    }
+
+    void resolveInitialChain()
+
+    return () => {
+      isCancelled = true
+    }
+  }, [isV3WalletConnectionActive, initialV3ChainId, connectedChainId, chainId, walletClient])
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -461,7 +538,23 @@ export const Connected = () => {
       return
     }
 
+    const targetChainId = initialV3ChainId ?? connectedChainId ?? chainId
+    if (!targetChainId) {
+      return
+    }
+
+    try {
+      const walletClientChainId = await walletClient.getChainId()
+      if (walletClientChainId !== targetChainId) {
+        await switchChainAsync({ chainId: targetChainId })
+      }
+    } catch (error) {
+      console.error('Failed to switch chain before sending implicit test transaction:', error)
+      return
+    }
+
     sendImplicitTestTransaction({
+      chainId: targetChainId,
       to: getEmitterContractAddress(window.location.origin),
       value: 0n,
       data: AbiFunction.getSelector(EMITTER_ABI[1])
@@ -487,7 +580,19 @@ export const Connected = () => {
     if (!walletClient) {
       return
     }
+
+    try {
+      const walletClientChainId = await walletClient.getChainId()
+      if (walletClientChainId !== chainId) {
+        await switchChainAsync({ chainId })
+      }
+    } catch (error) {
+      console.error('Failed to switch chain before sending permissioned transaction:', error)
+      return
+    }
+
     sendPermissionedTransaction({
+      chainId,
       to: getEmitterContractAddress(window.location.origin),
       data: AbiFunction.getSelector(EMITTER_ABI[0])
     })

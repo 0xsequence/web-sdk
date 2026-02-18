@@ -58,7 +58,6 @@ export const walletConnect = (options: WalletConnectOptions): Wallet => ({
 
         return result
       }
-
       return {
         ...connector,
         connect

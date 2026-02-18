@@ -3,7 +3,8 @@ import {
   type ExplicitSessionConfig,
   type FeeOption,
   type FeeToken,
-  type GetFeeTokensResponse
+  type GetFeeTokensResponse,
+  type TransactionRequest as DappClientTransactionRequest
 } from '@0xsequence/dapp-client'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -245,6 +246,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   private currentChainId: number
   private nodesUrl: string
   private projectAccessKey: string
+  private useWalletTransactionForSend = false
   private enableImplicitSession?: boolean
   private loginType?: SequenceV3LoginType
   private initialSessionConfig?: ExplicitSessionConfig
@@ -318,6 +320,14 @@ export class SequenceV3Provider implements EIP1193Provider {
 
   getChainId(): number {
     return this.currentChainId
+  }
+
+  /**
+   * Toggles wallet-action based transaction sending for eth_sendTransaction.
+   * Used by Trails flows where V3 should route through sendWalletTransaction.
+   */
+  setUseWalletTransactionForSend(enabled: boolean) {
+    this.useWalletTransactionForSend = enabled
   }
 
   async request(args: EIP1193RequestArgs): Promise<any> {
@@ -517,6 +527,50 @@ export class SequenceV3Provider implements EIP1193Provider {
             shortMessage: 'Invalid transaction params'
           })
         }
+
+        if (this.useWalletTransactionForSend) {
+          const walletTransactionRequest: DappClientTransactionRequest = {
+            to: tx.to,
+            value: tx.value !== undefined ? BigInt(tx.value.toString()) : undefined,
+            data: tx.data ?? undefined,
+            gasLimit: tx.gas !== undefined ? BigInt(tx.gas.toString()) : undefined
+          }
+
+          return await new Promise((resolve, reject) => {
+            const unsubscribe = this.client.on('walletActionResponse', (data: any) => {
+              unsubscribe()
+
+              if (data?.error) {
+                reject(new RpcError(new Error(data.error), { code: 4001, shortMessage: data.error }))
+                return
+              }
+
+              const txHash = data?.response?.transactionHash
+              if (!txHash) {
+                reject(
+                  new RpcError(new Error('No transaction hash returned from wallet action response'), {
+                    code: -32000,
+                    shortMessage: 'Wallet transaction failed'
+                  })
+                )
+                return
+              }
+
+              resolve(txHash)
+            })
+
+            this.client.sendWalletTransaction(this.currentChainId, walletTransactionRequest).catch((error: unknown) => {
+              unsubscribe()
+              reject(
+                new RpcError(new Error(formatProviderError(error)), {
+                  code: -32000,
+                  shortMessage: 'Failed to send wallet transaction'
+                })
+              )
+            })
+          })
+        }
+
         const transactions = [{ to: tx.to!, value: BigInt(tx.value?.toString() ?? '0'), data: tx.data ?? '0x' }]
 
         // @note feeConfirmationHandler will only be defined if the useFeeOptions hook is used anywhere in the app

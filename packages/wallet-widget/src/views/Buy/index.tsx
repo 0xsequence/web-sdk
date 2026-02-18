@@ -1,32 +1,43 @@
-import { TransactionOnRampProvider, useAddFundsModal } from '@0xsequence/checkout'
-import { useWallets } from '@0xsequence/connect'
-import { AddIcon, Text } from '@0xsequence/design-system'
-import { useConnection } from 'wagmi'
+import { TrailsWidget } from '0xtrails'
+import { useConnectConfigContext, useTheme } from '@0xsequence/connect'
+import { useConfig } from '@0xsequence/hooks'
+import { useAccount } from 'wagmi'
 
-import { WalletSelect } from '../../components/Select/WalletSelect.js'
+import { TRAILS_CUSTOM_CSS, TRAILS_CUSTOM_CSS_LIGHT } from '../../views/Swap/consts.js'
+import { useTrailsSequenceV3WalletSend } from '../../views/Swap/useTrailsSequenceV3WalletSend.js'
 
 export const Buy = () => {
-  const { address } = useConnection()
-  const { setActiveWallet } = useWallets()
-  const { triggerAddFunds } = useAddFundsModal()
+  const { address } = useAccount()
+  const config = useConfig()
+  const { theme } = useTheme()
+  const { trailsCustomCSS } = useConnectConfigContext()
+  useTrailsSequenceV3WalletSend()
 
-  const onClickWallet = (address: string) => {
-    setActiveWallet(address)
-  }
-
-  const onClickAddFunds = () => {
-    triggerAddFunds({ walletAddress: address || '', provider: TransactionOnRampProvider.transak })
-  }
+  const trailsApiUrl = config.env.trailsApiUrl
+  const sequenceIndexerUrl = config.env.indexerUrl
+  const sequenceNodeGatewayUrl = config.env.nodeGatewayUrl
+  const sequenceApiUrl = config.env.apiUrl
+  const trailsTheme = typeof theme === 'string' && theme === 'light' ? 'light' : 'dark'
+  const resolvedCustomCss =
+    typeof trailsCustomCSS === 'string'
+      ? trailsCustomCSS
+      : trailsCustomCSS?.[trailsTheme] || (trailsTheme === 'dark' ? TRAILS_CUSTOM_CSS : TRAILS_CUSTOM_CSS_LIGHT)
 
   return (
-    <div className="flex flex-col justify-center items-center px-4 pb-6 gap-4 w-full">
-      <WalletSelect selectedWallet={address || ''} onClick={onClickWallet} />
-      <div className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer">
-        <AddIcon color="white" />
-        <Text variant="normal" fontWeight="bold" color="primary" onClick={onClickAddFunds}>
-          Add Funds to Selected Wallet
-        </Text>
-      </div>
-    </div>
+    <TrailsWidget
+      apiKey={config.projectAccessKey}
+      trailsApiUrl={trailsApiUrl}
+      sequenceIndexerUrl={sequenceIndexerUrl}
+      sequenceNodeGatewayUrl={sequenceNodeGatewayUrl}
+      appUrl="https://sequence.app"
+      sequenceApiUrl={sequenceApiUrl}
+      renderInline={true}
+      theme={trailsTheme}
+      mode="fund"
+      toAddress={address || null}
+      customCss={resolvedCustomCss}
+      hideDisconnect={true}
+      hideAddWallet={true}
+    />
   )
 }

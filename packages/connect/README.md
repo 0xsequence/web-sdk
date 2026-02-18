@@ -29,6 +29,8 @@ yarn add @0xsequence/connect
 
 2. Create the wallet configuration
 
+Use separate sections for Ecosystem (v3) and WaaS.
+
 ```typescript [config.ts]
 import { createConfig, createContractPermission } from '@0xsequence/connect'
 import { parseEther, parseUnits } from 'viem'
@@ -36,12 +38,13 @@ import { parseEther, parseUnits } from 'viem'
 export const USDC_ADDRESS_ARBITRUM = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831'
 export const AAVE_V3_POOL_ADDRESS_ARBITRUM = '0x794a61358D6845594F94dc1DB02A252b5b4814aD'
 
-export const config: any = createConfig({
-  projectAccessKey: 'AQAAAAAAAABtDHG1It7lxRF_9bbxw4diip8',
+// Ecosystem connector (sequenceV3 connector path)
+export const ecosystemConfig = createConfig({
+  projectAccessKey: '<your-project-access-key>',
   signIn: {
     projectName: 'Sequence Web SDK Demo'
   },
-  walletUrl: 'https://next-acme-wallet.sequence-dev.app/',
+  walletUrl: 'https://wallet.sequence.app',
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
   chainIds: [42161],
@@ -49,13 +52,14 @@ export const config: any = createConfig({
   google: true,
   apple: true,
   email: true,
+  passkey: true,
   explicitSessionParams: {
     chainId: 42161,
     nativeTokenSpending: {
-      valueLimit: parseEther('0.01') // Allow spending up to 0.01 ETH for gas fees
+      valueLimit: parseEther('0.01')
     },
     expiresIn: {
-      hours: 24 // Session lasts for 24 hours
+      hours: 24
     },
     permissions: [
       createContractPermission({
@@ -72,12 +76,40 @@ export const config: any = createConfig({
             param: 'amount',
             type: 'uint256',
             condition: 'LESS_THAN_OR_EQUAL',
-            value: parseUnits('100', 6), // Max cumulative amount of 100 USDC
+            value: parseUnits('100', 6),
             cumulative: true
           }
         ]
       })
     ]
+  },
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
+  }
+})
+
+// WaaS connector path
+export const waasConfig = createConfig('waas', {
+  projectAccessKey: '<your-project-access-key>',
+  waasConfigKey: '<your-waas-config-key>',
+  appName: 'Sequence Web SDK Demo',
+  chainIds: [42161],
+  defaultChainId: 42161,
+  guest: true,
+  email: true,
+  google: {
+    clientId: '<your-google-client-id>'
+  },
+  apple: {
+    clientId: '<your-apple-client-id>',
+    redirectURI: 'https://your.app/apple-callback'
+  },
+  X: {
+    clientId: '<your-x-client-id>',
+    redirectURI: 'https://your.app/x-callback'
+  },
+  walletConnect: {
+    projectId: '<your-wallet-connect-id>'
   }
 })
 ```
@@ -98,8 +130,11 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import App from "./App";
-import { config } from "./config";
+import { ecosystemConfig, waasConfig } from "./config";
 import { SequenceConnect } from "@0xsequence/connect";
+
+const config = ecosystemConfig
+// const config = waasConfig
 
 function Dapp() {
   return (

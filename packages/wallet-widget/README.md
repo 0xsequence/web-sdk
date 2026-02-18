@@ -81,3 +81,39 @@ function App() {
 ```
 
 ### For more information, please visit the [Wallet Widget SDK documentation](https://docs.sequence.xyz/sdk/web/wallet-widget-sdk/getting-started).
+
+# Opening the embedded wallet
+
+The embedded wallet modal can be summoned with the `useOpenWalletModal` hook.
+
+```js
+import { useOpenWalletModal } from '@0xsequence/wallet-widget'
+
+const MyComponent = () => {
+  const { setOpenWalletModal } = useOpenWalletModal()
+
+  const onClick = () => {
+    setOpenWalletModal(true)
+  }
+
+  return <button onClick={onClick}>open wallet</button>
+}
+```
+
+# Trails widget customization
+
+You can override the Trails widget styling via the connect config. Provide a single CSS string or per-theme values:
+
+```js
+import { SequenceConnect, createConfig } from '@0xsequence/connect'
+
+const config = createConfig('waas', {
+  projectAccessKey: '<your-project-access-key>',
+  waasConfigKey: '<your-waas-config-key>',
+  defaultTheme: 'light',
+  trailsCustomCSS: {
+    light: '/* custom light theme CSS */',
+    dark: '/* custom dark theme CSS */'
+  }
+})
+```

@@ -30,6 +30,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "0xtrails": "^0.11.0",
     "@0xsequence/design-system": "2.1.11",
     "@radix-ui/react-popover": "^1.1.11",
     "dayjs": "^1.11.13",
@@ -50,7 +51,7 @@
     "ethers": ">= 6.13.0",
     "react": ">= 17",
     "react-dom": ">= 17",
-    "viem": ">= 2.28.0",
+    "viem": ">= 2.45.0",
     "wagmi": ">= 3.2.0"
   },
   "devDependencies": {
@@ -61,7 +62,7 @@
     "ethers": "^6.13.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "viem": "^2.28.1",
+    "viem": "^2.45.1",
     "wagmi": "^3.2.0"
   }
 }
