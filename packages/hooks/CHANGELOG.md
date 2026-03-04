@@ -1,5 +1,19 @@
 # @0xsequence/hooks
 
+## 6.0.0
+
+### Major Changes
+
+- 3313726: Connect package improvements for v6
+
+### Patch Changes
+
+- 3313726: ethauth fixes
+- 3313726: 6.0.0 beta fixes
+- 3313726: Ecosystem wallet config update
+- 3313726: ethauth support
+- 6.0.0 release
+
 ## 6.0.0-beta.4
 
 ### Patch Changes
