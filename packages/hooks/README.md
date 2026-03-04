@@ -1,333 +1,55 @@
-# @0xsequence/hooks
 
-React hooks to interface with Sequence services.
+# Sequence Hooks SDK
 
-Wrap your application with the `SequenceHooksProvider` to provide a config to the hooks.
+Use [@0xsequence/hooks](https://www.npmjs.com/package/@0xsequence/hooks/v/0.0.0-20250924112110) to query coin prices, swap routes, swap quotes, balances, transaction history, token information and more by leveraging the Sequence API and Indexer.
 
-```tsx
-<SequenceHooksProvider
-  config={{
-    projectAccessKey: 'your-project-access-key',
-    env: {
-      indexerGatewayUrl: 'your-indexer-gateway-url',
-      metadataUrl: 'your-metadata-url',
-      apiUrl: 'your-api-url',
-      indexerUrl: 'your-indexer-url',
-      imageProxyUrl: 'your-image-proxy-url',
-      builderUrl: 'your-builder-api-url'
+## Key Features
+
+- Coin prices
+- Cross chain swap routes and quotes 
+- Multichain balances 
+- Transaction history
+- Query multiple contracts at once
+- Get current active wallet status and information
+- Get NFT and token metadata
+- Multiple filtering options
+
+# Quickstart
+
+1. Install the package:
+```bash
+npm install @0xsequence/hooks
+# or
+pnpm install @0xsequence/hooks
+# or
+yarn add @0xsequence/hooks
+```
+
+2. Wrap your app with the SequenceHooksProvider.
+
+```typescript [main.tsx]
+    import React from "react";
+    import ReactDOM from "react-dom/client";
+    import "./index.css";
+
+    import App from "./App";
+    import { SequenceHooksProvider } from "@0xsequence/hooks";
+
+    function Dapp() {
+        return (
+            <SequenceHooksProvider config={{ projectAccessKey: "AQAAAAAAAABtDHG1It7lxRF_9bbxw4diip8" }}>
+                <App />
+            </SequenceHooksProvider>
+        );
     }
-  }}
->
-  <App />
-</SequenceHooksProvider>
+
+    ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+        <Dapp />
+    </React.StrictMode>
+    );
 ```
 
-## Hooks:
+3. Start using the hooks in your app.
 
-Sequence hooks are grouped into 5 categories, based on the sequence service they interact with:
-
-### API
-
-- useGetCoinPrices
-- useGetCollectiblePrices
-- useGetExchangeRate
-
-### Indexer
-
-- useGetTransactionHistory
-- useGetTransactionHistorySummary
-
-### Indexer Gateway
-
-- useGetNativeTokenBalance
-- useGetTokenBalancesSummary
-- useGetTokenBalancesDetails
-- useGetTokenBalancesByContract
-- useGetSingleTokenBalance
-
-### Metadata
-
-- useGetContractInfo
-- useGetMultipleContractInfo
-- useGetTokenMetadata
-
-### Combination
-
-- useGetSwapQuote
-
-## Usage
-
-### useGetCoinPrices
-
-```tsx
-import { useGetCoinPrices } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetCoinPrices(
-  [
-    {
-      chainId: 1,
-      contractAddress: '0x0123456789012345678901234567890123456789'
-    }
-  ],
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetCollectiblePrices
-
-```tsx
-import { useGetCollectiblePrices } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetCollectiblePrices(
-  [
-    {
-      chainId: 1,
-      contractAddress: '0x0123456789012345678901234567890123456789',
-      tokenId: '1'
-    }
-  ],
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetExchangeRate
-
-```tsx
-import { useGetExchangeRate } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetExchangeRate('CAD', {
-  // options param is optional and default values are below
-  disabled: false
-})
-```
-
-### useGetTransactionHistory
-
-```tsx
-import { useGetTransactionHistory } from '@0xsequence/hooks'
-
-const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTransactionHistory({
-  accountAddresses: ['0x0123456789012345678901234567890123456789'],
-  contractAddresses: ['0x0123456789012345678901234567890123456789'], // optional
-  tokenId: '1', // optional
-  chainId: 1, // optional
-  page: { // optional
-    pageSize: 10,
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false,
-  }
-})
-```
-
-### useGetTransactionHistorySummary
-
-```tsx
-import { useGetTransactionHistorySummary } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetTransactionHistorySummary(
-  {
-    accountAddresses: ['0x0123456789012345678901234567890123456789'],
-    chainIds: [1]
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetNativeTokenBalance
-
-```tsx
-import { useGetNativeTokenBalance } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetNativeTokenBalance(
-  {
-    accountAddress: '0x0123456789012345678901234567890123456789',
-    chainIds: [1], // either use chainIds or networks name
-    networks: ['mainnet']
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetTokenBalancesSummary
-
-```tsx
-import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesSummary } from '@0xsequence/hooks'
-
-const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesSummary(
-  {
-    chainIds: [1], // either use chainIds or networks name
-    networks: ['mainnet'],
-    filter: {
-      accountAddresses: ['0x0123456789012345678901234567890123456789'],
-      contractWhitelist: ['0x0123456789012345678901234567890123456789'],
-      contractBlacklist: ['0x0000000000000000000000000000000000000000'],
-      contractStatus: ContractVerificationStatus.VERIFIED,
-      omitNativeBalances: false
-    },
-    omitMetadata: false, // optional
-    page: {
-      // optional
-      pageSize: 10
-    }
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetTokenBalancesDetails
-
-```tsx
-import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesDetails } from '@0xsequence/hooks'
-
-const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesDetails(
-  {
-    chainIds: [1], // either use chainIds or networks name
-    networks: ['mainnet'],
-    filter: {
-      accountAddresses: ['0x0123456789012345678901234567890123456789'],
-      contractWhitelist: ['0x0123456789012345678901234567890123456789'],
-      contractBlacklist: ['0x0000000000000000000000000000000000000000'],
-      contractStatus: ContractVerificationStatus.VERIFIED,
-      omitNativeBalances: false
-    },
-    omitMetadata: false, // optional
-    page: {
-      // optional
-      pageSize: 10
-    }
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetTokenBalancesByContract
-
-```tsx
-import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { useGetTokenBalancesByContract } from '@0xsequence/hooks'
-
-const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useGetTokenBalancesByContract(
-  {
-    chainIds: [1], // either use chainIds or networks name
-    networks: ['mainnet'],
-    filter: {
-      accountAddresses: ['0x0123456789012345678901234567890123456789'],
-      contractWhitelist: ['0x0123456789012345678901234567890123456789'],
-      contractBlacklist: ['0x0000000000000000000000000000000000000000'],
-      contractStatus: ContractVerificationStatus.VERIFIED,
-      omitNativeBalances: false
-    },
-    omitMetadata: false, // optional
-    page: {
-      // optional
-      pageSize: 10
-    }
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetSingleTokenBalance
-
-```tsx
-import { useGetSingleTokenBalance } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetSingleTokenBalance({
-  chainId: 1,
-  accountAddress: '0x9876543210987654321098765432109876543210',
-  contractAddress: '0x0123456789012345678901234567890123456789'
-})
-```
-
-### useGetContractInfo
-
-```tsx
-import { useGetContractInfo } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetContractInfo(
-  {
-    chainId: 1,
-    contractAddress: '0x0123456789012345678901234567890123456789'
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetMultipleContractInfo
-
-```tsx
-import { useGetMultipleContractInfo } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetMultipleContractInfo(
-  [
-    { chainId: 1, contractAddress: '0x0123456789012345678901234567890123456789' },
-    { chainId: 1, contractAddress: '0x0123456789012345678901234567890123456789' }
-  ],
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetTokenMetadata
-
-```tsx
-import { useGetTokenMetadata } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetTokenMetadata(
-  {
-    chainId: '1',
-    contractAddress: '0x0123456789012345678901234567890123456789',
-    tokenIds: ['1']
-  },
-  {
-    // options param is optional and default values are below
-    disabled: false
-  }
-)
-```
-
-### useGetSwapQuote
-
-```tsx
-import { useGetSwapQuote } from '@0xsequence/hooks'
-
-const { data, isLoading, error } = useGetSwapQuote({
-  userAddress: '0x9876543210987654321098765432109876543210',
-  buyCurrencyAddress: '0x0123456789012345678901234567890123456789',
-  sellCurrencyAddress: '0x0123456789012345678901234567890123456789',
-  buyAmount: '1',
-  chainId: 1,
-  includeApprove: true,
-  slippagePercentage: 5 // optional
-})
-```
+### For more information, please visit the [Hooks SDK documentation](https://docs.sequence.xyz/sdk/web/hooks-sdk/getting-started).

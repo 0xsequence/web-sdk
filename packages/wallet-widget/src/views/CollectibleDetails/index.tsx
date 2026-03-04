@@ -11,7 +11,7 @@ import {
   Text
 } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useEffect, useRef, useState } from 'react'
 import { formatUnits, getAddress } from 'viem'

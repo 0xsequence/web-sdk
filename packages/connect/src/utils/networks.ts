@@ -1,4 +1,93 @@
-import { ChainId, networks } from '@0xsequence/network'
+import { Network } from '@0xsequence/wallet-primitives'
+
+export const ChainId = Network.ChainId
+export type ChainId = number
+
+interface BlockExplorerConfig {
+  name?: string
+  rootUrl: string
+}
+
+interface NativeToken {
+  symbol: string
+  name: string
+  decimals: number
+}
+
+export interface SequenceNetwork {
+  chainId: ChainId
+  name: string
+  title?: string
+  rpcUrl: string
+  logoURI?: string
+  blockExplorer?: BlockExplorerConfig
+  nativeToken: NativeToken
+  testnet?: boolean
+  deprecated?: true
+}
+
+const toSequenceNetwork = (network: Network.Network): SequenceNetwork => ({
+  chainId: network.chainId,
+  name: network.name,
+  title: network.title,
+  rpcUrl: network.rpcUrl,
+  logoURI: network.logoUrl,
+  blockExplorer: network.blockExplorer
+    ? {
+        name: network.blockExplorer.name,
+        rootUrl: network.blockExplorer.url
+      }
+    : undefined,
+  nativeToken: {
+    symbol: network.nativeCurrency.symbol,
+    name: network.nativeCurrency.name,
+    decimals: network.nativeCurrency.decimals
+  },
+  testnet: network.type === Network.NetworkType.TESTNET || undefined,
+  deprecated: network.deprecated
+})
+
+export const allNetworks: SequenceNetwork[] = Network.ALL.map(toSequenceNetwork)
+
+export const networks: Record<number, SequenceNetwork> = Object.fromEntries(
+  allNetworks.map(network => [network.chainId, network])
+)
+
+const toChainIdNumber = (chainIdLike: unknown): number | undefined => {
+  if (typeof chainIdLike === 'number') {
+    return Number.isFinite(chainIdLike) ? chainIdLike : undefined
+  }
+  if (typeof chainIdLike === 'bigint') {
+    return Number(chainIdLike)
+  }
+  if (typeof chainIdLike === 'string') {
+    const maybeNumber = Number(chainIdLike)
+    return Number.isFinite(maybeNumber) ? maybeNumber : undefined
+  }
+  if (chainIdLike && typeof chainIdLike === 'object' && 'chainId' in chainIdLike) {
+    return toChainIdNumber((chainIdLike as { chainId: unknown }).chainId)
+  }
+  return undefined
+}
+
+export const findSupportedNetwork = (
+  chainIdOrName: string | number | bigint | { chainId: unknown }
+): SequenceNetwork | undefined => {
+  const chainId = toChainIdNumber(chainIdOrName)
+  if (chainId !== undefined) {
+    return networks[chainId]
+  }
+
+  if (typeof chainIdOrName === 'string') {
+    const networkName = chainIdOrName.toLowerCase()
+    return allNetworks.find(network => network.name === networkName)
+  }
+
+  return undefined
+}
+
+const GOERLI_CHAIN_ID = 5
+const POLYGON_MUMBAI_CHAIN_ID = 80001
 
 export const getNetworkColor = (chainId: number, mode: 'dark' | 'light' = 'light') => {
   switch (chainId) {
@@ -16,9 +105,9 @@ export const getNetworkColor = (chainId: number, mode: 'dark' | 'light' = 'light
       return mode === 'light' ? '#E84142' : '#E84142'
     case ChainId.GNOSIS:
       return mode === 'light' ? '#00193C' : '#D8E8FF'
-    case ChainId.GOERLI:
+    case GOERLI_CHAIN_ID:
       return mode === 'light' ? '#A77A00' : '#FFA700'
-    case ChainId.POLYGON_MUMBAI:
+    case POLYGON_MUMBAI_CHAIN_ID:
     case ChainId.POLYGON_AMOY:
       return mode === 'light' ? '#D68828' : '#FFA700'
     default:
@@ -42,9 +131,9 @@ export const getNetworkBackgroundColor = (chainId: number, mode: 'dark' | 'light
       return mode === 'light' ? '#FBDFDF' : '#390B0C'
     case ChainId.GNOSIS:
       return mode === 'light' ? '#D8E8FF' : '#00193C'
-    case ChainId.GOERLI:
+    case GOERLI_CHAIN_ID:
       return mode === 'light' ? '#FFD871' : '#554018'
-    case ChainId.POLYGON_MUMBAI:
+    case POLYGON_MUMBAI_CHAIN_ID:
     case ChainId.POLYGON_AMOY:
       return mode === 'light' ? '#FFE8CD' : '#554018'
     default:

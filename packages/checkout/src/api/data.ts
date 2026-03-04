@@ -1,4 +1,4 @@
-import { ChainId as Chains, findSupportedNetwork } from '@0xsequence/network'
+import { ChainId as Chains, findSupportedNetwork } from '@0xsequence/connect'
 import { zeroAddress } from 'viem'
 
 import { type ForteConfig, type StructuredCalldata } from '../contexts/index.js'

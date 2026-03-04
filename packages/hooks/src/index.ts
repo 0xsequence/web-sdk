@@ -30,11 +30,20 @@ export {
 
 // IndexerGateway
 export { useIndexerGatewayClient } from './hooks/IndexerGateway/useIndexerGatewayClient.js'
-export { useGetNativeTokenBalance } from './hooks/IndexerGateway/useGetNativeTokenBalance.js'
+export { useGetNativeTokenBalance, type GetNativeTokenBalanceArgs } from './hooks/IndexerGateway/useGetNativeTokenBalance.js'
 export { useGetSingleTokenBalance, type GetSingleTokenBalanceArgs } from './hooks/IndexerGateway/useGetSingleTokenBalance.js'
-export { useGetTokenBalancesByContract } from './hooks/IndexerGateway/useGetTokenBalancesByContract.js'
-export { useGetTokenBalancesDetails } from './hooks/IndexerGateway/useGetTokenBalancesDetails.js'
-export { useGetTokenBalancesSummary } from './hooks/IndexerGateway/useGetTokenBalancesSummary.js'
+export {
+  useGetTokenBalancesByContract,
+  type GetTokenBalancesByContractArgs
+} from './hooks/IndexerGateway/useGetTokenBalancesByContract.js'
+export {
+  useGetTokenBalancesDetails,
+  type GetTokenBalancesDetailsArgs
+} from './hooks/IndexerGateway/useGetTokenBalancesDetails.js'
+export {
+  useGetTokenBalancesSummary,
+  type GetTokenBalancesSummaryArgs
+} from './hooks/IndexerGateway/useGetTokenBalancesSummary.js'
 
 // Metadata
 export { useMetadataClient } from './hooks/Metadata/useMetadataClient.js'

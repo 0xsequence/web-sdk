@@ -1,9 +1,9 @@
-import { Button, Divider, PINCodeInput, Spinner, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Card, Divider, PINCodeInput, Spinner, Text, TextInput } from '@0xsequence/design-system'
 import { type Account } from '@0xsequence/waas'
 import { GoogleLogin, type CredentialResponse } from '@react-oauth/google'
-import { ethers } from 'ethers'
 import { useEffect, useRef, useState, type SetStateAction } from 'react'
 import AppleSignin from 'react-apple-signin-auth'
+import { english } from 'viem/accounts'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useSequenceWaaS } from '../../hooks/useSequenceWaaS.js'
@@ -13,7 +13,7 @@ import { isAccountAlreadyLinkedError, useEmailAuth } from '../../utils/useEmailA
 import { AccountName } from './AccountName.js'
 
 export function SocialLink() {
-  const [linkErrorMessage, setLinkErrorMessage] = useState<string | null>('this is and error message')
+  const [linkErrorMessage, setLinkErrorMessage] = useState<string | null>(null)
   const [currentAccount, setCurrentAccount] = useState<Account>()
   const [accounts, setAccounts] = useState<Account[]>()
   const [loading, setLoading] = useState<boolean>(true)
@@ -37,23 +37,30 @@ export function SocialLink() {
     sendChallengeAnswer
   } = useEmailAuth({
     sessionName: randomName(),
-    onSuccess: async ({ wallet }) => {
-      console.log(`Wallet address: ${wallet}`)
+    onSuccess: async () => {
+      await refreshAccounts()
     },
     linkAccount: true
   })
+
+  const refreshAccounts = async () => {
+    const response = await sequenceWaaS.listAccounts()
+    setAccounts(response.accounts)
+    if (response.currentAccountId) {
+      setCurrentAccount(response.accounts.find(account => account.id === response.currentAccountId))
+    }
+    window.dispatchEvent(new CustomEvent('sequence:waas-accounts-updated'))
+  }
 
   const removeAccount = async (id: string) => {
     setLoading(true)
     setAccounts(undefined)
     try {
       await sequenceWaaS.removeAccount(id)
-      const response = await sequenceWaaS.listAccounts()
-      setAccounts(response.accounts)
+      await refreshAccounts()
     } catch (e: unknown) {
       setError(getMessageFromUnknownError(e))
-      const response = await sequenceWaaS.listAccounts()
-      setAccounts(response.accounts)
+      await refreshAccounts()
     }
 
     setLoading(false)
@@ -64,8 +71,8 @@ export function SocialLink() {
 
     setLinkErrorMessage(null)
     try {
-      const linkResponse = await sequenceWaaS.linkAccount(challenge)
-      setAccounts(accounts => [...(accounts || []), linkResponse.account])
+      await sequenceWaaS.linkAccount(challenge)
+      await refreshAccounts()
     } catch (e) {
       if (isAccountAlreadyLinkedError(e)) {
         setLinkErrorMessage('This account is already linked to another wallet')
@@ -79,8 +86,8 @@ export function SocialLink() {
 
     setLinkErrorMessage(null)
     try {
-      const linkResponse = await sequenceWaaS.linkAccount(challenge)
-      setAccounts(accounts => [...(accounts || []), linkResponse.account])
+      await sequenceWaaS.linkAccount(challenge)
+      await refreshAccounts()
     } catch (e) {
       if (isAccountAlreadyLinkedError(e)) {
         setLinkErrorMessage('This account is already linked to another wallet')
@@ -89,17 +96,8 @@ export function SocialLink() {
   }
 
   useEffect(() => {
-    sequenceWaaS
-      .listAccounts()
-      .then(response => {
-        setAccounts(response.accounts)
-
-        if (response.currentAccountId) {
-          setCurrentAccount(response.accounts.find(account => account.id === response.currentAccountId))
-        }
-
-        setLoading(false)
-      })
+    refreshAccounts()
+      .then(() => setLoading(false))
       .catch((e: unknown) => {
         setError(getMessageFromUnknownError(e))
         setLoading(false)
@@ -107,41 +105,65 @@ export function SocialLink() {
   }, [emailAuthInProgress])
 
   return (
-    <div className="p-4">
-      <div className="flex flex-col gap-4 mb-5">
+    <div className="p-4 flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <Text variant="normal" color="text100" fontWeight="bold">
-          Your connected (linked) accounts
+          Linked accounts
         </Text>
-        {accounts && (
-          <>
-            {accounts.map(a => (
-              <div key={a.id} className="flex flex-row items-center gap-2">
-                <Text variant="normal" color="text100">
-                  <AccountName acc={a} />
-                </Text>
-                {a.id !== currentAccount?.id && <Button size="xs" label="Remove" onClick={() => removeAccount(a.id)} />}
-                {a.id === currentAccount?.id && (
-                  <div>
-                    <Text variant="small" color="text100">
-                      (Account you logged in with)
+        <Text variant="small" color="text80">
+          Manage the sign-in methods connected to this wallet. Remove any you no longer use.
+        </Text>
+      </div>
+
+      <Card className="p-4">
+        <div className="flex flex-col gap-3">
+          <Text variant="small" color="text80" fontWeight="medium">
+            Connected logins
+          </Text>
+          {loading && <Spinner />}
+          {!loading && accounts && accounts.length === 0 && (
+            <Text variant="small" color="text80">
+              No accounts linked yet. Add one below to secure your wallet.
+            </Text>
+          )}
+          {!loading &&
+            accounts?.map(a => (
+              <div
+                key={a.id}
+                className="flex flex-row items-center gap-2 justify-between border border-border-normal rounded-md px-3 py-2"
+              >
+                <div className="flex flex-col">
+                  <Text variant="normal" color="text100">
+                    <AccountName acc={a} />
+                  </Text>
+                  {a.id === currentAccount?.id && (
+                    <Text variant="small" color="text80">
+                      Currently signed in
                     </Text>
-                  </div>
-                )}
+                  )}
+                </div>
+                {a.id !== currentAccount?.id && <Button size="xs" label="Remove" onClick={() => removeAccount(a.id)} />}
               </div>
             ))}
-          </>
-        )}
-        {loading && <Spinner />}
-      </div>
+          {error && (
+            <Text variant="small" color="negative" fontWeight="medium">
+              Error loading accounts: {error}
+            </Text>
+          )}
+        </div>
+      </Card>
 
       <Divider />
 
       <div className="flex flex-col gap-2 w-full">
-        <Text variant="large" color="text100" fontWeight="bold" className="mb-5">
-          Connect (link) another login method
+        <Text variant="large" color="text100" fontWeight="bold" className="mb-2">
+          Link another login method
+        </Text>
+        <Text variant="small" color="text80">
+          Add a backup sign-in option to make sure you can always access your wallet.
         </Text>
 
-        <div className="flex flex-col w-fit gap-2">
+        <div className="flex flex-col w-fit gap-2 mt-2">
           {googleClientId && <GoogleLogin onSuccess={handleGoogleLogin} shape="circle" width="100%" />}
           {appleClientId && (
             // @ts-ignore
@@ -177,14 +199,14 @@ export function SocialLink() {
           <div className="flex flex-col">
             <div className="mt-3">
               <Text className="mt-5" variant="normal" color="text80">
-                Enter code received in email.
+                Enter the 6-digit code we emailed you.
               </Text>
             </div>
             <div className="mt-4">
               <PINCodeInput value={code} digits={6} onChange={setCode} />
             </div>
 
-            <div className="flex gap-2 my-4">
+            <div className="flex gap-2 my-4 items-center">
               {emailAuthLoading ? (
                 <Spinner />
               ) : (
@@ -201,8 +223,7 @@ export function SocialLink() {
         ) : (
           <div className="mb-4">
             <Text variant="normal" color="text80">
-              Enter your email to recieve a code to login and create your wallet. <br />
-              Please check your spam folder if you don&apos;t see it in your inbox.
+              Use an email to add a recovery login. We&apos;ll send a one-time code to verify.
             </Text>
 
             <div className="mt-6">
@@ -232,7 +253,7 @@ export function SocialLink() {
                 </Text>
               )}
             </div>
-            <div className="flex gap-2 my-4 items-center justify-center">
+            <div className="flex gap-2 my-4 items-center justify-start">
               {emailAuthLoading ? (
                 <Spinner />
               ) : (
@@ -248,11 +269,6 @@ export function SocialLink() {
           </div>
         )}
       </div>
-      {error && (
-        <Text variant="normal" color="text100" fontWeight="bold">
-          Error loading accounts: {error}
-        </Text>
-      )}
     </div>
   )
 }
@@ -263,12 +279,12 @@ const DEVICE_EMOJIS = [
 ]
 
 function randomName() {
-  const wordlistSize = 2048
-  const words = ethers.wordlists.en
+  const wordlistSize = english.length
+  const words = english
 
   const randomEmoji = DEVICE_EMOJIS[Math.floor(Math.random() * DEVICE_EMOJIS.length)]
-  const randomWord1 = words.getWord(Math.floor(Math.random() * wordlistSize))
-  const randomWord2 = words.getWord(Math.floor(Math.random() * wordlistSize))
+  const randomWord1 = words[Math.floor(Math.random() * wordlistSize)]
+  const randomWord2 = words[Math.floor(Math.random() * wordlistSize)]
 
   return `${randomEmoji} ${randomWord1} ${randomWord2}`
 }

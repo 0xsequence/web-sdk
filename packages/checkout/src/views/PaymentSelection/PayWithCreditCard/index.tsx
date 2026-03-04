@@ -1,8 +1,8 @@
 import { ArrowRightIcon, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
 import { useClearCachedBalances, useGetContractInfo } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import type { CheckoutSettings } from '../../../contexts/CheckoutModal.js'
 import type { SelectPaymentSettings } from '../../../contexts/SelectPaymentModal.js'
@@ -36,7 +36,7 @@ export const PayWithCreditCard = ({ settings, disableButtons, skipOnCloseCallbac
     forteConfig
   } = settings
 
-  const { address: userAddress } = useAccount()
+  const { address: userAddress } = useConnection()
   const { clearCachedBalances } = useClearCachedBalances()
   const { closeSelectPaymentModal } = useSelectPaymentModal()
   const { triggerCheckout } = useCheckoutModal()

@@ -4,12 +4,14 @@ import { useConfig } from '@0xsequence/hooks'
 import { useAccount } from 'wagmi'
 
 import { TRAILS_CUSTOM_CSS, TRAILS_CUSTOM_CSS_LIGHT } from '../../views/Swap/consts.js'
+import { useTrailsSequenceV3WalletSend } from '../../views/Swap/useTrailsSequenceV3WalletSend.js'
 
 export const Buy = () => {
   const { address } = useAccount()
   const config = useConfig()
   const { theme } = useTheme()
   const { trailsCustomCSS } = useConnectConfigContext()
+  useTrailsSequenceV3WalletSend()
 
   const trailsApiUrl = config.env.trailsApiUrl
   const sequenceIndexerUrl = config.env.indexerUrl

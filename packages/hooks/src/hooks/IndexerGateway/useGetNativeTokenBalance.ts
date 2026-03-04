@@ -7,9 +7,11 @@ import { createNativeTokenBalance } from '../../utils/helpers.js'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient.js'
 
+export type GetNativeTokenBalanceArgs = IndexerGateway.GetNativeTokenBalanceRequest
+
 const getNativeTokenBalance = async (
   indexerGatewayClient: SequenceIndexerGateway,
-  args: IndexerGateway.GetNativeTokenBalanceArgs
+  args: GetNativeTokenBalanceArgs
 ): Promise<TokenBalance[]> => {
   const res = await indexerGatewayClient.getNativeTokenBalance(args)
 
@@ -51,7 +53,7 @@ const getNativeTokenBalance = async (
  * }
  * ```
  */
-export const useGetNativeTokenBalance = (args: IndexerGateway.GetNativeTokenBalanceArgs, options?: HooksOptions) => {
+export const useGetNativeTokenBalance = (args: GetNativeTokenBalanceArgs, options?: HooksOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({

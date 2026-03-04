@@ -13,7 +13,7 @@ import {
 import { useGetContractInfo, useGetTokenBalancesSummary } from '@0xsequence/hooks'
 import { useEffect } from 'react'
 import { formatUnits, zeroAddress } from 'viem'
-import { useAccount, useConfig } from 'wagmi'
+import { useConfig, useConnection } from 'wagmi'
 
 import { HEADER_HEIGHT } from '../../constants/index.js'
 import { useCheckoutModal, useNavigation } from '../../hooks/index.js'
@@ -24,7 +24,7 @@ export const CheckoutSelection = () => {
   const { chains } = useConfig()
   const { setNavigation } = useNavigation()
   const { closeCheckout, settings } = useCheckoutModal()
-  const { address: accountAddress } = useAccount()
+  const { address: accountAddress } = useConnection()
 
   const cryptoCheckoutSettings = settings?.cryptoCheckout
   const creditCardCheckoutSettings = settings?.creditCardCheckout

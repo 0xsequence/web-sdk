@@ -11,7 +11,7 @@ import {
 import { Modal, Scroll } from '@0xsequence/design-system'
 import { AnimatePresence } from 'motion/react'
 import { useContext, useEffect, useRef, useState, type ReactNode } from 'react'
-import { useAccount } from 'wagmi'
+import { useConnection } from 'wagmi'
 
 import { WALLET_HEIGHT, WALLET_WIDTH } from '../../constants/index.js'
 import {
@@ -48,7 +48,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
   const { theme, position } = useTheme()
   const { isConnectModalOpen } = useOpenConnectModal()
   const { isSocialLinkOpen } = useSocialLink()
-  const { address } = useAccount()
+  const { address } = useConnection()
   const { customCSS } = useConnectConfigContext()
 
   useEffect(() => {
@@ -127,6 +127,7 @@ export const WalletContent = ({ children }: SequenceWalletProviderProps) => {
                         }
                       }}
                       scroll={false}
+                      isDismissible={navigation.location !== 'search'}
                       onClose={() => setOpenWalletModal(false)}
                     >
                       <div

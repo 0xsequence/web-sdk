@@ -1,8 +1,8 @@
 import { SequenceIndexer } from '@0xsequence/indexer'
-import { ChainId, networks } from '@0xsequence/network'
 import { useMemo } from 'react'
 
 import { envString } from '../../utils/envstring.js'
+import { ChainId, networks } from '../../utils/networks.js'
 import { useConfig } from '../useConfig.js'
 import { useNetwork } from '../useNetwork.js'
 
@@ -29,7 +29,7 @@ import { useNetwork } from '../useNetwork.js'
  * const TokenBalanceChecker = () => {
  *   const chainId = useChainId()
  *   const indexerClient = useIndexerClient(chainId)
- *   const { address } = useAccount()
+ *   const { address } = useConnection()
  *
  *   const checkBalance = async () => {
  *     // Get native token balance

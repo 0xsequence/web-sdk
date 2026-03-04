@@ -1,0 +1,22 @@
+{
+  "mode": "exit",
+  "tag": "beta",
+  "initialVersions": {
+    "example-aave": "0.0.0",
+    "example-next": "1.0.4",
+    "example-react": "1.0.4",
+    "example-react-waas": "1.0.0",
+    "@0xsequence/checkout": "6.0.0-beta.3",
+    "@0xsequence/connect": "6.0.0-beta.3",
+    "@0xsequence/hooks": "6.0.0-beta.3",
+    "@0xsequence/immutable-connector": "6.0.0-beta.3",
+    "@0xsequence/wallet-widget": "6.0.0-beta.3"
+  },
+  "changesets": [
+    "large-mails-peel",
+    "light-buses-rescue",
+    "small-cameras-think",
+    "social-views-look",
+    "tangy-garlics-hide"
+  ]
+}

@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, CheckmarkIcon, PINCodeInput, Spinner, Text } from '@0xsequence/design-system'
 import { useEffect, useRef, useState } from 'react'
 

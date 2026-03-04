@@ -1,6 +1,6 @@
 import type { Price, TokenPrice } from '@0xsequence/api'
 import { compareAddress } from '@0xsequence/connect'
-import type { GetTransactionHistoryReturn, TokenBalance, Transaction } from '@0xsequence/indexer'
+import type { GetTransactionHistoryResponse, TokenBalance, Transaction } from '@0xsequence/indexer'
 import type { InfiniteData } from '@tanstack/react-query'
 import { formatUnits, zeroAddress } from 'viem'
 
@@ -93,7 +93,7 @@ export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByType
 }
 
 export const flattenPaginatedTransactionHistory = (
-  transactionHistoryData: InfiniteData<GetTransactionHistoryReturn> | undefined
+  transactionHistoryData: InfiniteData<GetTransactionHistoryResponse> | undefined
 ) => {
   const transactionHistory: Transaction[] = []
 

@@ -3,11 +3,13 @@ import { useConnectConfigContext, useTheme } from '@0xsequence/connect'
 import { useConfig } from '@0xsequence/hooks'
 
 import { TRAILS_CUSTOM_CSS, TRAILS_CUSTOM_CSS_LIGHT } from './consts.js'
+import { useTrailsSequenceV3WalletSend } from './useTrailsSequenceV3WalletSend.js'
 
 export const Swap = () => {
   const config = useConfig()
   const { theme } = useTheme()
   const { trailsCustomCSS } = useConnectConfigContext()
+  useTrailsSequenceV3WalletSend()
 
   const trailsApiUrl = config.env.trailsApiUrl
   const sequenceIndexerUrl = config.env.indexerUrl

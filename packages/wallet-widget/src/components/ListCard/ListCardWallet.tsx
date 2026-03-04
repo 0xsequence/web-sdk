@@ -41,11 +41,12 @@ export const ListCardWallet = ({
       if (sequenceWaas) {
         const sequenceWaasAccounts = await sequenceWaas.listAccounts()
         const waasEmail = sequenceWaasAccounts.accounts.find(account => account.type === 'OIDC')?.email
+        const nonGuest = sequenceWaasAccounts.accounts.find(account => account.type !== 'Guest')
         let backupEmail = ''
         if (sequenceWaasAccounts.accounts.length > 0) {
           backupEmail = sequenceWaasAccounts.accounts[0].email
         }
-        setSignInDisplay(waasEmail || backupEmail)
+        setSignInDisplay(waasEmail || nonGuest?.email || backupEmail)
       } else {
         setSignInDisplay(connector?.name || '')
       }

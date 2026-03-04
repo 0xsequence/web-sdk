@@ -1,10 +1,10 @@
 import type { ContractInfo, GetContractInfoArgs } from '@0xsequence/metadata'
-import { findSupportedNetwork } from '@0xsequence/network'
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants.js'
 import type { HooksOptions } from '../../types/hooks.js'
 import { compareAddress } from '../../utils/helpers.js'
+import { findSupportedNetwork } from '../../utils/networks.js'
 
 import { useMetadataClient } from './useMetadataClient.js'
 
