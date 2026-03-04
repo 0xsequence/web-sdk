@@ -25,6 +25,8 @@ export const createNativeTokenBalance = (chainId: number, accountAddress: string
     accountAddress,
     contractType: ContractType.NATIVE,
     balance,
+    balanceUSD: '0',
+    priceUSD: '0',
     blockHash: '',
     blockNumber: 0,
     tokenID: '',

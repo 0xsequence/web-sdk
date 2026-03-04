@@ -4,11 +4,14 @@ import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../../constants.js'
-import { useGetTokenBalancesByContract } from '../../hooks/IndexerGateway/useGetTokenBalancesByContract.js'
+import {
+  useGetTokenBalancesByContract,
+  type GetTokenBalancesByContractArgs
+} from '../../hooks/IndexerGateway/useGetTokenBalancesByContract.js'
 import { createWrapper } from '../createWrapper.js'
 import { server } from '../setup.js'
 
-const getTokenBalancesByContractArgs: IndexerGateway.GetTokenBalancesByContractArgs = {
+const getTokenBalancesByContractArgs: GetTokenBalancesByContractArgs = {
   filter: {
     accountAddresses: [ACCOUNT_ADDRESS],
     contractStatus: IndexerGateway.ContractVerificationStatus.ALL,

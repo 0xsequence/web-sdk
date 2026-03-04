@@ -7,10 +7,9 @@ import { createNativeTokenBalance, sortBalancesByType } from '../../utils/helper
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient.js'
 
-const getTokenBalancesSummary = async (
-  indexerGatewayClient: SequenceIndexerGateway,
-  args: IndexerGateway.GetTokenBalancesSummaryArgs
-) => {
+export type GetTokenBalancesSummaryArgs = IndexerGateway.GetTokenBalancesSummaryRequest
+
+const getTokenBalancesSummary = async (indexerGatewayClient: SequenceIndexerGateway, args: GetTokenBalancesSummaryArgs) => {
   try {
     const res = await indexerGatewayClient.getTokenBalancesSummary(args)
 
@@ -104,7 +103,7 @@ const getTokenBalancesSummary = async (
  * }
  * ```
  */
-export const useGetTokenBalancesSummary = (args: IndexerGateway.GetTokenBalancesSummaryArgs, options?: HooksOptions) => {
+export const useGetTokenBalancesSummary = (args: GetTokenBalancesSummaryArgs, options?: HooksOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useInfiniteQuery({

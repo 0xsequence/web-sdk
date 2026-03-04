@@ -11,42 +11,42 @@
   "author": "Sequence Platforms ULC",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "dist/cjs/index.js",
+  "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm && pnpm build:cjs",
-    "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm",
     "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:css": "node scripts/build-css.js && prettier --write src/styles.ts",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
     "dev": "pnpm run writeVersion && concurrently \"pnpm dev:tsc\"  \"pnpm watch-css\"",
-    "dev:tsc": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
+    "dev:tsc": "tsc --watch --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "watch-css": "node scripts/watch-css.js",
     "writeVersion": "node scripts/writeVersion.js",
     "test": "echo",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/dapp-client": "3.0.0-beta.16",
-    "@0xsequence/api": ">=2.3.38",
+    "@0xsequence/dapp-client": "3.0.0",
+    "@0xsequence/api": ">=3.0.0",
     "@0xsequence/auth": "^2.3.38",
     "@0xsequence/core": "^2.3.38",
     "@0xsequence/design-system": "2.1.11",
     "@0xsequence/ethauth": "^1.0.0",
-    "@0xsequence/indexer": "^2.3.38",
-    "@0xsequence/metadata": "^2.3.38",
+    "@0xsequence/indexer": "^3.0.0",
+    "@0xsequence/metadata": "^3.0.0",
     "@0xsequence/network": "^2.3.38",
     "@0xsequence/provider": "^2.3.38",
     "@0xsequence/utils": "^2.3.38",
