@@ -1,4 +1,4 @@
-import { ChainId } from '@0xsequence/network'
+import { ChainId } from '@0xsequence/connect'
 import { zeroAddress } from 'viem'
 
 interface CountriesResult {

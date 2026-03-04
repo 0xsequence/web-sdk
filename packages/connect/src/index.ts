@@ -64,7 +64,15 @@ export {
 } from './utils/helpers.js'
 export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
 export { getModalPositionCss } from './utils/styling.js'
-export { getNetwork, getNetworkBackgroundColor, getNetworkColor } from './utils/networks.js'
+export {
+  ChainId,
+  allNetworks,
+  findSupportedNetwork,
+  getNetwork,
+  getNetworkBackgroundColor,
+  getNetworkColor,
+  networks
+} from './utils/networks.js'
 export { signEthAuthProof, validateEthProof } from './utils/ethAuth.js'
 export { isTxRejected, sendTransactions, waitForTransactionReceipt } from './utils/transactions.js'
 export { createContractPermission, createContractPermissions, createExplicitSessionConfig } from './utils/session/index.js'

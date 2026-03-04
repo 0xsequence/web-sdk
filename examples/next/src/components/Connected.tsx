@@ -11,7 +11,7 @@ import {
   type Permission
 } from '@0xsequence/connect'
 import { Button, Card, Divider, Text } from '@0xsequence/design-system'
-import { allNetworks, ChainId } from '@0xsequence/network'
+import { allNetworks, ChainId } from '@0xsequence/connect'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import { AbiFunction } from 'ox'

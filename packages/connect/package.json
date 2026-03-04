@@ -47,7 +47,7 @@
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/indexer": "^3.0.0",
     "@0xsequence/metadata": "^3.0.0",
-    "@0xsequence/network": "^2.3.38",
+    "@0xsequence/wallet-primitives": "^3.0.0",
     "@0xsequence/provider": "^2.3.38",
     "@0xsequence/utils": "^2.3.38",
     "@0xsequence/waas": "^2.3.38",

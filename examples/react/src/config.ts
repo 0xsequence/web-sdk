@@ -1,5 +1,5 @@
 import { ConnectConfig, createConfig, createContractPermission } from '@0xsequence/connect'
-import { ChainId } from '@0xsequence/network'
+import { ChainId } from '@0xsequence/connect'
 import { Environment } from '@imtbl/config'
 import { passport } from '@imtbl/sdk'
 

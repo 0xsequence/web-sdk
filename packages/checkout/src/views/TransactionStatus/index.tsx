@@ -17,7 +17,7 @@ import {
   type SequenceIndexer,
   type TransactionReceipt
 } from '@0xsequence/indexer'
-import { findSupportedNetwork } from '@0xsequence/network'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { formatUnits, type Hex, type PublicClient } from 'viem'

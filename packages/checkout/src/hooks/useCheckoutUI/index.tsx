@@ -1,5 +1,5 @@
 import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import type { Hex } from 'viem'
 
 import type { TransakConfig } from '../../contexts/CheckoutModal.js'

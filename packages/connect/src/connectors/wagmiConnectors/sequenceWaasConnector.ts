@@ -1,4 +1,3 @@
-import { allNetworks, type EIP1193Provider } from '@0xsequence/network'
 import {
   SequenceWaaS,
   WebrpcEndpointError,
@@ -23,7 +22,16 @@ import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { normalizeChainId } from '../../utils/helpers.js'
+import { allNetworks } from '../../utils/networks.js'
 import { getPkcePair, getXOauthUrl } from '../X/XAuth.js'
+
+type EIP1193Request = { method: string; params?: any[] }
+
+interface EIP1193Provider {
+  request(args: EIP1193Request): Promise<any>
+  on(event: string, listener: (...args: any[]) => void): void
+  removeListener(event: string, listener: (...args: any[]) => void): void
+}
 
 export interface SequenceWaasConnectConfig {
   googleClientId?: string

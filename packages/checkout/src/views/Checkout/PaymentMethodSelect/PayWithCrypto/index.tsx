@@ -18,7 +18,7 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
-import { findSupportedNetwork } from '@0xsequence/network'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { useEffect, useState, type RefObject } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useChainId, useConnection, usePublicClient, useReadContract, useSwitchChain, useWalletClient } from 'wagmi'

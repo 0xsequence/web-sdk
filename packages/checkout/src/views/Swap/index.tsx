@@ -8,7 +8,7 @@ import {
   useGetTokenBalancesSummary,
   useIndexerClient
 } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/network'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { useEffect, useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useChainId, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'

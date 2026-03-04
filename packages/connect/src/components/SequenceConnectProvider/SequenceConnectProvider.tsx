@@ -2,7 +2,6 @@
 
 import { Button, Card, Modal, ModalPrimitive, Spinner, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
-import { ChainId } from '@0xsequence/network'
 import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AnimatePresence } from 'motion/react'
@@ -30,6 +29,7 @@ import {
   type ModalPosition
 } from '../../types.js'
 import { isJSON } from '../../utils/helpers.js'
+import { ChainId } from '../../utils/networks.js'
 import { getModalPositionCss } from '../../utils/styling.js'
 import { Connect } from '../Connect/Connect.js'
 import { EpicAuthProvider } from '../EpicAuthProvider/index.js'

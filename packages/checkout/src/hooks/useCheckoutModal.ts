@@ -26,7 +26,7 @@ type UseCheckoutModalReturnType = {
  * @example
  * ```tsx
  * import { useCheckoutModal } from '@0xsequence/checkout'
- * import { ChainId } from '@0xsequence/network'
+ * import { ChainId } from '@0xsequence/connect'
  * import { getOrderbookCalldata } from '../utils'
  *
  * const YourComponent = () => {
