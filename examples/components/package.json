@@ -11,5 +11,6 @@
     "@0xsequence/design-system": "2.1.11",
     "wagmi": "^3.2.0"
   },
-  "private": true
+  "private": true,
+  "version": null
 }
