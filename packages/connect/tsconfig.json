@@ -11,9 +11,6 @@
     "strict": true,
     // "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-    "paths": {
-      "@0xsequence/dapp-client": ["./node_modules/@0xsequence/dapp-client/dist/index.d.ts"]
-    },
     "rootDir": "./src",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
