@@ -8,8 +8,7 @@
       "@0xsequence/connect",
       "@0xsequence/checkout",
       "@0xsequence/wallet-widget",
-      "@0xsequence/hooks",
-      "@0xsequence/immutable-connector"
+      "@0xsequence/hooks"
     ]
   ],
   "access": "public",
