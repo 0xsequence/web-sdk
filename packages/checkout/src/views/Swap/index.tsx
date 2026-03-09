@@ -84,12 +84,28 @@ export const Swap = () => {
     return map
   }, [tokenBalances])
 
+  const isTargetWalletClientReady = !!walletClient
+  const isTargetPublicClientReady = publicClient?.chain?.id === chainId
+
   useEffect(() => {
-    if (isSwitchingChain && connectedChainId == Number(chainId) && !isLoadingWalletClient) {
+    if (
+      isSwitchingChain &&
+      connectedChainId === chainId &&
+      !isLoadingWalletClient &&
+      isTargetWalletClientReady &&
+      isTargetPublicClientReady
+    ) {
       setIsSwitchingChain(false)
       onClickProceed()
     }
-  }, [connectedChainId, chainId, isLoadingWalletClient, isSwitchingChain])
+  }, [
+    connectedChainId,
+    chainId,
+    isLoadingWalletClient,
+    isSwitchingChain,
+    isTargetWalletClientReady,
+    isTargetPublicClientReady
+  ])
 
   useEffect(() => {
     // Only attempt to select a currency if none is currently selected
@@ -176,14 +192,6 @@ export const Swap = () => {
     if (!userAddress) {
       throw new Error('User address is not available. Please ensure your wallet is connected.')
     }
-    if (!publicClient) {
-      throw new Error('Public client is not available. Please check your network connection.')
-    }
-    if (!walletClient || isErrorWalletClient || errorWalletClient) {
-      throw new Error('Wallet client is not available. Please ensure your wallet is connected.', {
-        cause: errorWalletClient
-      })
-    }
     if (!connector) {
       throw new Error('Wallet connector is not available. Please ensure your wallet is properly connected.')
     }
@@ -192,6 +200,15 @@ export const Swap = () => {
       await switchChain({ chainId })
       setIsSwitchingChain(true)
       return
+    }
+
+    if (!publicClient || publicClient.chain?.id !== chainId) {
+      throw new Error('Public client is not ready for the selected network. Please try again.')
+    }
+    if (!walletClient || isErrorWalletClient || errorWalletClient) {
+      throw new Error('Wallet client is not available. Please ensure your wallet is connected.', {
+        cause: errorWalletClient
+      })
     }
 
     setIsError(false)
