@@ -1,5 +1,13 @@
 # @0xsequence/connect
 
+## 6.0.1
+
+### Patch Changes
+
+- Minor fixes
+- Updated dependencies
+  - @0xsequence/hooks@6.0.1
+
 ## 6.0.0
 
 ### Major Changes
