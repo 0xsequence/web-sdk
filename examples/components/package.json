@@ -4,13 +4,13 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@radix-ui/react-popover": "^1.1.11",
-    "typescript": "^5.8.3"
+    "@radix-ui/react-popover": "^1.1.11"
   },
   "peerDependencies": {
     "@0xsequence/design-system": "2.1.11",
+    "react": "^19.1.0",
     "wagmi": "^3.2.0"
   },
   "private": true,
-  "version": null
+  "version": "0.0.0"
 }
