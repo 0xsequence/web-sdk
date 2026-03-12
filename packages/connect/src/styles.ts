@@ -257,6 +257,9 @@ export const styles = String.raw`
     container-type: inline-size;
     container-name: field-group;
   }
+  .\@container {
+    container-type: inline-size;
+  }
   .pointer-events-none {
     pointer-events: none;
   }
@@ -306,6 +309,9 @@ export const styles = String.raw`
   }
   .top-0 {
     top: calc(var(--spacing) * 0);
+  }
+  .top-1 {
+    top: calc(var(--spacing) * 1);
   }
   .top-1\/2 {
     top: calc(1 / 2 * 100%);
@@ -560,6 +566,10 @@ export const styles = String.raw`
   }
   .aspect-square {
     aspect-ratio: 1 / 1;
+  }
+  .size-2 {
+    width: calc(var(--spacing) * 2);
+    height: calc(var(--spacing) * 2);
   }
   .size-2\.5 {
     width: calc(var(--spacing) * 2.5);
@@ -1758,6 +1768,9 @@ export const styles = String.raw`
   .tracking-widest {
     --tw-tracking: var(--tracking-widest);
     letter-spacing: var(--tracking-widest);
+  }
+  .text-wrap {
+    text-wrap: wrap;
   }
   .text-ellipsis {
     text-overflow: ellipsis;
