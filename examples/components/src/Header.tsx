@@ -1,19 +1,34 @@
 import { truncateAtIndex } from '@0xsequence/connect'
-import { Button, Card, ChevronDownIcon, GradientAvatar, Image, NetworkImage, SignoutIcon, Text } from '@0xsequence/design-system'
+import {
+  Button,
+  Card,
+  ChevronDownIcon,
+  GradientAvatar,
+  Image,
+  MoonIcon,
+  NetworkImage,
+  SignoutIcon,
+  SunIcon,
+  Text,
+  useTheme
+} from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useState } from 'react'
 import { useChainId, useChains, useConnection, useDisconnect, useSwitchChain } from 'wagmi'
 
 export const Header = () => {
+  const { theme, setTheme } = useTheme()
+  const normalizedTheme: 'light' | 'dark' = theme === 'light' ? 'light' : 'dark'
+
   return (
-    <div
-      className="flex fixed top-0 w-full p-4 justify-between bg-background-overlay backdrop-blur-md z-3"
-      style={{ borderBottom: '1px solid #222' }}
-    >
+    <div className="flex fixed top-0 w-full p-4 justify-between bg-background-overlay backdrop-blur-md z-3 border-b ">
       <div className="flex flex-row items-center justify-center gap-3">
         <Image src="images/sequence-websdk-dark.svg" alt="Sequence Web SDK Logo" />
       </div>
       <div className="flex gap-2 items-center">
+        <Button onClick={() => setTheme(normalizedTheme === 'dark' ? 'light' : 'dark')} variant="ghost" size="sm">
+          {normalizedTheme === 'dark' ? <SunIcon /> : <MoonIcon />}
+        </Button>
         <NetworkSelect />
         <AccountMenu />
       </div>

@@ -77,7 +77,7 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
       </div>
 
       {!isReadOnly && (
-        <Button size="xs" variant="ghost" onClick={onDisconnect}>
+        <Button size="xs" variant="secondary" onClick={onDisconnect}>
           Disconnect
         </Button>
       )}

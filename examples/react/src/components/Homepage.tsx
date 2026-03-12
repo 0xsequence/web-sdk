@@ -1,5 +1,5 @@
 import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { Button, Collapsible, Image, Text, TextInput } from '@0xsequence/design-system'
+import { Button, Collapsible, Image, MoonIcon, SunIcon, Text, TextInput, useTheme } from '@0xsequence/design-system'
 import { Footer } from 'example-shared-components'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -14,9 +14,12 @@ type HomepageProps = {
 }
 
 export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
+  const { theme, setTheme } = useTheme()
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
   const [walletUrlInput, setWalletUrlInput] = useState(walletUrl)
+
+  const normalizedTheme: 'light' | 'dark' = theme === 'light' ? 'light' : 'dark'
 
   const onClickConnect = () => {
     setOpenConnectModal(true)
@@ -35,7 +38,13 @@ export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
   return (
     <main>
       {wallets.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-5 h-screen">
+        <div className="flex flex-col items-center justify-center gap-5 h-screen relative">
+          <div className="absolute top-4 right-4">
+            <Button onClick={() => setTheme(normalizedTheme === 'dark' ? 'light' : 'dark')} variant="ghost" size="sm">
+              {normalizedTheme === 'dark' ? <SunIcon /> : <MoonIcon />}
+            </Button>
+          </div>
+
           <div className="flex flex-row items-center justify-center gap-3">
             <Image className="w-[300px]" src="images/sequence-websdk-dark.svg" />
           </div>

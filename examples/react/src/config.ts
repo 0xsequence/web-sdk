@@ -94,9 +94,10 @@ export const persistWalletUrl = (walletUrl: string) => {
   window.localStorage.setItem(WALLET_URL_STORAGE_KEY, sanitized)
 }
 
-export const createExampleConfig = (walletUrl: string) =>
+export const createExampleConfig = (walletUrl: string, theme: 'light' | 'dark' = 'dark') =>
   createConfig({
     ...connectConfig,
+    defaultTheme: theme,
     walletUrl: sanitizeWalletUrl(walletUrl),
     dappOrigin: window.location.origin,
     appName: 'Sequence Web SDK Demo',

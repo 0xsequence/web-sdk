@@ -1048,12 +1048,12 @@ export const Connect = (props: ConnectProps) => {
                         </div>
                       )}
                       {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
-                        <div className="flex gap-4 flex-row justify-center items-center">
-                          <Separator className="mx-0 my-0 grow" />
-                          <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">
+                        <div className="flex gap-2 flex-row justify-center items-center w-full">
+                          <Separator className="flex-1" />
+                          <Text className="leading-4 h-4 text-sm shrink-0" variant="normal" fontWeight="medium" color="muted">
                             or
                           </Text>
-                          <Separator className="mx-0 my-0 grow" />
+                          <Separator className="flex-1" />
                         </div>
                       )}
                       {showEmailInputSection && (

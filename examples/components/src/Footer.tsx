@@ -1,4 +1,4 @@
-import { Button, Image, Text } from '@0xsequence/design-system'
+import { Button, cn, Image, Text } from '@0xsequence/design-system'
 
 interface BottomPageLink {
   label: string
@@ -90,7 +90,7 @@ export const Footer = () => {
                 }
               }}
             >
-              <Image className="h-3" src={socialLink.icon} alt={socialLink.id} />
+              <Image color="black" className={cn('h-3')} src={socialLink.icon} alt={socialLink.id} />
             </div>
           )
         })}
@@ -99,7 +99,7 @@ export const Footer = () => {
   }
 
   return (
-    <div className="h-[60px] flex p-5 fixed bottom-0 w-full justify-between bg-background-overlay backdrop-blur-md border-t-1 border-t-[#222]">
+    <div className="h-[60px] flex p-5 fixed bottom-0 w-full justify-between bg-background-overlay backdrop-blur-md border-t-1">
       <Links />
       <Socials />
     </div>
