@@ -3,10 +3,10 @@ import { compareAddress, formatDisplay, getNativeTokenInfoByChainId, truncateAtI
 import {
   ArrowRightIcon,
   Button,
-  Divider,
   GradientAvatar,
   LinkIcon,
   NetworkImage,
+  Separator,
   Skeleton,
   Text,
   TokenImage
@@ -270,14 +270,12 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           </div>
         ))}
       </div>
-      <Button
-        className="w-full rounded-xl"
-        onClick={onClickBlockExplorer}
-        rightIcon={LinkIcon}
-        label={`View on ${nativeTokenInfo.blockExplorerName}`}
-      />
+      <Button className="w-full rounded-xl" onClick={onClickBlockExplorer}>
+        {`View on ${nativeTokenInfo.blockExplorerName}`}
+        <LinkIcon />
+      </Button>
       <div>
-        <Divider className="w-full my-2" />
+        <Separator className="w-full my-2" />
         <div className="flex w-full flex-col gap-2 justify-center items-start">
           <Text variant="normal" color="muted" fontWeight="medium">
             Status
@@ -287,7 +285,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
           </Text>
         </div>
 
-        <Divider className="w-full my-2" />
+        <Separator className="w-full my-2" />
         <div className="flex w-full flex-col gap-2 justify-center items-start">
           <Text variant="normal" color="muted" fontWeight="medium">
             Transaction Hash

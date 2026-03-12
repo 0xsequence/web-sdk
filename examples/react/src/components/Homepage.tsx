@@ -42,9 +42,11 @@ export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
 
           <div className="flex flex-col gap-3 items-center">
             <div className="flex gap-2 flex-row items-center">
-              <Button onClick={onClickConnect} variant="feature" label="Connect" />
+              <Button onClick={onClickConnect} variant="primary">
+                Connect
+              </Button>
               <Link to="/inline">
-                <Button variant="primary" label="Inline Demo" />
+                <Button variant="primary">Inline Demo</Button>
               </Link>
             </div>
 
@@ -81,19 +83,17 @@ export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
                       </Text>
                       <div className="flex gap-2 items-center">
                         <Button
-                          variant="glass"
-                          label="Reset"
+                          variant="ghost"
                           onClick={() => {
                             setWalletUrlInput(DEFAULT_WALLET_URL)
                             onWalletUrlChange(DEFAULT_WALLET_URL)
                           }}
-                        />
-                        <Button
-                          variant="primary"
-                          label={isDirty ? 'Save' : 'Saved'}
-                          disabled={!isDirty}
-                          onClick={() => onWalletUrlChange(normalizedInput)}
-                        />
+                        >
+                          Reset
+                        </Button>
+                        <Button variant="primary" disabled={!isDirty} onClick={() => onWalletUrlChange(normalizedInput)}>
+                          {isDirty ? 'Save' : 'Saved'}
+                        </Button>
                       </div>
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 import { compareAddress, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
-import { cn, Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
+import { cn, SearchIcon, Separator, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'
 import type { ContractInfo, Transaction, TxnTransfer } from '@0xsequence/indexer'
 import Fuse from 'fuse.js'
@@ -425,7 +425,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
                   {selectedTab === 'history' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
                 </TabsPrimitive.TabsTrigger>
               </TabsPrimitive.TabsList>
-              <Divider className="absolute bottom-0 my-0 w-full" />
+              <Separator className="absolute bottom-0 my-0 w-full" />
             </div>
           ) : (
             <div className={cn('flex flex-col px-4 gap-4', `${variant === 'send' && 'pt-4'}`)}>

@@ -1,4 +1,4 @@
-import { ArrowUpIcon, Button, Divider, ExternalLinkIcon, Skeleton } from '@0xsequence/design-system'
+import { ArrowUpIcon, Button, ExternalLinkIcon, Separator, Skeleton } from '@0xsequence/design-system'
 
 interface CollectibleDetailsSkeletonProps {
   isReadOnly: boolean
@@ -11,27 +11,33 @@ export const CollectibleDetailsSkeleton = ({ isReadOnly }: CollectibleDetailsSke
         <Skeleton className="w-full aspect-square rounded-lg" />
 
         <div className="flex flex-row gap-4">
-          <Button className="text-primary w-full" variant="glass" leftIcon={ArrowUpIcon} label="Send" disabled={isReadOnly} />
-          <Button className="text-primary w-full" variant="glass" leftIcon={ExternalLinkIcon} label="Open in..." />
+          <Button className="text-primary w-full" variant="ghost" disabled={isReadOnly}>
+            <ArrowUpIcon />
+            Send
+          </Button>
+          <Button className="text-primary w-full" variant="ghost">
+            <ExternalLinkIcon />
+            Open in...
+          </Button>
         </div>
 
         <Skeleton className="w-full h-10" />
 
         <Skeleton className="w-full h-7" />
 
-        <Divider className="my-0" />
+        <Separator className="my-0" />
 
         <Skeleton className="w-full h-7" />
 
-        <Divider className="my-0" />
+        <Separator className="my-0" />
 
         <Skeleton className="w-full h-7" />
 
-        <Divider className="my-0" />
+        <Separator className="my-0" />
 
         <Skeleton className="w-full h-7" />
 
-        <Divider className="my-0" />
+        <Separator className="my-0" />
 
         <Skeleton className="w-full h-14" />
       </div>

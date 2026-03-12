@@ -7,8 +7,8 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, Switch, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/connect'
+import { Button, Card, Switch, Text } from '@0xsequence/design-system'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import React, { useEffect } from 'react'
@@ -395,7 +395,9 @@ export const Connected = () => {
             </div>
 
             <div className="flex gap-2 flex-row items-center justify-center">
-              <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+              <Button shape="square" onClick={onClickConnect} variant="primary" size="sm">
+                Connect another wallet
+              </Button>
             </div>
 
             <Text className="align-self-center mt-4" variant="medium" color="muted">
@@ -537,8 +539,9 @@ export const Connected = () => {
                         confirmPendingFeeOption(pendingFeeOptionConfirmation.id, feeTokenAddress)
                       }
                     }}
-                    label="Confirm fee option"
-                  />
+                  >
+                    Confirm fee option
+                  </Button>
                   {feeOptionAlert && (
                     <div className="mt-3">
                       <Alert

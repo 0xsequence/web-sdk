@@ -13,15 +13,16 @@ export const CopyButton = (props: CopyButtonProps) => {
   const { text, size = 'xs', inline = false, ...rest } = props
   const [isCopied, setCopied] = useClipboard({ timeout: 4000 })
 
+  const Icon = isCopied ? CheckmarkIcon : CopyIcon
+
   return inline ? (
-    <Button size={size} variant="text" leftIcon={isCopied ? CheckmarkIcon : CopyIcon} onClick={() => setCopied(text)} />
+    <Button size={size} variant="text" onClick={() => setCopied(text)}>
+      <Icon />
+    </Button>
   ) : (
-    <Button
-      size={size}
-      leftIcon={isCopied ? CheckmarkIcon : CopyIcon}
-      label={isCopied ? 'Copied' : 'Copy'}
-      onClick={() => setCopied(text)}
-      {...rest}
-    />
+    <Button size={size} onClick={() => setCopied(text)} {...rest}>
+      <Icon />
+      {isCopied ? 'Copied' : 'Copy'}
+    </Button>
   )
 }

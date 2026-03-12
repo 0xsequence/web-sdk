@@ -1,14 +1,5 @@
-import {
-  Button,
-  Card,
-  ChevronDownIcon,
-  GradientAvatar,
-  Image,
-  NetworkImage,
-  SignoutIcon,
-  Text,
-  truncateAddress
-} from '@0xsequence/design-system'
+import { truncateAtIndex } from '@0xsequence/connect'
+import { Button, Card, ChevronDownIcon, GradientAvatar, Image, NetworkImage, SignoutIcon, Text } from '@0xsequence/design-system'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { useState } from 'react'
 import { useChainId, useChains, useConnection, useDisconnect, useSwitchChain } from 'wagmi'
@@ -20,7 +11,7 @@ export const Header = () => {
       style={{ borderBottom: '1px solid #222' }}
     >
       <div className="flex flex-row items-center justify-center gap-3">
-        <Image src="images/sequence-websdk-dark.svg" alt="Sequence Web SDK Logo" disableAnimation />
+        <Image src="images/sequence-websdk-dark.svg" alt="Sequence Web SDK Logo" />
       </div>
       <div className="flex gap-2 items-center">
         <NetworkSelect />
@@ -46,7 +37,7 @@ const AccountMenu = () => {
             <div className="flex flex-row gap-2 justify-end items-center">
               <GradientAvatar address={String(address)} size="sm" />
               <Text variant="normal" fontWeight="bold" color="primary">
-                {truncateAddress(String(address), 4)}
+                {truncateAtIndex(String(address), 8)}
               </Text>
             </div>
           </div>
@@ -76,14 +67,10 @@ const AccountMenu = () => {
               </Card>
 
               <div className="mt-2">
-                <Button
-                  className="w-full"
-                  shape="square"
-                  variant="emphasis"
-                  rightIcon={SignoutIcon}
-                  label="Sign out"
-                  onClick={() => disconnect.mutate()}
-                />
+                <Button className="w-full" shape="square" variant="emphasis" onClick={() => disconnect.mutate()}>
+                  Sign out
+                  <SignoutIcon />
+                </Button>
               </div>
             </Card>
           </PopoverPrimitive.Content>
@@ -138,15 +125,14 @@ const NetworkSelect = () => {
                       switchChain({ chainId: chain.id })
                       toggleOpen(false)
                     }}
-                    leftIcon={() => <NetworkImage chainId={chain.id} size="sm" />}
-                    label={
-                      <div className="flex items-center gap-2">
-                        <Text variant="normal" fontWeight="bold" color="primary">
-                          {chain.name}
-                        </Text>
-                      </div>
-                    }
-                  />
+                  >
+                    <NetworkImage chainId={chain.id} size="sm" />
+                    <div className="flex items-center gap-2">
+                      <Text variant="normal" fontWeight="bold" color="primary">
+                        {chain.name}
+                      </Text>
+                    </div>
+                  </Button>
                 ))}
               </div>
             </Card>

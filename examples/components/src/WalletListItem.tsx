@@ -33,7 +33,9 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
           </Text>
         </div>
       </div>
-      <Button variant="text" size="sm" label="Disconnect" onClick={onDisconnect} style={{ position: 'relative', zIndex: 2 }} />
+      <Button variant="text" size="sm" onClick={onDisconnect} style={{ position: 'relative', zIndex: 2 }}>
+        Disconnect
+      </Button>
     </Card>
   )
 }

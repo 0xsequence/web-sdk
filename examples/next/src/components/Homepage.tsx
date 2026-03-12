@@ -33,7 +33,9 @@ export const Homepage = () => {
           </div>
 
           <div className="flex gap-2 flex-row items-center">
-            <Button onClick={onClickConnect} variant="feature" label="Connect" />
+            <Button onClick={onClickConnect} variant="primary">
+              Connect
+            </Button>
           </div>
 
           {/* <div className="permissions-group">

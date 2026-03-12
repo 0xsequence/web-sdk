@@ -1,5 +1,5 @@
 import { ContractVerificationStatus, useWallets } from '@0xsequence/connect'
-import { Divider, TabsContent, TabsPrimitive, Text } from '@0xsequence/design-system'
+import { Separator, TabsContent, TabsPrimitive, Text } from '@0xsequence/design-system'
 import { useGetTokenBalancesByContract } from '@0xsequence/hooks'
 import type { TokenBalance } from '@0xsequence/indexer'
 import { useState } from 'react'
@@ -65,7 +65,7 @@ export const CollectionDetails = ({ contractAddress, chainId }: TokenInfo) => {
               {selectedTab === 'explore' && <div className="absolute bottom-0 w-full h-[2px] bg-white" />}
             </TabsPrimitive.TabsTrigger>
           </TabsPrimitive.TabsList>
-          <Divider className="absolute bottom-0 my-0 w-full" />
+          <Separator className="absolute bottom-0 my-0 w-full" />
         </div>
 
         <div className="flex flex-col p-4 pb-2 gap-4">

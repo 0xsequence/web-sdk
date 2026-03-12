@@ -22,9 +22,11 @@ export const Homepage = () => {
           </div>
 
           <div className="flex gap-2 flex-row items-center">
-            <Button onClick={onClickConnect} variant="feature" label="Connect" />
+            <Button onClick={onClickConnect} variant="primary">
+              Connect
+            </Button>
             <Link to="/inline">
-              <Button variant="primary" label="Inline Demo" />
+              <Button variant="primary">Inline Demo</Button>
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { useDetectContractVersion } from '@0xsequence/hooks'
 import { type CheckoutOptionsSalesContractArgs } from '@0xsequence/marketplace'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import { encodeFunctionData, toHex, zeroAddress, type Hex } from 'viem'
 import { useReadContract, useReadContracts } from 'wagmi'
 

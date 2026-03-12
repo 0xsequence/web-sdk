@@ -7,6 +7,7 @@ import {
   TRANSACTION_CONFIRMATIONS_DEFAULT,
   useAnalyticsContext
 } from '@0xsequence/connect'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { AddIcon, Button, ChevronDownIcon, Spinner, Text, TokenImage, WarningIcon } from '@0xsequence/design-system'
 import {
   DEFAULT_SLIPPAGE_BPS,
@@ -18,7 +19,6 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import { TransactionOnRampProvider } from '@0xsequence/marketplace'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import { useEffect, useState, type RefObject } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useChainId, useConnection, usePublicClient, useReadContract, useSwitchChain, useWalletClient } from 'wagmi'
@@ -597,12 +597,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         }}
         className="flex flex-row gap-2 justify-between items-center p-2 bg-button-glass rounded-full cursor-pointer select-none"
       >
-        <TokenImage
-          disableAnimation
-          size="sm"
-          src={selectedCurrencyInfo?.logoURI}
-          withNetwork={Number(selectedCurrency.chainId)}
-        />
+        <TokenImage size="sm" src={selectedCurrencyInfo?.logoURI} withNetwork={Number(selectedCurrency.chainId)} />
         <Text variant="small" color="text100" fontWeight="bold">
           {selectedCurrencyInfo?.symbol}
         </Text>
@@ -663,14 +658,10 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
           </div>
         </div>
         {onRampProvider !== TransactionOnRampProvider.unknown && (
-          <Button
-            label="Add Funds"
-            className="w-full"
-            shape="square"
-            variant="glass"
-            leftIcon={() => <AddIcon size="md" />}
-            onClick={onClickAddFunds}
-          ></Button>
+          <Button className="w-full" shape="square" variant="ghost" onClick={onClickAddFunds}>
+            <AddIcon size="md" />
+            Add Funds
+          </Button>
         )}
       </div>
     )
@@ -799,12 +790,13 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
 
         <Button
           disabled={isPurchasing || isErrorSwapQuote || isSwitchingChainRef.current}
-          label={getConfirmButtonText()}
           className="w-full"
           shape="square"
           variant="primary"
           onClick={onClickPurchase}
-        ></Button>
+        >
+          {getConfirmButtonText()}
+        </Button>
       </div>
     </div>
   )

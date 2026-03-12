@@ -375,7 +375,9 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                   <Text className="whitespace-nowrap" variant="small" color="muted">
                     {`~${fiatCurrency.sign}${amountToSendFiat}`}
                   </Text>
-                  <Button className="shrink-0" size="xs" shape="square" label="Max" onClick={handleMax} data-id="maxCoin" />
+                  <Button className="shrink-0" size="xs" shape="square" onClick={handleMax} data-id="maxCoin">
+                    Max
+                  </Button>
                 </>
               }
             />
@@ -406,15 +408,10 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                   name="to-address"
                   data-1p-ignore
                   controls={
-                    <Button
-                      className="shrink-0"
-                      size="xs"
-                      shape="square"
-                      label="Paste"
-                      onClick={handlePaste}
-                      data-id="to-address"
-                      leftIcon={CopyIcon}
-                    />
+                    <Button className="shrink-0" size="xs" shape="square" onClick={handlePaste} data-id="to-address">
+                      <CopyIcon />
+                      Paste
+                    </Button>
                   }
                 />
                 {wallets.length > 1 && <AllButActiveWalletSelect onClick={setToAddress} />}
@@ -437,9 +434,10 @@ export const SendCoin = ({ chainId, contractAddress }: SendCoinProps) => {
                 size="lg"
                 type="submit"
                 disabled={!isNonZeroAmount || !isEthAddress(toAddress) || insufficientFunds || isSendTxnPending}
-                label="Send"
-                rightIcon={ChevronRightIcon}
-              />
+              >
+                Send
+                <ChevronRightIcon />
+              </Button>
             )}
           </div>
         </>

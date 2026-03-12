@@ -68,13 +68,9 @@ export const Footer = () => {
     return (
       <div className="flex flex-row gap-4">
         {bottomPageLinks.map((link, index) => (
-          <Button
-            className="flex gap-4"
-            variant="text"
-            onClick={() => onClickLinkUrl(link.url)}
-            key={index}
-            label={<Text variant="small">{link.label}</Text>}
-          />
+          <Button className="flex gap-4" variant="text" onClick={() => onClickLinkUrl(link.url)} key={index}>
+            <Text variant="small">{link.label}</Text>
+          </Button>
         ))}
       </div>
     )
@@ -94,7 +90,7 @@ export const Footer = () => {
                 }
               }}
             >
-              <Image className="h-3" src={socialLink.icon} alt={socialLink.id} disableAnimation />
+              <Image className="h-3" src={socialLink.icon} alt={socialLink.id} />
             </div>
           )
         })}

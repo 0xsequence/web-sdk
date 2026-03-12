@@ -1,6 +1,6 @@
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { ArrowRightIcon, Card, PaymentsIcon, Spinner, Text } from '@0xsequence/design-system'
 import { useClearCachedBalances, useGetContractInfo } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import { useEffect, useState } from 'react'
 import { useConnection } from 'wagmi'
 

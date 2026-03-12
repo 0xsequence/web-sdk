@@ -1,4 +1,4 @@
-import { ChevronDownIcon, cn, Field, textVariants } from '@0xsequence/design-system'
+import { ChevronDownIcon, cn, textVariants } from '@0xsequence/design-system'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { forwardRef, type ReactNode, type Ref } from 'react'
 
@@ -37,7 +37,10 @@ export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement
   const { name, label, options, value, onValueChange } = props
 
   return (
-    <Field id={name} label={label} labelLocation={'top'} className="grid whitespace-nowrap">
+    <div className="grid whitespace-nowrap gap-2">
+      <label htmlFor={name} className="text-sm text-muted">
+        {label}
+      </label>
       <SelectPrimitive.Root name={name} value={value} onValueChange={onValueChange}>
         <SelectPrimitive.Trigger
           id={name}
@@ -75,6 +78,6 @@ export const Select = forwardRef((props: SelectProps, ref: Ref<HTMLButtonElement
           </SelectPrimitive.Content>
         </SelectPrimitive.Portal>
       </SelectPrimitive.Root>
-    </Field>
+    </div>
   )
 })

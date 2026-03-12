@@ -65,8 +65,8 @@ export {
 export { createNativeTokenBalance, getNativeTokenInfoByChainId } from './utils/tokens.js'
 export { getModalPositionCss } from './utils/styling.js'
 export {
-  ChainId,
   allNetworks,
+  ChainId,
   findSupportedNetwork,
   getNetwork,
   getNetworkBackgroundColor,

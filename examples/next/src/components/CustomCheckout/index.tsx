@@ -87,7 +87,7 @@ export const CustomCheckout = () => {
                 width: '36px'
               }}
             >
-              <Image alt="Collectible preview" disableAnimation src={orderSummary.data?.collectibleItem?.collectibleImageUrl} />
+              <Image alt="Collectible preview" src={orderSummary.data?.collectibleItem?.collectibleImageUrl} />
             </div>
             <div className="flex flex-col gap-0.5">
               <Text variant="small" color="secondary" fontWeight="medium">
@@ -101,7 +101,7 @@ export const CustomCheckout = () => {
         </div>
         <div className="flex gap-1 flex-col">
           <div className="flex flex-row gap-2 items-center">
-            <NetworkImage disableAnimation chainId={chainId} size="sm" />
+            <NetworkImage chainId={chainId} size="sm" />
             <Text
               color="white"
               variant="large"

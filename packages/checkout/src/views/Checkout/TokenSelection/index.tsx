@@ -1,7 +1,7 @@
 import { compareAddress, ContractVerificationStatus, formatDisplay } from '@0xsequence/connect'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { Card, Scroll, SearchInput, Spinner, Text, TokenImage } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetSwapRoutes, useGetTokenBalancesSummary } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import Fuse from 'fuse.js'
 import { useState } from 'react'
 import { formatUnits } from 'viem'
@@ -200,7 +200,7 @@ const TokenOption = ({ tokenName, chainId, balanceRaw, decimals, logoUrl, symbol
       onClick={onClick}
     >
       <div className="flex flex-row gap-2 items-center">
-        <TokenImage disableAnimation src={logoUrl} withNetwork={chainId} className="w-6 h-6" />
+        <TokenImage src={logoUrl} withNetwork={chainId} className="w-6 h-6" />
         <div className="flex flex-col gap-0">
           <div className="flex flex-row gap-1">
             <Text color="text80" variant="small" fontWeight="bold">

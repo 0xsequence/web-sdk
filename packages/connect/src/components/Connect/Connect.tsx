@@ -4,10 +4,10 @@ import {
   ArrowRightIcon,
   Button,
   Card,
-  Divider,
+  DialogPrimitive,
   IconButton,
   Image,
-  ModalPrimitive,
+  Separator,
   Spinner,
   Text,
   TextInput,
@@ -477,7 +477,7 @@ export const Connect = (props: ConnectProps) => {
       }
 
       const Logo = (props: LogoProps) => {
-        return <Image src={connector.icon} alt={connector.name} disableAnimation {...props} />
+        return <Image src={connector.icon} alt={connector.name} {...props} />
       }
 
       return {
@@ -596,7 +596,6 @@ export const Connect = (props: ConnectProps) => {
         <Image
           src={logoUrl || ''}
           alt={projectName}
-          disableAnimation
           {...logoProps}
           style={{
             objectFit: 'contain',
@@ -872,7 +871,9 @@ export const Connect = (props: ConnectProps) => {
               </Text>
             </div>
           </Card>
-          <Button label="Cancel" variant="glass" onClick={onDismissRestorableSession} disabled={isRestoringSession} />
+          <Button variant="ghost" onClick={onDismissRestorableSession} disabled={isRestoringSession}>
+            Cancel
+          </Button>
         </div>
         <div className="mt-6">
           <PoweredBySequence />
@@ -981,7 +982,7 @@ export const Connect = (props: ConnectProps) => {
               <>
                 {!hideExternalConnectOptions && (
                   <>
-                    <Divider className="text-background-raised w-full" />
+                    <Separator className="w-full my-4" />
                     <div className="flex justify-center">
                       <Text variant="small" color="muted">
                         {!hasPrimarySequenceConnection ? 'Connect with a social account' : 'Connect another wallet'}
@@ -1048,11 +1049,11 @@ export const Connect = (props: ConnectProps) => {
                       )}
                       {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
                         <div className="flex gap-4 flex-row justify-center items-center">
-                          <Divider className="mx-0 my-0 text-background-secondary grow" />
+                          <Separator className="mx-0 my-0 grow" />
                           <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">
                             or
                           </Text>
-                          <Divider className="mx-0 my-0 text-background-secondary grow" />
+                          <Separator className="mx-0 my-0 grow" />
                         </div>
                       )}
                       {showEmailInputSection && (
@@ -1102,7 +1103,7 @@ const TitleWrapper = ({ children, isInline }: { children: ReactNode; isInline: b
     return <>{children}</>
   }
 
-  return <ModalPrimitive.Title asChild>{children}</ModalPrimitive.Title>
+  return <DialogPrimitive.Title asChild>{children}</DialogPrimitive.Title>
 }
 
 const getUserIdForEvent = (address: string) => {

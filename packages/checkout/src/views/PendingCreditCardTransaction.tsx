@@ -1,7 +1,7 @@
 import { useAnalyticsContext } from '@0xsequence/connect'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { Spinner, Text } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetTokenMetadata } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import { useEffect, useMemo, useRef } from 'react'
 import { formatUnits } from 'viem'
 
