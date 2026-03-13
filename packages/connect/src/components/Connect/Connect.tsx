@@ -1194,7 +1194,7 @@ const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
             height: '80px'
           }}
         >
-          {Logo && <Logo style={{ width: '70px', height: '70px' }} />}
+          {Logo && <Logo style={{ width: '60px', height: '60px' }} />}
         </div>
       </div>
 

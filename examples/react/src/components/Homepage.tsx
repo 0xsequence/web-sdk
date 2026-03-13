@@ -66,12 +66,7 @@ export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
               <Collapsible
                 label="Config"
                 defaultOpen={false}
-                className="w-full bg-background-overlay border border-solid border-border-muted rounded-2xl"
-                style={{
-                  boxShadow: '0 24px 60px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.05) inset',
-                  background:
-                    'linear-gradient(140deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), linear-gradient(180deg, rgba(64,33,152,0.12), rgba(64,33,152,0))'
-                }}
+                className="w-full bg-background-raised border border-solid border-border-muted rounded-2xl"
               >
                 <div className="flex flex-col gap-3 pt-0" style={{ lineHeight: 1.5 }}>
                   <div className="flex flex-col gap-1">
