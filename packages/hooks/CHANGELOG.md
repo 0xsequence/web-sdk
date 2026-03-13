@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.9
+
+### Patch Changes
+
+- Fix for chain switch
+
 ## 5.4.8
 
 ### Patch Changes

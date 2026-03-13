@@ -1,5 +1,16 @@
 # @0xsequence/kit-wallet
 
+## 5.4.9
+
+### Patch Changes
+
+- Fix for chain switch
+
+- Updated dependencies []:
+  - @0xsequence/checkout@5.4.9
+  - @0xsequence/connect@5.4.9
+  - @0xsequence/hooks@5.4.9
+
 ## 5.4.8
 
 ### Patch Changes

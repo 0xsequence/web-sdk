@@ -1,5 +1,14 @@
 # @0xsequence/connect
 
+## 5.4.9
+
+### Patch Changes
+
+- Fix for chain switch
+
+- Updated dependencies []:
+  - @0xsequence/hooks@5.4.9
+
 ## 5.4.8
 
 ### Patch Changes

@@ -98,14 +98,7 @@ export const Swap = () => {
       setIsSwitchingChain(false)
       onClickProceed()
     }
-  }, [
-    connectedChainId,
-    chainId,
-    isLoadingWalletClient,
-    isSwitchingChain,
-    isTargetWalletClientReady,
-    isTargetPublicClientReady
-  ])
+  }, [connectedChainId, chainId, isLoadingWalletClient, isSwitchingChain, isTargetWalletClientReady, isTargetPublicClientReady])
 
   useEffect(() => {
     // Only attempt to select a currency if none is currently selected
