@@ -8,7 +8,7 @@ import {
   validateEthProof
 } from '@0xsequence/connect'
 import { allNetworks, ChainId } from '@0xsequence/connect'
-import { Button, Card, Switch, Text } from '@0xsequence/design-system'
+import { Button, Card, Select, Switch, Text } from '@0xsequence/design-system'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import React, { useEffect } from 'react'
@@ -20,8 +20,6 @@ import { sponsoredContractAddresses } from '../config'
 import { messageToSign } from '../constants'
 import { abi } from '../constants/nft-abi'
 import { delay } from '../utils'
-
-import { Select } from './Select'
 
 export const Connected = () => {
   const { setOpenConnectModal } = useOpenConnectModal()
@@ -473,35 +471,40 @@ export const Connected = () => {
               )}
             {pendingFeeOptionConfirmation && (
               <div className="my-3">
-                <Select
-                  name="feeOption"
-                  label="Pick a fee option"
-                  onValueChange={val => {
-                    const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
-                    if (selected) {
-                      setSelectedFeeOptionTokenName(selected.token.name)
-                      setFeeOptionAlert(undefined)
-                    }
-                  }}
-                  value={selectedFeeOptionTokenName || ''}
-                  options={[
-                    ...pendingFeeOptionConfirmation.options.map(option => ({
-                      label: (
-                        <div className="flex items-start flex-col">
-                          <div className="flex flex-row">
-                            <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
-                            <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                <div className="grid whitespace-nowrap gap-2">
+                  <label htmlFor="feeOption" className="text-sm text-muted">
+                    Pick a fee option
+                  </label>
+                  <Select.Helper
+                    id="feeOption"
+                    name="feeOption"
+                    onValueChange={val => {
+                      const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
+                      if (selected) {
+                        setSelectedFeeOptionTokenName(selected.token.name)
+                        setFeeOptionAlert(undefined)
+                      }
+                    }}
+                    value={selectedFeeOptionTokenName || ''}
+                    options={[
+                      ...pendingFeeOptionConfirmation.options.map(option => ({
+                        label: (
+                          <div className="flex items-start flex-col">
+                            <div className="flex flex-row">
+                              <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
+                              <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                            </div>
+                            <div className="flex flex-row">
+                              <Text>Wallet balance for {option.token.name}: </Text>{' '}
+                              <Text>{'balanceFormatted' in option ? option.balanceFormatted : null}</Text>
+                            </div>
                           </div>
-                          <div className="flex flex-row">
-                            <Text>Wallet balance for {option.token.name}: </Text>{' '}
-                            <Text>{'balanceFormatted' in option ? option.balanceFormatted : null}</Text>
-                          </div>
-                        </div>
-                      ),
-                      value: option.token.name
-                    }))
-                  ]}
-                />
+                        ),
+                        value: option.token.name
+                      }))
+                    ]}
+                  />
+                </div>
                 <div className="flex my-2 items-center justify-center flex-col">
                   <Button
                     onClick={() => {
