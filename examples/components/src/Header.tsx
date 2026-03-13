@@ -21,9 +21,12 @@ export const Header = () => {
   const normalizedTheme: 'light' | 'dark' = theme === 'light' ? 'light' : 'dark'
 
   return (
-    <div className="flex fixed top-0 w-full p-4 justify-between bg-background-overlay backdrop-blur-md z-3 border-b ">
+    <div className="flex fixed top-0 w-full p-4 justify-between bg-background-primary backdrop-blur-md z-3 border-b border-border-normal">
       <div className="flex flex-row items-center justify-center gap-3">
-        <Image src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'} alt="Sequence Web SDK Logo" />
+        <Image
+          src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'}
+          alt="Sequence Web SDK Logo"
+        />
       </div>
       <div className="flex gap-2 items-center">
         <Button onClick={() => setTheme(normalizedTheme === 'dark' ? 'light' : 'dark')} variant="ghost" size="sm">
@@ -45,7 +48,7 @@ const AccountMenu = () => {
     <PopoverPrimitive.Root open={isOpen} onOpenChange={toggleOpen}>
       <PopoverPrimitive.Trigger asChild>
         <div
-          className="flex border-1 border-solid rounded-xl px-4 py-3 cursor-pointer gap-2 items-center select-none"
+          className="flex border-1 border-solid border-border-normal bg-background-secondary rounded-xl px-4 py-3 cursor-pointer gap-2 items-center select-none"
           style={{ height: 52 }}
         >
           <div className="flex flex-col">
@@ -64,9 +67,9 @@ const AccountMenu = () => {
       </PopoverPrimitive.Trigger>
       {isOpen && (
         <PopoverPrimitive.Portal>
-          <PopoverPrimitive.Content side="bottom" sideOffset={8} align="end" asChild>
-            <Card className="z-20 bg-background-raised backdrop-blur-md relative p-2" style={{ minWidth: 360 }}>
-              <Card>
+          <PopoverPrimitive.Content className="bg-background-raised!" side="bottom" sideOffset={8} align="end" asChild>
+            <Card className="z-20 backdrop-blur-md relative p-2" style={{ minWidth: 360 }}>
+              <Card className="bg-muted/20">
                 <div className="flex items-center justify-between">
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Account
@@ -82,7 +85,7 @@ const AccountMenu = () => {
               </Card>
 
               <div className="mt-2">
-                <Button className="w-full" shape="square" variant="emphasis" onClick={() => disconnect.mutate()}>
+                <Button className="w-full justify-between" shape="square" variant="secondary" onClick={() => disconnect.mutate()}>
                   Sign out
                   <SignoutIcon />
                 </Button>
@@ -111,7 +114,7 @@ const NetworkSelect = () => {
     <PopoverPrimitive.Root open={isOpen} onOpenChange={toggleOpen}>
       <PopoverPrimitive.Trigger asChild>
         <div
-          className="flex border-1 border-solid rounded-xl px-4 py-3 cursor-pointer gap-2 items-center select-none"
+          className="flex border-1 border-solid border-border-normal bg-background-secondary rounded-xl px-4 py-3 cursor-pointer gap-2 items-center select-none"
           style={{ height: 52 }}
         >
           <div className="flex items-center gap-2">
@@ -128,9 +131,9 @@ const NetworkSelect = () => {
       </PopoverPrimitive.Trigger>
       {isOpen && (
         <PopoverPrimitive.Portal>
-          <PopoverPrimitive.Content side="bottom" sideOffset={8} align="end" asChild>
+          <PopoverPrimitive.Content className="p-3" side="bottom" sideOffset={8} align="end" asChild>
             <Card className="flex z-20 bg-background-raised backdrop-blur-md relative flex-col overflow-hidden">
-              <div className="flex flex-col gap-2 max-h-[320px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex flex-col gap-1 max-h-[320px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 {chains.map(chain => (
                   <Button
                     className="w-full min-h-[44px] h-12"

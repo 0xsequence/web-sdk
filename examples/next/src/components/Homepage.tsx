@@ -30,7 +30,11 @@ export const Homepage = () => {
       {wallets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-5 h-screen">
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image className="w-[300px]" alt="Sequence Web SDK" src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'} />
+            <Image
+              className="w-[300px]"
+              alt="Sequence Web SDK"
+              src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'}
+            />
           </div>
 
           <div className="flex gap-2 flex-row items-center">

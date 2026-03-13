@@ -21,9 +21,8 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
       key={id}
     >
       <div className="absolute top-0 left-0 right-0 bottom-0" onClick={onSelect} style={{ cursor: 'pointer', zIndex: 1 }} />
-      <div className="flex flex-row items-center">
-        <div className="border" />
-        <div className="flex flex-col gap-1">
+      <div className="flex flex-row items-center gap-3">
+        <div className="flex flex-col gap-1 min-w-0">
           <Text variant="normal" color="primary">
             {isEmbedded ? 'Embedded - ' : ''}
             {name}
@@ -33,7 +32,7 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
           </Text>
         </div>
       </div>
-      <Button variant="text" size="sm" onClick={onDisconnect} style={{ position: 'relative', zIndex: 2 }}>
+      <Button variant="secondary" size="xs" onClick={onDisconnect} style={{ position: 'relative', zIndex: 2 }}>
         Disconnect
       </Button>
     </Card>

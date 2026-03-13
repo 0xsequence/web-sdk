@@ -19,9 +19,9 @@ export const Homepage = () => {
       {wallets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-5 h-screen">
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image 
-              className="w-[300px]" 
-              src={theme === 'dark' ? 'images/sequence-websdk-light.svg' : 'images/sequence-websdk-dark.svg'} 
+            <Image
+              className="w-[300px]"
+              src={theme === 'dark' ? 'images/sequence-websdk-light.svg' : 'images/sequence-websdk-dark.svg'}
             />
           </div>
 
