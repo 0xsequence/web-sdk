@@ -111,7 +111,7 @@ export const truncateAtIndex = (text: string, truncateIndex: number) => {
   let finalText = text
 
   if (text.length >= truncateIndex) {
-    finalText = text.slice(0, truncateIndex) + '...' + text.slice(text.length - 4, text.length)
+    finalText = text.slice(0, 4) + '...' + text.slice(text.length - 4, text.length)
   }
 
   return finalText

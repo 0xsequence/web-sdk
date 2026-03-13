@@ -2,10 +2,10 @@ import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
 import {
   AddIcon,
   ArrowUpIcon,
-  Divider,
   IconButton,
   ScanIcon,
   SearchIcon,
+  Separator,
   SettingsIcon,
   SwapIcon,
   Text,
@@ -157,7 +157,7 @@ export const HomeHeader = () => {
         <IconButton className="bg-background-secondary" icon={SearchIcon} size="sm" onClick={() => onClickSearch()} />
         <IconButton className="bg-background-secondary" icon={SettingsIcon} size="sm" onClick={() => onClickSettings()} />
       </div>
-      <Divider className="my-0 w-full" style={{ position: 'absolute', bottom: 0 }} />
+      <Separator className="my-0 w-full" style={{ position: 'absolute', bottom: 0 }} />
 
       <AnimatePresence>
         {isWalletViewOpen && (

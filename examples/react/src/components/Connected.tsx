@@ -10,8 +10,8 @@ import {
   useWallets,
   validateEthProof
 } from '@0xsequence/connect'
-import { Button, Card, Divider, Text } from '@0xsequence/design-system'
 import { allNetworks, ChainId } from '@0xsequence/connect'
+import { Button, Card, Select, Separator, Text } from '@0xsequence/design-system'
 import { useOpenWalletModal } from '@0xsequence/wallet-widget'
 import { Alert, CardButton, Header, WalletListItem, type AlertProps } from 'example-shared-components'
 import { AbiFunction } from 'ox'
@@ -30,8 +30,6 @@ import {
   PermissionsType,
   USDC_ADDRESS
 } from '../constants/permissions'
-
-import { Select } from './Select'
 
 const INITIAL_V3_CHAIN_ID_STORAGE_KEY = 'sequence.example.initialV3ChainId'
 
@@ -698,7 +696,9 @@ export const Connected = () => {
             </div>
 
             <div className="flex gap-2 flex-row items-center justify-center">
-              <Button shape="square" onClick={onClickConnect} variant="feature" size="sm" label="Connect another wallet" />
+              <Button shape="square" onClick={onClickConnect} variant="primary" size="sm">
+                Connect another wallet
+              </Button>
             </div>
 
             <Text className="align-self-center mt-4" variant="medium" color="muted">
@@ -779,7 +779,7 @@ export const Connected = () => {
               </>
             )}
 
-            <Divider />
+            <Separator />
 
             {isV3WalletConnectionActive && (
               <>
@@ -788,17 +788,22 @@ export const Connected = () => {
                 </Text>
 
                 <div className="mb-2">
-                  <Select
-                    name="permissionType"
-                    label="Pick a permission type"
-                    onValueChange={val => setPermissionType(val as PermissionsType)}
-                    value={permissionType}
-                    options={[
-                      { label: 'Contract call (explicitEmit)', value: 'contractCall' },
-                      { label: 'USDC Transfer (Optimism only)', value: 'usdcTransfer' },
-                      { label: 'Combined (explicitEmit() + USDC transfer)', value: 'combined' }
-                    ]}
-                  />
+                  <div className="grid whitespace-nowrap gap-2">
+                    <label htmlFor="permissionType" className="text-sm text-muted">
+                      Pick a permission type
+                    </label>
+                    <Select.Helper
+                      id="permissionType"
+                      name="permissionType"
+                      onValueChange={val => setPermissionType(val as PermissionsType)}
+                      value={permissionType}
+                      options={[
+                        { label: 'Contract call (explicitEmit)', value: 'contractCall' },
+                        { label: 'USDC Transfer (Optimism only)', value: 'usdcTransfer' },
+                        { label: 'Combined (explicitEmit() + USDC transfer)', value: 'combined' }
+                      ]}
+                    />
+                  </div>
                   <div className="my-2 text-center">
                     {isCheckingPermission && (
                       <Text variant="small" color="muted">
@@ -893,35 +898,40 @@ export const Connected = () => {
 
             {pendingFeeOptionConfirmation && (
               <div className="my-3">
-                <Select
-                  name="feeOption"
-                  label="Pick a fee option"
-                  onValueChange={val => {
-                    const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
-                    if (selected) {
-                      setSelectedFeeOptionTokenName(selected.token.name)
-                      setFeeOptionAlert(undefined)
-                    }
-                  }}
-                  value={selectedFeeOptionTokenName || ''}
-                  options={[
-                    ...pendingFeeOptionConfirmation.options.map(option => ({
-                      label: (
-                        <div className="flex items-start flex-col">
-                          <div className="flex flex-row">
-                            <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
-                            <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                <div className="grid whitespace-nowrap gap-2">
+                  <label htmlFor="feeOption" className="text-sm text-muted">
+                    Pick a fee option
+                  </label>
+                  <Select.Helper
+                    id="feeOption"
+                    name="feeOption"
+                    onValueChange={val => {
+                      const selected = pendingFeeOptionConfirmation?.options?.find(option => option.token.name === val)
+                      if (selected) {
+                        setSelectedFeeOptionTokenName(selected.token.name)
+                        setFeeOptionAlert(undefined)
+                      }
+                    }}
+                    value={selectedFeeOptionTokenName || ''}
+                    options={[
+                      ...pendingFeeOptionConfirmation.options.map(option => ({
+                        label: (
+                          <div className="flex items-start flex-col">
+                            <div className="flex flex-row">
+                              <Text variant="xsmall">Fee (in {option.token.name}): </Text>{' '}
+                              <Text variant="xsmall">{formatUnits(BigInt(option.value), option.token.decimals || 0)}</Text>
+                            </div>
+                            <div className="flex flex-row">
+                              <Text>Wallet balance for {option.token.name}: </Text>{' '}
+                              <Text>{'balanceFormatted' in option ? option.balanceFormatted : null}</Text>
+                            </div>
                           </div>
-                          <div className="flex flex-row">
-                            <Text>Wallet balance for {option.token.name}: </Text>{' '}
-                            <Text>{'balanceFormatted' in option ? option.balanceFormatted : null}</Text>
-                          </div>
-                        </div>
-                      ),
-                      value: option.token.name
-                    }))
-                  ]}
-                />
+                        ),
+                        value: option.token.name
+                      }))
+                    ]}
+                  />
+                </div>
                 <div className="flex my-2 items-center justify-center flex-col">
                   <Button
                     onClick={() => {
@@ -959,8 +969,9 @@ export const Connected = () => {
                         confirmPendingFeeOption(pendingFeeOptionConfirmation.id, feeTokenAddress)
                       }
                     }}
-                    label="Confirm fee option"
-                  />
+                  >
+                    Confirm fee option
+                  </Button>
                   {feeOptionAlert && (
                     <div className="mt-3">
                       <Alert

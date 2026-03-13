@@ -28,20 +28,14 @@ export const CoinDetailsSkeleton = ({ chainId, isReadOnly }: CoinDetailsSkeleton
         </div>
         {!isReadOnly && (
           <div className="flex gap-2">
-            <Button
-              className="w-full text-primary bg-background-secondary"
-              leftIcon={SendIcon}
-              label="Send"
-              disabled
-              onClick={() => {}}
-            />
-            <Button
-              className="w-full text-primary bg-background-secondary"
-              leftIcon={SwapIcon}
-              label="Swap"
-              disabled
-              onClick={() => {}}
-            />
+            <Button className="w-full text-primary bg-background-secondary" disabled onClick={() => {}}>
+              <SendIcon />
+              Send
+            </Button>
+            <Button className="w-full text-primary bg-background-secondary" disabled onClick={() => {}}>
+              <SwapIcon />
+              Swap
+            </Button>
           </div>
         )}
         <div>

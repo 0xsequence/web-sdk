@@ -1,5 +1,5 @@
 import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { cardVariants, CheckmarkIcon, CloseIcon, cn, Divider, IconButton, Spinner, Text } from '@0xsequence/design-system'
+import { cardVariants, CheckmarkIcon, CloseIcon, cn, IconButton, Separator, Spinner, Text } from '@0xsequence/design-system'
 import { useState } from 'react'
 
 import { ListCard } from '../../components/ListCard/ListCard.js'
@@ -61,8 +61,8 @@ export const SettingsWallets = () => {
                 <Spinner />
               ) : disconnectConfirm === 'All' ? (
                 <div className="flex gap-3">
-                  <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={() => handleDisconnect()} />
-                  <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setDisconnectConfirm(null)} />
+                  <IconButton size="xs" variant="destructive" icon={CheckmarkIcon} onClick={() => handleDisconnect()} />
+                  <IconButton size="xs" variant="ghost" icon={CloseIcon} onClick={() => setDisconnectConfirm(null)} />
                 </div>
               ) : (
                 <DisconnectButton label="Disconnect All" onClick={() => confrimDisconnectAll()} />
@@ -85,8 +85,8 @@ export const SettingsWallets = () => {
                 <Spinner />
               ) : disconnectConfirm === wallet.address ? (
                 <div className="flex gap-3">
-                  <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={() => handleDisconnect()} />
-                  <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setDisconnectConfirm(null)} />
+                  <IconButton size="xs" variant="destructive" icon={CheckmarkIcon} onClick={() => handleDisconnect()} />
+                  <IconButton size="xs" variant="ghost" icon={CloseIcon} onClick={() => setDisconnectConfirm(null)} />
                 </div>
               ) : (
                 <DisconnectButton label="Disconnect" onClick={() => confirmDisconnect(wallet.address)} />
@@ -97,7 +97,7 @@ export const SettingsWallets = () => {
       </div>
 
       <div className="bg-background-primary" style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-        <Divider className="my-0" />
+        <Separator className="my-0" />
         <div className="rounded-none m-4">
           <div
             className={cn(

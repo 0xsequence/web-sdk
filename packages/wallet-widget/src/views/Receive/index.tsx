@@ -48,8 +48,14 @@ export const Receive = () => {
         </div>
       </div>
       <div className="flex gap-3">
-        <Button onClick={() => setCopied(address || '')} leftIcon={CopyIcon} label={isCopied ? 'Copied!' : 'Copy'} />
-        <Button onClick={onClickShare} leftIcon={ShareIcon} label="Share" />
+        <Button onClick={() => setCopied(address || '')}>
+          <CopyIcon />
+          {isCopied ? 'Copied!' : 'Copy'}
+        </Button>
+        <Button onClick={onClickShare}>
+          <ShareIcon />
+          Share
+        </Button>
       </div>
     </div>
   )

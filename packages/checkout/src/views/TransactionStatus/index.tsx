@@ -1,4 +1,5 @@
-import { CollectibleTileImage, formatDisplay, waitForTransactionReceipt } from '@0xsequence/connect'
+import { CollectibleTileImage, formatDisplay, truncateAtIndex, waitForTransactionReceipt } from '@0xsequence/connect'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import {
   ArrowDownIcon,
   Button,
@@ -8,8 +9,7 @@ import {
   NetworkImage,
   Spinner,
   Text,
-  TokenImage,
-  truncateAddress
+  TokenImage
 } from '@0xsequence/design-system'
 import { useGetContractInfo, useGetTokenMetadata, useIndexerClient } from '@0xsequence/hooks'
 import {
@@ -17,7 +17,6 @@ import {
   type SequenceIndexer,
   type TransactionReceipt
 } from '@0xsequence/indexer'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { formatUnits, type Hex, type PublicClient } from 'viem'
@@ -292,7 +291,7 @@ export const TransactionStatus = () => {
                 </div>
               </div>
               <div className="flex flex-row gap-1 items-center justify-center">
-                <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" symbol={dataCurrencyInfo?.symbol} disableAnimation />
+                <TokenImage src={dataCurrencyInfo?.logoURI} size="xs" symbol={dataCurrencyInfo?.symbol} />
                 <Text variant="normal" fontWeight="bold" color="white">{`${price} ${dataCurrencyInfo?.symbol}`}</Text>
               </div>
             </div>
@@ -341,7 +340,11 @@ export const TransactionStatus = () => {
             closeTransactionStatusModal()
             button.action()
           }
-          return <Button key={button.label} label={button.label} onClick={action} />
+          return (
+            <Button key={button.label} onClick={action}>
+              {button.label}
+            </Button>
+          )
         })}
       </div>
     )
@@ -377,7 +380,7 @@ export const TransactionStatus = () => {
                 asChild
               >
                 <a href={blockExplorerUrl} target="_blank" rel="noreferrer">
-                  {truncateAddress(txHash, 4, 4)}
+                  {truncateAtIndex(txHash, 10)}
                 </a>
               </Text>
             </div>

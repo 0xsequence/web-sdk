@@ -14,7 +14,7 @@
     "@0xsequence/dapp-client": "3.0.1",
     "@0xsequence/checkout": "workspace:*",
     "@0xsequence/connect": "workspace:*",
-    "@0xsequence/design-system": "2.1.11",
+    "@0xsequence/design-system": "3.2.9",
     "@0xsequence/hooks": "workspace:*",
     "@0xsequence/waas": "^2.3.38",
     "@0xsequence/wallet-widget": "workspace:*",

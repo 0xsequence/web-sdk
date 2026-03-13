@@ -1,13 +1,15 @@
 'use client'
 
 import {
+  ArrowLeftIcon,
   ArrowRightIcon,
   Button,
   Card,
-  Divider,
+  CloseIcon,
+  DialogPrimitive,
   IconButton,
   Image,
-  ModalPrimitive,
+  Separator,
   Spinner,
   Text,
   TextInput,
@@ -74,6 +76,15 @@ const getConnectorProvider = (connector: ExtendedConnector): WalletConfiguration
   }
   if (walletId.includes('passkey')) {
     return 'PASSKEY'
+  }
+  if (walletId.includes('guest')) {
+    return 'GUEST'
+  }
+  if (walletId.includes('x-waas') || walletId === 'x-waas') {
+    return 'X'
+  }
+  if (walletId.includes('epic')) {
+    return 'EPIC'
   }
 
   return null
@@ -190,6 +201,7 @@ export const Connect = (props: ConnectProps) => {
   const [isRestoringSession, setIsRestoringSession] = useState(false)
   const [restorableSessionDismissed, setRestorableSessionDismissed] = useState(false)
   const [restorableSession, setRestorableSession] = useState<RestorableSessionState | null>(null)
+  const [connectingConnector, setConnectingConnector] = useState<ExtendedConnector | null>(null)
 
   const handleUnlinkWallet = async (address: string) => {
     try {
@@ -477,7 +489,7 @@ export const Connect = (props: ConnectProps) => {
       }
 
       const Logo = (props: LogoProps) => {
-        return <Image src={connector.icon} alt={connector.name} disableAnimation {...props} />
+        return <Image src={connector.icon} alt={connector.name} {...props} />
       }
 
       return {
@@ -596,7 +608,6 @@ export const Connect = (props: ConnectProps) => {
         <Image
           src={logoUrl || ''}
           alt={projectName}
-          disableAnimation
           {...logoProps}
           style={{
             objectFit: 'contain',
@@ -631,15 +642,21 @@ export const Connect = (props: ConnectProps) => {
 
     switch (connector._wallet?.id) {
       case 'guest-waas':
-        return <GuestWaasConnectButton {...commonProps} setIsLoading={setIsLoading} />
+        return (
+          <GuestWaasConnectButton {...commonProps} setIsLoading={setIsLoading} setConnectingConnector={setConnectingConnector} />
+        )
       case 'google-waas':
-        return <GoogleWaasConnectButton {...commonProps} />
+        return (
+          <GoogleWaasConnectButton {...commonProps} setIsLoading={setIsLoading} setConnectingConnector={setConnectingConnector} />
+        )
       case 'apple-waas':
-        return <AppleWaasConnectButton {...commonProps} />
+        return (
+          <AppleWaasConnectButton {...commonProps} setIsLoading={setIsLoading} setConnectingConnector={setConnectingConnector} />
+        )
       case 'epic-waas':
         return <EpicWaasConnectButton {...commonProps} />
       case 'X-waas':
-        return <XWaasConnectButton {...commonProps} />
+        return <XWaasConnectButton {...commonProps} setIsLoading={setIsLoading} setConnectingConnector={setConnectingConnector} />
       default:
         return <ConnectButton {...commonProps} />
     }
@@ -656,6 +673,8 @@ export const Connect = (props: ConnectProps) => {
   }, [status, isRestoringSession])
 
   const handleConnect = async (connector: ExtendedConnector) => {
+    setConnectingConnector(connector)
+
     if (connector._wallet.id === 'guest-waas') {
       const sequenceWaaS = new SequenceWaaS({
         projectAccessKey: config.projectAccessKey,
@@ -675,9 +694,16 @@ export const Connect = (props: ConnectProps) => {
         },
         onSettled: result => {
           setLastConnectedWallet(result?.accounts[0])
+          setConnectingConnector(null)
         }
       }
     )
+  }
+
+  const handleCancelConnect = () => {
+    connect.reset()
+    setConnectingConnector(null)
+    setIsLoading(false)
   }
 
   const onDismissRestorableSession = () => {
@@ -872,7 +898,9 @@ export const Connect = (props: ConnectProps) => {
               </Text>
             </div>
           </Card>
-          <Button label="Cancel" variant="glass" onClick={onDismissRestorableSession} disabled={isRestoringSession} />
+          <Button variant="ghost" onClick={onDismissRestorableSession} disabled={isRestoringSession}>
+            Cancel
+          </Button>
         </div>
         <div className="mt-6">
           <PoweredBySequence />
@@ -934,36 +962,44 @@ export const Connect = (props: ConnectProps) => {
     )
   }
 
+  const showLoader = isLoading && connectingConnector
+
   return (
     <div className={isInline ? 'p-0' : 'p-4'}>
-      <div
-        className="flex flex-col justify-center text-primary items-center font-medium"
-        style={{
-          marginTop: isInline ? '0' : '2px'
-        }}
-      >
-        <TitleWrapper isInline={isInline}>
-          <Text color="secondary">
-            {isLoading
-              ? `Connecting...`
-              : hasPrimarySequenceConnection
-                ? 'Wallets'
-                : `Connect ${projectName ? `to ${projectName}` : ''}`}
-          </Text>
-        </TitleWrapper>
-
-        {isSigningLinkMessage && (
-          <div className="mt-4">
-            <Text variant="small" color="muted">
-              Confirm the signature request to link your account
+      {!showLoader && (
+        <div
+          className="flex flex-col justify-center text-primary items-center font-medium"
+          style={{
+            marginTop: isInline ? '0' : '2px'
+          }}
+        >
+          <TitleWrapper isInline={isInline}>
+            <Text color="secondary">
+              {isLoading
+                ? `Connecting...`
+                : hasPrimarySequenceConnection
+                  ? 'Wallets'
+                  : `Connect ${projectName ? `to ${projectName}` : ''}`}
             </Text>
-          </div>
-        )}
-      </div>
-      {isLoading ? (
-        <div className="flex justify-center items-center pt-4">
-          <Spinner />
+          </TitleWrapper>
+
+          {isSigningLinkMessage && (
+            <div className="mt-4">
+              <Text variant="small" color="muted">
+                Confirm the signature request to link your account
+              </Text>
+            </div>
+          )}
         </div>
+      )}
+      {isLoading ? (
+        connectingConnector ? (
+          <ConnectorLoading connector={connectingConnector} onCancel={handleCancelConnect} />
+        ) : (
+          <div className="flex justify-center items-center pt-4">
+            <Spinner />
+          </div>
+        )
       ) : (
         <>
           {!hideConnectedWallets && wallets.length > 0 && !showEmailWaasPinInput && (
@@ -981,7 +1017,7 @@ export const Connect = (props: ConnectProps) => {
               <>
                 {!hideExternalConnectOptions && (
                   <>
-                    <Divider className="text-background-raised w-full" />
+                    <Separator className="w-full my-4" />
                     <div className="flex justify-center">
                       <Text variant="small" color="muted">
                         {!hasPrimarySequenceConnection ? 'Connect with a social account' : 'Connect another wallet'}
@@ -1047,12 +1083,12 @@ export const Connect = (props: ConnectProps) => {
                         </div>
                       )}
                       {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
-                        <div className="flex gap-4 flex-row justify-center items-center">
-                          <Divider className="mx-0 my-0 text-background-secondary grow" />
-                          <Text className="leading-4 h-4 text-sm" variant="normal" fontWeight="medium" color="muted">
+                        <div className="flex gap-2 flex-row justify-center items-center w-full">
+                          <Separator className="flex-1" />
+                          <Text className="leading-4 h-4 text-sm shrink-0" variant="normal" fontWeight="medium" color="muted">
                             or
                           </Text>
-                          <Divider className="mx-0 my-0 text-background-secondary grow" />
+                          <Separator className="flex-1" />
                         </div>
                       )}
                       {showEmailInputSection && (
@@ -1102,9 +1138,86 @@ const TitleWrapper = ({ children, isInline }: { children: ReactNode; isInline: b
     return <>{children}</>
   }
 
-  return <ModalPrimitive.Title asChild>{children}</ModalPrimitive.Title>
+  return <DialogPrimitive.Title asChild>{children}</DialogPrimitive.Title>
 }
 
 const getUserIdForEvent = (address: string) => {
   return genUserId(address.toLowerCase(), false, { privacy: { userIdHash: true } }).userId
+}
+
+interface ConnectorLoadingProps {
+  connector: ExtendedConnector
+  onCancel: () => void
+}
+
+const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
+  const { theme } = useTheme()
+  const walletProps = connector._wallet
+  const Logo = getLogo(theme, walletProps)
+  const walletName = walletProps?.name || 'Wallet'
+  const provider = getConnectorProvider(connector)
+  const isGuest = provider === 'GUEST'
+
+  return (
+    <div className="flex flex-col items-center justify-center pb-4 bg-background-primary rounded-2xl">
+      <div className="flex items-center justify-between w-full mb-4">
+        <IconButton icon={ArrowLeftIcon} onClick={onCancel} size="xs" />
+        <Text fontWeight="semibold" color="primary" className="">
+          {isGuest ? 'Connecting...' : `Sign in with ${walletName}`}
+        </Text>
+
+        <div className="w-7" />
+      </div>
+
+      <div className="relative mb-4" style={{ width: '146px', height: '146px' }}>
+        <div
+          className="absolute top-0 left-0 rounded-full"
+          style={{
+            width: '146px',
+            height: '146px',
+            background:
+              theme === 'dark'
+                ? 'conic-gradient(from 90deg, rgba(255, 255, 255, 1) 0deg, rgba(99, 102, 241, 1) 39.6deg, rgba(106, 74, 255, 0) 115.2deg, rgba(106, 74, 255, 0) 360deg)'
+                : 'conic-gradient(from 90deg, rgba(75, 50, 180, 1) 0deg, rgba(147, 137, 227, 1) 39.6deg, rgba(147, 137, 227, 0) 115.2deg, rgba(147, 137, 227, 0) 360deg)',
+            animation: 'connectorSpinnerRotate 1.5s linear infinite',
+            mask: 'radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 4px))',
+            WebkitMask: 'radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 4px))'
+          }}
+        />
+
+        <div
+          className="absolute flex items-center justify-center bg-background-secondary rounded-2xl"
+          style={{
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80px',
+            height: '80px'
+          }}
+        >
+          {Logo && <Logo style={{ width: '60px', height: '60px' }} />}
+        </div>
+      </div>
+
+      {!isGuest && (
+        <Text color="muted" className="text-center">
+          Continue on the popup
+        </Text>
+      )}
+
+      <Button onClick={onCancel} variant="secondary" size="md" className="mt-4">
+        <CloseIcon />
+        <Text variant="normal" fontWeight="medium" color="primary">
+          Cancel
+        </Text>
+      </Button>
+
+      <style>{`
+        @keyframes connectorSpinnerRotate {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+      `}</style>
+    </div>
+  )
 }

@@ -1,4 +1,4 @@
-import { Divider } from '@0xsequence/design-system'
+import { Separator } from '@0xsequence/design-system'
 import { motion } from 'motion/react'
 import { useContext, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
@@ -88,7 +88,7 @@ export const SlideupDrawer = ({
           </div>
           {footer && (
             <>
-              <Divider className="my-0" />
+              <Separator className="my-0" />
               <div className="flex flex-row justify-start p-4">{footer}</div>
             </>
           )}
