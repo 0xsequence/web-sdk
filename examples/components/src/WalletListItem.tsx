@@ -29,7 +29,7 @@ export const WalletListItem = ({ id, name, address, isActive, isEmbedded, onSele
             {name}
           </Text>
           <Text variant="normal" fontWeight="bold" color="primary">
-            {truncateAtMiddle(address, 10)}
+            {truncateAtMiddle(address, 8)}
           </Text>
         </div>
       </div>

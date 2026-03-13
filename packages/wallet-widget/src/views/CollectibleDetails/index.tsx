@@ -190,7 +190,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
             leftIcon={
               tokenBalance?.accountAddress && <GradientAvatar address={getAddress(tokenBalance?.accountAddress)} size="xs" />
             }
-            label={truncateAtIndex(tokenBalance?.accountAddress || '', 6) || 'Unknown Owner'}
+            label={truncateAtIndex(tokenBalance?.accountAddress || '', 8) || 'Unknown Owner'}
           />
         </div>
         <Separator className="my-0" />

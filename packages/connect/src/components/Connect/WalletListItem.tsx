@@ -71,7 +71,7 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
             )}
           </div>
           <Text variant="normal" fontWeight="bold" color="primary">
-            {truncateAtIndex(address, 13)}
+            {truncateAtIndex(address, 8)}
           </Text>
         </div>
       </div>

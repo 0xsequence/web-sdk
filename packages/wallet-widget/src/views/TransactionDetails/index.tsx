@@ -88,7 +88,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
   }
   const Transfer = ({ transfer }: TransferProps) => {
     const recipientAddress = transfer.to
-    const recipientAddressFormatted = truncateAtIndex(recipientAddress, 10)
+    const recipientAddressFormatted = truncateAtIndex(recipientAddress, 8)
     const isNativeToken = compareAddress(transfer?.contractInfo?.address || '', zeroAddress)
     const isCollectible = transfer.contractType === 'ERC721' || transfer.contractType === 'ERC1155'
     const tokenId = transfer.tokenIds?.[0]
@@ -132,7 +132,7 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
       fiatPrice: number
     }) => {
       const senderAddress = transfer.from
-      const senderAddressFormatted = truncateAtIndex(senderAddress, 10)
+      const senderAddressFormatted = truncateAtIndex(senderAddress, 8)
 
       return (
         <div
