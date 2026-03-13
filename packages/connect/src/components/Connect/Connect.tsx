@@ -1176,7 +1176,9 @@ const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
             width: '146px',
             height: '146px',
             background:
-              'conic-gradient(from 90deg, rgba(255, 255, 255, 1) 0deg, rgba(99, 102, 241, 1) 39.6deg, rgba(106, 74, 255, 0) 115.2deg, rgba(106, 74, 255, 0) 360deg)',
+              theme === 'dark'
+                ? 'conic-gradient(from 90deg, rgba(255, 255, 255, 1) 0deg, rgba(99, 102, 241, 1) 39.6deg, rgba(106, 74, 255, 0) 115.2deg, rgba(106, 74, 255, 0) 360deg)'
+                : 'conic-gradient(from 90deg, rgba(75, 50, 180, 1) 0deg, rgba(147, 137, 227, 1) 39.6deg, rgba(147, 137, 227, 0) 115.2deg, rgba(147, 137, 227, 0) 360deg)',
             animation: 'connectorSpinnerRotate 1.5s linear infinite',
             mask: 'radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 4px))',
             WebkitMask: 'radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 4px))'
