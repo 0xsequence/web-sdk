@@ -164,7 +164,7 @@ const NetworkSelect = () => {
       </PopoverPrimitive.Trigger>
       {isOpen && (
         <PopoverPrimitive.Portal>
-          <PopoverPrimitive.Content className="p-3" side="bottom" sideOffset={8} align="end" asChild>
+          <PopoverPrimitive.Content className="p-3 shadow-lg" side="bottom" sideOffset={8} align="end" asChild>
             <Card
               className="flex z-20 bg-background-raised backdrop-blur-md relative flex-col overflow-hidden"
               style={{ width: 320 }}
