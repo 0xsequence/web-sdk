@@ -165,12 +165,28 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
     }
   )
 
+  const isTargetWalletClientReady = !!walletClient
+  const isTargetPublicClientReady = publicClient?.chain?.id === chainId
+
   useEffect(() => {
-    if (isSwitchingChainRef.current && connectedChainId == Number(chainId) && !isLoadingWalletClient) {
+    if (
+      isSwitchingChainRef.current &&
+      connectedChainId === chainId &&
+      !isLoadingWalletClient &&
+      isTargetWalletClientReady &&
+      isTargetPublicClientReady
+    ) {
       isSwitchingChainRef.current = false
       onClickPurchase()
     }
-  }, [connectedChainId, chainId, isLoadingWalletClient, isSwitchingChainRef.current])
+  }, [
+    connectedChainId,
+    chainId,
+    isLoadingWalletClient,
+    isSwitchingChainRef,
+    isTargetWalletClientReady,
+    isTargetPublicClientReady
+  ])
 
   const isNotEnoughBalanceError =
     typeof swapQuoteError?.cause === 'string' && swapQuoteError?.cause?.includes('not enough balance for swap')
@@ -230,19 +246,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   const priceFiat = (fiatExchangeRate * Number(formattedPrice)).toFixed(2)
 
   const onPurchaseMainCurrency = async () => {
-    if (!walletClient || isErrorWalletClient || errorWalletClient) {
-      throw new Error('Wallet client is not available. Please ensure your wallet is connected.', {
-        cause: errorWalletClient
-      })
-    }
     if (!userAddress) {
       throw new Error('User address is not available. Please ensure your wallet is connected.')
-    }
-    if (!publicClient) {
-      throw new Error('Public client is not available. Please check your network connection.')
-    }
-    if (!indexerClient) {
-      throw new Error('Indexer client is not available. Please check your network connection.')
     }
     if (!connector) {
       throw new Error('Wallet connector is not available. Please ensure your wallet is properly connected.')
@@ -256,6 +261,18 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         await switchChain({ chainId })
         isSwitchingChainRef.current = true
         return
+      }
+
+      if (!walletClient || isErrorWalletClient || errorWalletClient) {
+        throw new Error('Wallet client is not available. Please ensure your wallet is connected.', {
+          cause: errorWalletClient
+        })
+      }
+      if (!publicClient || publicClient.chain?.id !== chainId) {
+        throw new Error('Public client is not ready for the selected network. Please try again.')
+      }
+      if (!indexerClient) {
+        throw new Error('Indexer client is not available. Please check your network connection.')
       }
 
       const approveTxData = encodeFunctionData({
@@ -380,14 +397,8 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
   }
 
   const onClickPurchaseSwap = async () => {
-    if (!walletClient) {
-      throw new Error('Wallet client is not available. Please ensure your wallet is connected.')
-    }
     if (!userAddress) {
       throw new Error('User address is not available. Please ensure your wallet is connected.')
-    }
-    if (!publicClient) {
-      throw new Error('Public client is not available. Please check your network connection.')
     }
     if (!connector) {
       throw new Error('Wallet connector is not available. Please ensure your wallet is properly connected.')
@@ -404,6 +415,18 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
         await switchChain({ chainId })
         isSwitchingChainRef.current = true
         return
+      }
+
+      if (!walletClient || isErrorWalletClient || errorWalletClient) {
+        throw new Error('Wallet client is not available. Please ensure your wallet is connected.', {
+          cause: errorWalletClient
+        })
+      }
+      if (!publicClient || publicClient.chain?.id !== chainId) {
+        throw new Error('Public client is not ready for the selected network. Please try again.')
+      }
+      if (!indexerClient) {
+        throw new Error('Indexer client is not available. Please check your network connection.')
       }
 
       const approveTxData = encodeFunctionData({
