@@ -46,7 +46,7 @@ export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
           </div>
 
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image className="w-[300px]" src="images/sequence-websdk-dark.svg" />
+            <Image className="w-[300px]" src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'} />
           </div>
 
           <div className="flex flex-col gap-3 items-center">

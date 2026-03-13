@@ -23,7 +23,7 @@ export const Header = () => {
   return (
     <div className="flex fixed top-0 w-full p-4 justify-between bg-background-overlay backdrop-blur-md z-3 border-b ">
       <div className="flex flex-row items-center justify-center gap-3">
-        <Image src="images/sequence-websdk-dark.svg" alt="Sequence Web SDK Logo" />
+        <Image src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'} alt="Sequence Web SDK Logo" />
       </div>
       <div className="flex gap-2 items-center">
         <Button onClick={() => setTheme(normalizedTheme === 'dark' ? 'light' : 'dark')} variant="ghost" size="sm">
