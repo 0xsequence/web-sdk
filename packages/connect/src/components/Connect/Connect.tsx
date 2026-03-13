@@ -1156,7 +1156,6 @@ const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
   const Logo = getLogo(theme, walletProps)
   const walletName = walletProps?.name || 'Wallet'
   const provider = getConnectorProvider(connector)
-  const hasExtension = !provider
   const isGuest = provider === 'GUEST'
 
   return (
@@ -1199,16 +1198,9 @@ const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
       </div>
 
       {!isGuest && (
-        <>
-          <Text color="muted" className="text-center">
-            Continue on the popup{hasExtension ? ' or' : ''}
-          </Text>
-          {hasExtension && (
-            <Text fontWeight="semibold" color="primary" className="text-center">
-              download {walletName.toLowerCase()} extension
-            </Text>
-          )}
-        </>
+        <Text color="muted" className="text-center">
+          Continue on the popup
+        </Text>
       )}
 
       <Button onClick={onCancel} variant="secondary" size="md" className="mt-4">
