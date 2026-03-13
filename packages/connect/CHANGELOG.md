@@ -1,5 +1,13 @@
 # @0xsequence/connect
 
+## 6.0.2
+
+### Patch Changes
+
+- Fix for chain switch
+- Updated dependencies
+  - @0xsequence/hooks@6.0.2
+
 ## 6.0.1
 
 ### Patch Changes
