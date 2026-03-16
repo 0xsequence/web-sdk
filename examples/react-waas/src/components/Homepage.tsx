@@ -21,7 +21,7 @@ export const Homepage = () => {
           <div className="flex flex-row items-center justify-center gap-3">
             <Image
               className="w-[300px]"
-              src={theme === 'dark' ? 'images/sequence-websdk-light.svg' : 'images/sequence-websdk-dark.svg'}
+              src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'}
             />
           </div>
 

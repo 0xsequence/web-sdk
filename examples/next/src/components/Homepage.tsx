@@ -25,6 +25,8 @@ export const Homepage = () => {
     setOpenConnectModal(true)
   }
 
+  console.log(theme)
+
   return (
     <main>
       {wallets.length === 0 ? (
@@ -33,7 +35,7 @@ export const Homepage = () => {
             <Image
               className="w-[300px]"
               alt="Sequence Web SDK"
-              src={theme === 'dark' ? 'images/sequence-websdk-dark.svg' : 'images/sequence-websdk-light.svg'}
+              src={theme === 'dark' ? 'images/sequence-websdk-light.svg' : 'images/sequence-websdk-dark.svg'}
             />
           </div>
 
