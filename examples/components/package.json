@@ -7,7 +7,7 @@
     "@radix-ui/react-popover": "^1.1.11"
   },
   "peerDependencies": {
-    "@0xsequence/design-system": "2.1.11",
+    "@0xsequence/design-system": "3.2.9",
     "react": "^19.1.0",
     "wagmi": "^3.2.0"
   },

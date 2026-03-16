@@ -26,7 +26,7 @@ export const TokenImageCustom = ({
         }}
       >
         <NetworkImageCustom
-          className="border"
+          className={'border border-background-primary'}
           chainId={chainId}
           indicatorPosition="top-right"
           style={{

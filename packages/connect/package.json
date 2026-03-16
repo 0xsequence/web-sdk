@@ -43,7 +43,7 @@
     "@0xsequence/api": ">=3.0.1",
     "@0xsequence/auth": "^2.3.38",
     "@0xsequence/core": "^2.3.38",
-    "@0xsequence/design-system": "2.1.11",
+    "@0xsequence/design-system": "3.2.9",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/indexer": ">=3.0.1",
     "@0xsequence/wallet-primitives": ">=3.0.1",

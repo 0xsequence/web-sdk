@@ -101,7 +101,7 @@ export const SequenceConnectPreviewProvider = (props: SequenceConnectProviderPro
               }}
             >
               <div id="kit-provider" style={{ background: inlineBackground }}>
-                <ThemeProvider root="#kit-provider" scope="kit" theme={theme}>
+                <ThemeProvider root="#kit-provider" theme={theme}>
                   {isWalletConfigLoading ? (
                     <div className="flex py-8 justify-center items-center">
                       <Spinner size="lg" />

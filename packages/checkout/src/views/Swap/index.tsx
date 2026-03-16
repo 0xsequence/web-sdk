@@ -1,4 +1,5 @@
 import { compareAddress, CryptoOption, formatDisplay, sendTransactions } from '@0xsequence/connect'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import { Button, Spinner, Text } from '@0xsequence/design-system'
 import {
   DEFAULT_SLIPPAGE_BPS,
@@ -8,7 +9,6 @@ import {
   useGetTokenBalancesSummary,
   useIndexerClient
 } from '@0xsequence/hooks'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import { useEffect, useMemo, useState } from 'react'
 import { formatUnits, zeroAddress, type Hex } from 'viem'
 import { useChainId, useConnection, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'
@@ -393,9 +393,10 @@ export const Swap = () => {
           <Button
             disabled={noOptionsFound || !selectedCurrency || quoteFetchInProgress || isTxsPending || isErrorSwapQuote}
             variant="primary"
-            label={quoteFetchInProgress ? 'Preparing swap...' : isTxsPending ? 'Preparing transaction...' : 'Proceed'}
             onClick={onClickProceed}
-          />
+          >
+            {quoteFetchInProgress ? 'Preparing swap...' : isTxsPending ? 'Preparing transaction...' : 'Proceed'}
+          </Button>
         </div>
       )
     }

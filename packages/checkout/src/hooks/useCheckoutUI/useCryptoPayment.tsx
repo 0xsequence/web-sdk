@@ -1,4 +1,5 @@
 import { compareAddress, ContractVerificationStatus, formatDisplay, sendTransactions } from '@0xsequence/connect'
+import { findSupportedNetwork } from '@0xsequence/connect'
 import {
   DEFAULT_SLIPPAGE_BPS,
   useGetSwapQuote,
@@ -7,7 +8,6 @@ import {
   useIndexerClient
 } from '@0xsequence/hooks'
 import type { ContractInfo, TokenMetadata } from '@0xsequence/metadata'
-import { findSupportedNetwork } from '@0xsequence/connect'
 import { useState } from 'react'
 import { encodeFunctionData, formatUnits, zeroAddress, type Hex } from 'viem'
 import { useConnection, usePublicClient, useReadContract, useWalletClient } from 'wagmi'

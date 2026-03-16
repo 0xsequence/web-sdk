@@ -91,8 +91,13 @@ export const ShowAllWalletsButton = ({ onClick }: ShowAllWalletsButtonProps) => 
   )
 }
 
-export const GuestWaasConnectButton = (props: ConnectButtonProps & { setIsLoading: (isLoading: boolean) => void }) => {
-  const { connector, onConnect, setIsLoading } = props
+export const GuestWaasConnectButton = (
+  props: ConnectButtonProps & {
+    setIsLoading: (isLoading: boolean) => void
+    setConnectingConnector?: (connector: ExtendedConnector | null) => void
+  }
+) => {
+  const { connector, onConnect, setIsLoading, setConnectingConnector } = props
 
   return (
     <ConnectButton
@@ -100,6 +105,7 @@ export const GuestWaasConnectButton = (props: ConnectButtonProps & { setIsLoadin
       connector={connector}
       onConnect={() => {
         setIsLoading(true)
+        setConnectingConnector?.(connector)
         onConnect(connector)
       }}
       disableTooltip
@@ -107,8 +113,13 @@ export const GuestWaasConnectButton = (props: ConnectButtonProps & { setIsLoadin
   )
 }
 
-export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
-  const { connector, onConnect, isDescriptive = false, label } = props
+export const GoogleWaasConnectButton = (
+  props: ConnectButtonProps & {
+    setIsLoading?: (isLoading: boolean) => void
+    setConnectingConnector?: (connector: ExtendedConnector | null) => void
+  }
+) => {
+  const { connector, onConnect, isDescriptive = false, label, setIsLoading, setConnectingConnector } = props
   const storage = useStorage()
 
   const { theme } = useTheme()
@@ -149,6 +160,10 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
         style={{
           height: buttonHeight
         }}
+        onClick={() => {
+          setIsLoading?.(true)
+          setConnectingConnector?.(connector)
+        }}
       >
         <div
           className="flex flex-row h-full overflow-hidden items-center justify-center"
@@ -169,6 +184,8 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
             }}
             onError={() => {
               console.log('Login Failed')
+              setIsLoading?.(false)
+              setConnectingConnector?.(null)
             }}
           />
         </div>
@@ -179,8 +196,13 @@ export const GoogleWaasConnectButton = (props: ConnectButtonProps) => {
   )
 }
 
-export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
-  const { connector, onConnect } = props
+export const AppleWaasConnectButton = (
+  props: ConnectButtonProps & {
+    setIsLoading?: (isLoading: boolean) => void
+    setConnectingConnector?: (connector: ExtendedConnector | null) => void
+  }
+) => {
+  const { connector, onConnect, setIsLoading, setConnectingConnector } = props
   const storage = useStorage()
 
   const { data: appleClientId } = useStorageItem(LocalStorageKey.WaasAppleClientID)
@@ -191,6 +213,8 @@ export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
       {...props}
       connector={connector}
       onConnect={() => {
+        setIsLoading?.(true)
+        setConnectingConnector?.(connector)
         appleAuthHelpers.signIn({
           authOptions: {
             clientId: appleClientId,
@@ -204,9 +228,15 @@ export const AppleWaasConnectButton = (props: ConnectButtonProps) => {
               onConnect(connector)
             } else {
               console.log('Apple login error: No id_token found')
+              setIsLoading?.(false)
+              setConnectingConnector?.(null)
             }
           },
-          onError: (error: any) => console.error(error)
+          onError: (error: any) => {
+            console.error(error)
+            setIsLoading?.(false)
+            setConnectingConnector?.(null)
+          }
         })
       }}
       disableTooltip
@@ -231,8 +261,13 @@ export const EpicWaasConnectButton = (props: ConnectButtonProps) => {
   ) : null
 }
 
-export const XWaasConnectButton = (props: ConnectButtonProps) => {
-  const { connector, onConnect } = props
+export const XWaasConnectButton = (
+  props: ConnectButtonProps & {
+    setIsLoading?: (isLoading: boolean) => void
+    setConnectingConnector?: (connector: ExtendedConnector | null) => void
+  }
+) => {
+  const { connector, onConnect, setIsLoading, setConnectingConnector } = props
   const storage = useStorage()
 
   const [XCodeVerifier, setXCodeVerifier] = useState<string>('')
@@ -258,6 +293,8 @@ export const XWaasConnectButton = (props: ConnectButtonProps) => {
       {...props}
       connector={connector}
       onConnect={() => {
+        setIsLoading?.(true)
+        setConnectingConnector?.(connector)
         const popup = window.open(authUrl as string, 'XAuthPopup', 'width=700,height=700')
 
         const handleMessage = async (event: MessageEvent) => {
@@ -281,7 +318,12 @@ export const XWaasConnectButton = (props: ConnectButtonProps) => {
               onConnect(connector)
             } catch (error) {
               console.log('X login error', error)
+              setIsLoading?.(false)
+              setConnectingConnector?.(null)
             }
+          } else {
+            setIsLoading?.(false)
+            setConnectingConnector?.(null)
           }
         }
 

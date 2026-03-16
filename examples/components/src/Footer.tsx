@@ -1,4 +1,4 @@
-import { Button, Image, Text } from '@0xsequence/design-system'
+import { Button, DiscordIcon, GithubIcon, Text, TwitterIcon, YoutubeIcon } from '@0xsequence/design-system'
 
 interface BottomPageLink {
   label: string
@@ -31,29 +31,29 @@ export const bottomPageLinks: BottomPageLink[] = [
 interface SocialLinks {
   id: string
   url: string
-  icon: string
+  icon: React.ComponentType
 }
 
 export const socialLinks: SocialLinks[] = [
   {
     id: 'discord',
     url: 'https://discord.gg/sequence',
-    icon: 'images/discord.svg'
+    icon: DiscordIcon
   },
   {
     id: 'twitter',
     url: 'https://www.twitter.com/0xsequence',
-    icon: 'images/twitter.svg'
+    icon: TwitterIcon
   },
   {
     id: 'youtube',
     url: 'https://www.youtube.com/channel/UC1zHgUyV-doddTcnFNqt62Q',
-    icon: 'images/youtube.svg'
+    icon: YoutubeIcon
   },
   {
     id: 'github',
     url: 'https://github.com/0xsequence',
-    icon: 'images/github.svg'
+    icon: GithubIcon
   }
 ]
 
@@ -68,13 +68,9 @@ export const Footer = () => {
     return (
       <div className="flex flex-row gap-4">
         {bottomPageLinks.map((link, index) => (
-          <Button
-            className="flex gap-4"
-            variant="text"
-            onClick={() => onClickLinkUrl(link.url)}
-            key={index}
-            label={<Text variant="small">{link.label}</Text>}
-          />
+          <Button className="flex gap-4" variant="text" onClick={() => onClickLinkUrl(link.url)} key={index}>
+            <Text variant="small">{link.label}</Text>
+          </Button>
         ))}
       </div>
     )
@@ -84,6 +80,7 @@ export const Footer = () => {
     return (
       <div className="flex gap-4 justify-center items-center">
         {socialLinks.map((socialLink, index) => {
+          const IconComponent = socialLink.icon
           return (
             <div
               className="cursor-pointer"
@@ -94,7 +91,7 @@ export const Footer = () => {
                 }
               }}
             >
-              <Image className="h-3" src={socialLink.icon} alt={socialLink.id} disableAnimation />
+              <IconComponent />
             </div>
           )
         })}
@@ -103,7 +100,7 @@ export const Footer = () => {
   }
 
   return (
-    <div className="h-[60px] flex p-5 fixed bottom-0 w-full justify-between bg-background-overlay backdrop-blur-md border-t-1 border-t-[#222]">
+    <div className="h-[60px] flex p-5 fixed bottom-0 w-full justify-between bg-background-primary backdrop-blur-md border-t border-border-normal">
       <Links />
       <Socials />
     </div>

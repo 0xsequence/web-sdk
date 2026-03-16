@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Card, Modal, ModalPrimitive, Spinner, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
+import { Button, Card, DialogPrimitive, Modal, Spinner, Text, ToastProvider, type Theme } from '@0xsequence/design-system'
 import { SequenceHooksProvider } from '@0xsequence/hooks'
 import { SequenceClient, setupAnalytics, type Analytics } from '@0xsequence/provider'
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -81,6 +81,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth ?? {}
 
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
+  const [isConnectLoading, setIsConnectLoading] = useState<boolean>(false)
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
@@ -246,6 +247,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                             <Modal
                               scroll={false}
                               size="sm"
+                              isDismissible={!isConnectLoading}
                               contentProps={{
                                 style: {
                                   maxWidth: '390px',
@@ -263,6 +265,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                 <EpicAuthProvider>
                                   <Connect
                                     onClose={() => setOpenConnectModal(false)}
+                                    onLoadingChange={setIsConnectLoading}
                                     emailConflictInfo={emailConflictInfo}
                                     {...props}
                                     config={incomingConfig}
@@ -299,14 +302,14 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                     marginTop: '4px'
                                   }}
                                 >
-                                  <ModalPrimitive.Title asChild>
+                                  <DialogPrimitive.Title asChild>
                                     <Text className="mb-5" variant="large" asChild>
                                       <h1>
                                         Confirm{' '}
                                         {pendingRequestConfirmation.type === 'signMessage' ? 'signing message' : 'transaction'}
                                       </h1>
                                     </Text>
-                                  </ModalPrimitive.Title>
+                                  </DialogPrimitive.Title>
 
                                   {pendingRequestConfirmation.type === 'signMessage' && pendingRequestConfirmation.message && (
                                     <div className="flex flex-col w-full">
@@ -351,21 +354,23 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                       className="w-full"
                                       shape="square"
                                       size="lg"
-                                      label="Reject"
                                       onClick={() => {
                                         rejectPendingRequest(pendingRequestConfirmation?.id)
                                       }}
-                                    />
+                                    >
+                                      Reject
+                                    </Button>
                                     <Button
                                       className="flex items-center text-center w-full"
                                       shape="square"
                                       size="lg"
-                                      label="Confirm"
                                       variant="primary"
                                       onClick={() => {
                                         confirmPendingRequest(pendingRequestConfirmation?.id)
                                       }}
-                                    />
+                                    >
+                                      Confirm
+                                    </Button>
                                   </div>
                                 </div>
 
@@ -385,9 +390,9 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                               }}
                             >
                               <div className="p-4">
-                                <ModalPrimitive.Title asChild>
+                                <DialogPrimitive.Title asChild>
                                   <PageHeading>Email already in use</PageHeading>
-                                </ModalPrimitive.Title>
+                                </DialogPrimitive.Title>
                                 <div>
                                   <Text className="text-center" variant="normal" color="secondary">
                                     Another account with this email address{' '}
@@ -397,12 +402,13 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                   </Text>
                                   <div className="flex mt-4 gap-2 items-center justify-center">
                                     <Button
-                                      label="OK"
                                       onClick={() => {
                                         setOpenConnectModal(false)
                                         toggleEmailConflictModal(false)
                                       }}
-                                    />
+                                    >
+                                      OK
+                                    </Button>
                                   </div>
                                 </div>
                               </div>

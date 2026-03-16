@@ -30,7 +30,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@0xsequence/design-system": "2.1.11",
+    "@0xsequence/design-system": "3.2.9",
     "@0xsequence/marketplace": "^2.3.38",
     "date-fns": "^4.1.0",
     "fuse.js": "^7.1.0",

@@ -1,7 +1,7 @@
 'use client'
 
 import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { Button, Image } from '@0xsequence/design-system'
+import { Button, Image, useTheme } from '@0xsequence/design-system'
 import { Footer } from 'example-shared-components'
 
 import { PERMISSION_TYPE_LOCAL_STORAGE_KEY, PermissionsType } from '../constants/permissions'
@@ -12,6 +12,7 @@ import { Connected } from './Connected'
 export const Homepage = () => {
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
+  const { theme } = useTheme()
 
   const [initialPermissionsType, setInitialPermissionsType] = useLocalState<PermissionsType>(
     PERMISSION_TYPE_LOCAL_STORAGE_KEY,
@@ -24,16 +25,24 @@ export const Homepage = () => {
     setOpenConnectModal(true)
   }
 
+  console.log(theme)
+
   return (
     <main>
       {wallets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-5 h-screen">
           <div className="flex flex-row items-center justify-center gap-3">
-            <Image className="w-[300px]" alt="Sequence Web SDK" src="images/sequence-websdk-dark.svg" />
+            <Image
+              className="w-[300px]"
+              alt="Sequence Web SDK"
+              src={theme === 'dark' ? 'images/sequence-websdk-light.svg' : 'images/sequence-websdk-dark.svg'}
+            />
           </div>
 
           <div className="flex gap-2 flex-row items-center">
-            <Button onClick={onClickConnect} variant="feature" label="Connect" />
+            <Button onClick={onClickConnect} variant="primary">
+              Connect
+            </Button>
           </div>
 
           {/* <div className="permissions-group">

@@ -110,8 +110,9 @@ export const truncateAtMiddle = (text: string, truncateAt: number) => {
 export const truncateAtIndex = (text: string, truncateIndex: number) => {
   let finalText = text
 
-  if (text.length >= truncateIndex) {
-    finalText = text.slice(0, truncateIndex) + '...' + text.slice(text.length - 4, text.length)
+  if (text.length > truncateIndex) {
+    const charsToShow = Math.floor(truncateIndex / 2)
+    finalText = text.slice(0, charsToShow) + '...' + text.slice(text.length - charsToShow, text.length)
   }
 
   return finalText

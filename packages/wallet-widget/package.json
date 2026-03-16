@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "0xtrails": "^0.11.0",
-    "@0xsequence/design-system": "2.1.11",
+    "@0xsequence/design-system": "3.2.9",
     "@radix-ui/react-popover": "^1.1.11",
     "dayjs": "^1.11.13",
     "fuse.js": "^7.1.0",

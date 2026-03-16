@@ -1,5 +1,5 @@
-import { getNativeTokenInfoByChainId } from '@0xsequence/connect'
-import { compareAddress, Image, Skeleton, Text } from '@0xsequence/design-system'
+import { compareAddress, getNativeTokenInfoByChainId } from '@0xsequence/connect'
+import { Image, Skeleton, Text } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
 import { zeroAddress } from 'viem'
 import { useConfig } from 'wagmi'

@@ -1,3 +1,4 @@
+import { truncateAtIndex } from '@0xsequence/connect'
 import {
   Button,
   Card,
@@ -8,8 +9,7 @@ import {
   LinkIcon,
   Spinner,
   Text,
-  Tooltip,
-  truncateAddress
+  Tooltip
 } from '@0xsequence/design-system'
 import React, { useState } from 'react'
 
@@ -71,12 +71,16 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
             )}
           </div>
           <Text variant="normal" fontWeight="bold" color="primary">
-            {truncateAddress(address, 8, 5)}
+            {truncateAtIndex(address, 8)}
           </Text>
         </div>
       </div>
 
-      {!isReadOnly && <Button size="xs" variant="glass" label="Disconnect" onClick={onDisconnect} />}
+      {!isReadOnly && (
+        <Button size="xs" variant="secondary" onClick={onDisconnect}>
+          Disconnect
+        </Button>
+      )}
 
       {isReadOnly && isLinked && (
         <div className="flex relative items-center gap-2">
@@ -84,13 +88,19 @@ export const WalletListItem: React.FC<WalletListItemProps> = ({
             <Spinner />
           ) : showUnlinkConfirm ? (
             <div className="flex gap-3">
-              <IconButton size="xs" variant="danger" icon={CheckmarkIcon} onClick={handleUnlink} />
-              <IconButton size="xs" variant="glass" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
+              <IconButton size="xs" variant="destructive" icon={CheckmarkIcon} onClick={handleUnlink} />
+              <IconButton size="xs" variant="ghost" icon={CloseIcon} onClick={() => setShowUnlinkConfirm(false)} />
             </div>
           ) : (
             <>
-              {onReconnect && <Button size="xs" variant="glass" label="Reconnect" onClick={onReconnect} />}
-              <Button size="xs" variant="glass" label="Unlink" onClick={() => setShowUnlinkConfirm(true)} />
+              {onReconnect && (
+                <Button size="xs" variant="ghost" onClick={onReconnect}>
+                  Reconnect
+                </Button>
+              )}
+              <Button size="xs" variant="ghost" onClick={() => setShowUnlinkConfirm(true)}>
+                Unlink
+              </Button>
             </>
           )}
         </div>

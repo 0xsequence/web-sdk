@@ -1,4 +1,4 @@
-import { Divider, TabsContent, TabsHeader, TabsRoot, Text } from '@0xsequence/design-system'
+import { Separator, TabsContent, TabsHeader, TabsPrimitive, Text } from '@0xsequence/design-system'
 import { useClearCachedBalances } from '@0xsequence/hooks'
 import { useEffect, useRef, useState } from 'react'
 
@@ -76,12 +76,12 @@ export const PaymentSelectionContent = () => {
               {`Pay with${isSingleOption ? ' ' + tabs[0].label : ''}`}
             </Text>
           </div>
-          <Divider className="w-full" />
+          <Separator className="w-full" />
         </div>
-        <TabsRoot
+        <TabsPrimitive.Root
           className={'w-full'}
           value={selectedTab}
-          onValueChange={value => {
+          onValueChange={(value: string) => {
             // There is a bug with the tabs components which causes the tabs
             // to change to the credit card tab upon initial mount.
             if (isFirstRender.current) {
@@ -103,7 +103,7 @@ export const PaymentSelectionContent = () => {
               <PayWithCreditCardTab skipOnCloseCallback={skipOnCloseCallback} />
             </TabWrapper>
           </TabsContent>
-        </TabsRoot>
+        </TabsPrimitive.Root>
       </div>
     </>
   )

@@ -1,11 +1,10 @@
 import { useWallets } from '@0xsequence/connect'
-import { ChevronDownIcon, Text } from '@0xsequence/design-system'
+import { Button, ChevronDownIcon, Text } from '@0xsequence/design-system'
 import { useObservable } from 'micro-observables'
 import { AnimatePresence } from 'motion/react'
 import { useState } from 'react'
 
 import { useSettings } from '../../hooks/index.js'
-import { MiniButton } from '../MiniButton.js'
 import { SlideupDrawer } from '../Select/SlideupDrawer.js'
 
 import { CollectionsFilter } from './CollectionsFilter.js'
@@ -129,10 +128,10 @@ export const FilterOptions = ({ filterType }: { filterType: 'wallets' | 'network
 
   return (
     <div onClick={() => setOpen()}>
-      <MiniButton className="h-8">
+      <Button className="h-8" variant="secondary">
         {filterLabel()}
-        <ChevronDownIcon color="white" size="sm" />
-      </MiniButton>
+        <ChevronDownIcon size="sm" />
+      </Button>
       <AnimatePresence>
         {openType === 'networks' && (
           <SlideupDrawer
