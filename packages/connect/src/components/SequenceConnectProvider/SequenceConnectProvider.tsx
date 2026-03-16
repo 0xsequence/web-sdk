@@ -246,6 +246,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                             <Modal
                               scroll={false}
                               size="sm"
+                              isDismissible={false}
                               contentProps={{
                                 style: {
                                   maxWidth: '390px',

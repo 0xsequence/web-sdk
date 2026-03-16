@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  ArrowLeftIcon,
   ArrowRightIcon,
   Button,
   Card,
@@ -700,12 +699,6 @@ export const Connect = (props: ConnectProps) => {
     )
   }
 
-  const handleCancelConnect = () => {
-    connect.reset()
-    setConnectingConnector(null)
-    setIsLoading(false)
-  }
-
   const onDismissRestorableSession = () => {
     setRestorableSession(null)
     setRestorableSessionDismissed(true)
@@ -974,13 +967,17 @@ export const Connect = (props: ConnectProps) => {
           }}
         >
           <TitleWrapper isInline={isInline}>
-            <Text color="secondary">
-              {isLoading
-                ? `Connecting...`
-                : hasPrimarySequenceConnection
-                  ? 'Wallets'
-                  : `Connect ${projectName ? `to ${projectName}` : ''}`}
-            </Text>
+            <div className="flex items-center justify-between w-full">
+              <Text color="secondary">
+                {isLoading
+                  ? `Connecting...`
+                  : hasPrimarySequenceConnection
+                    ? 'Wallets'
+                    : `Connect ${projectName ? `to ${projectName}` : ''}`}
+              </Text>
+
+              <IconButton icon={CloseIcon} onClick={onClose} size="xs" />
+            </div>
           </TitleWrapper>
 
           {isSigningLinkMessage && (
@@ -994,7 +991,7 @@ export const Connect = (props: ConnectProps) => {
       )}
       {isLoading ? (
         connectingConnector ? (
-          <ConnectorLoading connector={connectingConnector} onCancel={handleCancelConnect} />
+          <ConnectorLoading connector={connectingConnector} />
         ) : (
           <div className="flex justify-center items-center pt-4">
             <Spinner />
@@ -1147,10 +1144,9 @@ const getUserIdForEvent = (address: string) => {
 
 interface ConnectorLoadingProps {
   connector: ExtendedConnector
-  onCancel: () => void
 }
 
-const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
+const ConnectorLoading = ({ connector }: ConnectorLoadingProps) => {
   const { theme } = useTheme()
   const walletProps = connector._wallet
   const Logo = getLogo(theme, walletProps)
@@ -1160,14 +1156,9 @@ const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center pb-4 bg-background-primary rounded-2xl">
-      <div className="flex items-center justify-between w-full mb-4">
-        <IconButton icon={ArrowLeftIcon} onClick={onCancel} size="xs" />
-        <Text fontWeight="semibold" color="primary" className="">
-          {isGuest ? 'Connecting...' : `Sign in with ${walletName}`}
-        </Text>
-
-        <div className="w-7" />
-      </div>
+      <Text fontWeight="semibold" color="primary" className="mb-4">
+        {isGuest ? 'Connecting...' : `Sign in with ${walletName}`}
+      </Text>
 
       <div className="relative mb-4" style={{ width: '146px', height: '146px' }}>
         <div
@@ -1204,13 +1195,6 @@ const ConnectorLoading = ({ connector, onCancel }: ConnectorLoadingProps) => {
           Continue on the popup
         </Text>
       )}
-
-      <Button onClick={onCancel} variant="secondary" size="md" className="mt-4">
-        <CloseIcon />
-        <Text variant="normal" fontWeight="medium" color="primary">
-          Cancel
-        </Text>
-      </Button>
 
       <style>{`
         @keyframes connectorSpinnerRotate {
