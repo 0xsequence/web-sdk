@@ -4,7 +4,6 @@ import {
   ArrowRightIcon,
   Button,
   Card,
-  CloseIcon,
   DialogPrimitive,
   IconButton,
   Image,
@@ -98,6 +97,7 @@ interface RestorableSessionState {
 interface ConnectProps extends SequenceConnectProviderProps {
   emailConflictInfo?: FormattedEmailConflictInfo | null
   onClose: () => void
+  onLoadingChange?: (isLoading: boolean) => void
   isInline?: boolean
   enabledProviders?: WalletConfigurationProvider[]
   isV3WalletSignedIn?: boolean | null
@@ -115,7 +115,7 @@ export const Connect = (props: ConnectProps) => {
   const { analytics } = useAnalyticsContext()
   const { hideExternalConnectOptions, hideConnectedWallets, hideSocialConnectOptions } = useWalletSettings()
 
-  const { onClose, emailConflictInfo, config: baseConfig = {} as ConnectConfig, isInline = false } = props
+  const { onClose, onLoadingChange, emailConflictInfo, config: baseConfig = {} as ConnectConfig, isInline = false } = props
   const config = props.resolvedConfig ?? baseConfig
   const isV3WalletSignedIn = props.isV3WalletSignedIn ?? null
   const isAuthStatusLoading = props.isAuthStatusLoading ?? false
@@ -128,6 +128,11 @@ export const Connect = (props: ConnectProps) => {
   const descriptiveSocials = !!config?.signIn?.descriptiveSocials
   const showWalletAuthOptionsFirst = config?.signIn?.showWalletAuthOptionsFirst ?? false
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    onLoadingChange?.(isLoading)
+  }, [isLoading, onLoadingChange])
+
   const projectName = baseSignIn?.projectName
   const ecosystemProjectName = walletConfigurationSignIn?.projectName ?? baseSignIn?.projectName
   const ecosystemLogoUrl = walletConfigurationSignIn?.logoUrl ?? baseSignIn?.logoUrl
@@ -967,17 +972,13 @@ export const Connect = (props: ConnectProps) => {
           }}
         >
           <TitleWrapper isInline={isInline}>
-            <div className="flex items-center justify-between w-full">
-              <Text color="secondary">
-                {isLoading
-                  ? `Connecting...`
-                  : hasPrimarySequenceConnection
-                    ? 'Wallets'
-                    : `Connect ${projectName ? `to ${projectName}` : ''}`}
-              </Text>
-
-              <IconButton icon={CloseIcon} onClick={onClose} size="xs" />
-            </div>
+            <Text color="secondary">
+              {isLoading
+                ? `Connecting...`
+                : hasPrimarySequenceConnection
+                  ? 'Wallets'
+                  : `Connect ${projectName ? `to ${projectName}` : ''}`}
+            </Text>
           </TitleWrapper>
 
           {isSigningLinkMessage && (

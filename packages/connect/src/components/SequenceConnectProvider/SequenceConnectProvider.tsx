@@ -81,6 +81,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
   const { expiry = DEFAULT_SESSION_EXPIRATION, app = defaultAppName, origin, nonce } = ethAuth ?? {}
 
   const [openConnectModal, setOpenConnectModal] = useState<boolean>(false)
+  const [isConnectLoading, setIsConnectLoading] = useState<boolean>(false)
   const [theme, setTheme] = useState<Exclude<Theme, undefined>>(defaultTheme || 'dark')
   const [modalPosition, setModalPosition] = useState<ModalPosition>(position)
   const [displayedAssets, setDisplayedAssets] = useState<DisplayedAsset[]>(displayedAssetsSetting)
@@ -246,7 +247,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                             <Modal
                               scroll={false}
                               size="sm"
-                              isDismissible={false}
+                              isDismissible={!isConnectLoading}
                               contentProps={{
                                 style: {
                                   maxWidth: '390px',
@@ -264,6 +265,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                 <EpicAuthProvider>
                                   <Connect
                                     onClose={() => setOpenConnectModal(false)}
+                                    onLoadingChange={setIsConnectLoading}
                                     emailConflictInfo={emailConflictInfo}
                                     {...props}
                                     config={incomingConfig}
