@@ -20,7 +20,7 @@ const getCSSStyleSheet = (customCSS?: string) => {
 
 interface ShadowRootProps {
   theme?: Theme
-  children: ReactNode
+  children: ReactNode | ((container: HTMLDivElement) => ReactNode)
   customCSS?: string
 }
 
@@ -51,14 +51,20 @@ export const ShadowRoot = (props: ShadowRootProps) => {
     }
   }, [windowDocument])
 
+  const renderedChildren = container ? (
+    typeof children === 'function' ? (
+      children(container)
+    ) : (
+      <ThemeProvider theme={theme} root={container}>
+        {children}
+      </ThemeProvider>
+    )
+  ) : null
+
   return windowDocument
     ? createPortal(
         <div data-shadow-host ref={hostRef}>
-          {container && (
-            <ThemeProvider theme={theme} root={container}>
-              {children}
-            </ThemeProvider>
-          )}
+          {renderedChildren}
         </div>,
         document.body
       )
