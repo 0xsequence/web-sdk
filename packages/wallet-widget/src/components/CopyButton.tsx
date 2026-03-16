@@ -18,7 +18,7 @@ export const CopyButton = (props: CopyButtonProps) => {
 
   return (
     <div className="flex flex-row gap-1 items-center hover:opacity-80 cursor-pointer" onClick={() => setCopied(text)}>
-      {isCopied ? <CheckmarkIcon color="white" size={size} /> : <CopyIcon color="white" size={size} />}
+      {isCopied ? <CheckmarkIcon size={size} /> : <CopyIcon size={size} />}
       {includeLabel && (
         <Text color="primary" fontWeight="medium" variant="normal">
           {label}

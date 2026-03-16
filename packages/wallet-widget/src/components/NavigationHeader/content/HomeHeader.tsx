@@ -2,6 +2,7 @@ import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
 import {
   AddIcon,
   ArrowUpIcon,
+  Button,
   IconButton,
   ScanIcon,
   SearchIcon,
@@ -176,24 +177,18 @@ export const HomeHeader = () => {
             }
             footer={
               <div className="flex flex-row w-full gap-3">
-                <div
-                  className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer"
-                  onClick={() => setOpenConnectModal(true)}
-                >
-                  <AddIcon color="white" />
+                <Button className="flex justify-center items-center flex-1" onClick={() => setOpenConnectModal(true)}>
+                  <AddIcon />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Add Wallet
                   </Text>
-                </div>
-                <div
-                  className="flex justify-center items-center bg-background-secondary rounded-full py-3 px-4 gap-2 w-full hover:opacity-80 cursor-pointer"
-                  onClick={() => handleManageWallets()}
-                >
-                  <SettingsIcon color="white" />
+                </Button>
+                <Button className="flex justify-center items-center flex-1" onClick={() => handleManageWallets()}>
+                  <SettingsIcon />
                   <Text variant="normal" fontWeight="bold" color="primary">
                     Manage
                   </Text>
-                </div>
+                </Button>
               </div>
             }
           >

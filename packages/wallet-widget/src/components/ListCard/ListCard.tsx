@@ -38,7 +38,7 @@ export const ListCard = ({
         <div className="flex flex-row gap-3 items-center">
           {rightChildren}
           {type === 'chevron' ? (
-            <ChevronRightIcon color="white" size="md" />
+            <ChevronRightIcon size="md" />
           ) : type === 'radio' ? (
             <RadioSelector isSelected={isSelected} />
           ) : null}
