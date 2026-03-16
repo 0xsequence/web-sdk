@@ -3,6 +3,10 @@ import { findSupportedNetwork } from '@0xsequence/connect'
 import {
   ArrowUpIcon,
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   ExternalLinkIcon,
   GradientAvatar,
   Image,
@@ -12,8 +16,7 @@ import {
   Text
 } from '@0xsequence/design-system'
 import { useGetSingleTokenBalance } from '@0xsequence/hooks'
-import * as PopoverPrimitive from '@radix-ui/react-popover'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { formatUnits, getAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
@@ -31,17 +34,7 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
   const network = findSupportedNetwork(chainId)
   const { hideUnlistedTokens } = useSettings()
 
-  const triggerRef = useRef<HTMLButtonElement>(null)
-  const [triggerWidth, setTriggerWidth] = useState<number>(0)
-
-  const [isExternalPopoverOpen, setIsExternalPopoverOpen] = useState(false)
   const [foundMarketplaceURL] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (triggerRef.current) {
-      setTriggerWidth(triggerRef.current.offsetWidth)
-    }
-  }, [isExternalPopoverOpen])
 
   const isReadOnly = !chains.map(chain => chain.id).includes(chainId)
 
@@ -100,55 +93,34 @@ export const CollectibleDetails = ({ contractAddress, chainId, tokenId, accountA
       <div className="flex flex-col p-4 gap-4">
         <TokenTileImage src={tokenBalance?.tokenMetadata?.image} symbol={tokenBalance?.tokenMetadata?.name} />
         <div className="flex flex-row gap-4">
-          <Button className="text-primary w-full bg-background-secondary" variant="ghost" onClick={onClickSend}>
+          <Button className="text-primary w-full" variant="secondary" onClick={onClickSend}>
             <ArrowUpIcon />
             Send
           </Button>
 
-          <PopoverPrimitive.Root open={isExternalPopoverOpen} onOpenChange={setIsExternalPopoverOpen}>
-            <PopoverPrimitive.Trigger asChild>
-              <Button ref={triggerRef} className="text-primary w-full bg-background-secondary" variant="ghost">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="text-primary w-full" variant="secondary">
                 <ExternalLinkIcon />
                 Open in...
               </Button>
-            </PopoverPrimitive.Trigger>
+            </DropdownMenuTrigger>
 
-            {isExternalPopoverOpen && (
-              <PopoverPrimitive.Content
-                className="flex flex-col p-2 gap-2 z-20 rounded-2xl border border-border-normal"
-                style={{ background: 'rgb(25, 25, 25)', minWidth: triggerWidth }}
-                asChild
-                side="bottom"
-                sideOffset={-44}
-                align="end"
-              >
-                <div>
-                  <div
-                    className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
-                    onClick={() => {
-                      onClickOpenScan()
-                    }}
-                  >
-                    <Text variant="normal" fontWeight="bold" color="primary">
-                      Open in {network?.blockExplorer?.name}
-                    </Text>
-                  </div>
-                  {foundMarketplaceURL && (
-                    <div
-                      className="flex flex-row items-center py-2 px-4 gap-2 bg-background-secondary rounded-lg hover:opacity-80 cursor-pointer"
-                      onClick={() => {
-                        onClickOpenMarketplace()
-                      }}
-                    >
-                      <Text variant="normal" fontWeight="bold" color="primary">
-                        Open in Marketplace
-                      </Text>
-                    </div>
-                  )}
-                </div>
-              </PopoverPrimitive.Content>
-            )}
-          </PopoverPrimitive.Root>
+            <DropdownMenuContent align="end" className="w-full min-w-[200px]">
+              <DropdownMenuItem onClick={onClickOpenScan}>
+                <Text variant="normal" fontWeight="bold" color="primary">
+                  Open in {network?.blockExplorer?.name}
+                </Text>
+              </DropdownMenuItem>
+              {foundMarketplaceURL && (
+                <DropdownMenuItem onClick={onClickOpenMarketplace}>
+                  <Text variant="normal" fontWeight="bold" color="primary">
+                    Open in Marketplace
+                  </Text>
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <Text variant="xxlarge" color="primary" fontWeight="bold">
           {tokenBalance?.tokenMetadata?.name || 'Unknown Collectible'}

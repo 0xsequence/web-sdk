@@ -271,8 +271,8 @@ export const TransactionDetails = ({ transaction }: TransactionDetailProps) => {
         ))}
       </div>
       <Button className="w-full rounded-xl" onClick={onClickBlockExplorer}>
-        {`View on ${nativeTokenInfo.blockExplorerName}`}
         <LinkIcon />
+        {`View on ${nativeTokenInfo.blockExplorerName}`}
       </Button>
       <div>
         <Separator className="w-full my-2" />
