@@ -41,21 +41,21 @@
   "dependencies": {
     "@0xsequence/dapp-client": ">=3.0.1",
     "@0xsequence/api": ">=3.0.1",
-    "@0xsequence/auth": "^2.3.38",
-    "@0xsequence/core": "^2.3.38",
+    "@0xsequence/auth": "^2.3.43",
+    "@0xsequence/core": "^2.3.43",
     "@0xsequence/design-system": "3.2.9",
     "@0xsequence/ethauth": "^1.0.0",
     "@0xsequence/indexer": ">=3.0.1",
     "@0xsequence/wallet-primitives": ">=3.0.1",
-    "@0xsequence/provider": "^2.3.38",
-    "@0xsequence/waas": "^2.3.38",
+    "@0xsequence/provider": "^2.3.43",
+    "@0xsequence/waas": "^2.3.43",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
     "uuid": "^10.0.0"
   },
   "peerDependencies": {
-    "0xsequence": ">= 2.3.38",
+    "0xsequence": ">= 2.3.43",
     "@0xsequence/hooks": "workspace:*",
     "@coinbase/wallet-sdk": "^4.3.6",
     "@databeat/tracker": "^0.9.3",
@@ -81,7 +81,7 @@
     }
   },
   "devDependencies": {
-    "0xsequence": "^2.3.38",
+    "0xsequence": "^2.3.43",
     "@0xsequence/hooks": "workspace:*",
     "@databeat/tracker": "^0.9.3",
     "@react-oauth/google": "^0.11.1",
