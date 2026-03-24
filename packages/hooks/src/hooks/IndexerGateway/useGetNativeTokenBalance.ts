@@ -16,7 +16,14 @@ const getNativeTokenBalance = async (
   const res = await indexerGatewayClient.getNativeTokenBalance(args)
 
   const balances = res.balances.map(balances =>
-    createNativeTokenBalance(balances.chainId, balances.result.accountAddress, balances.result.balance)
+    createNativeTokenBalance({
+      chainId: balances.chainId,
+      accountAddress: balances.result.accountAddress,
+      balance: balances.result.balance,
+      balanceUSD: balances.result.balanceUSD,
+      priceUSD: balances.result.priceUSD,
+      priceUpdatedAt: balances.result.priceUpdatedAt
+    })
   )
 
   return balances
