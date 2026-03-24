@@ -1,5 +1,5 @@
 import { NetworkImage } from '@0xsequence/design-system'
-import type { ContractInfo } from '@0xsequence/indexer'
+import type { CollectionInfo } from '../../../hooks/useGetAllCollections.js'
 
 import { TokenTileImage } from '../../TokenTileImage.js'
 
@@ -7,8 +7,8 @@ const NETWORK_IMAGE_SIZE = '15%'
 const NETWORK_IMAGE_OFFSET = '2%'
 
 interface CollectionTileProps {
-  balance: ContractInfo
-  onTokenClick: (token: ContractInfo) => void
+  balance: CollectionInfo
+  onTokenClick: (token: CollectionInfo) => void
 }
 
 export const CollectionTile = ({ balance, onTokenClick }: CollectionTileProps) => {

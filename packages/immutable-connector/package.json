@@ -34,12 +34,9 @@
   },
   "peerDependencies": {
     "@0xsequence/connect": "workspace:*",
-    "0xsequence": ">= 2.3.38",
     "@imtbl/config": ">=2.1.2",
     "@imtbl/sdk": ">=2.1.2",
-    "ethers": "^6.13.0",
     "react": ">= 17 < 19",
-    "react-dom": ">= 17 < 19",
     "viem": "^2.44.4",
     "wagmi": "^2.19.5"
   }

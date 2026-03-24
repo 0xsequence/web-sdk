@@ -1,7 +1,7 @@
 import { compareAddress, getNativeTokenInfoByChainId, useWallets } from '@0xsequence/connect'
 import { cn, Divider, SearchIcon, TabsContent, TabsHeader, TabsPrimitive, Text, TextInput } from '@0xsequence/design-system'
 import { useGetCoinPrices, useGetExchangeRate, useGetTransactionHistorySummary } from '@0xsequence/hooks'
-import type { ContractInfo, Transaction, TxnTransfer } from '@0xsequence/indexer'
+import type { Transaction, TxnTransfer } from '@0xsequence/indexer'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import { useObservable } from 'micro-observables'
@@ -9,7 +9,7 @@ import { useEffect, useMemo } from 'react'
 import { useConfig } from 'wagmi'
 
 import { useGetAllTokensDetails, useGetMoreBalances, useNavigation, useSettings } from '../../hooks/index.js'
-import { useGetAllCollections } from '../../hooks/useGetAllCollections.js'
+import { useGetAllCollections, type CollectionInfo } from '../../hooks/useGetAllCollections.js'
 import { useNavigationHeader } from '../../hooks/useNavigationHeader.js'
 import { computeBalanceFiat, type TokenBalanceWithDetails } from '../../utils/index.js'
 import { FilterMenu } from '../Filter/FilterMenu.js'
@@ -177,7 +177,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
         name: 'collectionName',
         getFn: (item: any) => {
           if (item._type === 'collection') {
-            return item.contractInfo?.name || ''
+            return item.contractInfo?.name || item.name || ''
           }
           return ''
         }
@@ -385,7 +385,7 @@ export const GeneralList = ({ variant = 'default' }: { variant?: 'default' | 'se
     })
   }
 
-  const handleCollectionClick = (collection: ContractInfo) => {
+  const handleCollectionClick = (collection: CollectionInfo) => {
     setNavigation({
       location: 'collection-details',
       params: {

@@ -1,6 +1,6 @@
 import type { Price, TokenPrice } from '@0xsequence/api'
 import { compareAddress } from '@0xsequence/connect'
-import type { GetTransactionHistoryReturn, TokenBalance, Transaction } from '@0xsequence/indexer'
+import type { TokenBalance, Transaction } from '@0xsequence/indexer'
 import type { InfiniteData } from '@tanstack/react-query'
 import { formatUnits, zeroAddress } from 'viem'
 
@@ -61,6 +61,10 @@ interface SortBalancesByTypeReturn {
   collectibles: TokenBalance[]
 }
 
+interface TransactionHistoryPage {
+  transactions: Transaction[]
+}
+
 const compareTokenBalanceIds = (a: TokenBalance, b: TokenBalance) => {
   return (a.tokenID || '').localeCompare(b.tokenID || '')
 }
@@ -92,9 +96,7 @@ export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByType
   }
 }
 
-export const flattenPaginatedTransactionHistory = (
-  transactionHistoryData: InfiniteData<GetTransactionHistoryReturn> | undefined
-) => {
+export const flattenPaginatedTransactionHistory = (transactionHistoryData: InfiniteData<TransactionHistoryPage> | undefined) => {
   const transactionHistory: Transaction[] = []
 
   transactionHistoryData?.pages.forEach(page => {

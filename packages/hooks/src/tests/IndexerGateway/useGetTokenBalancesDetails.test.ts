@@ -8,7 +8,7 @@ import { useGetTokenBalancesDetails } from '../../hooks/IndexerGateway/useGetTok
 import { createWrapper } from '../createWrapper.js'
 import { server } from '../setup.js'
 
-const getTokenBalancesDetailsArgs: IndexerGateway.GetTokenBalancesDetailsArgs = {
+const getTokenBalancesDetailsArgs: IndexerGateway.GetTokenBalancesDetailsRequest = {
   filter: {
     accountAddresses: [ACCOUNT_ADDRESS],
     contractStatus: IndexerGateway.ContractVerificationStatus.ALL,
