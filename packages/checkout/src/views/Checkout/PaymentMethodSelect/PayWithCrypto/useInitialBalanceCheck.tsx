@@ -43,7 +43,7 @@ export const useInitialBalanceCheck = ({
       chainId: chainId
     },
     {
-      disabled: isInitialBalanceChecked || !isInsufficientBalance || isFree
+      enabled: !isInitialBalanceChecked && isInsufficientBalance && !isFree
     }
   )
 
@@ -66,7 +66,7 @@ export const useInitialBalanceCheck = ({
       omitMetadata: true
     },
     {
-      disabled: isInitialBalanceChecked || !isInsufficientBalance || swapRoutesIsLoading || isFree
+      enabled: !isInitialBalanceChecked && isInsufficientBalance && !swapRoutesIsLoading && !isFree
     }
   )
 

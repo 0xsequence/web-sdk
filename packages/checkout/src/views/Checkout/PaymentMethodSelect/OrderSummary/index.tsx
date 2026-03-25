@@ -21,7 +21,7 @@ export const OrderSummary = () => {
       tokenIDs: tokenIds.some(id => id === '') ? [] : tokenIds
     },
     {
-      disabled: tokenIds.some(id => id === '')
+      enabled: tokenIds.every(id => id !== '')
     }
   )
   const { data: dataCollectionInfo, isLoading: isLoadingCollectionInfo } = useGetContractInfo({

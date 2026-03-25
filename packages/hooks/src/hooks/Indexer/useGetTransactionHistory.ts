@@ -3,7 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { getAddress } from 'viem'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { InfiniteQueryHookOptions } from '../../types/hooks.js'
 
 import { useIndexerClient } from './useIndexerClient.js'
 
@@ -128,11 +128,14 @@ const getTransactionHistory = async (
  * }
  * ```
  */
-export const useGetTransactionHistory = (args: UseGetTransactionHistoryArgs, options?: HooksOptions) => {
+export const useGetTransactionHistory = (
+  args: UseGetTransactionHistoryArgs,
+  options?: InfiniteQueryHookOptions<Awaited<ReturnType<typeof getTransactionHistory>>, Error, Page>
+) => {
   const indexerClient = useIndexerClient(args.chainId)
 
   return useInfiniteQuery({
-    queryKey: [QUERY_KEYS.useGetTransactionHistory, args, options],
+    queryKey: [QUERY_KEYS.useGetTransactionHistory, args],
     queryFn: ({ pageParam }) => {
       return getTransactionHistory(indexerClient, {
         ...args,
@@ -143,8 +146,9 @@ export const useGetTransactionHistory = (args: UseGetTransactionHistoryArgs, opt
       return page?.more ? page : undefined
     },
     initialPageParam: { ...args?.page } as Page,
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneSecond * 30,
-    enabled: !!args.chainId && args.accountAddresses.length > 0 && !options?.disabled
+    enabled: !!args.chainId && args.accountAddresses.length > 0,
+    ...options
   })
 }

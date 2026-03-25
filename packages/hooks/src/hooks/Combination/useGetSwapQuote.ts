@@ -1,8 +1,8 @@
-import type { GetLifiSwapQuoteRequest } from '@0xsequence/api'
+import type { GetLifiSwapQuoteRequest, LifiSwapQuote } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 import { compareAddress } from '../../utils/helpers.js'
 import { useAPIClient } from '../API/useAPIClient.js'
 
@@ -88,11 +88,11 @@ import { useAPIClient } from '../API/useAPIClient.js'
  * }
  * ```
  */
-export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteRequest, options?: HooksOptions) => {
+export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteRequest, options?: QueryHookOptions<LifiSwapQuote>) => {
   const apiClient = useAPIClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetSwapQuote, getSwapQuoteArgs, options],
+    queryKey: [QUERY_KEYS.useGetSwapQuote, getSwapQuoteArgs],
     queryFn: async () => {
       const res = await apiClient.getLifiSwapQuote({
         params: {
@@ -111,15 +111,15 @@ export const useGetSwapQuote = (getSwapQuoteArgs: GetLifiSwapQuoteRequest, optio
         currencyAddress: compareAddress(res.quote.currencyAddress, ZERO_ADDRESS) ? ZERO_ADDRESS : res.quote.currencyAddress
       }
     },
-    retry: options?.retry ?? false,
-    staleTime: time.oneMinute * 1,
+    retry: false,
+    staleTime: time.oneMinute,
     enabled:
-      !options?.disabled &&
       !!getSwapQuoteArgs.params.walletAddress &&
       !!getSwapQuoteArgs.params.fromTokenAddress &&
       !!getSwapQuoteArgs.params.toTokenAddress &&
       getSwapQuoteArgs.params.fromTokenAmount !== '0' &&
       !!getSwapQuoteArgs.params.chainId &&
-      !!getSwapQuoteArgs.params.includeApprove
+      !!getSwapQuoteArgs.params.includeApprove,
+    ...options
   })
 }

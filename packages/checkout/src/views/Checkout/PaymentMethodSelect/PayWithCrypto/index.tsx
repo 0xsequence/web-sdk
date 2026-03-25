@@ -135,7 +135,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
       contractAddress: selectedCurrency.address
     },
     {
-      disabled: !isSwapTransaction
+      enabled: isSwapTransaction
     }
   )
 
@@ -161,7 +161,7 @@ export const PayWithCryptoTab = ({ skipOnCloseCallback, isSwitchingChainRef }: P
       }
     },
     {
-      disabled: !isSwapTransaction
+      enabled: isSwapTransaction
     }
   )
 
