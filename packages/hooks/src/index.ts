@@ -1,6 +1,3 @@
-// Types
-export type { InfiniteQueryHookOptions, QueryHookOptions } from './types/hooks.js'
-
 // Constants
 export { DEFAULT_SLIPPAGE_BPS, QUERY_KEYS } from './constants.js'
 
