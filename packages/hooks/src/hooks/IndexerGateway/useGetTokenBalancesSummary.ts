@@ -15,7 +15,14 @@ const getTokenBalancesSummary = async (indexerGatewayClient: SequenceIndexerGate
 
     const nativeTokens: TokenBalance[] = res.nativeBalances.flatMap(nativeChainBalance =>
       nativeChainBalance.results.map(nativeTokenBalance =>
-        createNativeTokenBalance(nativeChainBalance.chainId, nativeTokenBalance.accountAddress, nativeTokenBalance.balance)
+        createNativeTokenBalance({
+          chainId: nativeChainBalance.chainId,
+          accountAddress: nativeTokenBalance.accountAddress,
+          balance: nativeTokenBalance.balance,
+          balanceUSD: nativeTokenBalance.balanceUSD,
+          priceUSD: nativeTokenBalance.priceUSD,
+          priceUpdatedAt: nativeTokenBalance.priceUpdatedAt
+        })
       )
     )
 

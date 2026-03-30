@@ -1,8 +1,6 @@
 import { SequenceCheckoutConfig } from '@0xsequence/checkout'
 import { ConnectConfig, createConfig, createContractPermission } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/connect'
-import { Environment } from '@imtbl/config'
-import { passport } from '@imtbl/sdk'
 import { zeroAddress } from 'viem'
 import { cookieStorage, createStorage } from 'wagmi'
 
@@ -72,31 +70,6 @@ export const connectConfig: ConnectConfig = {
         builderUrl: 'https://dev-api.sequence.build'
       }
     : undefined
-}
-
-let passportInstance: passport.Passport | undefined
-
-export const getPassportInstance = () => {
-  if (typeof window === 'undefined') {
-    return undefined
-  }
-
-  if (!passportInstance) {
-    passportInstance = new passport.Passport({
-      baseConfig: {
-        environment: Environment.SANDBOX,
-        publishableKey: 'pk_imapik-test-VEMeW7wUX7hE7LHg3FxY'
-      },
-      forceScwDeployBeforeMessageSignature: true,
-      clientId: 'ap8Gv3188GLFROiBFBNFz77DojRpqxnS',
-      redirectUri: `${defaultOrigin}/auth-callback`,
-      logoutRedirectUri: `${defaultOrigin}`,
-      audience: 'platform_api',
-      scope: 'openid offline_access email transact'
-    })
-  }
-
-  return passportInstance
 }
 
 export const config = createConfig({

@@ -5,7 +5,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { Homepage } from './components/Homepage'
-import { ImmutableCallback } from './components/ImmutableCallback'
 import { InlineDemo } from './components/InlineDemo'
 import { XAuthCallback } from './components/XAuthCallback'
 import { createExampleConfig, loadWalletUrl, persistWalletUrl, sanitizeWalletUrl } from './config'
@@ -48,7 +47,6 @@ const AppContent = () => {
           <Routes>
             <Route path="/" element={<Homepage walletUrl={walletUrl} onWalletUrlChange={handleWalletUrlChange} />} />
             <Route path="/inline" element={<InlineDemo config={config} />} />
-            <Route path="/auth-callback" element={<ImmutableCallback />} />
             <Route path="/auth-callback-X" element={<XAuthCallback />} />
           </Routes>
         </BrowserRouter>

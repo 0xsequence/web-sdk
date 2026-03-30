@@ -27,7 +27,16 @@ const getSingleTokenBalance = async (args: GetSingleTokenBalanceArgs, indexerGat
   })
 
   if (compareAddress(args.contractAddress, ZERO_ADDRESS)) {
-    return createNativeTokenBalance(args.chainId, args.accountAddress, balance.nativeBalances[0].results[0].balance)
+    const nativeBalance = balance.nativeBalances[0].results[0]
+
+    return createNativeTokenBalance({
+      chainId: args.chainId,
+      accountAddress: args.accountAddress,
+      balance: nativeBalance.balance,
+      balanceUSD: nativeBalance.balanceUSD,
+      priceUSD: nativeBalance.priceUSD,
+      priceUpdatedAt: nativeBalance.priceUpdatedAt
+    })
   } else {
     if (args.tokenId) {
       return balance.balances[0].results.find(result => result.tokenID === args.tokenId)

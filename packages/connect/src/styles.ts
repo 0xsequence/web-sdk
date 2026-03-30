@@ -888,6 +888,9 @@ export const styles = String.raw`
   .min-w-\[8rem\] {
     min-width: 8rem;
   }
+  .min-w-\[200px\] {
+    min-width: 200px;
+  }
   .min-w-full {
     min-width: 100%;
   }

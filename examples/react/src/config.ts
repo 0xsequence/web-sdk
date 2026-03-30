@@ -1,7 +1,5 @@
 import { ConnectConfig, createConfig, createContractPermission } from '@0xsequence/connect'
 import { ChainId } from '@0xsequence/connect'
-import { Environment } from '@imtbl/config'
-import { passport } from '@imtbl/sdk'
 
 import { webSdkDemoLogoDataUrl } from './constants/index.js'
 import { getEmitterContractAddress } from './constants/permissions'
@@ -15,8 +13,7 @@ const isDev = false
 const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 export const WALLET_URL_STORAGE_KEY = 'sequence-react-example.walletUrl'
-export const DEFAULT_WALLET_URL = 'https://immutable.ecosystem-demo.xyz'
-// export const DEFAULT_WALLET_URL = 'https://v3.sequence-dev.app/'
+export const DEFAULT_WALLET_URL = 'https://v3.sequence-dev.app'
 
 export const sanitizeWalletUrl = (walletUrl: string): string => {
   const trimmed = walletUrl.trim()
@@ -61,19 +58,6 @@ export const connectConfig: ConnectConfig = {
       }
     : undefined
 }
-
-export const passportInstance = new passport.Passport({
-  baseConfig: {
-    environment: Environment.SANDBOX,
-    publishableKey: 'pk_imapik-test-VEMeW7wUX7hE7LHg3FxY'
-  },
-  forceScwDeployBeforeMessageSignature: true,
-  clientId: 'ap8Gv3188GLFROiBFBNFz77DojRpqxnS',
-  redirectUri: `${window.location.origin}/auth-callback`,
-  logoutRedirectUri: `${window.location.origin}`,
-  audience: 'platform_api',
-  scope: 'openid offline_access email transact'
-})
 
 export const loadWalletUrl = (): string => {
   if (typeof window === 'undefined') {
