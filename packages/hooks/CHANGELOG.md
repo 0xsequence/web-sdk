@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.3
+
+### Patch Changes
+
+- Remove unnecessary waas components
+
 ## 6.0.2
 
 ### Patch Changes
