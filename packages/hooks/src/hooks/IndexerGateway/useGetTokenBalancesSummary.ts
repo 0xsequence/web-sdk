@@ -2,7 +2,7 @@ import { SequenceIndexerGateway, type IndexerGateway, type Page, type TokenBalan
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { InfiniteQueryHookOptions } from '../../types/hooks.js'
 import { createNativeTokenBalance, sortBalancesByType } from '../../utils/helpers.js'
 
 import { useIndexerGatewayClient } from './useIndexerGatewayClient.js'
@@ -110,11 +110,14 @@ const getTokenBalancesSummary = async (indexerGatewayClient: SequenceIndexerGate
  * }
  * ```
  */
-export const useGetTokenBalancesSummary = (args: GetTokenBalancesSummaryArgs, options?: HooksOptions) => {
+export const useGetTokenBalancesSummary = (
+  args: GetTokenBalancesSummaryArgs,
+  options?: InfiniteQueryHookOptions<Awaited<ReturnType<typeof getTokenBalancesSummary>>, Error, Page>
+) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useInfiniteQuery({
-    queryKey: [QUERY_KEYS.useGetTokenBalancesSummary, args, options],
+    queryKey: [QUERY_KEYS.useGetTokenBalancesSummary, args],
     queryFn: ({ pageParam }) => {
       return getTokenBalancesSummary(indexerGatewayClient, { ...args, page: pageParam })
     },
@@ -122,8 +125,9 @@ export const useGetTokenBalancesSummary = (args: GetTokenBalancesSummaryArgs, op
       return page?.more ? page : undefined
     },
     initialPageParam: { ...args?.page } as Page,
-    retry: options?.retry ?? true,
+    retry: true,
     staleTime: time.oneSecond * 30,
-    enabled: args.filter.accountAddresses.length > 0 && !options?.disabled
+    enabled: args.filter.accountAddresses.length > 0,
+    ...options
   })
 }

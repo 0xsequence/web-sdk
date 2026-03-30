@@ -1,8 +1,8 @@
-import { SequenceAPIClient, type Token } from '@0xsequence/api'
+import { SequenceAPIClient, type Token, type TokenPrice } from '@0xsequence/api'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 
 import { useAPIClient } from './useAPIClient.js'
 
@@ -36,16 +36,8 @@ const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
  *   - chainId: The chain ID where the token exists
  *   - contractAddress: The token's contract address (use ZERO_ADDRESS for native tokens)
  *
- * @param options - Optional configuration options:
- *   - retry: Whether to retry failed requests (defaults to false)
- *   - disabled: Whether to disable the query
- *
- * @returns React Query result object containing:
- *   - data: Array of token prices when available
- *   - isLoading: Whether the initial request is in progress
- *   - error: Any error that occurred
- *   - isError: Whether an error occurred
- *   - isSuccess: Whether the request was successful
+ * @param options - React Query options (except queryKey and queryFn which are managed by the hook).
+ *   Defaults: retry: false, staleTime: 1 minute.
  *
  * @example
  * ```tsx
@@ -59,24 +51,17 @@ const getCoinPrices = async (apiClient: SequenceAPIClient, tokens: Token[]) => {
  *     contractAddress: '0x...' // USDC on Polygon
  *   }
  * ])
- *
- * if (isLoading) {
- *   return <div>Loading prices...</div>
- * }
- *
- * if (prices) {
- *   console.log('ETH price:', prices[0].price.value)
- * }
  * ```
  */
-export const useGetCoinPrices = (tokens: Token[], options?: HooksOptions) => {
+export const useGetCoinPrices = (tokens: Token[], options?: QueryHookOptions<TokenPrice[]>) => {
   const apiClient = useAPIClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetCoinPrices, tokens, options],
+    queryKey: [QUERY_KEYS.useGetCoinPrices, tokens],
     queryFn: () => getCoinPrices(apiClient, tokens),
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneMinute,
-    enabled: tokens.length > 0 && !options?.disabled
+    enabled: tokens.length > 0,
+    ...options
   })
 }

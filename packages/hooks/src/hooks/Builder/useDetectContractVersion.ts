@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 import { useConfig } from '../useConfig.js'
 
 /**
@@ -9,22 +9,12 @@ import { useConfig } from '../useConfig.js'
  *
  * This hook uses React Query to fetch and cache the version of a contract.
  *
- *
  * @param args - The arguments for the hook:
- *   - address: The address of the contract
+ *   - contractAddress: The address of the contract
  *   - chainId: The chain id of the contract
  *
- * @param options - Optional configuration options:
- *   - retry: Whether to retry failed requests (defaults to false)
- *   - disabled: Whether to disable the query
- *
- * @returns React Query result object containing:
- *   - data: The version of the contract
- *   - isLoading: Whether the initial request is in progress
- *   - error: Any error that occurred
- *   - isError: Whether an error occurred
- *   - isSuccess: Whether the request was successful
- *
+ * @param options - React Query options (except queryKey and queryFn which are managed by the hook).
+ *   Defaults: retry: false, staleTime: 60 minutes.
  */
 
 interface DetectContractVersionArgs {
@@ -32,11 +22,11 @@ interface DetectContractVersionArgs {
   chainId: number
 }
 
-export const useDetectContractVersion = (args: DetectContractVersionArgs, options?: HooksOptions) => {
+export const useDetectContractVersion = (args: DetectContractVersionArgs, options?: QueryHookOptions<any>) => {
   const { projectAccessKey, env } = useConfig()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useDetectContractVersion, args.contractAddress, args.chainId, options],
+    queryKey: [QUERY_KEYS.useDetectContractVersion, args.contractAddress, args.chainId],
     queryFn: async () => {
       const res = await fetch(`${env.builderUrl}/rpc/ContractLibrary/DetectContractVersion`, {
         method: 'POST',
@@ -46,8 +36,9 @@ export const useDetectContractVersion = (args: DetectContractVersionArgs, option
       const data = await res.json()
       return data
     },
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneMinute * 60,
-    enabled: !!args.contractAddress && !!args.chainId && !options?.disabled
+    enabled: !!args.contractAddress && !!args.chainId,
+    ...options
   })
 }

@@ -172,7 +172,7 @@ export const Swap = () => {
       }
     },
     {
-      disabled: disableSwapQuote
+      enabled: !disableSwapQuote
     }
   )
 

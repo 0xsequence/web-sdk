@@ -1,8 +1,8 @@
-import { SequenceMetadata, type GetTokenMetadataArgs } from '@0xsequence/metadata'
+import { SequenceMetadata, type GetTokenMetadataArgs, type TokenMetadata } from '@0xsequence/metadata'
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 import { splitEvery } from '../../utils/helpers.js'
 import { useConfig } from '../useConfig.js'
 
@@ -120,15 +120,16 @@ const getTokenMetadata = async (metadataClient: SequenceMetadata, args: GetToken
  * }
  * ```
  */
-export const useGetTokenMetadata = (args: GetTokenMetadataArgs, options?: HooksOptions) => {
+export const useGetTokenMetadata = (args: GetTokenMetadataArgs, options?: QueryHookOptions<TokenMetadata[]>) => {
   const { env } = useConfig()
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetTokenMetadata, args, options],
+    queryKey: [QUERY_KEYS.useGetTokenMetadata, args],
     queryFn: () => getTokenMetadata(metadataClient, args, env.imageProxyUrl),
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneHour,
-    enabled: !!args.chainID && !!args.contractAddress && !options?.disabled
+    enabled: !!args.chainID && !!args.contractAddress,
+    ...options
   })
 }

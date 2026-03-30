@@ -1,8 +1,8 @@
 import type { ContractInfo, GetContractInfoArgs } from '@0xsequence/metadata'
-import { useQuery, type UseQueryResult } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time, ZERO_ADDRESS } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 import { compareAddress } from '../../utils/helpers.js'
 import { findSupportedNetwork } from '../../utils/networks.js'
 
@@ -71,11 +71,11 @@ import { useMetadataClient } from './useMetadataClient.js'
  * }
  * ```
  */
-export const useGetContractInfo = (args: GetContractInfoArgs, options?: HooksOptions): UseQueryResult<ContractInfo> => {
+export const useGetContractInfo = (args: GetContractInfoArgs, options?: QueryHookOptions<ContractInfo>) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetContractInfo, args, options],
+    queryKey: [QUERY_KEYS.useGetContractInfo, args],
     queryFn: async () => {
       const isNativeToken = compareAddress(ZERO_ADDRESS, args.contractAddress)
 
@@ -92,8 +92,9 @@ export const useGetContractInfo = (args: GetContractInfoArgs, options?: HooksOpt
           : {})
       }
     },
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneMinute * 10,
-    enabled: !!args.chainID && !!args.contractAddress && !options?.disabled
+    enabled: !!args.chainID && !!args.contractAddress,
+    ...options
   })
 }

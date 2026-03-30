@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getAddress } from 'viem'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 
 import { useIndexerClients } from './useIndexerClient.js'
 
@@ -116,21 +116,19 @@ const getTransactionHistorySummary = async (
  */
 export const useGetTransactionHistorySummary = (
   getTransactionHistorySummaryArgs: GetTransactionHistorySummaryArgs,
-  options?: HooksOptions
+  options?: QueryHookOptions<Transaction[]>
 ) => {
   const indexerClients = useIndexerClients(getTransactionHistorySummaryArgs.chainIds)
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetTransactionHistorySummary, getTransactionHistorySummaryArgs, options],
+    queryKey: [QUERY_KEYS.useGetTransactionHistorySummary, getTransactionHistorySummaryArgs],
     queryFn: async () => {
       return await getTransactionHistorySummary(indexerClients, getTransactionHistorySummaryArgs)
     },
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneSecond * 30,
     refetchOnMount: true,
-    enabled:
-      getTransactionHistorySummaryArgs.chainIds.length > 0 &&
-      getTransactionHistorySummaryArgs.accountAddresses.length > 0 &&
-      !options?.disabled
+    enabled: getTransactionHistorySummaryArgs.chainIds.length > 0 && getTransactionHistorySummaryArgs.accountAddresses.length > 0,
+    ...options
   })
 }

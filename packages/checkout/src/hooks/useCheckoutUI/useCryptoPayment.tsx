@@ -152,7 +152,7 @@ export const useCryptoPayment = ({
       }
     },
     {
-      disabled: disableSwapQuote
+      enabled: !disableSwapQuote
     }
   )
 

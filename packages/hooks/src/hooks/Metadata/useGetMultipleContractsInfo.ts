@@ -2,7 +2,7 @@ import { SequenceMetadata, type ContractInfo, type GetContractInfoArgs } from '@
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 
 import { useMetadataClient } from './useMetadataClient.js'
 
@@ -110,14 +110,14 @@ const getMultipleContractsInfo = async (
  * }
  * ```
  */
-export const useGetMultipleContractsInfo = (args: GetContractInfoArgs[], options?: HooksOptions) => {
+export const useGetMultipleContractsInfo = (args: GetContractInfoArgs[], options?: QueryHookOptions<ContractInfo[]>) => {
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetMultipleContractInfo, args, options],
+    queryKey: [QUERY_KEYS.useGetMultipleContractInfo, args],
     queryFn: async () => await getMultipleContractsInfo(metadataClient, args),
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneHour,
-    enabled: !options?.disabled
+    ...options
   })
 }

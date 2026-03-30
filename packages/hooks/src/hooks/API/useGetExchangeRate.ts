@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { QUERY_KEYS, time } from '../../constants.js'
-import type { HooksOptions } from '../../types/hooks.js'
+import type { QueryHookOptions } from '../../types/hooks.js'
 
 import { useAPIClient } from './useAPIClient.js'
 
@@ -10,45 +10,25 @@ import { useAPIClient } from './useAPIClient.js'
  *
  * This hook uses React Query to fetch and cache exchange rates from the Sequence API.
  * Rates are automatically refreshed every 10 minutes to ensure they stay current.
- * Used throughout the wallet widget and checkout components to display fiat values
- * for tokens and NFTs.
  *
  * @see {@link https://docs.sequence.xyz/sdk/web/hooks-sdk/hooks/useGetExchangeRate} for more detailed documentation.
  *
  * @param toCurrency - The target currency code (e.g., 'EUR', 'GBP', 'JPY').
  *                     If 'USD' is provided, returns 1 as the conversion rate.
  *
- * @param options - Optional configuration options:
- *   - retry: Whether to retry failed requests (defaults to false)
- *   - disabled: Whether to disable the query
- *
- * @returns React Query result object containing:
- *   - data: The exchange rate value from USD to the target currency
- *   - isLoading: Whether the initial request is in progress
- *   - error: Any error that occurred
- *   - isError: Whether an error occurred
- *   - isSuccess: Whether the request was successful
+ * @param options - React Query options (except queryKey and queryFn which are managed by the hook).
+ *   Defaults: retry: false, staleTime: 10 minutes.
  *
  * @example
  * ```tsx
  * const { data: rate = 1, isLoading } = useGetExchangeRate('EUR')
- *
- * // Convert USD amount to EUR
- * const usdAmount = 100
- * const eurAmount = usdAmount * rate
- *
- * if (isLoading) {
- *   return <div>Loading rates...</div>
- * }
- *
- * console.log(`${usdAmount} USD = ${eurAmount} EUR`)
  * ```
  */
-export const useGetExchangeRate = (toCurrency: string, options?: HooksOptions) => {
+export const useGetExchangeRate = (toCurrency: string, options?: QueryHookOptions<number>) => {
   const apiClient = useAPIClient()
 
   return useQuery({
-    queryKey: [QUERY_KEYS.useGetExchangeRate, toCurrency, options],
+    queryKey: [QUERY_KEYS.useGetExchangeRate, toCurrency],
     queryFn: async () => {
       if (toCurrency === 'USD') {
         return 1
@@ -58,8 +38,9 @@ export const useGetExchangeRate = (toCurrency: string, options?: HooksOptions) =
 
       return res.exchangeRate.value
     },
-    retry: options?.retry ?? false,
+    retry: false,
     staleTime: time.oneMinute * 10,
-    enabled: !!toCurrency && !options?.disabled
+    enabled: !!toCurrency,
+    ...options
   })
 }
