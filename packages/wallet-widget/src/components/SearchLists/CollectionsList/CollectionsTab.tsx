@@ -1,19 +1,19 @@
 import { Skeleton, Spinner } from '@0xsequence/design-system'
-import type { ContractInfo } from '@0xsequence/indexer'
 import type { FC } from 'react'
 
+import type { CollectionInfo } from '../../../hooks/useGetAllCollections.js'
 import { InfiniteScroll } from '../../InfiniteScroll.js'
 import { NoResults } from '../../NoResults.js'
 
 import { CollectionTile } from './CollectionTile.js'
 
 interface CollectionsTabProps {
-  displayedCollectibleBalances: ContractInfo[] | undefined
+  displayedCollectibleBalances: CollectionInfo[] | undefined
   fetchMoreCollectibleBalances: () => Promise<any>
   hasMoreCollectibleBalances: boolean
   isFetchingMoreCollectibleBalances: boolean
   isFetchingInitialBalances: boolean
-  onTokenClick: (token: ContractInfo) => void
+  onTokenClick: (token: CollectionInfo) => void
 }
 
 export const CollectionsTab: FC<CollectionsTabProps> = ({

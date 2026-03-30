@@ -2,15 +2,29 @@ import { useGetMultipleContractsInfo, useGetTokenBalancesSummary } from '@0xsequ
 import { ContractVerificationStatus } from '@0xsequence/indexer'
 import { useEffect } from 'react'
 
+interface UseGetAllCollectionsArgs {
+  accountAddresses: string[]
+  chainIds: number[]
+  hideUnlistedTokens: boolean
+}
+
+export interface CollectionInfo {
+  address: string
+  chainId: number
+  logoURI: string
+  name: string
+}
+
+interface UseGetAllCollectionsReturn {
+  data: CollectionInfo[]
+  isLoading: boolean
+}
+
 export const useGetAllCollections = ({
   accountAddresses,
   chainIds,
   hideUnlistedTokens
-}: {
-  accountAddresses: string[]
-  chainIds: number[]
-  hideUnlistedTokens: boolean
-}) => {
+}: UseGetAllCollectionsArgs): UseGetAllCollectionsReturn => {
   const {
     data: tokenBalancesData,
     isLoading,

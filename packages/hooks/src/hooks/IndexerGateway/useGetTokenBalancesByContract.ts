@@ -8,7 +8,7 @@ import { useIndexerGatewayClient } from './useIndexerGatewayClient.js'
 
 const getTokenBalancesByContract = async (
   indexerGatewayClient: SequenceIndexerGateway,
-  args: IndexerGateway.GetTokenBalancesByContractArgs
+  args: IndexerGateway.GetTokenBalancesByContractRequest
 ) => {
   const res = await indexerGatewayClient.getTokenBalancesByContract(args)
 
@@ -72,7 +72,7 @@ const getTokenBalancesByContract = async (
  * }
  * ```
  */
-export const useGetTokenBalancesByContract = (args: IndexerGateway.GetTokenBalancesByContractArgs, options?: HooksOptions) => {
+export const useGetTokenBalancesByContract = (args: IndexerGateway.GetTokenBalancesByContractRequest, options?: HooksOptions) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useInfiniteQuery({
