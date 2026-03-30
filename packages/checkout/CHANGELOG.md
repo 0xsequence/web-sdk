@@ -1,5 +1,15 @@
 # @0xsequence/checkout
 
+## 5.4.10
+
+### Patch Changes
+
+- Cleanup for waas package dependencies
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.10
+  - @0xsequence/hooks@5.4.10
+
 ## 5.4.9
 
 ### Patch Changes

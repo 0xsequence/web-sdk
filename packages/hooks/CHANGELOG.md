@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.10
+
+### Patch Changes
+
+- Cleanup for waas package dependencies
+
 ## 5.4.9
 
 ### Patch Changes
