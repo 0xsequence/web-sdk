@@ -21,7 +21,7 @@ import {
 import { createConnector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
-import { normalizeChainId } from '../../utils/helpers.js'
+import { normalizeChainId, normalizeSequenceNodesUrl } from '../../utils/helpers.js'
 import { allNetworks } from '../../utils/networks.js'
 import { getPkcePair, getXOauthUrl } from '../X/XAuth.js'
 
@@ -87,7 +87,7 @@ export function sequenceWaasWallet(params: BaseSequenceWaasConnectorOptions) {
     [LocalStorageKey.WaasSignInEmail]: string
   }
 
-  const nodesUrl = params.nodesUrl ?? 'https://nodes.sequence.app'
+  const nodesUrl = normalizeSequenceNodesUrl(params.nodesUrl) ?? 'https://nodes.sequence.app'
 
   const showConfirmationModal = params.enableConfirmationModal ?? false
 

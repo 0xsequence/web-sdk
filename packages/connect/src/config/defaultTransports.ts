@@ -1,5 +1,6 @@
 import { http, type Chain } from 'viem'
 
+import { normalizeSequenceNodesUrl } from '../utils/helpers.js'
 import { getNetwork } from '../utils/networks.js'
 
 const isSequenceNodeUrl = (url: string): boolean => {
@@ -12,19 +13,20 @@ const applyTemplate = (template: string, params: Record<string, string>): string
 
 const resolveNetworkName = (chain: Chain, nodesUrl: string): string => {
   if (isSequenceNodeUrl(nodesUrl)) {
-    return getNetwork(chain.id).name
+    try {
+      return getNetwork(chain.id).name
+    } catch {
+      return (chain as any).shortName ?? chain.name
+    }
   }
 
   return (chain as any).shortName ?? chain.name
 }
 
-const withSequenceNetworkPath = (url: string, networkName: string): string => {
+const withSequenceNetworkPath = (url: string, networkName: string, hasTemplate: boolean): string => {
   const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url
-  const pathSegments = cleanUrl.split('/').filter(Boolean)
-  const hasNetworkPath =
-    pathSegments[pathSegments.length - 1] === networkName || pathSegments[pathSegments.length - 2] === networkName
 
-  if (hasNetworkPath) {
+  if (hasTemplate) {
     return cleanUrl
   }
 
@@ -45,10 +47,14 @@ export const getDefaultTransports = (chains: readonly [Chain, ...Chain[]], proje
     chains.map(chain => {
       const resolvedNodesUrl = nodesUrl
         ? (() => {
-            const networkName = resolveNetworkName(chain, nodesUrl)
-            const templatedUrl = applyTemplate(nodesUrl, { network: networkName })
+            const normalizedNodesUrl = normalizeSequenceNodesUrl(nodesUrl) ?? nodesUrl
+            const networkName = resolveNetworkName(chain, normalizedNodesUrl)
+            const hasTemplate = normalizedNodesUrl.includes('{network}')
+            const templatedUrl = applyTemplate(normalizedNodesUrl, { network: networkName })
 
-            return isSequenceNodeUrl(nodesUrl) ? withSequenceNetworkPath(templatedUrl, networkName) : templatedUrl
+            return isSequenceNodeUrl(normalizedNodesUrl)
+              ? withSequenceNetworkPath(templatedUrl, networkName, hasTemplate)
+              : templatedUrl
           })()
         : chain.rpcUrls.default.http[0]
 

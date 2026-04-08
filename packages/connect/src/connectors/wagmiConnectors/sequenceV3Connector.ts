@@ -24,6 +24,7 @@ import { createConnector, type Connector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import type { EthAuthSettings } from '../../types.js'
+import { normalizeSequenceNodesUrl } from '../../utils/helpers.js'
 import { getNetwork } from '../../utils/networks.js'
 import { SEQUENCE_VALUE_FORWARDER } from '../../utils/session/constants.js'
 import { createContractPermission, createExplicitSessionConfig } from '../../utils/session/index.js'
@@ -240,24 +241,6 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
       }
     }
   })
-}
-
-const normalizeSequenceNodesUrl = (nodesUrl?: string) => {
-  if (!nodesUrl || !nodesUrl.includes('sequence.app')) {
-    return nodesUrl
-  }
-
-  const cleanUrl = nodesUrl.endsWith('/') ? nodesUrl.slice(0, -1) : nodesUrl
-  const pathSegments = cleanUrl.split('/').filter(Boolean)
-  const hasTemplate = cleanUrl.includes('{network}')
-  const hasNetworkPath =
-    pathSegments[pathSegments.length - 1] === '{network}' || pathSegments[pathSegments.length - 2] === '{network}'
-
-  if (hasTemplate || hasNetworkPath) {
-    return cleanUrl
-  }
-
-  return `${cleanUrl}/{network}`
 }
 
 sequenceV3Wallet.type = 'sequence-v3-wallet' as const
@@ -724,10 +707,8 @@ const getRpcUrl = (nodesUrl: string, projectAccessKey: string, networkName: stri
 
   if (nodesUrl.includes('sequence')) {
     const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url
-    const pathSegments = cleanUrl.split('/').filter(Boolean)
-    const hasNetworkPath =
-      pathSegments[pathSegments.length - 1] === networkName || pathSegments[pathSegments.length - 2] === networkName
-    const withNetwork = hasNetworkPath ? cleanUrl : `${cleanUrl}/${networkName}`
+    const hasTemplate = nodesUrl.includes('{network}')
+    const withNetwork = hasTemplate ? cleanUrl : `${cleanUrl}/${networkName}`
 
     if (withNetwork.endsWith(`/${projectAccessKey}`)) {
       return withNetwork
