@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 6.0.4
+
+### Patch Changes
+
+- Fix for node urls
+- Updated dependencies
+  - @0xsequence/connect@6.0.4
+  - @0xsequence/hooks@6.0.4
+
 ## 6.0.3
 
 ### Patch Changes
