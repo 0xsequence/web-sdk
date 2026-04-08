@@ -94,14 +94,16 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     [LocalStorageKey.V3ActiveLoginType]: string
   }
 
+  const normalizedNodesUrl = normalizeSequenceNodesUrl(params.nodesUrl)
+
   const client = new DappClient(params.walletUrl, params.dappOrigin, params.projectAccessKey, {
-    nodesUrl: params.nodesUrl,
+    nodesUrl: normalizedNodesUrl,
     relayerUrl: params.relayerUrl
   })
   const provider = new SequenceV3Provider(
     client,
     params.defaultNetwork,
-    params.nodesUrl,
+    normalizedNodesUrl,
     params.projectAccessKey,
     params.loginType,
     params.explicitSessionParams ? createExplicitSessionConfig(params.explicitSessionParams) : undefined,
@@ -240,6 +242,24 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
   })
 }
 
+const normalizeSequenceNodesUrl = (nodesUrl?: string) => {
+  if (!nodesUrl || !nodesUrl.includes('sequence.app')) {
+    return nodesUrl
+  }
+
+  const cleanUrl = nodesUrl.endsWith('/') ? nodesUrl.slice(0, -1) : nodesUrl
+  const pathSegments = cleanUrl.split('/').filter(Boolean)
+  const hasTemplate = cleanUrl.includes('{network}')
+  const hasNetworkPath =
+    pathSegments[pathSegments.length - 1] === '{network}' || pathSegments[pathSegments.length - 2] === '{network}'
+
+  if (hasTemplate || hasNetworkPath) {
+    return cleanUrl
+  }
+
+  return `${cleanUrl}/{network}`
+}
+
 sequenceV3Wallet.type = 'sequence-v3-wallet' as const
 
 export class SequenceV3Provider implements EIP1193Provider {
@@ -269,7 +289,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   constructor(
     private client: DappClient,
     defaultNetwork: number,
-    nodesUrl = 'https://nodes.sequence.app',
+    nodesUrl = 'https://nodes.sequence.app/{network}',
     projectAccessKey: string,
     loginType?: SequenceV3LoginType,
     initialSessionConfig?: ExplicitSessionConfig,
@@ -703,7 +723,17 @@ const getRpcUrl = (nodesUrl: string, projectAccessKey: string, networkName: stri
   let url = applyTemplate(nodesUrl, { network: networkName })
 
   if (nodesUrl.includes('sequence')) {
-    url = `${url}/${projectAccessKey}`
+    const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url
+    const pathSegments = cleanUrl.split('/').filter(Boolean)
+    const hasNetworkPath =
+      pathSegments[pathSegments.length - 1] === networkName || pathSegments[pathSegments.length - 2] === networkName
+    const withNetwork = hasNetworkPath ? cleanUrl : `${cleanUrl}/${networkName}`
+
+    if (withNetwork.endsWith(`/${projectAccessKey}`)) {
+      return withNetwork
+    }
+
+    url = `${withNetwork}/${projectAccessKey}`
   }
 
   return url
