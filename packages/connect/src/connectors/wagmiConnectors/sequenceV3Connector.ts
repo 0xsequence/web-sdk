@@ -24,6 +24,7 @@ import { createConnector, type Connector } from 'wagmi'
 
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import type { EthAuthSettings } from '../../types.js'
+import { normalizeSequenceNodesUrl } from '../../utils/helpers.js'
 import { getNetwork } from '../../utils/networks.js'
 import { SEQUENCE_VALUE_FORWARDER } from '../../utils/session/constants.js'
 import { createContractPermission, createExplicitSessionConfig } from '../../utils/session/index.js'
@@ -94,14 +95,16 @@ export function sequenceV3Wallet(params: BaseSequenceV3ConnectorOptions) {
     [LocalStorageKey.V3ActiveLoginType]: string
   }
 
+  const normalizedNodesUrl = normalizeSequenceNodesUrl(params.nodesUrl)
+
   const client = new DappClient(params.walletUrl, params.dappOrigin, params.projectAccessKey, {
-    nodesUrl: params.nodesUrl,
+    nodesUrl: normalizedNodesUrl,
     relayerUrl: params.relayerUrl
   })
   const provider = new SequenceV3Provider(
     client,
     params.defaultNetwork,
-    params.nodesUrl,
+    normalizedNodesUrl,
     params.projectAccessKey,
     params.loginType,
     params.explicitSessionParams ? createExplicitSessionConfig(params.explicitSessionParams) : undefined,
@@ -269,7 +272,7 @@ export class SequenceV3Provider implements EIP1193Provider {
   constructor(
     private client: DappClient,
     defaultNetwork: number,
-    nodesUrl = 'https://nodes.sequence.app',
+    nodesUrl = 'https://nodes.sequence.app/{network}',
     projectAccessKey: string,
     loginType?: SequenceV3LoginType,
     initialSessionConfig?: ExplicitSessionConfig,
@@ -703,7 +706,15 @@ const getRpcUrl = (nodesUrl: string, projectAccessKey: string, networkName: stri
   let url = applyTemplate(nodesUrl, { network: networkName })
 
   if (nodesUrl.includes('sequence')) {
-    url = `${url}/${projectAccessKey}`
+    const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url
+    const hasTemplate = nodesUrl.includes('{network}')
+    const withNetwork = hasTemplate ? cleanUrl : `${cleanUrl}/${networkName}`
+
+    if (withNetwork.endsWith(`/${projectAccessKey}`)) {
+      return withNetwork
+    }
+
+    url = `${withNetwork}/${projectAccessKey}`
   }
 
   return url
