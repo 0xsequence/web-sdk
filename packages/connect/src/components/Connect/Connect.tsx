@@ -30,7 +30,7 @@ import {
   ShowAllWalletsButton
 } from '../ConnectButton/index.js'
 import type { SequenceConnectProviderProps } from '../SequenceConnectProvider/index.js'
-import { PoweredBySequence } from '../SequenceLogo/index.js'
+import { PoweredByPolygon } from '../PolygonBrand/index.js'
 
 import { Banner } from './Banner.js'
 import { ConnectedWallets } from './ConnectedWallets.js'
@@ -614,11 +614,12 @@ export const Connect = (props: ConnectProps) => {
                   </div>
                 </>
               )}
+
               {!showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
                 <WalletConnectorsSection />
               )}
               <div className="mt-6">
-                <PoweredBySequence />
+                <PoweredByPolygon />
               </div>
             </>
           )}
