@@ -50,7 +50,7 @@ import {
   XWaasConnectButton
 } from '../ConnectButton/index.js'
 import type { SequenceConnectProviderProps } from '../SequenceConnectProvider/index.js'
-import { PoweredBySequence } from '../SequenceLogo/index.js'
+import { PoweredByPolygon } from '../PolygonBrand/index.js'
 
 import { Banner } from './Banner.js'
 import { ConnectedWallets } from './ConnectedWallets.js'
@@ -901,7 +901,7 @@ export const Connect = (props: ConnectProps) => {
           </Button>
         </div>
         <div className="mt-6">
-          <PoweredBySequence />
+          <PoweredByPolygon />
         </div>
       </div>
     )
@@ -1120,7 +1120,7 @@ export const Connect = (props: ConnectProps) => {
                   <WalletConnectorsSection />
                 )}
                 <div className="mt-6">
-                  <PoweredBySequence />
+                  <PoweredByPolygon />
                 </div>
               </>
             )}

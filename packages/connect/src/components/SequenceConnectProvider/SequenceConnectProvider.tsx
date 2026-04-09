@@ -36,7 +36,7 @@ import { EpicAuthProvider } from '../EpicAuthProvider/index.js'
 import { JsonTreeViewer } from '../JsonTreeViewer.js'
 import { NetworkBadge } from '../NetworkBadge/index.js'
 import { PageHeading } from '../PageHeading/index.js'
-import { PoweredBySequence } from '../SequenceLogo/index.js'
+import { PoweredByPolygon } from '../PolygonBrand/index.js'
 import { ShadowRoot } from '../ShadowRoot/index.js'
 import { SocialLink } from '../SocialLink/SocialLink.js'
 import { TxnDetails } from '../TxnDetails/index.js'
@@ -375,7 +375,7 @@ export const SequenceConnectProvider = (props: SequenceConnectProviderProps) => 
                                 </div>
 
                                 <div className="mt-4">
-                                  <PoweredBySequence />
+                                  <PoweredByPolygon />
                                 </div>
                               </div>
                             </Modal>
