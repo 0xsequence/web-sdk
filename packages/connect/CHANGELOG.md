@@ -1,5 +1,13 @@
 # @0xsequence/connect
 
+## 6.0.5
+
+### Patch Changes
+
+- Powered by logo update
+- Updated dependencies
+  - @0xsequence/hooks@6.0.5
+
 ## 6.0.4
 
 ### Patch Changes

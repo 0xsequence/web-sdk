@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.5
+
+### Patch Changes
+
+- Powered by logo update
+
 ## 6.0.4
 
 ### Patch Changes
