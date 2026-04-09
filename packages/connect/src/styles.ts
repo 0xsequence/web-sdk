@@ -592,9 +592,6 @@ export const styles = String.raw`
   .w-\[56px\] {
     width: 56px;
   }
-  .w-\[80px\] {
-    width: 80px;
-  }
   .w-\[100px\] {
     width: 100px;
   }
@@ -648,6 +645,9 @@ export const styles = String.raw`
   }
   .flex-1 {
     flex: 1;
+  }
+  .flex-none {
+    flex: none;
   }
   .flex-shrink {
     flex-shrink: 1;
