@@ -1,5 +1,14 @@
 # @0xsequence/immutable-connector
 
+## 5.4.11
+
+### Patch Changes
+
+- Polygon logo fix
+
+- Updated dependencies []:
+  - @0xsequence/connect@5.4.11
+
 ## 5.4.10
 
 ### Patch Changes

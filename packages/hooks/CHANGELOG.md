@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 5.4.11
+
+### Patch Changes
+
+- Polygon logo fix
+
 ## 5.4.10
 
 ### Patch Changes
