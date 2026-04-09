@@ -15,7 +15,7 @@ export const PoweredByPolygon = () => {
       <Text variant="xsmall" color="muted" fontWeight="bold">
         Powered by
       </Text>
-      <div className="h-auto flex-none" style={{ width: 56 }}>
+      <div className="h-auto flex-none" style={{ width: 56, marginTop: 2 }}>
         <PolygonLogo />
       </div>
     </div>
