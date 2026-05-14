@@ -336,8 +336,6 @@ export class SequenceV3Provider implements EIP1193Provider {
   async request(args: EIP1193RequestArgs): Promise<any> {
     const { method, params } = args
 
-    console.log(`Request method: ${method}`, params)
-
     switch (method) {
       case 'eth_accounts': {
         if (this.client.isInitialized) {
