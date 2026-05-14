@@ -1,5 +1,14 @@
 # @0xsequence/kit-wallet
 
+## 6.0.6
+
+### Patch Changes
+
+- Minor improvements
+- Updated dependencies
+  - @0xsequence/connect@6.0.6
+  - @0xsequence/hooks@6.0.6
+
 ## 6.0.5
 
 ### Patch Changes
