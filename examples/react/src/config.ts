@@ -13,7 +13,7 @@ const isDev = false
 const projectAccessKey = isDev ? 'AQAAAAAAAAVBcvNU0sTXiBQmgnL-uVm929Y' : 'AQAAAAAAAEGvyZiWA9FMslYeG_yayXaHnSI'
 const walletConnectProjectId = 'c65a6cb1aa83c4e24500130f23a437d8'
 export const WALLET_URL_STORAGE_KEY = 'sequence-react-example.walletUrl'
-export const DEFAULT_WALLET_URL = 'https://v3.sequence-dev.app'
+export const DEFAULT_WALLET_URL = 'https://wallet.polygon.technology'
 
 export const sanitizeWalletUrl = (walletUrl: string): string => {
   const trimmed = walletUrl.trim()

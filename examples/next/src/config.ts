@@ -21,7 +21,7 @@ export const sponsoredContractAddresses: Record<number, `0x${string}`> = {
 
 export const connectConfig: ConnectConfig = {
   projectAccessKey,
-  walletUrl: 'https://v3.sequence-dev.app',
+  walletUrl: 'https://wallet.polygon.technology',
   defaultTheme: 'dark',
   signIn: {
     projectName: 'Sequence Web SDK Demo',
@@ -74,7 +74,7 @@ export const connectConfig: ConnectConfig = {
 
 export const config = createConfig({
   ...connectConfig,
-  walletUrl: 'https://v3.sequence-dev.app',
+  walletUrl: 'https://wallet.polygon.technology',
   dappOrigin: defaultOrigin,
   appName: 'Sequence Web SDK Demo',
   chainIds: [ChainId.ARBITRUM_SEPOLIA, ChainId.OPTIMISM],

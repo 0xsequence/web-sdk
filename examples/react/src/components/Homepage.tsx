@@ -82,7 +82,7 @@ export const Homepage = ({ walletUrl, onWalletUrlChange }: HomepageProps) => {
                       name="wallet-url"
                       value={walletUrlInput}
                       onChange={e => setWalletUrlInput(e.target.value)}
-                      placeholder="https://v3.sequence-dev.app"
+                      placeholder="https://wallet.polygon.technology"
                     />
                     <div className="flex flex-col gap-2">
                       <Text variant="small" color="muted">
