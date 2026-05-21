@@ -21,7 +21,7 @@ export const config = createConfig({
     indexerUrl: 'https://dev-indexer.sequence.app',
     builderUrl: 'https://dev-api.sequence.build'
   },
-  walletUrl: 'https://v3.sequence-dev.app',
+  walletUrl: 'https://wallet.polygon.technology',
   // walletUrl: 'http://localhost:5173',
   dappOrigin: window.location.origin,
   appName: 'Sequence Web SDK Demo',
