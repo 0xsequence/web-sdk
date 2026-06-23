@@ -9,6 +9,7 @@ import type { Connector } from 'wagmi'
 import { useConnections } from 'wagmi'
 
 import { Deferred } from '../utils/deferred.js'
+import { compareAddress } from '../utils/helpers.js'
 
 // Shared state across hook instances
 let sharedPendingConfirmation: WaasFeeOptionConfirmation | undefined = undefined
@@ -101,8 +102,12 @@ export function useWaasFeeOptions(options?: WaasFeeOptionsConfig): UseWaasFeeOpt
           const { token, value } = option
           const decimals = token.decimals ?? 18
           const rawValue = BigInt(value)
-          const balance = token.contractAddress
-            ? BigInt(balances.balances.find(({ contractAddress }) => contractAddress === token.contractAddress)?.balance ?? '0')
+          const tokenContractAddress = token.contractAddress
+          const balance = tokenContractAddress
+            ? BigInt(
+                balances.balances.find(({ contractAddress }) => compareAddress(contractAddress, tokenContractAddress))?.balance ??
+                  '0'
+              )
             : BigInt(balances.nativeBalances?.[0]?.balance ?? '0')
 
           return {
