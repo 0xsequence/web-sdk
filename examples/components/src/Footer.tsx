@@ -37,7 +37,7 @@ interface SocialLinks {
 export const socialLinks: SocialLinks[] = [
   {
     id: 'discord',
-    url: 'https://discord.gg/sequence',
+    url: 'https://discord.com/invite/YnGKP7d3vS',
     icon: DiscordIcon
   },
   {
