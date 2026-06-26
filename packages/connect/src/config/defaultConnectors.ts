@@ -64,6 +64,7 @@ export interface DefaultV3ConnectorOptions extends CommonConnectorOptions {
     | false
     | {
         projectId: string
+        customStoragePrefix?: string
       }
   additionalWallets?: Wallet[]
   /**
@@ -135,6 +136,7 @@ export interface DefaultWaasConnectorOptions extends CommonConnectorOptions {
     | false
     | {
         projectId: string
+        customStoragePrefix?: string
       }
   additionalWallets?: Wallet[]
 
@@ -278,10 +280,12 @@ export const getDefaultWaasConnectors = (options: DefaultWaasConnectorOptions): 
 
   if (options.walletConnect || options.walletConnectProjectId) {
     const projectId = (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
+    const customStoragePrefix = options.walletConnect && options.walletConnect.customStoragePrefix
 
     wallets.push(
       walletConnect({
         projectId,
+        ...(customStoragePrefix && { customStoragePrefix }),
         defaultNetwork: defaultChainId
       })
     )
@@ -424,10 +428,12 @@ export const getDefaultV3Connectors = (options: DefaultV3ConnectorOptions): Crea
 
   if (options.walletConnect || options.walletConnectProjectId) {
     const projectId = (options.walletConnect && options.walletConnect?.projectId) || options.walletConnectProjectId!
+    const customStoragePrefix = options.walletConnect && options.walletConnect.customStoragePrefix
 
     wallets.push(
       walletConnect({
         projectId,
+        ...(customStoragePrefix && { customStoragePrefix }),
         defaultNetwork: defaultChainId
       })
     )

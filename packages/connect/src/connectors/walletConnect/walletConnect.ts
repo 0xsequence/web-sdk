@@ -9,6 +9,27 @@ interface WalletConnectOptions extends WalletConnectParameters {
   defaultNetwork?: number
 }
 
+const SWITCH_CHAIN_ON_CONNECT_TIMEOUT_MS = 1500
+
+const withTimeout = <T>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error('WalletConnect switchChain timed out'))
+    }, timeoutMs)
+
+    promise.then(
+      value => {
+        clearTimeout(timeout)
+        resolve(value)
+      },
+      error => {
+        clearTimeout(timeout)
+        reject(error)
+      }
+    )
+  })
+}
+
 export const walletConnect = (options: WalletConnectOptions): Wallet => ({
   id: 'wallet-connect',
   logoDark: WalletConnectLogo,
@@ -27,36 +48,28 @@ export const walletConnect = (options: WalletConnectOptions): Wallet => ({
         isReconnecting?: boolean
         withCapabilities?: withCapabilities | boolean
       }) => {
-        const targetChainId = params?.chainId ?? defaultNetwork ?? config.chains[0]?.id
-        if (!targetChainId) {
-          throw new Error('No target chain ID available')
-        }
-
-        if (!connector.connect || !connector.switchChain) {
+        if (!connector.connect) {
           throw new Error('WalletConnect connector not properly initialized')
         }
 
-        // First establish the basic connection
-        const result = await connector.connect({ ...params, chainId: targetChainId })
+        const { chainId, ...connectParams } = params ?? {}
+        const result = await connector.connect(connectParams)
+        const targetChainId = chainId ?? defaultNetwork
 
-        // Only attempt to switch chains if we're not already on the target chain
-        if (result.chainId !== targetChainId) {
-          try {
-            // Switch to the target chain
-            await connector.switchChain({ chainId: targetChainId })
-
-            // Return the connection with the updated chain
-            return {
-              accounts: result.accounts,
-              chainId: targetChainId
-            }
-          } catch (error) {
-            console.warn('Failed to switch chain:', error)
-            return result
-          }
+        if (!targetChainId || result.chainId === targetChainId || !connector.switchChain) {
+          return result
         }
 
-        return result
+        try {
+          await withTimeout(connector.switchChain({ chainId: targetChainId }), SWITCH_CHAIN_ON_CONNECT_TIMEOUT_MS)
+
+          return {
+            accounts: result.accounts,
+            chainId: targetChainId
+          }
+        } catch {
+          return result
+        }
       }
       return {
         ...connector,
