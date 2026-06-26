@@ -138,13 +138,30 @@ export const normalizeChainId = (chainId: string | number | bigint | { chainId: 
   if (typeof chainId === 'object') {
     return normalizeChainId(chainId.chainId)
   }
+
+  let normalizedChainId: number
+
   if (typeof chainId === 'string') {
-    return Number.parseInt(chainId, chainId.trim().substring(0, 2) === '0x' ? 16 : 10)
+    const trimmed = chainId.trim()
+    const isHex = trimmed.startsWith('0x')
+    if (isHex ? !/^0x[\da-f]+$/iu.test(trimmed) : !/^\d+$/u.test(trimmed)) {
+      throw new Error(`Invalid chain id: ${chainId}`)
+    }
+    normalizedChainId = Number.parseInt(trimmed, isHex ? 16 : 10)
+  } else if (typeof chainId === 'bigint') {
+    if (chainId < 0n || chainId > BigInt(Number.MAX_SAFE_INTEGER)) {
+      throw new Error(`Invalid chain id: ${chainId.toString()}`)
+    }
+    normalizedChainId = Number(chainId)
+  } else {
+    normalizedChainId = chainId
   }
-  if (typeof chainId === 'bigint') {
-    return Number(chainId)
+
+  if (!Number.isSafeInteger(normalizedChainId) || normalizedChainId < 0) {
+    throw new Error(`Invalid chain id: ${chainId.toString()}`)
   }
-  return chainId
+
+  return normalizedChainId
 }
 
 export const isSequenceUrl = (url?: string): url is string => {
