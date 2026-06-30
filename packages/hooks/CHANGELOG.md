@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.8
+
+### Patch Changes
+
+- Bug fixes
+
 ## 6.0.7
 
 ### Patch Changes
