@@ -9,13 +9,12 @@ import { useStorage, useStorageItem } from '../../hooks/useStorage.js'
 import type { ExtendedConnector, WalletProperties } from '../../types.js'
 
 const BUTTON_HEIGHT = '52px'
-const BUTTON_HEIGHT_TEXT = '44px'
-const BUTTON_HEIGHT_DESCRIPTIVE = '40px'
+const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
+const GOOGLE_BUTTON_HEIGHT_DESCRIPTIVE = '40px'
 // Standard Google buttons have an intrinsic localized text width; narrow connector cells use the official icon variant.
 const GOOGLE_STANDARD_BUTTON_MIN_WIDTH = 240
 const iconSizeClasses = 'w-8 h-8'
-const iconTextSizeClasses = 'w-6 h-6'
-const iconDescriptiveSizeClasses = 'w-5 h-5'
+const iconDescriptiveSizeClasses = 'w-6 h-6'
 
 export const getLogo = (theme: any, walletProps: WalletProperties) =>
   theme === 'dark'
@@ -44,16 +43,13 @@ export const ConnectButton = (props: ConnectButtonProps) => {
     return (
       <Tooltip message={label || walletProps.name} side="bottom" disabled={disableTooltip}>
         <Card
-          className="flex items-center justify-center w-full"
+          className={`flex gap-3 items-center w-full ${isDescriptive ? 'justify-start' : 'justify-center'}`}
           clickable
           onClick={() => onConnect(connector)}
-          style={{
-            height: isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT_TEXT,
-            ...(isDescriptive ? { borderRadius: '9999px', gap: '10px', padding: '0 16px' } : {})
-          }}
+          style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
         >
-          <Logo className={isDescriptive ? iconDescriptiveSizeClasses : iconTextSizeClasses} />
-          <Text color="primary" variant="normal" fontWeight={isDescriptive ? 'medium' : 'bold'}>
+          <Logo className={iconDescriptiveSizeClasses} />
+          <Text color="primary" variant="normal" fontWeight="bold">
             {buttonCopy}
           </Text>
         </Card>
@@ -196,7 +192,7 @@ export const GoogleWaasConnectButton = (
     return () => mutationObserver.disconnect()
   }, [buttonWidth, theme, useIconButton])
 
-  const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
+  const buttonHeight = isDescriptive ? GOOGLE_BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
   const useSequenceShell = isDescriptive && !useIconButton
   // GIS supports outline_dark, but @react-oauth/google's theme type has not caught up with the current API.
   const googleButtonTheme = (theme === 'dark' ? 'outline_dark' : 'outline') as GoogleLoginProps['theme']
