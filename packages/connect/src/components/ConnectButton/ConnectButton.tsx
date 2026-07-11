@@ -130,10 +130,18 @@ export const GoogleWaasConnectButton = (
   const storage = useStorage()
   const containerRef = useRef<HTMLDivElement>(null)
   const googleButtonRef = useRef<HTMLDivElement>(null)
+  const isMountedRef = useRef(true)
   const [buttonWidth, setButtonWidth] = useState(0)
   const [useIconButton, setUseIconButton] = useState(true)
 
   const { theme } = useTheme()
+
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   useEffect(() => {
     const updateButtonWidth = () => {
@@ -199,7 +207,7 @@ export const GoogleWaasConnectButton = (
       className={`relative flex w-full items-center justify-center ${
         useSequenceShell ? 'overflow-hidden rounded-full bg-background-secondary' : ''
       }`}
-      style={{ height: buttonHeight }}
+      style={{ height: buttonHeight, maxWidth: '400px', marginInline: 'auto' }}
     >
       <div ref={googleButtonRef} className="flex max-w-full items-center justify-center">
         {buttonWidth > 0 && (
@@ -214,12 +222,21 @@ export const GoogleWaasConnectButton = (
             logo_alignment={useIconButton ? undefined : 'center'}
             locale="en"
             onSuccess={credentialResponse => {
+              // GIS may finish after the modal has unmounted; ignore stale callbacks after dismissal.
+              if (!isMountedRef.current) {
+                return
+              }
+
               if (credentialResponse.credential) {
                 storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
                 onConnect(connector)
               }
             }}
             onError={() => {
+              if (!isMountedRef.current) {
+                return
+              }
+
               console.log('Login Failed')
               setIsLoading?.(false)
               setConnectingConnector?.(null)
