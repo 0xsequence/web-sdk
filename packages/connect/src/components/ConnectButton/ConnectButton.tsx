@@ -1,6 +1,6 @@
 import { Card, ContextMenuIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
-import { GoogleLogin } from '@react-oauth/google'
-import { useEffect, useState } from 'react'
+import { GoogleLogin, type GoogleLoginProps } from '@react-oauth/google'
+import { useEffect, useRef, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { getXIdToken } from '../../connectors/X/XAuth.js'
@@ -9,9 +9,13 @@ import { useStorage, useStorageItem } from '../../hooks/useStorage.js'
 import type { ExtendedConnector, WalletProperties } from '../../types.js'
 
 const BUTTON_HEIGHT = '52px'
-const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
+const BUTTON_HEIGHT_TEXT = '44px'
+const BUTTON_HEIGHT_DESCRIPTIVE = '40px'
+// Standard Google buttons have an intrinsic localized text width; narrow connector cells use the official icon variant.
+const GOOGLE_STANDARD_BUTTON_MIN_WIDTH = 240
 const iconSizeClasses = 'w-8 h-8'
-const iconDescriptiveSizeClasses = 'w-6 h-6'
+const iconTextSizeClasses = 'w-6 h-6'
+const iconDescriptiveSizeClasses = 'w-5 h-5'
 
 export const getLogo = (theme: any, walletProps: WalletProperties) =>
   theme === 'dark'
@@ -40,13 +44,16 @@ export const ConnectButton = (props: ConnectButtonProps) => {
     return (
       <Tooltip message={label || walletProps.name} side="bottom" disabled={disableTooltip}>
         <Card
-          className={`flex gap-3 items-center w-full ${isDescriptive ? 'justify-start' : 'justify-center'}`}
+          className="flex items-center justify-center w-full"
           clickable
           onClick={() => onConnect(connector)}
-          style={{ height: BUTTON_HEIGHT_DESCRIPTIVE }}
+          style={{
+            height: isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT_TEXT,
+            ...(isDescriptive ? { borderRadius: '9999px', gap: '10px', padding: '0 16px' } : {})
+          }}
         >
-          <Logo className={iconDescriptiveSizeClasses} />
-          <Text color="primary" variant="normal" fontWeight="bold">
+          <Logo className={isDescriptive ? iconDescriptiveSizeClasses : iconTextSizeClasses} />
+          <Text color="primary" variant="normal" fontWeight={isDescriptive ? 'medium' : 'bold'}>
             {buttonCopy}
           </Text>
         </Card>
@@ -119,63 +126,93 @@ export const GoogleWaasConnectButton = (
     setConnectingConnector?: (connector: ExtendedConnector | null) => void
   }
 ) => {
-  const { connector, onConnect, isDescriptive = false, label, setIsLoading, setConnectingConnector } = props
+  const { connector, onConnect, isDescriptive = false, setIsLoading, setConnectingConnector } = props
   const storage = useStorage()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const googleButtonRef = useRef<HTMLDivElement>(null)
+  const [buttonWidth, setButtonWidth] = useState(0)
+  const [useIconButton, setUseIconButton] = useState(true)
 
   const { theme } = useTheme()
-  const walletProps = connector._wallet
 
-  const Logo = getLogo(theme, walletProps)
-
-  const WaasLoginContent = () => {
-    const baseClasses = 'flex items-center w-full h-full bg-background-secondary absolute pointer-events-none top-0 right-0'
-    const layoutClasses = isDescriptive ? 'gap-3 justify-start px-4' : 'justify-center'
-
-    const copy = walletProps?.ctaText || 'Continue with Google'
-    if (isDescriptive) {
-      return (
-        <div className={`${baseClasses} ${layoutClasses}`}>
-          <Logo className={iconDescriptiveSizeClasses} />
-          <Text color="primary" variant="normal" fontWeight="bold">
-            {copy}
-          </Text>
-        </div>
-      )
+  useEffect(() => {
+    const updateButtonWidth = () => {
+      const availableWidth = containerRef.current?.clientWidth ?? 0
+      const nextButtonWidth = Math.min(400, Math.floor(availableWidth))
+      setButtonWidth(currentWidth => (currentWidth === nextButtonWidth ? currentWidth : nextButtonWidth))
     }
 
-    return (
-      <div className={`${baseClasses} ${layoutClasses}`}>
-        <Logo className={iconSizeClasses} />
-      </div>
-    )
-  }
+    updateButtonWidth()
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateButtonWidth)
+      return () => window.removeEventListener('resize', updateButtonWidth)
+    }
+
+    const resizeObserver = new ResizeObserver(updateButtonWidth)
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current)
+    }
+
+    return () => resizeObserver.disconnect()
+  }, [])
+
+  useEffect(() => {
+    setUseIconButton(buttonWidth < GOOGLE_STANDARD_BUTTON_MIN_WIDTH)
+  }, [buttonWidth, theme])
+
+  useEffect(() => {
+    if (useIconButton) {
+      return
+    }
+
+    const buttonContainer = googleButtonRef.current
+    const availableWidth = containerRef.current?.clientWidth ?? 0
+    if (!buttonContainer || availableWidth === 0) {
+      return
+    }
+
+    const checkButtonOverflow = () => {
+      // GIS makes its iframe wider than the visible button to add click padding, so measure Google's immediate wrapper instead.
+      const renderedButton = buttonContainer.querySelector('iframe')?.parentElement
+      if (renderedButton && renderedButton.getBoundingClientRect().width > availableWidth + 1) {
+        setUseIconButton(true)
+      }
+    }
+
+    checkButtonOverflow()
+
+    const mutationObserver = new MutationObserver(checkButtonOverflow)
+    mutationObserver.observe(buttonContainer, { childList: true, subtree: true, attributes: true })
+
+    return () => mutationObserver.disconnect()
+  }, [buttonWidth, theme, useIconButton])
 
   const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
+  const useSequenceShell = isDescriptive && !useIconButton
+  // GIS supports outline_dark, but @react-oauth/google's theme type has not caught up with the current API.
+  const googleButtonTheme = (theme === 'dark' ? 'outline_dark' : 'outline') as GoogleLoginProps['theme']
 
   return (
-    <Tooltip message={label || walletProps.name} disabled>
-      <Card
-        className="bg-transparent p-0 w-full relative"
-        clickable
-        style={{
-          height: buttonHeight
-        }}
-        onClick={() => {
-          setIsLoading?.(true)
-          setConnectingConnector?.(connector)
-        }}
-      >
-        <div
-          className="flex flex-row h-full overflow-hidden items-center justify-center"
-          style={{
-            opacity: 0.0000001,
-            transform: 'scale(100)'
-          }}
-        >
+    <div
+      ref={containerRef}
+      className={`relative flex w-full items-center justify-center ${
+        useSequenceShell ? 'overflow-hidden rounded-full bg-background-secondary' : ''
+      }`}
+      style={{ height: buttonHeight }}
+    >
+      <div ref={googleButtonRef} className="flex max-w-full items-center justify-center">
+        {buttonWidth > 0 && (
           <GoogleLogin
-            width="56"
-            type="icon"
+            key={`${theme}-${buttonWidth}-${useIconButton ? 'icon' : 'standard'}`}
+            width={useIconButton ? undefined : buttonWidth.toString()}
+            type={useIconButton ? 'icon' : 'standard'}
+            theme={googleButtonTheme}
             size="large"
+            shape={useIconButton ? 'circle' : useSequenceShell ? 'rectangular' : 'pill'}
+            text={useIconButton ? undefined : 'continue_with'}
+            logo_alignment={useIconButton ? undefined : 'center'}
+            locale="en"
             onSuccess={credentialResponse => {
               if (credentialResponse.credential) {
                 storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
@@ -188,11 +225,18 @@ export const GoogleWaasConnectButton = (
               setConnectingConnector?.(null)
             }}
           />
+        )}
+      </div>
+      {useSequenceShell && (
+        // Keep Google's iframe directly interactive while replacing only its outer border with Sequence's visual shell.
+        <div aria-hidden className="pointer-events-none absolute inset-0 rounded-full border-1 border-border-card">
+          <div
+            className="absolute rounded-full border-2"
+            style={{ inset: '1px', borderColor: 'var(--seq-color-background-secondary)' }}
+          />
         </div>
-
-        <WaasLoginContent />
-      </Card>
-    </Tooltip>
+      )}
+    </div>
   )
 }
 
