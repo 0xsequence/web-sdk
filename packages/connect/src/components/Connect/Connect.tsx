@@ -588,13 +588,19 @@ export const Connect = (props: ConnectProps) => {
 
   const renderConnectorButton = (
     connector: ExtendedConnector,
-    options?: { isDescriptive?: boolean; disableTooltip?: boolean }
+    options?: {
+      isDescriptive?: boolean
+      disableTooltip?: boolean
+      forceIcon?: boolean
+      googleButtonTheme?: 'filled_blue' | 'outline'
+    }
   ) => {
     const commonProps = {
       connector,
       onConnect,
       isDescriptive: options?.isDescriptive,
-      disableTooltip: options?.disableTooltip
+      disableTooltip: options?.disableTooltip,
+      forceIcon: options?.forceIcon
     }
 
     // Special handling for ecosystem connector - use config data for display
@@ -651,7 +657,12 @@ export const Connect = (props: ConnectProps) => {
         )
       case 'google-waas':
         return (
-          <GoogleWaasConnectButton {...commonProps} setIsLoading={setIsLoading} setConnectingConnector={setConnectingConnector} />
+          <GoogleWaasConnectButton
+            {...commonProps}
+            buttonTheme={options?.googleButtonTheme}
+            setIsLoading={setIsLoading}
+            setConnectingConnector={setConnectingConnector}
+          />
         )
       case 'apple-waas':
         return (
@@ -831,6 +842,7 @@ export const Connect = (props: ConnectProps) => {
 
   const showMoreSocialOptions = socialAuthConnectors.length > MAX_ITEM_PER_ROW
   const showMoreWalletOptions = walletConnectors.length > MAX_ITEM_PER_ROW
+  const googleSocialConnector = socialAuthConnectors.find(connector => connector._wallet?.id === 'google-waas')
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
 
@@ -1045,7 +1057,7 @@ export const Connect = (props: ConnectProps) => {
                 )}
 
                 {!hasPrimarySequenceConnection && (
-                  <div className="flex mt-4 gap-6 flex-col">
+                  <div className={clsx('flex mt-4 flex-col', !descriptiveSocials && googleSocialConnector ? 'gap-3' : 'gap-6')}>
                     <>
                       {showEcosystemConnectorSection && ecosystemConnector && (
                         <div
@@ -1059,31 +1071,82 @@ export const Connect = (props: ConnectProps) => {
                           </div>
                         </div>
                       )}
-                      {!hideSocialConnectOptions && showSocialConnectorSection && (
-                        <div
-                          className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
-                        >
-                          {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
-                            return (
-                              <div className="w-full" key={connector.uid}>
-                                {renderConnectorButton(connector, {
+                      {!hideSocialConnectOptions &&
+                        showSocialConnectorSection &&
+                        (() => {
+                          const visibleSocialConnectors = socialAuthConnectors.slice(0, socialConnectorsPerRow)
+                          const otherConnectors = visibleSocialConnectors.filter(
+                            connector => connector._wallet?.id !== 'google-waas'
+                          )
+                          const renderConnectorGroup = (connectors: ExtendedConnector[]) => (
+                            <div
+                              className={`flex gap-2 ${descriptiveSocials ? 'flex-col items-start justify-start' : 'flex-row items-center justify-center'}`}
+                            >
+                              {connectors.map(connector => {
+                                const connectorButton = renderConnectorButton(connector, {
                                   isDescriptive: descriptiveSocials,
-                                  disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials
-                                })}
+                                  disableTooltip: config?.signIn?.disableTooltipForDescriptiveSocials,
+                                  forceIcon: !descriptiveSocials && connector._wallet?.id === 'guest-waas'
+                                })
+
+                                return (
+                                  <div className="w-full" key={connector.uid}>
+                                    {connectorButton}
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )
+                          if (!googleSocialConnector) {
+                            return (
+                              <div className="flex w-full flex-col gap-2">
+                                {renderConnectorGroup(visibleSocialConnectors)}
+                                {showMoreSocialOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />}
                               </div>
                             )
-                          })}
-                          {showMoreSocialOptions && (
-                            <div className="w-full">
-                              <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                          }
+
+                          if (descriptiveSocials) {
+                            return (
+                              <div className="flex w-full flex-col gap-3">
+                                <Separator className="w-full" />
+                                <div className="rounded-xl border border-border-card bg-background-secondary p-2">
+                                  {renderConnectorButton(googleSocialConnector, {
+                                    isDescriptive: true,
+                                    disableTooltip: true,
+                                    googleButtonTheme: 'filled_blue'
+                                  })}
+                                </div>
+                                <Separator className="w-full" />
+                                {renderConnectorGroup(otherConnectors)}
+                                {showMoreSocialOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />}
+                              </div>
+                            )
+                          }
+
+                          return (
+                            <div className="flex w-full flex-col gap-3">
+                              {renderConnectorGroup(otherConnectors)}
+                              {showMoreSocialOptions && <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />}
+                              <Separator className="w-full" />
+                              {renderConnectorButton(googleSocialConnector, {
+                                isDescriptive: true,
+                                disableTooltip: true,
+                                googleButtonTheme: 'outline'
+                              })}
                             </div>
-                          )}
-                        </div>
-                      )}
+                          )
+                        })()}
                       {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
                         <div className="flex gap-2 flex-row justify-center items-center w-full">
                           <Separator className="flex-1" />
-                          <Text className="leading-4 h-4 text-sm shrink-0" variant="normal" fontWeight="medium" color="muted">
+                          <Text
+                            className="h-4 text-sm shrink-0"
+                            style={{ lineHeight: '16px' }}
+                            variant="normal"
+                            fontWeight="medium"
+                            color="muted"
+                          >
                             or
                           </Text>
                           <Separator className="flex-1" />

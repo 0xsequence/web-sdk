@@ -1,5 +1,4 @@
 import { Card, ContextMenuIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
-import { GoogleLogin, type GoogleLoginProps } from '@react-oauth/google'
 import { useEffect, useRef, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
@@ -7,6 +6,7 @@ import { getXIdToken } from '../../connectors/X/XAuth.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useStorage, useStorageItem } from '../../hooks/useStorage.js'
 import type { ExtendedConnector, WalletProperties } from '../../types.js'
+import { GoogleSignInButton, type GoogleButtonTheme } from '../GoogleSignInButton/GoogleSignInButton.js'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
@@ -27,14 +27,21 @@ interface ConnectButtonProps {
   onConnect: (connector: ExtendedConnector) => void
   isDescriptive?: boolean
   disableTooltip?: boolean
+  forceIcon?: boolean
+}
+
+type GoogleWaasConnector = ExtendedConnector & {
+  params?: {
+    googleClientId?: string
+  }
 }
 
 export const ConnectButton = (props: ConnectButtonProps) => {
-  const { connector, label, disableTooltip, onConnect } = props
+  const { connector, label, disableTooltip, forceIcon = false, onConnect } = props
   const { theme } = useTheme()
   const walletProps = connector._wallet
   const isDescriptive = props.isDescriptive || false
-  const shouldRenderTextButton = isDescriptive || !!walletProps.ctaText
+  const shouldRenderTextButton = !forceIcon && (isDescriptive || !!walletProps.ctaText)
   const buttonCopy = walletProps.ctaText || `Continue with ${label || walletProps.name}`.trim()
 
   const Logo = getLogo(theme, walletProps)
@@ -100,7 +107,7 @@ export const GuestWaasConnectButton = (
     setConnectingConnector?: (connector: ExtendedConnector | null) => void
   }
 ) => {
-  const { connector, onConnect, setIsLoading, setConnectingConnector } = props
+  const { connector, onConnect, forceIcon, setIsLoading, setConnectingConnector } = props
 
   return (
     <ConnectButton
@@ -111,26 +118,26 @@ export const GuestWaasConnectButton = (
         setConnectingConnector?.(connector)
         onConnect(connector)
       }}
-      disableTooltip
+      disableTooltip={!forceIcon}
     />
   )
 }
 
 export const GoogleWaasConnectButton = (
   props: ConnectButtonProps & {
+    buttonTheme?: 'filled_blue' | 'outline'
     setIsLoading?: (isLoading: boolean) => void
     setConnectingConnector?: (connector: ExtendedConnector | null) => void
   }
 ) => {
-  const { connector, onConnect, isDescriptive = false, setIsLoading, setConnectingConnector } = props
+  const { connector, onConnect, isDescriptive = false, buttonTheme = 'outline', setIsLoading, setConnectingConnector } = props
   const storage = useStorage()
   const containerRef = useRef<HTMLDivElement>(null)
-  const googleButtonRef = useRef<HTMLDivElement>(null)
   const isMountedRef = useRef(true)
   const [buttonWidth, setButtonWidth] = useState(0)
-  const [useIconButton, setUseIconButton] = useState(true)
 
   const { theme } = useTheme()
+  const googleClientId = (connector as GoogleWaasConnector).params?.googleClientId ?? ''
 
   useEffect(() => {
     isMountedRef.current = true
@@ -140,83 +147,68 @@ export const GoogleWaasConnectButton = (
   }, [])
 
   useEffect(() => {
-    const updateButtonWidth = () => {
+    let hasMeasured = false
+    let resizeObserver: ResizeObserver | undefined
+
+    const measureInitialWidth = () => {
+      if (hasMeasured) {
+        return
+      }
+
       const availableWidth = containerRef.current?.clientWidth ?? 0
+      if (availableWidth === 0) {
+        return
+      }
+
+      hasMeasured = true
       const nextButtonWidth = Math.min(400, Math.floor(availableWidth))
-      setButtonWidth(currentWidth => (currentWidth === nextButtonWidth ? currentWidth : nextButtonWidth))
+      setButtonWidth(nextButtonWidth)
+      resizeObserver?.disconnect()
+      window.removeEventListener('resize', measureInitialWidth)
     }
 
-    updateButtonWidth()
+    measureInitialWidth()
 
-    if (typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', updateButtonWidth)
-      return () => window.removeEventListener('resize', updateButtonWidth)
-    }
-
-    const resizeObserver = new ResizeObserver(updateButtonWidth)
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current)
-    }
-
-    return () => resizeObserver.disconnect()
-  }, [])
-
-  useEffect(() => {
-    setUseIconButton(buttonWidth < GOOGLE_STANDARD_BUTTON_MIN_WIDTH)
-  }, [buttonWidth, theme])
-
-  useEffect(() => {
-    if (useIconButton) {
-      return
-    }
-
-    const buttonContainer = googleButtonRef.current
-    const availableWidth = containerRef.current?.clientWidth ?? 0
-    if (!buttonContainer || availableWidth === 0) {
-      return
-    }
-
-    const checkButtonOverflow = () => {
-      // GIS makes its iframe wider than the visible button to add click padding, so measure Google's immediate wrapper instead.
-      const renderedButton = buttonContainer.querySelector('iframe')?.parentElement
-      if (renderedButton && renderedButton.getBoundingClientRect().width > availableWidth + 1) {
-        setUseIconButton(true)
+    if (!hasMeasured) {
+      if (typeof ResizeObserver === 'undefined') {
+        window.addEventListener('resize', measureInitialWidth)
+      } else {
+        resizeObserver = new ResizeObserver(measureInitialWidth)
+        if (containerRef.current) {
+          resizeObserver.observe(containerRef.current)
+        }
       }
     }
 
-    checkButtonOverflow()
+    return () => {
+      resizeObserver?.disconnect()
+      window.removeEventListener('resize', measureInitialWidth)
+    }
+  }, [])
 
-    const mutationObserver = new MutationObserver(checkButtonOverflow)
-    mutationObserver.observe(buttonContainer, { childList: true, subtree: true, attributes: true })
-
-    return () => mutationObserver.disconnect()
-  }, [buttonWidth, theme, useIconButton])
-
+  const useIconButton = buttonWidth < GOOGLE_STANDARD_BUTTON_MIN_WIDTH
   const buttonHeight = isDescriptive ? GOOGLE_BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
-  const useSequenceShell = isDescriptive && !useIconButton
   // GIS supports outline_dark, but @react-oauth/google's theme type has not caught up with the current API.
-  const googleButtonTheme = (theme === 'dark' ? 'outline_dark' : 'outline') as GoogleLoginProps['theme']
+  const googleButtonTheme: GoogleButtonTheme =
+    buttonTheme === 'filled_blue' ? 'filled_blue' : theme === 'dark' ? 'outline_dark' : 'outline'
 
   return (
     <div
       ref={containerRef}
-      className={`relative flex w-full items-center justify-center ${
-        useSequenceShell ? 'overflow-hidden rounded-full bg-background-secondary' : ''
-      }`}
+      className="relative flex w-full items-center justify-center"
       style={{ height: buttonHeight, maxWidth: '400px', marginInline: 'auto' }}
     >
-      <div ref={googleButtonRef} className="flex max-w-full items-center justify-center">
+      <div className="flex max-w-full items-center justify-center">
         {buttonWidth > 0 && (
-          <GoogleLogin
-            key={`${theme}-${buttonWidth}-${useIconButton ? 'icon' : 'standard'}`}
+          <GoogleSignInButton
+            clientId={googleClientId}
             width={useIconButton ? undefined : buttonWidth.toString()}
             type={useIconButton ? 'icon' : 'standard'}
             theme={googleButtonTheme}
             size="large"
-            shape={useIconButton ? 'circle' : useSequenceShell ? 'rectangular' : 'pill'}
+            shape={useIconButton ? 'circle' : 'pill'}
             text={useIconButton ? undefined : 'continue_with'}
             logo_alignment={useIconButton ? undefined : 'center'}
-            locale="en"
             onSuccess={credentialResponse => {
               // GIS may finish after the modal has unmounted; ignore stale callbacks after dismissal.
               if (!isMountedRef.current) {
@@ -240,15 +232,6 @@ export const GoogleWaasConnectButton = (
           />
         )}
       </div>
-      {useSequenceShell && (
-        // Keep Google's iframe directly interactive while replacing only its outer border with Sequence's visual shell.
-        <div aria-hidden className="pointer-events-none absolute inset-0 rounded-full border-1 border-border-card">
-          <div
-            className="absolute rounded-full border-2"
-            style={{ inset: '1px', borderColor: 'var(--seq-color-background-secondary)' }}
-          />
-        </div>
-      )}
     </div>
   )
 }

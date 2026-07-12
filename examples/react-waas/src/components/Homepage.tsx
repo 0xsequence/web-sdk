@@ -1,11 +1,16 @@
 import { useOpenConnectModal, useWallets } from '@0xsequence/connect'
-import { Button, Image, useTheme } from '@0xsequence/design-system'
+import { Button, Image, Switch, Text, useTheme } from '@0xsequence/design-system'
 import { Footer } from 'example-shared-components'
 import { Link } from 'react-router-dom'
 
 import { Connected } from './Connected'
 
-export const Homepage = () => {
+interface HomepageProps {
+  useFullWidthSocials: boolean
+  onUseFullWidthSocialsChange: (useFullWidthSocials: boolean) => void
+}
+
+export const Homepage = ({ useFullWidthSocials, onUseFullWidthSocialsChange }: HomepageProps) => {
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
   const { theme } = useTheme()
@@ -33,6 +38,22 @@ export const Homepage = () => {
               <Button variant="primary">Inline Demo</Button>
             </Link>
           </div>
+
+          <label className="flex items-center gap-3">
+            <Text variant="small" color={useFullWidthSocials ? 'muted' : 'primary'}>
+              Compact
+            </Text>
+            <Switch
+              name="social-button-layout"
+              size="sm"
+              checked={useFullWidthSocials}
+              onCheckedChange={onUseFullWidthSocialsChange}
+              aria-label="Use full width social buttons"
+            />
+            <Text variant="small" color={useFullWidthSocials ? 'primary' : 'muted'}>
+              Full width
+            </Text>
+          </label>
         </div>
       ) : (
         <Connected />
