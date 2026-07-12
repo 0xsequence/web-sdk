@@ -656,14 +656,7 @@ export const Connect = (props: ConnectProps) => {
           <GuestWaasConnectButton {...commonProps} setIsLoading={setIsLoading} setConnectingConnector={setConnectingConnector} />
         )
       case 'google-waas':
-        return (
-          <GoogleWaasConnectButton
-            {...commonProps}
-            buttonTheme={options?.googleButtonTheme}
-            setIsLoading={setIsLoading}
-            setConnectingConnector={setConnectingConnector}
-          />
-        )
+        return <GoogleWaasConnectButton {...commonProps} buttonTheme={options?.googleButtonTheme} />
       case 'apple-waas':
         return (
           <AppleWaasConnectButton {...commonProps} setIsLoading={setIsLoading} setConnectingConnector={setConnectingConnector} />

@@ -126,11 +126,9 @@ export const GuestWaasConnectButton = (
 export const GoogleWaasConnectButton = (
   props: ConnectButtonProps & {
     buttonTheme?: 'filled_blue' | 'outline'
-    setIsLoading?: (isLoading: boolean) => void
-    setConnectingConnector?: (connector: ExtendedConnector | null) => void
   }
 ) => {
-  const { connector, onConnect, isDescriptive = false, buttonTheme = 'outline', setIsLoading, setConnectingConnector } = props
+  const { connector, onConnect, isDescriptive = false, buttonTheme = 'outline' } = props
   const storage = useStorage()
   const containerRef = useRef<HTMLDivElement>(null)
   const isMountedRef = useRef(true)
@@ -226,8 +224,6 @@ export const GoogleWaasConnectButton = (
               }
 
               console.log('Login Failed')
-              setIsLoading?.(false)
-              setConnectingConnector?.(null)
             }}
           />
         )}
