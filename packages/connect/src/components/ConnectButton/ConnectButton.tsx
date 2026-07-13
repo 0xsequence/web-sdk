@@ -1,15 +1,18 @@
 import { Card, ContextMenuIcon, Text, Tooltip, useTheme } from '@0xsequence/design-system'
-import { GoogleLogin } from '@react-oauth/google'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { appleAuthHelpers } from 'react-apple-signin-auth'
 
 import { getXIdToken } from '../../connectors/X/XAuth.js'
 import { LocalStorageKey } from '../../constants/localStorage.js'
 import { useStorage, useStorageItem } from '../../hooks/useStorage.js'
 import type { ExtendedConnector, WalletProperties } from '../../types.js'
+import { GoogleSignInButton, type GoogleButtonTheme } from '../GoogleSignInButton/GoogleSignInButton.js'
 
 const BUTTON_HEIGHT = '52px'
 const BUTTON_HEIGHT_DESCRIPTIVE = '44px'
+const GOOGLE_BUTTON_HEIGHT_DESCRIPTIVE = '40px'
+// Standard Google buttons have an intrinsic localized text width; narrow connector cells use the official icon variant.
+const GOOGLE_STANDARD_BUTTON_MIN_WIDTH = 240
 const iconSizeClasses = 'w-8 h-8'
 const iconDescriptiveSizeClasses = 'w-6 h-6'
 
@@ -24,14 +27,21 @@ interface ConnectButtonProps {
   onConnect: (connector: ExtendedConnector) => void
   isDescriptive?: boolean
   disableTooltip?: boolean
+  forceIcon?: boolean
+}
+
+type GoogleWaasConnector = ExtendedConnector & {
+  params?: {
+    googleClientId?: string
+  }
 }
 
 export const ConnectButton = (props: ConnectButtonProps) => {
-  const { connector, label, disableTooltip, onConnect } = props
+  const { connector, label, disableTooltip, forceIcon = false, onConnect } = props
   const { theme } = useTheme()
   const walletProps = connector._wallet
   const isDescriptive = props.isDescriptive || false
-  const shouldRenderTextButton = isDescriptive || !!walletProps.ctaText
+  const shouldRenderTextButton = !forceIcon && (isDescriptive || !!walletProps.ctaText)
   const buttonCopy = walletProps.ctaText || `Continue with ${label || walletProps.name}`.trim()
 
   const Logo = getLogo(theme, walletProps)
@@ -97,7 +107,7 @@ export const GuestWaasConnectButton = (
     setConnectingConnector?: (connector: ExtendedConnector | null) => void
   }
 ) => {
-  const { connector, onConnect, setIsLoading, setConnectingConnector } = props
+  const { connector, onConnect, forceIcon, setIsLoading, setConnectingConnector } = props
 
   return (
     <ConnectButton
@@ -108,91 +118,117 @@ export const GuestWaasConnectButton = (
         setConnectingConnector?.(connector)
         onConnect(connector)
       }}
-      disableTooltip
+      disableTooltip={!forceIcon}
     />
   )
 }
 
 export const GoogleWaasConnectButton = (
   props: ConnectButtonProps & {
-    setIsLoading?: (isLoading: boolean) => void
-    setConnectingConnector?: (connector: ExtendedConnector | null) => void
+    buttonTheme?: 'filled_blue' | 'outline'
   }
 ) => {
-  const { connector, onConnect, isDescriptive = false, label, setIsLoading, setConnectingConnector } = props
+  const { connector, onConnect, isDescriptive = false, buttonTheme = 'outline' } = props
   const storage = useStorage()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isMountedRef = useRef(true)
+  const [buttonWidth, setButtonWidth] = useState(0)
 
   const { theme } = useTheme()
-  const walletProps = connector._wallet
+  const googleClientId = (connector as GoogleWaasConnector).params?.googleClientId ?? ''
 
-  const Logo = getLogo(theme, walletProps)
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
-  const WaasLoginContent = () => {
-    const baseClasses = 'flex items-center w-full h-full bg-background-secondary absolute pointer-events-none top-0 right-0'
-    const layoutClasses = isDescriptive ? 'gap-3 justify-start px-4' : 'justify-center'
+  useEffect(() => {
+    let hasMeasured = false
+    let resizeObserver: ResizeObserver | undefined
 
-    const copy = walletProps?.ctaText || 'Continue with Google'
-    if (isDescriptive) {
-      return (
-        <div className={`${baseClasses} ${layoutClasses}`}>
-          <Logo className={iconDescriptiveSizeClasses} />
-          <Text color="primary" variant="normal" fontWeight="bold">
-            {copy}
-          </Text>
-        </div>
-      )
+    const measureInitialWidth = () => {
+      if (hasMeasured) {
+        return
+      }
+
+      const availableWidth = containerRef.current?.clientWidth ?? 0
+      if (availableWidth === 0) {
+        return
+      }
+
+      hasMeasured = true
+      const nextButtonWidth = Math.min(400, Math.floor(availableWidth))
+      setButtonWidth(nextButtonWidth)
+      resizeObserver?.disconnect()
+      window.removeEventListener('resize', measureInitialWidth)
     }
 
-    return (
-      <div className={`${baseClasses} ${layoutClasses}`}>
-        <Logo className={iconSizeClasses} />
-      </div>
-    )
-  }
+    measureInitialWidth()
 
-  const buttonHeight = isDescriptive ? BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
+    if (!hasMeasured) {
+      if (typeof ResizeObserver === 'undefined') {
+        window.addEventListener('resize', measureInitialWidth)
+      } else {
+        resizeObserver = new ResizeObserver(measureInitialWidth)
+        if (containerRef.current) {
+          resizeObserver.observe(containerRef.current)
+        }
+      }
+    }
+
+    return () => {
+      resizeObserver?.disconnect()
+      window.removeEventListener('resize', measureInitialWidth)
+    }
+  }, [])
+
+  const useIconButton = buttonWidth < GOOGLE_STANDARD_BUTTON_MIN_WIDTH
+  const buttonHeight = isDescriptive ? GOOGLE_BUTTON_HEIGHT_DESCRIPTIVE : BUTTON_HEIGHT
+  // GIS supports outline_dark, but @react-oauth/google's theme type has not caught up with the current API.
+  const googleButtonTheme: GoogleButtonTheme =
+    buttonTheme === 'filled_blue' ? 'filled_blue' : theme === 'dark' ? 'outline_dark' : 'outline'
 
   return (
-    <Tooltip message={label || walletProps.name} disabled>
-      <Card
-        className="bg-transparent p-0 w-full relative"
-        clickable
-        style={{
-          height: buttonHeight
-        }}
-        onClick={() => {
-          setIsLoading?.(true)
-          setConnectingConnector?.(connector)
-        }}
-      >
-        <div
-          className="flex flex-row h-full overflow-hidden items-center justify-center"
-          style={{
-            opacity: 0.0000001,
-            transform: 'scale(100)'
-          }}
-        >
-          <GoogleLogin
-            width="56"
-            type="icon"
+    <div
+      ref={containerRef}
+      className="relative flex w-full items-center justify-center"
+      style={{ height: buttonHeight, maxWidth: '400px', marginInline: 'auto' }}
+    >
+      <div className="flex max-w-full items-center justify-center">
+        {buttonWidth > 0 && (
+          <GoogleSignInButton
+            clientId={googleClientId}
+            width={useIconButton ? undefined : buttonWidth.toString()}
+            type={useIconButton ? 'icon' : 'standard'}
+            theme={googleButtonTheme}
             size="large"
+            shape={useIconButton ? 'circle' : 'pill'}
+            text={useIconButton ? undefined : 'continue_with'}
+            logo_alignment={useIconButton ? undefined : 'center'}
             onSuccess={credentialResponse => {
+              // GIS may finish after the modal has unmounted; ignore stale callbacks after dismissal.
+              if (!isMountedRef.current) {
+                return
+              }
+
               if (credentialResponse.credential) {
                 storage?.setItem(LocalStorageKey.WaasGoogleIdToken, credentialResponse.credential)
                 onConnect(connector)
               }
             }}
             onError={() => {
+              if (!isMountedRef.current) {
+                return
+              }
+
               console.log('Login Failed')
-              setIsLoading?.(false)
-              setConnectingConnector?.(null)
             }}
           />
-        </div>
-
-        <WaasLoginContent />
-      </Card>
-    </Tooltip>
+        )}
+      </div>
+    </div>
   )
 }
 
