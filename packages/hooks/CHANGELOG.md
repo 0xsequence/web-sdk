@@ -1,5 +1,11 @@
 # @0xsequence/hooks
 
+## 6.0.9
+
+### Patch Changes
+
+- Auth screen fix
+
 ## 6.0.8
 
 ### Patch Changes

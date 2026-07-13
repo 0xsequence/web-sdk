@@ -1,5 +1,14 @@
 # @0xsequence/connect
 
+## 6.0.9
+
+### Patch Changes
+
+- a95f233: Fix Google WaaS v2 sign-in clicks failing in Chromium by replacing the hidden, transformed iframe with a directly interactive Google button.
+- Auth screen fix
+- Updated dependencies
+  - @0xsequence/hooks@6.0.9
+
 ## 6.0.8
 
 ### Patch Changes

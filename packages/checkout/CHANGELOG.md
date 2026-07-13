@@ -1,5 +1,15 @@
 # @0xsequence/checkout
 
+## 6.0.9
+
+### Patch Changes
+
+- Auth screen fix
+- Updated dependencies [a95f233]
+- Updated dependencies
+  - @0xsequence/connect@6.0.9
+  - @0xsequence/hooks@6.0.9
+
 ## 6.0.8
 
 ### Patch Changes
