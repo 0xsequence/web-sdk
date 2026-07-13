@@ -18,7 +18,7 @@ interface GoogleIdentityApi {
   renderButton: (parent: HTMLElement, options: GoogleButtonConfiguration) => void
 }
 
-interface GoogleSignInButtonProps extends Omit<GsiButtonConfiguration, 'theme'> {
+interface GoogleSignInButtonProps extends Omit<GsiButtonConfiguration, 'theme' | 'click_listener'> {
   clientId: string
   theme?: GoogleButtonTheme
   onSuccess: (credentialResponse: CredentialResponse) => void
@@ -80,8 +80,7 @@ export const GoogleSignInButton = ({
   shape,
   logo_alignment,
   width,
-  locale,
-  click_listener
+  locale
 }: GoogleSignInButtonProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const onSuccessRef = useRef(onSuccess)
@@ -103,6 +102,7 @@ export const GoogleSignInButton = ({
 
   useEffect(() => {
     if (!clientId) {
+      containerRef.current?.replaceChildren()
       return
     }
 
@@ -123,6 +123,9 @@ export const GoogleSignInButton = ({
     const handleIframeLoad = () => {
       if (!isCancelled && renderedIframe?.src.includes('accounts.google.com/gsi/button')) {
         const remainingLoadingTime = Math.max(0, MIN_LOADING_DURATION_MS - (performance.now() - loadingStartedAt))
+        if (revealTimer) {
+          clearTimeout(revealTimer)
+        }
         revealTimer = setTimeout(() => setReadySignature(renderSignature), remainingLoadingTime)
       }
     }
@@ -152,6 +155,7 @@ export const GoogleSignInButton = ({
         return
       }
 
+      container.replaceChildren()
       credentialHandlers.set(buttonState, handleCredential)
       if (!initializeGoogleIdentity(googleIdentity, clientId)) {
         credentialHandlers.delete(buttonState)
@@ -160,7 +164,6 @@ export const GoogleSignInButton = ({
       }
 
       mutationObserver.observe(container, { childList: true, subtree: true })
-      container.replaceChildren()
       googleIdentity.renderButton(container, {
         type,
         theme,
@@ -170,7 +173,6 @@ export const GoogleSignInButton = ({
         logo_alignment,
         width,
         locale,
-        click_listener,
         state: buttonState
       })
       findRenderedIframe()
@@ -188,27 +190,25 @@ export const GoogleSignInButton = ({
       }
       mutationObserver.disconnect()
       renderedIframe?.removeEventListener('load', handleIframeLoad)
+      containerRef.current?.replaceChildren()
       if (credentialHandlers.get(buttonState) === handleCredential) {
         credentialHandlers.delete(buttonState)
       }
     }
-  }, [buttonState, clientId, type, theme, size, text, shape, logo_alignment, width, locale, click_listener, renderSignature])
+  }, [buttonState, clientId, type, theme, size, text, shape, logo_alignment, width, locale, renderSignature])
 
   return (
     <div className="relative max-w-full" style={{ width: containerWidth, height: buttonHeight }} aria-busy={!isReady}>
-      <div
-        className="pointer-events-none absolute inset-0 z-10 h-full w-full rounded-full transition-opacity duration-150 ease-out"
-        style={{ opacity: isReady ? 0 : 1 }}
-        aria-hidden
-      >
-        <Skeleton className="h-full w-full rounded-full" />
-      </div>
+      {!isReady && (
+        <div className="pointer-events-none absolute inset-0 z-10 h-full w-full rounded-full" aria-hidden>
+          <Skeleton className="h-full w-full rounded-full" />
+        </div>
+      )}
       <div
         ref={containerRef}
         style={{
           height: buttonHeight,
-          opacity: isReady ? 1 : 0,
-          pointerEvents: isReady ? 'auto' : 'none'
+          visibility: isReady ? 'visible' : 'hidden'
         }}
       />
       {!isReady && (

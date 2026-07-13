@@ -26,16 +26,16 @@
   ],
   "scripts": {
     "build": "pnpm run writeVersion && pnpm build:clean && pnpm build:css && pnpm build:esm && pnpm build:cjs",
-    "build:cjs": "tsc --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
-    "build:esm": "tsc --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
+    "build:cjs": "tsc -p tsconfig.build.json --module commonjs --moduleResolution node --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/cjs && echo '{ \"type\": \"commonjs\" }' > dist/cjs/package.json",
+    "build:esm": "tsc -p tsconfig.build.json --verbatimModuleSyntax false --declaration --declarationMap --outDir dist/esm",
     "build:css": "node scripts/build-css.js",
     "build:clean": "rimraf -g ./dist",
     "build:check": "attw --pack .",
     "dev": "pnpm run writeVersion && concurrently \"pnpm dev:tsc\"  \"pnpm watch-css\"",
-    "dev:tsc": "tsc --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
+    "dev:tsc": "tsc -p tsconfig.build.json --watch --module es2022 --moduleResolution node --declaration --declarationMap --outDir dist/esm",
     "watch-css": "node scripts/watch-css.js",
     "writeVersion": "node scripts/writeVersion.js",
-    "test": "echo",
+    "test": "vitest --run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -72,12 +72,15 @@
     "0xsequence": "^2.3.43",
     "@0xsequence/hooks": "workspace:*",
     "@tanstack/react-query": "^5.74.11",
+    "@testing-library/react": "^16.3.0",
     "@types/uuid": "^9.0.8",
     "concurrently": "^9.1.2",
     "ethers": "^6.13.7",
+    "jsdom": "^25.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "viem": "^2.44.4",
+    "vitest": "^2.1.9",
     "wagmi": "^2.19.5"
   }
 }

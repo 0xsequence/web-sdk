@@ -136,43 +136,29 @@ export const GoogleWaasConnectButton = (
   }, [])
 
   useEffect(() => {
-    let hasMeasured = false
-    let resizeObserver: ResizeObserver | undefined
-
-    const measureInitialWidth = () => {
-      if (hasMeasured) {
-        return
-      }
-
+    const measureWidth = () => {
       const availableWidth = containerRef.current?.clientWidth ?? 0
       if (availableWidth === 0) {
         return
       }
 
-      hasMeasured = true
       const nextButtonWidth = Math.min(400, Math.floor(availableWidth))
-      setButtonWidth(nextButtonWidth)
-      resizeObserver?.disconnect()
-      window.removeEventListener('resize', measureInitialWidth)
+      setButtonWidth(currentWidth => (currentWidth === nextButtonWidth ? currentWidth : nextButtonWidth))
     }
 
-    measureInitialWidth()
+    measureWidth()
 
-    if (!hasMeasured) {
-      if (typeof ResizeObserver === 'undefined') {
-        window.addEventListener('resize', measureInitialWidth)
-      } else {
-        resizeObserver = new ResizeObserver(measureInitialWidth)
-        if (containerRef.current) {
-          resizeObserver.observe(containerRef.current)
-        }
-      }
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', measureWidth)
+      return () => window.removeEventListener('resize', measureWidth)
     }
 
-    return () => {
-      resizeObserver?.disconnect()
-      window.removeEventListener('resize', measureInitialWidth)
+    const resizeObserver = new ResizeObserver(measureWidth)
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current)
     }
+
+    return () => resizeObserver.disconnect()
   }, [])
 
   const useIconButton = buttonWidth < GOOGLE_STANDARD_BUTTON_MIN_WIDTH
