@@ -382,8 +382,52 @@ export const Connect = (props: ConnectProps) => {
 
   const showMoreSocialOptions = socialAuthConnectors.length > MAX_ITEM_PER_ROW
   const showMoreWalletOptions = walletConnectors.length > MAX_ITEM_PER_ROW
+  const googleSocialConnector = socialAuthConnectors.find(connector => connector._wallet?.id === 'google-waas')
   const socialConnectorsPerRow = showMoreSocialOptions && !descriptiveSocials ? MAX_ITEM_PER_ROW - 1 : socialAuthConnectors.length
   const walletConnectorsPerRow = showMoreWalletOptions ? MAX_ITEM_PER_ROW - 1 : walletConnectors.length
+
+  const renderSocialConnectorButton = (
+    connector: ExtendedConnector,
+    options?: { isDescriptive?: boolean; googleButtonTheme?: 'filled_blue' | 'outline' }
+  ) => {
+    const isDescriptive = options?.isDescriptive ?? descriptiveSocials
+
+    switch (connector._wallet.id) {
+      case 'guest-waas':
+        return (
+          <GuestWaasConnectButton
+            isDescriptive={isDescriptive}
+            connector={connector}
+            onConnect={onConnect}
+            setIsLoading={setIsLoading}
+          />
+        )
+      case 'google-waas':
+        return (
+          <GoogleWaasConnectButton
+            isDescriptive={isDescriptive}
+            buttonTheme={options?.googleButtonTheme}
+            connector={connector}
+            onConnect={onConnect}
+          />
+        )
+      case 'apple-waas':
+        return <AppleWaasConnectButton isDescriptive={isDescriptive} connector={connector} onConnect={onConnect} />
+      case 'epic-waas':
+        return <EpicWaasConnectButton isDescriptive={isDescriptive} connector={connector} onConnect={onConnect} />
+      case 'X-waas':
+        return <XWaasConnectButton isDescriptive={isDescriptive} connector={connector} onConnect={onConnect} />
+      default:
+        return (
+          <ConnectButton
+            disableTooltip={config?.signIn?.disableTooltipForDescriptiveSocials}
+            isDescriptive={isDescriptive}
+            connector={connector}
+            onConnect={onConnect}
+          />
+        )
+    }
+  }
 
   const WalletConnectorsSection = () => {
     return (
@@ -398,7 +442,10 @@ export const Connect = (props: ConnectProps) => {
 
   if (showExtendedList) {
     const SEARCHABLE_TRESHOLD = 8
-    const connectors = showExtendedList === 'social' ? socialAuthConnectors : walletConnectors
+    const connectors =
+      showExtendedList === 'social'
+        ? socialAuthConnectors.filter(connector => connector._wallet?.id !== 'google-waas')
+        : walletConnectors
     const searchable = connectors.length > SEARCHABLE_TRESHOLD
 
     return (
@@ -522,62 +569,63 @@ export const Connect = (props: ConnectProps) => {
                   {showWalletAuthOptionsFirst && !hideExternalConnectOptions && walletConnectors.length > 0 && (
                     <WalletConnectorsSection />
                   )}
-                  <div className="flex mt-6 gap-6 flex-col">
+                  <div className={clsx('flex mt-6 flex-col', !descriptiveSocials && googleSocialConnector ? 'gap-3' : 'gap-6')}>
                     <>
-                      {!hideSocialConnectOptions && showSocialConnectorSection && (
-                        <div className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}>
-                          {socialAuthConnectors.slice(0, socialConnectorsPerRow).map(connector => {
+                      {!hideSocialConnectOptions &&
+                        showSocialConnectorSection &&
+                        (() => {
+                          const visibleSocialConnectors = socialAuthConnectors.slice(0, socialConnectorsPerRow)
+                          const otherConnectors = visibleSocialConnectors.filter(
+                            connector => connector._wallet?.id !== 'google-waas'
+                          )
+                          const renderConnectorGroup = (connectors: ExtendedConnector[], includeShowMore = false) => (
+                            <div
+                              className={`flex gap-2 justify-center items-center ${descriptiveSocials ? 'flex-col' : 'flex-row'}`}
+                            >
+                              {connectors.map(connector => (
+                                <div className="w-full" key={connector.uid}>
+                                  {renderSocialConnectorButton(connector)}
+                                </div>
+                              ))}
+                              {includeShowMore && (
+                                <div className="w-full">
+                                  <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                                </div>
+                              )}
+                            </div>
+                          )
+
+                          if (!googleSocialConnector) {
+                            return renderConnectorGroup(visibleSocialConnectors, showMoreSocialOptions)
+                          }
+
+                          if (descriptiveSocials) {
                             return (
-                              <div className="w-full" key={connector.uid}>
-                                {connector._wallet.id === 'guest-waas' ? (
-                                  <GuestWaasConnectButton
-                                    isDescriptive={descriptiveSocials}
-                                    connector={connector}
-                                    onConnect={onConnect}
-                                    setIsLoading={setIsLoading}
-                                  />
-                                ) : connector._wallet.id === 'google-waas' ? (
-                                  <GoogleWaasConnectButton
-                                    isDescriptive={descriptiveSocials}
-                                    connector={connector}
-                                    onConnect={onConnect}
-                                  />
-                                ) : connector._wallet.id === 'apple-waas' ? (
-                                  <AppleWaasConnectButton
-                                    isDescriptive={descriptiveSocials}
-                                    connector={connector}
-                                    onConnect={onConnect}
-                                  />
-                                ) : connector._wallet.id === 'epic-waas' ? (
-                                  <EpicWaasConnectButton
-                                    isDescriptive={descriptiveSocials}
-                                    connector={connector}
-                                    onConnect={onConnect}
-                                  />
-                                ) : connector._wallet.id === 'X-waas' ? (
-                                  <XWaasConnectButton
-                                    isDescriptive={descriptiveSocials}
-                                    connector={connector}
-                                    onConnect={onConnect}
-                                  />
-                                ) : (
-                                  <ConnectButton
-                                    disableTooltip={config?.signIn?.disableTooltipForDescriptiveSocials}
-                                    isDescriptive={descriptiveSocials}
-                                    connector={connector}
-                                    onConnect={onConnect}
-                                  />
-                                )}
+                              <div className="flex w-full flex-col gap-3">
+                                <Divider className="mx-0 my-0 text-background-secondary w-full" />
+                                <div className="rounded-xl border border-border-card bg-background-secondary p-2">
+                                  {renderSocialConnectorButton(googleSocialConnector, {
+                                    isDescriptive: true,
+                                    googleButtonTheme: 'filled_blue'
+                                  })}
+                                </div>
+                                <Divider className="mx-0 my-0 text-background-secondary w-full" />
+                                {renderConnectorGroup(otherConnectors, showMoreSocialOptions)}
                               </div>
                             )
-                          })}
-                          {showMoreSocialOptions && (
-                            <div className="w-full">
-                              <ShowAllWalletsButton onClick={() => setShowExtendedList('social')} />
+                          }
+
+                          return (
+                            <div className="flex w-full flex-col gap-3">
+                              {renderConnectorGroup(otherConnectors, showMoreSocialOptions)}
+                              <Divider className="mx-0 my-0 text-background-secondary w-full" />
+                              {renderSocialConnectorButton(googleSocialConnector, {
+                                isDescriptive: true,
+                                googleButtonTheme: 'outline'
+                              })}
                             </div>
-                          )}
-                        </div>
-                      )}
+                          )
+                        })()}
                       {!hideSocialConnectOptions && showSocialConnectorSection && showEmailInputSection && (
                         <div className="flex gap-4 flex-row justify-center items-center">
                           <Divider className="mx-0 my-0 text-background-secondary grow" />
