@@ -1,5 +1,5 @@
 import { useOpenConnectModal, useWallets, WalletType } from '@0xsequence/connect'
-import { Button, Card, CheckmarkIcon, Image, Text } from '@0xsequence/design-system'
+import { Button, Card, CheckmarkIcon, Image, Switch, Text } from '@0xsequence/design-system'
 import { clsx } from 'clsx'
 import { Footer } from 'example-shared-components'
 import { Link } from 'react-router-dom'
@@ -10,7 +10,12 @@ import { Connected } from './Connected'
 const searchParams = new URLSearchParams(location.search)
 const walletType: WalletType = searchParams.get('type') === 'universal' ? 'universal' : 'waas'
 
-export const Homepage = () => {
+interface HomepageProps {
+  useFullWidthSocials: boolean
+  onUseFullWidthSocialsChange: (useFullWidthSocials: boolean) => void
+}
+
+export const Homepage = ({ useFullWidthSocials, onUseFullWidthSocialsChange }: HomepageProps) => {
   const { wallets } = useWallets()
   const { setOpenConnectModal } = useOpenConnectModal()
 
@@ -39,6 +44,21 @@ export const Homepage = () => {
               <Button variant="primary" label="Inline Demo" />
             </Link>
           </div>
+
+          <label className="flex items-center gap-3">
+            <Text variant="small" color={useFullWidthSocials ? 'muted' : 'primary'}>
+              Compact
+            </Text>
+            <Switch
+              name="social-button-layout"
+              checked={useFullWidthSocials}
+              onCheckedChange={onUseFullWidthSocialsChange}
+              aria-label="Use full width social buttons"
+            />
+            <Text variant="small" color={useFullWidthSocials ? 'primary' : 'muted'}>
+              Full width
+            </Text>
+          </label>
 
           <div className="flex gap-2 flex-col px-4 mt-10 w-full max-w-[480px]">
             <WalletTypeSelect
