@@ -199,16 +199,19 @@ export const GoogleSignInButton = ({
 
   return (
     <div className="relative max-w-full" style={{ width: containerWidth, height: buttonHeight }} aria-busy={!isReady}>
-      {!isReady && (
-        <div className="pointer-events-none absolute inset-0 z-10 h-full w-full rounded-full" aria-hidden>
-          <Skeleton className="h-full w-full rounded-full" />
-        </div>
-      )}
+      <div
+        className="pointer-events-none absolute inset-0 z-10 h-full w-full rounded-full transition-opacity duration-150 ease-out"
+        style={{ opacity: isReady ? 0 : 1 }}
+        aria-hidden
+      >
+        <Skeleton className="h-full w-full rounded-full" />
+      </div>
       <div
         ref={containerRef}
         style={{
           height: buttonHeight,
-          visibility: isReady ? 'visible' : 'hidden'
+          opacity: isReady ? 1 : 0,
+          pointerEvents: isReady ? 'auto' : 'none'
         }}
       />
       {!isReady && (
