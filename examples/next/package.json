@@ -18,7 +18,7 @@
     "@0xsequence/wallet-widget": "workspace:*",
     "@tanstack/react-query": "^5.74.11",
     "example-shared-components": "workspace:*",
-    "next": "14.2.3",
+    "next": "15.5.29",
     "ox": "^0.11.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
