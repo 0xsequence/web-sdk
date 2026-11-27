@@ -52,7 +52,7 @@
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
     "motion": "^12.9.2",
-    "uuid": "^10.0.0"
+    "uuid": "^14.0.0"
   },
   "peerDependencies": {
     "0xsequence": ">= 2.3.43",
